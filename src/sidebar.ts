@@ -1,0 +1,132 @@
+import type { DataFile } from "./types";
+import { h, clear } from "./dom";
+
+export interface Sidebar {
+  setVisibleCoalitions(ids: Set<string>): void;
+  getVisibleCoalitions(): Set<string>;
+  /** A mount point below the coalitions list, above the legend. */
+  controlsContainer(): HTMLElement;
+}
+
+export interface SidebarCallbacks {
+  onChange(visible: Set<string>): void;
+}
+
+export function createSidebar(
+  parent: HTMLElement,
+  data: DataFile,
+  cb: SidebarCallbacks,
+): Sidebar {
+  const aside = h("aside", { class: "sidebar" });
+  parent.appendChild(aside);
+
+  let visible = new Set(data.coalitions.map((c) => c.id));
+
+  // Sub-containers — built once. Only the coalitions list re-renders.
+  const coalitionsBlock = h("div", { class: "coalitions-block" });
+  const controlsBlock = h("div", { class: "controls-block" });
+  const legendBlock = h("div", { class: "legend-block" });
+  aside.appendChild(coalitionsBlock);
+  aside.appendChild(controlsBlock);
+  aside.appendChild(legendBlock);
+
+  function renderCoalitions() {
+    clear(coalitionsBlock);
+    coalitionsBlock.appendChild(h("h3", {}, "Coalitions"));
+
+    for (const c of data.coalitions) {
+      const cb_in = h("input", {
+        type: "checkbox",
+        id: `co-${c.id}`,
+      }) as HTMLInputElement;
+      cb_in.checked = visible.has(c.id);
+      cb_in.addEventListener("change", () => {
+        if (cb_in.checked) visible.add(c.id);
+        else visible.delete(c.id);
+        cb.onChange(new Set(visible));
+      });
+      const row = h(
+        "label",
+        { class: "coalition-row", for: `co-${c.id}` },
+        cb_in,
+        h("div", { class: "dot", style: `background:${c.color}` }),
+        h("span", { class: "label" }, c.name),
+        h("span", { class: "count" }, String(c.member_count)),
+      );
+      coalitionsBlock.appendChild(row);
+    }
+
+    const actions = h("div", { class: "actions" });
+    const allBtn = h("button", {}, "All");
+    const noneBtn = h("button", {}, "None");
+    allBtn.addEventListener("click", () => {
+      visible = new Set(data.coalitions.map((c) => c.id));
+      renderCoalitions();
+      cb.onChange(new Set(visible));
+    });
+    noneBtn.addEventListener("click", () => {
+      visible = new Set();
+      renderCoalitions();
+      cb.onChange(new Set(visible));
+    });
+    actions.appendChild(allBtn);
+    actions.appendChild(noneBtn);
+    coalitionsBlock.appendChild(actions);
+  }
+
+  function renderLegend() {
+    clear(legendBlock);
+    const legend = h("div", { class: "legend" });
+    legend.appendChild(h("h3", {}, "Legend"));
+    legend.appendChild(
+      h(
+        "div",
+        { class: "row" },
+        h("div", {
+          class: "swatch",
+          style: "width:22px;height:22px",
+        }),
+        h("div", {}, "Coalition (size ∝ members)"),
+      ),
+    );
+    legend.appendChild(
+      h(
+        "div",
+        { class: "row" },
+        h("div", {
+          class: "swatch",
+          style: "width:10px;height:10px",
+        }),
+        h("div", {}, "Member organization"),
+      ),
+    );
+    legend.appendChild(
+      h(
+        "div",
+        { class: "row" },
+        h("div", {
+          style:
+            "width:24px;height:1px;background:rgba(255,255,255,0.3);align-self:center",
+        }),
+        h("div", {}, "Membership edge"),
+      ),
+    );
+    legendBlock.appendChild(legend);
+  }
+
+  renderCoalitions();
+  renderLegend();
+
+  return {
+    setVisibleCoalitions(ids) {
+      visible = new Set(ids);
+      renderCoalitions();
+    },
+    getVisibleCoalitions() {
+      return new Set(visible);
+    },
+    controlsContainer() {
+      return controlsBlock;
+    },
+  };
+}
