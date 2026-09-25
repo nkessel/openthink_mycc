@@ -62,3 +62,8 @@ What / why
   approval, change log count, connections, locations, round trips), screenshots with injected test data.
   Not verified: a real run in Google Apps Script (setEmailCollectionType/setPublished are feature-detected with fallbacks).
 - Shared the "Openthink data" sheet with ab130@wellesley.edu and turibius@bu.edu as editors (Drive).
+
+2026-09-25 14:35 — Claude
+- At Nathan's request: merged PR #1 into development_branch, renamed the Google Sheet to "MA Climate Coalition Map
+  data" (Drive), and updated the name in Code.gs/SETUP.md (this PR). The Apps Script paste + first run must be done by
+  Nathan in his Google account — no tool here can run Apps Script or reach his browser.

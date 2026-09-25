@@ -1,7 +1,7 @@
 # Setup: sheet, forms, and website (about 20 minutes, once)
 
 **How it fits together**
-- **Google Sheet ("Openthink data")** — the source of truth for the map. Only the core team can open it.
+- **Google Sheet ("MA Climate Coalition Map data")** — the source of truth for the map. Only the core team can open it.
 - **Four Google Forms** — how point-people update their own org and add events/projects. They sign in with Google; the script checks their email against the **Editors** tab before changing anything.
 - **Website (GitHub Pages)** — a static site that reads the sheet's public data live, with a nightly backup copy in the repo.
 
@@ -23,7 +23,7 @@ Every question is optional except "which one is this about?". Blank answers neve
 
 ## 1. Add the script to the sheet
 
-1. Open the **Openthink data** Google Sheet (shared with the core team).
+1. Open the [**MA Climate Coalition Map data**](https://docs.google.com/spreadsheets/d/187YVEn7wmtyso30Q453uWzSPcXLVQN2I-8UN86swT7E/edit) Google Sheet (shared with the core team).
 2. **Extensions → Apps Script**. Delete what's in `Code.gs`, paste in all of [`Code.gs`](Code.gs), click **Save**.
 3. Close that tab and reload the sheet. An **Openthink** menu appears.
 
