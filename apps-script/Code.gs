@@ -49,7 +49,13 @@ var NEW_EVENT = '➕ Add a new event';
 var NEW_PROJECT = '➕ Add a new project';
 var NONE = '— None —';
 var REMOVE_YES = 'Yes, take it off the map';
-var REMOTE_YES = "We're remote / have no public location — don't show a pin";
+var REMOTE_YES = "We're remote / have no public location — don't show a pin"; // older forms' checkbox
+/** Typed into the HQ question instead of an address: no public location, no pin. */
+var REMOTE_WORDS = /^\s*(remote|none|no public location|n\/?a)\s*\.?\s*$/i;
+var ORG_HELP = {
+  desc: 'What your organization does, who you serve, your current campaigns, and what you could use help with. Write as much as you like: the map shows all of it, and more detail helps it suggest organizations doing similar work.',
+  hq: 'A street address or just a town. Places your pin on the geographic map. If you have no public location, type "remote" and no pin is shown.',
+};
 
 var OPTIONAL_NOTE =
   'Everything below is optional — only fill in what is new or needs changing. ' +
@@ -84,12 +90,17 @@ var Q = {
   orgTown: 'Town or region you focus on',
   orgHq: 'Headquarters address or town (for the map pin)',
   orgRemote: 'No public location?',
+  pointName: 'Point person — name',
+  pointEmail: 'Point person — email',
+  pointPhone: 'Point person — phone (optional)',
   orgDesc: 'Short description',
   orgCoalitions: 'Coalitions you belong to',
   youth: 'Is your organization youth-serving?',
   membership: 'About how many active members do you have?',
   website: 'Website',
   logo: 'Logo image link',
+  worksWithGrid: 'Organizations you work with',
+  // older forms asked one checkbox question per frequency; still understood when read back
   worksWith: function (freq) { return 'Organizations you work with — ' + freq.toLowerCase(); },
   // event
   whichEvent: 'Which event is this about?',
@@ -124,7 +135,7 @@ var ORG_TYPES = [
   ['Union', 'union'],
   ['Media', 'media'],
   ['Government / regional body', 'regional_gov'],
-  ['Other', 'other'],
+  ['Other', 'other'], // older forms; new forms have a write-in "Other" instead
 ];
 var MEMBERSHIP = ['Under 10', '10+', '25+', '50+', '100+'];
 var STATUSES = [['Active', 'active'], ['Planning', 'planning'], ['Completed', 'completed']];
@@ -317,6 +328,8 @@ function buildForms(dataLoaded) {
       // Already built: just keep its title current (e.g. after a rename).
       var existing = FormApp.openById(props.getProperty(s.key));
       if (existing.getTitle() !== s.title) existing.setTitle(s.title);
+      if (s.key === 'FORM_ORG') upgradeOrgForm_(existing);
+      if (s.key === 'FORM_FEEDBACK') upgradeFeedbackForm_(existing);
       return;
     }
     var form = FormApp.create(s.title);
@@ -422,11 +435,10 @@ function buildOrgForm_(form) {
   addSelector_(form, Q.whichOrg, 'Pick your organization to update it, or choose "' + NEW_ORG + '".', NEW_ORG);
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
   form.addTextItem().setTitle(Q.orgAbbrev).setHelpText('e.g. MYCC, BLS YouthCAN');
-  form.addListItem().setTitle(Q.orgType).setChoiceValues(ORG_TYPES.map(function (t) { return t[0]; }));
-  form.addParagraphTextItem().setTitle(Q.orgDesc).setHelpText('One or two sentences about what you do.');
+  addOrgType_(form);
+  form.addParagraphTextItem().setTitle(Q.orgDesc).setHelpText(ORG_HELP.desc);
   form.addTextItem().setTitle(Q.orgTown).setHelpText('e.g. Worcester, Cape Cod, Greater Boston, statewide.');
-  form.addTextItem().setTitle(Q.orgHq).setHelpText('A street address or just a town. Places your pin on the geographic map.');
-  form.addCheckboxItem().setTitle(Q.orgRemote).setChoiceValues([REMOTE_YES]);
+  form.addTextItem().setTitle(Q.orgHq).setHelpText(ORG_HELP.hq);
   form.addCheckboxItem().setTitle(Q.orgCoalitions)
     .setHelpText('If you answer this, check every coalition you are part of — it replaces your current list.')
     .setChoiceValues([NONE]);
@@ -437,16 +449,85 @@ function buildOrgForm_(form) {
   form.addTextItem().setTitle(Q.logo)
     .setHelpText('A link to your logo (PNG or JPG) — e.g. from your website, or a Google Drive file shared as "anyone with the link".');
   addPublicContact_(form);
+  addPointPerson_(form);
 
-  form.addPageBreakItem().setTitle('Who you work with')
-    .setHelpText('Which organizations do you work with, and how often? This draws the connections between organizations on the map. ' +
-      'Skip this page to keep your current answers; if you answer any of these, they replace your current list.');
-  FREQUENCIES.forEach(function (f) {
-    form.addCheckboxItem().setTitle(Q.worksWith(f[0])).setChoiceValues([NONE]);
-  });
+  form.addPageBreakItem().setTitle(WORKS_WITH_PAGE)
+    .setHelpText('Which organizations do you work with, and how often? This draws the connections between organizations on the map.');
+  addWorksWithGrid_(form);
 
   form.addPageBreakItem().setTitle('Anything else');
   addRemove_(form, 'organization');
+}
+
+var WORKS_WITH_PAGE = 'Who you work with';
+var POINT_PERSON_PAGE = 'Point person (private)';
+
+/** Org type as a multiple-choice question so "Other" can be a write-in. */
+function addOrgType_(form) {
+  return form.addMultipleChoiceItem().setTitle(Q.orgType)
+    .setChoiceValues(ORG_TYPES.filter(function (t) { return t[1] !== 'other'; }).map(function (t) { return t[0]; }))
+    .showOtherOption(true);
+}
+var FEEDBACK_TYPES = ["Something's broken", 'Info on the map is wrong or missing', 'Idea or feature request', 'Question'];
+
+/** Who the core team contacts about this org. Private: stored on the Editors tab, never on the map.
+ *  Their email can then update this org through the forms. */
+function addPointPerson_(form) {
+  form.addPageBreakItem().setTitle(POINT_PERSON_PAGE)
+    .setHelpText('Who should we contact about your organization? Only the core team sees this; it is never shown on the map. ' +
+      'This person can then update your organization\'s info through these forms (they sign in with this email).');
+  form.addTextItem().setTitle(Q.pointName);
+  form.addTextItem().setTitle(Q.pointEmail)
+    .setValidation(FormApp.createTextValidation().requireTextIsEmail().build());
+  form.addTextItem().setTitle(Q.pointPhone);
+}
+
+/** One row per organization, one column per frequency. A blank row = no active contact. */
+function addWorksWithGrid_(form) {
+  return form.addCheckboxGridItem().setTitle(Q.worksWithGrid)
+    .setHelpText('Tick how often you work with each organization; leave a row blank if you don\'t. ' +
+      'Leave the whole grid blank to keep your current answers — if you tick anything, it replaces your current list.')
+    .setRows([NONE])
+    .setColumns(FREQUENCIES.map(function (f) { return f[0]; }));
+}
+
+/** Bring an already-built org form up to date (safe to run again): the works-with grid, the
+ *  combined HQ/remote question, and current help texts. */
+function upgradeOrgForm_(form) {
+  var items = form.getItems();
+  if (!items.some(function (it) { return it.getTitle() === Q.pointEmail; })) {
+    var before = items.filter(function (it) { return it.getTitle() === WORKS_WITH_PAGE; })[0];
+    var at = before ? before.getIndex() : null;
+    var n0 = form.getItems().length;
+    addPointPerson_(form);
+    if (at !== null) {
+      var added = form.getItems().slice(n0); // page break + 3 questions, in order
+      added.forEach(function (it, k) { form.moveItem(it.getIndex(), at + k); });
+    }
+    items = form.getItems();
+  }
+  var typeItem = items.filter(function (it) { return it.getTitle() === Q.orgType; })[0];
+  if (typeItem && typeItem.getType() === FormApp.ItemType.LIST) {
+    var typeAt = typeItem.getIndex();
+    form.deleteItem(typeItem);
+    form.moveItem(addOrgType_(form).getIndex(), typeAt);
+    items = form.getItems();
+  }
+  var hasGrid = items.some(function (it) { return it.getTitle() === Q.worksWithGrid; });
+  var oldTitles = FREQUENCIES.map(function (f) { return Q.worksWith(f[0]); });
+  if (!hasGrid) {
+    var page = items.filter(function (it) { return it.getTitle() === WORKS_WITH_PAGE; })[0];
+    var grid = addWorksWithGrid_(form);
+    if (page) form.moveItem(grid.getIndex(), page.getIndex() + 1);
+    var pageItem = page ? page.asPageBreakItem() : null;
+    if (pageItem) pageItem.setHelpText('Which organizations do you work with, and how often? This draws the connections between organizations on the map.');
+  }
+  form.getItems().forEach(function (it) {
+    var title = it.getTitle();
+    if (oldTitles.indexOf(title) !== -1 || title === Q.orgRemote) form.deleteItem(it);
+    else if (title === Q.orgDesc) it.setHelpText(ORG_HELP.desc);
+    else if (title === Q.orgHq) it.setHelpText(ORG_HELP.hq);
+  });
 }
 
 function buildEventForm_(form) {
@@ -486,11 +567,19 @@ function buildProjectForm_(form) {
   addRemove_(form, 'project');
 }
 
+/** Older feedback forms had a fixed "Other" choice; make it a write-in (safe to run again). */
+function upgradeFeedbackForm_(form) {
+  form.getItems().forEach(function (it) {
+    if (it.getTitle() === Q.fbType && it.getType() === FormApp.ItemType.MULTIPLE_CHOICE) {
+      it.asMultipleChoiceItem().setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
+    }
+  });
+}
+
 function buildFeedbackForm_(form) {
   form.setDescription('Tell us what is working, what is broken, or what you wish the MA Climate Coalition Map did. Only your feedback is required — no sign-in needed.');
   form.setConfirmationMessage('Thank you — we read every one.');
-  form.addMultipleChoiceItem().setTitle(Q.fbType).setChoiceValues([
-    "Something's broken", 'Info on the map is wrong or missing', 'Idea or feature request', 'Question', 'Other']);
+  form.addMultipleChoiceItem().setTitle(Q.fbType).setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
   form.addCheckboxItem().setTitle(Q.fbArea).setChoiceValues([
     'Network map', 'Geographic map', 'Organizations list', 'Events list', 'Projects list', 'Suggested connections',
     'The forms', 'General']);
@@ -535,19 +624,22 @@ function refreshDropdowns() {
       var type = items[i].getType();
       if (type === FormApp.ItemType.LIST) items[i].asListItem().setChoiceValues(values);
       else if (type === FormApp.ItemType.CHECKBOX) items[i].asCheckboxItem().setChoiceValues(values);
+      else if (type === FormApp.ItemType.CHECKBOX_GRID) items[i].asCheckboxGridItem().setRows(values);
     }
   };
 
   set('FORM_ORG', Q.whichOrg, [NEW_ORG].concat(orgLabels));
   set('FORM_ORG', Q.orgCoalitions, coalitionLabels);
-  FREQUENCIES.forEach(function (f) { set('FORM_ORG', Q.worksWith(f[0]), orgLabels); });
+  set('FORM_ORG', Q.worksWithGrid, orgLabels);
   set('FORM_EVENT', Q.whichEvent, [NEW_EVENT].concat(eventLabels));
   set('FORM_PROJECT', Q.whichProject, [NEW_PROJECT].concat(projectLabels));
   ['FORM_EVENT', 'FORM_PROJECT'].forEach(function (k) {
     set(k, Q.hostOrg, [NONE].concat(orgLabels));
     set(k, Q.coalition, [NONE].concat(coalitionLabels));
   });
-  ['FORM_ORG', 'FORM_EVENT', 'FORM_PROJECT'].forEach(function (k) { set(k, Q.tags, tags); });
+  // The org form asks "youth-serving?" as its own question, so it isn't offered as a tag there too.
+  set('FORM_ORG', Q.tags, tags.filter(function (x) { return x !== humanize_('youth_serving'); }));
+  ['FORM_EVENT', 'FORM_PROJECT'].forEach(function (k) { set(k, Q.tags, tags); });
   set('FORM_PROJECT', Q.skills, skills);
 }
 
@@ -624,6 +716,7 @@ function processSubmission_(kind, a, email, approver) {
   logChange_(email, FORM_NAMES[kind], result.action, flag, result.type, result.id, result.name, result.changes);
   // An approved new org: its submitter becomes that org's point-person.
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
+  if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
   refreshDropdowns();
 }
 
@@ -709,6 +802,29 @@ function addEditorOrg_(email, orgId) {
   }
 }
 
+/** Point-person answers → an Editors row for that email with this org added (name/phone kept up to date). */
+function savePointPerson_(orgId, a) {
+  var email = String(a[Q.pointEmail] || '').trim().toLowerCase();
+  if (!email || email.indexOf('@') === -1) return;
+  var name = String(a[Q.pointName] || '').trim();
+  var phone = String(a[Q.pointPhone] || '').trim();
+  var sheet = ss_().getSheetByName(TAB.editors);
+  var table = readTable_(sheet);
+  var row = table.rows.filter(function (r) { return String(r.email).toLowerCase() === email; })[0];
+  var note = phone ? 'phone: ' + phone : '';
+  if (row) {
+    var up = { org_ids: uniq_(list_(row.org_ids).concat([orgId])).join(', ') };
+    if (name) up.name = name;
+    if (note) {
+      var rest = str_(row.notes).split(/;\s*/).filter(function (x) { return x && x.indexOf('phone: ') !== 0; });
+      up.notes = [note].concat(rest).join('; ');
+    }
+    writeFields_(sheet, table.headers, row._row, up);
+  } else {
+    appendObject_(sheet, { email: email, role: 'editor', org_ids: orgId, name: name, notes: note ? note + '; point person from the org form' : 'point person from the org form' });
+  }
+}
+
 function queueForReview_(kind, a, email, target, reason) {
   var sheet = ss_().getSheetByName(TAB.review);
   var summary = Object.keys(a).filter(function (k) {
@@ -764,7 +880,16 @@ function onReviewEdit(e) {
 function answers_(response) {
   var out = {};
   response.getItemResponses().forEach(function (ir) {
-    out[ir.getItem().getTitle()] = ir.getResponse();
+    var item = ir.getItem();
+    var value = ir.getResponse();
+    // Grid answers come back as one entry per row, in row order; keep them as { rowLabel: [columns] }.
+    if (item.getType && item.getType() === FormApp.ItemType.CHECKBOX_GRID) {
+      var rows = item.asCheckboxGridItem().getRows();
+      var byRow = {};
+      (value || []).forEach(function (cols, i) { if (cols && cols.length) byRow[rows[i]] = [].concat(cols); });
+      value = byRow;
+    }
+    out[item.getTitle()] = value;
   });
   return out;
 }
@@ -785,8 +910,9 @@ function saveOrg_(a, t) {
   if (a[Q.youth]) patch.youth_serving = a[Q.youth] === 'Yes' ? 'TRUE' : 'FALSE';
   put_(patch, 'membership_size', a[Q.membership]);
   put_(patch, 'public_contact', a[Q.publicContact]);
-  put_(patch, 'hq_address', a[Q.orgHq]);
-  if (asArray_(a[Q.orgRemote]).indexOf(REMOTE_YES) !== -1) patch.remote = 'TRUE';
+  var hqRemote = REMOTE_WORDS.test(String(a[Q.orgHq] || ''));
+  if (!hqRemote) put_(patch, 'hq_address', a[Q.orgHq]);
+  if (hqRemote || asArray_(a[Q.orgRemote]).indexOf(REMOTE_YES) !== -1) patch.remote = 'TRUE';
   else if (a[Q.orgHq]) patch.remote = 'FALSE';
   if (isRemove_(a)) patch.hidden = 'TRUE';
 
@@ -812,6 +938,14 @@ function saveOrg_(a, t) {
 /** "Who you work with": answering any of the four questions replaces this org's reported list. */
 function saveConnections_(orgId, a) {
   var picked = [];
+  var grid = a[Q.worksWithGrid] || {};
+  Object.keys(grid).forEach(function (label) {
+    var to = idFromLabel_(label, 'org');
+    if (!to || to === orgId) return;
+    asArray_(grid[label]).forEach(function (col) {
+      FREQUENCIES.forEach(function (f) { if (f[0] === col) picked.push({ to: to, freq: f[2], label: f[0] }); });
+    });
+  });
   FREQUENCIES.forEach(function (f) {
     asArray_(a[Q.worksWith(f[0])]).forEach(function (label) {
       var to = idFromLabel_(label, 'org');

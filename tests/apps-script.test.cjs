@@ -214,6 +214,38 @@ assert.equal(log().at(-1).record_type, "feedback");
 // every submission is in the Change Log
 const submissions = 15;
 assert.equal(log().length, submissions, `expected one Change Log row per submission (+ approval), got ${log().length}`);
+// the grid version of "who you work with": one row per org, strongest ticked column wins, blank rows = no contact
+submit("fo", "point@bls.org", {
+  [Q.whichOrg]: BLS,
+  [Q.worksWithGrid]: { "Andover Climate Lobby": ["Monthly", "Yearly or less"], "Belmont High School Climate Action Club": ["A few times a year"] },
+});
+{
+  const mine = book["Connections"].filter((r) => r[0] === "boston_latin_school_youthcan").map((r) => r[1] + ":" + r[2]).sort();
+  assert.deepEqual(mine, ["andover_climate_lobby:monthly", "belmont_high_school_climate_club:few_per_year"]);
+}
+// a blank grid keeps the current answers
+submit("fo", "point@bls.org", { [Q.whichOrg]: BLS, [Q.orgDesc]: "Only the description changed" });
+assert.equal(book["Connections"].filter((r) => r[0] === "boston_latin_school_youthcan").length, 2);
+
+// typing "remote" in the HQ question means no public location
+submit("fo", "point@bls.org", { [Q.whichOrg]: BLS, [Q.orgHq]: "Remote" });
+{
+  const row = ctx.readAll_().orgs.find((o) => o.id === "boston_latin_school_youthcan");
+  assert.equal(String(row.remote), "TRUE");
+  assert.notEqual(String(row.hq_address), "Remote");
+}
+
+// point person: saved privately on the Editors tab, and can then edit that org
+submit("fo", "point@bls.org", { [Q.whichOrg]: BLS, [Q.pointName]: "Rae Lin", [Q.pointEmail]: "Rae@BLS.org", [Q.pointPhone]: "617-555-0100" });
+{
+  const ed = ctx.readAll_().editors.find((r) => r.email === "rae@bls.org");
+  assert.ok(ed && String(ed.org_ids).includes("boston_latin_school_youthcan"));
+  assert.equal(ed.name, "Rae Lin"); assert.match(String(ed.notes), /phone: 617-555-0100/);
+  assert.ok(!JSON.stringify(data()).includes("617-555-0100"), "point-person phone never published");
+  submit("fo", "rae@bls.org", { [Q.whichOrg]: BLS, [Q.orgDesc]: "Edited by the new point person" });
+  assert.equal(data().organizations.find((o) => o.id === "boston_latin_school_youthcan").description, "Edited by the new point person");
+}
+
 // after an org renames itself, the new plain name picks the same row
 submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby", [Q.orgName]: "Andover Climate Lobby Group" });
 submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby Group", [Q.orgDesc]: "Renamed and still found" });

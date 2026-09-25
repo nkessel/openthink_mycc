@@ -76,5 +76,6 @@ export function typeLabel(t: string): string {
     university: "University",
     unknown: "Unknown",
   };
-  return map[t] || t;
+  // Write-in types from the form arrive as slugs ("mutual_aid") → "Mutual aid".
+  return map[t] || (t ? t.charAt(0).toUpperCase() + t.slice(1).replace(/_/g, " ") : t);
 }
