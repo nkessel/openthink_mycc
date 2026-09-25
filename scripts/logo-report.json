@@ -1,19 +1,11 @@
 {
   "youth_climate_action_now": {
-    "name": "Youth Climate Action Now",
-    "how": "header <img> logo",
-    "url": "https://climateactionnowma.org/wp-content/uploads/2024/06/site_logo_24.png",
-    "file": "logos/youth_climate_action_now.png",
-    "bytes": 20216,
-    "note": "program of Climate Action Now — uses CAN's logo"
+    "skipped": "already has a logo",
+    "logo": "logos/youth_climate_action_now.png"
   },
   "roxbury_environmental_empowerment_project_by_alternatives_fo": {
-    "name": "Roxbury Environmental Empowerment Project",
-    "how": "header <img> logo",
-    "url": "https://ace-ej.org/wp-content/uploads/2026/05/ace-logo-color.svg",
-    "file": "logos/roxbury_environmental_empowerment_project_by_alternatives_fo.svg",
-    "bytes": 27023,
-    "note": "REEP is a program of ACE — uses ACE's logo"
+    "skipped": "already has a logo",
+    "logo": "logos/roxbury_environmental_empowerment_project_by_alternatives_fo.svg"
   },
   "masscosh_tlaw_climate_change_and_environmental_justice_team": {
     "skipped": "already has a logo",
@@ -28,20 +20,12 @@
     "logo": "logos/sustainable_sharon_coalition_youth.png"
   },
   "masspirg_amherst": {
-    "name": "Massachusetts Public Interest Research Group Amherest",
-    "how": "google s2 icon",
-    "url": "https://www.google.com/s2/favicons?domain=masspirg.org&sz=256",
-    "file": "logos/masspirg_amherst.png",
-    "bytes": 2658,
-    "note": "uses MASSPIRG's logo"
+    "skipped": "already has a logo",
+    "logo": "logos/masspirg_amherst.png"
   },
   "masspirg_boston": {
-    "name": "Massachusetts Public Interest Research Group Boston",
-    "how": "google s2 icon",
-    "url": "https://www.google.com/s2/favicons?domain=masspirg.org&sz=256",
-    "file": "logos/masspirg_boston.png",
-    "bytes": 2658,
-    "note": "uses MASSPIRG's logo"
+    "skipped": "already has a logo",
+    "logo": "logos/masspirg_boston.png"
   },
   "healthlink": {
     "name": "HealthLink",
@@ -61,11 +45,8 @@
     "note": "xrwesternmass.org now shows unrelated content; uses the XR symbol from XR Boston"
   },
   "climate_action_now_western_ma": {
-    "name": "Climate Action Now Western Massachusetts",
-    "how": "header <img> logo",
-    "url": "https://climateactionnowma.org/wp-content/uploads/2024/06/site_logo_24.png",
-    "file": "logos/climate_action_now_western_ma.png",
-    "bytes": 20216
+    "skipped": "already has a logo",
+    "logo": "logos/climate_action_now_western_ma.png"
   },
   "sunrise_boston": {
     "skipped": "already has a logo",
@@ -80,11 +61,8 @@
     "logo": "logos/sunrise_lexington.png"
   },
   "greenroots": {
-    "name": "Greenroots",
-    "how": "google s2 icon",
-    "url": "https://www.google.com/s2/favicons?domain=greenrootschelsea.org&sz=256",
-    "file": "logos/greenroots.png",
-    "bytes": 12240
+    "skipped": "already has a logo",
+    "logo": "logos/greenroots.png"
   },
   "bodhisara_dharma_community": {
     "name": "Bodhisara Dharma Community",
@@ -143,11 +121,8 @@
     "logo": "logos/xr_boston.png"
   },
   "league_of_women_voters_of_massachusetts": {
-    "name": "League of Women Voters of Massachusetts",
-    "how": "header <img> logo",
-    "url": "https://lwvma.org/wp-content/uploads/2020/07/LWVMA_500t-300x116.png",
-    "file": "logos/league_of_women_voters_of_massachusetts.png",
-    "bytes": 16603
+    "skipped": "already has a logo",
+    "logo": "logos/league_of_women_voters_of_massachusetts.png"
   },
   "neighbor_to_neighbor_massachusetts": {
     "skipped": "already has a logo",
@@ -158,7 +133,8 @@
     "how": "header <img> logo",
     "url": "https://communityactionworks.org/wp-content/uploads/2023/09/logo-1.svg",
     "file": "logos/community_action_works.svg",
-    "bytes": 58491
+    "bytes": 58491,
+    "note": "header logo is white-on-transparent; uses the site icon"
   },
   "21st_century_schools_fund": {
     "name": "21st Century Schools Fund",
@@ -202,19 +178,12 @@
     "logo": "logos/collaborative_for_high_performance_schools.png"
   },
   "cooler_communities": {
-    "name": "Cooler Communities",
-    "how": "logo wrapper <img>",
-    "url": "https://coolercommunities.org/wp-content/uploads/logo.png",
-    "file": "logos/cooler_communities.png",
-    "bytes": 61990
+    "skipped": "already has a logo",
+    "logo": "logos/cooler_communities.png"
   },
   "franklin_county_and_north_quabbin_community_health_improveme": {
-    "name": "Franklin County & North Quabbin Community Health Improvement Planning Network",
-    "how": "logo wrapper <img>",
-    "url": "https://frcog.org/wp-content/uploads/2022/05/logo-franklin-regional-council-governments-full.jpg",
-    "file": "logos/franklin_county_and_north_quabbin_community_health_improveme.png",
-    "bytes": 27623,
-    "note": "uses FRCOG's logo"
+    "skipped": "already has a logo",
+    "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png"
   },
   "green_weymouth": {
     "skipped": "already has a logo",
@@ -225,30 +194,24 @@
     "logo": "logos/ma_senior_action.png"
   },
   "mass_facilities_administrators_association": {
-    "name": "Mass Facilities Administrators Association",
-    "how": "header <img> logo",
-    "url": "https://avatar-development.com/mfaa/wp-content/uploads/2024/03/Logo-white-text.png",
-    "file": "logos/mass_facilities_administrators_association.png",
-    "bytes": 15631
+    "skipped": "already has a logo",
+    "logo": "logos/mass_facilities_administrators_association.png"
   },
   "massachusetts_jobs_with_justice": {
     "skipped": "already has a logo",
     "logo": "logos/massachusetts_jobs_with_justice.png"
   },
   "metropolitan_area_planning_council": {
-    "name": "Metropolitan Area Planning Council",
-    "how": "apple-touch-icon",
-    "url": "https://www.mapc.org/wp-content/uploads/2025/11/cropped-Website-Favicon-512x512-08-scaled-1-180x180.png",
-    "file": "logos/metropolitan_area_planning_council.png",
-    "bytes": 6629
+    "skipped": "already has a logo",
+    "logo": "logos/metropolitan_area_planning_council.png"
   },
   "mtacan": {
     "name": "Massachusetts Teachers Association Climate Action Network",
-    "error": "no usable image",
-    "tried": [
-      "google s2 icon: HTTP 404",
-      "duckduckgo icon: HTTP 404"
-    ]
+    "how": "google s2 icon",
+    "url": "https://www.google.com/s2/favicons?domain=massteacher.org&sz=256",
+    "file": "logos/mtacan.png",
+    "bytes": 3058,
+    "note": "mtaclimateaction.org no longer resolves; uses the MTA logo"
   },
   "northeast_climate_justice_research_collaborative": {
     "skipped": "already has a logo",
@@ -260,10 +223,11 @@
   },
   "sustainable_business_network_of_massachusetts": {
     "name": "Sustainable Business Network of Massachusetts",
-    "how": "logo wrapper <img>",
-    "url": "https://images.squarespace-cdn.com/content/v1/5faab8eb29e0595fb9fbd867/1606160400661-0S6AMWYX66N1DUCTAKPY/SBNwhite1.png?format=1500w",
+    "how": "icon",
+    "url": "https://images.squarespace-cdn.com/content/v1/5faab8eb29e0595fb9fbd867/1610648930278-YZGBGIG9XD3PI8QO835N/favicon.ico?format=100w",
     "file": "logos/sustainable_business_network_of_massachusetts.png",
-    "bytes": 11410
+    "bytes": 4477,
+    "note": "header logo is white-on-transparent; uses the site icon"
   },
   "undauntedk12": {
     "skipped": "already has a logo",

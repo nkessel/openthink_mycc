@@ -659,13 +659,13 @@
       "events": [
         {
           "id": "gjc_e1",
-          "name": "EJ Roundtable \u2014 Chelsea",
+          "name": "EJ Roundtable — Chelsea",
           "date": "2026-06-22T18:00:00",
           "location": "Chelsea Senior Center"
         },
         {
           "id": "gjc_e2",
-          "name": "EJ Roundtable \u2014 Springfield",
+          "name": "EJ Roundtable — Springfield",
           "date": "2026-09-14T18:00:00",
           "location": "Springfield Public Library"
         },
@@ -4456,7 +4456,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://massteacher.org/"
+      "website": "https://massteacher.org/",
+      "logo": "logos/mtacan.png"
     },
     {
       "id": "northeast_climate_justice_research_collaborative",
