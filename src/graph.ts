@@ -56,6 +56,8 @@ export interface Graph {
 
 const COALITION_LABEL_FONT_SIZE = 14;
 const ORG_LABEL_FONT_SIZE = 10;
+/** Logo size as a share of the node radius (a small margin keeps round logos off the edge). */
+const LOGO_SCALE = 0.86;
 const ORG_NAME_FONT_SIZE = 11;
 
 export function createGraph(
@@ -103,7 +105,9 @@ export function createGraph(
 
   const hint = document.createElement("div");
   hint.className = "hint";
-  hint.textContent = "Drag nodes · Scroll to zoom · Click for details";
+  hint.textContent = window.matchMedia("(pointer: coarse)").matches
+    ? "Drag nodes · Pinch to zoom · Tap for details"
+    : "Drag nodes · Scroll to zoom · Click for details";
   wrap.appendChild(hint);
 
   // Top-left overlay: search + org-to-org link toggle
@@ -345,12 +349,30 @@ export function createGraph(
         .append("circle")
         .attr("class", "ring")
         .attr("r", r)
-        .attr("fill", "#2a2a36");
-      sel
+        .attr("fill", d.logo ? "#f8fafc" : "#2a2a36");
+      const label = sel
         .append("text")
         .attr("class", "node-label")
         .attr("font-size", ORG_LABEL_FONT_SIZE)
         .text(initials(d.name, 3));
+      if (d.logo) {
+        // Logo inside the circle; the initials come back if the image fails to load.
+        label.style("display", "none");
+        const s = r * LOGO_SCALE;
+        sel
+          .append("image")
+          .attr("class", "node-logo")
+          .attr("href", d.logo)
+          .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s)
+          .attr("preserveAspectRatio", "xMidYMid meet")
+          .style("clip-path", "circle(50%)")
+          .attr("pointer-events", "none")
+          .on("error", function () {
+            d3.select(this).remove();
+            label.style("display", null);
+            sel.select("circle.ring").attr("fill", "#2a2a36");
+          });
+      }
       sel
         .append("text")
         .attr("class", "node-name")
@@ -367,6 +389,9 @@ export function createGraph(
       const sel = d3.select(this);
       const r = nodeRadiusOf(d);
       sel.select<SVGCircleElement>("circle.ring").attr("r", r);
+      const s = r * LOGO_SCALE;
+      sel.select<SVGImageElement>("image.node-logo")
+        .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s);
 
       // Find matching group (if any) — first match wins
       let matchedColor: string | null = null;
@@ -495,10 +520,17 @@ export function createGraph(
       ys.push(n.y - r - 14, n.y + r + 14);
     });
     if (!xs.length) return;
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
-    const minY = Math.min(...ys);
-    const maxY = Math.max(...ys);
+    // Fit the main cluster: a few unconnected orgs drift far out and would otherwise shrink
+    // everything (tiny on phones). They stay reachable by panning or zooming out.
+    const q = (arr: number[], p: number) => {
+      const v = [...arr].sort((a, b) => a - b);
+      return v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
+    };
+    const trim = xs.length > 40 ? 0.04 : 0;
+    const minX = q(xs, trim);
+    const maxX = q(xs, 1 - trim);
+    const minY = q(ys, trim);
+    const maxY = q(ys, 1 - trim);
     const pad = 60;
     const bw = maxX - minX + pad * 2;
     const bh = maxY - minY + pad * 2;

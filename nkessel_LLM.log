@@ -128,3 +128,16 @@ What / why
   - "Other" is now a write-in for org type (was a dropdown, now multiple choice) and feedback type. Written-in org types
     are stored as slugs and shown humanized on the site.
   - Upgrade step on re-running setup applies all of it to the live forms.
+
+2026-09-25 20:00 — Claude (site: sidebar, mobile, logos, map tiles)
+- Nathan: retractable left sidebar; short app name so it fits (esp. mobile); mobile-friendly pass; logos on the map.
+- Sidebar: "‹ Hide" in the panel, "☰ Filters" on the map to bring it back. Desktop remembers the choice; phones start
+  hidden and open it as an overlay (tap the map to close).
+- Brand: "MA Climate Map" (full name as tooltip/page title); topbar never wraps, tabs scroll sideways on phones.
+- Mobile: list views no longer overflow (search/filters wrap, one card per row), drawer is full width, smaller topbar,
+  touch hint text, 100dvh for phone browser bars. Checked with headless screenshots at 375×740 and 1280×800.
+- Logos: orgs with a logo show it inside their circle (88 of 150); initials come back if an image fails to load.
+  (The map never drew logos before — they were only in the drawer and Organizations list.)
+- Found while testing: the Geographic basemap showed "API KEY REQUIRED" everywhere (CARTO now needs a key). Switched to
+  OpenStreetMap's keyless tiles, darkened with CSS to match. Also the initial auto-fit now ignores the outermost ~4% of
+  nodes so a few far-off unconnected orgs don't shrink the whole map.

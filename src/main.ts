@@ -12,6 +12,7 @@ import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData } from "./fab";
+import { setupSidebarToggle } from "./sidebar";
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
 
 async function main() {
@@ -57,7 +58,6 @@ async function main() {
   // ----- Map view (sidebar + graph + drawer) -----
   const mapView = h("div", { class: "view map", style: "height:100%" });
   mapView.style.display = "grid";
-  mapView.style.gridTemplateColumns = "var(--sidebar-w) 1fr";
   content.appendChild(mapView);
 
   const tooltip = createTooltip();
@@ -72,9 +72,11 @@ async function main() {
   });
 
   const graphContainer = h("div", {
+    class: "graph-area",
     style: "position:relative;overflow:hidden",
   });
   mapView.appendChild(graphContainer);
+  setupSidebarToggle(mapView, sidebar.element(), graphContainer);
 
   drawerApi = createDrawer(graphContainer, data, {
     onOrgClick: (id) => {

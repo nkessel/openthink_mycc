@@ -14,7 +14,8 @@ export function createTopbar(
   const bar = h("header", { class: "topbar" });
   parent.appendChild(bar);
 
-  bar.appendChild(h("div", { class: "brand" }, "MA Climate Coalition Map"));
+  // Short name so it fits on one line, even on phones; the full name is the tooltip / page title.
+  bar.appendChild(h("div", { class: "brand", title: "MA Climate Coalition Map" }, "MA Climate Map"));
 
   const tabs: { id: TopTab; label: string; disabled?: boolean }[] = [
     { id: "map", label: "Map" },

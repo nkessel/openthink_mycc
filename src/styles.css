@@ -1522,3 +1522,147 @@ body {
 .pair-plus {
   color: var(--text-faint);
 }
+
+/* ---------- Retractable sidebar ---------- */
+.view.map {
+  grid-template-columns: var(--sidebar-w) 1fr;
+  position: relative;
+}
+.view.map.sidebar-collapsed {
+  grid-template-columns: 0 1fr;
+}
+.view.map > .sidebar {
+  grid-column: 1;
+  grid-row: 1;
+}
+.view.map > .graph-area {
+  grid-column: 2;
+  grid-row: 1;
+}
+.view.map.sidebar-collapsed > .sidebar {
+  visibility: hidden;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+.sidebar-hide {
+  display: block;
+  margin: 0 0 10px auto;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.sidebar-hide:hover,
+.sidebar-show:hover {
+  color: var(--text);
+}
+.sidebar-show {
+  display: none;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 6;
+  background: rgba(21, 21, 28, 0.92);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.view.map.sidebar-collapsed .sidebar-show {
+  display: block;
+}
+.view.map.sidebar-collapsed .graph-overlay {
+  left: 104px;
+  width: min(340px, calc(100% - 116px));
+}
+
+/* ---------- Brand + tabs fit on one line ---------- */
+.topbar {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.topbar::-webkit-scrollbar {
+  display: none;
+}
+.topbar .brand,
+.tab {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ---------- Geographic basemap: darken OSM tiles to match the site ---------- */
+.geo-map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.85) saturate(0.6);
+}
+
+#app {
+  height: 100dvh;
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 720px) {
+  :root {
+    --topbar-h: 48px;
+    --drawer-w: 100vw;
+  }
+  .topbar {
+    padding: 0 10px;
+  }
+  .topbar .brand {
+    font-size: 15px;
+    margin-right: 6px;
+  }
+  .tab {
+    padding: 0 9px;
+  }
+  /* Sidebar opens as an overlay; the map always keeps the full width. */
+  .view.map,
+  .view.map.sidebar-collapsed {
+    grid-template-columns: 0 1fr;
+  }
+  .view.map > .sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(300px, 86vw);
+    z-index: 30;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease;
+  }
+  .view.map.sidebar-collapsed > .sidebar {
+    visibility: visible;
+    padding: 16px 14px;
+    border-right: 1px solid var(--border);
+    transform: translateX(-105%);
+  }
+  .list-toolbar {
+    padding: 12px;
+    gap: 8px;
+  }
+  .list-toolbar .search {
+    min-width: 0;
+    flex-basis: 100%;
+    max-width: none;
+  }
+  .list-toolbar .select {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+  .list-body {
+    padding: 12px 12px 90px;
+    grid-template-columns: 1fr;
+  }
+  .hint {
+    display: none;
+  }
+}

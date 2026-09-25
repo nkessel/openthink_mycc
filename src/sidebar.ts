@@ -6,6 +6,42 @@ export interface Sidebar {
   getVisibleCoalitions(): Set<string>;
   /** A mount point below the coalitions list, above the legend. */
   controlsContainer(): HTMLElement;
+  element(): HTMLElement;
+}
+
+const MOBILE = "(max-width: 720px)";
+const COLLAPSE_KEY = "mccm.sidebarCollapsed";
+
+/**
+ * Retractable sidebar. Desktop: the panel slides away and the map takes the full width
+ * (remembered per browser). Phones: it starts hidden and opens as an overlay.
+ */
+export function setupSidebarToggle(view: HTMLElement, aside: HTMLElement, graphArea: HTMLElement): void {
+  const mobile = () => window.matchMedia(MOBILE).matches;
+  let saved: string | null = null;
+  try { saved = localStorage.getItem(COLLAPSE_KEY); } catch { /* storage unavailable */ }
+
+  const hideBtn = h("button", { class: "sidebar-hide", type: "button", "aria-label": "Hide panel", title: "Hide panel" }, "‹ Hide");
+  const showBtn = h("button", { class: "sidebar-show", type: "button", "aria-label": "Show filters and settings", title: "Show filters and settings" }, "☰ Filters");
+  aside.prepend(hideBtn);
+  graphArea.appendChild(showBtn);
+
+  const set = (collapsed: boolean, remember: boolean) => {
+    view.classList.toggle("sidebar-collapsed", collapsed);
+    showBtn.setAttribute("aria-expanded", String(!collapsed));
+    if (remember && !mobile()) {
+      try { localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0"); } catch { /* ignore */ }
+    }
+    // The graph re-centers on window resize; its width changed on desktop.
+    requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+  };
+  hideBtn.addEventListener("click", () => set(true, true));
+  showBtn.addEventListener("click", () => set(false, true));
+  // On phones, tapping the map closes the overlay.
+  graphArea.addEventListener("pointerdown", (e) => {
+    if (mobile() && !view.classList.contains("sidebar-collapsed") && e.target !== showBtn) set(true, false);
+  });
+  set(mobile() ? true : saved === "1", false);
 }
 
 export interface SidebarCallbacks {
@@ -17,7 +53,7 @@ export function createSidebar(
   data: DataFile,
   cb: SidebarCallbacks,
 ): Sidebar {
-  const aside = h("aside", { class: "sidebar" });
+  const aside = h("aside", { class: "sidebar", id: "map-sidebar" });
   parent.appendChild(aside);
 
   let visible = new Set(data.coalitions.map((c) => c.id));
@@ -127,6 +163,9 @@ export function createSidebar(
     },
     controlsContainer() {
       return controlsBlock;
+    },
+    element() {
+      return aside;
     },
   };
 }
