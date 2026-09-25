@@ -119,7 +119,7 @@ export function createGeographicView(
         fillOpacity: 0.95,
       });
       dot.bindTooltip(
-        `<strong>${escapeHTML(o.name)}</strong><br/><span style="color:#94a3b8">${typeLabel(o.type)} · ${escapeHTML(o.geographic_focus)}</span>`,
+        `<strong>${escapeHTML(o.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML([typeLabel(o.type), o.geographic_focus].filter(Boolean).join(" · "))}</span>`,
         { direction: "top", offset: [0, -2] },
       );
       dot.on("click", () => cb.onNodeClick({ ...o, kind: "org" }));

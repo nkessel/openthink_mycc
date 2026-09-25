@@ -10,6 +10,7 @@ import { createEventsView } from "./events";
 import { createProjectsView } from "./projects";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
+import { createFab } from "./fab";
 
 async function main() {
   const app = document.getElementById("app")!;
@@ -167,6 +168,9 @@ async function main() {
       tooltip.hide();
     }
   }
+
+  // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
+  createFab(content, () => drawerApi?.current() ?? null);
 
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {

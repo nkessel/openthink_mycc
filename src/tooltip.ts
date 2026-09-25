@@ -96,7 +96,7 @@ export function createTooltip(): Tooltip {
             h(
               "div",
               { class: "subtitle" },
-              `${typeLabel(node.type)} · ${node.geographic_focus}`,
+              [node.abbrev, typeLabel(node.type), node.geographic_focus].filter(Boolean).join(" · "),
             ),
           ),
         ),

@@ -9,6 +9,7 @@ import type {
 } from "./types";
 import { initials, relTime, fmtDateTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
+import { formUrl } from "./fab";
 
 type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "about";
 
@@ -16,6 +17,7 @@ export interface Drawer {
   open(node: GraphNode): void;
   close(): void;
   isOpen(): boolean;
+  current(): GraphNode | null;
   setActiveTab(tab: DrawerTab): void;
 }
 
@@ -80,31 +82,31 @@ export function createDrawer(
       );
     } else {
       const o = node as Organization;
+      const badge = o.logo
+        ? h("div", { class: "badge logo" }, h("img", { src: o.logo, alt: "" }))
+        : h("div", { class: "badge", style: "background:#3a3a4a;color:#e5e7eb" }, initials(o.name));
+      const sub = [o.abbrev, typeLabel(o.type), o.geographic_focus].filter(Boolean).join(" · ");
       head.appendChild(
-        h(
-          "div",
-          { class: "title-row" },
-          h(
-            "div",
-            {
-              class: "badge",
-              style: "background:#3a3a4a;color:#e5e7eb",
-            },
-            initials(o.name),
-          ),
-          h(
-            "div",
-            {},
-            h("h2", {}, o.name),
-            h(
-              "div",
-              { class: "sub" },
-              `${typeLabel(o.type)} · ${o.geographic_focus}`,
-            ),
-          ),
-        ),
+        h("div", { class: "title-row" }, badge, h("div", {}, h("h2", {}, o.name), h("div", { class: "sub" }, sub))),
       );
-      head.appendChild(h("div", { class: "desc" }, o.description));
+      head.appendChild(
+        o.description
+          ? h("div", { class: "desc" }, o.description)
+          : h("div", { class: "desc faint" }, "No description yet."),
+      );
+      const tags = h("div", { class: "tags" });
+      if (o.profile?.youth_serving) tags.appendChild(h("span", { class: "tag" }, "Youth-serving"));
+      if (o.profile?.school_club) tags.appendChild(h("span", { class: "tag" }, "School club"));
+      if (o.profile?.hub) tags.appendChild(h("span", { class: "tag" }, "Hub org"));
+      if (o.profile?.geo_precision === "approx") tags.appendChild(h("span", { class: "tag" }, "Approximate location"));
+      for (const t of o.topic_tags || []) tags.appendChild(h("span", { class: "tag" }, prettifyTag(t)));
+      if (tags.childNodes.length) head.appendChild(tags);
+      const edit = formUrl("org", node);
+      if (edit) {
+        head.appendChild(
+          h("a", { class: "edit-link", href: edit, target: "_blank", rel: "noopener" }, "✎ Update this organization's info"),
+        );
+      }
       head.appendChild(
         h(
           "div",
@@ -293,30 +295,23 @@ export function createDrawer(
   }
 
   function renderOrgAbout(body: HTMLElement, org: Organization): void {
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Type"),
-        h("div", { class: "desc" }, typeLabel(org.type)),
-      ),
-    );
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Geographic focus"),
-        h("div", { class: "desc" }, org.geographic_focus),
-      ),
-    );
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Description"),
-        h("div", { class: "desc" }, org.description),
-      ),
-    );
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    const score = (v?: number) => (v === undefined ? undefined : `${v} / 4`);
+    const p = org.profile || {};
+    row("Type", typeLabel(org.type));
+    row("Geographic focus", org.geographic_focus);
+    row("Description", org.description);
+    row("Website", org.website ? h("a", { href: org.website, target: "_blank", rel: "noopener" }, org.website) : undefined);
+    row("Contact", org.public_contact);
+    row("Active membership", p.membership_size);
+    row("EJ / frontline focus", score(p.ej_focus));
+    row("Grassroots power", score(p.grassroots));
+    row("Policy writing", score(p.policy_expertise));
+    row("“In the building”", score(p.in_building));
+    if (!body.childNodes.length) body.appendChild(h("div", { class: "empty" }, "No details yet."));
   }
 
   // suppress unused-import warning
@@ -341,6 +336,9 @@ export function createDrawer(
     close() {
       el.classList.remove("open");
       currentNode = null;
+    },
+    current() {
+      return el.classList.contains("open") ? currentNode : null;
     },
     isOpen() {
       return el.classList.contains("open");

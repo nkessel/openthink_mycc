@@ -1,0 +1,28 @@
+2026-09-25 — Claude (claude-opus-5-5), working for Nathan (nkessel)
+Branch: claude/forms-org-import-fab → PR into development_branch
+
+What / why
+- Created development_branch from main (it didn't exist yet; guideline 10 says we work there). No content changes on it; everything else goes through this PR (guideline 9).
+- git pull + checked open PRs first (none) (guideline 8).
+- Org data: added scripts/import-orgs.mjs and ran it against aissatabarry/ma-climate-coalition-map
+  (commit e8bb5ce, 2026-09-25) because Nathan said that repo is the most up-to-date org source.
+  -> 150 orgs, 88 logos (public/logos/*.png, extracted from embedded base64), 175 memberships.
+  -> Coalitions now match the source's 8: MPF, MYCC, EJLT, GJC, CRS, HERO kept their projects/events/actions;
+     CCCC and SCJC added (no projects/events yet).
+  -> Dropped mara, gfn, ghs, zcrf (not in the source) with their 12 projects, 12 events, 12 actions,
+     per "get rid of any projects or events that belong to orgs not on this list". Projects/events are
+     attached to coalitions in our schema, so "belongs to" was read as "belongs to a coalition not on the list".
+  -> Source has no member ties for CCCC, CRS, HERO, so they show 0 members.
+  -> Source has no town/description for orgs, and type only for school clubs; the rest are "unknown"
+     until groups fill them in via the org form.
+- Forms + sheet: apps-script/Code.gs builds 4 Google Forms (org, event, project, feedback) linked to a sheet,
+  seeds the sheet from development_branch's data.json, applies submissions (blank = keep), logs changes,
+  and serves public data as JSON. All questions optional except "which one is this about?" (and the feedback
+  message), per Nathan's request. Includes every question from the team's existing "Climate Map Modification
+  Form" (organization, contact info, event name/description, date/time/location, climate topic tags).
+  Tested with a mocked Sheets/Forms runtime in Node (seed → data.json round-trip, and simulated submissions).
+  Not yet run inside real Google Apps Script — first real run may surface permission/API quirks.
+- App: + floating action button (src/fab.ts) with the 4 forms, pre-filled with the org/coalition open in the
+  drawer; org drawer shows logo, abbreviation, profile scores, and an "Update this organization's info" link.
+  Form URLs go in src/forms.config.ts after setup (empty until then; menu says "Form not connected yet").
+- Added LLM_GUIDELINES.md (featured in README) and CLAUDE.md so Claude Code sessions pick the rules up.

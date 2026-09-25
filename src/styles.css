@@ -1107,3 +1107,122 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #3a3a4a;
 }
+
+/* ---------- org logos + edit link ---------- */
+.drawer .badge.logo {
+  background: #edeae0;
+  padding: 5px;
+  overflow: hidden;
+}
+.drawer .badge.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.drawer .desc.faint {
+  color: var(--text-faint);
+  font-style: italic;
+}
+.drawer .edit-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--accent);
+  text-decoration: none;
+}
+.drawer .edit-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- "+" floating action button ---------- */
+.fab-wrap {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  transition: right 0.25s ease;
+}
+.drawer.open ~ .fab-wrap {
+  right: calc(var(--drawer-w) + 24px);
+}
+.fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-green);
+  color: #06140e;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.fab:hover {
+  background: #5ee0b0;
+}
+.fab:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+.fab-wrap.open .fab {
+  transform: rotate(45deg);
+}
+.fab-menu {
+  display: none;
+  flex-direction: column;
+  min-width: 260px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.fab-wrap.open .fab-menu {
+  display: flex;
+}
+.fab-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 11px 14px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+.fab-item:last-child {
+  border-bottom: none;
+}
+.fab-item:hover {
+  background: var(--bg-elev-2);
+}
+.fab-item-label {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.fab-item-hint {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+.fab-item.disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.fab-item.disabled:hover {
+  background: transparent;
+}
+@media (max-width: 720px) {
+  .fab-wrap,
+  .drawer.open ~ .fab-wrap {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+.drawer .title-row {
+  padding-right: 28px;
+}
