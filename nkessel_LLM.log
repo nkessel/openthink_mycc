@@ -78,3 +78,8 @@ What / why
   sheet menu, form titles/descriptions, admin alert subject, docs. Kept internal names (repo, package name,
   OPENTHINK_DATA_URL, localStorage key) so nothing breaks. Re-running "Set up sheet + forms" now also retitles the
   already-built forms, since those were created with the old name.
+
+2026-09-25 15:35 — Claude (connect PR, stacked on the rename PR)
+- Pasted the Start Here "For the site" JSON into src/forms.config.ts, so the + button and "Update this info" links open
+  the real forms (pre-filled with the open org/coalition). LIVE_DATA_URL still empty: the web app deployment errored when
+  I tried it from Chrome; waiting on Nathan to deploy it (SETUP.md step 3) and send the /exec URL.

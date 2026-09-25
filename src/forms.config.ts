@@ -13,8 +13,21 @@ export interface FormLink {
 }
 
 export const FORMS: Record<"org" | "event" | "project" | "feedback", FormLink> = {
-  org: { url: "" },
-  event: { url: "" },
-  project: { url: "" },
-  feedback: { url: "" },
+  org: {
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSeQ4MOk9YHT7XX9UTaOEpQrofLU-uqyXVOuu9yEZzGrHzvGpw/viewform",
+    orgEntry: "entry.1787507842",
+  },
+  event: {
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSe6jLOWOLU0sZdsiqMcfABsQpSRKyXWocWi4nj_ZRDVtNfxUQ/viewform",
+    hostOrgEntry: "entry.250607576",
+    coalitionEntry: "entry.1780232957",
+  },
+  project: {
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSe4CpR61Iklqh4U24rcEtqs-0XyxkaMYd2jcMmymHGuFRqM2g/viewform",
+    hostOrgEntry: "entry.207544512",
+    coalitionEntry: "entry.13985344",
+  },
+  feedback: {
+    url: "https://docs.google.com/forms/d/e/1FAIpQLScwazw1P9rbQT4KAoUn0DSuI6B9Lpdx-kcrZXdZV45-HlAVKw/viewform",
+  },
 };
