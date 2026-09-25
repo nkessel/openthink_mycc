@@ -113,3 +113,9 @@ What / why
   If a row has several ticks, the most frequent wins. An entirely blank grid keeps the org's current answers, so an org
   that only edits its description doesn't lose its connections (judgment call — flag if Nathan wants blank = clear all).
   Re-running "Set up sheet + forms" swaps the old questions for the grid on the live form; old-style answers still parse.
+- Same PR, per Nathan: (1) org description help text now invites detail (was "one or two sentences"; the map shows the
+  full text and more text improves suggested connections). (2) HQ address and the "No public location?" checkbox are
+  one question: type an address/town, or "remote" for no pin. Old checkbox answers still parse. The upgrade step on
+  re-running setup applies both to the live form.
+- Not possible in Google Forms: type-to-search dropdowns and address autocomplete (no custom widgets). Addresses are
+  geocoded on submit instead; pre-filling from the map's + button avoids scrolling the org list.

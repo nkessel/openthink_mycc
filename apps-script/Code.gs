@@ -49,7 +49,13 @@ var NEW_EVENT = '➕ Add a new event';
 var NEW_PROJECT = '➕ Add a new project';
 var NONE = '— None —';
 var REMOVE_YES = 'Yes, take it off the map';
-var REMOTE_YES = "We're remote / have no public location — don't show a pin";
+var REMOTE_YES = "We're remote / have no public location — don't show a pin"; // older forms' checkbox
+/** Typed into the HQ question instead of an address: no public location, no pin. */
+var REMOTE_WORDS = /^\s*(remote|none|no public location|n\/?a)\s*\.?\s*$/i;
+var ORG_HELP = {
+  desc: 'What your organization does, who you serve, your current campaigns, and what you could use help with. Write as much as you like: the map shows all of it, and more detail helps it suggest organizations doing similar work.',
+  hq: 'A street address or just a town. Places your pin on the geographic map. If you have no public location, type "remote" and no pin is shown.',
+};
 
 var OPTIONAL_NOTE =
   'Everything below is optional — only fill in what is new or needs changing. ' +
@@ -319,7 +325,7 @@ function buildForms(dataLoaded) {
       // Already built: just keep its title current (e.g. after a rename).
       var existing = FormApp.openById(props.getProperty(s.key));
       if (existing.getTitle() !== s.title) existing.setTitle(s.title);
-      if (s.key === 'FORM_ORG') upgradeWorksWith_(existing);
+      if (s.key === 'FORM_ORG') upgradeOrgForm_(existing);
       return;
     }
     var form = FormApp.create(s.title);
@@ -426,10 +432,9 @@ function buildOrgForm_(form) {
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
   form.addTextItem().setTitle(Q.orgAbbrev).setHelpText('e.g. MYCC, BLS YouthCAN');
   form.addListItem().setTitle(Q.orgType).setChoiceValues(ORG_TYPES.map(function (t) { return t[0]; }));
-  form.addParagraphTextItem().setTitle(Q.orgDesc).setHelpText('One or two sentences about what you do.');
+  form.addParagraphTextItem().setTitle(Q.orgDesc).setHelpText(ORG_HELP.desc);
   form.addTextItem().setTitle(Q.orgTown).setHelpText('e.g. Worcester, Cape Cod, Greater Boston, statewide.');
-  form.addTextItem().setTitle(Q.orgHq).setHelpText('A street address or just a town. Places your pin on the geographic map.');
-  form.addCheckboxItem().setTitle(Q.orgRemote).setChoiceValues([REMOTE_YES]);
+  form.addTextItem().setTitle(Q.orgHq).setHelpText(ORG_HELP.hq);
   form.addCheckboxItem().setTitle(Q.orgCoalitions)
     .setHelpText('If you answer this, check every coalition you are part of — it replaces your current list.')
     .setChoiceValues([NONE]);
@@ -460,8 +465,9 @@ function addWorksWithGrid_(form) {
     .setColumns(FREQUENCIES.map(function (f) { return f[0]; }));
 }
 
-/** Older org forms had four checkbox lists; swap them for the grid (safe to run again). */
-function upgradeWorksWith_(form) {
+/** Bring an already-built org form up to date (safe to run again): the works-with grid, the
+ *  combined HQ/remote question, and current help texts. */
+function upgradeOrgForm_(form) {
   var items = form.getItems();
   var hasGrid = items.some(function (it) { return it.getTitle() === Q.worksWithGrid; });
   var oldTitles = FREQUENCIES.map(function (f) { return Q.worksWith(f[0]); });
@@ -472,7 +478,12 @@ function upgradeWorksWith_(form) {
     var pageItem = page ? page.asPageBreakItem() : null;
     if (pageItem) pageItem.setHelpText('Which organizations do you work with, and how often? This draws the connections between organizations on the map.');
   }
-  form.getItems().forEach(function (it) { if (oldTitles.indexOf(it.getTitle()) !== -1) form.deleteItem(it); });
+  form.getItems().forEach(function (it) {
+    var title = it.getTitle();
+    if (oldTitles.indexOf(title) !== -1 || title === Q.orgRemote) form.deleteItem(it);
+    else if (title === Q.orgDesc) it.setHelpText(ORG_HELP.desc);
+    else if (title === Q.orgHq) it.setHelpText(ORG_HELP.hq);
+  });
 }
 
 function buildEventForm_(form) {
@@ -821,8 +832,9 @@ function saveOrg_(a, t) {
   if (a[Q.youth]) patch.youth_serving = a[Q.youth] === 'Yes' ? 'TRUE' : 'FALSE';
   put_(patch, 'membership_size', a[Q.membership]);
   put_(patch, 'public_contact', a[Q.publicContact]);
-  put_(patch, 'hq_address', a[Q.orgHq]);
-  if (asArray_(a[Q.orgRemote]).indexOf(REMOTE_YES) !== -1) patch.remote = 'TRUE';
+  var hqRemote = REMOTE_WORDS.test(String(a[Q.orgHq] || ''));
+  if (!hqRemote) put_(patch, 'hq_address', a[Q.orgHq]);
+  if (hqRemote || asArray_(a[Q.orgRemote]).indexOf(REMOTE_YES) !== -1) patch.remote = 'TRUE';
   else if (a[Q.orgHq]) patch.remote = 'FALSE';
   if (isRemove_(a)) patch.hidden = 'TRUE';
 
