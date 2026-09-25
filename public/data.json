@@ -659,13 +659,13 @@
       "events": [
         {
           "id": "gjc_e1",
-          "name": "EJ Roundtable — Chelsea",
+          "name": "EJ Roundtable \u2014 Chelsea",
           "date": "2026-06-22T18:00:00",
           "location": "Chelsea Senior Center"
         },
         {
           "id": "gjc_e2",
-          "name": "EJ Roundtable — Springfield",
+          "name": "EJ Roundtable \u2014 Springfield",
           "date": "2026-09-14T18:00:00",
           "location": "Springfield Public Library"
         },
@@ -1758,8 +1758,7 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://www.xrwesternmass.org/",
-      "logo": "logos/xr_western_mass.png"
+      "website": "https://xrboston.org/west/"
     },
     {
       "id": "act_on_mass",
@@ -2800,8 +2799,7 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://www.bodhisara.org/",
-      "logo": "logos/bodhisara_dharma_community.ico"
+      "website": "https://www.bodhisara.org/"
     },
     {
       "id": "boston_catholic_climate_movement",
@@ -3766,8 +3764,7 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
-      "logo": "logos/south_coast_neighbors_united.png"
+      "website": "https://actionnetwork.org/groups/south-coast-neighbors-united"
     },
     {
       "id": "sunwealth",
@@ -3886,9 +3883,7 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": "",
-      "website": "https://uppercapewomen.org/",
-      "logo": "logos/upper_cape_women_s_coalition.png"
+      "description": ""
     },
     {
       "id": "vineyard_power_cooperative",

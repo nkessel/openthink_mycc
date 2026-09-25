@@ -22,9 +22,29 @@ mkdirSync(`${ROOT}public/logos`, { recursive: true });
 let sharp = null;
 try { sharp = (await import("sharp")).default; } catch { /* optional: resize when available */ }
 
-const UA = "Mozilla/5.0 (compatible; OpenthinkLogoBot/1.0; +https://github.com/nkessel/openthink_mycc)";
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
 const get = (url, ms = 20000) =>
-  fetch(url, { headers: { "User-Agent": UA, Accept: "*/*" }, redirect: "follow", signal: AbortSignal.timeout(ms) });
+  fetch(url, {
+    headers: { "User-Agent": UA, Accept: "text/html,application/xhtml+xml,image/avif,image/webp,image/*,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.9" },
+    redirect: "follow",
+    signal: AbortSignal.timeout(ms),
+  });
+
+/** Load a page, trying https/http and with/without www if the first attempt fails. */
+async function getPage(url) {
+  const u = new URL(url);
+  const bare = u.hostname.replace(/^www\./, "");
+  const variants = [url, `https://www.${bare}${u.pathname}`, `https://${bare}${u.pathname}`, `http://${bare}${u.pathname}`];
+  let last;
+  for (const v of [...new Set(variants)]) {
+    try {
+      const res = await get(v);
+      if (res.ok) return { html: await res.text(), url: res.url || v };
+      last = new Error(`HTTP ${res.status}`);
+    } catch (e) { last = e; }
+  }
+  throw last;
+}
 
 const attr = (tag, name) => {
   const m = new RegExp(`\\b${name}\\s*=\\s*("([^"]*)"|'([^']*)'|([^\\s>]+))`, "i").exec(tag);
@@ -58,6 +78,15 @@ function candidates(html, base) {
   return out.filter((c) => c.url);
 }
 
+/** Last resort: icon services that already crawled the site. */
+function iconServices(site) {
+  const host = new URL(site).hostname.replace(/^www\./, "");
+  return [
+    { how: "google s2 icon", url: `https://www.google.com/s2/favicons?domain=${host}&sz=256` },
+    { how: "duckduckgo icon", url: `https://icons.duckduckgo.com/ip3/${host}.ico` },
+  ];
+}
+
 const EXT = { "image/png": "png", "image/jpeg": "jpg", "image/svg+xml": "svg", "image/webp": "webp", "image/gif": "gif", "image/x-icon": "ico", "image/vnd.microsoft.icon": "ico" };
 
 async function download(url) {
@@ -78,6 +107,18 @@ async function download(url) {
   return { buf, type };
 }
 
+/** True when the visible pixels are almost all white/very light (e.g. a logo made for dark headers). */
+async function isWhiteOnClear(buf) {
+  const { data, info } = await sharp(buf).ensureAlpha().resize(64, 64, { fit: "inside" }).raw().toBuffer({ resolveWithObject: true });
+  let opaque = 0, light = 0;
+  for (let i = 0; i < data.length; i += info.channels) {
+    if (data[i + 3] < 128) continue;
+    opaque++;
+    if (data[i] > 225 && data[i + 1] > 225 && data[i + 2] > 225) light++;
+  }
+  return opaque > 0 && light / opaque > 0.85 && opaque < (data.length / info.channels) * 0.9;
+}
+
 const report = {};
 for (const s of sources) {
   const org = orgs.get(s.id);
@@ -87,11 +128,18 @@ for (const s of sources) {
 
   let picks = [];
   try {
+    if (s.skip_logo) { report[s.id] = { name: org.name, skipped: s.note || "skip_logo" }; continue; }
     if (s.logo_url) picks = [{ how: "logo_url (set by hand)", url: s.logo_url }];
     else {
       const page = s.logo_site || s.website;
-      const res = await get(page);
-      picks = candidates(await res.text(), res.url || page);
+      try {
+        const { html, url } = await getPage(page);
+        picks = candidates(html, url);
+      } catch (e) {
+        picks = [];
+        console.log(s.id, "page failed:", e.message);
+      }
+      picks.push(...iconServices(page));
     }
   } catch (e) {
     report[s.id] = { error: `couldn't load site: ${e.message}` };
@@ -106,9 +154,15 @@ for (const s of sources) {
       let ext = EXT[type] || "png";
       if (sharp && ["png", "jpg", "webp", "gif"].includes(ext)) {
         const meta = await sharp(buf).metadata();
-        if ((meta.width || 0) < 32 && (meta.height || 0) < 32) throw new Error(`too small (${meta.width}×${meta.height})`);
+        if ((meta.width || 0) < 48 && (meta.height || 0) < 48) throw new Error(`too small (${meta.width}×${meta.height})`);
+        if (await isWhiteOnClear(buf)) throw new Error("white logo on transparent background (invisible on light badges)");
         buf = await sharp(buf).resize(256, 256, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
         ext = "png";
+      }
+      if (sharp && ext === "svg") {
+        let white = false;
+        try { white = await isWhiteOnClear(buf); } catch { /* unreadable svg: keep it */ }
+        if (white) throw new Error("white logo on transparent background (invisible on light badges)");
       }
       for (const old of ["png", "jpg", "svg", "webp", "gif", "ico"]) {
         const p = `${ROOT}public/logos/${s.id}.${old}`;
