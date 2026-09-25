@@ -83,3 +83,5 @@ What / why
 - Pasted the Start Here "For the site" JSON into src/forms.config.ts, so the + button and "Update this info" links open
   the real forms (pre-filled with the open org/coalition). LIVE_DATA_URL still empty: the web app deployment errored when
   I tried it from Chrome; waiting on Nathan to deploy it (SETUP.md step 3) and send the /exec URL.
+- 16:20 — Web app deployed (Anyone, execute as Nathan; Nathan approved the authorization). Checked it: returns 150 orgs /
+  8 coalitions, no emails. Added it as LIVE_DATA_URL, so approved form edits show up on the site without code changes.
