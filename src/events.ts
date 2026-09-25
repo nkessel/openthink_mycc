@@ -1,7 +1,7 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, type Owner } from "./owners";
 import { h, clear } from "./dom";
-import { fmtDateTime } from "./util";
+import { fmtEventTime } from "./util";
 
 export interface EventsView {
   el: HTMLElement;
@@ -129,7 +129,7 @@ export function createEventsView(
         h(
           "div",
           { class: "meta-row" },
-          h("span", { class: "pill deadline" }, fmtDateTime(r.event.date)),
+          h("span", { class: "pill deadline" }, fmtEventTime(r.event.date, r.event.end)),
           h("span", { class: "pill kind" }, r.event.location),
           !r.isUpcoming && h("span", { class: "pill" }, "past"),
         ),

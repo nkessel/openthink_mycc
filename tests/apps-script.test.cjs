@@ -182,11 +182,11 @@ assert.ok(!data().organizations.find((o) => o.name === "Sneaky Org"));
 // the approved submitter can now add an org-owned, in-person event with a location
 submit("fe", "new@natick.org", {
   [Q.whichEvent]: NEW_EVENT, [Q.hostOrg]: "Natick Climate Circle [natick_climate_circle]", [Q.eventName]: "Song Circle for the Planet",
-  [Q.eventDate]: "2026-10-18", [Q.eventTime]: "15:00", [Q.location]: "Natick Common", [Q.online]: "No",
+  [Q.eventDate]: "2026-10-18", [Q.eventTime]: "15:00", [Q.eventEndTime]: "17:30", [Q.location]: "Natick Common", [Q.online]: "No",
 });
 d = data();
 const ev = d.organizations.find((o) => o.id === "natick_climate_circle").events[0];
-assert.equal(ev.date, "2026-10-18T15:00:00"); assert.ok(Math.abs(ev.lat - 42.2834) < 1e-6); assert.ok(!ev.online);
+assert.equal(ev.date, "2026-10-18T15:00:00"); assert.equal(ev.end, "2026-10-18T17:30:00"); assert.ok(Math.abs(ev.lat - 42.2834) < 1e-6); assert.ok(!ev.online);
 assert.ok(!d.coalitions.find((c) => c.id === "mycc").events.find((e) => e.name === ev.name), "org-owned, not coalition");
 
 // …but can't put an event under a coalition they don't manage without their org
@@ -206,9 +206,13 @@ assert.ok(vp.online && vp.lat === undefined, "online project has no pin");
 submit("fp", "turibius@bu.edu", { [Q.whichProject]: "Youth Summit 2026 [mycc_p2]", [Q.remove]: [G("REMOVE_YES")] });
 assert.ok(!data().coalitions.find((c) => c.id === "mycc").projects.find((p) => p.id === "mycc_p2"));
 
-// feedback: no sign-in needed, logged
-submit("ff", "", { [Q.fbType]: "Idea or feature request", [Q.fbMessage]: "Add a calendar export" });
+// feedback: signed-in email + optional phone saved on the (private) Feedback tab, logged
+submit("ff", "Fan@Example.org", { [Q.fbType]: "Idea or feature request", [Q.fbMessage]: "Add a calendar export", [Q.fbPhone]: "508-555-0199" });
 assert.equal(book["Feedback"].length, 2);
+{
+  const fb = Object.fromEntries(book["Feedback"][0].map((h, i) => [h, book["Feedback"][1][i]]));
+  assert.equal(fb.email, "fan@example.org"); assert.equal(fb.phone, "508-555-0199");
+}
 assert.equal(log().at(-1).record_type, "feedback");
 
 // every submission is in the Change Log

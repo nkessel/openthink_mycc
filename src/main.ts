@@ -105,6 +105,9 @@ async function main() {
   });
   graphApi.setVisibleCoalitions(sidebar.getVisibleCoalitions());
 
+  // Filters that aren't coalitions go right under the coalition list.
+  sidebar.filtersContainer().appendChild(graphApi.orgLinkToggle());
+
   // Controls panel (Forces / Display / Groups) — mounts inside the sidebar
   createControls(sidebar.controlsContainer(), {
     onSettingsChange: (partial) => graphApi!.updateSettings(partial),

@@ -4,6 +4,8 @@ import { h, clear } from "./dom";
 export interface Sidebar {
   setVisibleCoalitions(ids: Set<string>): void;
   getVisibleCoalitions(): Set<string>;
+  /** Extra filters, right under the coalitions list. */
+  filtersContainer(): HTMLElement;
   /** A mount point below the coalitions list, above the legend. */
   controlsContainer(): HTMLElement;
   element(): HTMLElement;
@@ -60,9 +62,11 @@ export function createSidebar(
 
   // Sub-containers — built once. Only the coalitions list re-renders.
   const coalitionsBlock = h("div", { class: "coalitions-block" });
+  const filtersBlock = h("div", { class: "filters-block" });
   const controlsBlock = h("div", { class: "controls-block" });
   const legendBlock = h("div", { class: "legend-block" });
   aside.appendChild(coalitionsBlock);
+  aside.appendChild(filtersBlock);
   aside.appendChild(controlsBlock);
   aside.appendChild(legendBlock);
 
@@ -160,6 +164,9 @@ export function createSidebar(
     },
     getVisibleCoalitions() {
       return new Set(visible);
+    },
+    filtersContainer() {
+      return filtersBlock;
     },
     controlsContainer() {
       return controlsBlock;

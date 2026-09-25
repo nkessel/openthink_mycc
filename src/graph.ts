@@ -49,6 +49,8 @@ export interface Graph {
   focusOnNode(id: string): void;
   setSelectedNode(node: GraphNode | null): void;
   focusOnCoalition(id: string): void;
+  /** The "org-to-org connections" checkbox, for the host page to place (the sidebar). */
+  orgLinkToggle(): HTMLElement;
   updateSettings(partial: Partial<GraphSettings>): void;
   setGroups(groups: GroupRule[]): void;
   kickSimulation(): void;
@@ -123,6 +125,7 @@ export function createGraph(
       api.setSelectedNode(n);
     }),
   );
+  // Org-to-org toggle: built here (it drives the graph), shown in the sidebar with the other filters.
   const toggle = document.createElement("label");
   toggle.className = "org-link-toggle";
   const box = document.createElement("input");
@@ -141,7 +144,6 @@ export function createGraph(
         : " Org-to-org connections (none reported yet)",
     ),
   );
-  overlay.appendChild(toggle);
 
   const svg = d3
     .select(wrap)
@@ -579,6 +581,9 @@ export function createGraph(
   }
 
   const api: Graph = {
+    orgLinkToggle() {
+      return toggle;
+    },
     setVisibleCoalitions(ids) {
       visibleCoalitions = new Set(ids);
       applyVisibility();

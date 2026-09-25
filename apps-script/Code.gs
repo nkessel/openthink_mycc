@@ -108,6 +108,7 @@ var Q = {
   eventDesc: 'Event description',
   eventDate: 'Date',
   eventTime: 'Start time',
+  eventEndTime: 'End time',
   // project
   whichProject: 'Which project is this about?',
   projectName: 'Project name',
@@ -119,7 +120,8 @@ var Q = {
   fbArea: 'Which part of the map is it about?',
   fbMessage: 'Your feedback',
   fbName: 'Name',
-  fbEmail: 'Email',
+  fbEmail: 'Email', // older feedback forms; new ones collect the signed-in email
+  fbPhone: 'Phone (optional)',
   fbFollowUp: 'Is it OK for us to follow up with you?',
 };
 
@@ -160,12 +162,12 @@ var COLS = {
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
     'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden'],
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
-    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden'],
+    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end'],
   'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
     'reviewed_at', 'payload'],
-  'Feedback': ['submitted_at', 'type', 'area', 'message', 'name', 'email', 'ok_to_follow_up', 'status', 'notes'],
+  'Feedback': ['submitted_at', 'type', 'area', 'message', 'name', 'email', 'ok_to_follow_up', 'status', 'notes', 'phone'],
   'Change Log': ['timestamp', 'email', 'form', 'status', 'flag', 'record_type', 'record_id', 'record_name', 'changes'],
 };
 
@@ -216,6 +218,15 @@ function ensureTrigger_(handler, create) {
   if (!exists) create();
 }
 
+/** Columns added in later versions go at the end of an existing tab (nothing is moved). */
+function addMissingColumns_(sh, cols) {
+  var have = sh.getRange(1, 1, 1, Math.max(1, sh.getLastColumn())).getValues()[0].map(String);
+  cols.filter(function (c) { return have.indexOf(c) === -1; }).forEach(function (c) {
+    var col = sh.getLastColumn() + 1;
+    sh.getRange(1, col).setValue(c).setFontWeight('bold').setFontColor('#ffffff').setBackground('#1f2937');
+  });
+}
+
 function seedSheet_(ss) {
   var start = ss.getSheetByName(TAB.start);
   if (!start) {
@@ -236,6 +247,8 @@ function seedSheet_(ss) {
       sh.getRange(1, 1, 1, COLS[name].length).setValues([COLS[name]])
         .setFontWeight('bold').setFontColor('#ffffff').setBackground('#1f2937');
       sh.setFrozenRows(1); sh.setFrozenColumns(1);
+    } else {
+      addMissingColumns_(sh, COLS[name]);
     }
     var data = rows[name];
     if (data && data.length && sh.getLastRow() <= 1) {
@@ -273,7 +286,7 @@ function sheetRowsFromData_(d) {
   };
   var event = function (e, coalitionId, hostId) {
     push('Events', { id: e.id, coalition_id: coalitionId, host_org_id: hostId || e.host_org_id, name: e.name,
-      description: e.description, date: e.date, location: e.location, online: bool(e.online),
+      description: e.description, date: e.date, end: e.end, location: e.location, online: bool(e.online),
       lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact });
   };
   d.coalitions.forEach(function (c) {
@@ -320,7 +333,7 @@ function buildForms(dataLoaded) {
     { key: 'FORM_ORG', title: 'MA Climate Coalition Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
     { key: 'FORM_EVENT', title: 'MA Climate Coalition Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
     { key: 'FORM_PROJECT', title: 'MA Climate Coalition Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
-    { key: 'FORM_FEEDBACK', title: 'MA Climate Coalition Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: false },
+    { key: 'FORM_FEEDBACK', title: 'MA Climate Coalition Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
   ];
 
   specs.forEach(function (s) {
@@ -330,6 +343,7 @@ function buildForms(dataLoaded) {
       if (existing.getTitle() !== s.title) existing.setTitle(s.title);
       if (s.key === 'FORM_ORG') upgradeOrgForm_(existing);
       if (s.key === 'FORM_FEEDBACK') upgradeFeedbackForm_(existing);
+      if (s.key === 'FORM_EVENT') upgradeEventForm_(existing);
       return;
     }
     var form = FormApp.create(s.title);
@@ -530,6 +544,15 @@ function upgradeOrgForm_(form) {
   });
 }
 
+/** Older event forms had no end time; add it right after the start time (safe to run again). */
+function upgradeEventForm_(form) {
+  var items = form.getItems();
+  if (items.some(function (it) { return it.getTitle() === Q.eventEndTime; })) return;
+  var start = items.filter(function (it) { return it.getTitle() === Q.eventTime; })[0];
+  var end = form.addTimeItem().setTitle(Q.eventEndTime);
+  if (start) form.moveItem(end.getIndex(), start.getIndex() + 1);
+}
+
 function buildEventForm_(form) {
   header_(form,
     "Use this form to add your organization's or coalition's public event to the map, or to update or remove one that's already there.\n\n" +
@@ -540,6 +563,7 @@ function buildEventForm_(form) {
   form.addParagraphTextItem().setTitle(Q.eventDesc);
   form.addDateItem().setTitle(Q.eventDate);
   form.addTimeItem().setTitle(Q.eventTime);
+  form.addTimeItem().setTitle(Q.eventEndTime);
   addLocation_(form, 'event');
   addTags_(form);
   form.addTextItem().setTitle(Q.link);
@@ -569,15 +593,30 @@ function buildProjectForm_(form) {
 
 /** Older feedback forms had a fixed "Other" choice; make it a write-in (safe to run again). */
 function upgradeFeedbackForm_(form) {
+  collectVerifiedEmail_(form);
+  form.setDescription(FEEDBACK_DESC);
+  /** @type {GoogleAppsScript.Forms.Item | null} */ var nameItem = null;
+  var hasPhone = false;
   form.getItems().forEach(function (it) {
-    if (it.getTitle() === Q.fbType && it.getType() === FormApp.ItemType.MULTIPLE_CHOICE) {
+    var title = it.getTitle();
+    if (title === Q.fbType && it.getType() === FormApp.ItemType.MULTIPLE_CHOICE) {
       it.asMultipleChoiceItem().setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
     }
+    if (title === Q.fbEmail) form.deleteItem(it); // the signed-in email replaces it
+    if (title === Q.fbName) nameItem = it;
+    if (title === Q.fbPhone) hasPhone = true;
   });
+  if (!hasPhone) {
+    var phone = form.addTextItem().setTitle(Q.fbPhone);
+    var after = /** @type {GoogleAppsScript.Forms.Item | null} */ (nameItem);
+    if (after) form.moveItem(phone.getIndex(), after.getIndex() + 1);
+  }
 }
+var FEEDBACK_DESC = 'Tell us what is working, what is broken, or what you wish the MA Climate Coalition Map did. ' +
+  "You'll be asked to sign in with Google so we can follow up; only your feedback is required.";
 
 function buildFeedbackForm_(form) {
-  form.setDescription('Tell us what is working, what is broken, or what you wish the MA Climate Coalition Map did. Only your feedback is required — no sign-in needed.');
+  form.setDescription(FEEDBACK_DESC);
   form.setConfirmationMessage('Thank you — we read every one.');
   form.addMultipleChoiceItem().setTitle(Q.fbType).setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
   form.addCheckboxItem().setTitle(Q.fbArea).setChoiceValues([
@@ -585,7 +624,7 @@ function buildFeedbackForm_(form) {
     'The forms', 'General']);
   form.addParagraphTextItem().setTitle(Q.fbMessage).setRequired(true);
   form.addTextItem().setTitle(Q.fbName);
-  form.addTextItem().setTitle(Q.fbEmail);
+  form.addTextItem().setTitle(Q.fbPhone);
   form.addMultipleChoiceItem().setTitle(Q.fbFollowUp).setChoiceValues(['Yes', 'No']);
 }
 
@@ -702,7 +741,7 @@ function handleSubmit(e) {
  * queued submission (access check skipped).
  */
 function processSubmission_(kind, a, email, approver) {
-  if (kind === 'feedback') return saveFeedback_(a);
+  if (kind === 'feedback') return saveFeedback_(a, email);
   var t = readAll_();
   LABEL_INDEX_ = buildLabelIndex_(t); // match labels against the sheet as it is now
   var target = describeTarget_(kind, a, t);
@@ -991,6 +1030,12 @@ function saveEvent_(a, t) {
     var tm = time || old.slice(11, 16) || '00:00';
     if (d) patch.date = d + 'T' + tm + ':00';
   }
+  var endTime = a[Q.eventEndTime];
+  if (endTime) {
+    var day = (patch.date || (existing ? String(existing.date) : '')).slice(0, 10);
+    if (day) patch.end = day + 'T' + endTime + ':00';
+  }
+  if (patch.end) addMissingColumns_(ss_().getSheetByName(TAB.events), COLS[TAB.events]);
   return upsert_(TAB.events, 'event', a[Q.whichEvent], NEW_EVENT, patch);
 }
 
@@ -1031,20 +1076,23 @@ function locationPatch_(patch, a, existing) {
   }
 }
 
-function saveFeedback_(a) {
+function saveFeedback_(a, signedInEmail) {
   var sheet = ss_().getSheetByName(TAB.feedback);
+  addMissingColumns_(sheet, COLS[TAB.feedback]);
+  var email = signedInEmail || a[Q.fbEmail] || '';
   appendObject_(sheet, {
     submitted_at: nowIso_(),
     type: a[Q.fbType] || '',
     area: asArray_(a[Q.fbArea]).join(', '),
     message: a[Q.fbMessage] || '',
     name: a[Q.fbName] || '',
-    email: a[Q.fbEmail] || '',
+    email: email,
+    phone: a[Q.fbPhone] || '',
     ok_to_follow_up: a[Q.fbFollowUp] || '',
     status: 'new',
     notes: '',
   });
-  logChange_(a[Q.fbEmail] || '', FORM_NAMES.feedback, 'saved', '', 'feedback', '', a[Q.fbType] || 'feedback',
+  logChange_(email, FORM_NAMES.feedback, 'saved', '', 'feedback', '', a[Q.fbType] || 'feedback',
     String(a[Q.fbMessage] || '').slice(0, 300));
 }
 
@@ -1184,7 +1232,7 @@ function buildDataFile_(t, generatedAt) {
   });
   var events = group(t.events, function (e) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
-      e, ['description', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
+      e, ['end', 'description', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
   });
   var actions = group(t.actions.map(function (a) { var c = {}; for (var k in a) c[k] = a[k]; c.host_org_id = ''; return c; }), function (a) {
     return { id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name), urgency: str(a.urgency) || 'medium',
