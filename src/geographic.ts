@@ -100,10 +100,10 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     if (map) return map;
     map = L.map(mapEl, { zoomControl: true, attributionControl: true });
     map.fitBounds(MA_BOUNDS, { padding: [20, 20] });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution:
-        '© <a href="https://www.openstreetmap.org/copyright">OSM</a> · © <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: "abcd",
+    // OpenStreetMap's own tiles need no API key (CARTO's now do). They're light, so CSS
+    // (.geo-view .leaflet-tile-pane) darkens them to match the site.
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19,
     }).addTo(map);
 
