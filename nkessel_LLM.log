@@ -106,3 +106,10 @@ What / why
 - The sheet's id column stays: Connections, Editors, Events/Projects point to orgs by id, and ids never change.
 - Renamed in the sheet: citizens_climate_lobby_boston → "Citizens Climate Lobby Boston",
   citizens_climate_lobby_south_shore_cape_and_islands → "Citizens Climate Lobby South Shore, Cape and Islands".
+
+2026-09-25 19:25 — Claude
+- Nathan: replace the four "who you work with" checkbox lists with one list of orgs, checkboxes per frequency, blank =
+  no active contact. Now a checkbox grid (rows = orgs, columns = Weekly / Monthly / A few times a year / Yearly or less).
+  If a row has several ticks, the most frequent wins. An entirely blank grid keeps the org's current answers, so an org
+  that only edits its description doesn't lose its connections (judgment call — flag if Nathan wants blank = clear all).
+  Re-running "Set up sheet + forms" swaps the old questions for the grid on the live form; old-style answers still parse.

@@ -214,6 +214,19 @@ assert.equal(log().at(-1).record_type, "feedback");
 // every submission is in the Change Log
 const submissions = 15;
 assert.equal(log().length, submissions, `expected one Change Log row per submission (+ approval), got ${log().length}`);
+// the grid version of "who you work with": one row per org, strongest ticked column wins, blank rows = no contact
+submit("fo", "point@bls.org", {
+  [Q.whichOrg]: BLS,
+  [Q.worksWithGrid]: { "Andover Climate Lobby": ["Monthly", "Yearly or less"], "Belmont High School Climate Action Club": ["A few times a year"] },
+});
+{
+  const mine = book["Connections"].filter((r) => r[0] === "boston_latin_school_youthcan").map((r) => r[1] + ":" + r[2]).sort();
+  assert.deepEqual(mine, ["andover_climate_lobby:monthly", "belmont_high_school_climate_club:few_per_year"]);
+}
+// a blank grid keeps the current answers
+submit("fo", "point@bls.org", { [Q.whichOrg]: BLS, [Q.orgDesc]: "Only the description changed" });
+assert.equal(book["Connections"].filter((r) => r[0] === "boston_latin_school_youthcan").length, 2);
+
 // after an org renames itself, the new plain name picks the same row
 submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby", [Q.orgName]: "Andover Climate Lobby Group" });
 submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby Group", [Q.orgDesc]: "Renamed and still found" });
