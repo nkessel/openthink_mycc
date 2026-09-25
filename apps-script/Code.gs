@@ -1,7 +1,7 @@
 /**
  * Openthink — forms + spreadsheet backend
  * ---------------------------------------
- * Paste this whole file into the Openthink data Google Sheet:
+ * Paste this whole file into the MA Climate Coalition Map data Google Sheet:
  *   Extensions → Apps Script → replace Code.gs → Save.
  * Then reload the sheet and run  Openthink → Set up sheet + forms  once.
  *
@@ -159,7 +159,7 @@ var COLS = {
 };
 
 var START_TEXT = [
-  ['Openthink data', ''],
+  ['MA Climate Coalition Map data', ''],
   ['', ''],
   ['This spreadsheet is the source of truth for the Openthink map. The forms write into it; the site reads from it.', ''],
   ['', ''],
