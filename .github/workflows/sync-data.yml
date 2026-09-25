@@ -1,0 +1,41 @@
+name: Nightly data snapshot
+# Saves the Google Sheet's current data into public/data.json as a backup the site can
+# fall back to. Opens a PR into development_branch only when something changed.
+# Needs the repository variable OPENTHINK_DATA_URL (Settings → Secrets and variables → Actions → Variables).
+on:
+  schedule:
+    - cron: "17 7 * * *" # ~3am Boston
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  sync:
+    if: ${{ vars.OPENTHINK_DATA_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: development_branch
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/pull-data.mjs
+        env:
+          OPENTHINK_DATA_URL: ${{ vars.OPENTHINK_DATA_URL }}
+      - name: Open PR if data changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # generated_at always changes; only continue if real content changed
+          if git diff --quiet -I '"generated_at"' -- public/data.json; then echo "No data changes"; exit 0; fi
+          branch="data-sync/$(date -u +%Y-%m-%d)"
+          git config user.name "openthink-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add public/data.json
+          git commit -m "Nightly data snapshot from the Openthink sheet"
+          git push -f origin "$branch"
+          gh pr create --base development_branch --head "$branch" \
+            --title "Nightly data snapshot $(date -u +%Y-%m-%d)" \
+            --body "Automatic backup of the Google Sheet's data. Merge to update the fallback copy the site uses when Google is unreachable." || true

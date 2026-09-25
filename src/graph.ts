@@ -8,6 +8,7 @@ import type {
 } from "./types";
 import { coalitionRadius, orgRadius, initials } from "./util";
 import type { Tooltip } from "./tooltip";
+import { createNodeSearch, allNodesForSearch } from "./search";
 
 export interface GraphCallbacks {
   onNodeClick(node: GraphNode): void;
@@ -44,6 +45,8 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
 
 export interface Graph {
   setVisibleCoalitions(ids: Set<string>): void;
+  /** Center on any node (coalition or org). */
+  focusOnNode(id: string): void;
   setSelectedNode(node: GraphNode | null): void;
   focusOnCoalition(id: string): void;
   updateSettings(partial: Partial<GraphSettings>): void;
@@ -74,11 +77,21 @@ export function createGraph(
   const allNodes: GraphNode[] = [...coalitionNodes, ...orgNodes];
   const nodeById = new Map<string, GraphNode>(allNodes.map((n) => [n.id, n]));
 
-  const allLinks: GraphLink[] = data.edges.map((e) => ({
-    source: e.source,
-    target: e.target,
-    coalitionId: e.source, // source is always coalition in our data
-  }));
+  const orgIds = new Set(data.organizations.map((o) => o.id));
+  const allLinks: GraphLink[] = [
+    ...data.edges.map((e) => ({
+      source: e.source,
+      target: e.target,
+      coalitionId: e.source, // source is always coalition in our data
+      kind: "membership" as const,
+    })),
+    // Org-to-org: how often they work together (weight 1 = yearly or less … 4 = weekly)
+    ...(data.org_links || [])
+      .filter((l) => orgIds.has(l.source) && orgIds.has(l.target))
+      .map((l) => ({ source: l.source, target: l.target, coalitionId: "", kind: "org" as const, weight: l.weight })),
+  ];
+  const orgLinkCount = allLinks.filter((l) => l.kind === "org").length;
+  let showOrgLinks = true;
 
   let visibleCoalitions = new Set(data.coalitions.map((c) => c.id));
   let selectedId: string | null = null;
@@ -92,6 +105,39 @@ export function createGraph(
   hint.className = "hint";
   hint.textContent = "Drag nodes · Scroll to zoom · Click for details";
   wrap.appendChild(hint);
+
+  // Top-left overlay: search + org-to-org link toggle
+  const overlay = document.createElement("div");
+  overlay.className = "graph-overlay";
+  wrap.appendChild(overlay);
+  overlay.appendChild(
+    createNodeSearch(allNodesForSearch(data), (id) => {
+      const n = nodeById.get(id);
+      if (!n) return;
+      api.focusOnNode(id);
+      cb.onNodeClick(n);
+      api.setSelectedNode(n);
+    }),
+  );
+  const toggle = document.createElement("label");
+  toggle.className = "org-link-toggle";
+  const box = document.createElement("input");
+  box.type = "checkbox";
+  box.checked = showOrgLinks;
+  box.addEventListener("change", () => {
+    showOrgLinks = box.checked;
+    linkForce.strength(linkStrengthFor);
+    applyVisibility();
+  });
+  toggle.appendChild(box);
+  toggle.appendChild(
+    document.createTextNode(
+      orgLinkCount
+        ? ` Org-to-org connections (${orgLinkCount}) — thicker = more often`
+        : " Org-to-org connections (none reported yet)",
+    ),
+  );
+  overlay.appendChild(toggle);
 
   const svg = d3
     .select(wrap)
@@ -164,6 +210,8 @@ export function createGraph(
       typeof l.source === "string" ? nodeById.get(l.source) : l.source;
     // 0..1 → 50..380
     const base = 50 + settings.linkDistance * 330;
+    // Orgs that work together more often sit closer
+    if (l.kind === "org") return base * (1.3 - (l.weight ?? 1) * 0.2);
     if (src?.kind === "coalition") return coalitionRadius(src) + base * 0.6;
     return base;
   }
@@ -172,6 +220,13 @@ export function createGraph(
   }
   function linkForceStrength(): number {
     return 0.1 + settings.linkForce * 0.9;
+  }
+  function linkStrengthFor(l: GraphLink): number {
+    if (l.kind === "org") return showOrgLinks ? linkForceStrength() * 0.25 * (l.weight ?? 1) : 0;
+    return linkForceStrength();
+  }
+  function linkWidthFor(l: GraphLink): number {
+    return l.kind === "org" ? settings.linkThickness * (0.6 + (l.weight ?? 1) * 0.6) : settings.linkThickness;
   }
   function nodeRadiusOf(n: GraphNode): number {
     const base = n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
@@ -183,7 +238,7 @@ export function createGraph(
     .forceLink<GraphNode, GraphLink>(allLinks)
     .id((d) => d.id)
     .distance(linkDistanceFor)
-    .strength(linkForceStrength());
+    .strength(linkStrengthFor);
 
   const chargeForce = d3
     .forceManyBody<GraphNode>()
@@ -245,7 +300,7 @@ export function createGraph(
     .data(allLinks)
     .enter()
     .append("line")
-    .attr("class", "link") as LinkSel;
+    .attr("class", (l) => (l.kind === "org" ? `link org-link w${l.weight ?? 1}` : "link")) as LinkSel;
 
   let nodeSel: NodeSel = nodeLayer
     .selectAll<SVGGElement, GraphNode>("g.node")
@@ -337,8 +392,8 @@ export function createGraph(
         .select<SVGTextElement>("text.node-name")
         .attr("y", r + (d.kind === "coalition" ? 14 : 12));
     });
-    // Link thickness
-    linkSel.attr("stroke-width", settings.linkThickness);
+    // Link thickness (org-to-org links scale with how often they work together)
+    linkSel.attr("stroke-width", linkWidthFor);
   }
   // Apply on initial render
   applyVisualSettings();
@@ -461,11 +516,12 @@ export function createGraph(
     // A node is visible iff:
     //  - it's a coalition and its id ∈ visible set
     //  - it's an org and at least one of its coalition_ids ∈ visible set
+    //  - or it belongs to no coalition at all (always shown)
     const orgVisible = new Map<string, boolean>();
     for (const o of orgNodes) {
       orgVisible.set(
         o.id,
-        o.coalition_ids.some((c) => visibleCoalitions.has(c)),
+        !o.coalition_ids.length || o.coalition_ids.some((c) => visibleCoalitions.has(c)),
       );
     }
     nodeSel.style("display", (n) => {
@@ -475,9 +531,9 @@ export function createGraph(
       return orgVisible.get(n.id) ? null : "none";
     });
     linkSel.style("display", (l) => {
-      const sid = (l.source as GraphNode).id ?? l.source;
-      const tid = (l.target as GraphNode).id ?? l.target;
-      if (typeof sid !== "string" || typeof tid !== "string") return null;
+      const sid = typeof l.source === "string" ? l.source : l.source.id;
+      const tid = typeof l.target === "string" ? l.target : l.target.id;
+      if (l.kind === "org") return showOrgLinks && orgVisible.get(sid) && orgVisible.get(tid) ? null : "none";
       if (!visibleCoalitions.has(sid)) return "none";
       if (!orgVisible.get(tid)) return "none";
       return null;
@@ -499,6 +555,9 @@ export function createGraph(
       selectedId = node?.id ?? null;
       applySelection();
     },
+    focusOnNode(id) {
+      api.focusOnCoalition(id);
+    },
     focusOnCoalition(id) {
       const n = nodeById.get(id);
       if (!n || n.x === undefined || n.y === undefined) return;
@@ -516,7 +575,7 @@ export function createGraph(
       settings = { ...settings, ...partial };
       // Forces that depend on settings need re-init
       if (partial.linkForce !== undefined) {
-        linkForce.strength(linkForceStrength());
+        linkForce.strength(linkStrengthFor);
       }
       if (partial.linkDistance !== undefined) {
         linkForce.distance(linkDistanceFor);
@@ -533,7 +592,7 @@ export function createGraph(
         applyVisualSettings();
       }
       if (partial.linkThickness !== undefined) {
-        linkSel.attr("stroke-width", settings.linkThickness);
+        linkSel.attr("stroke-width", linkWidthFor);
       }
       if (partial.textFadeThreshold !== undefined) {
         applyTextFade();

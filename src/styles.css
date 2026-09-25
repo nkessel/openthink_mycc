@@ -1107,3 +1107,418 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #3a3a4a;
 }
+
+/* ---------- org logos + edit link ---------- */
+.drawer .badge.logo {
+  background: #edeae0;
+  padding: 5px;
+  overflow: hidden;
+}
+.drawer .badge.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.drawer .desc.faint {
+  color: var(--text-faint);
+  font-style: italic;
+}
+.drawer .edit-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--accent);
+  text-decoration: none;
+}
+.drawer .edit-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- "+" floating action button ---------- */
+.fab-wrap {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  transition: right 0.25s ease;
+}
+.drawer.open ~ .fab-wrap {
+  right: calc(var(--drawer-w) + 24px);
+}
+.fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-green);
+  color: #06140e;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.fab:hover {
+  background: #5ee0b0;
+}
+.fab:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+.fab-wrap.open .fab {
+  transform: rotate(45deg);
+}
+.fab-menu {
+  display: none;
+  flex-direction: column;
+  min-width: 260px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.fab-wrap.open .fab-menu {
+  display: flex;
+}
+.fab-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 11px 14px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+.fab-item:last-child {
+  border-bottom: none;
+}
+.fab-item:hover {
+  background: var(--bg-elev-2);
+}
+.fab-item-label {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.fab-item-hint {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+.fab-item.disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.fab-item.disabled:hover {
+  background: transparent;
+}
+@media (max-width: 720px) {
+  .fab-wrap,
+  .drawer.open ~ .fab-wrap {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+.drawer .title-row {
+  padding-right: 28px;
+}
+
+/* ---------- drawer sections ---------- */
+.drawer .section-label {
+  margin: 14px 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.drawer .section-label:first-child {
+  margin-top: 0;
+}
+.drawer .section-note {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-bottom: 10px;
+  line-height: 1.45;
+}
+.drawer .item.clickable {
+  cursor: pointer;
+}
+.drawer .item.clickable:hover {
+  border-color: var(--accent);
+}
+
+/* ---------- org-to-org links on the graph ---------- */
+.link.org-link {
+  stroke: rgba(251, 191, 36, 0.55);
+}
+.link.org-link.highlight {
+  stroke: rgba(251, 191, 36, 0.95);
+}
+
+/* ---------- search box (graph, geographic, orgs list) ---------- */
+.graph-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(340px, calc(100% - 24px));
+}
+.search-box {
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: 13px;
+  box-shadow: var(--shadow);
+}
+.search-box input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+}
+.search-results {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.search-results.open {
+  display: block;
+}
+.search-result {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+}
+.search-result:last-child {
+  border-bottom: none;
+}
+.search-result.active,
+.search-result:hover {
+  background: var(--bg-elev-2);
+}
+.search-name {
+  font-size: 13px;
+  color: var(--text);
+}
+.search-sub {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.org-link-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: rgba(21, 21, 28, 0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* ---------- geographic panel: search, layers, near me ---------- */
+.geo-panel {
+  position: absolute;
+  top: 12px;
+  left: 56px;
+  z-index: 1000;
+  width: min(320px, calc(100% - 72px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: calc(100% - 24px);
+}
+.geo-layers,
+.geo-near-list:not(:empty) {
+  background: rgba(21, 21, 28, 0.92);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  box-shadow: var(--shadow);
+}
+.geo-layers h3 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 600;
+}
+.geo-layer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.geo-layer .swatch {
+  display: inline-block;
+  flex-shrink: 0;
+}
+.geo-note {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.geo-near {
+  align-self: flex-start;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.geo-near:hover {
+  border-color: var(--accent);
+}
+.geo-near-list {
+  overflow-y: auto;
+  min-height: 0;
+}
+.geo-near-head {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.geo-near-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 6px 0;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.geo-near-row .n {
+  font-size: 13px;
+}
+.geo-near-row .k {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.geo-near-row:hover .n {
+  color: var(--accent);
+}
+.geo-pin {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  border-radius: 50%;
+  border: 1.5px solid #0a0a0f;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.geo-pin.event {
+  background: #f472b6;
+  color: #0a0a0f;
+}
+.geo-pin.project {
+  background: #38bdf8;
+  color: #0a0a0f;
+  border-radius: 4px;
+}
+@media (max-width: 720px) {
+  .geo-panel {
+    left: 12px;
+    top: 56px;
+    width: calc(100% - 24px);
+  }
+}
+
+/* ---------- organizations list ---------- */
+.list-toolbar .select {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: 13px;
+}
+.list-toolbar .check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.list-note {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+.coalition-badge.logo {
+  background: #edeae0;
+  padding: 3px;
+  overflow: hidden;
+}
+.coalition-badge.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.list-card.pair {
+  cursor: default;
+}
+.pair-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pair-org {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elev-2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+.pair-org:hover {
+  border-color: var(--accent);
+}
+.pair-plus {
+  color: var(--text-faint);
+}

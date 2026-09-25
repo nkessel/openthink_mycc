@@ -9,18 +9,23 @@ import type {
 } from "./types";
 import { initials, relTime, fmtDateTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
+import { formUrl } from "./fab";
+import { orgProjects, orgEvents } from "./owners";
+import { suggestionsFor } from "./suggestions";
 
-type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "about";
+type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
 
 export interface Drawer {
   open(node: GraphNode): void;
   close(): void;
   isOpen(): boolean;
+  current(): GraphNode | null;
   setActiveTab(tab: DrawerTab): void;
 }
 
 export interface DrawerCallbacks {
   onCoalitionClick?(coalitionId: string): void;
+  onOrgClick?(orgId: string): void;
 }
 
 export function createDrawer(
@@ -80,31 +85,31 @@ export function createDrawer(
       );
     } else {
       const o = node as Organization;
+      const badge = o.logo
+        ? h("div", { class: "badge logo" }, h("img", { src: o.logo, alt: "" }))
+        : h("div", { class: "badge", style: "background:#3a3a4a;color:#e5e7eb" }, initials(o.name));
+      const sub = [o.abbrev, typeLabel(o.type), o.geographic_focus].filter(Boolean).join(" · ");
       head.appendChild(
-        h(
-          "div",
-          { class: "title-row" },
-          h(
-            "div",
-            {
-              class: "badge",
-              style: "background:#3a3a4a;color:#e5e7eb",
-            },
-            initials(o.name),
-          ),
-          h(
-            "div",
-            {},
-            h("h2", {}, o.name),
-            h(
-              "div",
-              { class: "sub" },
-              `${typeLabel(o.type)} · ${o.geographic_focus}`,
-            ),
-          ),
-        ),
+        h("div", { class: "title-row" }, badge, h("div", {}, h("h2", {}, o.name), h("div", { class: "sub" }, sub))),
       );
-      head.appendChild(h("div", { class: "desc" }, o.description));
+      head.appendChild(
+        o.description
+          ? h("div", { class: "desc" }, o.description)
+          : h("div", { class: "desc faint" }, "No description yet."),
+      );
+      const tags = h("div", { class: "tags" });
+      if (o.profile?.youth_serving) tags.appendChild(h("span", { class: "tag" }, "Youth-serving"));
+      if (o.profile?.school_club) tags.appendChild(h("span", { class: "tag" }, "School club"));
+      if (o.profile?.hub) tags.appendChild(h("span", { class: "tag" }, "Hub org"));
+      if (o.profile?.geo_precision === "approx") tags.appendChild(h("span", { class: "tag" }, "Approximate location"));
+      for (const t of o.topic_tags || []) tags.appendChild(h("span", { class: "tag" }, prettifyTag(t)));
+      if (tags.childNodes.length) head.appendChild(tags);
+      const edit = formUrl("org", node);
+      if (edit) {
+        head.appendChild(
+          h("a", { class: "edit-link", href: edit, target: "_blank", rel: "noopener" }, "✎ Update this organization's info"),
+        );
+      }
       head.appendChild(
         h(
           "div",
@@ -140,7 +145,10 @@ export function createDrawer(
             { id: "actions", label: "Actions" },
           ]
         : [
-            { id: "coalitions", label: "Coalitions" },
+            { id: "coalitions", label: "Connections" },
+            { id: "suggested", label: "Suggested" },
+            { id: "projects", label: "Projects" },
+            { id: "events", label: "Events" },
             { id: "about", label: "About" },
           ];
     // Ensure activeTab is valid for this node kind
@@ -176,6 +184,12 @@ export function createDrawer(
       const o = node as Organization;
       if (activeTab === "coalitions") {
         renderCoalitionList(body, o);
+      } else if (activeTab === "suggested") {
+        renderSuggestions(body, o);
+      } else if (activeTab === "projects") {
+        renderProjects(body, orgProjects(data, o));
+      } else if (activeTab === "events") {
+        renderEvents(body, orgEvents(data, o));
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
       }
@@ -262,11 +276,64 @@ export function createDrawer(
     }
   }
 
+  function renderSuggestions(body: HTMLElement, org: Organization): void {
+    const list = suggestionsFor(data, org.id);
+    body.appendChild(
+      h("div", { class: "section-note" },
+        "Organizations doing similar work that haven't said they work together. Suggestions improve as groups add descriptions and topics."),
+    );
+    if (!list.length) {
+      body.appendChild(h("div", { class: "empty" }, "No suggestions yet."));
+      return;
+    }
+    for (const { other, s } of list) {
+      const o = orgsById.get(other);
+      if (!o) continue;
+      const row = h(
+        "div",
+        { class: "item clickable" },
+        h("div", { class: "name" }, o.name),
+        h("div", { class: "desc" }, s.reasons.join(" · ") + (s.sharedCoalition ? " · Already share a coalition" : "")),
+        h("div", { class: "row" }, h("span", { class: "pill" }, `${Math.round(s.score * 100)}% match`)),
+      );
+      row.addEventListener("click", () => cb.onOrgClick?.(other));
+      body.appendChild(row);
+    }
+  }
+
+  function renderOrgLinks(body: HTMLElement, org: Organization): void {
+    const FREQ: Record<string, string> = { weekly: "Weekly", monthly: "Monthly", few_per_year: "A few times a year", yearly: "Yearly or less" };
+    const links = (data.org_links || [])
+      .filter((l) => l.source === org.id || l.target === org.id)
+      .sort((x, y) => y.weight - x.weight);
+    body.appendChild(h("div", { class: "section-label" }, `Works with (${links.length})`));
+    if (!links.length) {
+      body.appendChild(h("div", { class: "empty" }, "No organizations reported yet."));
+      return;
+    }
+    for (const l of links) {
+      const otherId = l.source === org.id ? l.target : l.source;
+      const o = orgsById.get(otherId);
+      if (!o) continue;
+      const row = h(
+        "div",
+        { class: "coalition-link" },
+        h("div", { class: "dot", style: `background:#9ca3af;opacity:${0.4 + l.weight * 0.15}` }),
+        h("div", {}, h("div", { class: "name", style: "font-size:13px" }, o.name),
+          h("div", { class: "sub", style: "font-size:11px;color:#6b7280" }, FREQ[l.frequency] || l.frequency)),
+      );
+      row.addEventListener("click", () => cb.onOrgClick?.(otherId));
+      body.appendChild(row);
+    }
+  }
+
   function renderCoalitionList(body: HTMLElement, org: Organization): void {
+    body.appendChild(h("div", { class: "section-label" }, `Coalitions (${org.coalition_ids.length})`));
     if (!org.coalition_ids.length) {
       body.appendChild(
         h("div", { class: "empty" }, "Not currently in any coalition."),
       );
+      renderOrgLinks(body, org);
       return;
     }
     for (const cid of org.coalition_ids) {
@@ -290,33 +357,27 @@ export function createDrawer(
       row.addEventListener("click", () => cb.onCoalitionClick?.(cid));
       body.appendChild(row);
     }
+    renderOrgLinks(body, org);
   }
 
   function renderOrgAbout(body: HTMLElement, org: Organization): void {
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Type"),
-        h("div", { class: "desc" }, typeLabel(org.type)),
-      ),
-    );
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Geographic focus"),
-        h("div", { class: "desc" }, org.geographic_focus),
-      ),
-    );
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Description"),
-        h("div", { class: "desc" }, org.description),
-      ),
-    );
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    const score = (v?: number) => (v === undefined ? undefined : `${v} / 4`);
+    const p = org.profile || {};
+    row("Type", typeLabel(org.type));
+    row("Geographic focus", org.geographic_focus);
+    row("Description", org.description);
+    row("Website", org.website ? h("a", { href: org.website, target: "_blank", rel: "noopener" }, org.website) : undefined);
+    row("Contact", org.public_contact);
+    row("Active membership", p.membership_size);
+    row("EJ / frontline focus", score(p.ej_focus));
+    row("Grassroots power", score(p.grassroots));
+    row("Policy writing", score(p.policy_expertise));
+    row("“In the building”", score(p.in_building));
+    if (!body.childNodes.length) body.appendChild(h("div", { class: "empty" }, "No details yet."));
   }
 
   // suppress unused-import warning
@@ -341,6 +402,9 @@ export function createDrawer(
     close() {
       el.classList.remove("open");
       currentNode = null;
+    },
+    current() {
+      return el.classList.contains("open") ? currentNode : null;
     },
     isOpen() {
       return el.classList.contains("open");

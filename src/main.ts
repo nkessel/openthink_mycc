@@ -8,8 +8,11 @@ import { createDrawer } from "./drawer";
 import { createGeographicView } from "./geographic";
 import { createEventsView } from "./events";
 import { createProjectsView } from "./projects";
+import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
+import { createFab } from "./fab";
+import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
 
 async function main() {
   const app = document.getElementById("app")!;
@@ -18,9 +21,7 @@ async function main() {
   // Fetch data
   let data: DataFile;
   try {
-    const res = await fetch("/data.json");
-    if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
-    data = (await res.json()) as DataFile;
+    data = await loadData();
   } catch (err) {
     createTopbar(app, { onTabChange: () => {} });
     app.appendChild(
@@ -76,6 +77,14 @@ async function main() {
   mapView.appendChild(graphContainer);
 
   drawerApi = createDrawer(graphContainer, data, {
+    onOrgClick: (id) => {
+      const org = data.organizations.find((o) => o.id === id);
+      if (!org) return;
+      const node: GraphNode = { ...org, kind: "org" };
+      drawerApi!.open(node);
+      graphApi?.setSelectedNode(node);
+      if (activeTab === "map") graphApi?.focusOnNode(id);
+    },
     onCoalitionClick: (cid) => {
       const coalition = data.coalitions.find((c) => c.id === cid);
       if (!coalition) return;
@@ -138,6 +147,19 @@ async function main() {
   eventsView.el.style.inset = "0";
   content.appendChild(eventsView.el);
 
+  // ----- Organizations view -----
+  const orgsView = createOrgsView(data, {
+    onOrgClick: (node) => {
+      drawerApi!.open(node);
+      graphApi!.setSelectedNode(node);
+    },
+  });
+  orgsView.el.style.display = "none";
+  orgsView.el.style.height = "100%";
+  orgsView.el.style.position = "absolute";
+  orgsView.el.style.inset = "0";
+  content.appendChild(orgsView.el);
+
   // ----- Projects view -----
   const projectsView = createProjectsView(data, {
     onCoalitionClick: (node) => {
@@ -161,12 +183,16 @@ async function main() {
     mapView.style.display = tab === "map" ? "grid" : "none";
     geoView.el.style.display = tab === "geo" ? "block" : "none";
     eventsView.el.style.display = tab === "events" ? "grid" : "none";
+    orgsView.el.style.display = tab === "orgs" ? "grid" : "none";
     projectsView.el.style.display = tab === "projects" ? "grid" : "none";
     if (tab === "geo") geoView.invalidate();
     if (tab !== "map") {
       tooltip.hide();
     }
   }
+
+  // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
+  createFab(content, () => drawerApi?.current() ?? null);
 
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {
@@ -175,6 +201,31 @@ async function main() {
       graphApi?.setSelectedNode(null);
     }
   });
+}
+
+/** Live data from the Google Sheet when configured, else the committed snapshot. */
+async function loadData(): Promise<DataFile> {
+  const get = async (url: string, ms: number) => {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+      const res = await fetch(url, { signal: ctrl.signal });
+      if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
+      const d = (await res.json()) as DataFile;
+      if (!Array.isArray(d.coalitions) || !Array.isArray(d.organizations)) throw new Error("bad data");
+      return d;
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+  if (LIVE_DATA_URL) {
+    try {
+      return await get(LIVE_DATA_URL, 8000);
+    } catch (err) {
+      console.warn("Live data unavailable, using snapshot:", err);
+    }
+  }
+  return get(SNAPSHOT_URL, 15000);
 }
 
 main();

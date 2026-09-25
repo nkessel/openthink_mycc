@@ -1,0 +1,64 @@
+2026-09-25 — Claude (claude-opus-5-5), working for Nathan (nkessel)
+Branch: claude/forms-org-import-fab → PR into development_branch
+
+What / why
+- Created development_branch from main (it didn't exist yet; guideline 10 says we work there). No content changes on it; everything else goes through this PR (guideline 9).
+- git pull + checked open PRs first (none) (guideline 8).
+- Org data: added scripts/import-orgs.mjs and ran it against aissatabarry/ma-climate-coalition-map
+  (commit e8bb5ce, 2026-09-25) because Nathan said that repo is the most up-to-date org source.
+  -> 150 orgs, 88 logos (public/logos/*.png, extracted from embedded base64), 175 memberships.
+  -> Coalitions now match the source's 8: MPF, MYCC, EJLT, GJC, CRS, HERO kept their projects/events/actions;
+     CCCC and SCJC added (no projects/events yet).
+  -> Dropped mara, gfn, ghs, zcrf (not in the source) with their 12 projects, 12 events, 12 actions,
+     per "get rid of any projects or events that belong to orgs not on this list". Projects/events are
+     attached to coalitions in our schema, so "belongs to" was read as "belongs to a coalition not on the list".
+  -> Source has no member ties for CCCC, CRS, HERO, so they show 0 members.
+  -> Source has no town/description for orgs, and type only for school clubs; the rest are "unknown"
+     until groups fill them in via the org form.
+- Forms + sheet: apps-script/Code.gs builds 4 Google Forms (org, event, project, feedback) linked to a sheet,
+  seeds the sheet from development_branch's data.json, applies submissions (blank = keep), logs changes,
+  and serves public data as JSON. All questions optional except "which one is this about?" (and the feedback
+  message), per Nathan's request. Includes every question from the team's existing "Climate Map Modification
+  Form" (organization, contact info, event name/description, date/time/location, climate topic tags).
+  Tested with a mocked Sheets/Forms runtime in Node (seed → data.json round-trip, and simulated submissions).
+  Not yet run inside real Google Apps Script — first real run may surface permission/API quirks.
+- App: + floating action button (src/fab.ts) with the 4 forms, pre-filled with the org/coalition open in the
+  drawer; org drawer shows logo, abbreviation, profile scores, and an "Update this organization's info" link.
+  Form URLs go in src/forms.config.ts after setup (empty until then; menu says "Form not connected yet").
+- Added LLM_GUIDELINES.md (featured in README) and CLAUDE.md so Claude Code sessions pick the rules up.
+
+2026-09-25 (later) — Claude, same PR (#1, not yet merged)
+- Nathan: events/projects can belong to coalitions OR orgs. Changed the schema: org-owned items now live in
+  organizations[].projects/events; coalition items stay under coalitions (optionally with host_org_id).
+  Events/Projects views and the org drawer (new Projects + Events tabs) show both. Forms explain the choice;
+  items with neither are kept in the sheet but flagged in Change Log and left off the map.
+  Replaces my earlier workaround (org-only items were filed under the org's first coalition).
+- To raise confidence before the first real Google run: added `npm run check:apps-script` (type-checks Code.gs
+  against @types/google-apps-script — catches misspelled/nonexistent Google API calls) and
+  `npm run test:apps-script` (the Node simulation tests, now in the repo), plus a GitHub Actions CI workflow
+  running build + both checks on every PR. Wrapped Form.shortenFormUrl in try/catch (legacy API; falls back to the long link).
+
+2026-09-25 (afternoon) — Claude, same PR (#1), per Nathan's requirements review
+- Hosting: stays static on GitHub Pages (relative base, Pages deploy workflow from development_branch). Site reads the
+  sheet's public JSON live (src/data.config.ts LIVE_DATA_URL) and falls back to public/data.json; nightly Action opens a
+  snapshot PR when data changed. Couldn't enable Pages via API from here — repo owner does 2 clicks (SETUP.md step 5).
+- Access control (Nathan's design, replacing per-org passwords): forms require Google sign-in and record the verified
+  email; Editors tab maps emails → org_ids / coalition_ids; admins = Nathan, Aissata, Turibius. Unauthorized, no-email,
+  and new-org submissions go to "Needs Review" (tick approve), are flagged in Change Log, and email the admins.
+  Every submission (incl. feedback and refused approvals) gets a Change Log row. Approved new orgs make their proposer
+  the point-person.
+- Org-to-org connections: org form page "Who you work with" (weekly / monthly / a few times a year / yearly or less);
+  stored in Connections tab; data.json org_links (one per pair, strongest answer wins, both reporters kept); drawn as
+  weighted amber edges on the graph with a toggle.
+- Locations: events and projects get location + "online?" (geocoded on submit); geographic view has Events/Projects
+  checkboxes (off by default). Orgs get HQ address + "remote" (no pin).
+- Search: graph search box, Organizations tab (search + filters), geographic search (places via OSM Nominatim,
+  orgs, coalitions → fit to members, events, projects) and "What's near me?".
+- Holes: src/suggestions.ts scores unconnected org pairs (TF-IDF of name/description/tags, shared tags/skills, type,
+  youth-serving, distance); shown per org (drawer "Suggested") and as a list. Same-name pairs are flagged as possible
+  duplicates (the source data has e.g. 3× Citizens Climate Lobby).
+- Also: orgs with no coalition were hidden on the graph (pre-existing bug) — now shown.
+- Verified: build, Apps Script type check against official typings, Node simulation tests (access rules, review
+  approval, change log count, connections, locations, round trips), screenshots with injected test data.
+  Not verified: a real run in Google Apps Script (setEmailCollectionType/setPublished are feature-detected with fallbacks).
+- Shared the "Openthink data" sheet with ab130@wellesley.edu and turibius@bu.edu as editors (Drive).

@@ -8,6 +8,15 @@ export interface Project {
   description: string;
   status: ProjectStatus;
   skills_needed: string[];
+  // Optional fields filled in through the Openthink forms
+  host_org_id?: string;
+  topic_tags?: string[];
+  link?: string;
+  public_contact?: string;
+  location?: string;
+  online?: boolean;
+  lat?: number;
+  lng?: number;
 }
 
 export interface CoalitionEvent {
@@ -15,6 +24,15 @@ export interface CoalitionEvent {
   name: string;
   date: string;
   location: string;
+  // Optional fields filled in through the Openthink forms
+  description?: string;
+  host_org_id?: string;
+  topic_tags?: string[];
+  link?: string;
+  public_contact?: string;
+  online?: boolean;
+  lat?: number;
+  lng?: number;
 }
 
 export interface Action {
@@ -54,6 +72,38 @@ export interface Organization {
   lat: number;
   lng: number;
   last_activity: string;
+  // From the MA Climate Coalition Map import and/or the Openthink forms
+  abbrev?: string;
+  website?: string;
+  /** Relative path (logos/<id>.png) or an absolute image URL. */
+  logo?: string;
+  /** No public location: listed, but no pin on the geographic map. */
+  remote?: boolean;
+  public_contact?: string;
+  topic_tags?: string[];
+  profile?: OrgProfile;
+  /** Strength of each coalition tie (1–4), keyed by coalition id. */
+  coalition_weights?: Record<string, number>;
+  /** Projects/events that belong to this org rather than a coalition. */
+  projects?: Project[];
+  events?: CoalitionEvent[];
+}
+
+/** Org attributes from the MA Climate Coalition Map. Scores are 1–4. */
+export interface OrgProfile {
+  youth_serving?: boolean;
+  school_club?: boolean;
+  hub?: boolean;
+  inactive?: boolean;
+  paid_staff?: boolean;
+  ej_focus?: number;
+  grassroots?: number;
+  policy_expertise?: number;
+  in_building?: number;
+  membership_size?: string;
+  c3_tier?: string;
+  c4_tier?: string;
+  geo_precision?: "exact" | "approx" | string;
 }
 
 export interface Edge {
@@ -63,6 +113,8 @@ export interface Edge {
 
 export interface DataFile {
   generated_at: string;
+  /** Org-to-org connections; optional for older data files. */
+  org_links?: OrgLink[];
   coalitions: Coalition[];
   organizations: Organization[];
   edges: Edge[];
@@ -95,5 +147,21 @@ export type GraphNode = CoalitionNode | OrgNode;
 export interface GraphLink {
   source: GraphNode | string;
   target: GraphNode | string;
+  /** Coalition id for membership links; "" for org-to-org links. */
   coalitionId: string;
+  kind?: "membership" | "org";
+  /** Org-to-org strength, 1 (yearly or less) … 4 (weekly). */
+  weight?: number;
+}
+
+/** How often two orgs work together (from the organization form). */
+export type LinkFrequency = "weekly" | "monthly" | "few_per_year" | "yearly";
+
+export interface OrgLink {
+  source: string;
+  target: string;
+  frequency: LinkFrequency | string;
+  weight: number;
+  /** Org ids that reported this connection. */
+  reported_by: string[];
 }

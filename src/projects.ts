@@ -1,6 +1,6 @@
-import type { DataFile, Coalition, Project, GraphNode } from "./types";
+import type { DataFile, Project, GraphNode } from "./types";
+import { allProjects, type Owner } from "./owners";
 import { h, clear } from "./dom";
-import { initials } from "./util";
 
 export interface ProjectsView {
   el: HTMLElement;
@@ -13,7 +13,7 @@ export interface ProjectsCallbacks {
 
 interface Row {
   project: Project;
-  coalition: Coalition;
+  owner: Owner;
 }
 
 export function createProjectsView(
@@ -22,12 +22,7 @@ export function createProjectsView(
 ): ProjectsView {
   const wrap = h("div", { class: "list-view" });
 
-  const rows: Row[] = [];
-  for (const c of data.coalitions) {
-    for (const p of c.projects) {
-      rows.push({ project: p, coalition: c });
-    }
-  }
+  const rows: Row[] = allProjects(data);
 
   // Skill universe across all projects
   const skillSet = new Set<string>();
@@ -48,7 +43,7 @@ export function createProjectsView(
   const search = h("input", {
     class: "search",
     type: "search",
-    placeholder: "Search projects or coalitions…",
+    placeholder: "Search projects, coalitions, or orgs…",
   }) as HTMLInputElement;
   search.addEventListener("input", () => {
     q = search.value.trim().toLowerCase();
@@ -128,8 +123,8 @@ export function createProjectsView(
     return (
       r.project.name.toLowerCase().includes(q) ||
       r.project.description.toLowerCase().includes(q) ||
-      r.coalition.name.toLowerCase().includes(q) ||
-      r.coalition.abbrev.toLowerCase().includes(q)
+      r.owner.name.toLowerCase().includes(q) ||
+      r.owner.abbrev.toLowerCase().includes(q)
     );
   }
 
@@ -159,18 +154,18 @@ export function createProjectsView(
             "div",
             {
               class: "coalition-badge",
-              style: `background:${r.coalition.color}`,
+              style: `background:${r.owner.color}`,
             },
-            r.coalition.abbrev || initials(r.coalition.name),
+            r.owner.abbrev,
           ),
-          h("div", { class: "coalition-name" }, r.coalition.name),
+          h("div", { class: "coalition-name" }, r.owner.name),
         ),
         h("div", { class: "name" }, r.project.name),
         h("div", { class: "desc" }, r.project.description),
         meta,
       );
       card.addEventListener("click", () => {
-        cb.onCoalitionClick({ ...r.coalition, kind: "coalition" });
+        cb.onCoalitionClick(r.owner.node);
       });
       body.appendChild(card);
     }
