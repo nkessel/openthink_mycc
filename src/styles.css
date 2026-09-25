@@ -1666,3 +1666,18 @@ body {
     display: none;
   }
 }
+
+/* Org-to-org toggle now lives in the sidebar, under the coalitions */
+.sidebar .filters-block {
+  margin: 12px 0 4px;
+}
+.sidebar .filters-block .org-link-toggle {
+  display: flex;
+  align-self: auto;
+  background: transparent;
+  border: 0;
+  padding: 6px 4px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.35;
+}

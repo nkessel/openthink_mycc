@@ -206,9 +206,13 @@ assert.ok(vp.online && vp.lat === undefined, "online project has no pin");
 submit("fp", "turibius@bu.edu", { [Q.whichProject]: "Youth Summit 2026 [mycc_p2]", [Q.remove]: [G("REMOVE_YES")] });
 assert.ok(!data().coalitions.find((c) => c.id === "mycc").projects.find((p) => p.id === "mycc_p2"));
 
-// feedback: no sign-in needed, logged
-submit("ff", "", { [Q.fbType]: "Idea or feature request", [Q.fbMessage]: "Add a calendar export" });
+// feedback: signed-in email + optional phone saved on the (private) Feedback tab, logged
+submit("ff", "Fan@Example.org", { [Q.fbType]: "Idea or feature request", [Q.fbMessage]: "Add a calendar export", [Q.fbPhone]: "508-555-0199" });
 assert.equal(book["Feedback"].length, 2);
+{
+  const fb = Object.fromEntries(book["Feedback"][0].map((h, i) => [h, book["Feedback"][1][i]]));
+  assert.equal(fb.email, "fan@example.org"); assert.equal(fb.phone, "508-555-0199");
+}
 assert.equal(log().at(-1).record_type, "feedback");
 
 // every submission is in the Change Log

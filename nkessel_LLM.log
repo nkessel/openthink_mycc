@@ -141,3 +141,13 @@ What / why
 - Found while testing: the Geographic basemap showed "API KEY REQUIRED" everywhere (CARTO now needs a key). Switched to
   OpenStreetMap's keyless tiles, darkened with CSS to match. Also the initial auto-fit now ignores the outermost ~4% of
   nodes so a few far-off unconnected orgs don't shrink the whole map.
+
+2026-09-25 20:10 — Claude
+- Feedback form (Nathan: collect phone, require email like the other forms): now Google sign-in with the verified email
+  recorded (the old optional "Email" question is removed), plus "Phone (optional)". Saved on the private Feedback tab
+  (new "phone" column is added to the existing tab automatically). Re-running setup upgrades the live form.
+- Map: the org-to-org connections checkbox moved from the map overlay into the sidebar, under the coalition filters.
+- Pending (needs Nathan's click): the sheet's script still has my temporary "One-time form fix" helper + menu item
+  (removes "Remove from the map?" from the forms, fixes leftover "Openthink" text). My clicks on that menu item didn't
+  register; a workaround via the edit trigger was blocked as a change to shared automation. After Nathan runs it, the
+  script gets replaced with the repo version (which also drops the helper).
