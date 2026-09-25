@@ -14,7 +14,7 @@ export function createTopbar(
   const bar = h("header", { class: "topbar" });
   parent.appendChild(bar);
 
-  bar.appendChild(h("div", { class: "brand" }, "Openthink"));
+  bar.appendChild(h("div", { class: "brand" }, "MA Climate Coalition Map"));
 
   const tabs: { id: TopTab; label: string; disabled?: boolean }[] = [
     { id: "map", label: "Map" },

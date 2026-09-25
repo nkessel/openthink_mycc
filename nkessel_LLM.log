@@ -67,3 +67,14 @@ What / why
 - At Nathan's request: merged PR #1 into development_branch, renamed the Google Sheet to "MA Climate Coalition Map
   data" (Drive), and updated the name in Code.gs/SETUP.md (this PR). The Apps Script paste + first run must be done by
   Nathan in his Google account — no tool here can run Apps Script or reach his browser.
+
+2026-09-25 15:30 — Claude
+- Setup done in Google/GitHub (no code): pasted Code.gs into the sheet's bound Apps Script (via Nathan's Chrome — the
+  in-app browser pane can't open the Apps Script popup) and ran Set up sheet + forms (Nathan approved the permissions):
+  150 orgs loaded, 4 forms built. GitHub Pages turned on (Source: GitHub Actions; development_branch allowed in the
+  github-pages environment); deploy re-run succeeded, site live at https://nkessel.github.io/openthink_mycc/.
+- Leftover: a standalone "Untitled project" in Nathan's Apps Script (my first attempt, not bound to the sheet) — safe to delete.
+- This PR, per Nathan ("replace Openthink with MA Climate Coalition Map", scope = what people see): site title/header,
+  sheet menu, form titles/descriptions, admin alert subject, docs. Kept internal names (repo, package name,
+  OPENTHINK_DATA_URL, localStorage key) so nothing breaks. Re-running "Set up sheet + forms" now also retitles the
+  already-built forms, since those were created with the old name.

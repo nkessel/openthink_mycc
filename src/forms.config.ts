@@ -1,6 +1,6 @@
-// Links to the Openthink Google Forms, used by the + button and "Update this info" links.
+// Links to the MA Climate Coalition Map Google Forms, used by the + button and "Update this info" links.
 //
-// After running "Openthink → Set up sheet + forms" in the Google Sheet, copy the JSON
+// After running "MA Climate Coalition Map → Set up sheet + forms" in the Google Sheet, copy the JSON
 // from the "For the site" row on its Start Here tab and paste it over FORMS below.
 // Until then the + button explains that the forms aren't connected yet.
 

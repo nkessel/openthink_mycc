@@ -1,4 +1,4 @@
-// Pull the latest map data from the Openthink Google Sheet into public/data.json.
+// Pull the latest map data from the MA Climate Coalition Map Google Sheet into public/data.json.
 //
 //   OPENTHINK_DATA_URL="https://script.google.com/macros/s/…/exec" npm run pull-data
 //

@@ -25,15 +25,15 @@ Every question is optional except "which one is this about?". Blank answers neve
 
 1. Open the [**MA Climate Coalition Map data**](https://docs.google.com/spreadsheets/d/187YVEn7wmtyso30Q453uWzSPcXLVQN2I-8UN86swT7E/edit) Google Sheet (shared with the core team).
 2. **Extensions → Apps Script**. Delete what's in `Code.gs`, paste in all of [`Code.gs`](Code.gs), click **Save**.
-3. Close that tab and reload the sheet. An **Openthink** menu appears.
+3. Close that tab and reload the sheet. A **MA Climate Coalition Map** menu appears.
 
 ## 2. Build everything
 
-1. **Openthink → Set up sheet + forms (run once)**.
+1. **MA Climate Coalition Map → Set up sheet + forms (run once)**.
 2. Approve the permission prompt (it creates forms, edits this sheet, sends review alerts, and looks up addresses for map pins). If Google says the app is unverified: **Advanced → Go to project** — it's your own script.
 3. When it finishes: the tabs are filled from `development_branch`, the four forms exist and are shared with the core team, and their links are on **Start Here**.
 
-Running it again is safe: it skips forms that already exist and never overwrites filled tabs.
+Running it again is safe: it skips forms that already exist (only updating their titles) and never overwrites filled tabs.
 
 ## 3. Publish the live data link
 
@@ -67,7 +67,7 @@ To move an item from a coalition to an org only, clear its `coalition_id` cell i
 ## Day to day
 
 - Review **Needs Review** when the alert email arrives; tick **approve** or leave it (set `status` to `rejected` for your own records).
-- Add point-people on **Editors**. Then run **Openthink → Refresh form dropdowns** if you edited orgs/events/projects by hand.
+- Add point-people on **Editors**. Then run **MA Climate Coalition Map → Refresh form dropdowns** if you edited orgs/events/projects by hand.
 - The 1–4 scores (`ej_focus`, `grassroots`, `policy_expertise`, `in_building`) and `coalition_weights` are core-team columns; no form changes them.
 
 ## Limits worth knowing
