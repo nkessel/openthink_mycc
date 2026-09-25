@@ -75,6 +75,9 @@ export interface Organization {
   profile?: OrgProfile;
   /** Strength of each coalition tie (1–4), keyed by coalition id. */
   coalition_weights?: Record<string, number>;
+  /** Projects/events that belong to this org rather than a coalition. */
+  projects?: Project[];
+  events?: CoalitionEvent[];
 }
 
 /** Org attributes from the MA Climate Coalition Map. Scores are 1–4. */

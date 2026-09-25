@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "pull-data": "node scripts/pull-data.mjs"
+    "pull-data": "node scripts/pull-data.mjs",
+    "test:apps-script": "node tests/apps-script.test.cjs",
+    "check:apps-script": "mkdir -p .apps-script-check && cp apps-script/Code.gs .apps-script-check/Code.js && tsc -p apps-script/tsconfig.json"
   },
   "dependencies": {
     "@types/leaflet": "1.9.21",
@@ -16,6 +18,7 @@
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",
+    "@types/google-apps-script": "^2.0.13",
     "typescript": "^5.6.3",
     "vite": "^6.0.1"
   }

@@ -8,3 +8,4 @@ dist
 # Local-only inspiration material + dev artifacts (not part of the deployable app)
 context/
 .screenshots/
+.apps-script-check/

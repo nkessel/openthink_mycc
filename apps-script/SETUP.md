@@ -45,6 +45,16 @@ The web app only serves the public tabs — never Feedback or Change Log.
 - For an email per submission, set `NOTIFY_EMAIL` at the top of `Code.gs`.
 - Dropdowns of orgs/events/projects refresh after each submission, or via **Openthink → Refresh form dropdowns** after hand edits.
 
+## Who owns an event or project
+
+Pick an **Organization**, a **Coalition**, or both:
+
+- Organization only → it's that org's own event/project (shows on the org).
+- Coalition (with or without an org) → it's the coalition's, hosted by that org if one is picked (shows on both).
+- Neither → it's saved but stays off the map; Change Log flags it with ⚠.
+
+To move an existing item from a coalition to an org only, clear its `coalition_id` cell in the sheet (blank form answers never erase anything).
+
 ## Limits worth knowing
 
 - Anyone with a form link can submit, and edits go live in the sheet right away (not on the site until data is pulled and merged). Change Log is the safety net; if spam becomes a problem, turn on "Restrict to users in…" or "Collect email addresses" in each form's settings.

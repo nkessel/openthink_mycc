@@ -10,6 +10,7 @@ import type {
 import { initials, relTime, fmtDateTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
 import { formUrl } from "./fab";
+import { orgProjects, orgEvents } from "./owners";
 
 type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "about";
 
@@ -143,6 +144,8 @@ export function createDrawer(
           ]
         : [
             { id: "coalitions", label: "Coalitions" },
+            { id: "projects", label: "Projects" },
+            { id: "events", label: "Events" },
             { id: "about", label: "About" },
           ];
     // Ensure activeTab is valid for this node kind
@@ -178,6 +181,10 @@ export function createDrawer(
       const o = node as Organization;
       if (activeTab === "coalitions") {
         renderCoalitionList(body, o);
+      } else if (activeTab === "projects") {
+        renderProjects(body, orgProjects(data, o));
+      } else if (activeTab === "events") {
+        renderEvents(body, orgEvents(data, o));
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
       }

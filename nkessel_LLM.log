@@ -26,3 +26,14 @@ What / why
   drawer; org drawer shows logo, abbreviation, profile scores, and an "Update this organization's info" link.
   Form URLs go in src/forms.config.ts after setup (empty until then; menu says "Form not connected yet").
 - Added LLM_GUIDELINES.md (featured in README) and CLAUDE.md so Claude Code sessions pick the rules up.
+
+2026-09-25 (later) — Claude, same PR (#1, not yet merged)
+- Nathan: events/projects can belong to coalitions OR orgs. Changed the schema: org-owned items now live in
+  organizations[].projects/events; coalition items stay under coalitions (optionally with host_org_id).
+  Events/Projects views and the org drawer (new Projects + Events tabs) show both. Forms explain the choice;
+  items with neither are kept in the sheet but flagged in Change Log and left off the map.
+  Replaces my earlier workaround (org-only items were filed under the org's first coalition).
+- To raise confidence before the first real Google run: added `npm run check:apps-script` (type-checks Code.gs
+  against @types/google-apps-script — catches misspelled/nonexistent Google API calls) and
+  `npm run test:apps-script` (the Node simulation tests, now in the repo), plus a GitHub Actions CI workflow
+  running build + both checks on every PR. Wrapped Form.shortenFormUrl in try/catch (legacy API; falls back to the long link).

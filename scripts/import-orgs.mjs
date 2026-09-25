@@ -11,7 +11,8 @@
 //  - Coalitions: the source's 8 coalitions. Existing coalitions that match keep their
 //    description, tags, color, projects, events and actions. Coalitions that are not in
 //    the source are dropped, along with their projects, events, and actions.
-//  - Events/projects hosted by an org (host_org_id) that is no longer listed are dropped.
+//  - Projects/events owned by an org that is no longer listed are dropped, and so are
+//    coalition projects/events whose host org (host_org_id) is no longer listed.
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -130,6 +131,13 @@ const organizations = orgNodes.map((n) => {
 for (const o of organizations) {
   o.geographic_focus ??= "";
   o.description ??= "";
+}
+// Keep org-owned projects/events for orgs that are still listed (matched by id)
+const oldOrgs = new Map(old.organizations.map((o) => [o.id, o]));
+for (const o of organizations) {
+  const prev = oldOrgs.get(o.id);
+  if (prev?.projects?.length) o.projects = prev.projects;
+  if (prev?.events?.length) o.events = prev.events;
 }
 const orgIds = new Set(organizations.map((o) => o.id));
 

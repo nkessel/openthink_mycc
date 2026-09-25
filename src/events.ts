@@ -1,6 +1,7 @@
-import type { DataFile, Coalition, CoalitionEvent, GraphNode } from "./types";
+import type { DataFile, CoalitionEvent, GraphNode } from "./types";
+import { allEvents, type Owner } from "./owners";
 import { h, clear } from "./dom";
-import { fmtDateTime, initials } from "./util";
+import { fmtDateTime } from "./util";
 
 export interface EventsView {
   el: HTMLElement;
@@ -15,7 +16,7 @@ type TimeFilter = "all" | "upcoming" | "past";
 
 interface Row {
   event: CoalitionEvent;
-  coalition: Coalition;
+  owner: Owner;
   isUpcoming: boolean;
 }
 
@@ -25,18 +26,13 @@ export function createEventsView(
 ): EventsView {
   const wrap = h("div", { class: "list-view" });
 
-  // Flatten and tag every event with its parent coalition
+  // Flatten and tag every event with the coalition or org it belongs to
   const now = Date.now();
-  const rows: Row[] = [];
-  for (const c of data.coalitions) {
-    for (const e of c.events) {
-      rows.push({
-        event: e,
-        coalition: c,
-        isUpcoming: new Date(e.date).getTime() >= now,
-      });
-    }
-  }
+  const rows: Row[] = allEvents(data).map(({ event, owner }) => ({
+    event,
+    owner,
+    isUpcoming: new Date(event.date).getTime() >= now,
+  }));
   rows.sort((a, b) => {
     if (a.isUpcoming !== b.isUpcoming) return a.isUpcoming ? -1 : 1;
     return new Date(a.event.date).getTime() - new Date(b.event.date).getTime();
@@ -54,7 +50,7 @@ export function createEventsView(
   const search = h("input", {
     class: "search",
     type: "search",
-    placeholder: "Search events, locations, or coalitions…",
+    placeholder: "Search events, locations, coalitions, or orgs…",
   }) as HTMLInputElement;
   search.addEventListener("input", () => {
     q = search.value.trim().toLowerCase();
@@ -99,8 +95,8 @@ export function createEventsView(
     return (
       r.event.name.toLowerCase().includes(q) ||
       r.event.location.toLowerCase().includes(q) ||
-      r.coalition.name.toLowerCase().includes(q) ||
-      r.coalition.abbrev.toLowerCase().includes(q)
+      r.owner.name.toLowerCase().includes(q) ||
+      r.owner.abbrev.toLowerCase().includes(q)
     );
   }
 
@@ -123,11 +119,11 @@ export function createEventsView(
             "div",
             {
               class: "coalition-badge",
-              style: `background:${r.coalition.color}`,
+              style: `background:${r.owner.color}`,
             },
-            r.coalition.abbrev || initials(r.coalition.name),
+            r.owner.abbrev,
           ),
-          h("div", { class: "coalition-name" }, r.coalition.name),
+          h("div", { class: "coalition-name" }, r.owner.name),
         ),
         h("div", { class: "name" }, r.event.name),
         h(
@@ -139,7 +135,7 @@ export function createEventsView(
         ),
       );
       card.addEventListener("click", () => {
-        cb.onCoalitionClick({ ...r.coalition, kind: "coalition" });
+        cb.onCoalitionClick(r.owner.node);
       });
       body.appendChild(card);
     }

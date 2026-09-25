@@ -223,6 +223,14 @@ function sheetRowsFromData_(d) {
     });
   });
   d.organizations.forEach(function (o) {
+    (o.projects || []).forEach(function (p) {
+      out.Projects.push([p.id, '', o.id, p.name, v(p.description), v(p.status), L(p.skills_needed),
+        L(p.topic_tags), v(p.link), v(p.public_contact), '', '']);
+    });
+    (o.events || []).forEach(function (e) {
+      out.Events.push([e.id, '', o.id, e.name, v(e.description), v(e.date), v(e.location),
+        L(e.topic_tags), v(e.link), v(e.public_contact), '', '']);
+    });
     var weights = Object.keys(o.coalition_weights || {}).map(function (k) { return k + ':' + o.coalition_weights[k]; });
     var prof = o.profile || {};
     out.Organizations.push([o.id, o.name, v(o.abbrev), v(o.type), v(o.geographic_focus), v(o.description),
@@ -346,8 +354,8 @@ function buildEventForm_(form) {
     "Use this form to add your organization's public event to the coalition map, or to update or remove one that's already there.\n\n" +
     OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE);
   addSelector_(form, Q.whichEvent, 'Pick an event to update it, or choose "' + NEW_EVENT + '".', NEW_EVENT);
-  form.addListItem().setTitle(Q.hostOrg).setHelpText('The organization hosting the event.').setChoiceValues([NONE]);
-  form.addListItem().setTitle(Q.coalition).setHelpText('If the event is part of a coalition\'s work.').setChoiceValues([NONE]);
+  form.addListItem().setTitle(Q.hostOrg).setHelpText('The organization hosting the event. Pick an organization, a coalition, or both.').setChoiceValues([NONE]);
+  form.addListItem().setTitle(Q.coalition).setHelpText('If the event is part of a coalition\'s work. Leave as "None" for an organization\'s own event.').setChoiceValues([NONE]);
   form.addTextItem().setTitle(Q.eventName);
   form.addParagraphTextItem().setTitle(Q.eventDesc);
   form.addDateItem().setTitle(Q.eventDate);
@@ -366,8 +374,8 @@ function buildProjectForm_(form) {
     'Projects are how volunteers find ways to help, so the skills question matters.\n\n' +
     OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE);
   addSelector_(form, Q.whichProject, 'Pick a project to update it, or choose "' + NEW_PROJECT + '".', NEW_PROJECT);
-  form.addListItem().setTitle(Q.hostOrg).setHelpText('The organization leading the project.').setChoiceValues([NONE]);
-  form.addListItem().setTitle(Q.coalition).setHelpText("If the project is part of a coalition's work.").setChoiceValues([NONE]);
+  form.addListItem().setTitle(Q.hostOrg).setHelpText('The organization leading the project. Pick an organization, a coalition, or both.').setChoiceValues([NONE]);
+  form.addListItem().setTitle(Q.coalition).setHelpText("If the project is part of a coalition's work. Leave as \"None\" for an organization's own project.").setChoiceValues([NONE]);
   form.addTextItem().setTitle(Q.projectName);
   form.addParagraphTextItem().setTitle(Q.projectDesc);
   form.addMultipleChoiceItem().setTitle(Q.projectStatus).setChoiceValues(STATUSES.map(function (s) { return s[0]; }));
@@ -601,6 +609,9 @@ function upsert_(tabName, recordType, formName, selection, newLabel, patch, subm
     var row = { id: id, last_activity: now };
     if (recordType === 'project' && !patch.status) row.status = 'active';
     if (!patch.name) { row.hidden = 'TRUE'; changes.push('hidden until it has a name'); }
+    if ((recordType === 'event' || recordType === 'project') && !patch.host_org_id && !patch.coalition_id) {
+      changes.push('⚠ no organization or coalition picked — it will not show on the map until one is set');
+    }
     Object.keys(patch).forEach(function (k) { row[k] = patch[k]; changes.push(k + ': ' + patch[k]); });
     appendObject_(sheet, row);
     name = patch.name || '(no name yet)';
@@ -690,11 +701,12 @@ function buildDataFile_(t, generatedAt) {
   var orgById = {};
   orgs.forEach(function (o) { orgById[o.id] = o; });
 
-  // Events/projects without a coalition sit under their host org's first coalition.
+  // Projects/events belong to a coalition (coalition_id) or, without one, to their host org.
+  // Items whose coalition and org are both missing or hidden are left out.
   var home = function (r) {
-    if (str(r.coalition_id) && coalitionIds[str(r.coalition_id)]) return str(r.coalition_id);
-    var host = orgById[str(r.host_org_id)];
-    return host && host.coalition_ids.length ? host.coalition_ids[0] : null;
+    if (str(r.coalition_id) && coalitionIds[str(r.coalition_id)]) return 'c:' + str(r.coalition_id);
+    if (orgById[str(r.host_org_id)]) return 'o:' + str(r.host_org_id);
+    return null;
   };
   var group = function (rows, mapFn) {
     var by = {};
@@ -714,7 +726,7 @@ function buildDataFile_(t, generatedAt) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
       e, ['description', 'host_org_id', 'topic_tags', 'link', 'public_contact']);
   });
-  var actions = group(t.actions, function (a) {
+  var actions = group(t.actions.map(function (a) { a.host_org_id = ''; return a; }), function (a) {
     return { id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name), urgency: str(a.urgency) || 'medium',
       skills_needed: list_(a.skills_needed), deadline: str(a.deadline) || null };
   });
@@ -726,9 +738,14 @@ function buildDataFile_(t, generatedAt) {
       id: str(c.id), name: str(c.name), abbrev: str(c.abbrev), description: str(c.description),
       focus_tags: list_(c.focus_tags), geographic_scope: str(c.geographic_scope), color: str(c.color),
       lat: Number(c.lat), lng: Number(c.lng), member_ids: members, member_count: members.length,
-      projects: projects[c.id] || [], events: events[c.id] || [], actions: actions[c.id] || [],
+      projects: projects['c:' + c.id] || [], events: events['c:' + c.id] || [], actions: actions['c:' + c.id] || [],
       last_activity: str(c.last_activity),
     };
+  });
+
+  orgs.forEach(function (o) {
+    if (projects['o:' + o.id]) o.projects = projects['o:' + o.id];
+    if (events['o:' + o.id]) o.events = events['o:' + o.id];
   });
 
   var edges = [];
@@ -803,7 +820,9 @@ function writeLinks_() {
     var id = props.getProperty(r[1]);
     if (!id) return [r[0], '(not built)'];
     var f = FormApp.openById(id);
-    return [r[0], f.shortenFormUrl(f.getPublishedUrl()) + '    (edit: ' + f.getEditUrl() + ')'];
+    var link = f.getPublishedUrl();
+    try { link = f.shortenFormUrl(link); } catch (e) { /* keep the long link */ }
+    return [r[0], link + '    (edit: ' + f.getEditUrl() + ')'];
   });
   rows.push(['', '']);
   rows.push(['For the site: paste into src/forms.config.ts', JSON.stringify(siteFormConfig_())]);
