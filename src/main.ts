@@ -11,7 +11,7 @@ import { createProjectsView } from "./projects";
 import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
-import { createFab } from "./fab";
+import { createFab, setFormLabelData } from "./fab";
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
 
 async function main() {
@@ -192,6 +192,7 @@ async function main() {
   }
 
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
+  setFormLabelData(data.organizations);
   createFab(content, () => drawerApi?.current() ?? null);
 
   // Escape closes drawer

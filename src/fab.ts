@@ -6,8 +6,16 @@ import { h } from "./dom";
 
 export type FormKind = keyof typeof FORMS;
 
-export const orgLabel = (o: Organization) => `${o.name} [${o.id}]`;
-export const coalitionLabel = (c: Coalition) => `${c.name} (${c.abbrev}) [${c.id}]`;
+// Must match the dropdown labels built by buildLabelIndex_ in apps-script/Code.gs:
+// plain names, with " [id]" added only when two orgs share a name.
+let sharedOrgNames = new Set<string>();
+export function setFormLabelData(orgs: Organization[]): void {
+  const seen = new Set<string>();
+  sharedOrgNames = new Set();
+  for (const o of orgs) (seen.has(o.name) ? sharedOrgNames : seen).add(o.name);
+}
+export const orgLabel = (o: Organization) => (sharedOrgNames.has(o.name) ? `${o.name} [${o.id}]` : o.name);
+export const coalitionLabel = (c: Coalition) => (c.abbrev ? `${c.name} (${c.abbrev})` : c.name);
 
 /** Form URL, pre-filled for the given org/coalition when possible. null = forms not set up. */
 export function formUrl(kind: FormKind, context: GraphNode | null = null): string | null {

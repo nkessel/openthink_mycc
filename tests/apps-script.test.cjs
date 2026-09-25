@@ -93,8 +93,18 @@ const submit = (fid, email, ans) =>
     },
   });
 const NEW_ORG = G("NEW_ORG"), NEW_EVENT = G("NEW_EVENT"), NEW_PROJECT = G("NEW_PROJECT");
-const BLS = "Boston Latin School Youth Climate Action Network [boston_latin_school_youthcan]";
-const MYCC = "Massachusetts Youth Climate Coalition (MYCC) [mycc]";
+// Dropdowns show plain names now; old "[id]" labels (still used below) keep working.
+const BLS = "Boston Latin School Youth Climate Action Network";
+const MYCC = "Massachusetts Youth Climate Coalition (MYCC)";
+{
+  const idx = ctx.buildLabelIndex_(ctx.readAll_());
+  assert.equal(idx.byLabel.org[BLS], "boston_latin_school_youthcan");
+  assert.equal(idx.byLabel.coalition[MYCC], "mycc");
+  // same-name orgs get their id appended so each choice is still unique
+  const same = Object.keys(idx.byLabel.org).filter((l) => l.startsWith("Citizens Climate Lobby ["));
+  const dupes = ctx.readAll_().orgs.filter((o) => o.name === "Citizens Climate Lobby").length;
+  assert.equal(same.length, dupes > 1 ? dupes : 0);
+}
 const log = () => book["Change Log"].slice(1).map((r) => Object.fromEntries(COLS["Change Log"].map((c, i) => [c, r[i]])));
 const review = () => book["Needs Review"].slice(1).map((r) => Object.fromEntries(COLS["Needs Review"].map((c, i) => [c, r[i]])));
 const data = () => ctx.buildDataFile_(ctx.readAll_(), "now");
@@ -204,6 +214,11 @@ assert.equal(log().at(-1).record_type, "feedback");
 // every submission is in the Change Log
 const submissions = 15;
 assert.equal(log().length, submissions, `expected one Change Log row per submission (+ approval), got ${log().length}`);
+// after an org renames itself, the new plain name picks the same row
+submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby", [Q.orgName]: "Andover Climate Lobby Group" });
+submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby Group", [Q.orgDesc]: "Renamed and still found" });
+assert.equal(data().organizations.find((o) => o.id === "andover_climate_lobby").description, "Renamed and still found");
+
 console.log("access control, review queue, change log OK");
 
 // 3) round trip again with org-owned items, locations, and org links

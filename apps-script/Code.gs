@@ -506,14 +506,13 @@ function refreshDropdowns() {
   var t = readAll_();
   var visible = function (r) { return !isTrue_(r.hidden); };
 
-  var orgs = t.orgs.filter(visible).sort(byName_);
-  var orgLabels = orgs.map(orgLabel_);
-  var coalitionLabels = t.coalitions.map(coalitionLabel_);
-  var eventLabels = t.events.filter(visible)
-    .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); })
-    .map(function (e) { return e.name + ' — ' + shortDate_(e.date) + ' [' + e.id + ']'; });
-  var projectLabels = t.projects.filter(visible).sort(byName_)
-    .map(function (p) { return p.name + ' [' + p.id + ']'; });
+  var idx = buildLabelIndex_(t);
+  var labelsOf = function (kind, rows) { return rows.map(function (r) { return idx.byId[kind][str_(r.id)]; }); };
+  var orgLabels = labelsOf('org', t.orgs.filter(visible).sort(byName_));
+  var coalitionLabels = labelsOf('coalition', t.coalitions);
+  var eventLabels = labelsOf('event', t.events.filter(visible)
+    .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); }));
+  var projectLabels = labelsOf('project', t.projects.filter(visible).sort(byName_));
 
   var tags = uniq_(BASE_TAGS.concat(
     flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); })),
@@ -552,8 +551,38 @@ function refreshDropdowns() {
   set('FORM_PROJECT', Q.skills, skills);
 }
 
-function orgLabel_(o) { return o.name + ' [' + o.id + ']'; }
-function coalitionLabel_(c) { return c.name + ' (' + c.abbrev + ') [' + c.id + ']'; }
+/**
+ * Dropdown labels are just the name people know ("Sunrise Boston", "Mass Power Forward (MPF)",
+ * "Youth Lobby Day — Jun 25, 2026"). Only when two records of the same kind would get the same
+ * label is the id added in brackets, so every choice still points to exactly one row.
+ * Keep in sync with orgLabel/coalitionLabel in src/fab.ts (the site pre-fills with them).
+ */
+var LABEL_BASE_ = {
+  org: function (o) { return str_(o.name); },
+  coalition: function (c) { return str_(c.name) + (str_(c.abbrev) ? ' (' + str_(c.abbrev) + ')' : ''); },
+  event: function (e) { return str_(e.name) + ' — ' + shortDate_(e.date); },
+  project: function (p) { return str_(p.name); },
+};
+
+/** { byId: {kind: {id: label}}, byLabel: {kind: {label: id}} } for all rows (hidden ones too). */
+function buildLabelIndex_(t) {
+  var tables = { org: t.orgs, coalition: t.coalitions, event: t.events, project: t.projects };
+  var idx = { byId: {}, byLabel: {} };
+  Object.keys(tables).forEach(function (kind) {
+    var rows = tables[kind].filter(function (r) { return str_(r.id); });
+    var count = {};
+    rows.forEach(function (r) { var b = LABEL_BASE_[kind](r); count[b] = (count[b] || 0) + 1; });
+    idx.byId[kind] = {}; idx.byLabel[kind] = {};
+    rows.forEach(function (r) {
+      var b = LABEL_BASE_[kind](r);
+      var label = count[b] > 1 ? b + ' [' + str_(r.id) + ']' : b;
+      idx.byId[kind][str_(r.id)] = label;
+      idx.byLabel[kind][label] = str_(r.id);
+    });
+  });
+  return idx;
+}
+var LABEL_INDEX_ = null;
 
 // ---------------------------------------------------------------- submissions
 function handleSubmit(e) {
@@ -583,6 +612,7 @@ function handleSubmit(e) {
 function processSubmission_(kind, a, email, approver) {
   if (kind === 'feedback') return saveFeedback_(a);
   var t = readAll_();
+  LABEL_INDEX_ = buildLabelIndex_(t); // match labels against the sheet as it is now
   var target = describeTarget_(kind, a, t);
   var access = approver ? { ok: true } : authorize_(email, kind, a, target, t);
   if (!access.ok) {
@@ -603,7 +633,7 @@ var FORM_NAMES = { org: 'Update your organization', event: 'Add or edit an event
 function describeTarget_(kind, a, t) {
   var sel = kind === 'org' ? a[Q.whichOrg] : kind === 'event' ? a[Q.whichEvent] : a[Q.whichProject];
   var isNew = sel === NEW_ORG || sel === NEW_EVENT || sel === NEW_PROJECT;
-  var id = isNew ? '' : idFromLabel_(sel);
+  var id = isNew ? '' : idFromLabel_(sel, kind);
   var rows = kind === 'org' ? t.orgs : kind === 'event' ? t.events : t.projects;
   var rec = id ? findById_(rows, id) : null;
   var target = { kind: kind, isNew: isNew, id: id, label: sel, record: rec, owners: { orgs: [], coalitions: [] }, newOwners: { orgs: [], coalitions: [] } };
@@ -612,8 +642,8 @@ function describeTarget_(kind, a, t) {
   } else {
     if (rec && str_(rec.host_org_id)) target.owners.orgs.push(str_(rec.host_org_id));
     if (rec && str_(rec.coalition_id)) target.owners.coalitions.push(str_(rec.coalition_id));
-    var host = a[Q.hostOrg] && a[Q.hostOrg] !== NONE ? idFromLabel_(a[Q.hostOrg]) : '';
-    var coal = a[Q.coalition] && a[Q.coalition] !== NONE ? idFromLabel_(a[Q.coalition]) : '';
+    var host = a[Q.hostOrg] && a[Q.hostOrg] !== NONE ? idFromLabel_(a[Q.hostOrg], 'org') : '';
+    var coal = a[Q.coalition] && a[Q.coalition] !== NONE ? idFromLabel_(a[Q.coalition], 'coalition') : '';
     if (host) target.newOwners.orgs.push(host);
     if (coal) target.newOwners.coalitions.push(coal);
   }
@@ -747,7 +777,7 @@ function saveOrg_(a, t) {
   put_(patch, 'geographic_focus', a[Q.orgTown]);
   put_(patch, 'description', a[Q.orgDesc]);
   if (asArray_(a[Q.orgCoalitions]).length) {
-    patch.coalition_ids = asArray_(a[Q.orgCoalitions]).map(idFromLabel_).filter(Boolean).join(', ');
+    patch.coalition_ids = asArray_(a[Q.orgCoalitions]).map(function (l) { return idFromLabel_(l, 'coalition'); }).filter(Boolean).join(', ');
   }
   putTags_(patch, a[Q.tags]);
   put_(patch, 'website', a[Q.website]);
@@ -761,7 +791,7 @@ function saveOrg_(a, t) {
   if (isRemove_(a)) patch.hidden = 'TRUE';
 
   var isNew = a[Q.whichOrg] === NEW_ORG;
-  var existing = isNew ? null : findById_(t.orgs, idFromLabel_(a[Q.whichOrg]));
+  var existing = isNew ? null : findById_(t.orgs, idFromLabel_(a[Q.whichOrg], 'org'));
   // Place the pin: headquarters address first, else the town/region.
   var place = patch.hq_address || (patch.geographic_focus && !(existing && str_(existing.hq_address)) ? patch.geographic_focus : '');
   if (place && (!existing || str_(existing.hq_address) !== place)) {
@@ -784,7 +814,7 @@ function saveConnections_(orgId, a) {
   var picked = [];
   FREQUENCIES.forEach(function (f) {
     asArray_(a[Q.worksWith(f[0])]).forEach(function (label) {
-      var to = idFromLabel_(label);
+      var to = idFromLabel_(label, 'org');
       if (to && to !== orgId) picked.push({ to: to, freq: f[2], label: f[0] });
     });
   });
@@ -818,7 +848,7 @@ function saveEvent_(a, t) {
   put_(patch, 'link', a[Q.link]);
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
-  var existing = a[Q.whichEvent] === NEW_EVENT ? null : findById_(t.events, idFromLabel_(a[Q.whichEvent]));
+  var existing = a[Q.whichEvent] === NEW_EVENT ? null : findById_(t.events, idFromLabel_(a[Q.whichEvent], 'event'));
   locationPatch_(patch, a, existing);
   var date = a[Q.eventDate], time = a[Q.eventTime];
   if (date || time) {
@@ -843,14 +873,14 @@ function saveProject_(a, t) {
   put_(patch, 'link', a[Q.link]);
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
-  var existing = a[Q.whichProject] === NEW_PROJECT ? null : findById_(t.projects, idFromLabel_(a[Q.whichProject]));
+  var existing = a[Q.whichProject] === NEW_PROJECT ? null : findById_(t.projects, idFromLabel_(a[Q.whichProject], 'project'));
   locationPatch_(patch, a, existing);
   return upsert_(TAB.projects, 'project', a[Q.whichProject], NEW_PROJECT, patch);
 }
 
 function ownerPatch_(patch, a) {
-  if (a[Q.hostOrg] && a[Q.hostOrg] !== NONE) patch.host_org_id = idFromLabel_(a[Q.hostOrg]);
-  if (a[Q.coalition] && a[Q.coalition] !== NONE) patch.coalition_id = idFromLabel_(a[Q.coalition]);
+  if (a[Q.hostOrg] && a[Q.hostOrg] !== NONE) patch.host_org_id = idFromLabel_(a[Q.hostOrg], 'org');
+  if (a[Q.coalition] && a[Q.coalition] !== NONE) patch.coalition_id = idFromLabel_(a[Q.coalition], 'coalition');
 }
 
 /** Location text + online flag; geocode new/changed in-person locations for the map pin. */
@@ -910,7 +940,7 @@ function upsert_(tabName, recordType, selection, newLabel, patch) {
     appendObject_(sheet, row);
     name = patch.name || '(no name yet)';
   } else {
-    id = idFromLabel_(selection);
+    id = idFromLabel_(selection, recordType === 'organization' ? 'org' : recordType);
     var rec = findById_(table.rows, id);
     if (!rec) return { action: 'not found', type: recordType, id: id, name: selection, changes: JSON.stringify(patch) };
     name = patch.name || rec.name;
@@ -1235,7 +1265,15 @@ function list_(v) {
 function flat_(arrs) { return [].concat.apply([], arrs); }
 function uniq_(arr) { var seen = {}; return arr.filter(function (x) { return seen[x] ? false : (seen[x] = true); }); }
 function isTrue_(v) { return v === true || /^(true|yes|1|x)$/i.test(String(v === undefined || v === null ? '' : v).trim()); }
-function idFromLabel_(label) { var m = /\[([^\]]+)\]\s*$/.exec(String(label || '')); return m ? m[1] : ''; }
+/** Row id for a dropdown choice of the given kind. Old "[id]" labels still work. */
+function idFromLabel_(label, kind) {
+  var text = String(label || '').trim();
+  var m = /\[([^\]]+)\]\s*$/.exec(text);
+  if (m) return m[1];
+  if (!text || !kind) return '';
+  if (!LABEL_INDEX_) LABEL_INDEX_ = buildLabelIndex_(readAll_());
+  return LABEL_INDEX_.byLabel[kind][text] || '';
+}
 function findById_(rows, id) { for (var i = 0; i < rows.length; i++) if (String(rows[i].id) === id) return rows[i]; return null; }
 function lookup_(pairs, label) { for (var i = 0; i < pairs.length; i++) if (pairs[i][0] === label) return pairs[i][1]; return slug_(label); }
 function slug_(s) { return String(s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, ''); }
