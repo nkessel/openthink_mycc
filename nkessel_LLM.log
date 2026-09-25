@@ -85,3 +85,13 @@ What / why
   I tried it from Chrome; waiting on Nathan to deploy it (SETUP.md step 3) and send the /exec URL.
 - 16:20 — Web app deployed (Anyone, execute as Nathan; Nathan approved the authorization). Checked it: returns 150 orgs /
   8 coalitions, no emails. Added it as LIVE_DATA_URL, so approved form edits show up on the site without code changes.
+
+2026-09-25 16:30 — Claude (launch wrap-up)
+- Nathan said to do everything: merged PRs #3 (rename) and #4 (forms + live data) after CI passed; Pages redeployed.
+  Verified on the live site: title/header "MA Climate Coalition Map", data loads from the sheet's web app.
+- Pasted the renamed Code.gs into the sheet's Apps Script and re-ran setup (Nathan approved Google's re-authorization):
+  sheet menu and all four forms now say "MA Climate Coalition Map"; also renamed the forms' Drive files to match.
+- Added repo variable OPENTHINK_DATA_URL (= web app URL), which turns on the nightly snapshot PRs (sync-data.yml).
+- 16:35 — Fixed the Start Here intro line (A3) to say "MA Climate Coalition Map"; moved my stray standalone
+  "Untitled project" Apps Script to Drive trash (recoverable).
+- Not done: an end-to-end test submission (blocked as a write to live shared data) — Nathan to submit one test event.
