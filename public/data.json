@@ -659,13 +659,13 @@
       "events": [
         {
           "id": "gjc_e1",
-          "name": "EJ Roundtable \u2014 Chelsea",
+          "name": "EJ Roundtable — Chelsea",
           "date": "2026-06-22T18:00:00",
           "location": "Chelsea Senior Center"
         },
         {
           "id": "gjc_e2",
-          "name": "EJ Roundtable \u2014 Springfield",
+          "name": "EJ Roundtable — Springfield",
           "date": "2026-09-14T18:00:00",
           "location": "Springfield Public Library"
         },
@@ -1217,7 +1217,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/"
+      "website": "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/",
+      "logo": "logos/youth_climate_action_now.png"
     },
     {
       "id": "roxbury_environmental_empowerment_project_by_alternatives_fo",
@@ -1245,7 +1246,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://ace-ej.org/"
+      "website": "https://ace-ej.org/",
+      "logo": "logos/roxbury_environmental_empowerment_project_by_alternatives_fo.svg"
     },
     {
       "id": "alternatives_for_community_and_environment",
@@ -1524,7 +1526,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://masspirg.org/"
+      "website": "https://masspirg.org/",
+      "logo": "logos/masspirg_amherst.png"
     },
     {
       "id": "masspirg_boston",
@@ -1549,7 +1552,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://masspirg.org/"
+      "website": "https://masspirg.org/",
+      "logo": "logos/masspirg_boston.png"
     },
     {
       "id": "vietaid",
@@ -1758,7 +1762,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://xrboston.org/west/"
+      "website": "https://xrboston.org/west/",
+      "logo": "logos/xr_western_mass.png"
     },
     {
       "id": "act_on_mass",
@@ -1845,7 +1850,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://climateactionnowma.org/"
+      "website": "https://climateactionnowma.org/",
+      "logo": "logos/climate_action_now_western_ma.png"
     },
     {
       "id": "sustainable_milton",
@@ -2303,7 +2309,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://www.greenrootschelsea.org/"
+      "website": "https://www.greenrootschelsea.org/",
+      "logo": "logos/greenroots.png"
     },
     {
       "id": "north_american_indian_center_of_boston",
@@ -4009,7 +4016,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://lwvma.org/"
+      "website": "https://lwvma.org/",
+      "logo": "logos/league_of_women_voters_of_massachusetts.png"
     },
     {
       "id": "neighbor_to_neighbor_massachusetts",
@@ -4303,7 +4311,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://coolercommunities.org/"
+      "website": "https://coolercommunities.org/",
+      "logo": "logos/cooler_communities.png"
     },
     {
       "id": "franklin_county_and_north_quabbin_community_health_improveme",
@@ -4322,7 +4331,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://frcog.org/"
+      "website": "https://frcog.org/",
+      "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png"
     },
     {
       "id": "green_weymouth",
@@ -4427,7 +4437,7 @@
       "geographic_focus": "",
       "description": "",
       "website": "https://www.mapc.org/",
-      "logo": "logos/metropolitan_area_planning_council.svg"
+      "logo": "logos/metropolitan_area_planning_council.png"
     },
     {
       "id": "mtacan",

@@ -1,208 +1,157 @@
 {
   "youth_climate_action_now": {
     "name": "Youth Climate Action Now",
-    "error": "no usable image",
-    "tried": [
-      "icon: fetch failed",
-      "favicon.ico: not an image (text/html)"
-    ]
+    "how": "header <img> logo",
+    "url": "https://climateactionnowma.org/wp-content/uploads/2024/06/site_logo_24.png",
+    "file": "logos/youth_climate_action_now.png",
+    "bytes": 20216,
+    "note": "program of Climate Action Now — uses CAN's logo"
   },
   "roxbury_environmental_empowerment_project_by_alternatives_fo": {
     "name": "Roxbury Environmental Empowerment Project",
-    "error": "no usable image",
-    "tried": [
-      "icon: fetch failed",
-      "favicon.ico: not an image (text/html)"
-    ]
+    "how": "header <img> logo",
+    "url": "https://ace-ej.org/wp-content/uploads/2026/05/ace-logo-color.svg",
+    "file": "logos/roxbury_environmental_empowerment_project_by_alternatives_fo.svg",
+    "bytes": 27023,
+    "note": "REEP is a program of ACE — uses ACE's logo"
   },
   "masscosh_tlaw_climate_change_and_environmental_justice_team": {
-    "name": "Massachusetts Coalition for Occupational Safety and Health Teens Lead at Work",
-    "how": "logo wrapper <img>",
-    "url": "https://cdn.prod.website-files.com/69f1350e3d459d11eacec686/69f1350e3d459d11eacec715_MassCOSH%20Helping%20Hands%20Logo.jpeg",
-    "file": "logos/masscosh_tlaw_climate_change_and_environmental_justice_team.png",
-    "bytes": 63825
+    "skipped": "already has a logo",
+    "logo": "logos/masscosh_tlaw_climate_change_and_environmental_justice_team.png"
   },
   "youth_action_collaborative_alumni_node_at_clean_water_action": {
-    "name": "Youth Action Collaborative Alumni Node at  Clean Water Action",
-    "how": "header <img> logo",
-    "url": "https://cleanwater.org/themes/custom/clean_water_theme/logo.png",
-    "file": "logos/youth_action_collaborative_alumni_node_at_clean_water_action.png",
-    "bytes": 11500,
-    "note": "uses Clean Water Action's logo"
+    "skipped": "already has a logo",
+    "logo": "logos/youth_action_collaborative_alumni_node_at_clean_water_action.png"
   },
   "sustainable_sharon_coalition_youth": {
-    "name": "Sustainable Sharon Coalition Youth Committee",
-    "how": "logo wrapper <img>",
-    "url": "https://images.squarespace-cdn.com/content/v1/62005882aa12560e4865b66d/3ed147ed-0c7d-4a85-a687-318a48590a63/2022-Horizontal-SSC-logo-trans+1200dpi.png?format=1500w",
-    "file": "logos/sustainable_sharon_coalition_youth.png",
-    "bytes": 13244,
-    "note": "uses Sustainable Sharon Coalition's logo"
+    "skipped": "already has a logo",
+    "logo": "logos/sustainable_sharon_coalition_youth.png"
   },
   "masspirg_amherst": {
     "name": "Massachusetts Public Interest Research Group Amherest",
-    "error": "no usable image",
-    "tried": [
-      "favicon.ico: too small"
-    ]
+    "how": "google s2 icon",
+    "url": "https://www.google.com/s2/favicons?domain=masspirg.org&sz=256",
+    "file": "logos/masspirg_amherst.png",
+    "bytes": 2658,
+    "note": "uses MASSPIRG's logo"
   },
   "masspirg_boston": {
     "name": "Massachusetts Public Interest Research Group Boston",
-    "error": "no usable image",
-    "tried": [
-      "favicon.ico: too small"
-    ]
+    "how": "google s2 icon",
+    "url": "https://www.google.com/s2/favicons?domain=masspirg.org&sz=256",
+    "file": "logos/masspirg_boston.png",
+    "bytes": 2658,
+    "note": "uses MASSPIRG's logo"
   },
   "healthlink": {
     "name": "HealthLink",
     "error": "no usable image",
     "tried": [
-      "favicon.ico: HTTP 404"
+      "favicon.ico: HTTP 404",
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
     ]
   },
   "xr_western_mass": {
     "name": "Extinction Rebellion Western Mass",
-    "how": "icon 16x16",
-    "url": "https://data-sgp.live/img/favicon.webp",
+    "how": "logo_url (set by hand)",
+    "url": "https://xrboston.org/static/images/cropped-favicon-192x192.bab4741cb0b2.png",
     "file": "logos/xr_western_mass.png",
-    "bytes": 71121
+    "bytes": 21509,
+    "note": "xrwesternmass.org now shows unrelated content; uses the XR symbol from XR Boston"
   },
   "climate_action_now_western_ma": {
     "name": "Climate Action Now Western Massachusetts",
-    "error": "no usable image",
-    "tried": [
-      "icon: fetch failed",
-      "favicon.ico: not an image (text/html)"
-    ]
+    "how": "header <img> logo",
+    "url": "https://climateactionnowma.org/wp-content/uploads/2024/06/site_logo_24.png",
+    "file": "logos/climate_action_now_western_ma.png",
+    "bytes": 20216
   },
   "sunrise_boston": {
-    "name": "Sunrise Boston",
-    "how": "logo wrapper <img>",
-    "url": "https://www.sunrisemovement.org/wp-content/uploads/2023/08/logo-sunrise-movement-black.png",
-    "file": "logos/sunrise_boston.png",
-    "bytes": 8813,
-    "note": "uses the Sunrise Movement logo"
+    "skipped": "already has a logo",
+    "logo": "logos/sunrise_boston.png"
   },
   "sunrise_amherst": {
-    "name": "Sunrise Amherst",
-    "how": "logo wrapper <img>",
-    "url": "https://www.sunrisemovement.org/wp-content/uploads/2023/08/logo-sunrise-movement-black.png",
-    "file": "logos/sunrise_amherst.png",
-    "bytes": 8813,
-    "note": "uses the Sunrise Movement logo"
+    "skipped": "already has a logo",
+    "logo": "logos/sunrise_amherst.png"
   },
   "sunrise_lexington": {
-    "name": "Sunrise Lexington",
-    "how": "logo wrapper <img>",
-    "url": "https://www.sunrisemovement.org/wp-content/uploads/2023/08/logo-sunrise-movement-black.png",
-    "file": "logos/sunrise_lexington.png",
-    "bytes": 8813,
-    "note": "uses the Sunrise Movement logo"
+    "skipped": "already has a logo",
+    "logo": "logos/sunrise_lexington.png"
   },
   "greenroots": {
     "name": "Greenroots",
-    "error": "no usable image",
-    "tried": [
-      "favicon.ico: too small"
-    ]
+    "how": "google s2 icon",
+    "url": "https://www.google.com/s2/favicons?domain=greenrootschelsea.org&sz=256",
+    "file": "logos/greenroots.png",
+    "bytes": 12240
   },
   "bodhisara_dharma_community": {
     "name": "Bodhisara Dharma Community",
-    "how": "icon",
-    "url": "https://www.gstatic.com/images/branding/productlogos/sites_2026/v3/ico/sites_2026_16dp.ico",
-    "file": "logos/bodhisara_dharma_community.ico",
-    "bytes": 308
+    "skipped": "Google Sites page has no logo"
   },
   "mass_divest_coalition": {
-    "error": "couldn't load site: fetch failed"
+    "name": "Mass Divest Coalition",
+    "error": "no usable image",
+    "tried": [
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
+    ]
   },
   "no_sharon_gas_pipeline_clean_energy_now": {
-    "error": "couldn't load site: fetch failed"
+    "name": "No Sharon Gas Pipeline | Clean Energy Now",
+    "error": "no usable image",
+    "tried": [
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
+    ]
   },
   "solstice_initiative": {
-    "name": "Solstice Initiative",
-    "how": "apple-touch-icon",
-    "url": "https://solstice.us/wp-content/uploads/2025/02/Icon-Rounded-256px.png",
-    "file": "logos/solstice_initiative.png",
-    "bytes": 27326
+    "skipped": "already has a logo",
+    "logo": "logos/solstice_initiative.png"
   },
   "south_coast_neighbors_united": {
     "name": "South Coast Neighbors United",
-    "how": "icon",
-    "url": "https://actionnetwork.org/images/favicon.png",
-    "file": "logos/south_coast_neighbors_united.png",
-    "bytes": 12006,
-    "note": "no website found; Action Network page"
+    "skipped": "no website found; Action Network page"
   },
   "sunwealth": {
-    "name": "Sunwealth",
-    "how": "header <img> logo",
-    "url": "https://images.squarespace-cdn.com/content/v1/59552faaff7c50fb8b38c931/1515606963945-6ZWPBR86PN14MB8A289X/Sunwealth_2Color.png",
-    "file": "logos/sunwealth.png",
-    "bytes": 6398
+    "skipped": "already has a logo",
+    "logo": "logos/sunwealth.png"
   },
   "sustainable_sharon_coalition": {
-    "name": "Sustainable Sharon Coalition",
-    "how": "logo wrapper <img>",
-    "url": "https://images.squarespace-cdn.com/content/v1/62005882aa12560e4865b66d/3ed147ed-0c7d-4a85-a687-318a48590a63/2022-Horizontal-SSC-logo-trans+1200dpi.png?format=1500w",
-    "file": "logos/sustainable_sharon_coalition.png",
-    "bytes": 13244
+    "skipped": "already has a logo",
+    "logo": "logos/sustainable_sharon_coalition.png"
   },
   "sustainable_sudbury": {
-    "name": "Sustainable Sudbury",
-    "how": "icon",
-    "url": "https://lh7-us.googleusercontent.com/sitesv-images-rt/AMxu72vEvc7H8bY8InPR-9UHp8D4Vbwr8f_g3vXYIJuj0caNn0iHDIsvO-mrlXZf6Ah8FOejCoMCF08OdmHIKAiSwCAS07Tn-siNeQcep7S_cL1x2yTjySGhpZop6QvYUt3GnCaAvCItx17RLGuCNXMt7MJ7ezZZwYLW1ZejWatuLekJjRo4BsfXDTKtoP7ICnOMrXmkOaXDOAiccCxP2dyjj__xLQ",
-    "file": "logos/sustainable_sudbury.png",
-    "bytes": 13751
-  },
-  "upper_cape_women_s_coalition": {
-    "name": "Upper Cape Women's Coalition",
-    "how": "logo wrapper <img>",
-    "url": "https://shambalaawakeninghub.org/content/img/logo/logo.webp",
-    "file": "logos/upper_cape_women_s_coalition.png",
-    "bytes": 8030
+    "skipped": "already has a logo",
+    "logo": "logos/sustainable_sudbury.png"
   },
   "vineyard_power_cooperative": {
-    "name": "Vineyard Power Cooperative",
-    "how": "logo wrapper <img>",
-    "url": "https://images.squarespace-cdn.com/content/v1/61f06ae063ffc57c9538fc95/798ae1fb-8dba-4e56-994c-4517a16076ee/VP_Logo_Revised_3.png?format=1500w",
-    "file": "logos/vineyard_power_cooperative.png",
-    "bytes": 3794
+    "skipped": "already has a logo",
+    "logo": "logos/vineyard_power_cooperative.png"
   },
   "watertown_citizens_for_peace_justice_and_the_environment": {
-    "name": "Watertown Citizens for Peace, Justice, and the Environment",
-    "how": "logo wrapper <img>",
-    "url": "https://watertowncitizens.org/wp-content/uploads/2020/02/cropped-WC-logo-smaller-e1651794236765.jpg",
-    "file": "logos/watertown_citizens_for_peace_justice_and_the_environment.png",
-    "bytes": 25559
+    "skipped": "already has a logo",
+    "logo": "logos/watertown_citizens_for_peace_justice_and_the_environment.png"
   },
   "wendell_state_forest_alliance": {
-    "name": "Wendell State Forest Alliance",
-    "how": "apple-touch-icon",
-    "url": "https://static.wixstatic.com/media/a5dc1f_cfca6e2cbff342baa71eaa9a21237f4e%7Emv2.png/v1/fill/w_180%2Ch_180%2Clg_1%2Cusm_0.66_1.00_0.01/a5dc1f_cfca6e2cbff342baa71eaa9a21237f4e%7Emv2.png",
-    "file": "logos/wendell_state_forest_alliance.png",
-    "bytes": 24985
+    "skipped": "already has a logo",
+    "logo": "logos/wendell_state_forest_alliance.png"
   },
   "xr_boston": {
-    "name": "Extinction Rebellion Boston",
-    "how": "apple-touch-icon",
-    "url": "https://xrboston.org/static/images/cropped-favicon-192x192.bab4741cb0b2.png",
-    "file": "logos/xr_boston.png",
-    "bytes": 21509
+    "skipped": "already has a logo",
+    "logo": "logos/xr_boston.png"
   },
   "league_of_women_voters_of_massachusetts": {
     "name": "League of Women Voters of Massachusetts",
-    "error": "no usable image",
-    "tried": [
-      "icon: fetch failed",
-      "favicon.ico: not an image (text/html)"
-    ]
+    "how": "header <img> logo",
+    "url": "https://lwvma.org/wp-content/uploads/2020/07/LWVMA_500t-300x116.png",
+    "file": "logos/league_of_women_voters_of_massachusetts.png",
+    "bytes": 16603
   },
   "neighbor_to_neighbor_massachusetts": {
-    "name": "Neighbor to Neighbor Massachusetts",
-    "how": "logo wrapper <img>",
-    "url": "https://n2nma.org/wp-content/uploads/2022/11/Logo.png",
-    "file": "logos/neighbor_to_neighbor_massachusetts.png",
-    "bytes": 34759
+    "skipped": "already has a logo",
+    "logo": "logos/neighbor_to_neighbor_massachusetts.png"
   },
   "community_action_works": {
     "name": "Community Action Works",
@@ -215,115 +164,99 @@
     "name": "21st Century Schools Fund",
     "error": "no usable image",
     "tried": [
-      "favicon.ico: HTTP 404"
+      "favicon.ico: HTTP 404",
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
     ]
   },
   "acadia_center": {
-    "name": "Acadia Center",
-    "how": "header <img> logo",
-    "url": "https://media.acadiacenter.org/wp-content/uploads/2020/07/18173224/Acadia-RGB.svg",
-    "file": "logos/acadia_center.svg",
-    "bytes": 21921
+    "skipped": "already has a logo",
+    "logo": "logos/acadia_center.svg"
   },
   "aft_mass": {
-    "name": "American Federation of Teachers Massachusetts",
-    "how": "logo wrapper <img>",
-    "url": "https://ma.aft.org/sites/default/files/media/images/2026/aft-ma.banner.png",
-    "file": "logos/aft_mass.png",
-    "bytes": 7935
+    "skipped": "already has a logo",
+    "logo": "logos/aft_mass.png"
   },
   "alliance_for_business_leadership": {
-    "error": "couldn't load site: fetch failed"
+    "name": "Alliance for Business Leadership",
+    "error": "no usable image",
+    "tried": [
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
+    ]
   },
   "center_for_green_schools_at_us_gbc": {
-    "name": "Center for Green Schools at the U.S. Green Building Council",
-    "how": "header <img> logo",
-    "url": "https://centerforgreenschools.org/sites/default/files/2022-11/cfgs-logo.png",
-    "file": "logos/center_for_green_schools_at_us_gbc.png",
-    "bytes": 6629
+    "skipped": "already has a logo",
+    "logo": "logos/center_for_green_schools_at_us_gbc.png"
   },
   "chinese_progressive_association": {
     "name": "Chinese Progressive Association",
     "error": "no usable image",
     "tried": [
-      "favicon.ico: HTTP 404"
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
     ]
   },
   "collaborative_for_high_performance_schools": {
-    "name": "Collaborative for High Performance Schools",
-    "how": "logo wrapper <img>",
-    "url": "https://images.squarespace-cdn.com/content/v1/642de662bb454d02a92440d4/de7025fb-372e-4902-b4c9-7591a5e53712/CHPS-updated-logo+USGBC.jpg?format=1500w",
-    "file": "logos/collaborative_for_high_performance_schools.png",
-    "bytes": 17810
+    "skipped": "already has a logo",
+    "logo": "logos/collaborative_for_high_performance_schools.png"
   },
   "cooler_communities": {
     "name": "Cooler Communities",
-    "error": "no usable image",
-    "tried": [
-      "icon: fetch failed",
-      "favicon.ico: not an image (text/html)"
-    ]
+    "how": "logo wrapper <img>",
+    "url": "https://coolercommunities.org/wp-content/uploads/logo.png",
+    "file": "logos/cooler_communities.png",
+    "bytes": 61990
   },
   "franklin_county_and_north_quabbin_community_health_improveme": {
     "name": "Franklin County & North Quabbin Community Health Improvement Planning Network",
-    "error": "no usable image",
-    "tried": [
-      "icon: fetch failed",
-      "favicon.ico: not an image (text/html)"
-    ]
+    "how": "logo wrapper <img>",
+    "url": "https://frcog.org/wp-content/uploads/2022/05/logo-franklin-regional-council-governments-full.jpg",
+    "file": "logos/franklin_county_and_north_quabbin_community_health_improveme.png",
+    "bytes": 27623,
+    "note": "uses FRCOG's logo"
   },
   "green_weymouth": {
-    "name": "Green Weymouth",
-    "how": "logo wrapper <img>",
-    "url": "https://greenweymouth.com/wp-content/uploads/2017/10/cropped-green-weymouth-logo4.png",
-    "file": "logos/green_weymouth.png",
-    "bytes": 11832
+    "skipped": "already has a logo",
+    "logo": "logos/green_weymouth.png"
   },
   "ma_senior_action": {
-    "name": "Massachusetts Senior Action Council",
-    "how": "header <img> logo",
-    "url": "https://images.squarespace-cdn.com/content/v1/55ae9518e4b0a617842e0104/1438190195431-W38AGWU05SG2UFVZWQDO/MSAC_LOGO.jpg?format=1500w",
-    "file": "logos/ma_senior_action.png",
-    "bytes": 20747
+    "skipped": "already has a logo",
+    "logo": "logos/ma_senior_action.png"
   },
   "mass_facilities_administrators_association": {
     "name": "Mass Facilities Administrators Association",
-    "how": "logo wrapper <img>",
-    "url": "https://massfacilities.com/wp-content/uploads/2023/09/mfaa-logo.png",
+    "how": "header <img> logo",
+    "url": "https://avatar-development.com/mfaa/wp-content/uploads/2024/03/Logo-white-text.png",
     "file": "logos/mass_facilities_administrators_association.png",
-    "bytes": 12734
+    "bytes": 15631
   },
   "massachusetts_jobs_with_justice": {
-    "name": "Massachusetts Jobs with Justice",
-    "how": "header <img> logo",
-    "url": "https://images.squarespace-cdn.com/content/v1/5930ccefbe6594842fe981ce/1580498648230-1XWVPWC85WDG4ZOV0F76/2.png",
-    "file": "logos/massachusetts_jobs_with_justice.png",
-    "bytes": 17689
+    "skipped": "already has a logo",
+    "logo": "logos/massachusetts_jobs_with_justice.png"
   },
   "metropolitan_area_planning_council": {
     "name": "Metropolitan Area Planning Council",
-    "how": "header <img> logo",
-    "url": "https://www.mapc.org/wp-content/themes/mapc/assets/images/mapc-logo.svg",
-    "file": "logos/metropolitan_area_planning_council.svg",
-    "bytes": 2733
+    "how": "apple-touch-icon",
+    "url": "https://www.mapc.org/wp-content/uploads/2025/11/cropped-Website-Favicon-512x512-08-scaled-1-180x180.png",
+    "file": "logos/metropolitan_area_planning_council.png",
+    "bytes": 6629
   },
   "mtacan": {
-    "error": "couldn't load site: fetch failed"
+    "name": "Massachusetts Teachers Association Climate Action Network",
+    "error": "no usable image",
+    "tried": [
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
+    ]
   },
   "northeast_climate_justice_research_collaborative": {
-    "name": "Northeast Climate Justice Research Collaborative",
-    "how": "header <img> logo",
-    "url": "https://www.umb.edu/media/umassboston/site-assets/images/new-umb-logo-blue.svg",
-    "file": "logos/northeast_climate_justice_research_collaborative.svg",
-    "bytes": 6648,
-    "note": "hosted by UMass Boston's Sustainable Solutions Lab — uses its logo"
+    "skipped": "already has a logo",
+    "logo": "logos/northeast_climate_justice_research_collaborative.svg"
   },
   "pioneer_valley_asthma_coalition": {
-    "name": "Pioneer Valley Asthma Coalition",
-    "how": "header <img> logo",
-    "url": "https://irp.cdn-website.com/4788b297/dms3rep/multi/opt/PVAC_Logo.354120108_std-1920w.jpg",
-    "file": "logos/pioneer_valley_asthma_coalition.png",
-    "bytes": 40601
+    "skipped": "already has a logo",
+    "logo": "logos/pioneer_valley_asthma_coalition.png"
   },
   "sustainable_business_network_of_massachusetts": {
     "name": "Sustainable Business Network of Massachusetts",
@@ -333,10 +266,7 @@
     "bytes": 11410
   },
   "undauntedk12": {
-    "name": "UndauntedK12",
-    "how": "logo wrapper <img>",
-    "url": "https://images.squarespace-cdn.com/content/v1/5fb00bc59da2506552b36ae4/3f778008-0e23-4768-a411-4bbda7e84695/image1-removebg-preview.png?format=1500w",
-    "file": "logos/undauntedk12.png",
-    "bytes": 5686
+    "skipped": "already has a logo",
+    "logo": "logos/undauntedk12.png"
   }
 }
