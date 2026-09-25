@@ -119,3 +119,12 @@ What / why
   re-running setup applies both to the live form.
 - Not possible in Google Forms: type-to-search dropdowns and address autocomplete (no custom widgets). Addresses are
   geocoded on submit instead; pre-filling from the map's + button avoids scrolling the org list.
+- Same PR, more of Nathan's form notes:
+  - Youth-serving was asked twice (its own yes/no question and a "Youth serving" topic tag); the tag is no longer
+    offered on the org form (still on events/projects).
+  - New private "Point person" page on the org form: name, email (validated), phone (optional). Saved on the Editors
+    tab (never published); that email can then edit the org. Only applied when the submission itself is authorized or
+    approved, so nobody can grant themselves access.
+  - "Other" is now a write-in for org type (was a dropdown, now multiple choice) and feedback type. Written-in org types
+    are stored as slugs and shown humanized on the site.
+  - Upgrade step on re-running setup applies all of it to the live forms.
