@@ -1,0 +1,29 @@
+name: Fetch org logos
+# Downloads missing org logos listed in scripts/logo-sources.json into public/logos/
+# and commits them back to the same branch (so they show up in that branch's PR).
+# Runs when logo-sources.json changes on a non-main branch, or on demand.
+on:
+  push:
+    branches-ignore: [main, development_branch]
+    paths: [scripts/logo-sources.json, scripts/fetch-logos.mjs]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save sharp
+      - run: node scripts/fetch-logos.mjs
+      - name: Commit logos
+        run: |
+          git config user.name "openthink-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/logos public/data.json scripts/logo-report.json
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -m "Fetch org logos from their websites"
+          git push

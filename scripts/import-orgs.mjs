@@ -13,7 +13,7 @@
 //    the source are dropped, along with their projects, events, and actions.
 //  - Projects/events owned by an org that is no longer listed are dropped, and so are
 //    coalition projects/events whose host org (host_org_id) is no longer listed.
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const SOURCE_URL =
@@ -59,7 +59,7 @@ for (const n of orgNodes) {
   idFor.set(n.id, id);
 }
 
-if (existsSync(LOGOS)) rmSync(LOGOS, { recursive: true });
+// Logos fetched from org websites (scripts/fetch-logos.mjs) live here too, so don't wipe the folder.
 mkdirSync(LOGOS, { recursive: true });
 
 const num = (v) => (v === null || v === undefined || v === "" ? undefined : Number(v));
@@ -136,6 +136,8 @@ for (const o of organizations) {
 const oldOrgs = new Map(old.organizations.map((o) => [o.id, o]));
 for (const o of organizations) {
   const prev = oldOrgs.get(o.id);
+  if (!o.logo && prev?.logo && (/^https?:/.test(prev.logo) || existsSync(`${ROOT}public/${prev.logo}`))) o.logo = prev.logo;
+  if (!o.website && prev?.website) o.website = prev.website;
   if (prev?.projects?.length) o.projects = prev.projects;
   if (prev?.events?.length) o.events = prev.events;
 }
