@@ -8,7 +8,7 @@ export interface Project {
   description: string;
   status: ProjectStatus;
   skills_needed: string[];
-  // Optional fields filled in through the Openthink forms
+  // Optional fields filled in through the MA Climate Coalition Map forms
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
@@ -24,7 +24,7 @@ export interface CoalitionEvent {
   name: string;
   date: string;
   location: string;
-  // Optional fields filled in through the Openthink forms
+  // Optional fields filled in through the MA Climate Coalition Map forms
   description?: string;
   host_org_id?: string;
   topic_tags?: string[];
@@ -72,7 +72,7 @@ export interface Organization {
   lat: number;
   lng: number;
   last_activity: string;
-  // From the MA Climate Coalition Map import and/or the Openthink forms
+  // From the MA Climate Coalition Map import and/or the map forms
   abbrev?: string;
   website?: string;
   /** Relative path (logos/<id>.png) or an absolute image URL. */

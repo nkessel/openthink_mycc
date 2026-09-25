@@ -1,4 +1,4 @@
-# Openthink — Climate Coalition Map
+# MA Climate Coalition Map
 
 A force-directed network map of Massachusetts climate coalitions and their member organizations. Coalitions are sized by member count; edges denote membership. Members in multiple coalitions naturally land between hubs.
 

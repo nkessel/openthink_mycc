@@ -1,6 +1,6 @@
 # LLM guidelines
 
-Shared rules for anyone (human or AI) using an LLM — Claude Code, ChatGPT, Copilot, etc. — to work on Openthink.
+Shared rules for anyone (human or AI) using an LLM — Claude Code, ChatGPT, Copilot, etc. — to work on the MA Climate Coalition Map.
 
 1. Be brief in final answers.
 2. You are an LLM, so consider if you could be wrong. I'm a human, so consider if I could also be wrong, or if there could be better things.

@@ -1,9 +1,9 @@
 /**
- * Openthink — forms + spreadsheet backend
+ * MA Climate Coalition Map — forms + spreadsheet backend
  * ---------------------------------------
  * Paste this whole file into the MA Climate Coalition Map data Google Sheet:
  *   Extensions → Apps Script → replace Code.gs → Save.
- * Then reload the sheet and run  Openthink → Set up sheet + forms  once.
+ * Then reload the sheet and run  MA Climate Coalition Map → Set up sheet + forms  once.
  *
  * What it does
  *  - Loads the current map data from GitHub into the tabs (only if they're empty).
@@ -161,7 +161,7 @@ var COLS = {
 var START_TEXT = [
   ['MA Climate Coalition Map data', ''],
   ['', ''],
-  ['This spreadsheet is the source of truth for the Openthink map. The forms write into it; the site reads from it.', ''],
+  ['This spreadsheet is the source of truth for the MA Climate Coalition Map. The forms write into it; the site reads from it.', ''],
   ['', ''],
   ['Tabs', ''],
   ['Coalitions / Organizations / Projects / Events / Actions', 'The map data. Safe to edit by hand. Lists are comma-separated ids or tags.'],
@@ -183,7 +183,7 @@ var START_TEXT = [
 // ---------------------------------------------------------------- menu
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('Openthink')
+    .createMenu('MA Climate Coalition Map')
     .addItem('Set up sheet + forms (run once)', 'setUp')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
     .addItem('Show form + data links', 'showLinks')
@@ -306,14 +306,19 @@ function buildForms(dataLoaded) {
   var built = [];
 
   var specs = [
-    { key: 'FORM_ORG', title: 'Openthink — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
-    { key: 'FORM_EVENT', title: 'Openthink — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
-    { key: 'FORM_PROJECT', title: 'Openthink — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
-    { key: 'FORM_FEEDBACK', title: 'Openthink — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: false },
+    { key: 'FORM_ORG', title: 'MA Climate Coalition Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
+    { key: 'FORM_EVENT', title: 'MA Climate Coalition Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
+    { key: 'FORM_PROJECT', title: 'MA Climate Coalition Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
+    { key: 'FORM_FEEDBACK', title: 'MA Climate Coalition Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: false },
   ];
 
   specs.forEach(function (s) {
-    if (props.getProperty(s.key) && formExists_(props.getProperty(s.key))) return; // already built
+    if (props.getProperty(s.key) && formExists_(props.getProperty(s.key))) {
+      // Already built: just keep its title current (e.g. after a rename).
+      var existing = FormApp.openById(props.getProperty(s.key));
+      if (existing.getTitle() !== s.title) existing.setTitle(s.title);
+      return;
+    }
     var form = FormApp.create(s.title);
     if (s.signIn) collectVerifiedEmail_(form);
     s.build(form);
@@ -377,7 +382,7 @@ function renameResponseSheet_(ss, form, name) {
 function header_(form, text) {
   form.setDescription(text);
   form.setAllowResponseEdits(false);
-  form.setConfirmationMessage('Thank you! If you are a point-person for this organization, your changes are on their way to the map. Otherwise the Openthink team will review them.');
+  form.setConfirmationMessage('Thank you! If you are a point-person for this organization, your changes are on their way to the map. Otherwise the map team will review them.');
 }
 
 function addTags_(form) {
@@ -412,7 +417,7 @@ function addOwner_(form, what) {
 
 function buildOrgForm_(form) {
   header_(form,
-    'Use this form to add your organization to the Openthink climate coalition map, or to fill in and correct what we already have.\n\n' +
+    'Use this form to add your organization to the MA Climate Coalition Map, or to fill in and correct what we already have.\n\n' +
     OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE + '\n\n' + SIGNIN_NOTE);
   addSelector_(form, Q.whichOrg, 'Pick your organization to update it, or choose "' + NEW_ORG + '".', NEW_ORG);
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
@@ -482,7 +487,7 @@ function buildProjectForm_(form) {
 }
 
 function buildFeedbackForm_(form) {
-  form.setDescription('Tell us what is working, what is broken, or what you wish the Openthink map did. Only your feedback is required — no sign-in needed.');
+  form.setDescription('Tell us what is working, what is broken, or what you wish the MA Climate Coalition Map did. Only your feedback is required — no sign-in needed.');
   form.setConfirmationMessage('Thank you — we read every one.');
   form.addMultipleChoiceItem().setTitle(Q.fbType).setChoiceValues([
     "Something's broken", 'Info on the map is wrong or missing', 'Idea or feature request', 'Question', 'Other']);
@@ -689,7 +694,7 @@ function queueForReview_(kind, a, email, target, reason) {
   logChange_(email, FORM_NAMES[kind], 'needs review', reason, kind, target.id, target.label, summary);
   if (ALERT_ADMINS) {
     try {
-      MailApp.sendEmail(ADMIN_EMAILS.join(','), 'Openthink: submission needs review (' + reason.split(' — ')[0] + ')',
+      MailApp.sendEmail(ADMIN_EMAILS.join(','), 'MA Climate Coalition Map: submission needs review (' + reason.split(' — ')[0] + ')',
         'From: ' + (email || 'unknown') + '\nForm: ' + FORM_NAMES[kind] + '\nAbout: ' + target.label +
         '\nWhy: ' + reason + '\n\n' + summary + '\n\nReview it on the "Needs Review" tab: ' + ss_().getUrl());
     } catch (err) { /* email quota; the Change Log still has it */ }
