@@ -131,7 +131,9 @@
   {
     "id": "community_action_works",
     "website": "https://communityactionworks.org/",
-    "force": true
+    "force": true,
+    "prefer_icon": true,
+    "note": "header logo is white-on-transparent; uses the site icon"
   },
   {
     "id": "21st_century_schools_fund",
@@ -180,8 +182,7 @@
   },
   {
     "id": "mass_facilities_administrators_association",
-    "website": "https://massfacilities.com/",
-    "force": true
+    "website": "https://massfacilities.com/"
   },
   {
     "id": "massachusetts_jobs_with_justice",
@@ -189,12 +190,12 @@
   },
   {
     "id": "metropolitan_area_planning_council",
-    "website": "https://www.mapc.org/",
-    "force": true
+    "website": "https://www.mapc.org/"
   },
   {
     "id": "mtacan",
-    "website": "https://www.mtaclimateaction.org/"
+    "website": "https://massteacher.org/",
+    "note": "mtaclimateaction.org no longer resolves; uses the MTA logo"
   },
   {
     "id": "northeast_climate_justice_research_collaborative",
@@ -208,7 +209,9 @@
   {
     "id": "sustainable_business_network_of_massachusetts",
     "website": "https://www.sbnmass.org/",
-    "force": true
+    "force": true,
+    "prefer_icon": true,
+    "note": "header logo is white-on-transparent; uses the site icon"
   },
   {
     "id": "undauntedk12",

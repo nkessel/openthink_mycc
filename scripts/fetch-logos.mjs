@@ -140,6 +140,7 @@ for (const s of sources) {
         console.log(s.id, "page failed:", e.message);
       }
       picks.push(...iconServices(page));
+      if (s.prefer_icon) picks.sort((x, y) => Number(/img/.test(x.how)) - Number(/img/.test(y.how)));
     }
   } catch (e) {
     report[s.id] = { error: `couldn't load site: ${e.message}` };
