@@ -95,3 +95,14 @@ What / why
 - 16:35 — Fixed the Start Here intro line (A3) to say "MA Climate Coalition Map"; moved my stray standalone
   "Untitled project" Apps Script to Drive trash (recoverable).
 - Not done: an end-to-end test submission (blocked as a write to live shared data) — Nathan to submit one test event.
+
+2026-09-25 19:15 — Claude
+- Nathan: the "[org_id]" in form dropdowns looks weird; make names unique instead (e.g. the 3 "Citizens Climate Lobby"
+  rows get their chapter in the name, like the 350 Mass groups). Done: dropdowns now show plain names
+  (coalitions as "Name (ABBR)", events as "Name — date"). The script maps a picked name back to its row by matching
+  the sheet as it is at submit time; " [id]" is added only if two records of the same kind still share a name, so a
+  duplicate can never silently hit the wrong row. Old "[id]" labels (e.g. queued Needs Review items) still work.
+  Site pre-fill (src/fab.ts) uses the same rule. Tests: plain names, duplicate-name fallback, org rename then re-pick.
+- The sheet's id column stays: Connections, Editors, Events/Projects point to orgs by id, and ids never change.
+- Renamed in the sheet: citizens_climate_lobby_boston → "Citizens Climate Lobby Boston",
+  citizens_climate_lobby_south_shore_cape_and_islands → "Citizens Climate Lobby South Shore, Cape and Islands".
