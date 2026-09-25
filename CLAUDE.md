@@ -6,7 +6,9 @@ Follow the team's shared rules in [LLM_GUIDELINES.md](LLM_GUIDELINES.md). In sho
 
 - Vite + TypeScript + D3 single-page app; data is a static `public/data.json` (schema in `src/types.ts`).
 - Org list, org data, and logos come from the MA Climate Coalition Map (github.com/aissatabarry/ma-climate-coalition-map) via `node scripts/import-orgs.mjs`. Logos live in `public/logos/`.
-- Groups propose edits through Google Forms linked to a Google Sheet (`apps-script/`, see `apps-script/SETUP.md`). `npm run pull-data` pulls the sheet into `public/data.json`.
+- The Google Sheet is the source of truth after launch. Point-people edit through Google Forms (sign-in required); `apps-script/Code.gs` checks their email against the sheet's Editors tab, queues anything else in Needs Review, and logs every submission. See `apps-script/SETUP.md`.
+- The site is static (GitHub Pages, `.github/workflows/pages.yml`) and reads the sheet's public JSON via `LIVE_DATA_URL` in `src/data.config.ts`, falling back to `public/data.json` (nightly snapshot PRs from `.github/workflows/sync-data.yml`).
+- `npm run test:apps-script` and `npm run check:apps-script` test the Apps Script in Node; CI runs them on every PR.
 - The `+` button (`src/fab.ts`) links to those forms; form URLs live in `src/forms.config.ts`.
 
 ## Commands

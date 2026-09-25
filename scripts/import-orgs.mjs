@@ -188,7 +188,10 @@ const coalitions = raw.nodes.filter((n) => n.type === "coalition").map((n) => {
 const edges = [];
 for (const c of coalitions) for (const m of c.member_ids) edges.push({ source: c.id, target: m });
 
-const out = { generated_at: new Date().toISOString(), coalitions, organizations, edges };
+// Keep org-to-org links (from the forms) between orgs that are still listed
+const org_links = (old.org_links || []).filter((l) => orgIds.has(l.source) && orgIds.has(l.target));
+
+const out = { generated_at: new Date().toISOString(), coalitions, organizations, edges, org_links };
 writeFileSync(DATA, JSON.stringify(out, null, 2) + "\n");
 
 console.log(

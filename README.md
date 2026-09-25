@@ -8,11 +8,13 @@ Org list, org data, and logos come from the [MA Climate Coalition Map](https://g
 
 ## Views
 
-- **Map** — force-directed graph, drag/zoom/pan, click any node for a side drawer with that coalition's Projects, Events, and Actions.
-- **Geographic** — Leaflet/CARTO dark map with coalitions + members plotted by location.
-- **Events** — searchable list of upcoming + past events across all coalitions.
-- **Projects** — list filterable by status (active/planning) and required skills.
-- **+ button** — opens the Google Forms to add or update an org, event, or project, or send feedback (pre-filled with whatever is open in the drawer).
+- **Map** — force-directed graph of coalitions and orgs. Edges show coalition membership and, in amber, **org-to-org connections** (thicker = they work together more often). Search box to jump to any org or coalition. Click any node for its details, connections, projects, events, and **suggested connections**.
+- **Geographic** — Leaflet map of coalitions and org headquarters (remote orgs aren't pinned). Checkboxes add **event** and **project** pins (off by default). Search a place, org, coalition (zooms to its members), event or project; **What's near me?** lists everything within 15 km.
+- **Organizations** — searchable, filterable list of every org, plus **Suggested connections**: pairs of similar orgs that haven't said they work together.
+- **Events** / **Projects** — searchable lists across coalitions and orgs.
+- **+ button** — opens the Google Forms to add or update an org, event, or project, or send feedback (pre-filled with whatever is open).
+
+Hosted as a static site on GitHub Pages; data comes live from the Google Sheet (see [`apps-script/SETUP.md`](apps-script/SETUP.md)), with `public/data.json` as the fallback.
 
 ## Run locally
 

@@ -13,6 +13,10 @@ export interface Project {
   topic_tags?: string[];
   link?: string;
   public_contact?: string;
+  location?: string;
+  online?: boolean;
+  lat?: number;
+  lng?: number;
 }
 
 export interface CoalitionEvent {
@@ -26,6 +30,9 @@ export interface CoalitionEvent {
   topic_tags?: string[];
   link?: string;
   public_contact?: string;
+  online?: boolean;
+  lat?: number;
+  lng?: number;
 }
 
 export interface Action {
@@ -70,6 +77,8 @@ export interface Organization {
   website?: string;
   /** Relative path (logos/<id>.png) or an absolute image URL. */
   logo?: string;
+  /** No public location: listed, but no pin on the geographic map. */
+  remote?: boolean;
   public_contact?: string;
   topic_tags?: string[];
   profile?: OrgProfile;
@@ -104,6 +113,8 @@ export interface Edge {
 
 export interface DataFile {
   generated_at: string;
+  /** Org-to-org connections; optional for older data files. */
+  org_links?: OrgLink[];
   coalitions: Coalition[];
   organizations: Organization[];
   edges: Edge[];
@@ -136,5 +147,21 @@ export type GraphNode = CoalitionNode | OrgNode;
 export interface GraphLink {
   source: GraphNode | string;
   target: GraphNode | string;
+  /** Coalition id for membership links; "" for org-to-org links. */
   coalitionId: string;
+  kind?: "membership" | "org";
+  /** Org-to-org strength, 1 (yearly or less) … 4 (weekly). */
+  weight?: number;
+}
+
+/** How often two orgs work together (from the organization form). */
+export type LinkFrequency = "weekly" | "monthly" | "few_per_year" | "yearly";
+
+export interface OrgLink {
+  source: string;
+  target: string;
+  frequency: LinkFrequency | string;
+  weight: number;
+  /** Org ids that reported this connection. */
+  reported_by: string[];
 }

@@ -37,3 +37,28 @@ What / why
   against @types/google-apps-script — catches misspelled/nonexistent Google API calls) and
   `npm run test:apps-script` (the Node simulation tests, now in the repo), plus a GitHub Actions CI workflow
   running build + both checks on every PR. Wrapped Form.shortenFormUrl in try/catch (legacy API; falls back to the long link).
+
+2026-09-25 (afternoon) — Claude, same PR (#1), per Nathan's requirements review
+- Hosting: stays static on GitHub Pages (relative base, Pages deploy workflow from development_branch). Site reads the
+  sheet's public JSON live (src/data.config.ts LIVE_DATA_URL) and falls back to public/data.json; nightly Action opens a
+  snapshot PR when data changed. Couldn't enable Pages via API from here — repo owner does 2 clicks (SETUP.md step 5).
+- Access control (Nathan's design, replacing per-org passwords): forms require Google sign-in and record the verified
+  email; Editors tab maps emails → org_ids / coalition_ids; admins = Nathan, Aissata, Turibius. Unauthorized, no-email,
+  and new-org submissions go to "Needs Review" (tick approve), are flagged in Change Log, and email the admins.
+  Every submission (incl. feedback and refused approvals) gets a Change Log row. Approved new orgs make their proposer
+  the point-person.
+- Org-to-org connections: org form page "Who you work with" (weekly / monthly / a few times a year / yearly or less);
+  stored in Connections tab; data.json org_links (one per pair, strongest answer wins, both reporters kept); drawn as
+  weighted amber edges on the graph with a toggle.
+- Locations: events and projects get location + "online?" (geocoded on submit); geographic view has Events/Projects
+  checkboxes (off by default). Orgs get HQ address + "remote" (no pin).
+- Search: graph search box, Organizations tab (search + filters), geographic search (places via OSM Nominatim,
+  orgs, coalitions → fit to members, events, projects) and "What's near me?".
+- Holes: src/suggestions.ts scores unconnected org pairs (TF-IDF of name/description/tags, shared tags/skills, type,
+  youth-serving, distance); shown per org (drawer "Suggested") and as a list. Same-name pairs are flagged as possible
+  duplicates (the source data has e.g. 3× Citizens Climate Lobby).
+- Also: orgs with no coalition were hidden on the graph (pre-existing bug) — now shown.
+- Verified: build, Apps Script type check against official typings, Node simulation tests (access rules, review
+  approval, change log count, connections, locations, round trips), screenshots with injected test data.
+  Not verified: a real run in Google Apps Script (setEmailCollectionType/setPublished are feature-detected with fallbacks).
+- Shared the "Openthink data" sheet with ab130@wellesley.edu and turibius@bu.edu as editors (Drive).

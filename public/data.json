@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25T14:52:23.528Z",
+  "generated_at": "2026-09-25T16:41:36.628Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -5147,5 +5147,6 @@
       "source": "gjc",
       "target": "ma_senior_action"
     }
-  ]
+  ],
+  "org_links": []
 }
