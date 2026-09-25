@@ -25,6 +25,8 @@ export interface CoalitionEvent {
   date: string;
   location: string;
   // Optional fields filled in through the MA Climate Coalition Map forms
+  /** End date-time (same day as `date`), if given. */
+  end?: string;
   description?: string;
   host_org_id?: string;
   topic_tags?: string[];

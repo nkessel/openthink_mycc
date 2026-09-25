@@ -108,6 +108,7 @@ var Q = {
   eventDesc: 'Event description',
   eventDate: 'Date',
   eventTime: 'Start time',
+  eventEndTime: 'End time',
   // project
   whichProject: 'Which project is this about?',
   projectName: 'Project name',
@@ -161,7 +162,7 @@ var COLS = {
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
     'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden'],
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
-    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden'],
+    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end'],
   'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
@@ -285,7 +286,7 @@ function sheetRowsFromData_(d) {
   };
   var event = function (e, coalitionId, hostId) {
     push('Events', { id: e.id, coalition_id: coalitionId, host_org_id: hostId || e.host_org_id, name: e.name,
-      description: e.description, date: e.date, location: e.location, online: bool(e.online),
+      description: e.description, date: e.date, end: e.end, location: e.location, online: bool(e.online),
       lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact });
   };
   d.coalitions.forEach(function (c) {
@@ -342,6 +343,7 @@ function buildForms(dataLoaded) {
       if (existing.getTitle() !== s.title) existing.setTitle(s.title);
       if (s.key === 'FORM_ORG') upgradeOrgForm_(existing);
       if (s.key === 'FORM_FEEDBACK') upgradeFeedbackForm_(existing);
+      if (s.key === 'FORM_EVENT') upgradeEventForm_(existing);
       return;
     }
     var form = FormApp.create(s.title);
@@ -542,6 +544,15 @@ function upgradeOrgForm_(form) {
   });
 }
 
+/** Older event forms had no end time; add it right after the start time (safe to run again). */
+function upgradeEventForm_(form) {
+  var items = form.getItems();
+  if (items.some(function (it) { return it.getTitle() === Q.eventEndTime; })) return;
+  var start = items.filter(function (it) { return it.getTitle() === Q.eventTime; })[0];
+  var end = form.addTimeItem().setTitle(Q.eventEndTime);
+  if (start) form.moveItem(end.getIndex(), start.getIndex() + 1);
+}
+
 function buildEventForm_(form) {
   header_(form,
     "Use this form to add your organization's or coalition's public event to the map, or to update or remove one that's already there.\n\n" +
@@ -552,6 +563,7 @@ function buildEventForm_(form) {
   form.addParagraphTextItem().setTitle(Q.eventDesc);
   form.addDateItem().setTitle(Q.eventDate);
   form.addTimeItem().setTitle(Q.eventTime);
+  form.addTimeItem().setTitle(Q.eventEndTime);
   addLocation_(form, 'event');
   addTags_(form);
   form.addTextItem().setTitle(Q.link);
@@ -1018,6 +1030,12 @@ function saveEvent_(a, t) {
     var tm = time || old.slice(11, 16) || '00:00';
     if (d) patch.date = d + 'T' + tm + ':00';
   }
+  var endTime = a[Q.eventEndTime];
+  if (endTime) {
+    var day = (patch.date || (existing ? String(existing.date) : '')).slice(0, 10);
+    if (day) patch.end = day + 'T' + endTime + ':00';
+  }
+  if (patch.end) addMissingColumns_(ss_().getSheetByName(TAB.events), COLS[TAB.events]);
   return upsert_(TAB.events, 'event', a[Q.whichEvent], NEW_EVENT, patch);
 }
 
@@ -1214,7 +1232,7 @@ function buildDataFile_(t, generatedAt) {
   });
   var events = group(t.events, function (e) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
-      e, ['description', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
+      e, ['end', 'description', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
   });
   var actions = group(t.actions.map(function (a) { var c = {}; for (var k in a) c[k] = a[k]; c.host_org_id = ''; return c; }), function (a) {
     return { id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name), urgency: str(a.urgency) || 'medium',

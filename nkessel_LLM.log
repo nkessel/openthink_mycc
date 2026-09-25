@@ -151,3 +151,6 @@ What / why
   (removes "Remove from the map?" from the forms, fixes leftover "Openthink" text). My clicks on that menu item didn't
   register; a workaround via the edit trigger was blocked as a change to shared automation. After Nathan runs it, the
   script gets replaced with the repo version (which also drops the helper).
+- Same PR: "+" button centered at the bottom with a pulsing blue halo (static if reduced motion); stays centered in the
+  uncovered area when the drawer is open. Event form: new "End time" question (stored as `end`, same day as the start;
+  site shows "Jun 5, 5:00 PM – 7:00 PM"). Existing event form gets it on the next setup run; Events tab gets an `end` column.
