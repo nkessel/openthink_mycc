@@ -121,7 +121,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
         icon: L.divIcon({ className: "", iconSize: [r * 2, r * 2], iconAnchor: [r, r], html: labelNode.outerHTML }),
       });
       marker.bindTooltip(
-        `<strong>${escapeHTML(c.name)}</strong><br/><span style="color:#94a3b8">${c.member_count} members · ${escapeHTML(c.geographic_scope)}</span>`,
+        `<strong>${escapeHTML(c.name)}</strong><br/><span style="color:#94a3b8">${c.member_count} member ${c.member_count === 1 ? "group" : "groups"} · ${escapeHTML(c.geographic_scope)}</span>`,
         { direction: "top", offset: [0, -2] },
       );
       marker.on("click", () => cb.onNodeClick({ ...c, kind: "coalition" }));

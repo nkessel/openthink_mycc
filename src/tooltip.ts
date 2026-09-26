@@ -64,7 +64,7 @@ export function createTooltip(): Tooltip {
         h(
           "div",
           { class: "stats" },
-          stat(node.member_count, "Members"),
+          stat(node.member_count, "Member groups"),
           stat(node.projects.length, "Projects"),
           stat(node.events.length, "Events"),
           stat(node.actions.length, "Actions"),

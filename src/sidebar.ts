@@ -126,7 +126,7 @@ export function createSidebar(
           class: "swatch",
           style: "width:22px;height:22px",
         }),
-        h("div", {}, "Coalition (size ∝ members)"),
+        h("div", {}, "Coalition (size ∝ member groups)"),
       ),
     );
     legend.appendChild(
