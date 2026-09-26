@@ -964,7 +964,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/andover_climate_lobby.png"
     },
     {
       "id": "belmont_high_school_climate_club",
@@ -1054,7 +1055,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/students_for_environmental_action_at_weston_high_school.png"
     },
     {
       "id": "newton_south_high_school_environmental_club",
@@ -1074,7 +1076,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/newton_south_high_school_environmental_club.png"
     },
     {
       "id": "andover_high_school_environmental_club",
@@ -1112,7 +1115,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/belmont_hill_sustainability_club.ico"
     },
     {
       "id": "lorax_at_milton_academy",
@@ -1136,7 +1140,8 @@
         "mycc": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/lorax_at_milton_academy.png"
     },
     {
       "id": "boston_latin_school_youthcan",
@@ -1156,7 +1161,8 @@
         "mycc": 1.5
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/boston_latin_school_youthcan.png"
     },
     {
       "id": "boston_university_environmental_student_organization",
@@ -1196,7 +1202,9 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://fourriverscharter.org/",
+      "logo": "logos/four_rivers_climate_club.png"
     },
     {
       "id": "youth_climate_action_now",
@@ -1307,7 +1315,9 @@
         "gjc": 4
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac",
+      "logo": "logos/boston_student_advisory_council.ico"
     },
     {
       "id": "greenroots_eco",
@@ -2108,7 +2118,8 @@
         "mycc": 1.5
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/mit_sea.png"
     },
     {
       "id": "unitarian_universalist_mass_action",
@@ -3894,7 +3905,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://uppercapewomen.org/",
+      "logo": "logos/upper_cape_women_s_coalition.png"
     },
     {
       "id": "vineyard_power_cooperative",
