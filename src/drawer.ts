@@ -7,7 +7,7 @@ import type {
   GraphNode,
   DataFile,
 } from "./types";
-import { initials, relTime, fmtDateTime, typeLabel } from "./util";
+import { initials, relTime, fmtEventTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
 import { formUrl } from "./fab";
 import { orgProjects, orgEvents } from "./owners";
@@ -233,7 +233,7 @@ export function createDrawer(
           h(
             "div",
             { class: "row" },
-            h("span", { class: "pill deadline" }, fmtDateTime(e.date)),
+            h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end)),
             h("span", { class: "pill kind" }, e.location),
           ),
         ),

@@ -40,6 +40,13 @@ export function fmtDate(iso: string): string {
   });
 }
 
+/** "Jun 5, 5:00 PM – 7:00 PM" when an end time is known. */
+export function fmtEventTime(start: string, end?: string): string {
+  if (!end) return fmtDateTime(start);
+  const t = new Date(end).toLocaleString("en-US", { hour: "numeric", minute: "2-digit" });
+  return `${fmtDateTime(start)} – ${t}`;
+}
+
 export function fmtDateTime(iso: string): string {
   const d = new Date(iso);
   return d.toLocaleString("en-US", {

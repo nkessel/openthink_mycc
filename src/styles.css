@@ -1666,3 +1666,60 @@ body {
     display: none;
   }
 }
+
+/* Org-to-org toggle now lives in the sidebar, under the coalitions */
+.sidebar .filters-block {
+  margin: 12px 0 4px;
+}
+.sidebar .filters-block .org-link-toggle {
+  display: flex;
+  align-self: auto;
+  background: transparent;
+  border: 0;
+  padding: 6px 4px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+/* ---------- "+" button: centered at the bottom, blue halo ---------- */
+.fab-wrap,
+.drawer.open ~ .fab-wrap {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  transition: left 0.25s ease;
+}
+.drawer.open ~ .fab-wrap {
+  /* keep it centered in the part of the screen the drawer doesn't cover */
+  left: calc((100% - var(--drawer-w)) / 2);
+}
+.fab {
+  box-shadow:
+    0 0 0 6px rgba(56, 189, 248, 0.28),
+    0 0 26px 8px rgba(56, 189, 248, 0.45),
+    var(--shadow);
+  animation: fab-halo 2.8s ease-in-out infinite;
+}
+@keyframes fab-halo {
+  0%, 100% {
+    box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.28), 0 0 26px 8px rgba(56, 189, 248, 0.45), var(--shadow);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(56, 189, 248, 0.18), 0 0 38px 14px rgba(56, 189, 248, 0.5), var(--shadow);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab {
+    animation: none;
+  }
+}
+@media (max-width: 720px) {
+  .fab-wrap,
+  .drawer.open ~ .fab-wrap {
+    left: 50%;
+    right: auto;
+    bottom: 20px;
+  }
+}
