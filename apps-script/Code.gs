@@ -483,6 +483,7 @@ function buildOrgForm_(form) {
   addSelector_(form, Q.whichOrg, 'Pick your organization to update it, or choose "' + NEW_ORG + '".', NEW_ORG);
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
   form.addTextItem().setTitle(Q.orgAbbrev).setHelpText('e.g. MYCC, BLS YouthCAN');
+  addPointPerson_(form);
   addOrgType_(form);
   form.addParagraphTextItem().setTitle(Q.orgDesc).setHelpText(ORG_HELP.desc);
   form.addTextItem().setTitle(Q.orgTown).setHelpText('e.g. Worcester, Cape Cod, Greater Boston, statewide.');
@@ -496,7 +497,6 @@ function buildOrgForm_(form) {
   form.addTextItem().setTitle(Q.logo)
     .setHelpText('A link to your logo (PNG or JPG) — e.g. from your website, or a Google Drive file shared as "anyone with the link".');
   addPublicContact_(form);
-  addPointPerson_(form);
 
   form.addPageBreakItem().setTitle(WORKS_WITH_PAGE)
     .setHelpText('Which organizations do you work with, and how often? This draws the connections between organizations on the map.');
@@ -520,13 +520,33 @@ var FEEDBACK_TYPES = ["Something's broken", 'Info on the map is wrong or missing
 /** Who the core team contacts about this org. Private: stored on the Editors tab, never on the map.
  *  Their email can then update this org through the forms. */
 function addPointPerson_(form) {
-  form.addPageBreakItem().setTitle(POINT_PERSON_PAGE)
+  // A section header (not a page break), so it sits right after the short name on the same page.
+  form.addSectionHeaderItem().setTitle(POINT_PERSON_PAGE)
     .setHelpText('Who should we contact about your organization? Only the core team sees this; it is never shown on the map. ' +
       'This person can then update your organization\'s info through these forms (they sign in with this email).');
   form.addTextItem().setTitle(Q.pointName);
   form.addTextItem().setTitle(Q.pointEmail)
     .setValidation(FormApp.createTextValidation().requireTextIsEmail().build());
   form.addTextItem().setTitle(Q.pointPhone);
+}
+
+/** Point-person block (header + name/email/phone) directly after the short-name question.
+ *  Replaces the older separate "Point person" page. Safe to run again. */
+function placePointPerson_(form) {
+  var find = function (title) { return form.getItems().filter(function (it) { return it.getTitle() === title; })[0]; };
+  var header = find(POINT_PERSON_PAGE);
+  if (header && header.getType() === FormApp.ItemType.PAGE_BREAK) { form.deleteItem(header); header = null; }
+  if (!find(Q.pointEmail) || !header) {
+    [Q.pointName, Q.pointEmail, Q.pointPhone].forEach(function (t) { var it = find(t); if (it) form.deleteItem(it); });
+    addPointPerson_(form); // appended at the end; moved below
+  }
+  var abbrev = find(Q.orgAbbrev);
+  if (!abbrev) return;
+  [POINT_PERSON_PAGE, Q.pointName, Q.pointEmail, Q.pointPhone].forEach(function (t, k) {
+    var it = find(t);
+    var target = find(Q.orgAbbrev).getIndex() + 1 + k;
+    if (it && it.getIndex() !== target) form.moveItem(it.getIndex(), it.getIndex() < target ? target - 1 : target);
+  });
 }
 
 /** One row per organization, one column per frequency. A blank row = no active contact. */
@@ -542,17 +562,8 @@ function addWorksWithGrid_(form) {
  *  combined HQ/remote question, and current help texts. */
 function upgradeOrgForm_(form) {
   var items = form.getItems();
-  if (!items.some(function (it) { return it.getTitle() === Q.pointEmail; })) {
-    var before = items.filter(function (it) { return it.getTitle() === WORKS_WITH_PAGE; })[0];
-    var at = before ? before.getIndex() : null;
-    var n0 = form.getItems().length;
-    addPointPerson_(form);
-    if (at !== null) {
-      var added = form.getItems().slice(n0); // page break + 3 questions, in order
-      added.forEach(function (it, k) { form.moveItem(it.getIndex(), at + k); });
-    }
-    items = form.getItems();
-  }
+  placePointPerson_(form);
+  items = form.getItems();
   var typeItem = items.filter(function (it) { return it.getTitle() === Q.orgType; })[0];
   if (typeItem && typeItem.getType() === FormApp.ItemType.LIST) {
     var typeAt = typeItem.getIndex();
