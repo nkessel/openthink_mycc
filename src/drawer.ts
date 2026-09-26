@@ -80,7 +80,7 @@ export function createDrawer(
         h(
           "div",
           { class: "meta" },
-          metaCell(c.member_count, "Members"),
+          metaCell(c.member_count, "Member groups"),
           metaCell(c.projects.length, "Projects"),
           metaCell(c.events.length, "Events"),
         ),
@@ -354,7 +354,7 @@ export function createDrawer(
           h(
             "div",
             { class: "sub", style: "font-size:11px;color:#6b7280" },
-            `${c.member_count} members`,
+            `${c.member_count} member ${c.member_count === 1 ? "group" : "groups"}`,
           ),
         ),
       );

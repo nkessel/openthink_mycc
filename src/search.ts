@@ -27,7 +27,7 @@ const KIND_LABEL: Record<SearchKind, string> = {
 export function allNodesForSearch(data: DataFile): SearchItem[] {
   return [
     ...data.coalitions.map((c) => ({
-      id: c.id, kind: "coalition" as const, label: c.name, sub: `${c.abbrev} · ${c.member_count} members`,
+      id: c.id, kind: "coalition" as const, label: c.name, sub: `${c.abbrev} · ${c.member_count} member ${c.member_count === 1 ? "group" : "groups"}`,
       keywords: `${c.abbrev} ${c.focus_tags.join(" ")}`,
     })),
     ...data.organizations.map((o) => ({
