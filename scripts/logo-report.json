@@ -90,11 +90,7 @@
   },
   "south_coast_neighbors_united": {
     "name": "South Coast Neighbors United",
-    "how": "logo_url (set by hand)",
-    "url": "https://drive.google.com/uc?export=download&id=1y6r0yFiNI69N_lZ6nVZyeKhkUJoaUOjE",
-    "file": "logos/south_coast_neighbors_united.png",
-    "bytes": 127106,
-    "note": "from the team logo folder in Google Drive (Aissata)"
+    "skipped": "folder image is a crowd photo with a quote, not a logo — skipped"
   },
   "sunwealth": {
     "skipped": "already has a logo",
@@ -142,11 +138,7 @@
   },
   "21st_century_schools_fund": {
     "name": "21st Century Schools Fund",
-    "how": "logo_url (set by hand)",
-    "url": "https://drive.google.com/uc?export=download&id=1WPDUFnR-tcKo-h48LkOjoO73SChbknr4",
-    "file": "logos/21st_century_schools_fund.png",
-    "bytes": 11851,
-    "note": "from the team logo folder in Google Drive (Aissata)"
+    "skipped": "folder image is a blurry banner crop, unreadable as a logo — skipped"
   },
   "acadia_center": {
     "skipped": "already has a logo",
@@ -225,7 +217,7 @@
     "how": "icon",
     "url": "https://images.squarespace-cdn.com/content/v1/5faab8eb29e0595fb9fbd867/1610648930278-YZGBGIG9XD3PI8QO835N/favicon.ico?format=100w",
     "file": "logos/sustainable_business_network_of_massachusetts.png",
-    "bytes": 9731,
+    "bytes": 4477,
     "note": "header logo is white-on-transparent; uses the site icon"
   },
   "undauntedk12": {
@@ -242,11 +234,7 @@
   },
   "upper_cape_women_s_coalition": {
     "name": "Upper Cape Women's Coalition",
-    "how": "logo_url (set by hand)",
-    "url": "https://drive.google.com/uc?export=download&id=1im9fchnSOKEpP-ZDqQ8Jb4eWfqgWh-Pg",
-    "file": "logos/upper_cape_women_s_coalition.png",
-    "bytes": 81112,
-    "note": "from the team logo folder in Google Drive (Aissata)"
+    "skipped": "folder image is a photo of a sign, not a logo — skipped (and their domain now serves a casino ad)"
   },
   "boston_student_advisory_council": {
     "name": "Boston Student Advisory Council",
@@ -321,12 +309,8 @@
     "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "mit_sea": {
-    "name": "MIT Students for Environmental Action",
-    "how": "logo_url (set by hand)",
-    "url": "https://drive.google.com/uc?export=download&id=17fpafZZ0dNF5XdQVsk2UydVxJsoixmKS",
-    "file": "logos/mit_sea.png",
-    "bytes": 24647,
-    "note": "from the team logo folder in Google Drive (Aissata)"
+    "skipped": "already has a logo",
+    "logo": "logos/mit_sea.png"
   },
   "ma_youth_for_climate_justice": {
     "name": "Massachusetts Youth for Climate Justice",
