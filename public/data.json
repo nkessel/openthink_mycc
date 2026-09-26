@@ -439,7 +439,8 @@
           "deadline": null
         }
       ],
-      "last_activity": "2026-05-14T19:42:02.320Z"
+      "last_activity": "2026-05-14T19:42:02.320Z",
+      "logo": "logos/coalition_mycc.png"
     },
     {
       "id": "ejlt",
@@ -1055,7 +1056,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/students_for_environmental_action_at_weston_high_school.png"
     },
     {
       "id": "newton_south_high_school_environmental_club",
@@ -1075,7 +1077,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/newton_south_high_school_environmental_club.png"
     },
     {
       "id": "andover_high_school_environmental_club",
@@ -1094,7 +1097,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/andover_high_school_environmental_club.png"
     },
     {
       "id": "belmont_hill_sustainability_club",
@@ -1113,7 +1117,8 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/belmont_hill_sustainability_club.png"
     },
     {
       "id": "lorax_at_milton_academy",
@@ -1313,7 +1318,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac"
+      "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac",
+      "logo": "logos/boston_student_advisory_council.png"
     },
     {
       "id": "greenroots_eco",
@@ -1486,7 +1492,8 @@
         "mycc": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/ma_youth_for_climate_justice.png"
     },
     {
       "id": "masspirg",
@@ -3782,7 +3789,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://actionnetwork.org/groups/south-coast-neighbors-united"
+      "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
+      "logo": "logos/south_coast_neighbors_united.png"
     },
     {
       "id": "sunwealth",
@@ -3901,7 +3909,8 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "logo": "logos/upper_cape_women_s_coalition.png"
     },
     {
       "id": "vineyard_power_cooperative",
@@ -4101,7 +4110,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://www.21csf.org/"
+      "website": "https://www.21csf.org/",
+      "logo": "logos/21st_century_schools_fund.png"
     },
     {
       "id": "acadia_center",
@@ -4159,7 +4169,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://www.ablmass.org/"
+      "website": "https://www.ablmass.org/",
+      "logo": "logos/alliance_for_business_leadership.png"
     },
     {
       "id": "center_for_green_schools_at_us_gbc",
@@ -4201,7 +4212,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://cpaboston.org/"
+      "website": "https://cpaboston.org/",
+      "logo": "logos/chinese_progressive_association.png"
     },
     {
       "id": "citizens_climate_lobby",
