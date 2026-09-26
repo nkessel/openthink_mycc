@@ -238,42 +238,23 @@
   },
   "upper_cape_women_s_coalition": {
     "name": "Upper Cape Women's Coalition",
-    "how": "logo wrapper <img>",
-    "url": "https://shambalaawakeninghub.org/content/img/logo/logo.webp",
-    "file": "logos/upper_cape_women_s_coalition.png",
-    "bytes": 8030
+    "skipped": "site now shows a casino ad (domain looks hijacked) — no logo, no website"
   },
   "boston_student_advisory_council": {
     "name": "Boston Student Advisory Council",
-    "how": "icon",
-    "url": "https://resources.finalsite.net/images/v1724994773/bostonpublicschoolsorg/k8novht6qvokoesq35f9/favicon-boston.ico",
-    "file": "logos/boston_student_advisory_council.ico",
-    "bytes": 32988,
-    "note": "BPS program — uses the BPS logo"
+    "skipped": "unsure the picked icon is BPS's — skipped"
   },
   "four_rivers_climate_club": {
-    "name": "Four Rivers Climate Club",
-    "how": "logo wrapper <img>",
-    "url": "https://fourriverscharter.org/wp-content/uploads/2024/08/FRLogo.png",
-    "file": "logos/four_rivers_climate_club.png",
-    "bytes": 97327,
-    "note": "club's school logo (the club has no logo of its own)"
+    "skipped": "already has a logo",
+    "logo": "logos/four_rivers_climate_club.png"
   },
   "andover_climate_lobby": {
-    "name": "Andover Climate Lobby",
-    "how": "apple-touch-icon",
-    "url": "https://www.andover.edu/dist/assets/favicons/apple-touch-icon-57x57.png",
-    "file": "logos/andover_climate_lobby.png",
-    "bytes": 2146,
-    "note": "Phillips Academy Andover students — club's school logo (the club has no logo of its own)"
+    "skipped": "already has a logo",
+    "logo": "logos/andover_climate_lobby.png"
   },
   "newton_south_high_school_environmental_club": {
     "name": "Newton South High School Environmental Club",
-    "how": "icon",
-    "url": "https://resources.finalsite.net/images/v1741366802/newtonk12maus/huqie65bhohzoblimzbg/thrive_nowords.png",
-    "file": "logos/newton_south_high_school_environmental_club.png",
-    "bytes": 49510,
-    "note": "club's school logo (the club has no logo of its own)"
+    "skipped": "unsure the picked icon is Newton's — skipped"
   },
   "andover_high_school_environmental_club": {
     "name": "Andover High School Environmental Club",
@@ -286,42 +267,22 @@
   },
   "students_for_environmental_action_at_weston_high_school": {
     "name": "Students for Environmental Action at Weston High School",
-    "how": "header <img> logo",
-    "url": "https://www.westonschools.org/wp-content/uploads/2019/01/WEEFC-grants-touch-100-of-our-students-1-300x169.png",
-    "file": "logos/students_for_environmental_action_at_weston_high_school.png",
-    "bytes": 43102,
-    "note": "club's school logo (the club has no logo of its own)"
+    "skipped": "fetch picked the Weston Education Enrichment Fund logo, not the school — skipped"
   },
   "belmont_hill_sustainability_club": {
     "name": "Belmont Hill Sustainability Club",
-    "how": "icon",
-    "url": "https://www.belmonthill.org/uploaded/favicon.ico",
-    "file": "logos/belmont_hill_sustainability_club.ico",
-    "bytes": 32988,
-    "note": "club's school logo (the club has no logo of its own)"
+    "skipped": "unsure the picked icon is Belmont Hill's — skipped"
   },
   "lorax_at_milton_academy": {
-    "name": "LORAX at Milton Academy",
-    "how": "icon",
-    "url": "https://resources.finalsite.net/images/v1778182764/miltonedu/ubb0ylxj5wrfu05i92yx/Shield_Favicon1.png",
-    "file": "logos/lorax_at_milton_academy.png",
-    "bytes": 23627,
-    "note": "club's school logo (the club has no logo of its own)"
+    "skipped": "already has a logo",
+    "logo": "logos/lorax_at_milton_academy.png"
   },
   "boston_latin_school_youthcan": {
-    "name": "Boston Latin School Youth Climate Action Network",
-    "how": "logo wrapper <img>",
-    "url": "https://www.bls.org/pics/header_logo.png",
-    "file": "logos/boston_latin_school_youthcan.png",
-    "bytes": 5576,
-    "note": "club's school logo (the club has no logo of its own)"
+    "skipped": "already has a logo",
+    "logo": "logos/boston_latin_school_youthcan.png"
   },
   "mit_sea": {
-    "name": "MIT Students for Environmental Action",
-    "how": "apple-touch-icon",
-    "url": "https://www.mit.edu/themes/mit/assets/favicon/apple-touch-icon.png",
-    "file": "logos/mit_sea.png",
-    "bytes": 3015,
-    "note": "club's school logo (the club has no logo of its own)"
+    "skipped": "already has a logo",
+    "logo": "logos/mit_sea.png"
   }
 }
