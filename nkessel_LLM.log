@@ -177,3 +177,10 @@ What / why
 - The live site reads the Google Sheet, not data.json, so added menu item "Fill in missing logos + websites from
   GitHub" (fillLogosFromGitHub): copies logo paths/websites from development_branch's data.json into empty sheet cells
   only, logging each row. Nathan runs it once after this PR merges (and after re-pasting Code.gs).
+
+2026-09-25 20:25 — Claude
+- Nathan ran the temporary "One-time form fix" and "Set up sheet + forms". Verified all four live forms: org form has no
+  "Remove from the map?" and no separate youth question ("Youth serving" is a topic checkbox); event + project forms keep
+  "Remove from the map?"; event form has End time; feedback form has sign-in + Phone (optional), old Email question gone;
+  no "Openthink" text left in any form.
+- Restored the sheet's Apps Script to exactly the repo's apps-script/Code.gs (temporary helper + menu item removed).
