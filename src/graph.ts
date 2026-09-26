@@ -329,16 +329,35 @@ export function createGraph(
       .attr("stroke-width", 0);
     if (d.kind === "coalition") {
       const r = coalitionRadius(d);
-      sel
+      const ring = sel
         .append("circle")
         .attr("class", "ring")
         .attr("r", r)
-        .attr("fill", d.color);
-      sel
+        .attr("fill", d.logo ? "#f8fafc" : d.color);
+      if (d.logo) ring.attr("stroke", d.color).attr("stroke-width", 5);
+      const cLabel = sel
         .append("text")
         .attr("class", "node-label")
         .attr("font-size", Math.min(r * 0.55, 22))
         .text(d.abbrev || initials(d.name));
+      if (d.logo) {
+        // Logo inside the coalition's colored ring; the abbreviation returns if the image fails.
+        cLabel.style("display", "none");
+        const s = r * LOGO_SCALE * 0.9;
+        sel
+          .append("image")
+          .attr("class", "node-logo")
+          .attr("href", d.logo)
+          .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s)
+          .attr("preserveAspectRatio", "xMidYMid meet")
+          .style("clip-path", "circle(50%)")
+          .attr("pointer-events", "none")
+          .on("error", function () {
+            d3.select(this).remove();
+            cLabel.style("display", null);
+            ring.attr("fill", d.color).attr("stroke-width", 0);
+          });
+      }
       sel
         .append("text")
         .attr("class", "node-name")
@@ -391,7 +410,7 @@ export function createGraph(
       const sel = d3.select(this);
       const r = nodeRadiusOf(d);
       sel.select<SVGCircleElement>("circle.ring").attr("r", r);
-      const s = r * LOGO_SCALE;
+      const s = r * LOGO_SCALE * (d.kind === "coalition" ? 0.9 : 1);
       sel.select<SVGImageElement>("image.node-logo")
         .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s);
 

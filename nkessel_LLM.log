@@ -189,3 +189,15 @@ What / why
 - Nathan: point-person questions should come right after "Short name or abbreviation". They're now a section header +
   name/email/phone on the first page (no separate page). placePointPerson_ moves them on the live form (and removes the
   old "Point person (private)" page break) the next time "Set up sheet + forms" runs.
+
+2026-09-25 20:45 — Claude
+- Nathan: coalition logos; bigger org nodes; org panel tabs About > Projects > Events > Connections, with suggested
+  connections at the end of Connections.
+- Coalition logos: official sites found for only 2 of 8 (Mass Power Forward → mapowerforward.com, Climate Resilient
+  Schools → climateresilientschoolsma.org). MYCC, EJLT, CCCC, SCJC, GJC, HERO only have social pages or live on a member
+  org's site, so no logo was guessed (risk of the wrong logo); they keep their colored abbreviation circle. Add a
+  logo_url in scripts/logo-sources.json (kind: "coalition") to fill one in.
+  fetch-logos.mjs now takes coalition entries (saved as logos/coalition_<id>.png). Sheet: Coalitions tab gets logo +
+  website columns; "Fill in missing logos + websites from GitHub" also fills coalitions; the live data includes them.
+- Map: coalition logos sit inside their colored ring; org circles 14 → 20 px radius.
+- Org panel opens on About; Connections = coalitions, works-with, then "Suggested connections".

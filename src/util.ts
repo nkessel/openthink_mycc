@@ -63,7 +63,7 @@ export function coalitionRadius(c: Coalition): number {
 }
 
 export function orgRadius(_o: Organization): number {
-  return 14;
+  return 20; // was 14; bigger so logos read at the default zoom
 }
 
 export function typeLabel(t: string): string {
