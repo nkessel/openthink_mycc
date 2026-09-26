@@ -39,6 +39,7 @@ Running it again is safe: it skips forms that already exist (only updating their
 
 1. In Apps Script: **Deploy → New deployment → Web app**. Execute as **Me**, access **Anyone**. Copy the URL.
 2. It only serves public data — never Editors, Needs Review, Feedback, or Change Log.
+3. **After changing `Code.gs` later:** the web app keeps serving the version it was deployed with. Go to **Deploy → Manage deployments → ✏️ → Version: New version → Deploy** (same URL) so the site sees the change.
 
 ## 4. Connect the website (one small PR)
 

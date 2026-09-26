@@ -34,7 +34,7 @@ export interface GraphSettings {
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   centerForce: 0.5,
-  repelForce: 0.5,
+  repelForce: 0.65, // a bit more spread by default
   linkForce: 0.5,
   linkDistance: 0.5,
   nodeSize: 1,
@@ -58,8 +58,8 @@ export interface Graph {
 
 const COALITION_LABEL_FONT_SIZE = 14;
 const ORG_LABEL_FONT_SIZE = 10;
-/** Logo size as a share of the node radius (a small margin keeps round logos off the edge). */
-const LOGO_SCALE = 0.86;
+/** Logo size as a share of the node radius: fills the circle (no white rim). */
+const LOGO_SCALE = 1;
 const ORG_NAME_FONT_SIZE = 11;
 
 export function createGraph(
@@ -334,7 +334,8 @@ export function createGraph(
         .attr("class", "ring")
         .attr("r", r)
         .attr("fill", d.logo ? "#f8fafc" : d.color);
-      if (d.logo) ring.attr("stroke", d.color).attr("stroke-width", 5);
+      // style() (not attr) so it beats the stylesheet's white ring
+      if (d.logo) ring.style("stroke", d.color).style("stroke-width", "5px").style("stroke-opacity", "1");
       const cLabel = sel
         .append("text")
         .attr("class", "node-label")
@@ -343,7 +344,7 @@ export function createGraph(
       if (d.logo) {
         // Logo inside the coalition's colored ring; the abbreviation returns if the image fails.
         cLabel.style("display", "none");
-        const s = r * LOGO_SCALE * 0.9;
+        const s = r * LOGO_SCALE * 0.82; // inside the colored ring
         sel
           .append("image")
           .attr("class", "node-logo")
@@ -355,7 +356,7 @@ export function createGraph(
           .on("error", function () {
             d3.select(this).remove();
             cLabel.style("display", null);
-            ring.attr("fill", d.color).attr("stroke-width", 0);
+            ring.attr("fill", d.color).style("stroke", null).style("stroke-width", null).style("stroke-opacity", null);
           });
       }
       sel
@@ -371,6 +372,7 @@ export function createGraph(
         .attr("class", "ring")
         .attr("r", r)
         .attr("fill", d.logo ? "#f8fafc" : "#2a2a36");
+      if (d.logo) sel.select("circle.ring").style("stroke", "none"); // no white border around logos
       const label = sel
         .append("text")
         .attr("class", "node-label")
@@ -391,7 +393,7 @@ export function createGraph(
           .on("error", function () {
             d3.select(this).remove();
             label.style("display", null);
-            sel.select("circle.ring").attr("fill", "#2a2a36");
+            sel.select("circle.ring").attr("fill", "#2a2a36").style("stroke", null);
           });
       }
       sel
@@ -410,7 +412,7 @@ export function createGraph(
       const sel = d3.select(this);
       const r = nodeRadiusOf(d);
       sel.select<SVGCircleElement>("circle.ring").attr("r", r);
-      const s = r * LOGO_SCALE * (d.kind === "coalition" ? 0.9 : 1);
+      const s = r * LOGO_SCALE * (d.kind === "coalition" ? 0.82 : 1);
       sel.select<SVGImageElement>("image.node-logo")
         .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s);
 
