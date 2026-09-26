@@ -206,12 +206,8 @@
     "logo": "logos/metropolitan_area_planning_council.png"
   },
   "mtacan": {
-    "name": "Massachusetts Teachers Association Climate Action Network",
-    "how": "google s2 icon",
-    "url": "https://www.google.com/s2/favicons?domain=massteacher.org&sz=256",
-    "file": "logos/mtacan.png",
-    "bytes": 3058,
-    "note": "mtaclimateaction.org no longer resolves; uses the MTA logo"
+    "skipped": "already has a logo",
+    "logo": "logos/mtacan.png"
   },
   "northeast_climate_justice_research_collaborative": {
     "skipped": "already has a logo",
@@ -226,11 +222,27 @@
     "how": "icon",
     "url": "https://images.squarespace-cdn.com/content/v1/5faab8eb29e0595fb9fbd867/1610648930278-YZGBGIG9XD3PI8QO835N/favicon.ico?format=100w",
     "file": "logos/sustainable_business_network_of_massachusetts.png",
-    "bytes": 4477,
+    "bytes": 9731,
     "note": "header logo is white-on-transparent; uses the site icon"
   },
   "undauntedk12": {
     "skipped": "already has a logo",
     "logo": "logos/undauntedk12.png"
+  },
+  "mpf": {
+    "name": "Mass Power Forward",
+    "how": "header <img> logo",
+    "url": "https://www.mapowerforward.com/wp-content/uploads/2026/09/MPF_Logo-Tagline_White_on_Blue-page-001-1024x512.jpg",
+    "file": "logos/coalition_mpf.png",
+    "bytes": 27284,
+    "note": "Mass Power Forward's own site"
+  },
+  "crs": {
+    "name": "Climate Resilient Schools Coalition",
+    "how": "header <img> logo",
+    "url": "https://images.squarespace-cdn.com/content/v1/661f4a3f76c077227c70ab0b/78f5e5e3-6c62-4479-aebc-0f0c654af577/Black+Outline+Street+Brand+Modern+Typography+Logo+%281%29.png?format=1500w",
+    "file": "logos/coalition_crs.png",
+    "bytes": 11886,
+    "note": "Climate Resilient Schools Coalition's own site"
   }
 }

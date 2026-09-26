@@ -62,6 +62,9 @@ export interface Coalition {
   events: CoalitionEvent[];
   actions: Action[];
   last_activity: string;
+  /** Relative path (logos/coalition_<id>.png) or an absolute image URL. */
+  logo?: string;
+  website?: string;
 }
 
 export interface Organization {

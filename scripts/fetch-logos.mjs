@@ -1,4 +1,4 @@
-// Download missing org logos from each org's website into public/logos/.
+// Download missing org (and coalition) logos from their websites into public/logos/.
 //
 //   node scripts/fetch-logos.mjs            # uses scripts/logo-sources.json
 //
@@ -17,6 +17,8 @@ const sources = JSON.parse(readFileSync(`${ROOT}scripts/logo-sources.json`, "utf
 const dataPath = `${ROOT}public/data.json`;
 const data = JSON.parse(readFileSync(dataPath, "utf8"));
 const orgs = new Map(data.organizations.map((o) => [o.id, o]));
+// Entries with "kind": "coalition" fill a coalition's logo (saved as logos/coalition_<id>.png).
+const coalitions = new Map(data.coalitions.map((c) => [c.id, c]));
 mkdirSync(`${ROOT}public/logos`, { recursive: true });
 
 let sharp = null;
@@ -121,8 +123,10 @@ async function isWhiteOnClear(buf) {
 
 const report = {};
 for (const s of sources) {
-  const org = orgs.get(s.id);
-  if (!org) { report[s.id] = { error: "unknown org id" }; continue; }
+  const isCoalition = s.kind === "coalition";
+  const org = isCoalition ? coalitions.get(s.id) : orgs.get(s.id);
+  const fileId = isCoalition ? `coalition_${s.id}` : s.id;
+  if (!org) { report[s.id] = { error: `unknown ${isCoalition ? "coalition" : "org"} id` }; continue; }
   if (s.website && !org.website) org.website = s.website;
   if (org.logo && !s.logo_url && !s.force) { report[s.id] = { skipped: "already has a logo", logo: org.logo }; continue; }
 
@@ -166,11 +170,11 @@ for (const s of sources) {
         if (white) throw new Error("white logo on transparent background (invisible on light badges)");
       }
       for (const old of ["png", "jpg", "svg", "webp", "gif", "ico"]) {
-        const p = `${ROOT}public/logos/${s.id}.${old}`;
+        const p = `${ROOT}public/logos/${fileId}.${old}`;
         if (old !== ext && existsSync(p)) unlinkSync(p);
       }
-      writeFileSync(`${ROOT}public/logos/${s.id}.${ext}`, buf);
-      org.logo = `logos/${s.id}.${ext}`;
+      writeFileSync(`${ROOT}public/logos/${fileId}.${ext}`, buf);
+      org.logo = `logos/${fileId}.${ext}`;
       report[s.id] = { name: org.name, how: c.how, url: c.url, file: org.logo, bytes: buf.length, note: s.note };
       done = true;
       break;

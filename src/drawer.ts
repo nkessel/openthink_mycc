@@ -53,11 +53,13 @@ export function createDrawer(
         h(
           "div",
           { class: "title-row" },
-          h(
-            "div",
-            { class: "badge", style: `background:${c.color}` },
-            c.abbrev || initials(c.name),
-          ),
+          c.logo
+            ? h("div", { class: "badge logo", style: `border:2px solid ${c.color}` }, h("img", { src: c.logo, alt: "" }))
+            : h(
+                "div",
+                { class: "badge", style: `background:${c.color}` },
+                c.abbrev || initials(c.name),
+              ),
           h(
             "div",
             {},
@@ -145,11 +147,10 @@ export function createDrawer(
             { id: "actions", label: "Actions" },
           ]
         : [
-            { id: "coalitions", label: "Connections" },
-            { id: "suggested", label: "Suggested" },
+            { id: "about", label: "About" },
             { id: "projects", label: "Projects" },
             { id: "events", label: "Events" },
-            { id: "about", label: "About" },
+            { id: "coalitions", label: "Connections" },
           ];
     // Ensure activeTab is valid for this node kind
     if (!tabList.find((t) => t.id === activeTab)) {
@@ -183,7 +184,10 @@ export function createDrawer(
     } else {
       const o = node as Organization;
       if (activeTab === "coalitions") {
+        // Connections: coalitions, orgs they work with, then suggested connections at the end.
         renderCoalitionList(body, o);
+        body.appendChild(h("div", { class: "section-label" }, "Suggested connections"));
+        renderSuggestions(body, o);
       } else if (activeTab === "suggested") {
         renderSuggestions(body, o);
       } else if (activeTab === "projects") {
@@ -395,7 +399,7 @@ export function createDrawer(
     open(node) {
       currentNode = node;
       // Default tab depends on node kind
-      activeTab = node.kind === "coalition" ? "projects" : "coalitions";
+      activeTab = node.kind === "coalition" ? "projects" : "about";
       rerender();
       el.classList.add("open");
     },

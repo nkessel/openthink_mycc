@@ -154,7 +154,8 @@ var PROFILE_STR = ['membership_size', 'c3_tier', 'c4_tier', 'geo_precision'];
 var PROFILE_COLS = PROFILE_BOOL.concat(PROFILE_NUM, PROFILE_STR);
 
 var COLS = {
-  'Coalitions': ['id', 'name', 'abbrev', 'description', 'focus_tags', 'geographic_scope', 'color', 'lat', 'lng', 'last_activity'],
+  'Coalitions': ['id', 'name', 'abbrev', 'description', 'focus_tags', 'geographic_scope', 'color', 'lat', 'lng', 'last_activity',
+    'logo', 'website'],
   'Organizations': ['id', 'name', 'abbrev', 'type', 'geographic_focus', 'description', 'coalition_ids', 'topic_tags',
     'website', 'logo', 'public_contact', 'hq_address', 'remote', 'lat', 'lng', 'last_activity', 'hidden',
     'coalition_weights'].concat(PROFILE_COLS),
@@ -217,12 +218,34 @@ function fillLogosFromGitHub() {
   return msg;
 }
 
+/** Same as below, for the Coalitions tab (adds its logo/website columns if they're missing). */
+function fillCoalitionLogos_(data, counts) {
+  var sheet = ss_().getSheetByName(TAB.coalitions);
+  if (!sheet) return;
+  addMissingColumns_(sheet, COLS[TAB.coalitions]);
+  var table = readTable_(sheet);
+  var byId = {};
+  (data.coalitions || []).forEach(function (c) { byId[c.id] = c; });
+  table.rows.forEach(function (r) {
+    var src = byId[str_(r.id)];
+    if (!src) return;
+    var updates = {};
+    if (!str_(r.logo) && src.logo) { updates.logo = src.logo; counts.logos++; }
+    if (!str_(r.website) && src.website) { updates.website = src.website; counts.websites++; }
+    if (!Object.keys(updates).length) return;
+    writeFields_(sheet, table.headers, r._row, updates);
+    logChange_('', 'Fill from GitHub', 'updated', '', 'coalition', str_(r.id), str_(r.name),
+      Object.keys(updates).map(function (k) { return k + ': ∅ → ' + updates[k]; }).join('\n'));
+  });
+}
+
 function fillLogos_(data) {
   var sheet = ss_().getSheetByName(TAB.orgs);
   var table = readTable_(sheet);
   var byId = {};
   data.organizations.forEach(function (o) { byId[o.id] = o; });
   var counts = { logos: 0, websites: 0 };
+  fillCoalitionLogos_(data, counts);
   table.rows.forEach(function (r) {
     var src = byId[str_(r.id)];
     if (!src) return;
@@ -325,7 +348,8 @@ function sheetRowsFromData_(d) {
   };
   d.coalitions.forEach(function (c) {
     push('Coalitions', { id: c.id, name: c.name, abbrev: c.abbrev, description: c.description, focus_tags: L(c.focus_tags),
-      geographic_scope: c.geographic_scope, color: c.color, lat: c.lat, lng: c.lng, last_activity: c.last_activity });
+      geographic_scope: c.geographic_scope, color: c.color, lat: c.lat, lng: c.lng, last_activity: c.last_activity,
+      logo: c.logo, website: c.website });
     (c.projects || []).forEach(function (p) { project(p, c.id, ''); });
     (c.events || []).forEach(function (e) { event(e, c.id, ''); });
     (c.actions || []).forEach(function (a) {
@@ -1295,6 +1319,7 @@ function buildDataFile_(t, generatedAt) {
       lat: Number(c.lat), lng: Number(c.lng), member_ids: members, member_count: members.length,
       projects: projects['c:' + c.id] || [], events: events['c:' + c.id] || [], actions: actions['c:' + c.id] || [],
       last_activity: str(c.last_activity),
+      logo: str(c.logo) || undefined, website: str(c.website) || undefined,
     };
   });
 

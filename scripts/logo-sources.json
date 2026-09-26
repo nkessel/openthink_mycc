@@ -3,12 +3,12 @@
     "id": "youth_climate_action_now",
     "website": "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/",
     "logo_site": "https://climateactionnowma.org/",
-    "note": "program of Climate Action Now \u2014 uses CAN's logo"
+    "note": "program of Climate Action Now — uses CAN's logo"
   },
   {
     "id": "roxbury_environmental_empowerment_project_by_alternatives_fo",
     "website": "https://ace-ej.org/",
-    "note": "REEP is a program of ACE \u2014 uses ACE's logo"
+    "note": "REEP is a program of ACE — uses ACE's logo"
   },
   {
     "id": "masscosh_tlaw_climate_change_and_environmental_justice_team",
@@ -200,7 +200,7 @@
   {
     "id": "northeast_climate_justice_research_collaborative",
     "website": "https://www.umb.edu/ssl/",
-    "note": "hosted by UMass Boston's Sustainable Solutions Lab \u2014 uses its logo"
+    "note": "hosted by UMass Boston's Sustainable Solutions Lab — uses its logo"
   },
   {
     "id": "pioneer_valley_asthma_coalition",
@@ -216,5 +216,17 @@
   {
     "id": "undauntedk12",
     "website": "https://www.undauntedk12.org/"
+  },
+  {
+    "kind": "coalition",
+    "id": "mpf",
+    "website": "https://www.mapowerforward.com/",
+    "note": "Mass Power Forward's own site"
+  },
+  {
+    "kind": "coalition",
+    "id": "crs",
+    "website": "https://www.climateresilientschoolsma.org/",
+    "note": "Climate Resilient Schools Coalition's own site"
   }
 ]
