@@ -214,3 +214,14 @@ What / why
     school clubs / BSAC the school's (or BPS's) logo, noted as such in logo-sources.json. Still none for: MA Youth for
     Climate Justice, South Coast Neighbors United, Hands Across the River, Take Back the Grid (no website found), Bodhisara
     (site has no logo). Sites that blocked the downloader last time are retried.
+
+2026-09-26 16:25 — Claude
+- Nathan pointed to the team's logo folder in Drive (Aissata's collection, shared "anyone with link"). It has the real
+  logos for 16 orgs that were missing or had a stand-in (school logos for clubs); only part of the folder had made it
+  into the original import. logo-sources.json now downloads those via Drive links (logo_url). MYCC's logo comes from
+  "MYCC profile.PNG" in Nathan's Drive (also public). Each result is checked by eye before merging.
+- Result, checked by eye: 13 good (Andover Climate Lobby, Andover HS, BLS YouthCAN, BSAC, Weston SEA, NSHS, Belmont
+  Hill, MAYCJ, ABL, CPA, Four Rivers, LORAX, and MYCC's coalition logo). Skipped 3 folder images that are photos/banner
+  crops, not logos (21st Century Schools Fund, Upper Cape Women's Coalition, South Coast Neighbors United). The folder's
+  "MIT SEA" file is MIT's Sustainable Energy Alliance, a different group than Students for Environmental Action — kept
+  the MIT logo and flagged it. 9 orgs still without a logo.

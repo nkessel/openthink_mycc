@@ -90,7 +90,7 @@
   {
     "id": "south_coast_neighbors_united",
     "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
-    "note": "no website found; Action Network page",
+    "note": "folder image is a crowd photo with a quote, not a logo — skipped",
     "skip_logo": true
   },
   {
@@ -138,7 +138,9 @@
   },
   {
     "id": "21st_century_schools_fund",
-    "website": "https://www.21csf.org/"
+    "website": "https://www.21csf.org/",
+    "note": "folder image is a blurry banner crop, unreadable as a logo — skipped",
+    "skip_logo": true
   },
   {
     "id": "acadia_center",
@@ -150,7 +152,9 @@
   },
   {
     "id": "alliance_for_business_leadership",
-    "website": "https://www.ablmass.org/"
+    "website": "https://www.ablmass.org/",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1jKjaGhekyek3y3Yk4pallFrxAEonIAF6",
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   {
     "id": "center_for_green_schools_at_us_gbc",
@@ -159,7 +163,8 @@
   {
     "id": "chinese_progressive_association",
     "website": "https://cpaboston.org/",
-    "logo_url": "https://cpaboston.org/wp-content/uploads/2025/10/CPA-Logo-Dark-Red.png"
+    "logo_url": "https://drive.google.com/uc?export=download&id=1TJInF6YkFqmkL7QBm3wCP_3LteYD1EYS",
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   {
     "id": "collaborative_for_high_performance_schools",
@@ -233,62 +238,78 @@
   },
   {
     "id": "upper_cape_women_s_coalition",
-    "skip_logo": true,
-    "note": "site now shows a casino ad (domain looks hijacked) — no logo, no website"
+    "note": "folder image is a photo of a sign, not a logo — skipped (and their domain now serves a casino ad)",
+    "skip_logo": true
   },
   {
     "id": "boston_student_advisory_council",
     "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac",
     "logo_site": "https://www.bostonpublicschools.org/",
-    "note": "unsure the picked icon is BPS's — skipped",
-    "skip_logo": true
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=12ikdO1TSTgoihFQvZqueNQYMZ2frBLQc"
   },
   {
     "id": "four_rivers_climate_club",
     "website": "https://fourriverscharter.org/",
-    "note": "club's school logo (the club has no logo of its own)"
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1nUWZGWD3NcRDCSPohZ4qm9h2Tu5MYgvg"
   },
   {
     "id": "andover_climate_lobby",
     "logo_site": "https://www.andover.edu/",
-    "note": "Phillips Academy Andover students — club's school logo (the club has no logo of its own)"
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1LYuM3eQB7ciPP7Qkb7XRGmqx7Nqpz1IA"
   },
   {
     "id": "newton_south_high_school_environmental_club",
     "logo_site": "https://www.newton.k12.ma.us/",
-    "note": "unsure the picked icon is Newton's — skipped",
-    "skip_logo": true
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1K2r4RtI-2H3eMqy6kJsoBZOhGqW5ASwg"
   },
   {
     "id": "andover_high_school_environmental_club",
     "logo_site": "https://www.aps1.net/",
-    "note": "club's school logo (the club has no logo of its own)"
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=18ZdEbu_rIiNQmaMgULc7SqDDYJMZSA_Z"
   },
   {
     "id": "students_for_environmental_action_at_weston_high_school",
     "logo_site": "https://www.westonschools.org/",
-    "note": "fetch picked the Weston Education Enrichment Fund logo, not the school — skipped",
-    "skip_logo": true
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=14BKffuszP4Rf5bYDQAAe6zznDU5ptHmP"
   },
   {
     "id": "belmont_hill_sustainability_club",
     "logo_site": "https://www.belmonthill.org/",
-    "note": "unsure the picked icon is Belmont Hill's — skipped",
-    "skip_logo": true
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1DSxB7_19xfT4kVZ76nuUi9HNg_d_ahhN"
   },
   {
     "id": "lorax_at_milton_academy",
     "logo_site": "https://www.milton.edu/",
-    "note": "club's school logo (the club has no logo of its own)"
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1hUYnSBLa7V_xdELjNaOSGyD2E381hc50"
   },
   {
     "id": "boston_latin_school_youthcan",
     "logo_site": "https://www.bls.org/",
-    "note": "club's school logo (the club has no logo of its own)"
+    "note": "from the team logo folder in Google Drive (Aissata)",
+    "logo_url": "https://drive.google.com/uc?export=download&id=16iurjlrY_jSIHoC6IyxJvGMfaRsM3Lzt"
   },
   {
     "id": "mit_sea",
     "logo_site": "https://www.mit.edu/",
-    "note": "club's school logo (the club has no logo of its own)"
+    "note": "folder's 'MIT SEA' file is the Sustainable Energy Alliance (a different MIT group) — kept MIT's logo"
+  },
+  {
+    "id": "ma_youth_for_climate_justice",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1n6L5W8cfdLvxCBzAB0wjOfikF8mzWlRD",
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  {
+    "kind": "coalition",
+    "id": "mycc",
+    "logo_url": "https://drive.google.com/uc?export=download&id=1IwTYIKhhANUfj10M-QDQTrytCoHB5Zcm",
+    "note": "Nathan's Drive: MYCC profile.PNG"
   }
 ]

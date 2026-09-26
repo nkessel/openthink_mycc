@@ -90,7 +90,7 @@
   },
   "south_coast_neighbors_united": {
     "name": "South Coast Neighbors United",
-    "skipped": "no website found; Action Network page"
+    "skipped": "folder image is a crowd photo with a quote, not a logo — skipped"
   },
   "sunwealth": {
     "skipped": "already has a logo",
@@ -138,12 +138,7 @@
   },
   "21st_century_schools_fund": {
     "name": "21st Century Schools Fund",
-    "error": "no usable image",
-    "tried": [
-      "favicon.ico: HTTP 404",
-      "google s2 icon: HTTP 404",
-      "duckduckgo icon: HTTP 404"
-    ]
+    "skipped": "folder image is a blurry banner crop, unreadable as a logo — skipped"
   },
   "acadia_center": {
     "skipped": "already has a logo",
@@ -155,11 +150,11 @@
   },
   "alliance_for_business_leadership": {
     "name": "Alliance for Business Leadership",
-    "error": "no usable image",
-    "tried": [
-      "google s2 icon: HTTP 404",
-      "duckduckgo icon: HTTP 404"
-    ]
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1jKjaGhekyek3y3Yk4pallFrxAEonIAF6",
+    "file": "logos/alliance_for_business_leadership.png",
+    "bytes": 29613,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "center_for_green_schools_at_us_gbc": {
     "skipped": "already has a logo",
@@ -167,10 +162,11 @@
   },
   "chinese_progressive_association": {
     "name": "Chinese Progressive Association",
-    "error": "no usable image",
-    "tried": [
-      "logo_url (set by hand): HTTP 403"
-    ]
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1TJInF6YkFqmkL7QBm3wCP_3LteYD1EYS",
+    "file": "logos/chinese_progressive_association.png",
+    "bytes": 10649,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "collaborative_for_high_performance_schools": {
     "skipped": "already has a logo",
@@ -221,7 +217,7 @@
     "how": "icon",
     "url": "https://images.squarespace-cdn.com/content/v1/5faab8eb29e0595fb9fbd867/1610648930278-YZGBGIG9XD3PI8QO835N/favicon.ico?format=100w",
     "file": "logos/sustainable_business_network_of_massachusetts.png",
-    "bytes": 9731,
+    "bytes": 4477,
     "note": "header logo is white-on-transparent; uses the site icon"
   },
   "undauntedk12": {
@@ -238,51 +234,98 @@
   },
   "upper_cape_women_s_coalition": {
     "name": "Upper Cape Women's Coalition",
-    "skipped": "site now shows a casino ad (domain looks hijacked) — no logo, no website"
+    "skipped": "folder image is a photo of a sign, not a logo — skipped (and their domain now serves a casino ad)"
   },
   "boston_student_advisory_council": {
     "name": "Boston Student Advisory Council",
-    "skipped": "unsure the picked icon is BPS's — skipped"
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=12ikdO1TSTgoihFQvZqueNQYMZ2frBLQc",
+    "file": "logos/boston_student_advisory_council.png",
+    "bytes": 54669,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "four_rivers_climate_club": {
-    "skipped": "already has a logo",
-    "logo": "logos/four_rivers_climate_club.png"
+    "name": "Four Rivers Climate Club",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1nUWZGWD3NcRDCSPohZ4qm9h2Tu5MYgvg",
+    "file": "logos/four_rivers_climate_club.png",
+    "bytes": 31803,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "andover_climate_lobby": {
-    "skipped": "already has a logo",
-    "logo": "logos/andover_climate_lobby.png"
+    "name": "Andover Climate Lobby",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1LYuM3eQB7ciPP7Qkb7XRGmqx7Nqpz1IA",
+    "file": "logos/andover_climate_lobby.png",
+    "bytes": 17195,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "newton_south_high_school_environmental_club": {
     "name": "Newton South High School Environmental Club",
-    "skipped": "unsure the picked icon is Newton's — skipped"
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1K2r4RtI-2H3eMqy6kJsoBZOhGqW5ASwg",
+    "file": "logos/newton_south_high_school_environmental_club.png",
+    "bytes": 57018,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "andover_high_school_environmental_club": {
     "name": "Andover High School Environmental Club",
-    "error": "no usable image",
-    "tried": [
-      "favicon.ico: too small",
-      "google s2 icon: too small (32×32)",
-      "duckduckgo icon: too small (32×32)"
-    ]
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=18ZdEbu_rIiNQmaMgULc7SqDDYJMZSA_Z",
+    "file": "logos/andover_high_school_environmental_club.png",
+    "bytes": 41639,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "students_for_environmental_action_at_weston_high_school": {
     "name": "Students for Environmental Action at Weston High School",
-    "skipped": "fetch picked the Weston Education Enrichment Fund logo, not the school — skipped"
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=14BKffuszP4Rf5bYDQAAe6zznDU5ptHmP",
+    "file": "logos/students_for_environmental_action_at_weston_high_school.png",
+    "bytes": 21702,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "belmont_hill_sustainability_club": {
     "name": "Belmont Hill Sustainability Club",
-    "skipped": "unsure the picked icon is Belmont Hill's — skipped"
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1DSxB7_19xfT4kVZ76nuUi9HNg_d_ahhN",
+    "file": "logos/belmont_hill_sustainability_club.png",
+    "bytes": 58170,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "lorax_at_milton_academy": {
-    "skipped": "already has a logo",
-    "logo": "logos/lorax_at_milton_academy.png"
+    "name": "LORAX at Milton Academy",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1hUYnSBLa7V_xdELjNaOSGyD2E381hc50",
+    "file": "logos/lorax_at_milton_academy.png",
+    "bytes": 31092,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "boston_latin_school_youthcan": {
-    "skipped": "already has a logo",
-    "logo": "logos/boston_latin_school_youthcan.png"
+    "name": "Boston Latin School Youth Climate Action Network",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=16iurjlrY_jSIHoC6IyxJvGMfaRsM3Lzt",
+    "file": "logos/boston_latin_school_youthcan.png",
+    "bytes": 34573,
+    "note": "from the team logo folder in Google Drive (Aissata)"
   },
   "mit_sea": {
     "skipped": "already has a logo",
     "logo": "logos/mit_sea.png"
+  },
+  "ma_youth_for_climate_justice": {
+    "name": "Massachusetts Youth for Climate Justice",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1n6L5W8cfdLvxCBzAB0wjOfikF8mzWlRD",
+    "file": "logos/ma_youth_for_climate_justice.png",
+    "bytes": 50103,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "mycc": {
+    "name": "Massachusetts Youth Climate Coalition",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1IwTYIKhhANUfj10M-QDQTrytCoHB5Zcm",
+    "file": "logos/coalition_mycc.png",
+    "bytes": 17968,
+    "note": "Nathan's Drive: MYCC profile.PNG"
   }
 }
