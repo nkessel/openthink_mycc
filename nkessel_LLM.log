@@ -201,3 +201,16 @@ What / why
   website columns; "Fill in missing logos + websites from GitHub" also fills coalitions; the live data includes them.
 - Map: coalition logos sit inside their colored ring; org circles 14 → 20 px radius.
 - Org panel opens on About; Connections = coalitions, works-with, then "Suggested connections".
+
+2026-09-26 16:10 — Claude
+- Found why coalition logos (and event end times) weren't on the site: the Apps Script web app was still serving
+  deployment Version 1 (Google freezes a web app at its deployed version). Published Version 2 (same URL) from
+  Manage deployments. After any doGet/buildDataFile_ change, the web app needs a new version — noted in SETUP.md.
+- Nathan: logos shouldn't have a white border; fill more of the missing logos; repel force a bit stronger by default.
+  - Logos now fill the circle (no white rim/stroke); coalition logos sit inside their colored ring (the stylesheet's
+    white stroke was overriding it).
+  - Repel default 0.5 → 0.65; controls storage key bumped to v2 so browsers pick up the new defaults once.
+  - More logo sources: CPA (exact logo URL), Upper Cape Women's Coalition, HealthLink (citizensinaction.org), and for
+    school clubs / BSAC the school's (or BPS's) logo, noted as such in logo-sources.json. Still none for: MA Youth for
+    Climate Justice, South Coast Neighbors United, Hands Across the River, Take Back the Grid (no website found), Bodhisara
+    (site has no logo). Sites that blocked the downloader last time are retried.

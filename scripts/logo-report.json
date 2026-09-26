@@ -169,8 +169,7 @@
     "name": "Chinese Progressive Association",
     "error": "no usable image",
     "tried": [
-      "google s2 icon: HTTP 404",
-      "duckduckgo icon: HTTP 404"
+      "logo_url (set by hand): HTTP 403"
     ]
   },
   "collaborative_for_high_performance_schools": {
@@ -230,19 +229,60 @@
     "logo": "logos/undauntedk12.png"
   },
   "mpf": {
-    "name": "Mass Power Forward",
-    "how": "header <img> logo",
-    "url": "https://www.mapowerforward.com/wp-content/uploads/2026/09/MPF_Logo-Tagline_White_on_Blue-page-001-1024x512.jpg",
-    "file": "logos/coalition_mpf.png",
-    "bytes": 27284,
-    "note": "Mass Power Forward's own site"
+    "skipped": "already has a logo",
+    "logo": "logos/coalition_mpf.png"
   },
   "crs": {
-    "name": "Climate Resilient Schools Coalition",
-    "how": "header <img> logo",
-    "url": "https://images.squarespace-cdn.com/content/v1/661f4a3f76c077227c70ab0b/78f5e5e3-6c62-4479-aebc-0f0c654af577/Black+Outline+Street+Brand+Modern+Typography+Logo+%281%29.png?format=1500w",
-    "file": "logos/coalition_crs.png",
-    "bytes": 11886,
-    "note": "Climate Resilient Schools Coalition's own site"
+    "skipped": "already has a logo",
+    "logo": "logos/coalition_crs.png"
+  },
+  "upper_cape_women_s_coalition": {
+    "name": "Upper Cape Women's Coalition",
+    "skipped": "site now shows a casino ad (domain looks hijacked) — no logo, no website"
+  },
+  "boston_student_advisory_council": {
+    "name": "Boston Student Advisory Council",
+    "skipped": "unsure the picked icon is BPS's — skipped"
+  },
+  "four_rivers_climate_club": {
+    "skipped": "already has a logo",
+    "logo": "logos/four_rivers_climate_club.png"
+  },
+  "andover_climate_lobby": {
+    "skipped": "already has a logo",
+    "logo": "logos/andover_climate_lobby.png"
+  },
+  "newton_south_high_school_environmental_club": {
+    "name": "Newton South High School Environmental Club",
+    "skipped": "unsure the picked icon is Newton's — skipped"
+  },
+  "andover_high_school_environmental_club": {
+    "name": "Andover High School Environmental Club",
+    "error": "no usable image",
+    "tried": [
+      "favicon.ico: too small",
+      "google s2 icon: too small (32×32)",
+      "duckduckgo icon: too small (32×32)"
+    ]
+  },
+  "students_for_environmental_action_at_weston_high_school": {
+    "name": "Students for Environmental Action at Weston High School",
+    "skipped": "fetch picked the Weston Education Enrichment Fund logo, not the school — skipped"
+  },
+  "belmont_hill_sustainability_club": {
+    "name": "Belmont Hill Sustainability Club",
+    "skipped": "unsure the picked icon is Belmont Hill's — skipped"
+  },
+  "lorax_at_milton_academy": {
+    "skipped": "already has a logo",
+    "logo": "logos/lorax_at_milton_academy.png"
+  },
+  "boston_latin_school_youthcan": {
+    "skipped": "already has a logo",
+    "logo": "logos/boston_latin_school_youthcan.png"
+  },
+  "mit_sea": {
+    "skipped": "already has a logo",
+    "logo": "logos/mit_sea.png"
   }
 }

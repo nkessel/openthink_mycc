@@ -36,7 +36,8 @@
   },
   {
     "id": "healthlink",
-    "website": "http://www.citizensinaction.org/"
+    "website": "http://www.citizensinaction.org/",
+    "logo_site": "http://www.citizensinaction.org/"
   },
   {
     "id": "xr_western_mass",
@@ -157,7 +158,8 @@
   },
   {
     "id": "chinese_progressive_association",
-    "website": "https://cpaboston.org/"
+    "website": "https://cpaboston.org/",
+    "logo_url": "https://cpaboston.org/wp-content/uploads/2025/10/CPA-Logo-Dark-Red.png"
   },
   {
     "id": "collaborative_for_high_performance_schools",
@@ -228,5 +230,65 @@
     "id": "crs",
     "website": "https://www.climateresilientschoolsma.org/",
     "note": "Climate Resilient Schools Coalition's own site"
+  },
+  {
+    "id": "upper_cape_women_s_coalition",
+    "skip_logo": true,
+    "note": "site now shows a casino ad (domain looks hijacked) — no logo, no website"
+  },
+  {
+    "id": "boston_student_advisory_council",
+    "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac",
+    "logo_site": "https://www.bostonpublicschools.org/",
+    "note": "unsure the picked icon is BPS's — skipped",
+    "skip_logo": true
+  },
+  {
+    "id": "four_rivers_climate_club",
+    "website": "https://fourriverscharter.org/",
+    "note": "club's school logo (the club has no logo of its own)"
+  },
+  {
+    "id": "andover_climate_lobby",
+    "logo_site": "https://www.andover.edu/",
+    "note": "Phillips Academy Andover students — club's school logo (the club has no logo of its own)"
+  },
+  {
+    "id": "newton_south_high_school_environmental_club",
+    "logo_site": "https://www.newton.k12.ma.us/",
+    "note": "unsure the picked icon is Newton's — skipped",
+    "skip_logo": true
+  },
+  {
+    "id": "andover_high_school_environmental_club",
+    "logo_site": "https://www.aps1.net/",
+    "note": "club's school logo (the club has no logo of its own)"
+  },
+  {
+    "id": "students_for_environmental_action_at_weston_high_school",
+    "logo_site": "https://www.westonschools.org/",
+    "note": "fetch picked the Weston Education Enrichment Fund logo, not the school — skipped",
+    "skip_logo": true
+  },
+  {
+    "id": "belmont_hill_sustainability_club",
+    "logo_site": "https://www.belmonthill.org/",
+    "note": "unsure the picked icon is Belmont Hill's — skipped",
+    "skip_logo": true
+  },
+  {
+    "id": "lorax_at_milton_academy",
+    "logo_site": "https://www.milton.edu/",
+    "note": "club's school logo (the club has no logo of its own)"
+  },
+  {
+    "id": "boston_latin_school_youthcan",
+    "logo_site": "https://www.bls.org/",
+    "note": "club's school logo (the club has no logo of its own)"
+  },
+  {
+    "id": "mit_sea",
+    "logo_site": "https://www.mit.edu/",
+    "note": "club's school logo (the club has no logo of its own)"
   }
 ]

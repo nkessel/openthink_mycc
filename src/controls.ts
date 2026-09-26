@@ -24,7 +24,8 @@ export interface ControlsCallbacks {
   onAnimate(): void;
 }
 
-const STORAGE_KEY = "openthink.controls.v1";
+// v2: new defaults (stronger repel) — bumping the key lets everyone get them once.
+const STORAGE_KEY = "openthink.controls.v2";
 
 // Built-in groups — based on real values present in the dummy data.
 const DEFAULT_GROUPS: GroupSpec[] = [
