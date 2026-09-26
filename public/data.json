@@ -1055,8 +1055,7 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": "",
-      "logo": "logos/students_for_environmental_action_at_weston_high_school.png"
+      "description": ""
     },
     {
       "id": "newton_south_high_school_environmental_club",
@@ -1076,8 +1075,7 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": "",
-      "logo": "logos/newton_south_high_school_environmental_club.png"
+      "description": ""
     },
     {
       "id": "andover_high_school_environmental_club",
@@ -1115,8 +1113,7 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": "",
-      "logo": "logos/belmont_hill_sustainability_club.ico"
+      "description": ""
     },
     {
       "id": "lorax_at_milton_academy",
@@ -1316,8 +1313,7 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac",
-      "logo": "logos/boston_student_advisory_council.ico"
+      "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac"
     },
     {
       "id": "greenroots_eco",
@@ -3905,9 +3901,7 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": "",
-      "website": "https://uppercapewomen.org/",
-      "logo": "logos/upper_cape_women_s_coalition.png"
+      "description": ""
     },
     {
       "id": "vineyard_power_cooperative",
