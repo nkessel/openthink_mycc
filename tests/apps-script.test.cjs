@@ -111,7 +111,7 @@ const data = () => ctx.buildDataFile_(ctx.readAll_(), "now");
 
 // point-person edits their own org (+ connections)
 submit("fo", "Point@BLS.org", {
-  [Q.whichOrg]: BLS, [Q.orgDesc]: "New description", [Q.tags]: ["Clean energy", "Tree planting"], [Q.youth]: "Yes",
+  [Q.whichOrg]: BLS, [Q.orgDesc]: "New description", [Q.tags]: ["Clean energy", "Tree planting", "Youth serving"],
   [Q.logo]: "https://drive.google.com/file/d/abc123/view?usp=sharing",
   [Q.worksWith("Weekly")]: ["Belmont High School Climate Action Club [belmont_high_school_climate_club]"],
   [Q.worksWith("Yearly or less")]: ["Belmont High School Climate Action Club [belmont_high_school_climate_club]", "Andover Climate Lobby [andover_climate_lobby]"],
@@ -119,7 +119,7 @@ submit("fo", "Point@BLS.org", {
 let d = data();
 let org = d.organizations.find((o) => o.id === "boston_latin_school_youthcan");
 assert.equal(org.description, "New description");
-assert.deepEqual(J(org.topic_tags), ["clean_energy", "tree_planting"]);
+assert.deepEqual(J(org.topic_tags), ["clean_energy", "tree_planting", "youth_serving"]);
 assert.equal(org.profile.youth_serving, true);
 assert.equal(org.logo, "https://drive.google.com/thumbnail?id=abc123&sz=w400");
 const link = d.org_links.find((l) => [l.source, l.target].includes("belmont_high_school_climate_club") && [l.source, l.target].includes("boston_latin_school_youthcan"));

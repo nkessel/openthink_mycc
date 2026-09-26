@@ -95,7 +95,7 @@ var Q = {
   pointPhone: 'Point person — phone (optional)',
   orgDesc: 'Short description',
   orgCoalitions: 'Coalitions you belong to',
-  youth: 'Is your organization youth-serving?',
+  youth: 'Is your organization youth-serving?', // older forms; now the "Youth serving" topic tag
   membership: 'About how many active members do you have?',
   website: 'Website',
   logo: 'Logo image link',
@@ -491,7 +491,6 @@ function buildOrgForm_(form) {
     .setHelpText('If you answer this, check every coalition you are part of — it replaces your current list.')
     .setChoiceValues([NONE]);
   addTags_(form);
-  form.addMultipleChoiceItem().setTitle(Q.youth).setChoiceValues(['Yes', 'No']);
   form.addMultipleChoiceItem().setTitle(Q.membership).setChoiceValues(MEMBERSHIP);
   form.addTextItem().setTitle(Q.website);
   form.addTextItem().setTitle(Q.logo)
@@ -572,7 +571,7 @@ function upgradeOrgForm_(form) {
   }
   form.getItems().forEach(function (it) {
     var title = it.getTitle();
-    if (oldTitles.indexOf(title) !== -1 || title === Q.orgRemote) form.deleteItem(it);
+    if (oldTitles.indexOf(title) !== -1 || title === Q.orgRemote || title === Q.youth) form.deleteItem(it);
     else if (title === Q.orgDesc) it.setHelpText(ORG_HELP.desc);
     else if (title === Q.orgHq) it.setHelpText(ORG_HELP.hq);
   });
@@ -710,9 +709,8 @@ function refreshDropdowns() {
     set(k, Q.hostOrg, [NONE].concat(orgLabels));
     set(k, Q.coalition, [NONE].concat(coalitionLabels));
   });
-  // The org form asks "youth-serving?" as its own question, so it isn't offered as a tag there too.
-  set('FORM_ORG', Q.tags, tags.filter(function (x) { return x !== humanize_('youth_serving'); }));
-  ['FORM_EVENT', 'FORM_PROJECT'].forEach(function (k) { set(k, Q.tags, tags); });
+  // "Youth serving" is one of the topic checkboxes (it also sets the org's youth_serving flag).
+  ['FORM_ORG', 'FORM_EVENT', 'FORM_PROJECT'].forEach(function (k) { set(k, Q.tags, tags); });
   set('FORM_PROJECT', Q.skills, skills);
 }
 
@@ -981,6 +979,10 @@ function saveOrg_(a, t) {
   put_(patch, 'website', a[Q.website]);
   if (a[Q.logo]) put_(patch, 'logo', driveImage_(String(a[Q.logo]).trim()));
   if (a[Q.youth]) patch.youth_serving = a[Q.youth] === 'Yes' ? 'TRUE' : 'FALSE';
+  // Answering the topic checkboxes also answers "youth-serving?" (ticked or not).
+  if (asArray_(a[Q.tags]).length) {
+    patch.youth_serving = asArray_(a[Q.tags]).map(slug_).indexOf('youth_serving') !== -1 ? 'TRUE' : 'FALSE';
+  }
   put_(patch, 'membership_size', a[Q.membership]);
   put_(patch, 'public_contact', a[Q.publicContact]);
   var hqRemote = REMOTE_WORDS.test(String(a[Q.orgHq] || ''));
