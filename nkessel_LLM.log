@@ -220,3 +220,8 @@ What / why
   logos for 16 orgs that were missing or had a stand-in (school logos for clubs); only part of the folder had made it
   into the original import. logo-sources.json now downloads those via Drive links (logo_url). MYCC's logo comes from
   "MYCC profile.PNG" in Nathan's Drive (also public). Each result is checked by eye before merging.
+- Result, checked by eye: 13 good (Andover Climate Lobby, Andover HS, BLS YouthCAN, BSAC, Weston SEA, NSHS, Belmont
+  Hill, MAYCJ, ABL, CPA, Four Rivers, LORAX, and MYCC's coalition logo). Skipped 3 folder images that are photos/banner
+  crops, not logos (21st Century Schools Fund, Upper Cape Women's Coalition, South Coast Neighbors United). The folder's
+  "MIT SEA" file is MIT's Sustainable Energy Alliance, a different group than Students for Environmental Action — kept
+  the MIT logo and flagged it. 9 orgs still without a logo.

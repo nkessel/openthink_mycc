@@ -90,8 +90,8 @@
   {
     "id": "south_coast_neighbors_united",
     "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
-    "note": "from the team logo folder in Google Drive (Aissata)",
-    "logo_url": "https://drive.google.com/uc?export=download&id=1y6r0yFiNI69N_lZ6nVZyeKhkUJoaUOjE"
+    "note": "folder image is a crowd photo with a quote, not a logo — skipped",
+    "skip_logo": true
   },
   {
     "id": "sunwealth",
@@ -139,8 +139,8 @@
   {
     "id": "21st_century_schools_fund",
     "website": "https://www.21csf.org/",
-    "logo_url": "https://drive.google.com/uc?export=download&id=1WPDUFnR-tcKo-h48LkOjoO73SChbknr4",
-    "note": "from the team logo folder in Google Drive (Aissata)"
+    "note": "folder image is a blurry banner crop, unreadable as a logo — skipped",
+    "skip_logo": true
   },
   {
     "id": "acadia_center",
@@ -238,8 +238,8 @@
   },
   {
     "id": "upper_cape_women_s_coalition",
-    "note": "from the team logo folder in Google Drive (Aissata)",
-    "logo_url": "https://drive.google.com/uc?export=download&id=1im9fchnSOKEpP-ZDqQ8Jb4eWfqgWh-Pg"
+    "note": "folder image is a photo of a sign, not a logo — skipped (and their domain now serves a casino ad)",
+    "skip_logo": true
   },
   {
     "id": "boston_student_advisory_council",
@@ -299,8 +299,7 @@
   {
     "id": "mit_sea",
     "logo_site": "https://www.mit.edu/",
-    "note": "from the team logo folder in Google Drive (Aissata)",
-    "logo_url": "https://drive.google.com/uc?export=download&id=17fpafZZ0dNF5XdQVsk2UydVxJsoixmKS"
+    "note": "folder's 'MIT SEA' file is the Sustainable Energy Alliance (a different MIT group) — kept MIT's logo"
   },
   {
     "id": "ma_youth_for_climate_justice",
