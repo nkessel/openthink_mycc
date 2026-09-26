@@ -154,3 +154,10 @@ What / why
 - Same PR: "+" button centered at the bottom with a pulsing blue halo (static if reduced motion); stays centered in the
   uncovered area when the drawer is open. Event form: new "End time" question (stored as `end`, same day as the start;
   site shows "Jun 5, 5:00 PM – 7:00 PM"). Existing event form gets it on the next setup run; Events tab gets an `end` column.
+
+2026-09-25 20:20 — Claude
+- Nathan chose (a): on the org form, "Youth serving" is a topic checkbox again and the separate Yes/No question is
+  removed (setup's upgrade step deletes it on the live form). Ticking/unticking it in the topics also sets the org's
+  youth_serving flag, so the site's "Youth-serving only" filter keeps working. Old Yes/No answers still parse.
+- Nathan: keep "Remove from the map?" on the event and project forms; the one-time helper now only removes it from the
+  org form. (Repo code unchanged for that, per his earlier "no backend change" for the removal.)
