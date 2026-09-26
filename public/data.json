@@ -1216,7 +1216,9 @@
         "mycc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/",
+      "logo": "logos/youth_climate_action_now.png"
     },
     {
       "id": "roxbury_environmental_empowerment_project_by_alternatives_fo",
@@ -1243,7 +1245,9 @@
         "mycc": 1.5
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://ace-ej.org/",
+      "logo": "logos/roxbury_environmental_empowerment_project_by_alternatives_fo.svg"
     },
     {
       "id": "alternatives_for_community_and_environment",
@@ -1349,7 +1353,9 @@
         "mycc": 1.5
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://masscosh.org/",
+      "logo": "logos/masscosh_tlaw_climate_change_and_environmental_justice_team.png"
     },
     {
       "id": "tree_boston",
@@ -1422,7 +1428,9 @@
         "mycc": 1.5
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://cleanwater.org/",
+      "logo": "logos/youth_action_collaborative_alumni_node_at_clean_water_action.png"
     },
     {
       "id": "sustainable_sharon_coalition_youth",
@@ -1441,7 +1449,9 @@
         "mycc": 2
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.sustainablesharon.org/",
+      "logo": "logos/sustainable_sharon_coalition_youth.png"
     },
     {
       "id": "ma_youth_for_climate_justice",
@@ -1515,7 +1525,9 @@
         "mycc": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://masspirg.org/",
+      "logo": "logos/masspirg_amherst.png"
     },
     {
       "id": "masspirg_boston",
@@ -1539,7 +1551,9 @@
         "mycc": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://masspirg.org/",
+      "logo": "logos/masspirg_boston.png"
     },
     {
       "id": "vietaid",
@@ -1747,7 +1761,9 @@
         "mycc": 4
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://xrboston.org/west/",
+      "logo": "logos/xr_western_mass.png"
     },
     {
       "id": "act_on_mass",
@@ -1833,7 +1849,9 @@
         "scjc": 2
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://climateactionnowma.org/",
+      "logo": "logos/climate_action_now_western_ma.png"
     },
     {
       "id": "sustainable_milton",
@@ -1959,7 +1977,9 @@
         "mycc": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.sunrisemovement.org/",
+      "logo": "logos/sunrise_boston.png"
     },
     {
       "id": "sunrise_ipswich",
@@ -2034,7 +2054,9 @@
         "mycc": 1.5
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://hubs.sunrisemovement.org/amherst/",
+      "logo": "logos/sunrise_amherst.png"
     },
     {
       "id": "sunrise_lexington",
@@ -2057,7 +2079,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.sunrisemovement.org/",
+      "logo": "logos/sunrise_lexington.png"
     },
     {
       "id": "mit_sea",
@@ -2284,7 +2308,9 @@
         "gjc": 2
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.greenrootschelsea.org/",
+      "logo": "logos/greenroots.png"
     },
     {
       "id": "north_american_indian_center_of_boston",
@@ -2779,7 +2805,8 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.bodhisara.org/"
     },
     {
       "id": "boston_catholic_climate_movement",
@@ -3387,7 +3414,8 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://massdivest.org/"
     },
     {
       "id": "massachusetts_peace_action",
@@ -3482,7 +3510,8 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://nosharongaspipeline.org/"
     },
     {
       "id": "october_engineering_llc",
@@ -3716,7 +3745,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://solstice.us/",
+      "logo": "logos/solstice_initiative.png"
     },
     {
       "id": "south_coast_neighbors_united",
@@ -3739,7 +3770,8 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://actionnetwork.org/groups/south-coast-neighbors-united"
     },
     {
       "id": "sunwealth",
@@ -3761,7 +3793,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.sunwealth.com/",
+      "logo": "logos/sunwealth.png"
     },
     {
       "id": "sustainable_sharon_coalition",
@@ -3784,7 +3818,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.sustainablesharon.org/",
+      "logo": "logos/sustainable_sharon_coalition.png"
     },
     {
       "id": "sustainable_sudbury",
@@ -3807,7 +3843,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.sustainablesudbury.org/",
+      "logo": "logos/sustainable_sudbury.png"
     },
     {
       "id": "take_back_the_grid",
@@ -3874,7 +3912,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.vineyardpower.org/",
+      "logo": "logos/vineyard_power_cooperative.png"
     },
     {
       "id": "watertown_citizens_for_peace_justice_and_the_environment",
@@ -3896,7 +3936,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://watertowncitizens.org/",
+      "logo": "logos/watertown_citizens_for_peace_justice_and_the_environment.png"
     },
     {
       "id": "wendell_state_forest_alliance",
@@ -3921,7 +3963,9 @@
         "scjc": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.wendellforest.org/",
+      "logo": "logos/wendell_state_forest_alliance.png"
     },
     {
       "id": "xr_boston",
@@ -3945,7 +3989,9 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://xrboston.org/",
+      "logo": "logos/xr_boston.png"
     },
     {
       "id": "league_of_women_voters_of_massachusetts",
@@ -3969,7 +4015,9 @@
         "mpf": 4
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://lwvma.org/",
+      "logo": "logos/league_of_women_voters_of_massachusetts.png"
     },
     {
       "id": "neighbor_to_neighbor_massachusetts",
@@ -3997,7 +4045,9 @@
         "gjc": 2
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://n2nma.org/",
+      "logo": "logos/neighbor_to_neighbor_massachusetts.png"
     },
     {
       "id": "community_action_works",
@@ -4023,7 +4073,9 @@
         "scjc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://communityactionworks.org/",
+      "logo": "logos/community_action_works.svg"
     },
     {
       "id": "21st_century_schools_fund",
@@ -4037,7 +4089,8 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.21csf.org/"
     },
     {
       "id": "acadia_center",
@@ -4056,7 +4109,9 @@
         "geo_precision": "exact"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://acadiacenter.org/",
+      "logo": "logos/acadia_center.svg"
     },
     {
       "id": "aft_mass",
@@ -4071,7 +4126,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://ma.aft.org/",
+      "logo": "logos/aft_mass.png"
     },
     {
       "id": "alliance_for_business_leadership",
@@ -4090,7 +4147,8 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.ablmass.org/"
     },
     {
       "id": "center_for_green_schools_at_us_gbc",
@@ -4105,7 +4163,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.centerforgreenschools.org/",
+      "logo": "logos/center_for_green_schools_at_us_gbc.png"
     },
     {
       "id": "chinese_progressive_association",
@@ -4129,7 +4189,8 @@
         "gjc": 2
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://cpaboston.org/"
     },
     {
       "id": "citizens_climate_lobby",
@@ -4233,7 +4294,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://chps.net/",
+      "logo": "logos/collaborative_for_high_performance_schools.png"
     },
     {
       "id": "cooler_communities",
@@ -4247,7 +4310,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://coolercommunities.org/",
+      "logo": "logos/cooler_communities.png"
     },
     {
       "id": "franklin_county_and_north_quabbin_community_health_improveme",
@@ -4265,7 +4330,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://frcog.org/",
+      "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png"
     },
     {
       "id": "green_weymouth",
@@ -4283,7 +4350,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://greenweymouth.com/",
+      "logo": "logos/green_weymouth.png"
     },
     {
       "id": "ma_senior_action",
@@ -4306,7 +4375,9 @@
         "gjc": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.masssenioraction.org/",
+      "logo": "logos/ma_senior_action.png"
     },
     {
       "id": "mass_facilities_administrators_association",
@@ -4321,7 +4392,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://massfacilities.com/",
+      "logo": "logos/mass_facilities_administrators_association.png"
     },
     {
       "id": "massachusetts_jobs_with_justice",
@@ -4345,7 +4418,9 @@
         "scjc": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.massjwj.net/",
+      "logo": "logos/massachusetts_jobs_with_justice.png"
     },
     {
       "id": "metropolitan_area_planning_council",
@@ -4360,7 +4435,9 @@
         "geo_precision": "exact"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.mapc.org/",
+      "logo": "logos/metropolitan_area_planning_council.png"
     },
     {
       "id": "mtacan",
@@ -4378,7 +4455,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://massteacher.org/",
+      "logo": "logos/mtacan.png"
     },
     {
       "id": "northeast_climate_justice_research_collaborative",
@@ -4396,7 +4475,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.umb.edu/ssl/",
+      "logo": "logos/northeast_climate_justice_research_collaborative.svg"
     },
     {
       "id": "pioneer_valley_asthma_coalition",
@@ -4411,7 +4492,9 @@
         "geo_precision": "exact"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.pvasthmacoalition.org/",
+      "logo": "logos/pioneer_valley_asthma_coalition.png"
     },
     {
       "id": "sustainable_business_network_of_massachusetts",
@@ -4429,7 +4512,9 @@
         "geo_precision": "exact"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.sbnmass.org/",
+      "logo": "logos/sustainable_business_network_of_massachusetts.png"
     },
     {
       "id": "undauntedk12",
@@ -4443,7 +4528,9 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "website": "https://www.undauntedk12.org/",
+      "logo": "logos/undauntedk12.png"
     }
   ],
   "edges": [

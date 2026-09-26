@@ -268,3 +268,21 @@ const again = ctx.buildDataFile_(
 );
 assert.deepStrictEqual(J(norm(again)), J(norm(d)));
 console.log("second round trip (org-owned items, locations, links) OK");
+
+// 4) filling missing logos/websites from the repo never overwrites
+{
+  const orgRows = () => book["Organizations"].slice(1).map((r) => Object.fromEntries(COLS["Organizations"].map((c, i) => [c, r[i]])));
+  const target = orgRows().find((o) => !o.logo);
+  const withLogo = orgRows().find((o) => o.logo);
+  const src = J(orig);
+  src.organizations.find((o) => o.id === target.id).logo = "logos/new.png";
+  src.organizations.find((o) => o.id === target.id).website = "https://example.org/";
+  src.organizations.find((o) => o.id === withLogo.id).logo = "logos/should-not-replace.png";
+  const before = log().length;
+  const res = ctx.fillLogos_(src);
+  const after = orgRows();
+  assert.equal(after.find((o) => o.id === target.id).logo, "logos/new.png");
+  assert.equal(after.find((o) => o.id === withLogo.id).logo, withLogo.logo);
+  assert.ok(res.logos >= 1 && log().length > before);
+  console.log("fill logos from GitHub OK");
+}

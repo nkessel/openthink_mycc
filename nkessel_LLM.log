@@ -161,3 +161,19 @@ What / why
   youth_serving flag, so the site's "Youth-serving only" filter keeps working. Old Yes/No answers still parse.
 - Nathan: keep "Remove from the map?" on the event and project forms; the one-time helper now only removes it from the
   org form. (Repo code unchanged for that, per his earlier "no backend change" for the removal.)
+
+2026-09-25 evening — Claude, PR "Fetch missing org logos"
+- Nathan asked for the missing group logos (62 of 150 had none). Found official websites by web search for 49; the
+  workspace can't download from arbitrary sites, so scripts/fetch-logos.mjs runs in a GitHub Action
+  (.github/workflows/fetch-logos.yml) that scrapes each site's header logo / touch icon / favicon, resizes to 256px,
+  and commits them back to the branch. Reviewed every pick by eye (contact sheet on the site's badge color).
+- Rejected wrong picks. uppercapewomen.org now shows a casino and xrwesternmass.org shows unrelated content — likely
+  lapsed/taken-over domains — so neither is linked (XR Western Mass uses the XR symbol from XR Boston instead).
+- Some logos are the parent org's (Sunrise hubs → Sunrise Movement, MASSPIRG chapters → PIRG, REEP → ACE,
+  YAC → Clean Water Action, YCAN → Climate Action Now, MTACAN → MTA, NE CJ Research Collaborative → UMass Boston).
+- Also filled in `website` for those orgs. import-orgs.mjs no longer wipes public/logos and keeps fetched logos/websites.
+- Still missing: school clubs and groups with no website found or sites that block downloads; they can add a logo
+  link through the organization form.
+- The live site reads the Google Sheet, not data.json, so added menu item "Fill in missing logos + websites from
+  GitHub" (fillLogosFromGitHub): copies logo paths/websites from development_branch's data.json into empty sheet cells
+  only, logging each row. Nathan runs it once after this PR merges (and after re-pasting Code.gs).

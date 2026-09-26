@@ -200,7 +200,41 @@ function onOpen() {
     .addItem('Set up sheet + forms (run once)', 'setUp')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
     .addItem('Show form + data links', 'showLinks')
+    .addItem('Fill in missing logos + websites from GitHub', 'fillLogosFromGitHub')
     .addToUi();
+}
+
+/**
+ * Copies logo paths and websites from the repo's data.json into Organizations rows where those
+ * cells are empty (never overwrites). Logos themselves are files on the website (public/logos/),
+ * found by scripts/fetch-logos.mjs. Each filled row is recorded in Change Log.
+ */
+function fillLogosFromGitHub() {
+  var data = JSON.parse(UrlFetchApp.fetch(SEED_URL).getContentText());
+  var result = fillLogos_(data);
+  var msg = 'Filled ' + result.logos + ' logo(s) and ' + result.websites + ' website(s) from GitHub.';
+  try { SpreadsheetApp.getUi().alert(msg); } catch (e) { /* run from the editor */ }
+  return msg;
+}
+
+function fillLogos_(data) {
+  var sheet = ss_().getSheetByName(TAB.orgs);
+  var table = readTable_(sheet);
+  var byId = {};
+  data.organizations.forEach(function (o) { byId[o.id] = o; });
+  var counts = { logos: 0, websites: 0 };
+  table.rows.forEach(function (r) {
+    var src = byId[str_(r.id)];
+    if (!src) return;
+    var updates = {};
+    if (!str_(r.logo) && src.logo) { updates.logo = src.logo; counts.logos++; }
+    if (!str_(r.website) && src.website) { updates.website = src.website; counts.websites++; }
+    if (!Object.keys(updates).length) return;
+    writeFields_(sheet, table.headers, r._row, updates);
+    logChange_('', 'Fill from GitHub', 'updated', '', 'organization', str_(r.id), str_(r.name),
+      Object.keys(updates).map(function (k) { return k + ': ∅ → ' + updates[k]; }).join('\n'));
+  });
+  return counts;
 }
 
 // ---------------------------------------------------------------- set up

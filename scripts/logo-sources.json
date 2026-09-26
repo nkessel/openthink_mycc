@@ -1,0 +1,220 @@
+[
+  {
+    "id": "youth_climate_action_now",
+    "website": "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/",
+    "logo_site": "https://climateactionnowma.org/",
+    "note": "program of Climate Action Now \u2014 uses CAN's logo"
+  },
+  {
+    "id": "roxbury_environmental_empowerment_project_by_alternatives_fo",
+    "website": "https://ace-ej.org/",
+    "note": "REEP is a program of ACE \u2014 uses ACE's logo"
+  },
+  {
+    "id": "masscosh_tlaw_climate_change_and_environmental_justice_team",
+    "website": "https://masscosh.org/"
+  },
+  {
+    "id": "youth_action_collaborative_alumni_node_at_clean_water_action",
+    "website": "https://cleanwater.org/",
+    "note": "uses Clean Water Action's logo"
+  },
+  {
+    "id": "sustainable_sharon_coalition_youth",
+    "website": "https://www.sustainablesharon.org/",
+    "note": "uses Sustainable Sharon Coalition's logo"
+  },
+  {
+    "id": "masspirg_amherst",
+    "website": "https://masspirg.org/",
+    "note": "uses MASSPIRG's logo"
+  },
+  {
+    "id": "masspirg_boston",
+    "website": "https://masspirg.org/",
+    "note": "uses MASSPIRG's logo"
+  },
+  {
+    "id": "healthlink",
+    "website": "http://www.citizensinaction.org/"
+  },
+  {
+    "id": "xr_western_mass",
+    "website": "https://xrboston.org/west/",
+    "logo_url": "https://xrboston.org/static/images/cropped-favicon-192x192.bab4741cb0b2.png",
+    "note": "xrwesternmass.org now shows unrelated content; uses the XR symbol from XR Boston"
+  },
+  {
+    "id": "climate_action_now_western_ma",
+    "website": "https://climateactionnowma.org/"
+  },
+  {
+    "id": "sunrise_boston",
+    "website": "https://www.sunrisemovement.org/",
+    "note": "uses the Sunrise Movement logo"
+  },
+  {
+    "id": "sunrise_amherst",
+    "website": "https://hubs.sunrisemovement.org/amherst/",
+    "logo_site": "https://www.sunrisemovement.org/",
+    "note": "uses the Sunrise Movement logo"
+  },
+  {
+    "id": "sunrise_lexington",
+    "website": "https://www.sunrisemovement.org/",
+    "note": "uses the Sunrise Movement logo"
+  },
+  {
+    "id": "greenroots",
+    "website": "https://www.greenrootschelsea.org/"
+  },
+  {
+    "id": "bodhisara_dharma_community",
+    "website": "https://www.bodhisara.org/",
+    "skip_logo": true,
+    "note": "Google Sites page has no logo"
+  },
+  {
+    "id": "mass_divest_coalition",
+    "website": "https://massdivest.org/"
+  },
+  {
+    "id": "no_sharon_gas_pipeline_clean_energy_now",
+    "website": "https://nosharongaspipeline.org/"
+  },
+  {
+    "id": "solstice_initiative",
+    "website": "https://solstice.us/"
+  },
+  {
+    "id": "south_coast_neighbors_united",
+    "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
+    "note": "no website found; Action Network page",
+    "skip_logo": true
+  },
+  {
+    "id": "sunwealth",
+    "website": "https://www.sunwealth.com/"
+  },
+  {
+    "id": "sustainable_sharon_coalition",
+    "website": "https://www.sustainablesharon.org/"
+  },
+  {
+    "id": "sustainable_sudbury",
+    "website": "https://www.sustainablesudbury.org/"
+  },
+  {
+    "id": "vineyard_power_cooperative",
+    "website": "https://www.vineyardpower.org/"
+  },
+  {
+    "id": "watertown_citizens_for_peace_justice_and_the_environment",
+    "website": "https://watertowncitizens.org/"
+  },
+  {
+    "id": "wendell_state_forest_alliance",
+    "website": "https://www.wendellforest.org/"
+  },
+  {
+    "id": "xr_boston",
+    "website": "https://xrboston.org/"
+  },
+  {
+    "id": "league_of_women_voters_of_massachusetts",
+    "website": "https://lwvma.org/"
+  },
+  {
+    "id": "neighbor_to_neighbor_massachusetts",
+    "website": "https://n2nma.org/"
+  },
+  {
+    "id": "community_action_works",
+    "website": "https://communityactionworks.org/",
+    "force": true,
+    "prefer_icon": true,
+    "note": "header logo is white-on-transparent; uses the site icon"
+  },
+  {
+    "id": "21st_century_schools_fund",
+    "website": "https://www.21csf.org/"
+  },
+  {
+    "id": "acadia_center",
+    "website": "https://acadiacenter.org/"
+  },
+  {
+    "id": "aft_mass",
+    "website": "https://ma.aft.org/"
+  },
+  {
+    "id": "alliance_for_business_leadership",
+    "website": "https://www.ablmass.org/"
+  },
+  {
+    "id": "center_for_green_schools_at_us_gbc",
+    "website": "https://www.centerforgreenschools.org/"
+  },
+  {
+    "id": "chinese_progressive_association",
+    "website": "https://cpaboston.org/"
+  },
+  {
+    "id": "collaborative_for_high_performance_schools",
+    "website": "https://chps.net/"
+  },
+  {
+    "id": "cooler_communities",
+    "website": "https://coolercommunities.org/"
+  },
+  {
+    "id": "franklin_county_and_north_quabbin_community_health_improveme",
+    "website": "https://frcog.org/",
+    "note": "uses FRCOG's logo"
+  },
+  {
+    "id": "green_weymouth",
+    "website": "https://greenweymouth.com/"
+  },
+  {
+    "id": "ma_senior_action",
+    "website": "https://www.masssenioraction.org/"
+  },
+  {
+    "id": "mass_facilities_administrators_association",
+    "website": "https://massfacilities.com/"
+  },
+  {
+    "id": "massachusetts_jobs_with_justice",
+    "website": "https://www.massjwj.net/"
+  },
+  {
+    "id": "metropolitan_area_planning_council",
+    "website": "https://www.mapc.org/"
+  },
+  {
+    "id": "mtacan",
+    "website": "https://massteacher.org/",
+    "note": "mtaclimateaction.org no longer resolves; uses the MTA logo"
+  },
+  {
+    "id": "northeast_climate_justice_research_collaborative",
+    "website": "https://www.umb.edu/ssl/",
+    "note": "hosted by UMass Boston's Sustainable Solutions Lab \u2014 uses its logo"
+  },
+  {
+    "id": "pioneer_valley_asthma_coalition",
+    "website": "https://www.pvasthmacoalition.org/"
+  },
+  {
+    "id": "sustainable_business_network_of_massachusetts",
+    "website": "https://www.sbnmass.org/",
+    "force": true,
+    "prefer_icon": true,
+    "note": "header logo is white-on-transparent; uses the site icon"
+  },
+  {
+    "id": "undauntedk12",
+    "website": "https://www.undauntedk12.org/"
+  }
+]
