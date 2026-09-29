@@ -10,7 +10,7 @@ import type {
 import { initials, relTime, fmtEventTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
 import { formUrl } from "./fab";
-import { orgProjects, orgEvents } from "./owners";
+import { orgProjects, orgEvents, orgActions } from "./owners";
 import { suggestionsFor } from "./suggestions";
 
 type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
@@ -150,6 +150,7 @@ export function createDrawer(
             { id: "about", label: "About" },
             { id: "projects", label: "Projects" },
             { id: "events", label: "Events" },
+            { id: "actions", label: "Actions" },
             { id: "coalitions", label: "Connections" },
           ];
     // Ensure activeTab is valid for this node kind
@@ -194,11 +195,19 @@ export function createDrawer(
         renderProjects(body, orgProjects(data, o));
       } else if (activeTab === "events") {
         renderEvents(body, orgEvents(data, o));
+      } else if (activeTab === "actions") {
+        renderActions(body, orgActions(data, o));
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
       }
     }
     return body;
+  }
+
+  /** "More info" link, shown on every item that has a source link. */
+  function linkEl(link?: string): HTMLElement | null {
+    if (!link || !/^https?:\/\//.test(link)) return null;
+    return h("a", { class: "item-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗");
   }
 
   function renderProjects(body: HTMLElement, items: Project[]): void {
@@ -218,6 +227,7 @@ export function createDrawer(
             { class: "row" },
             h("span", { class: "pill kind" }, p.status),
           ),
+          linkEl(p.link),
         ),
       );
     }
@@ -238,8 +248,9 @@ export function createDrawer(
             "div",
             { class: "row" },
             h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end)),
-            h("span", { class: "pill kind" }, e.location),
+            e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
+          linkEl(e.link),
         ),
       );
     }
@@ -254,13 +265,9 @@ export function createDrawer(
       const row = h(
         "div",
         { class: "row" },
-        h(
-          "span",
-          { class: `pill ${a.urgency}` },
-          `${a.urgency} urgency`,
-        ),
-        h("span", { class: "pill kind" }, a.kind),
+        h("span", { class: "pill kind" }, a.kind === "role" ? "volunteer role" : "action"),
       );
+      if (a.urgency) row.appendChild(h("span", { class: `pill ${a.urgency}` }, `${a.urgency} urgency`));
       if (a.deadline) {
         row.appendChild(
           h("span", { class: "pill deadline" }, `by ${a.deadline}`),
@@ -274,7 +281,9 @@ export function createDrawer(
           "div",
           { class: "item" },
           h("div", { class: "name" }, a.name),
+          a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
+          linkEl(a.link),
         ),
       );
     }

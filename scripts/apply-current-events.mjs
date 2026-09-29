@@ -170,7 +170,7 @@ const byId = (list, id) => {
   return x;
 };
 for (const c of data.coalitions) { c.projects = []; c.events = []; c.actions = []; }
-for (const o of data.organizations) { delete o.projects; delete o.events; }
+for (const o of data.organizations) { delete o.projects; delete o.events; delete o.actions; }
 for (const [id, items] of Object.entries(coalitionItems)) {
   const c = byId(data.coalitions, id);
   c.projects = items.projects || []; c.events = items.events || []; c.actions = items.actions || [];
@@ -180,21 +180,29 @@ for (const [id, items] of Object.entries(orgItems)) {
   if (items.projects.length) o.projects = items.projects;
   if (items.events.length) o.events = items.events;
 }
-// Researched public activity for the rest of the orgs (events, projects, volunteer opportunities / action
-// alerts). Each entry carries the source `link` it came from. Volunteer roles and action alerts are stored as
-// projects ("Volunteer: ...", "Take action: ...") because the sheet only has coalition-level Actions.
-// Skips anything the hand-written entries above already cover (same link or same name).
+// Researched public activity for the rest of the orgs (events, projects, actions / volunteer opportunities).
+// Each entry carries the source `link` it came from and a `confidence` (0-1) that it is current, based on
+// whether the cited page still shows the item. Only items >= 0.5 are in this file; lower ones are held
+// for review. Skips anything the hand-written entries above already cover (same name).
 const researched = JSON.parse(readFileSync(`${ROOT}scripts/researched-activity.json`, "utf8"));
 const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
 for (const [id, items] of Object.entries(researched)) {
   const o = byId(data.organizations, id);
-  for (const kind of ["projects", "events"]) {
+  for (const kind of ["projects", "events", "actions"]) {
     const have = o[kind] || [];
-    for (const it of items[kind] || []) {
-      const dup = have.some((h) => norm(h.name) === norm(it.name) || (h.link && h.link === it.link && kind === "projects"));
-      if (!dup) have.push(it);
+    for (const { confidence: _c, ...it } of items[kind] || []) {
+      if (!have.some((h) => norm(h.name) === norm(it.name))) have.push(it);
     }
     if (have.length) o[kind] = have;
+  }
+}
+// Every org-owned item names its host org and lists (possibly empty) skills, as the sheet round-trip does.
+for (const o of data.organizations) {
+  for (const kind of ["projects", "events", "actions"]) {
+    for (const it of o[kind] || []) {
+      it.host_org_id = o.id;
+      if (kind !== "events") it.skills_needed = it.skills_needed || [];
+    }
   }
 }
 data.generated_at = new Date().toISOString();
@@ -212,12 +220,15 @@ if (csvDir) {
   const bool = (x) => (x === undefined ? "" : x ? "TRUE" : "FALSE");
   const P = ["id", "coalition_id", "host_org_id", "name", "description", "status", "skills_needed", "topic_tags", "link", "public_contact", "location", "online", "lat", "lng", "last_activity", "hidden"];
   const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end"];
-  const rowsP = [P], rowsE = [E];
+  const A = ["id", "coalition_id", "kind", "name", "urgency", "skills_needed", "deadline", "hidden", "host_org_id", "description", "link"];
+  const rowsP = [P], rowsE = [E], rowsA = [A];
+  const addA = (a, cid, oid) => rowsA.push(A.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(a.skills_needed) }[k] ?? a[k])));
   const addP = (p, cid, oid) => rowsP.push(P.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags), online: bool(p.online) }[k] ?? p[k])));
   const addE = (e, cid, oid) => rowsE.push(E.map((k) => ({ coalition_id: cid, host_org_id: oid, topic_tags: L(e.topic_tags), online: bool(e.online) }[k] ?? e[k])));
-  for (const c of data.coalitions) { c.projects.forEach((p) => addP(p, c.id, "")); c.events.forEach((e) => addE(e, c.id, "")); }
-  for (const o of data.organizations) { (o.projects || []).forEach((p) => addP(p, "", o.id)); (o.events || []).forEach((e) => addE(e, "", o.id)); }
+  for (const c of data.coalitions) { c.projects.forEach((p) => addP(p, c.id, "")); c.events.forEach((e) => addE(e, c.id, "")); c.actions.forEach((a) => addA(a, c.id, "")); }
+  for (const o of data.organizations) { (o.projects || []).forEach((p) => addP(p, "", o.id)); (o.events || []).forEach((e) => addE(e, "", o.id)); (o.actions || []).forEach((a) => addA(a, "", o.id)); }
   writeFileSync(`${csvDir}/Projects.csv`, rowsP.map((r) => r.map(esc).join(",")).join("\n") + "\n");
   writeFileSync(`${csvDir}/Events.csv`, rowsE.map((r) => r.map(esc).join(",")).join("\n") + "\n");
-  console.log(`Wrote ${csvDir}/Projects.csv and Events.csv`);
+  writeFileSync(`${csvDir}/Actions.csv`, rowsA.map((r) => r.map(esc).join(",")).join("\n") + "\n");
+  console.log(`Wrote ${csvDir}/Projects.csv, Events.csv and Actions.csv`);
 }

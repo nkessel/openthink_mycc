@@ -1,7 +1,7 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, type Owner } from "./owners";
 import { h, clear } from "./dom";
-import { fmtEventTime } from "./util";
+import { fmtEventTime, hasTime, parseEventDate } from "./util";
 
 export interface EventsView {
   el: HTMLElement;
@@ -31,11 +31,11 @@ export function createEventsView(
   const rows: Row[] = allEvents(data).map(({ event, owner }) => ({
     event,
     owner,
-    isUpcoming: new Date(event.date).getTime() >= now,
+    isUpcoming: parseEventDate(event.date).getTime() + (hasTime(event.date) ? 0 : 86400000) >= now,
   }));
   rows.sort((a, b) => {
     if (a.isUpcoming !== b.isUpcoming) return a.isUpcoming ? -1 : 1;
-    return new Date(a.event.date).getTime() - new Date(b.event.date).getTime();
+    return parseEventDate(a.event.date).getTime() - parseEventDate(b.event.date).getTime();
   });
 
   let q = "";
@@ -133,7 +133,11 @@ export function createEventsView(
           h("span", { class: "pill kind" }, r.event.location),
           !r.isUpcoming && h("span", { class: "pill" }, "past"),
         ),
+        r.event.link && /^https?:\/\//.test(r.event.link)
+          ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
+          : null,
       );
+      card.querySelector("a.item-link")?.addEventListener("click", (ev) => ev.stopPropagation());
       card.addEventListener("click", () => {
         cb.onCoalitionClick(r.owner.node);
       });

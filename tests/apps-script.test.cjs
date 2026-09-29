@@ -194,17 +194,17 @@ submit("fe", "new@natick.org", { [Q.whichEvent]: NEW_EVENT, [Q.coalition]: MYCC,
 assert.match(review().at(-1).reason, /^UNAUTHORIZED/);
 
 // coalition lead edits a coalition event (time only) and adds an online project
-submit("fe", "lead@mycc.org", { [Q.whichEvent]: "MYCC Steering Meeting — Jun 12, 2026 [mycc_e1]", [Q.eventTime]: "19:30" });
+submit("fe", "lead@mycc.org", { [Q.whichEvent]: "MYCC full-coalition call — Oct 4, 2026 [mycc_e_call_1004]", [Q.eventTime]: "19:30" });
 submit("fp", "lead@mycc.org", { [Q.whichProject]: NEW_PROJECT, [Q.coalition]: MYCC, [Q.projectName]: "Virtual Teach-in", [Q.location]: "Zoom", [Q.online]: "Yes" });
 d = data();
 const mycc = d.coalitions.find((c) => c.id === "mycc");
-assert.equal(mycc.events.find((e) => e.id === "mycc_e1").date, "2026-06-12T19:30:00");
+assert.equal(mycc.events.find((e) => e.id === "mycc_e_call_1004").date, "2026-10-04T19:30:00");
 const vp = mycc.projects.find((p) => p.name === "Virtual Teach-in");
 assert.ok(vp.online && vp.lat === undefined, "online project has no pin");
 
 // admin removes a project
-submit("fp", "turibius@bu.edu", { [Q.whichProject]: "Youth Summit 2026 [mycc_p2]", [Q.remove]: [G("REMOVE_YES")] });
-assert.ok(!data().coalitions.find((c) => c.id === "mycc").projects.find((p) => p.id === "mycc_p2"));
+submit("fp", "turibius@bu.edu", { [Q.whichProject]: "Annual Advocacy Day preparation [mycc_p_advocacy_day]", [Q.remove]: [G("REMOVE_YES")] });
+assert.ok(!data().coalitions.find((c) => c.id === "mycc").projects.find((p) => p.id === "mycc_p_advocacy_day"));
 
 // feedback: signed-in email + optional phone saved on the (private) Feedback tab, logged
 submit("ff", "Fan@Example.org", { [Q.fbType]: "Idea or feature request", [Q.fbMessage]: "Add a calendar export", [Q.fbPhone]: "508-555-0199" });

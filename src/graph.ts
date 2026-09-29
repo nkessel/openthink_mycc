@@ -8,10 +8,11 @@ import type {
   Thought,
   Project,
   CoalitionEvent,
+  Action,
 } from "./types";
 import { h } from "./dom";
-import { orgProjects, orgEvents } from "./owners";
-import { fmtEventTime, fmtDate } from "./util";
+import { orgProjects, orgEvents, orgActions } from "./owners";
+import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
 import type { Tooltip } from "./tooltip";
 import { createNodeSearch, allNodesForSearch } from "./search";
@@ -618,14 +619,14 @@ export function createGraph(
   // ----- Focus mode: zoom into one group and see its work as bubbles -----
   // Bubbles ring the node: thinking (purple), projects (green), events (amber), each kind together.
   // They sit right next to the node, so they read as closer to it than any partner org.
-  type BubbleKind = "thought" | "project" | "event";
+  type BubbleKind = "thought" | "project" | "event" | "action";
   interface Bubble {
     id: string;
     kind: BubbleKind;
     label: string;
     glyph: string;
     r: number;
-    item: Thought | Project | CoalitionEvent;
+    item: Thought | Project | CoalitionEvent | Action;
   }
   const BUBBLE_R = 22;
   const focusLayer = root.append("g").attr("class", "focus-layer");
@@ -644,7 +645,8 @@ export function createGraph(
     const thoughts: Thought[] = n.thoughts || [];
     const projects: Project[] = n.kind === "org" ? orgProjects(data, n) : n.projects;
     const events: CoalitionEvent[] = n.kind === "org" ? orgEvents(data, n) : n.events;
-    const sortedEvents = [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const actions: Action[] = n.kind === "org" ? orgActions(data, n) : n.actions;
+    const sortedEvents = [...events].sort((a, b) => parseEventDate(a.date).getTime() - parseEventDate(b.date).getTime());
     return [
       ...thoughts.map((t): Bubble => ({
         id: t.id, kind: "thought", label: shorten(t.text, 34), glyph: THOUGHT_GLYPH[t.kind] || "•", r: BUBBLE_R, item: t,
@@ -653,7 +655,10 @@ export function createGraph(
         id: p.id, kind: "project", label: shorten(p.name, 34), glyph: p.status === "active" ? "▶" : p.status === "completed" ? "✓" : "…", r: BUBBLE_R, item: p,
       })),
       ...sortedEvents.map((e): Bubble => ({
-        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: String(new Date(e.date).getDate()), r: BUBBLE_R - 2, item: e,
+        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: String(parseEventDate(e.date).getDate()), r: BUBBLE_R - 2, item: e,
+      })),
+      ...actions.map((a): Bubble => ({
+        id: a.id, kind: "action", label: shorten(a.name, 34), glyph: a.kind === "role" ? "♥" : "!", r: BUBBLE_R - 2, item: a,
       })),
     ];
   }
@@ -681,13 +686,16 @@ export function createGraph(
 
   function showCard(b: Bubble) {
     while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
-    const it = b.item as Thought & Project & CoalitionEvent;
+    const it = b.item as Thought & Project & CoalitionEvent & Action;
     const kindLabel =
       b.kind === "thought" ? { topic: "Thinking · topic", decision: "Thinking · decision", question: "Thinking · open question", update: "Thinking · update" }[(it as Thought).kind] || "Thinking"
-      : b.kind === "project" ? `Project · ${(it as Project).status}` : "Event";
-    const title = b.kind === "thought" ? (it as Thought).text : (it as Project | CoalitionEvent).name;
+      : b.kind === "project" ? `Project · ${(it as Project).status}`
+      : b.kind === "action" ? ((it as Action).kind === "role" ? "Volunteer opportunity" : "Action")
+      : "Event";
+    const title = b.kind === "thought" ? (it as Thought).text : (it as Project | CoalitionEvent | Action).name;
     const meta: string[] = [];
     if (b.kind === "event") meta.push(fmtEventTime((it as CoalitionEvent).date, (it as CoalitionEvent).end));
+    if (b.kind === "action" && (it as Action).deadline) meta.push(`by ${(it as Action).deadline}`);
     if (b.kind === "thought" && (it as Thought).date) meta.push(fmtDate(`${(it as Thought).date}T12:00:00`));
     const loc = b.kind === "event" ? (it as CoalitionEvent).location : b.kind === "project" ? (it as Project).location : "";
     if (loc) meta.push(loc);
@@ -698,7 +706,7 @@ export function createGraph(
     if (b.kind !== "thought") focusCard.appendChild(h("h3", {}, title));
     else focusCard.appendChild(h("p", { class: "focus-card-text" }, title));
     if (meta.length) focusCard.appendChild(h("div", { class: "focus-card-meta" }, meta.join(" · ")));
-    const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent).description;
+    const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent | Action).description;
     if (desc) focusCard.appendChild(h("p", { class: "focus-card-text" }, desc));
     if (b.kind === "thought") focusCard.appendChild(h("div", { class: "focus-card-source" }, `Source: ${(it as Thought).source}`));
     const link = (it as { link?: string }).link;
@@ -771,6 +779,7 @@ export function createGraph(
       h("span", { class: "lg k-thought" }, `Thinking ${count("thought")}`),
       h("span", { class: "lg k-project" }, `Projects ${count("project")}`),
       h("span", { class: "lg k-event" }, `Events ${count("event")}`),
+      h("span", { class: "lg k-action" }, `Actions ${count("action")}`),
     );
     focusBar.appendChild(legend);
     if (!count("thought")) {

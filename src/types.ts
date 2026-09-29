@@ -25,6 +25,7 @@ export interface CoalitionEvent {
   date: string;
   location: string;
   // Optional fields filled in through the MA Climate Coalition Map forms
+  /** A date with no time part ("2026-10-12") means the source did not post a time. */
   /** End date-time (same day as `date`), if given. */
   end?: string;
   description?: string;
@@ -58,9 +59,14 @@ export interface Action {
   id: string;
   kind: ActionKind;
   name: string;
-  urgency: Urgency;
+  /** Optional: only shown when the source says how urgent it is. */
+  urgency?: Urgency;
   skills_needed: string[];
   deadline: string | null;
+  // Optional: actions can belong to an org as well as a coalition, and should link to where to act.
+  description?: string;
+  link?: string;
+  host_org_id?: string;
 }
 
 export interface Coalition {
@@ -111,6 +117,7 @@ export interface Organization {
   /** Projects/events that belong to this org rather than a coalition. */
   projects?: Project[];
   events?: CoalitionEvent[];
+  actions?: Action[];
   /** Public thinking (merged in from public/thoughts.json). */
   thoughts?: Thought[];
 }

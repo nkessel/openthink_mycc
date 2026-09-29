@@ -164,7 +164,8 @@ var COLS = {
     'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden'],
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
     'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end'],
-  'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden'],
+  'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden', 'host_org_id',
+    'description', 'link'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
     'reviewed_at', 'payload'],
@@ -346,20 +347,22 @@ function sheetRowsFromData_(d) {
       description: e.description, date: e.date, end: e.end, location: e.location, online: bool(e.online),
       lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact });
   };
+  var action = function (a, coalitionId, hostId) {
+    push('Actions', { id: a.id, coalition_id: coalitionId, host_org_id: hostId || a.host_org_id, kind: a.kind, name: a.name,
+      urgency: a.urgency, skills_needed: L(a.skills_needed), deadline: a.deadline, description: a.description, link: a.link });
+  };
   d.coalitions.forEach(function (c) {
     push('Coalitions', { id: c.id, name: c.name, abbrev: c.abbrev, description: c.description, focus_tags: L(c.focus_tags),
       geographic_scope: c.geographic_scope, color: c.color, lat: c.lat, lng: c.lng, last_activity: c.last_activity,
       logo: c.logo, website: c.website });
     (c.projects || []).forEach(function (p) { project(p, c.id, ''); });
     (c.events || []).forEach(function (e) { event(e, c.id, ''); });
-    (c.actions || []).forEach(function (a) {
-      push('Actions', { id: a.id, coalition_id: c.id, kind: a.kind, name: a.name, urgency: a.urgency,
-        skills_needed: L(a.skills_needed), deadline: a.deadline });
-    });
+    (c.actions || []).forEach(function (a) { action(a, c.id, ''); });
   });
   d.organizations.forEach(function (o) {
     (o.projects || []).forEach(function (p) { project(p, '', o.id); });
     (o.events || []).forEach(function (e) { event(e, '', o.id); });
+    (o.actions || []).forEach(function (a) { action(a, '', o.id); });
     var prof = o.profile || {};
     var row = { id: o.id, name: o.name, abbrev: o.abbrev, type: o.type, geographic_focus: o.geographic_focus,
       description: o.description, coalition_ids: L(o.coalition_ids), topic_tags: L(o.topic_tags), website: o.website,
@@ -1305,9 +1308,10 @@ function buildDataFile_(t, generatedAt) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
       e, ['end', 'description', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
   });
-  var actions = group(t.actions.map(function (a) { var c = {}; for (var k in a) c[k] = a[k]; c.host_org_id = ''; return c; }), function (a) {
-    return { id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name), urgency: str(a.urgency) || 'medium',
-      skills_needed: list_(a.skills_needed), deadline: str(a.deadline) || null };
+  var actions = group(t.actions, function (a) {
+    return extra({ id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name),
+      skills_needed: list_(a.skills_needed), deadline: str(a.deadline) || null },
+      a, ['urgency', 'description', 'link', 'host_org_id']);
   });
 
   var coalitions = t.coalitions.filter(function (c) { return c.id; }).map(function (c) {
@@ -1326,6 +1330,7 @@ function buildDataFile_(t, generatedAt) {
   orgs.forEach(function (o) {
     if (projects['o:' + o.id]) o.projects = projects['o:' + o.id];
     if (events['o:' + o.id]) o.events = events['o:' + o.id];
+    if (actions['o:' + o.id]) o.actions = actions['o:' + o.id];
   });
 
   var edges = [];

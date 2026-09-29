@@ -41,7 +41,17 @@ export function fmtDate(iso: string): string {
 }
 
 /** "Jun 5, 5:00 PM – 7:00 PM" when an end time is known. */
+export function hasTime(iso: string): boolean {
+  return iso.length > 10;
+}
+
+/** Date-only strings ("2026-10-12") parse as UTC and can slip a day; parse them as local dates. */
+export function parseEventDate(iso: string): Date {
+  return new Date(hasTime(iso) ? iso : `${iso}T00:00:00`);
+}
+
 export function fmtEventTime(start: string, end?: string): string {
+  if (!hasTime(start)) return `${fmtDate(`${start}T12:00:00`)} · time not posted`;
   if (!end) return fmtDateTime(start);
   const t = new Date(end).toLocaleString("en-US", { hour: "numeric", minute: "2-digit" });
   return `${fmtDateTime(start)} – ${t}`;
