@@ -180,6 +180,23 @@ for (const [id, items] of Object.entries(orgItems)) {
   if (items.projects.length) o.projects = items.projects;
   if (items.events.length) o.events = items.events;
 }
+// Researched public activity for the rest of the orgs (events, projects, volunteer opportunities / action
+// alerts). Each entry carries the source `link` it came from. Volunteer roles and action alerts are stored as
+// projects ("Volunteer: ...", "Take action: ...") because the sheet only has coalition-level Actions.
+// Skips anything the hand-written entries above already cover (same link or same name).
+const researched = JSON.parse(readFileSync(`${ROOT}scripts/researched-activity.json`, "utf8"));
+const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
+for (const [id, items] of Object.entries(researched)) {
+  const o = byId(data.organizations, id);
+  for (const kind of ["projects", "events"]) {
+    const have = o[kind] || [];
+    for (const it of items[kind] || []) {
+      const dup = have.some((h) => norm(h.name) === norm(it.name) || (h.link && h.link === it.link && kind === "projects"));
+      if (!dup) have.push(it);
+    }
+    if (have.length) o[kind] = have;
+  }
+}
 data.generated_at = new Date().toISOString();
 writeFileSync(DATA, JSON.stringify(data, null, 2) + "\n");
 

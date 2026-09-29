@@ -246,3 +246,10 @@ What / why
 - Thinking bubbles are NOT published: drafts for MYCC (11 items from the June–Sept call notes, no names/emails) were kept out of the repo and sent to Nathan for MYCC review. Tested the view with them locally, then reset thoughts.json to {}.
 - Found: the live site still shows the old placeholders (the Google Sheet has them), so zoomed org views look empty until the sheet's Projects/Events tabs are updated with the CSVs.
 - Uncertain: only tested in headless Chromium at 1400x850; mobile layout of the header/card not checked. Coalition zoom with 45 members is busy but readable. Sheet has no Thoughts tab yet (thoughts.json is static for now).
+
+## 2026-09-29 — Researched public activity for all 150 orgs (branch claude/current-public-activity)
+- Asked: keep additions to public events, projects, actions, volunteer opportunities; research every org.
+- Did: 10 parallel researchers searched each org and read its public pages (curl; WebFetch was blocked on permissions). Findings curated into scripts/researched-activity.json (source `link` on every item) and merged by scripts/apply-current-events.mjs into public/data.json. Result: 212 projects, 95 events, 0 coalition actions. Sheet CSVs regenerated (--csv).
+- Decisions: org-level volunteer roles / action alerts stored as projects ("Volunteer: ...", "Take action: ...") because the sheet only has coalition-level Actions. Events capped at 6 per org, projects at 7. Mailing-list sign-ups dropped. Past events dropped.
+- Uncertain: ~50 orgs have nothing (blocked by Cloudflare/captcha, dead sites, or school clubs). Only ~30 links spot-checked (29/30 matched). Some events have no time (T12:00 placeholder). Some events are political (ballot-question, protest); kept as the orgs publicly list them, MYCC may want to filter.
+- The live site still reads the Google Sheet; Projects/Events tabs must be replaced with the CSVs for it to change.
