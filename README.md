@@ -65,3 +65,24 @@ The schema:
 - D3 (force layout)
 - Leaflet + CARTO dark tiles (geographic view)
 - No backend yet — static SPA
+
+## Zoom-in view and public "thinking"
+
+Click any group (coalition or organization) on the map to zoom in. Its **projects** (green), **events** (amber) and
+**thinking** (purple) float around it as bubbles, right next to it, while partner organizations recede. Click a bubble
+for details; press `Esc` or "Back to network" to zoom out.
+
+"Thinking" is what a group is working through in the open: topics, decisions and open questions. It lives in
+`public/thoughts.json`, separate from the sheet, so every item is reviewed and **approved by the group before it is
+published**. Drafts never go in that file. Format:
+
+```json
+{ "<org or coalition id>": [
+  { "id": "unique_id", "kind": "topic | decision | question | update",
+    "text": "One or two plain sentences. No names, emails, or anything sensitive.",
+    "date": "2026-09-06", "source": "MYCC full-coalition call, Sept 6, 2026", "link": "https://… (optional)" }
+] }
+```
+
+Guidelines: summarize at the level of ideas and decisions (never people), leave out anything the group hasn't agreed to
+share, and always say where it came from.

@@ -1723,3 +1723,154 @@ body {
     bottom: 20px;
   }
 }
+
+/* ---------- Zoomed-in view: a group's projects, events and public thinking as bubbles ---------- */
+:root {
+  --k-thought: #a78bfa;
+  --k-project: #34d399;
+  --k-event: #fbbf24;
+}
+.node-coalition.faded,
+.node-org.faded {
+  opacity: 0.1;
+  pointer-events: none;
+}
+.node-coalition.partner,
+.node-org.partner {
+  opacity: 0.55;
+}
+.node-coalition.partner-many,
+.node-org.partner-many {
+  opacity: 0.22;
+}
+.node-coalition.faded .node-name,
+.node-org.faded .node-name,
+.node-org.partner-many .node-name {
+  display: none;
+}
+.link.faded {
+  opacity: 0.05;
+}
+.focus-ring {
+  fill: none;
+  stroke: var(--border);
+  stroke-dasharray: 3 6;
+  stroke-width: 1;
+  pointer-events: none;
+}
+.bubble-link {
+  stroke: var(--text-faint);
+  stroke-opacity: 0.5;
+  stroke-width: 1.2;
+  pointer-events: none;
+}
+.bubble {
+  cursor: pointer;
+}
+.bubble circle {
+  fill: var(--bg-elev);
+  stroke-width: 2.5;
+}
+.bubble.b-thought circle { stroke: var(--k-thought); }
+.bubble.b-project circle { stroke: var(--k-project); }
+.bubble.b-event circle { stroke: var(--k-event); }
+.bubble:hover circle {
+  fill: var(--bg-elev-2);
+  stroke-width: 4;
+}
+.bubble-glyph {
+  text-anchor: middle;
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text);
+  pointer-events: none;
+}
+.bubble.b-thought .bubble-glyph { fill: var(--k-thought); }
+.bubble.b-project .bubble-glyph { fill: var(--k-project); }
+.bubble.b-event .bubble-glyph { fill: var(--k-event); }
+.bubble-label {
+  font-size: 11px;
+  fill: var(--text);
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  pointer-events: none;
+}
+
+.focus-bar {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 6;
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 8px 12px;
+  background: color-mix(in srgb, var(--bg-elev) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: calc(100% - 24px);
+}
+.focus-back {
+  background: var(--bg-elev-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  cursor: pointer;
+  font: inherit;
+}
+.focus-back:hover { border-color: var(--accent); }
+.focus-title { font-size: 15px; }
+.focus-legend { display: flex; gap: 12px; font-size: 12px; }
+.focus-legend .lg::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 5px;
+  border: 2px solid currentColor;
+}
+.lg.k-thought, .focus-card-kind.k-thought { color: var(--k-thought); }
+.lg.k-project, .focus-card-kind.k-project { color: var(--k-project); }
+.lg.k-event, .focus-card-kind.k-event { color: var(--k-event); }
+.focus-note {
+  flex-basis: 100%;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.focus-card {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 6;
+  width: min(360px, calc(100% - 24px));
+  max-height: 55%;
+  overflow: auto;
+  padding: 12px 14px 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: none;
+}
+.focus-card h3 { margin: 4px 0 6px; font-size: 15px; }
+.focus-card-kind { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
+.focus-card-meta { font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+.focus-card-text { margin: 6px 0; line-height: 1.45; }
+.focus-card-source { font-size: 12px; color: var(--text-dim); font-style: italic; }
+.focus-card-link { display: inline-block; margin-top: 6px; color: var(--accent); font-size: 13px; }
+.focus-card-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: 0;
+  color: var(--text-dim);
+  font-size: 18px;
+  cursor: pointer;
+}

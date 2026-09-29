@@ -37,6 +37,23 @@ export interface CoalitionEvent {
   lng?: number;
 }
 
+/**
+ * A piece of an org's or coalition's public thinking: a topic it is working through, a decision it made,
+ * or an open question. Shown as a "thinking" bubble when you zoom into the org. Everything in
+ * public/thoughts.json has been approved by the org for public display.
+ */
+export type ThoughtKind = "topic" | "decision" | "question" | "update";
+export interface Thought {
+  id: string;
+  kind: ThoughtKind;
+  text: string;
+  /** When it was discussed (ISO date). */
+  date?: string;
+  /** Where it came from, e.g. "MYCC full-coalition call, Sept 6". Shown so readers can trace it. */
+  source: string;
+  link?: string;
+}
+
 export interface Action {
   id: string;
   kind: ActionKind;
@@ -65,6 +82,8 @@ export interface Coalition {
   /** Relative path (logos/coalition_<id>.png) or an absolute image URL. */
   logo?: string;
   website?: string;
+  /** Public thinking (merged in from public/thoughts.json). */
+  thoughts?: Thought[];
 }
 
 export interface Organization {
@@ -92,6 +111,8 @@ export interface Organization {
   /** Projects/events that belong to this org rather than a coalition. */
   projects?: Project[];
   events?: CoalitionEvent[];
+  /** Public thinking (merged in from public/thoughts.json). */
+  thoughts?: Thought[];
 }
 
 /** Org attributes from the MA Climate Coalition Map. Scores are 1–4. */

@@ -237,3 +237,12 @@ What / why
 - Orgs, coalitions' other fields, and edges are unchanged (checked). Placeholder actions were removed too since none were real.
 - Uncertain: Arcadia pin is the Easthampton town centre (approximate); MYCC 10/4 call date is inferred from "every other Sunday 8 pm" + the 9/6 call; JCAN 10/12 and 10/20 have no named organizer, attributed to JCAN because they're on its calendar.
 - Note: the live site reads the Google Sheet, so the sheet's Projects/Events tabs still need these rows (CSV provided) or the site keeps showing the placeholders until the nightly snapshot logic is changed.
+
+2026-09-29 (later) — Claude
+- Nathan: use newsletters for events/projects; use MYCC meeting notes to make org thinking open; clicking an org should zoom in and show its events/projects/thinking as bubbles close to it, partner orgs further out ("openthink").
+- Decisions (asked): notes → draft summaries that MYCC approves before publishing; newsletters → one-time import, orgs confirm; build the zoom view first.
+- Newsletters: swept the inbox. Only Climate Action Now, JCAN, Sierra Club MA items (already imported earlier) were map-org events. Act on Mass is electoral/political; the energy-siting listening sessions are state-hosted with no map org as host. Nothing else added.
+- Zoom view: src/graph.ts enterFocus/exitFocus (click a node, search result, or drawer link). Static polar layout: thinking, projects, events ring the pinned node; partners fade; header bar with legend + Back; click a bubble for a detail card. Esc / background click exits. New Thought type, public/thoughts.json (empty until groups approve), merged in main.ts.
+- Thinking bubbles are NOT published: drafts for MYCC (11 items from the June–Sept call notes, no names/emails) were kept out of the repo and sent to Nathan for MYCC review. Tested the view with them locally, then reset thoughts.json to {}.
+- Found: the live site still shows the old placeholders (the Google Sheet has them), so zoomed org views look empty until the sheet's Projects/Events tabs are updated with the CSVs.
+- Uncertain: only tested in headless Chromium at 1400x850; mobile layout of the header/card not checked. Coalition zoom with 45 members is busy but readable. Sheet has no Thoughts tab yet (thoughts.json is static for now).

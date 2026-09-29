@@ -5,7 +5,13 @@ import type {
   GraphLink,
   CoalitionNode,
   OrgNode,
+  Thought,
+  Project,
+  CoalitionEvent,
 } from "./types";
+import { h } from "./dom";
+import { orgProjects, orgEvents } from "./owners";
+import { fmtEventTime, fmtDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
 import type { Tooltip } from "./tooltip";
 import { createNodeSearch, allNodesForSearch } from "./search";
@@ -49,6 +55,10 @@ export interface Graph {
   focusOnNode(id: string): void;
   setSelectedNode(node: GraphNode | null): void;
   focusOnCoalition(id: string): void;
+  /** Zoom into a node: its projects, events and public thinking float around it as bubbles. */
+  enterFocus(id: string): void;
+  /** Leave the zoomed-in view and return to the whole network. */
+  exitFocus(): void;
   /** The "org-to-org connections" checkbox, for the host page to place (the sidebar). */
   orgLinkToggle(): HTMLElement;
   updateSettings(partial: Partial<GraphSettings>): void;
@@ -108,8 +118,8 @@ export function createGraph(
   const hint = document.createElement("div");
   hint.className = "hint";
   hint.textContent = window.matchMedia("(pointer: coarse)").matches
-    ? "Drag nodes · Pinch to zoom · Tap for details"
-    : "Drag nodes · Scroll to zoom · Click for details";
+    ? "Tap a group to zoom into its work · Pinch to zoom"
+    : "Click a group to zoom into its work · Scroll to zoom · Esc to go back";
   wrap.appendChild(hint);
 
   // Top-left overlay: search + org-to-org link toggle
@@ -293,6 +303,8 @@ export function createGraph(
     })
     .on("end", (event, d) => {
       if (!event.active) sim.alphaTarget(0);
+      // A zoomed-in node stays where you put it until you leave the zoomed-in view.
+      if (d.id === focusId) return;
       d.fx = null;
       d.fy = null;
     });
@@ -463,11 +475,13 @@ export function createGraph(
     .on("click", function (event, d) {
       event.stopPropagation();
       cb.onNodeClick(d);
+      enterFocus(d.id);
     });
 
-  // Clicking the background closes selection
+  // Clicking the background closes selection and zooms back out
   svg.on("click", () => {
     api.setSelectedNode(null);
+    exitFocus();
   });
 
   // ----- Highlight connected nodes/edges on hover -----
@@ -510,6 +524,10 @@ export function createGraph(
       "transform",
       (n) => `translate(${n.x ?? 0},${n.y ?? 0})`,
     );
+    if (focusId) {
+      const f = nodeById.get(focusId);
+      if (f) focusGroup.attr("transform", `translate(${f.x ?? 0},${f.y ?? 0})`);
+    }
   });
 
   // Auto-fit once the simulation has settled enough
@@ -596,6 +614,202 @@ export function createGraph(
     sim.alpha(0.3).restart();
   }
 
+
+  // ----- Focus mode: zoom into one group and see its work as bubbles -----
+  // Bubbles ring the node: thinking (purple), projects (green), events (amber), each kind together.
+  // They sit right next to the node, so they read as closer to it than any partner org.
+  type BubbleKind = "thought" | "project" | "event";
+  interface Bubble {
+    id: string;
+    kind: BubbleKind;
+    label: string;
+    glyph: string;
+    r: number;
+    item: Thought | Project | CoalitionEvent;
+  }
+  const BUBBLE_R = 22;
+  const focusLayer = root.append("g").attr("class", "focus-layer");
+  const focusGroup = focusLayer.append("g").attr("class", "focus-group");
+  let focusId: string | null = null;
+  const focusBar = h("div", { class: "focus-bar" });
+  const focusCard = h("div", { class: "focus-card" });
+  focusBar.style.display = "none";
+  focusCard.style.display = "none";
+  wrap.appendChild(focusBar);
+  wrap.appendChild(focusCard);
+
+  const THOUGHT_GLYPH: Record<string, string> = { topic: "◆", decision: "✓", question: "?", update: "•" };
+
+  function bubblesFor(n: GraphNode): Bubble[] {
+    const thoughts: Thought[] = n.thoughts || [];
+    const projects: Project[] = n.kind === "org" ? orgProjects(data, n) : n.projects;
+    const events: CoalitionEvent[] = n.kind === "org" ? orgEvents(data, n) : n.events;
+    const sortedEvents = [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    return [
+      ...thoughts.map((t): Bubble => ({
+        id: t.id, kind: "thought", label: shorten(t.text, 34), glyph: THOUGHT_GLYPH[t.kind] || "•", r: BUBBLE_R, item: t,
+      })),
+      ...projects.map((p): Bubble => ({
+        id: p.id, kind: "project", label: shorten(p.name, 34), glyph: p.status === "active" ? "▶" : p.status === "completed" ? "✓" : "…", r: BUBBLE_R, item: p,
+      })),
+      ...sortedEvents.map((e): Bubble => ({
+        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: String(new Date(e.date).getDate()), r: BUBBLE_R - 2, item: e,
+      })),
+    ];
+  }
+
+  /** Nodes closest to the focused one: shared coalitions, org-to-org links, and its members. */
+  function partnersOf(n: GraphNode): Set<string> {
+    const ids = new Set<string>();
+    for (const l of allLinks) {
+      const s = typeof l.source === "string" ? l.source : l.source.id;
+      const t = typeof l.target === "string" ? l.target : l.target.id;
+      if (s === n.id) ids.add(t);
+      if (t === n.id) ids.add(s);
+    }
+    if (n.kind === "org") {
+      for (const l of allLinks) {
+        if (l.kind !== "membership") continue;
+        const s = typeof l.source === "string" ? l.source : l.source.id;
+        const t = typeof l.target === "string" ? l.target : l.target.id;
+        if (ids.has(s)) ids.add(t); // fellow members of the same coalitions
+      }
+    }
+    ids.delete(n.id);
+    return ids;
+  }
+
+  function showCard(b: Bubble) {
+    while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
+    const it = b.item as Thought & Project & CoalitionEvent;
+    const kindLabel =
+      b.kind === "thought" ? { topic: "Thinking · topic", decision: "Thinking · decision", question: "Thinking · open question", update: "Thinking · update" }[(it as Thought).kind] || "Thinking"
+      : b.kind === "project" ? `Project · ${(it as Project).status}` : "Event";
+    const title = b.kind === "thought" ? (it as Thought).text : (it as Project | CoalitionEvent).name;
+    const meta: string[] = [];
+    if (b.kind === "event") meta.push(fmtEventTime((it as CoalitionEvent).date, (it as CoalitionEvent).end));
+    if (b.kind === "thought" && (it as Thought).date) meta.push(fmtDate(`${(it as Thought).date}T12:00:00`));
+    const loc = b.kind === "event" ? (it as CoalitionEvent).location : b.kind === "project" ? (it as Project).location : "";
+    if (loc) meta.push(loc);
+    const close = h("button", { class: "focus-card-close", type: "button", "aria-label": "Close" }, "×");
+    close.addEventListener("click", () => (focusCard.style.display = "none"));
+    focusCard.appendChild(close);
+    focusCard.appendChild(h("div", { class: `focus-card-kind k-${b.kind}` }, kindLabel));
+    if (b.kind !== "thought") focusCard.appendChild(h("h3", {}, title));
+    else focusCard.appendChild(h("p", { class: "focus-card-text" }, title));
+    if (meta.length) focusCard.appendChild(h("div", { class: "focus-card-meta" }, meta.join(" · ")));
+    const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent).description;
+    if (desc) focusCard.appendChild(h("p", { class: "focus-card-text" }, desc));
+    if (b.kind === "thought") focusCard.appendChild(h("div", { class: "focus-card-source" }, `Source: ${(it as Thought).source}`));
+    const link = (it as { link?: string }).link;
+    if (link && /^https?:\/\//.test(link)) {
+      focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
+    }
+    focusCard.style.display = "block";
+  }
+
+  function enterFocus(id: string) {
+    const n = nodeById.get(id);
+    if (!n) return;
+    if (focusId && focusId !== id) exitFocus(false);
+    focusId = id;
+    const cx = n.x ?? 0;
+    const cy = n.y ?? 0;
+    n.fx = cx; // hold the node still while you look around it
+    n.fy = cy;
+
+    const bubbles = bubblesFor(n);
+    const nodeR = nodeRadiusOf(n);
+    const ringR = Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI));
+
+    focusGroup.selectAll("*").remove();
+    focusGroup.attr("transform", `translate(${cx},${cy})`);
+    focusGroup.append("circle").attr("class", "focus-ring").attr("r", ringR);
+    bubbles.forEach((b, i) => {
+      const a = (2 * Math.PI * i) / bubbles.length - Math.PI / 2;
+      const bx = Math.cos(a) * ringR;
+      const by = Math.sin(a) * ringR;
+      const g = focusGroup.append("g").attr("class", `bubble b-${b.kind}`).attr("transform", `translate(${bx},${by})`);
+      focusGroup.insert("line", ".bubble").attr("class", "bubble-link")
+        .attr("x1", Math.cos(a) * nodeR).attr("y1", Math.sin(a) * nodeR).attr("x2", bx).attr("y2", by);
+      g.append("circle").attr("r", b.r);
+      g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
+      const right = Math.cos(a) >= 0;
+      g.append("text")
+        .attr("class", "bubble-label")
+        .attr("x", (right ? 1 : -1) * (b.r + 6))
+        .attr("dy", "0.35em")
+        .attr("text-anchor", right ? "start" : "end")
+        .text(b.label);
+      g.on("click", (event: Event) => {
+        event.stopPropagation();
+        showCard(b);
+      });
+    });
+
+    // Partners stay visible but recede; everything else nearly disappears.
+    const partners = partnersOf(n);
+    // A coalition has dozens of members, so its partners fade further than an org's few neighbours.
+    nodeSel
+      .classed("faded", (d) => d.id !== id && !partners.has(d.id))
+      .classed("partner", (d) => partners.has(d.id))
+      .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12);
+    linkSel.classed("faded", (l) => {
+      const s = typeof l.source === "string" ? l.source : l.source.id;
+      const t = typeof l.target === "string" ? l.target : l.target.id;
+      return s !== id && t !== id;
+    });
+
+    // Header: who, what's here, how to leave.
+    while (focusBar.firstChild) focusBar.removeChild(focusBar.firstChild);
+    const count = (k: BubbleKind) => bubbles.filter((b) => b.kind === k).length;
+    const back = h("button", { class: "focus-back", type: "button" }, "← Back to network");
+    back.addEventListener("click", () => exitFocus());
+    focusBar.appendChild(back);
+    focusBar.appendChild(h("strong", { class: "focus-title" }, n.name));
+    const legend = h("div", { class: "focus-legend" },
+      h("span", { class: "lg k-thought" }, `Thinking ${count("thought")}`),
+      h("span", { class: "lg k-project" }, `Projects ${count("project")}`),
+      h("span", { class: "lg k-event" }, `Events ${count("event")}`),
+    );
+    focusBar.appendChild(legend);
+    if (!count("thought")) {
+      focusBar.appendChild(h("div", { class: "focus-note" },
+        "No public thinking shared yet. Point people can add it with the + button; nothing appears here until the group approves it."));
+    }
+    focusBar.style.display = "flex";
+    focusCard.style.display = "none";
+
+    // Zoom so the ring fills the view (nudged left when the details panel covers the right side).
+    const { w, h: vh } = dimensions();
+    const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
+    const scale = Math.max(
+      0.35,
+      Math.min(2.2, (w - panel) / (2 * (ringR + 230)), vh / (2 * (ringR + 90))),
+    );
+    const shift = panel / 2;
+    const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
+    svg.transition().duration(600).call(zoom.transform, t);
+    sim.alpha(0.05).restart();
+  }
+
+  function exitFocus(fit = true) {
+    if (!focusId) return;
+    const n = nodeById.get(focusId);
+    if (n) {
+      n.fx = null;
+      n.fy = null;
+    }
+    focusId = null;
+    focusGroup.selectAll("*").remove();
+    nodeSel.classed("faded", false).classed("partner", false).classed("partner-many", false);
+    linkSel.classed("faded", false);
+    focusBar.style.display = "none";
+    focusCard.style.display = "none";
+    if (fit) fitToView(true);
+    sim.alpha(0.1).restart();
+  }
+
   // ----- Selection -----
   function applySelection() {
     nodeSel.classed("selected", (n) => n.id === selectedId);
@@ -614,19 +828,16 @@ export function createGraph(
       applySelection();
     },
     focusOnNode(id) {
-      api.focusOnCoalition(id);
+      enterFocus(id);
     },
     focusOnCoalition(id) {
-      const n = nodeById.get(id);
-      if (!n || n.x === undefined || n.y === undefined) return;
-      const { w, h } = dimensions();
-      const scale = 1.4;
-      const t = d3.zoomIdentity
-        .translate(-n.x * scale, -n.y * scale)
-        .scale(scale);
-      void w;
-      void h;
-      svg.transition().duration(550).call(zoom.transform, t);
+      enterFocus(id);
+    },
+    enterFocus(id) {
+      enterFocus(id);
+    },
+    exitFocus() {
+      exitFocus();
     },
     updateSettings(partial) {
       const before = { ...settings };
