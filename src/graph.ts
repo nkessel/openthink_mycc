@@ -11,6 +11,7 @@ import type {
   Action,
 } from "./types";
 import { h } from "./dom";
+import { staleNotice } from "./notice";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
@@ -713,6 +714,7 @@ export function createGraph(
     if (link && /^https?:\/\//.test(link)) {
       focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
     }
+    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, focusId ? nodeById.get(focusId) ?? null : null));
     focusCard.style.display = "block";
   }
 

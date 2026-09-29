@@ -9,6 +9,7 @@ import type {
 } from "./types";
 import { initials, relTime, fmtEventTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
+import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { suggestionsFor } from "./suggestions";
@@ -176,11 +177,11 @@ export function createDrawer(
     if (node.kind === "coalition") {
       const c = node as Coalition;
       if (activeTab === "projects") {
-        renderProjects(body, c.projects);
+        renderProjects(body, c.projects, node);
       } else if (activeTab === "events") {
-        renderEvents(body, c.events);
+        renderEvents(body, c.events, node);
       } else if (activeTab === "actions") {
-        renderActions(body, c.actions);
+        renderActions(body, c.actions, node);
       }
     } else {
       const o = node as Organization;
@@ -192,11 +193,11 @@ export function createDrawer(
       } else if (activeTab === "suggested") {
         renderSuggestions(body, o);
       } else if (activeTab === "projects") {
-        renderProjects(body, orgProjects(data, o));
+        renderProjects(body, orgProjects(data, o), node);
       } else if (activeTab === "events") {
-        renderEvents(body, orgEvents(data, o));
+        renderEvents(body, orgEvents(data, o), node);
       } else if (activeTab === "actions") {
-        renderActions(body, orgActions(data, o));
+        renderActions(body, orgActions(data, o), node);
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
       }
@@ -210,7 +211,7 @@ export function createDrawer(
     return h("a", { class: "item-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗");
   }
 
-  function renderProjects(body: HTMLElement, items: Project[]): void {
+  function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
     if (!items.length) {
       body.appendChild(h("div", { class: "empty" }, "No active projects."));
       return;
@@ -228,12 +229,13 @@ export function createDrawer(
             h("span", { class: "pill kind" }, p.status),
           ),
           linkEl(p.link),
+          staleNotice("project", owner),
         ),
       );
     }
   }
 
-  function renderEvents(body: HTMLElement, items: CoalitionEvent[]): void {
+  function renderEvents(body: HTMLElement, items: CoalitionEvent[], owner: GraphNode): void {
     if (!items.length) {
       body.appendChild(h("div", { class: "empty" }, "No upcoming events."));
       return;
@@ -251,12 +253,13 @@ export function createDrawer(
             e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
           linkEl(e.link),
+          staleNotice("event", owner),
         ),
       );
     }
   }
 
-  function renderActions(body: HTMLElement, items: Action[]): void {
+  function renderActions(body: HTMLElement, items: Action[], owner: GraphNode): void {
     if (!items.length) {
       body.appendChild(h("div", { class: "empty" }, "No open actions."));
       return;
@@ -284,6 +287,7 @@ export function createDrawer(
           a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
           linkEl(a.link),
+          staleNotice("action", owner),
         ),
       );
     }

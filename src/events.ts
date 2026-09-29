@@ -1,6 +1,7 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, type Owner } from "./owners";
 import { h, clear } from "./dom";
+import { staleNotice } from "./notice";
 import { fmtEventTime, hasTime, parseEventDate } from "./util";
 
 export interface EventsView {
@@ -136,8 +137,9 @@ export function createEventsView(
         r.event.link && /^https?:\/\//.test(r.event.link)
           ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
           : null,
+        staleNotice("event", r.owner.node),
       );
-      card.querySelector("a.item-link")?.addEventListener("click", (ev) => ev.stopPropagation());
+      card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
       card.addEventListener("click", () => {
         cb.onCoalitionClick(r.owner.node);
       });

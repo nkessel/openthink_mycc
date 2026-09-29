@@ -260,3 +260,8 @@ What / why
 - Result: 149 projects, 106 events, 60 actions across 86 orgs/coalitions. CSVs regenerated (Projects, Events, Actions).
 - Uncertain: confidence is a heuristic (page text match + year mentions), not human verification; JS-only pages score low even if real. One Mass Audubon deadline (Nov 3 election) is inferred, and says so in its description. Item ids changed from the previous push, so any sheet rows imported from the earlier CSVs should be replaced, not appended.
 - Sheet: add the three new columns to the Actions tab (Apps Script adds them on next setup run) and import the 3 CSVs.
+
+## 2026-09-29 (evening) — "May be inaccurate" notice on every project/event/action
+- Asked: warn on all researched items, with a link to a Google Form to update.
+- Did: src/notice.ts adds a warning box to every project, event and action card (drawer, zoom-view card, Events and Projects lists). Events/projects link to their existing Google Form pre-filled with the owning org/coalition; actions have no form yet, so they link to the feedback form.
+- Uncertain: the forms can't pre-select the specific event/project being corrected (their dropdown labels are built by the Apps Script), so the person picks it themselves. Applies to all items, including the hand-sourced MYCC/MPF ones.
