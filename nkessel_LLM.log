@@ -228,3 +228,12 @@ What / why
 
 2026-09-26 16:35 — Claude
 - Nathan: coalitions say "x member groups" instead of "x members" (panel, tooltip, map popup, search, legend).
+
+2026-09-29 — Claude
+- Nathan: "update the map with actual current projects / events using all data available to us."
+- Found: the live sheet and public/data.json only had generated placeholder events/projects/actions (coalition-owned, none org-owned); the sheet's form-response tabs are still empty (no real submissions yet).
+- Gathered real, public items from: the CAN Western MA newsletter (9/29), JCAN events email (9/7), MYCC check-in email (9/16), team notes (Running: Climate Network Map), and the Amherst Indy article on MPF's dashboard launch (9/28). Skipped anything past, undated, or without a clear host.
+- scripts/apply-current-events.mjs (new): replaces all placeholder events/projects/actions with 9 projects + 9 events, each commented with its source; org-owned where an org hosts it (CAN Western MA, Sierra Club, JCAN), coalition-owned for MPF and MYCC. Optional --csv writes Projects/Events tab rows for the sheet.
+- Orgs, coalitions' other fields, and edges are unchanged (checked). Placeholder actions were removed too since none were real.
+- Uncertain: Arcadia pin is the Easthampton town centre (approximate); MYCC 10/4 call date is inferred from "every other Sunday 8 pm" + the 9/6 call; JCAN 10/12 and 10/20 have no named organizer, attributed to JCAN because they're on its calendar.
+- Note: the live site reads the Google Sheet, so the sheet's Projects/Events tabs still need these rows (CSV provided) or the site keeps showing the placeholders until the nightly snapshot logic is changed.
