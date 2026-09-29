@@ -50,7 +50,8 @@ export function parseEventDate(iso: string): Date {
   return new Date(hasTime(iso) ? iso : `${iso}T00:00:00`);
 }
 
-export function fmtEventTime(start: string, end?: string): string {
+export function fmtEventTime(start: string, end?: string, recurrence?: string): string {
+  if (recurrence) return `${recurrence} · next ${hasTime(start) ? fmtDateTime(start) : fmtDate(`${start}T12:00:00`)}`;
   if (!hasTime(start)) return `${fmtDate(`${start}T12:00:00`)} · time not posted`;
   if (!end) return fmtDateTime(start);
   const t = new Date(end).toLocaleString("en-US", { hour: "numeric", minute: "2-digit" });

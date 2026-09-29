@@ -74,6 +74,7 @@ export function createFab(parent: HTMLElement, getContext: () => GraphNode | nul
     );
     menu.appendChild(item("event", "Add or edit an event", `Public events${where}`));
     menu.appendChild(item("project", "Add or edit a project", `Projects that need help${where}`));
+    menu.appendChild(item("action", "Add or edit an action or volunteer opportunity", `Ways for people to help${where}`));
     menu.appendChild(item("feedback", "Send feedback", "Bugs, ideas, questions"));
   }
 

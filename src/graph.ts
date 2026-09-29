@@ -656,7 +656,7 @@ export function createGraph(
         id: p.id, kind: "project", label: shorten(p.name, 34), glyph: p.status === "active" ? "▶" : p.status === "completed" ? "✓" : "…", r: BUBBLE_R, item: p,
       })),
       ...sortedEvents.map((e): Bubble => ({
-        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: String(parseEventDate(e.date).getDate()), r: BUBBLE_R - 2, item: e,
+        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: e.recurrence ? "↻" : String(parseEventDate(e.date).getDate()), r: BUBBLE_R - 2, item: e,
       })),
       ...actions.map((a): Bubble => ({
         id: a.id, kind: "action", label: shorten(a.name, 34), glyph: a.kind === "role" ? "♥" : "!", r: BUBBLE_R - 2, item: a,
@@ -695,7 +695,7 @@ export function createGraph(
       : "Event";
     const title = b.kind === "thought" ? (it as Thought).text : (it as Project | CoalitionEvent | Action).name;
     const meta: string[] = [];
-    if (b.kind === "event") meta.push(fmtEventTime((it as CoalitionEvent).date, (it as CoalitionEvent).end));
+    if (b.kind === "event") meta.push(fmtEventTime((it as CoalitionEvent).date, (it as CoalitionEvent).end, (it as CoalitionEvent).recurrence));
     if (b.kind === "action" && (it as Action).deadline) meta.push(`by ${(it as Action).deadline}`);
     if (b.kind === "thought" && (it as Thought).date) meta.push(fmtDate(`${(it as Thought).date}T12:00:00`));
     const loc = b.kind === "event" ? (it as CoalitionEvent).location : b.kind === "project" ? (it as Project).location : "";

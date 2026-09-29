@@ -26,6 +26,8 @@ export interface CoalitionEvent {
   location: string;
   // Optional fields filled in through the MA Climate Coalition Map forms
   /** A date with no time part ("2026-10-12") means the source did not post a time. */
+  /** Repeats on a schedule, e.g. "Every Saturday, 12-1 PM". `date` is then the next occurrence. */
+  recurrence?: string;
   /** End date-time (same day as `date`), if given. */
   end?: string;
   description?: string;

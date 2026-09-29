@@ -249,7 +249,7 @@ export function createDrawer(
           h(
             "div",
             { class: "row" },
-            h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end)),
+            h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
             e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
           linkEl(e.link),

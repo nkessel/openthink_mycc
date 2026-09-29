@@ -219,7 +219,7 @@ if (csvDir) {
   const L = (xs) => (xs || []).join(", ");
   const bool = (x) => (x === undefined ? "" : x ? "TRUE" : "FALSE");
   const P = ["id", "coalition_id", "host_org_id", "name", "description", "status", "skills_needed", "topic_tags", "link", "public_contact", "location", "online", "lat", "lng", "last_activity", "hidden"];
-  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end"];
+  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end", "recurrence"];
   const A = ["id", "coalition_id", "kind", "name", "urgency", "skills_needed", "deadline", "hidden", "host_org_id", "description", "link"];
   const rowsP = [P], rowsE = [E], rowsA = [A];
   const addA = (a, cid, oid) => rowsA.push(A.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(a.skills_needed) }[k] ?? a[k])));

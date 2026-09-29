@@ -32,7 +32,7 @@ export function createEventsView(
   const rows: Row[] = allEvents(data).map(({ event, owner }) => ({
     event,
     owner,
-    isUpcoming: parseEventDate(event.date).getTime() + (hasTime(event.date) ? 0 : 86400000) >= now,
+    isUpcoming: !!event.recurrence || parseEventDate(event.date).getTime() + (hasTime(event.date) ? 0 : 86400000) >= now,
   }));
   rows.sort((a, b) => {
     if (a.isUpcoming !== b.isUpcoming) return a.isUpcoming ? -1 : 1;
@@ -130,7 +130,7 @@ export function createEventsView(
         h(
           "div",
           { class: "meta-row" },
-          h("span", { class: "pill deadline" }, fmtEventTime(r.event.date, r.event.end)),
+          h("span", { class: "pill deadline" }, fmtEventTime(r.event.date, r.event.end, r.event.recurrence)),
           h("span", { class: "pill kind" }, r.event.location),
           !r.isUpcoming && h("span", { class: "pill" }, "past"),
         ),
