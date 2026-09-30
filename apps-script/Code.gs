@@ -27,6 +27,8 @@
 var ADMIN_EMAILS = ['nathandkessel@gmail.com', 'ab130@wellesley.edu', 'turibius@bu.edu'];
 /** Where the starting data comes from (the repo's public/data.json). */
 var SEED_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/public/data.json';
+/** Where "Replace projects, events and actions from the repo" reads from (the repo's public/data.json). */
+var ACTIVITY_URL = SEED_URL;
 /** Email the admins when something needs review. */
 var ALERT_ADMINS = true;
 
@@ -211,6 +213,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('MA Climate Coalition Map')
     .addItem('Set up sheet + forms (run once)', 'setUp')
+    .addItem('Replace projects, events and actions from the repo', 'replaceActivityFromRepo')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
     .addItem('Show form + data links', 'showLinks')
     .addItem('Fill in missing logos + websites from GitHub', 'fillLogosFromGitHub')
@@ -285,6 +288,44 @@ function setUp() {
 function ensureTrigger_(handler, create) {
   var exists = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === handler; });
   if (!exists) create();
+}
+
+/**
+ * Replace the Projects, Events and Actions tabs with what is in the repo's data.json (new events/projects/actions
+ * gathered from public pages). Anything people added through the forms in those tabs is overwritten, so this asks first.
+ * Rows are written by header name, so column order in the sheet does not matter.
+ */
+function replaceActivityFromRepo() {
+  var ui = SpreadsheetApp.getUi();
+  var go = ui.alert('Replace Projects, Events and Actions?',
+    'This overwrites those three tabs with the repo data (' + ACTIVITY_URL + '). Changes made through the forms in those tabs since the last export will be lost.',
+    ui.ButtonSet.OK_CANCEL);
+  if (go !== ui.Button.OK) return;
+  var counts = replaceActivity_(JSON.parse(UrlFetchApp.fetch(ACTIVITY_URL).getContentText()));
+  refreshDropdowns();
+  ui.alert('Done: ' + counts.join(', ') + '.');
+}
+
+function replaceActivity_(data) {
+  var rows = sheetRowsFromData_(data);
+  var ss = ss_();
+  var counts = [];
+  [TAB.projects, TAB.events, TAB.actions].forEach(function (name) {
+    var sh = ss.getSheetByName(name);
+    addMissingColumns_(sh, COLS[name]);
+    var headers = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(String);
+    if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, headers.length).clearContent();
+    var data2 = rows[name].map(function (r) {
+      return headers.map(function (h) { var i = COLS[name].indexOf(h); return i === -1 ? '' : r[i]; });
+    });
+    if (data2.length) {
+      var range = sh.getRange(2, 1, data2.length, headers.length);
+      range.setNumberFormats(data2.map(function (r) { return r.map(function (v) { return typeof v === 'number' ? '0.000000' : '@'; }); }));
+      range.setValues(data2);
+    }
+    counts.push(data2.length + ' ' + name.toLowerCase());
+  });
+  return counts;
 }
 
 /** Columns added in later versions go at the end of an existing tab (nothing is moved). */
