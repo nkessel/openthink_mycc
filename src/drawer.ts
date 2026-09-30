@@ -387,7 +387,7 @@ export function createDrawer(
     row("Type", typeLabel(org.type));
     row("Geographic focus", org.geographic_focus);
     row("Description", org.description);
-    row("Website", org.website ? h("a", { href: org.website, target: "_blank", rel: "noopener" }, org.website) : undefined);
+    row("Website", org.website ? h("a", { class: "org-website", href: org.website, target: "_blank", rel: "noopener noreferrer" }, org.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
     row("Contact", org.public_contact);
     row("Active membership", p.membership_size);
     row("EJ / frontline focus", score(p.ej_focus));
