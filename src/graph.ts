@@ -20,6 +20,8 @@ import { createNodeSearch, allNodesForSearch } from "./search";
 
 export interface GraphCallbacks {
   onNodeClick(node: GraphNode): void;
+  /** The open group was clicked again: it collapsed. */
+  onNodeDeselect?(node: GraphNode): void;
 }
 
 export interface GroupRule {
@@ -38,6 +40,10 @@ export interface GraphSettings {
   linkThickness: number; // 0.5..4 (px)
   textFadeThreshold: number; // 0..1; below this zoom scale, hide names
   arrows: boolean;
+  /** Bubbles for events / projects / actions appear around a group when it is opened. */
+  showBubbles: boolean;
+  /** Scale group size by how much they're doing. */
+  sizeBy: "none" | "all" | "events" | "projects" | "actions";
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
@@ -49,6 +55,8 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   linkThickness: 1,
   textFadeThreshold: 0.5,
   arrows: false,
+  showBubbles: true,
+  sizeBy: "none",
 };
 
 export interface Graph {
@@ -183,8 +191,9 @@ export function createGraph(
       root.attr("transform", event.transform.toString());
       currentZoomScale = event.transform.k;
       applyTextFade();
-      // Hide tooltip while zooming
+      // Hide tooltip while zooming; a card anchored to a bubble would drift, so close it on manual pan/zoom
       tooltip.hide();
+      if (event.sourceEvent) focusCard.style.display = "none";
     });
 
   let currentZoomScale = 1;
@@ -246,9 +255,27 @@ export function createGraph(
   function linkWidthFor(l: GraphLink): number {
     return l.kind === "org" ? settings.linkThickness * (0.6 + (l.weight ?? 1) * 0.6) : settings.linkThickness;
   }
+  function activityCounts(n: GraphNode): { projects: number; events: number; actions: number } {
+    return n.kind === "org"
+      ? { projects: orgProjects(data, n).length, events: orgEvents(data, n).length, actions: orgActions(data, n).length }
+      : { projects: n.projects.length, events: n.events.length, actions: n.actions.length };
+  }
+  const countCache = new Map<string, { projects: number; events: number; actions: number }>();
+  function countsOf(n: GraphNode) {
+    let c = countCache.get(n.id);
+    if (!c) countCache.set(n.id, (c = activityCounts(n)));
+    return c;
+  }
+  tooltip.setCounts(countsOf);
+  function sizeFactor(n: GraphNode): number {
+    if (settings.sizeBy === "none") return 1;
+    const c = countsOf(n);
+    const v = settings.sizeBy === "all" ? c.projects + c.events + c.actions : c[settings.sizeBy];
+    return Math.min(2.6, 0.75 + 0.3 * Math.sqrt(v)); // 0 → small, ~10 → about 1.7x
+  }
   function nodeRadiusOf(n: GraphNode): number {
     const base = n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
-    return base * settings.nodeSize;
+    return base * settings.nodeSize * sizeFactor(n);
   }
 
   // ----- Force simulation -----
@@ -476,6 +503,12 @@ export function createGraph(
     })
     .on("click", function (event, d) {
       event.stopPropagation();
+      if (focusId === d.id) {
+        // Clicking the open group again folds its bubbles back in.
+        exitFocus();
+        cb.onNodeDeselect?.(d);
+        return;
+      }
       cb.onNodeClick(d);
       enterFocus(d.id);
     });
@@ -626,6 +659,8 @@ export function createGraph(
     kind: BubbleKind;
     label: string;
     glyph: string;
+    /** Second line under the label: date and place for events. */
+    subtitle?: string;
     r: number;
     item: Thought | Project | CoalitionEvent | Action;
   }
@@ -653,13 +688,14 @@ export function createGraph(
         id: t.id, kind: "thought", label: shorten(t.text, 34), glyph: THOUGHT_GLYPH[t.kind] || "•", r: BUBBLE_R, item: t,
       })),
       ...projects.map((p): Bubble => ({
-        id: p.id, kind: "project", label: shorten(p.name, 34), glyph: p.status === "active" ? "▶" : p.status === "completed" ? "✓" : "…", r: BUBBLE_R, item: p,
+        id: p.id, kind: "project", label: shorten(p.name, 34), glyph: "", subtitle: p.location ? shorten(p.location, 38) : undefined, r: BUBBLE_R, item: p,
       })),
       ...sortedEvents.map((e): Bubble => ({
-        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: e.recurrence ? "↻" : String(parseEventDate(e.date).getDate()), r: BUBBLE_R - 2, item: e,
+        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: e.recurrence ? "↻" : "",
+        subtitle: shorten([fmtShortDate(e.date), e.location].filter(Boolean).join(" · "), 42), r: BUBBLE_R - 2, item: e,
       })),
       ...actions.map((a): Bubble => ({
-        id: a.id, kind: "action", label: shorten(a.name, 34), glyph: a.kind === "role" ? "♥" : "!", r: BUBBLE_R - 2, item: a,
+        id: a.id, kind: "action", label: shorten(a.name, 34), glyph: "", subtitle: a.deadline ? `by ${shorten(a.deadline, 30)}` : undefined, r: BUBBLE_R - 2, item: a,
       })),
     ];
   }
@@ -685,7 +721,7 @@ export function createGraph(
     return ids;
   }
 
-  function showCard(b: Bubble) {
+  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }) {
     while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
     const it = b.item as Thought & Project & CoalitionEvent & Action;
     const kindLabel =
@@ -715,7 +751,62 @@ export function createGraph(
       focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
     }
     if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, focusId ? nodeById.get(focusId) ?? null : null, (b.item as { needs_info?: boolean }).needs_info));
+    focusCard.style.visibility = "hidden";
     focusCard.style.display = "block";
+    placeCard(anchor);
+    focusCard.style.visibility = "";
+  }
+
+  /** Put the card right next to the clicked bubble (below it, or above if there's no room), kept fully on screen. */
+  function placeCard(anchor?: { x: number; y: number; r: number }) {
+    const box = wrap.getBoundingClientRect();
+    const W = box.width;
+    const H = box.height;
+    const panel = W > 900 && focusId ? 420 : 0; // the details panel covers the right side
+    const usableW = W - panel;
+    const cw = Math.min(360, usableW - 24);
+    focusCard.style.width = `${cw}px`;
+    const ch = Math.min(focusCard.offsetHeight, H * 0.55);
+    if (!anchor) {
+      focusCard.style.left = "12px";
+      focusCard.style.top = `${Math.max(12, H - ch - 12)}px`;
+      return;
+    }
+    const gap = anchor.r + 14;
+    const below = anchor.y + gap + ch <= H - 12;
+    let top = below ? anchor.y + gap : anchor.y - gap - ch;
+    if (!below && top < 12) top = Math.max(12, Math.min(anchor.y - ch / 2, H - ch - 12)); // neither fits: sit beside it
+    let left = anchor.x - cw / 2;
+    if (!below && top < anchor.y - gap - ch + 1 && top + ch > anchor.y - gap) left = anchor.x + gap; // beside
+    left = Math.max(12, Math.min(left, usableW - cw - 12));
+    focusCard.style.left = `${left}px`;
+    focusCard.style.top = `${Math.max(12, top)}px`;
+  }
+
+  const LABEL_PX = 6; // rough width of one label character, for hit areas and spacing
+
+  // Icons drawn inside the bubbles, centred on (0,0): a calendar, a team of people, a checkmark.
+  function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind) {
+    const ic = g.append("g").attr("class", "bubble-icon");
+    if (kind === "event") {
+      ic.append("rect").attr("x", -8).attr("y", -7).attr("width", 16).attr("height", 15).attr("rx", 2.5);
+      ic.append("line").attr("x1", -8).attr("x2", 8).attr("y1", -2).attr("y2", -2);
+      ic.append("line").attr("x1", -4).attr("x2", -4).attr("y1", -10).attr("y2", -5);
+      ic.append("line").attr("x1", 4).attr("x2", 4).attr("y1", -10).attr("y2", -5);
+      ic.append("circle").attr("class", "dot").attr("cx", -3).attr("cy", 3).attr("r", 1);
+      ic.append("circle").attr("class", "dot").attr("cx", 1).attr("cy", 3).attr("r", 1);
+      ic.append("circle").attr("class", "dot").attr("cx", 5).attr("cy", 3).attr("r", 1);
+    } else if (kind === "project") {
+      // three people: one in front, two behind
+      ic.append("circle").attr("cx", 0).attr("cy", -4.5).attr("r", 3);
+      ic.append("path").attr("d", "M-5.5 8 a5.5 5 0 0 1 11 0");
+      ic.append("circle").attr("cx", -8).attr("cy", -2).attr("r", 2.2);
+      ic.append("path").attr("d", "M-12 7 a3.6 3.6 0 0 1 4.2 -3.4");
+      ic.append("circle").attr("cx", 8).attr("cy", -2).attr("r", 2.2);
+      ic.append("path").attr("d", "M12 7 a3.6 3.6 0 0 0 -4.2 -3.4");
+    } else if (kind === "action") {
+      ic.append("path").attr("class", "check").attr("d", "M-7 0.5 L-2.2 5.5 L7.5 -5");
+    }
   }
 
   function enterFocus(id: string) {
@@ -728,32 +819,59 @@ export function createGraph(
     n.fx = cx; // hold the node still while you look around it
     n.fy = cy;
 
-    const bubbles = bubblesFor(n);
+    const allBubbles = bubblesFor(n);
+    const bubbles = settings.showBubbles ? allBubbles : [];
     const nodeR = nodeRadiusOf(n);
-    const ringR = Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI));
+    const ringR = bubbles.length ? Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI)) : nodeR + 40;
+    // Room a bubble's text needs beyond the ring; everything else is moved out past this.
+    const clearR = bubbles.length ? ringR + 230 : nodeR + 120;
 
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
-    focusGroup.append("circle").attr("class", "focus-ring").attr("r", ringR);
+    if (bubbles.length) focusGroup.append("circle").attr("class", "focus-ring").attr("r", ringR).attr("opacity", 0).transition().duration(500).attr("opacity", 1);
     bubbles.forEach((b, i) => {
       const a = (2 * Math.PI * i) / bubbles.length - Math.PI / 2;
       const bx = Math.cos(a) * ringR;
       const by = Math.sin(a) * ringR;
-      const g = focusGroup.append("g").attr("class", `bubble b-${b.kind}`).attr("transform", `translate(${bx},${by})`);
-      focusGroup.insert("line", ".bubble").attr("class", "bubble-link")
-        .attr("x1", Math.cos(a) * nodeR).attr("y1", Math.sin(a) * nodeR).attr("x2", bx).attr("y2", by);
-      g.append("circle").attr("r", b.r);
-      g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
+      // Bubbles grow out of the group and settle into the ring.
+      const line = focusGroup.insert("line", ".bubble").attr("class", "bubble-link")
+        .attr("x1", Math.cos(a) * nodeR).attr("y1", Math.sin(a) * nodeR).attr("x2", Math.cos(a) * nodeR).attr("y2", Math.sin(a) * nodeR);
+      line.transition().duration(500).ease(d3.easeCubicOut).attr("x2", bx).attr("y2", by);
+      const g = focusGroup.append("g").attr("class", `bubble b-${b.kind}`)
+        .attr("transform", `translate(${Math.cos(a) * nodeR},${Math.sin(a) * nodeR}) scale(0.2)`)
+        .attr("opacity", 0);
+      g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", `translate(${bx},${by}) scale(1)`).attr("opacity", 1);
       const right = Math.cos(a) >= 0;
-      g.append("text")
+      const side = right ? 1 : -1;
+      // A transparent hit area under the text, so clicking the title clicks the bubble, not whatever is behind it.
+      const textW = Math.max(b.label.length, (b.subtitle || "").length) * LABEL_PX;
+      g.append("rect").attr("class", "bubble-hit")
+        .attr("x", right ? 0 : -(b.r + 8 + textW)).attr("y", -b.r - 2)
+        .attr("width", b.r + 8 + textW).attr("height", 2 * b.r + 4);
+      g.append("circle").attr("r", b.r);
+      if (b.kind === "thought") g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
+      else {
+        drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, b.kind);
+        if (b.glyph) g.append("text").attr("class", "bubble-badge").attr("x", b.r - 3).attr("y", -b.r + 7).text(b.glyph);
+      }
+      const label = g.append("text")
         .attr("class", "bubble-label")
-        .attr("x", (right ? 1 : -1) * (b.r + 6))
-        .attr("dy", "0.35em")
+        .attr("x", side * (b.r + 6))
+        .attr("dy", b.subtitle ? "-0.2em" : "0.35em")
         .attr("text-anchor", right ? "start" : "end")
         .text(b.label);
+      void label;
+      if (b.subtitle) {
+        g.append("text").attr("class", "bubble-sub")
+          .attr("x", side * (b.r + 6)).attr("dy", "1.15em")
+          .attr("text-anchor", right ? "start" : "end")
+          .text(b.subtitle);
+      }
       g.on("click", (event: Event) => {
         event.stopPropagation();
-        showCard(b);
+        const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
+        const wb = wrap.getBoundingClientRect();
+        showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 });
       });
     });
 
@@ -770,9 +888,26 @@ export function createGraph(
       return s !== id && t !== id;
     });
 
+    // Push every other group well away so the bubbles have clear space (and nothing sits behind them).
+    sim.force("focusPush", () => {
+      const f = nodeById.get(id);
+      if (!f) return;
+      for (const o of allNodes) {
+        if (o === f) continue;
+        const dx = (o.x ?? 0) - (f.x ?? 0);
+        const dy = (o.y ?? 0) - (f.y ?? 0);
+        const d = Math.hypot(dx, dy) || 1;
+        const min = clearR + nodeRadiusOf(o);
+        if (d < min) {
+          o.vx = (o.vx ?? 0) + (dx / d) * (min - d) * 0.25;
+          o.vy = (o.vy ?? 0) + (dy / d) * (min - d) * 0.25;
+        }
+      }
+    });
+
     // Header: who, what's here, how to leave.
     while (focusBar.firstChild) focusBar.removeChild(focusBar.firstChild);
-    const count = (k: BubbleKind) => bubbles.filter((b) => b.kind === k).length;
+    const count = (k: BubbleKind) => allBubbles.filter((b) => b.kind === k).length;
     const back = h("button", { class: "focus-back", type: "button" }, "← Back to network");
     back.addEventListener("click", () => exitFocus());
     focusBar.appendChild(back);
@@ -784,7 +919,9 @@ export function createGraph(
       h("span", { class: "lg k-action" }, `Actions ${count("action")}`),
     );
     focusBar.appendChild(legend);
-    if (!count("thought")) {
+    if (!settings.showBubbles) {
+      focusBar.appendChild(h("div", { class: "focus-note" }, "Bubbles are hidden. Turn on “Show events, projects & actions” in Display settings to see them."));
+    } else if (!count("thought")) {
       focusBar.appendChild(h("div", { class: "focus-note" },
         "No public thinking shared yet. Point people can add it with the + button; nothing appears here until the group approves it."));
     }
@@ -801,7 +938,7 @@ export function createGraph(
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
     svg.transition().duration(600).call(zoom.transform, t);
-    sim.alpha(0.05).restart();
+    sim.alpha(0.7).restart();
   }
 
   function exitFocus(fit = true) {
@@ -812,13 +949,25 @@ export function createGraph(
       n.fy = null;
     }
     focusId = null;
-    focusGroup.selectAll("*").remove();
+    sim.force("focusPush", null);
+    // Bubbles fold back into the group, then disappear.
+    if (fit) {
+      const nn = n;
+      focusGroup.selectAll<SVGGElement, unknown>("g.bubble")
+        .transition().duration(350).ease(d3.easeCubicIn)
+        .attr("transform", `translate(0,0) scale(0.2)`).attr("opacity", 0);
+      focusGroup.selectAll("line.bubble-link, circle.focus-ring").transition().duration(350).attr("opacity", 0);
+      setTimeout(() => { if (!focusId) focusGroup.selectAll("*").remove(); }, 380);
+      void nn;
+    } else {
+      focusGroup.selectAll("*").remove();
+    }
     nodeSel.classed("faded", false).classed("partner", false).classed("partner-many", false);
     linkSel.classed("faded", false);
     focusBar.style.display = "none";
     focusCard.style.display = "none";
-    if (fit) fitToView(true);
-    sim.alpha(0.1).restart();
+    if (fit) setTimeout(() => { if (!focusId) fitToView(true); }, 450);
+    sim.alpha(0.6).restart();
   }
 
   // ----- Selection -----
@@ -867,6 +1016,12 @@ export function createGraph(
         xForce.strength(centerForceStrength());
         yForce.strength(centerForceStrength());
       }
+      if (partial.sizeBy !== undefined) {
+        collideForce.radius((n) => nodeRadiusOf(n) + 14);
+        applyVisualSettings();
+        sim.alpha(0.4).restart();
+      }
+      if (partial.showBubbles !== undefined && focusId) enterFocus(focusId);
       if (partial.nodeSize !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
         applyVisualSettings();
@@ -901,4 +1056,9 @@ export function createGraph(
 
 function shorten(s: string, n: number): string {
   return s.length > n ? s.slice(0, n - 1) + "…" : s;
+}
+
+function fmtShortDate(iso: string): string {
+  const d = parseEventDate(iso);
+  return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }

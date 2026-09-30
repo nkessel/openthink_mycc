@@ -290,3 +290,9 @@ What / why
 ## 2026-09-30 — recurring events expand on the calendar
 - src/recurrence.ts parses the free-text recurrence (weekly, every other, nth weekday of month, "no July or December" skips) and the calendar draws every occurrence from the next date onward. Checked against all 21 current recurrences: 19 parse; 2 ("Monthly; next meeting …") fall back to showing only their next date.
 - Why: Nathan asked for every recurrence on the calendar. Text parsing is best-effort; a structured repeat field in the sheet/form would be exact (not built).
+
+## 2026-09-30 — duplicates, CAN calendar, map interaction overhaul (branch claude/calendar-view-logo-home)
+- Duplicates: the old check only matched exact normalized names. New pass in apply-current-events.mjs (same owner + same day + title similarity: Jaccard>=0.7 or >=0.8 containment; projects/actions Jaccard>=0.7) dropped 18 duplicate events. Not caught: near-same projects with different wording (e.g. two Sierra Club "Quabbin" projects) and co-hosted events listed under two different orgs (kept on purpose).
+- Climate Action Now: their /events calendar had 5 monthly Zoom series we missed; added as recurring events (source was model-summarised WebFetch because the site blocked curl/Playwright, confidence ~0.85). iCal/REST feeds not reachable.
+- Map: hover shows projects/events/actions counts; Display settings got "Make groups bigger by" (none/all/events/projects/actions) and "Show events, projects & actions around a group when you open it"; bubbles use icons (calendar, team of people, checkmark) with date·place subtitles; bubbles grow out of the clicked group, other groups are pushed away, clicking the open group again folds them back; info card appears next to the clicked bubble.
+- Why: requested by Nathan. Checked with Playwright (no JS errors). The preview reads the LIVE sheet, so it still showed pre-dedupe data.

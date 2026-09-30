@@ -2,7 +2,11 @@ import type { GraphNode } from "./types";
 import { initials, relTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
 
+export interface ActivityCounts { projects: number; events: number; actions: number }
+
 export interface Tooltip {
+  /** Lets the graph say how many projects / events / actions a node has. */
+  setCounts(fn: (node: GraphNode) => ActivityCounts): void;
   show(node: GraphNode, x: number, y: number): void;
   hide(): void;
   move(x: number, y: number): void;
@@ -14,6 +18,7 @@ export function createTooltip(): Tooltip {
   document.body.appendChild(el);
 
   let currentNode: GraphNode | null = null;
+  let counts: ((node: GraphNode) => ActivityCounts) | null = null;
 
   function position(x: number, y: number) {
     const rect = el.getBoundingClientRect();
@@ -36,6 +41,11 @@ export function createTooltip(): Tooltip {
       h("div", { class: "val" }, String(val)),
       h("div", { class: "lbl" }, lbl),
     );
+  }
+
+  function activityStats(node: GraphNode): HTMLElement[] {
+    const c = counts ? counts(node) : { projects: 0, events: 0, actions: 0 };
+    return [stat(c.projects, "Projects"), stat(c.events, "Events"), stat(c.actions, "Actions")];
   }
 
   function render(node: GraphNode): HTMLElement[] {
@@ -65,9 +75,7 @@ export function createTooltip(): Tooltip {
           "div",
           { class: "stats" },
           stat(node.member_count, "Member groups"),
-          stat(node.projects.length, "Projects"),
-          stat(node.events.length, "Events"),
-          stat(node.actions.length, "Actions"),
+          ...activityStats(node),
         ),
         h(
           "div",
@@ -104,6 +112,7 @@ export function createTooltip(): Tooltip {
           "div",
           { class: "stats" },
           stat(node.coalition_ids.length, "Coalitions"),
+          ...activityStats(node),
           stat(relTime(node.last_activity), "Last active"),
         ),
       ];
@@ -111,6 +120,9 @@ export function createTooltip(): Tooltip {
   }
 
   return {
+    setCounts(fn) {
+      counts = fn;
+    },
     show(node, x, y) {
       if (currentNode !== node) {
         currentNode = node;

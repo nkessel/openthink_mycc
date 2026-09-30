@@ -196,6 +196,46 @@ for (const [id, items] of Object.entries(researched)) {
     if (have.length) o[kind] = have;
   }
 }
+// Near-duplicate check (same owner, same day, similar title): keeps the richer record, logs what it dropped.
+// Exact-name matching missed things like "Tomás" vs "Tomas" or "…Picnic and Text Banking" vs "…Text Banking Picnic".
+const fold = (s) => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const STOP = new Set(["the", "and", "with", "for", "at", "of", "in", "on", "a", "an", "to", "virtual", "zoom", "webinar", "annual", "free"]);
+const toks = (s) => new Set(fold(s).replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 1 && !STOP.has(w)));
+// Same event if the titles share most words (Jaccard >= 0.7) or one title is nearly contained in the other (>= 0.8).
+// Sibling events like "Metro-North Chapter Meeting" / "Greater Springfield Chapter Meeting" stay separate.
+const jaccard = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].filter((w) => B.has(w)).length; return i / (A.size + B.size - i || 1); };
+const sameTitle = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].filter((w) => B.has(w)).length; return i / (A.size + B.size - i || 1) >= 0.7 || i / Math.max(1, Math.min(A.size, B.size)) >= 0.8; };
+const richness = (e) => (e.date.length > 10 ? 4 : 0) + (e.link ? 2 : 0) + (e.description ? 1 : 0) + (e.location ? 1 : 0) + (e.end ? 1 : 0);
+const droppedDups = [];
+for (const owner of [...data.coalitions, ...data.organizations]) {
+  const kept = [];
+  for (const e of owner.events || []) {
+    const dup = kept.find((k) => {
+      if (k.date.slice(0, 10) !== e.date.slice(0, 10)) return false;
+      if (k.date.length > 10 && e.date.length > 10 && k.date !== e.date) return false;
+      return sameTitle(k.name, e.name);
+    });
+    if (!dup) { kept.push(e); continue; }
+    if (richness(e) > richness(dup)) kept[kept.indexOf(dup)] = { ...e, location: e.location || dup.location };
+    droppedDups.push(`${owner.id}: "${e.name}" ~ "${dup.name}" (${e.date.slice(0, 10)})`);
+  }
+  if (owner.events) owner.events = kept;
+}
+// Same idea for projects and actions: same owner, near-identical title.
+for (const owner of [...data.coalitions, ...data.organizations]) {
+  for (const kind of ["projects", "actions"]) {
+    const kept = [];
+    for (const it of owner[kind] || []) {
+      const dup = kept.find((k) => jaccard(k.name, it.name) >= 0.7);
+      if (!dup) { kept.push(it); continue; }
+      if ((it.description || "").length + (it.link ? 20 : 0) > (dup.description || "").length + (dup.link ? 20 : 0)) kept[kept.indexOf(dup)] = it;
+      droppedDups.push(`${owner.id}: ${kind.slice(0, -1)} "${it.name}" ~ "${dup.name}"`);
+    }
+    if (owner[kind]) owner[kind] = kept;
+  }
+}
+if (droppedDups.length) console.log(`Dropped ${droppedDups.length} duplicate events:\n  ` + droppedDups.join("\n  "));
+
 // Every org-owned item names its host org and lists (possibly empty) skills, as the sheet round-trip does.
 for (const o of data.organizations) {
   for (const kind of ["projects", "events", "actions"]) {
