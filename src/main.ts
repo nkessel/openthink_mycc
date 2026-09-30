@@ -46,7 +46,15 @@ async function main() {
 
   const topbar = createTopbar(
     app,
-    { onTabChange: (t) => setTab(t) },
+    {
+      onTabChange: (t) => setTab(t),
+      onHome: () => {
+        setTab("map");
+        graphApi?.exitFocus();
+        drawerApi?.close();
+        graphApi?.setSelectedNode(null);
+      },
+    },
     activeTab,
   );
 

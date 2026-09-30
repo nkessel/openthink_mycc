@@ -281,3 +281,8 @@ What / why
 - Nathan saved/deployed the new Apps Script (version 3). I ran the sheet menu: "Replace projects, events and actions from the repo" (155 projects, 135 events, 68 actions) and "Set up sheet + forms" (actions form + event recurrence question built).
 - Pasted the actions form url/entry ids from Start Here "For the site" into src/forms.config.ts so "Update this action" links open the real form.
 - Why: finishes the rollout in apps-script/SETUP.md section 5. TODO after PR merges: set ACTIVITY_URL in the pasted script back to SEED_URL.
+
+## 2026-09-30 — calendar view + logo home (branch claude/calendar-view-logo-home, stacked on PR #18)
+- Events tab: List/Calendar toggle; month grid with prev/next/Today, day click lists that day's events. Recurring events (↻) show on their next date only (we store one next-occurrence date, not every repeat).
+- Top-left "MA Climate Map" logo now returns to the default map (Map tab, exits zoom, closes drawer).
+- Why: requested by Nathan. Checked with Playwright: no JS errors.
