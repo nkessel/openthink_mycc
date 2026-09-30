@@ -4,6 +4,8 @@ export type TopTab = "map" | "geo" | "orgs" | "events" | "projects";
 
 export interface TopbarCallbacks {
   onTabChange(tab: TopTab): void;
+  /** The brand/logo was clicked: go back to the default map. */
+  onHome?(): void;
 }
 
 export function createTopbar(
@@ -15,7 +17,12 @@ export function createTopbar(
   parent.appendChild(bar);
 
   // Short name so it fits on one line, even on phones; the full name is the tooltip / page title.
-  bar.appendChild(h("div", { class: "brand", title: "MA Climate Coalition Map" }, "MA Climate Map"));
+  const brand = h("a", { class: "brand", href: "./", title: "MA Climate Coalition Map — back to the map" }, "MA Climate Map");
+  brand.addEventListener("click", (e) => {
+    e.preventDefault();
+    cb.onHome?.();
+  });
+  bar.appendChild(brand);
 
   const tabs: { id: TopTab; label: string; disabled?: boolean }[] = [
     { id: "map", label: "Map" },

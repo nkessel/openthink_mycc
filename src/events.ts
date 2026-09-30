@@ -2,6 +2,7 @@ import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, type Owner } from "./owners";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
+import { occursOn, parseRecurrence } from "./recurrence";
 import { fmtEventTime, hasTime, parseEventDate } from "./util";
 
 export interface EventsView {
@@ -83,11 +84,98 @@ export function createEventsView(
     filters.appendChild(chip);
   }
   toolbar.appendChild(filters);
+
+  // List / Calendar toggle
+  let mode: "list" | "calendar" = "list";
+  const modes = h("div", { class: "filters view-modes" });
+  const modeEls = new Map<string, HTMLElement>();
+  for (const m of [["list", "List"], ["calendar", "Calendar"]] as const) {
+    const b = h("button", { class: `chip ${mode === m[0] ? "active" : ""}` }, m[1]);
+    b.addEventListener("click", () => {
+      mode = m[0];
+      for (const [id, el] of modeEls) el.classList.toggle("active", id === mode);
+      filters.style.display = mode === "list" ? "" : "none";
+      render();
+    });
+    modeEls.set(m[0], b);
+    modes.appendChild(b);
+  }
+  toolbar.appendChild(modes);
   wrap.appendChild(toolbar);
 
   // ---- Body ----
   const body = h("div", { class: "list-body" });
   wrap.appendChild(body);
+
+  // ---- Calendar ----
+  let monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  let selectedDay = "";
+  const dayKey = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+  function renderCalendar() {
+    const visible = rows.filter((r) => {
+      if (!q) return true;
+      return (
+        r.event.name.toLowerCase().includes(q) ||
+        r.event.location.toLowerCase().includes(q) ||
+        r.owner.name.toLowerCase().includes(q) ||
+        r.owner.abbrev.toLowerCase().includes(q)
+      );
+    });
+    // Every day of the 6-week grid, with the events that land on it (recurring ones expanded).
+    const gridStart = new Date(monthStart.getFullYear(), monthStart.getMonth(), 1 - monthStart.getDay());
+    const byDay = new Map<string, Row[]>();
+    const add = (k: string, r: Row) => (byDay.get(k) || byDay.set(k, []).get(k)!).push(r);
+    for (const r of visible) {
+      const anchor = parseEventDate(r.event.date);
+      const rule = r.event.recurrence ? parseRecurrence(r.event.recurrence) : null;
+      if (!rule) { add(dayKey(anchor), r); continue; }
+      for (let i = 0; i < 42; i++) {
+        const d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+        if (occursOn(rule, anchor, d)) add(dayKey(d), r);
+      }
+    }
+    let inMonth = 0;
+    for (const [k, rs] of byDay) if (k.startsWith(`${monthStart.getFullYear()}-${String(monthStart.getMonth() + 1).padStart(2, "0")}`)) inMonth += rs.length;
+    count.textContent = `${inMonth} event${inMonth === 1 ? "" : "s"} this month`;
+
+    const nav = h("div", { class: "cal-nav" });
+    const prev = h("button", { class: "chip" }, "‹");
+    const next = h("button", { class: "chip" }, "›");
+    const today = h("button", { class: "chip" }, "Today");
+    prev.addEventListener("click", () => { monthStart = new Date(monthStart.getFullYear(), monthStart.getMonth() - 1, 1); render(); });
+    next.addEventListener("click", () => { monthStart = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 1); render(); });
+    today.addEventListener("click", () => { const n = new Date(); monthStart = new Date(n.getFullYear(), n.getMonth(), 1); selectedDay = dayKey(n); render(); });
+    nav.append(prev, h("span", { class: "cal-title" }, monthStart.toLocaleDateString(undefined, { month: "long", year: "numeric" })), next, today);
+    body.appendChild(nav);
+
+    const grid = h("div", { class: "cal-grid" });
+    for (const d of ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) grid.appendChild(h("div", { class: "cal-dow" }, d));
+    const first = gridStart;
+    const todayKey = dayKey(new Date());
+    for (let i = 0; i < 42; i++) {
+      const d = new Date(first.getFullYear(), first.getMonth(), first.getDate() + i);
+      const k = dayKey(d);
+      const evs = byDay.get(k) || [];
+      const cell = h("div", { class: `cal-day ${d.getMonth() !== monthStart.getMonth() ? "other" : ""} ${k === todayKey ? "today" : ""} ${k === selectedDay ? "selected" : ""}` }, h("div", { class: "cal-num" }, String(d.getDate())));
+      for (const r of evs.slice(0, 3)) {
+        cell.appendChild(h("div", { class: "cal-ev", style: `border-left-color:${r.owner.color}`, title: r.event.name }, (r.event.recurrence ? "↻ " : "") + r.event.name));
+      }
+      if (evs.length > 3) cell.appendChild(h("div", { class: "cal-more" }, `+${evs.length - 3} more`));
+      cell.addEventListener("click", () => { selectedDay = k; render(); });
+      grid.appendChild(cell);
+    }
+    body.appendChild(grid);
+
+    const dayRows = byDay.get(selectedDay) || [];
+    if (selectedDay) {
+      const label = parseEventDate(selectedDay).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+      body.appendChild(h("h3", { class: "cal-day-title" }, dayRows.length ? label : `${label} — no events`));
+      for (const r of dayRows) body.appendChild(eventCard(r));
+    } else {
+      body.appendChild(h("div", { class: "list-empty" }, "Pick a day to see its events. Recurring events (↻) repeat on their schedule from their next date on."));
+    }
+  }
 
   function matches(r: Row): boolean {
     if (timeFilter === "upcoming" && !r.isUpcoming) return false;
@@ -103,13 +191,17 @@ export function createEventsView(
 
   function render() {
     clear(body);
+    if (mode === "calendar") return renderCalendar();
     const filtered = rows.filter(matches);
     count.textContent = `${filtered.length} event${filtered.length === 1 ? "" : "s"}`;
     if (!filtered.length) {
       body.appendChild(h("div", { class: "list-empty" }, "No events match."));
       return;
     }
-    for (const r of filtered) {
+    for (const r of filtered) body.appendChild(eventCard(r));
+  }
+
+  function eventCard(r: Row): HTMLElement {
       const card = h(
         "div",
         { class: "list-card" },
@@ -143,8 +235,7 @@ export function createEventsView(
       card.addEventListener("click", () => {
         cb.onCoalitionClick(r.owner.node);
       });
-      body.appendChild(card);
-    }
+      return card;
   }
 
   render();
