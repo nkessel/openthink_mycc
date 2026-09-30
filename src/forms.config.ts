@@ -27,13 +27,10 @@ export const FORMS: Record<"org" | "event" | "project" | "action" | "feedback", 
     hostOrgEntry: "entry.207544512",
     coalitionEntry: "entry.13985344",
   },
-  // Not built yet: run "Set up sheet + forms" again after deploying the new Code.gs, then paste the
-  // "For the site" JSON from the Start Here tab over FORMS. Until then this stays empty and the
-  // "may be out of date" notice on actions points at the feedback form instead.
   action: {
-    url: "",
-    hostOrgEntry: "",
-    coalitionEntry: "",
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSeLrAB0TWK_wPxRTalxvTH8lWuQywrjKTTfEem237X3CdcvXg/viewform",
+    hostOrgEntry: "entry.973662534",
+    coalitionEntry: "entry.711840281",
   },
   feedback: {
     url: "https://docs.google.com/forms/d/e/1FAIpQLScwazw1P9rbQT4KAoUn0DSuI6B9Lpdx-kcrZXdZV45-HlAVKw/viewform",

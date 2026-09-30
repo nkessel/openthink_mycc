@@ -276,3 +276,8 @@ What / why
 - Asked: allow all held items with a "needs more information - update this [item]" warning; how to do the sheet/form steps.
 - Did: the 40 held items are now in data.json with `needs_info: true` (38 added; 2 events without a usable future date stay out) and show a red "Needs more information. We couldn't confirm this <item> is current. Update this <item> ↗" notice; everything else keeps the yellow warning. `needs_info` is a new column on Projects/Events/Actions and round-trips through the Apps Script; a point person editing an item through a form clears it. SETUP.md gains section 5 (update script, replace data tabs from CSVs, build the actions form, connect the site).
 - Uncertain: the 37 dropped items (news posts, reports, past, off-mission) stay dropped. Importing CSVs with "Replace current sheet" wipes form edits made in those tabs since the last export.
+
+## 2026-09-30 — live sheet updated + actions form connected
+- Nathan saved/deployed the new Apps Script (version 3). I ran the sheet menu: "Replace projects, events and actions from the repo" (155 projects, 135 events, 68 actions) and "Set up sheet + forms" (actions form + event recurrence question built).
+- Pasted the actions form url/entry ids from Start Here "For the site" into src/forms.config.ts so "Update this action" links open the real form.
+- Why: finishes the rollout in apps-script/SETUP.md section 5. TODO after PR merges: set ACTIVITY_URL in the pasted script back to SEED_URL.
