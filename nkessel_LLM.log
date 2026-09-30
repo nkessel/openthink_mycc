@@ -286,3 +286,7 @@ What / why
 - Events tab: List/Calendar toggle; month grid with prev/next/Today, day click lists that day's events. Recurring events (↻) show on their next date only (we store one next-occurrence date, not every repeat).
 - Top-left "MA Climate Map" logo now returns to the default map (Map tab, exits zoom, closes drawer).
 - Why: requested by Nathan. Checked with Playwright: no JS errors.
+
+## 2026-09-30 — recurring events expand on the calendar
+- src/recurrence.ts parses the free-text recurrence (weekly, every other, nth weekday of month, "no July or December" skips) and the calendar draws every occurrence from the next date onward. Checked against all 21 current recurrences: 19 parse; 2 ("Monthly; next meeting …") fall back to showing only their next date.
+- Why: Nathan asked for every recurrence on the calendar. Text parsing is best-effort; a structured repeat field in the sheet/form would be exact (not built).

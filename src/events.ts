@@ -2,6 +2,7 @@ import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, type Owner } from "./owners";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
+import { occursOn, parseRecurrence } from "./recurrence";
 import { fmtEventTime, hasTime, parseEventDate } from "./util";
 
 export interface EventsView {
@@ -121,16 +122,22 @@ export function createEventsView(
         r.owner.abbrev.toLowerCase().includes(q)
       );
     });
+    // Every day of the 6-week grid, with the events that land on it (recurring ones expanded).
+    const gridStart = new Date(monthStart.getFullYear(), monthStart.getMonth(), 1 - monthStart.getDay());
     const byDay = new Map<string, Row[]>();
+    const add = (k: string, r: Row) => (byDay.get(k) || byDay.set(k, []).get(k)!).push(r);
     for (const r of visible) {
-      const k = dayKey(parseEventDate(r.event.date));
-      (byDay.get(k) || byDay.set(k, []).get(k)!).push(r);
+      const anchor = parseEventDate(r.event.date);
+      const rule = r.event.recurrence ? parseRecurrence(r.event.recurrence) : null;
+      if (!rule) { add(dayKey(anchor), r); continue; }
+      for (let i = 0; i < 42; i++) {
+        const d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+        if (occursOn(rule, anchor, d)) add(dayKey(d), r);
+      }
     }
-    const monthEvents = visible.filter((r) => {
-      const d = parseEventDate(r.event.date);
-      return d.getFullYear() === monthStart.getFullYear() && d.getMonth() === monthStart.getMonth();
-    });
-    count.textContent = `${monthEvents.length} event${monthEvents.length === 1 ? "" : "s"} this month`;
+    let inMonth = 0;
+    for (const [k, rs] of byDay) if (k.startsWith(`${monthStart.getFullYear()}-${String(monthStart.getMonth() + 1).padStart(2, "0")}`)) inMonth += rs.length;
+    count.textContent = `${inMonth} event${inMonth === 1 ? "" : "s"} this month`;
 
     const nav = h("div", { class: "cal-nav" });
     const prev = h("button", { class: "chip" }, "‹");
@@ -144,8 +151,7 @@ export function createEventsView(
 
     const grid = h("div", { class: "cal-grid" });
     for (const d of ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) grid.appendChild(h("div", { class: "cal-dow" }, d));
-    const first = new Date(monthStart);
-    first.setDate(1 - first.getDay());
+    const first = gridStart;
     const todayKey = dayKey(new Date());
     for (let i = 0; i < 42; i++) {
       const d = new Date(first.getFullYear(), first.getMonth(), first.getDate() + i);
@@ -167,7 +173,7 @@ export function createEventsView(
       body.appendChild(h("h3", { class: "cal-day-title" }, dayRows.length ? label : `${label} — no events`));
       for (const r of dayRows) body.appendChild(eventCard(r));
     } else {
-      body.appendChild(h("div", { class: "list-empty" }, "Pick a day to see its events. Recurring events (↻) appear on their next date."));
+      body.appendChild(h("div", { class: "list-empty" }, "Pick a day to see its events. Recurring events (↻) repeat on their schedule from their next date on."));
     }
   }
 
