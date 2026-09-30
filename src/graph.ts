@@ -714,7 +714,7 @@ export function createGraph(
     if (link && /^https?:\/\//.test(link)) {
       focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
     }
-    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, focusId ? nodeById.get(focusId) ?? null : null));
+    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, focusId ? nodeById.get(focusId) ?? null : null, (b.item as { needs_info?: boolean }).needs_info));
     focusCard.style.display = "block";
   }
 

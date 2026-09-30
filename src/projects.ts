@@ -167,7 +167,7 @@ export function createProjectsView(
         r.project.link && /^https?:\/\//.test(r.project.link)
           ? h("a", { class: "item-link", href: r.project.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗")
           : null,
-        staleNotice("project", r.owner.node),
+        staleNotice("project", r.owner.node, r.project.needs_info),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
       card.addEventListener("click", () => {

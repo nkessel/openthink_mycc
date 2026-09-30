@@ -229,7 +229,7 @@ export function createDrawer(
             h("span", { class: "pill kind" }, p.status),
           ),
           linkEl(p.link),
-          staleNotice("project", owner),
+          staleNotice("project", owner, p.needs_info),
         ),
       );
     }
@@ -253,7 +253,7 @@ export function createDrawer(
             e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
           linkEl(e.link),
-          staleNotice("event", owner),
+          staleNotice("event", owner, e.needs_info),
         ),
       );
     }
@@ -287,7 +287,7 @@ export function createDrawer(
           a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
           linkEl(a.link),
-          staleNotice("action", owner),
+          staleNotice("action", owner, a.needs_info),
         ),
       );
     }

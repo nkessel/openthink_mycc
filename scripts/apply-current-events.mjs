@@ -218,13 +218,13 @@ if (csvDir) {
   const esc = (v) => { v = v ?? ""; v = String(v); return /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v; };
   const L = (xs) => (xs || []).join(", ");
   const bool = (x) => (x === undefined ? "" : x ? "TRUE" : "FALSE");
-  const P = ["id", "coalition_id", "host_org_id", "name", "description", "status", "skills_needed", "topic_tags", "link", "public_contact", "location", "online", "lat", "lng", "last_activity", "hidden"];
-  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end", "recurrence"];
-  const A = ["id", "coalition_id", "kind", "name", "urgency", "skills_needed", "deadline", "hidden", "host_org_id", "description", "link"];
+  const P = ["id", "coalition_id", "host_org_id", "name", "description", "status", "skills_needed", "topic_tags", "link", "public_contact", "location", "online", "lat", "lng", "last_activity", "hidden", "needs_info"];
+  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end", "recurrence", "needs_info"];
+  const A = ["id", "coalition_id", "kind", "name", "urgency", "skills_needed", "deadline", "hidden", "host_org_id", "description", "link", "needs_info"];
   const rowsP = [P], rowsE = [E], rowsA = [A];
-  const addA = (a, cid, oid) => rowsA.push(A.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(a.skills_needed) }[k] ?? a[k])));
-  const addP = (p, cid, oid) => rowsP.push(P.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags), online: bool(p.online) }[k] ?? p[k])));
-  const addE = (e, cid, oid) => rowsE.push(E.map((k) => ({ coalition_id: cid, host_org_id: oid, topic_tags: L(e.topic_tags), online: bool(e.online) }[k] ?? e[k])));
+  const addA = (a, cid, oid) => rowsA.push(A.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(a.skills_needed), needs_info: a.needs_info ? "TRUE" : "" }[k] ?? a[k])));
+  const addP = (p, cid, oid) => rowsP.push(P.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags), online: bool(p.online), needs_info: p.needs_info ? "TRUE" : "" }[k] ?? p[k])));
+  const addE = (e, cid, oid) => rowsE.push(E.map((k) => ({ coalition_id: cid, host_org_id: oid, topic_tags: L(e.topic_tags), online: bool(e.online), needs_info: e.needs_info ? "TRUE" : "" }[k] ?? e[k])));
   for (const c of data.coalitions) { c.projects.forEach((p) => addP(p, c.id, "")); c.events.forEach((e) => addE(e, c.id, "")); c.actions.forEach((a) => addA(a, c.id, "")); }
   for (const o of data.organizations) { (o.projects || []).forEach((p) => addP(p, "", o.id)); (o.events || []).forEach((e) => addE(e, "", o.id)); (o.actions || []).forEach((a) => addA(a, "", o.id)); }
   writeFileSync(`${csvDir}/Projects.csv`, rowsP.map((r) => r.map(esc).join(",")).join("\n") + "\n");

@@ -9,6 +9,8 @@ export interface Project {
   status: ProjectStatus;
   skills_needed: string[];
   // Optional fields filled in through the MA Climate Coalition Map forms
+  /** We could not confirm this is current; shown with a "needs more information" notice until a point person updates it. */
+  needs_info?: boolean;
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
@@ -31,6 +33,7 @@ export interface CoalitionEvent {
   /** End date-time (same day as `date`), if given. */
   end?: string;
   description?: string;
+  needs_info?: boolean;
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
@@ -68,6 +71,7 @@ export interface Action {
   // Optional: actions can belong to an org as well as a coalition, and should link to where to act.
   description?: string;
   link?: string;
+  needs_info?: boolean;
   host_org_id?: string;
 }
 

@@ -2,14 +2,15 @@
 
 **How it fits together**
 - **Google Sheet ("MA Climate Coalition Map data")** — the source of truth for the map. Only the core team can open it.
-- **Four Google Forms** — how point-people update their own org and add events/projects. They sign in with Google; the script checks their email against the **Editors** tab before changing anything.
+- **Five Google Forms** — how point-people update their own org and add events/projects. They sign in with Google; the script checks their email against the **Editors** tab before changing anything.
 - **Website (GitHub Pages)** — a static site that reads the sheet's public data live, with a nightly backup copy in the repo.
 
 | Form | Who can use it | What it changes |
 |---|---|---|
 | Update your organization | Point-people for that org, admins. Anyone can *propose* a new org (reviewed). | Name, abbreviation, type, description, town, HQ address or "remote", coalitions, topics, youth-serving, membership size, website, logo link, public contact, **which orgs you work with and how often**, or remove |
-| Add or edit an event | Point-people for the host org or coalition, admins | Org and/or coalition, name, description, date, time, location, online?, topics, link, public contact, or remove |
+| Add or edit an event | Point-people for the host org or coalition, admins | Org and/or coalition, name, description, date, time, whether it repeats, location, online?, topics, link, public contact, or remove |
 | Add or edit a project | Same as events | Org and/or coalition, name, description, status, skills needed, location, online?, topics, link, public contact, or remove |
+| Add or edit an action or volunteer opportunity | Same as events | Org and/or coalition, name, what people can do, type (take action / volunteer), urgency, deadline, skills, link, public contact, or remove |
 | Send feedback | Anyone, no sign-in | Goes to the Feedback tab |
 
 Every question is optional except "which one is this about?". Blank answers never overwrite anything.
@@ -77,3 +78,14 @@ To move an item from a coalition to an org only, clear its `coalition_id` cell i
 - The access check stops mistakes and casual misuse; it is not bank-grade security. Anyone with edit access to the sheet can change anything, so keep the sheet shared only with the core team.
 - Logos are submitted as links (Forms can't take uploads without extra setup). Google Drive share links are converted automatically.
 - "Suggested connections" are only as good as the descriptions and topics groups fill in.
+
+## 5. Updating the data and adding the actions form later (existing sheet)
+
+Use this when the repo has new events/projects/actions (from `node scripts/apply-current-events.mjs --csv DIR`) or a new form.
+
+1. **Update the script.** Extensions → Apps Script → replace `Code.gs` with the repo's, **Save**. Then **Deploy → Manage deployments → ✏️ → Version: New version → Deploy**.
+2. **Replace the data tabs.** For each of **Projects**, **Events** and **Actions**: open the tab, **File → Import → Upload** the matching CSV, choose **Replace current sheet**. (This wipes the old placeholders. New columns such as `recurrence`, `needs_info`, `host_org_id`, `description` and `link` come in with the CSV.) Edits people already made through the forms live in these tabs, so export first if you need them.
+3. **Build the new form.** Reload the sheet, then **MA Climate Coalition Map → Set up sheet + forms**. It skips the forms that exist, adds the missing "action" form and the event form's repeat question, and refreshes every dropdown from the tabs.
+4. **Connect the site.** On **Start Here**, copy the JSON in the row "For the site: paste into src/forms.config.ts" and send it over (or paste it over `FORMS` in `src/forms.config.ts`). The `action` entry makes the "Update this action" link on the site open the new form.
+
+Anything a point person edits through a form clears that item's "needs more information" notice.

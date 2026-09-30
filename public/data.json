@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T21:57:04.624Z",
+  "generated_at": "2026-09-30T14:28:27.832Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -734,7 +734,39 @@
       },
       "geographic_focus": "",
       "description": "",
-      "logo": "logos/boston_latin_school_youthcan.png"
+      "logo": "logos/boston_latin_school_youthcan.png",
+      "projects": [
+        {
+          "name": "Annual BLS Trash Dash",
+          "link": "https://www.bostonlatinschoolyouthcan.org/events.html",
+          "needs_info": true,
+          "description": "Annual October student team competition to collect trash and recyclables on the Boston Latin School campus and Longwood area.",
+          "status": "active",
+          "id": "boston_latin_school_youthcan_p1",
+          "host_org_id": "boston_latin_school_youthcan",
+          "skills_needed": []
+        },
+        {
+          "name": "Annual Climate & Sustainability Youth Summit",
+          "link": "https://www.bostonlatinschoolyouthcan.org/events.html",
+          "needs_info": true,
+          "description": "Yearly free statewide student climate summit hosted by BLS YouthCAN.",
+          "status": "active",
+          "id": "boston_latin_school_youthcan_p2",
+          "host_org_id": "boston_latin_school_youthcan",
+          "skills_needed": []
+        },
+        {
+          "name": "Education for Sustainability campaign",
+          "link": "https://www.bostonlatinschoolyouthcan.org/about.html",
+          "needs_info": true,
+          "description": "BLS YouthCAN statewide campaign to incorporate sustainability lessons across subjects in grades 7-12.",
+          "status": "active",
+          "id": "boston_latin_school_youthcan_p3",
+          "host_org_id": "boston_latin_school_youthcan",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "boston_university_environmental_student_organization",
@@ -1281,6 +1313,16 @@
           "id": "clean_water_action_p5",
           "host_org_id": "clean_water_action",
           "skills_needed": []
+        },
+        {
+          "name": "Zero Waste in MA",
+          "link": "https://cleanwater.org/states/massachusetts",
+          "needs_info": true,
+          "description": "Clean Water Action campaign against landfill and incinerator pollution and for waste reduction.",
+          "status": "active",
+          "id": "clean_water_action_p6",
+          "host_org_id": "clean_water_action",
+          "skills_needed": []
         }
       ],
       "actions": [
@@ -1643,6 +1685,16 @@
           "id": "jewish_climate_action_networ_p1",
           "host_org_id": "jewish_climate_action_network",
           "skills_needed": []
+        },
+        {
+          "name": "MA Carbon Goals Tracker and Home-Energy Tools",
+          "link": "https://jewishclimate.org/",
+          "needs_info": true,
+          "description": "Carbon calculator and home-energy savings tools offered by JCAN-MA.",
+          "status": "active",
+          "id": "jewish_climate_action_networ_p2",
+          "host_org_id": "jewish_climate_action_network",
+          "skills_needed": []
         }
       ],
       "actions": [
@@ -1709,6 +1761,16 @@
           "description": "MassIPL convenes and supports congregation-based FAN Teams that work together on climate and environmental justice policy campaigns.",
           "status": "active",
           "id": "massachusetts_interfaith_pow_p3",
+          "host_org_id": "massachusetts_interfaith_power_and_light",
+          "skills_needed": []
+        },
+        {
+          "name": "Youth Ambassadors (Lawrence)",
+          "link": "https://www.massipl.org/initiatives/youth-ambassadors-lawrence",
+          "needs_info": true,
+          "description": "Paid summer leadership program for Lawrence-area youth ages 14-18 leading creation care projects in their congregations, with a $400 stipend.",
+          "status": "active",
+          "id": "massachusetts_interfaith_pow_p4",
           "host_org_id": "massachusetts_interfaith_power_and_light",
           "skills_needed": []
         }
@@ -2092,6 +2154,26 @@
           "location": "Northfield to Ludlow, Western Massachusetts",
           "link": "http://noclearcutforprofit.org",
           "host_org_id": "climate_action_now_western_ma"
+        },
+        {
+          "name": "A Climate Justice Plan for Springfield",
+          "link": "https://climateactionnowma.org/our-campaigns/a-climate-justice-plan-for-springfield/",
+          "needs_info": true,
+          "description": "Campaign page could not be loaded.",
+          "status": "active",
+          "id": "climate_action_now_western_m_p1",
+          "host_org_id": "climate_action_now_western_ma",
+          "skills_needed": []
+        },
+        {
+          "name": "Mutual Aid",
+          "link": "https://climateactionnowma.org/mutual-aid/",
+          "needs_info": true,
+          "description": "Program page could not be loaded.",
+          "status": "active",
+          "id": "climate_action_now_western_m_p2",
+          "host_org_id": "climate_action_now_western_ma",
+          "skills_needed": []
         }
       ],
       "events": [
@@ -2279,7 +2361,19 @@
         "mycc": 1.5
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "ECA Mass legislative advocacy and monthly chapter meetings",
+          "link": "https://ecamass.org/eca-mass-teams/",
+          "needs_info": true,
+          "description": "Massachusetts chapter of Elders Climate Action with monthly chapter meetings, teams and legislative action alerts.",
+          "status": "active",
+          "id": "elders_climate_action_mass_p1",
+          "host_org_id": "elders_climate_action_mass",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "mass_audubon_wma",
@@ -2543,6 +2637,16 @@
           "id": "sunrise_boston_p1",
           "host_org_id": "sunrise_boston",
           "skills_needed": []
+        },
+        {
+          "name": "Green New Deal for Communities",
+          "link": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
+          "needs_info": true,
+          "description": "Sunrise Movement national campaign pushing cities and towns to adopt local Green New Deal policies on housing, transit and public power.",
+          "status": "active",
+          "id": "sunrise_boston_p2",
+          "host_org_id": "sunrise_boston",
+          "skills_needed": []
         }
       ],
       "events": [
@@ -2801,7 +2905,29 @@
         "mpf": 1
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "100% Renewable Campaign",
+          "link": "https://environmentamerica.org/massachusetts/campaigns/100-renewable/",
+          "needs_info": true,
+          "description": "Environment Massachusetts campaign for 100% renewable energy.",
+          "status": "active",
+          "id": "environment_massachusetts_p1",
+          "host_org_id": "environment_massachusetts",
+          "skills_needed": []
+        },
+        {
+          "name": "Go Solar Campaign",
+          "link": "https://environmentamerica.org/massachusetts/center/campaigns/go-solar/",
+          "needs_info": true,
+          "description": "Environment Massachusetts campaign to expand solar power.",
+          "status": "active",
+          "id": "environment_massachusetts_p2",
+          "host_org_id": "environment_massachusetts",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "massachusetts_climate_action_network",
@@ -2828,7 +2954,82 @@
         "ejlt": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "Zero Carbon Renovation Fund",
+          "link": "https://www.massclimateaction.org/the_zero_carbon_renovation_fund",
+          "needs_info": true,
+          "description": "MCAN coalition campaign for a state fund to support zero-carbon building renovations.",
+          "status": "active",
+          "id": "massachusetts_climate_action_p1",
+          "host_org_id": "massachusetts_climate_action_network",
+          "skills_needed": []
+        },
+        {
+          "name": "Fighting for Better Buildings",
+          "link": "https://www.massclimateaction.org/fighting_for_better_buildings",
+          "needs_info": true,
+          "description": "MCAN campaign on building decarbonization policy.",
+          "status": "active",
+          "id": "massachusetts_climate_action_p2",
+          "host_org_id": "massachusetts_climate_action_network",
+          "skills_needed": []
+        },
+        {
+          "name": "Embodied Carbon Act",
+          "link": "https://www.massclimateaction.org/embodied_carbon_act",
+          "needs_info": true,
+          "description": "MCAN advocacy on legislation addressing embodied carbon in construction.",
+          "status": "active",
+          "id": "massachusetts_climate_action_p3",
+          "host_org_id": "massachusetts_climate_action_network",
+          "skills_needed": []
+        },
+        {
+          "name": "Local Decarbonizers Program",
+          "link": "https://www.massclimateaction.org/stage_a_local_decarbonizers_program",
+          "needs_info": true,
+          "description": "MCAN program supporting local climate action in communities.",
+          "status": "active",
+          "id": "massachusetts_climate_action_p4",
+          "host_org_id": "massachusetts_climate_action_network",
+          "skills_needed": []
+        },
+        {
+          "name": "Climate Goals Tracker",
+          "link": "https://www.massclimateaction.org/climate_goals_tracker",
+          "needs_info": true,
+          "description": "MCAN tool tracking progress toward Massachusetts climate goals.",
+          "status": "active",
+          "id": "massachusetts_climate_action_p5",
+          "host_org_id": "massachusetts_climate_action_network",
+          "skills_needed": []
+        },
+        {
+          "name": "Net Zero for All Campaign",
+          "link": "https://www.massclimateaction.org/net_zero",
+          "needs_info": true,
+          "description": "MCAN campaign and advocacy toolkit promoting net-zero planning in Massachusetts communities.",
+          "status": "active",
+          "id": "massachusetts_climate_action_p6",
+          "host_org_id": "massachusetts_climate_action_network",
+          "skills_needed": []
+        }
+      ],
+      "actions": [
+        {
+          "name": "Volunteer with MCAN",
+          "link": "https://www.massclimateaction.org/volunteer_with_mcan",
+          "needs_info": true,
+          "description": "Sign-up form to volunteer with the Massachusetts Climate Action Network on projects from data collection to event planning.",
+          "kind": "task",
+          "skills_needed": [],
+          "deadline": null,
+          "id": "massachusetts_climate_action_a1",
+          "host_org_id": "massachusetts_climate_action_network"
+        }
+      ]
     },
     {
       "id": "pipeline_awareness_network_ne",
@@ -3059,6 +3260,16 @@
           "id": "fore_river_residents_against_p2",
           "host_org_id": "fore_river_residents_against_the_compressor_station",
           "skills_needed": []
+        },
+        {
+          "name": "FRRACS monthly community meeting",
+          "link": "https://www.nocompressor.com/calendar",
+          "needs_info": true,
+          "description": "Fore River Residents Against the Compressor Station holds monthly community meetings, in person at the Fore River Clubhouse and on Zoom.",
+          "status": "active",
+          "id": "fore_river_residents_against_p3",
+          "host_org_id": "fore_river_residents_against_the_compressor_station",
+          "skills_needed": []
         }
       ],
       "actions": [
@@ -3191,6 +3402,16 @@
           "id": "slingshot_p1",
           "host_org_id": "slingshot",
           "skills_needed": []
+        },
+        {
+          "name": "Springfield Climate Justice Coalition",
+          "link": "https://www.slingshot.org/communitygroups",
+          "needs_info": true,
+          "description": "Springfield group opposing a fracked gas pipeline expansion project.",
+          "status": "active",
+          "id": "slingshot_p2",
+          "host_org_id": "slingshot",
+          "skills_needed": []
         }
       ]
     },
@@ -3228,6 +3449,30 @@
           "id": "350ma_p1",
           "host_org_id": "350ma",
           "skills_needed": []
+        }
+      ],
+      "actions": [
+        {
+          "name": "Petition: pass the Make Polluters Pay bill",
+          "link": "https://actionnetwork.org/petitions/support-the-make-polluters-pay-bill-in-massachusetts",
+          "needs_info": true,
+          "description": "Petition to the Governor, Senate President and Speaker to pass the Massachusetts Climate Change Superfund bill.",
+          "kind": "task",
+          "skills_needed": [],
+          "deadline": null,
+          "id": "350ma_a1",
+          "host_org_id": "350ma"
+        },
+        {
+          "name": "Write your legislators: 350 Mass priority bills",
+          "link": "https://actionnetwork.org/letters/write-your-legislators-350-mass-priority-bills",
+          "needs_info": true,
+          "description": "Letter asking legislators to cosponsor 350 Mass's 2025-2026 priority climate bills.",
+          "kind": "task",
+          "skills_needed": [],
+          "deadline": null,
+          "id": "350ma_a2",
+          "host_org_id": "350ma"
         }
       ]
     },
@@ -3751,6 +3996,26 @@
           "id": "salem_alliance_for_the_envir_p3",
           "host_org_id": "salem_alliance_for_the_environment",
           "skills_needed": []
+        },
+        {
+          "name": "Offshore Wind Advocacy",
+          "link": "https://salemsafe.org/campaigns/wind-power/",
+          "needs_info": true,
+          "description": "SAFE supports developing Salem's port for the offshore wind industry.",
+          "status": "active",
+          "id": "salem_alliance_for_the_envir_p4",
+          "host_org_id": "salem_alliance_for_the_environment",
+          "skills_needed": []
+        },
+        {
+          "name": "Natural Gas Leaks in Salem",
+          "link": "https://salemsafe.org/campaigns/gas-leaks/",
+          "needs_info": true,
+          "description": "SAFE's work on natural gas leaks, including a citywide gas leak map produced with the City of Salem.",
+          "status": "active",
+          "id": "salem_alliance_for_the_envir_p5",
+          "host_org_id": "salem_alliance_for_the_environment",
+          "skills_needed": []
         }
       ]
     },
@@ -3897,7 +4162,19 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "Boston Catholic Climate Movement",
+          "link": "https://bostoncatholicclimate.org/home/",
+          "needs_info": true,
+          "description": "Boston chapter of the Laudato Si' Movement.",
+          "status": "active",
+          "id": "boston_catholic_climate_move_p1",
+          "host_org_id": "boston_catholic_climate_movement",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "boston_climate_action_network",
@@ -4435,6 +4712,26 @@
           "id": "co_op_power_inc_p2",
           "host_org_id": "co_op_power_inc",
           "skills_needed": []
+        },
+        {
+          "name": "Rays the Valley",
+          "link": "https://www.cooppower.coop/rays-the-valley",
+          "needs_info": true,
+          "description": "Program expanding solar access in Western Massachusetts.",
+          "status": "active",
+          "id": "co_op_power_inc_p3",
+          "host_org_id": "co_op_power_inc",
+          "skills_needed": []
+        },
+        {
+          "name": "Community Energy Co-ops",
+          "link": "https://www.cooppower.coop/boston-metro-east",
+          "needs_info": true,
+          "description": "Network of member-run Community Energy Co-ops, including Boston Metro East.",
+          "status": "active",
+          "id": "co_op_power_inc_p4",
+          "host_org_id": "co_op_power_inc",
+          "skills_needed": []
         }
       ]
     },
@@ -4558,6 +4855,16 @@
           "id": "environmental_league_of_ma_p2",
           "host_org_id": "environmental_league_of_ma",
           "skills_needed": []
+        },
+        {
+          "name": "2025-2026 legislative priorities (ELM)",
+          "link": "https://www.environmentalleague.org/legislative-priorities/",
+          "needs_info": true,
+          "description": "ELM priority bills for the 2025-2026 session, including offshore wind (H.3501), transportation-climate alignment (H.3726) and building decarbonization (S.2294).",
+          "status": "active",
+          "id": "environmental_league_of_ma_p3",
+          "host_org_id": "environmental_league_of_ma",
+          "skills_needed": []
         }
       ],
       "events": [
@@ -4618,7 +4925,19 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "Mass Power Forward legislative agenda support",
+          "link": "https://fccpr.us/task-force/climate-crisis-task-force/",
+          "needs_info": true,
+          "description": "Franklin County task force supporting Mass Power Forward bills on gas expansion, utility lobbying, a Climate Change Superfund and air quality.",
+          "status": "active",
+          "id": "fccpr_climate_crisis_task_fo_p1",
+          "host_org_id": "fccpr_climate_crisis_task_force",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "first_parish_in_concord_environmental_team",
@@ -5116,7 +5435,19 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "Longmeadow Pipeline Awareness Group",
+          "link": "https://www.facebook.com/LongmeadowPipelineAwarenessGroup/",
+          "needs_info": true,
+          "description": "Group opposing the Eversource Springfield-Longmeadow gas pipeline project.",
+          "status": "active",
+          "id": "longmeadow_pipeline_awarenes_p1",
+          "host_org_id": "longmeadow_pipeline_awareness_group",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "mass_audubon",
@@ -5299,7 +5630,19 @@
       },
       "geographic_focus": "",
       "description": "",
-      "website": "https://massdivest.org/"
+      "website": "https://massdivest.org/",
+      "projects": [
+        {
+          "name": "Fossil fuel divestment of MA public pension funds",
+          "link": "https://massdivest.org/",
+          "description": "Campaign for Massachusetts public pension funds to divest from fossil fuels. Could not be confirmed as current.",
+          "status": "active",
+          "needs_info": true,
+          "id": "mass_divest_coalition_p1",
+          "host_org_id": "mass_divest_coalition",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "massachusetts_peace_action",
@@ -5580,7 +5923,19 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "Pro Bono Residential Electrification Consulting",
+          "link": "https://octoberengineering.com/",
+          "needs_info": true,
+          "description": "Sole-proprietor engineer offering pro bono residential heat pump and ventilation system design.",
+          "status": "active",
+          "id": "october_engineering_llc_p1",
+          "host_org_id": "october_engineering_llc",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "passive_house_massachusetts",
@@ -5680,7 +6035,19 @@
         "mpf": 3
       },
       "geographic_focus": "",
-      "description": ""
+      "description": "",
+      "projects": [
+        {
+          "name": "Pilgrim Coalition Pilgrim Nuclear advocacy",
+          "link": "https://grassrootsfund.org/groups/pilgrim-coalition",
+          "needs_info": true,
+          "description": "Marshfield group advocating on public health, safety and environmental protection around Pilgrim Nuclear Power Station.",
+          "status": "active",
+          "id": "pilgrim_coalition_p1",
+          "host_org_id": "pilgrim_coalition",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "pilgrim_watch",
@@ -5900,6 +6267,19 @@
           "id": "restore_the_north_woods_e3",
           "host_org_id": "restore_the_north_woods"
         }
+      ],
+      "actions": [
+        {
+          "name": "Save Mass Forests action pages",
+          "link": "https://www.savemassforests.com/",
+          "needs_info": true,
+          "description": "Action pages on biomass subsidies, large-scale solar and October Mountain State Forest.",
+          "kind": "task",
+          "skills_needed": [],
+          "deadline": null,
+          "id": "restore_the_north_woods_a1",
+          "host_org_id": "restore_the_north_woods"
+        }
       ]
     },
     {
@@ -6062,6 +6442,16 @@
           "description": "Volunteer-run initiatives in Sharon covering energy and renewables, plastic turf opposition, Sponsor a Street and the SSC Trash Challenge.",
           "status": "active",
           "id": "sustainable_sharon_coalition_p1",
+          "host_org_id": "sustainable_sharon_coalition",
+          "skills_needed": []
+        },
+        {
+          "name": "Solarize Sharon campaign",
+          "link": "https://www.sustainablesharon.org/blog/ssc-community-meeting-sharons-energy",
+          "needs_info": true,
+          "description": "Planned new Solarize Sharon solar campaign in partnership with the Town of Sharon.",
+          "status": "active",
+          "id": "sustainable_sharon_coalition_p2",
           "host_org_id": "sustainable_sharon_coalition",
           "skills_needed": []
         }
@@ -6343,7 +6733,32 @@
       "geographic_focus": "",
       "description": "",
       "website": "https://www.wendellforest.org/",
-      "logo": "logos/wendell_state_forest_alliance.png"
+      "logo": "logos/wendell_state_forest_alliance.png",
+      "projects": [
+        {
+          "name": "H.953 Act Relative to Forest Protection",
+          "link": "https://malegislature.gov/Bills/194/H953",
+          "needs_info": true,
+          "description": "Bill to designate DCR forest as permanently protected parks and reserves.",
+          "status": "active",
+          "id": "wendell_state_forest_allianc_p1",
+          "host_org_id": "wendell_state_forest_alliance",
+          "skills_needed": []
+        }
+      ],
+      "actions": [
+        {
+          "name": "Support forest protection legislation",
+          "link": "https://www.wendellforest.org/take-action",
+          "needs_info": true,
+          "description": "Take Action page for forest protection bills.",
+          "kind": "task",
+          "skills_needed": [],
+          "deadline": null,
+          "id": "wendell_state_forest_allianc_a1",
+          "host_org_id": "wendell_state_forest_alliance"
+        }
+      ]
     },
     {
       "id": "xr_boston",
@@ -7076,7 +7491,19 @@
       "geographic_focus": "",
       "description": "",
       "website": "https://frcog.org/",
-      "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png"
+      "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png",
+      "projects": [
+        {
+          "name": "Community Health Improvement Plan (CHIP) Network",
+          "link": "https://frcog.org/",
+          "description": "Franklin County and North Quabbin community health improvement network. Could not be confirmed as current.",
+          "status": "active",
+          "needs_info": true,
+          "id": "franklin_county_and_north_qu_p1",
+          "host_org_id": "franklin_county_and_north_quabbin_community_health_improveme",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "green_weymouth",
@@ -7386,7 +7813,19 @@
       "geographic_focus": "",
       "description": "",
       "website": "https://www.sbnmass.org/",
-      "logo": "logos/sustainable_business_network_of_massachusetts.png"
+      "logo": "logos/sustainable_business_network_of_massachusetts.png",
+      "projects": [
+        {
+          "name": "Sustainable Business of the Year Awards",
+          "link": "https://www.sbnmass.org/sbnawards",
+          "needs_info": true,
+          "description": "Annual awards recognizing Massachusetts businesses that are local, green and fair.",
+          "status": "active",
+          "id": "sustainable_business_network_p1",
+          "host_org_id": "sustainable_business_network_of_massachusetts",
+          "skills_needed": []
+        }
+      ]
     },
     {
       "id": "undauntedk12",
