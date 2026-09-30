@@ -112,6 +112,10 @@ async function main() {
       drawerApi!.open(node);
       graphApi!.setSelectedNode(node);
     },
+    onNodeDeselect: () => {
+      drawerApi!.close();
+      graphApi!.setSelectedNode(null);
+    },
   });
   graphApi.setVisibleCoalitions(sidebar.getVisibleCoalitions());
 

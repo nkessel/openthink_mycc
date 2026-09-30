@@ -273,6 +273,38 @@ export function createControls(
     }),
   );
   displayBody.appendChild(
+    makeToggle("Show events, projects & actions around a group when you open it", state.settings.showBubbles, (v) => {
+      state.settings.showBubbles = v;
+      cb.onSettingsChange({ showBubbles: v });
+      saveState(state);
+    }),
+  );
+  {
+    const wrapSel = h("div", { class: "control" });
+    wrapSel.appendChild(h("label", { class: "ctrl-label" }, "Make groups bigger by"));
+    const sel = h("select", { class: "size-by" }) as HTMLSelectElement;
+    const opts: [string, string][] = [
+      ["none", "Nothing (all the same)"],
+      ["all", "Everything they're doing"],
+      ["events", "Number of events"],
+      ["projects", "Number of projects"],
+      ["actions", "Number of actions"],
+    ];
+    for (const [v, l] of opts) {
+      const o = h("option", { value: v }, l) as HTMLOptionElement;
+      if (v === state.settings.sizeBy) o.selected = true;
+      sel.appendChild(o);
+    }
+    sel.addEventListener("change", () => {
+      const v = sel.value as GraphSettings["sizeBy"];
+      state.settings.sizeBy = v;
+      cb.onSettingsChange({ sizeBy: v });
+      saveState(state);
+    });
+    wrapSel.appendChild(sel);
+    displayBody.appendChild(wrapSel);
+  }
+  displayBody.appendChild(
     makeSlider("Node size", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;
       cb.onSettingsChange({ nodeSize: v });

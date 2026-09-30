@@ -1907,3 +1907,17 @@ body {
 .cal-more { font-size:10px; opacity:.7; }
 .cal-day-title { margin:16px 0 8px; font-size:15px; }
 @media (max-width:640px) { .cal-day { min-height:52px; } .cal-ev { display:none; } .cal-more { display:none; } .cal-day:has(.cal-ev) .cal-num::after { content:" •"; color:var(--accent); } }
+
+/* Bubble icons, subtitles and hit areas */
+.bubble-hit { fill: transparent; stroke: none; pointer-events: all; }
+.bubble-icon { fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.bubble-icon .check { stroke-width: 2.8; }
+.bubble-icon .dot { fill: currentColor; stroke: none; }
+.bubble.b-event .bubble-icon { stroke: var(--k-event); color: var(--k-event); }
+.bubble.b-project .bubble-icon { stroke: var(--k-project); color: var(--k-project); }
+.bubble.b-action .bubble-icon { stroke: var(--k-action); color: var(--k-action); }
+.bubble-badge { font-size: 12px; font-weight: 700; fill: var(--k-event); text-anchor: middle; pointer-events: none; }
+.bubble-label { pointer-events: all; }
+.bubble-sub { font-size: 10px; fill: var(--text-dim); paint-order: stroke; stroke: var(--bg); stroke-width: 3px; pointer-events: all; }
+.size-by { width: 100%; padding: 5px 6px; background: var(--bg-elev-2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-sm); font: inherit; }
+.focus-card { bottom: auto; }
