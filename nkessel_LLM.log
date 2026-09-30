@@ -228,3 +228,56 @@ What / why
 
 2026-09-26 16:35 — Claude
 - Nathan: coalitions say "x member groups" instead of "x members" (panel, tooltip, map popup, search, legend).
+
+2026-09-29 — Claude
+- Nathan: "update the map with actual current projects / events using all data available to us."
+- Found: the live sheet and public/data.json only had generated placeholder events/projects/actions (coalition-owned, none org-owned); the sheet's form-response tabs are still empty (no real submissions yet).
+- Gathered real, public items from: the CAN Western MA newsletter (9/29), JCAN events email (9/7), MYCC check-in email (9/16), team notes (Running: Climate Network Map), and the Amherst Indy article on MPF's dashboard launch (9/28). Skipped anything past, undated, or without a clear host.
+- scripts/apply-current-events.mjs (new): replaces all placeholder events/projects/actions with 9 projects + 9 events, each commented with its source; org-owned where an org hosts it (CAN Western MA, Sierra Club, JCAN), coalition-owned for MPF and MYCC. Optional --csv writes Projects/Events tab rows for the sheet.
+- Orgs, coalitions' other fields, and edges are unchanged (checked). Placeholder actions were removed too since none were real.
+- Uncertain: Arcadia pin is the Easthampton town centre (approximate); MYCC 10/4 call date is inferred from "every other Sunday 8 pm" + the 9/6 call; JCAN 10/12 and 10/20 have no named organizer, attributed to JCAN because they're on its calendar.
+- Note: the live site reads the Google Sheet, so the sheet's Projects/Events tabs still need these rows (CSV provided) or the site keeps showing the placeholders until the nightly snapshot logic is changed.
+
+2026-09-29 (later) — Claude
+- Nathan: use newsletters for events/projects; use MYCC meeting notes to make org thinking open; clicking an org should zoom in and show its events/projects/thinking as bubbles close to it, partner orgs further out ("openthink").
+- Decisions (asked): notes → draft summaries that MYCC approves before publishing; newsletters → one-time import, orgs confirm; build the zoom view first.
+- Newsletters: swept the inbox. Only Climate Action Now, JCAN, Sierra Club MA items (already imported earlier) were map-org events. Act on Mass is electoral/political; the energy-siting listening sessions are state-hosted with no map org as host. Nothing else added.
+- Zoom view: src/graph.ts enterFocus/exitFocus (click a node, search result, or drawer link). Static polar layout: thinking, projects, events ring the pinned node; partners fade; header bar with legend + Back; click a bubble for a detail card. Esc / background click exits. New Thought type, public/thoughts.json (empty until groups approve), merged in main.ts.
+- Thinking bubbles are NOT published: drafts for MYCC (11 items from the June–Sept call notes, no names/emails) were kept out of the repo and sent to Nathan for MYCC review. Tested the view with them locally, then reset thoughts.json to {}.
+- Found: the live site still shows the old placeholders (the Google Sheet has them), so zoomed org views look empty until the sheet's Projects/Events tabs are updated with the CSVs.
+- Uncertain: only tested in headless Chromium at 1400x850; mobile layout of the header/card not checked. Coalition zoom with 45 members is busy but readable. Sheet has no Thoughts tab yet (thoughts.json is static for now).
+
+## 2026-09-29 — Researched public activity for all 150 orgs (branch claude/current-public-activity)
+- Asked: keep additions to public events, projects, actions, volunteer opportunities; research every org.
+- Did: 10 parallel researchers searched each org and read its public pages (curl; WebFetch was blocked on permissions). Findings curated into scripts/researched-activity.json (source `link` on every item) and merged by scripts/apply-current-events.mjs into public/data.json. Result: 212 projects, 95 events, 0 coalition actions. Sheet CSVs regenerated (--csv).
+- Decisions: org-level volunteer roles / action alerts stored as projects ("Volunteer: ...", "Take action: ...") because the sheet only has coalition-level Actions. Events capped at 6 per org, projects at 7. Mailing-list sign-ups dropped. Past events dropped.
+- Uncertain: ~50 orgs have nothing (blocked by Cloudflare/captcha, dead sites, or school clubs). Only ~30 links spot-checked (29/30 matched). Some events have no time (T12:00 placeholder). Some events are political (ballot-question, protest); kept as the orgs publicly list them, MYCC may want to filter.
+- The live site still reads the Google Sheet; Projects/Events tabs must be replaced with the CSVs for it to change.
+
+## 2026-09-29 (later) — Org-level actions, confidence-based inclusion, no faked times
+- Asked: actions at org and coalition level; links wherever possible; no arbitrary caps (use relevancy confidence); note missing times instead of faking them; list items <50% confidence before publishing; update CSVs.
+- Did: Action now has optional host_org_id/description/link and Organization.actions (types, owners.ts, drawer Actions tab for orgs, zoom-view action bubbles, "More info" links on projects/events/actions). Apps Script: Actions tab gains host_org_id, description, link (appended columns); actions round-trip and org-owned actions work; urgency no longer defaults to "medium". Events with no posted time are stored date-only and shown as "time not posted" (6 such events). Removed the 6/7 caps; each item scored by re-reading its cited page; items >= 50% included, 49 below held in data-review/held-low-confidence.md (NOT in data.json). Fixed tests/apps-script.test.cjs, which still pointed at the old placeholder ids.
+- Result: 149 projects, 106 events, 60 actions across 86 orgs/coalitions. CSVs regenerated (Projects, Events, Actions).
+- Uncertain: confidence is a heuristic (page text match + year mentions), not human verification; JS-only pages score low even if real. One Mass Audubon deadline (Nov 3 election) is inferred, and says so in its description. Item ids changed from the previous push, so any sheet rows imported from the earlier CSVs should be replaced, not appended.
+- Sheet: add the three new columns to the Actions tab (Apps Script adds them on next setup run) and import the 3 CSVs.
+
+## 2026-09-29 (evening) — "May be inaccurate" notice on every project/event/action
+- Asked: warn on all researched items, with a link to a Google Form to update.
+- Did: src/notice.ts adds a warning box to every project, event and action card (drawer, zoom-view card, Events and Projects lists). Events/projects link to their existing Google Form pre-filled with the owning org/coalition; actions have no form yet, so they link to the feedback form.
+- Uncertain: the forms can't pre-select the specific event/project being corrected (their dropdown labels are built by the Apps Script), so the person picks it themselves. Applies to all items, including the hand-sourced MYCC/MPF ones.
+
+## 2026-09-29 (night) — Audit pass, recurring events, actions form
+- Asked: an actions form like the other item types; fix mislabeled items (e.g. Watertown "weekly vigil" was a project); find recurring event times; get the list right before publishing.
+- Did: 8 parallel auditors re-read every project/action (and every low-confidence or date-only event) with pages rendered in a browser (Playwright), then classified each as project / event / recurring event / action / hold / drop, with reworded neutral descriptions and links. 327 decisions -> 120 projects, 135 events (21 recurring, 4 date-only), 63 actions in data.json; 40 held (data-review/held-low-confidence.md); 37 dropped (news posts, reports, past, off-mission, stale bills). Events gain `recurrence` (date = next occurrence); Events tab gets a `recurrence` column and the event form a "Does it repeat?" question. Apps Script gains a fourth form (actions: name, description, type, urgency, deadline, skills, link, owner) with review queue, change log and dropdown refresh; tests cover it.
+- Uncertain: the actions form URL in src/forms.config.ts is empty until "Set up sheet + forms" is re-run and the JSON pasted; until then the "update this info" link on actions goes to the feedback form. Recurring `date` goes stale after the next occurrence passes. Some auditors relied on search snippets where sites blocked bots (noted in held list). Audit was by AI agents reading pages, not by the orgs.
+- MYCC calendar (calendar.online link in the call notes) is readable without sign-in and has per-category ICS feeds, but currently holds only MYCC's own recurring meetings; not imported (internal, not confirmed public).
+
+## 2026-09-30 — Held items published with "needs more information"; setup steps
+- Asked: allow all held items with a "needs more information - update this [item]" warning; how to do the sheet/form steps.
+- Did: the 40 held items are now in data.json with `needs_info: true` (38 added; 2 events without a usable future date stay out) and show a red "Needs more information. We couldn't confirm this <item> is current. Update this <item> ↗" notice; everything else keeps the yellow warning. `needs_info` is a new column on Projects/Events/Actions and round-trips through the Apps Script; a point person editing an item through a form clears it. SETUP.md gains section 5 (update script, replace data tabs from CSVs, build the actions form, connect the site).
+- Uncertain: the 37 dropped items (news posts, reports, past, off-mission) stay dropped. Importing CSVs with "Replace current sheet" wipes form edits made in those tabs since the last export.
+
+## 2026-09-30 — live sheet updated + actions form connected
+- Nathan saved/deployed the new Apps Script (version 3). I ran the sheet menu: "Replace projects, events and actions from the repo" (155 projects, 135 events, 68 actions) and "Set up sheet + forms" (actions form + event recurrence question built).
+- Pasted the actions form url/entry ids from Start Here "For the site" into src/forms.config.ts so "Update this action" links open the real form.
+- Why: finishes the rollout in apps-script/SETUP.md section 5. TODO after PR merges: set ACTIVITY_URL in the pasted script back to SEED_URL.

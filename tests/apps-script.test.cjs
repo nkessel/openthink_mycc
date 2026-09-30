@@ -82,7 +82,7 @@ out.organizations.forEach((o, i) => assert.ok(Math.abs(o.lat - orig.organization
 console.log("round trip OK");
 
 // 2) submissions
-Object.assign(props, { FORM_ORG: "fo", FORM_EVENT: "fe", FORM_PROJECT: "fp", FORM_FEEDBACK: "ff" });
+Object.assign(props, { FORM_ORG: "fo", FORM_EVENT: "fe", FORM_PROJECT: "fp", FORM_ACTION: "fa", FORM_FEEDBACK: "ff" });
 ctx.refreshDropdowns = () => {};
 const submit = (fid, email, ans) =>
   ctx.handleSubmit({
@@ -92,7 +92,7 @@ const submit = (fid, email, ans) =>
       getItemResponses: () => Object.entries(ans).map(([k, v]) => ({ getItem: () => ({ getTitle: () => k }), getResponse: () => v })),
     },
   });
-const NEW_ORG = G("NEW_ORG"), NEW_EVENT = G("NEW_EVENT"), NEW_PROJECT = G("NEW_PROJECT");
+const NEW_ORG = G("NEW_ORG"), NEW_EVENT = G("NEW_EVENT"), NEW_PROJECT = G("NEW_PROJECT"), NEW_ACTION = G("NEW_ACTION");
 // Dropdowns show plain names now; old "[id]" labels (still used below) keep working.
 const BLS = "Boston Latin School Youth Climate Action Network";
 const MYCC = "Massachusetts Youth Climate Coalition (MYCC)";
@@ -194,17 +194,33 @@ submit("fe", "new@natick.org", { [Q.whichEvent]: NEW_EVENT, [Q.coalition]: MYCC,
 assert.match(review().at(-1).reason, /^UNAUTHORIZED/);
 
 // coalition lead edits a coalition event (time only) and adds an online project
-submit("fe", "lead@mycc.org", { [Q.whichEvent]: "MYCC Steering Meeting — Jun 12, 2026 [mycc_e1]", [Q.eventTime]: "19:30" });
+submit("fe", "lead@mycc.org", { [Q.whichEvent]: "MYCC full-coalition call — Oct 4, 2026 [mycc_e_call_1004]", [Q.eventTime]: "19:30" });
 submit("fp", "lead@mycc.org", { [Q.whichProject]: NEW_PROJECT, [Q.coalition]: MYCC, [Q.projectName]: "Virtual Teach-in", [Q.location]: "Zoom", [Q.online]: "Yes" });
 d = data();
 const mycc = d.coalitions.find((c) => c.id === "mycc");
-assert.equal(mycc.events.find((e) => e.id === "mycc_e1").date, "2026-06-12T19:30:00");
+assert.equal(mycc.events.find((e) => e.id === "mycc_e_call_1004").date, "2026-10-04T19:30:00");
 const vp = mycc.projects.find((p) => p.name === "Virtual Teach-in");
 assert.ok(vp.online && vp.lat === undefined, "online project has no pin");
 
+// recurring event + actions form: an org editor adds an action, a non-owner is queued, and an admin removes one
+submit("fe", "lead@mycc.org", { [Q.whichEvent]: NEW_EVENT, [Q.coalition]: MYCC, [Q.eventName]: "Weekly vigil", [Q.eventDate]: "2026-10-03", [Q.eventTime]: "12:00", [Q.eventRecurrence]: "Every Saturday, 12-1 PM" });
+assert.equal(data().coalitions.find((c) => c.id === "mycc").events.find((e) => e.name === "Weekly vigil").recurrence, "Every Saturday, 12-1 PM");
+submit("fa", "lead@mycc.org", { [Q.whichAction]: NEW_ACTION, [Q.coalition]: MYCC, [Q.actionName]: "Testify on the Climate Ed bill", [Q.actionKind]: "Take action (sign, call, comment, show up)", [Q.actionDeadline]: "2026-11-01", [Q.link]: "https://example.org/testify" });
+{
+  const act = data().coalitions.find((c) => c.id === "mycc").actions.find((x) => x.name === "Testify on the Climate Ed bill");
+  assert.ok(act && act.kind === "task" && act.deadline === "2026-11-01" && act.link === "https://example.org/testify" && act.urgency === undefined);
+}
+submit("fa", "point@bls.org", { [Q.whichAction]: NEW_ACTION, [Q.hostOrg]: BLS, [Q.actionName]: "Volunteer at the Trash Dash", [Q.actionKind]: "Volunteer role or opportunity" });
+{
+  const act = data().organizations.find((o) => o.id === "boston_latin_school_youthcan").actions.find((x) => x.name === "Volunteer at the Trash Dash");
+  assert.ok(act && act.kind === "role" && act.host_org_id === "boston_latin_school_youthcan");
+}
+submit("fa", "point@bls.org", { [Q.whichAction]: NEW_ACTION, [Q.coalition]: MYCC, [Q.actionName]: "Not mine" });
+assert.match(review().at(-1).reason, /^UNAUTHORIZED/);
+
 // admin removes a project
-submit("fp", "turibius@bu.edu", { [Q.whichProject]: "Youth Summit 2026 [mycc_p2]", [Q.remove]: [G("REMOVE_YES")] });
-assert.ok(!data().coalitions.find((c) => c.id === "mycc").projects.find((p) => p.id === "mycc_p2"));
+submit("fp", "turibius@bu.edu", { [Q.whichProject]: "Annual Advocacy Day preparation [mycc_p_advocacy_day]", [Q.remove]: [G("REMOVE_YES")] });
+assert.ok(!data().coalitions.find((c) => c.id === "mycc").projects.find((p) => p.id === "mycc_p_advocacy_day"));
 
 // feedback: signed-in email + optional phone saved on the (private) Feedback tab, logged
 submit("ff", "Fan@Example.org", { [Q.fbType]: "Idea or feature request", [Q.fbMessage]: "Add a calendar export", [Q.fbPhone]: "508-555-0199" });
@@ -216,7 +232,7 @@ assert.equal(book["Feedback"].length, 2);
 assert.equal(log().at(-1).record_type, "feedback");
 
 // every submission is in the Change Log
-const submissions = 15;
+const submissions = 19;
 assert.equal(log().length, submissions, `expected one Change Log row per submission (+ approval), got ${log().length}`);
 // the grid version of "who you work with": one row per org, strongest ticked column wins, blank rows = no contact
 submit("fo", "point@bls.org", {

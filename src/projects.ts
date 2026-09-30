@@ -1,6 +1,7 @@
 import type { DataFile, Project, GraphNode } from "./types";
 import { allProjects, type Owner } from "./owners";
 import { h, clear } from "./dom";
+import { staleNotice } from "./notice";
 
 export interface ProjectsView {
   el: HTMLElement;
@@ -163,7 +164,12 @@ export function createProjectsView(
         h("div", { class: "name" }, r.project.name),
         h("div", { class: "desc" }, r.project.description),
         meta,
+        r.project.link && /^https?:\/\//.test(r.project.link)
+          ? h("a", { class: "item-link", href: r.project.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗")
+          : null,
+        staleNotice("project", r.owner.node, r.project.needs_info),
       );
+      card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
       card.addEventListener("click", () => {
         cb.onCoalitionClick(r.owner.node);
       });

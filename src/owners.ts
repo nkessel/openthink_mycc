@@ -1,7 +1,7 @@
 // Projects and events can belong to a coalition or to an organization.
 // Coalition-owned items live in coalition.projects/events (optionally with host_org_id);
 // org-owned items (no coalition) live in organization.projects/events.
-import type { CoalitionEvent, DataFile, GraphNode, Organization, Project } from "./types";
+import type { Action, CoalitionEvent, DataFile, GraphNode, Organization, Project } from "./types";
 import { initials } from "./util";
 
 export interface Owner {
@@ -44,4 +44,10 @@ export function orgProjects(data: DataFile, org: Organization): Project[] {
 export function orgEvents(data: DataFile, org: Organization): CoalitionEvent[] {
   const hosted = data.coalitions.flatMap((c) => c.events.filter((e) => e.host_org_id === org.id));
   return [...(org.events || []), ...hosted];
+}
+
+/** Actions and volunteer opportunities: an org's own plus coalition-level ones it hosts. */
+export function orgActions(data: DataFile, org: Organization): Action[] {
+  const hosted = data.coalitions.flatMap((c) => c.actions.filter((a) => a.host_org_id === org.id));
+  return [...(org.actions || []), ...hosted];
 }

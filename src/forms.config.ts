@@ -12,7 +12,7 @@ export interface FormLink {
   coalitionEntry?: string;
 }
 
-export const FORMS: Record<"org" | "event" | "project" | "feedback", FormLink> = {
+export const FORMS: Record<"org" | "event" | "project" | "action" | "feedback", FormLink> = {
   org: {
     url: "https://docs.google.com/forms/d/e/1FAIpQLSeQ4MOk9YHT7XX9UTaOEpQrofLU-uqyXVOuu9yEZzGrHzvGpw/viewform",
     orgEntry: "entry.1787507842",
@@ -26,6 +26,11 @@ export const FORMS: Record<"org" | "event" | "project" | "feedback", FormLink> =
     url: "https://docs.google.com/forms/d/e/1FAIpQLSe4CpR61Iklqh4U24rcEtqs-0XyxkaMYd2jcMmymHGuFRqM2g/viewform",
     hostOrgEntry: "entry.207544512",
     coalitionEntry: "entry.13985344",
+  },
+  action: {
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSeLrAB0TWK_wPxRTalxvTH8lWuQywrjKTTfEem237X3CdcvXg/viewform",
+    hostOrgEntry: "entry.973662534",
+    coalitionEntry: "entry.711840281",
   },
   feedback: {
     url: "https://docs.google.com/forms/d/e/1FAIpQLScwazw1P9rbQT4KAoUn0DSuI6B9Lpdx-kcrZXdZV45-HlAVKw/viewform",

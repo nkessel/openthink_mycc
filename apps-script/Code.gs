@@ -27,6 +27,8 @@
 var ADMIN_EMAILS = ['nathandkessel@gmail.com', 'ab130@wellesley.edu', 'turibius@bu.edu'];
 /** Where the starting data comes from (the repo's public/data.json). */
 var SEED_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/public/data.json';
+/** Where "Replace projects, events and actions from the repo" reads from (the repo's public/data.json). */
+var ACTIVITY_URL = SEED_URL;
 /** Email the admins when something needs review. */
 var ALERT_ADMINS = true;
 
@@ -47,6 +49,7 @@ var TAB = {
 var NEW_ORG = '➕ Add a new organization';
 var NEW_EVENT = '➕ Add a new event';
 var NEW_PROJECT = '➕ Add a new project';
+var NEW_ACTION = '➕ Add a new action or volunteer opportunity';
 var NONE = '— None —';
 var REMOVE_YES = 'Yes, take it off the map';
 var REMOTE_YES = "We're remote / have no public location — don't show a pin"; // older forms' checkbox
@@ -109,12 +112,20 @@ var Q = {
   eventDate: 'Date',
   eventTime: 'Start time',
   eventEndTime: 'End time',
+  eventRecurrence: 'Does it repeat? (leave blank for a one-time event)',
   // project
   whichProject: 'Which project is this about?',
   projectName: 'Project name',
   projectDesc: 'Project description',
   projectStatus: 'Status',
   skills: 'Skills or help needed',
+  // action / volunteer opportunity
+  whichAction: 'Which action or volunteer opportunity is this about?',
+  actionName: 'Action or opportunity name',
+  actionDesc: 'What people can do',
+  actionKind: 'Type',
+  actionUrgency: 'Urgency',
+  actionDeadline: 'Deadline (leave blank if none)',
   // feedback
   fbType: 'What kind of feedback?',
   fbArea: 'Which part of the map is it about?',
@@ -140,6 +151,8 @@ var ORG_TYPES = [
   ['Other', 'other'], // older forms; new forms have a write-in "Other" instead
 ];
 var MEMBERSHIP = ['Under 10', '10+', '25+', '50+', '100+'];
+var ACTION_KINDS = [['Take action (sign, call, comment, show up)', 'task'], ['Volunteer role or opportunity', 'role']];
+var URGENCIES = [['Low', 'low'], ['Medium', 'medium'], ['High', 'high']];
 var STATUSES = [['Active', 'active'], ['Planning', 'planning'], ['Completed', 'completed']];
 var BASE_TAGS = ['clean_energy', 'climate_policy', 'environmental_justice', 'grassroots',
   'green_buildings', 'health', 'housing', 'just_transition', 'school_clubs', 'youth_serving'];
@@ -161,10 +174,11 @@ var COLS = {
     'coalition_weights'].concat(PROFILE_COLS),
   'Connections': ['from_org', 'to_org', 'frequency', 'updated_at', 'reported_by'],
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
-    'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden'],
+    'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info'],
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
-    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end'],
-  'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden'],
+    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info'],
+  'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden', 'host_org_id',
+    'description', 'link', 'needs_info'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
     'reviewed_at', 'payload'],
@@ -199,6 +213,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('MA Climate Coalition Map')
     .addItem('Set up sheet + forms (run once)', 'setUp')
+    .addItem('Replace projects, events and actions from the repo', 'replaceActivityFromRepo')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
     .addItem('Show form + data links', 'showLinks')
     .addItem('Fill in missing logos + websites from GitHub', 'fillLogosFromGitHub')
@@ -275,6 +290,44 @@ function ensureTrigger_(handler, create) {
   if (!exists) create();
 }
 
+/**
+ * Replace the Projects, Events and Actions tabs with what is in the repo's data.json (new events/projects/actions
+ * gathered from public pages). Anything people added through the forms in those tabs is overwritten, so this asks first.
+ * Rows are written by header name, so column order in the sheet does not matter.
+ */
+function replaceActivityFromRepo() {
+  var ui = SpreadsheetApp.getUi();
+  var go = ui.alert('Replace Projects, Events and Actions?',
+    'This overwrites those three tabs with the repo data (' + ACTIVITY_URL + '). Changes made through the forms in those tabs since the last export will be lost.',
+    ui.ButtonSet.OK_CANCEL);
+  if (go !== ui.Button.OK) return;
+  var counts = replaceActivity_(JSON.parse(UrlFetchApp.fetch(ACTIVITY_URL).getContentText()));
+  refreshDropdowns();
+  ui.alert('Done: ' + counts.join(', ') + '.');
+}
+
+function replaceActivity_(data) {
+  var rows = sheetRowsFromData_(data);
+  var ss = ss_();
+  var counts = [];
+  [TAB.projects, TAB.events, TAB.actions].forEach(function (name) {
+    var sh = ss.getSheetByName(name);
+    addMissingColumns_(sh, COLS[name]);
+    var headers = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(String);
+    if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, headers.length).clearContent();
+    var data2 = rows[name].map(function (r) {
+      return headers.map(function (h) { var i = COLS[name].indexOf(h); return i === -1 ? '' : r[i]; });
+    });
+    if (data2.length) {
+      var range = sh.getRange(2, 1, data2.length, headers.length);
+      range.setNumberFormats(data2.map(function (r) { return r.map(function (v) { return typeof v === 'number' ? '0.000000' : '@'; }); }));
+      range.setValues(data2);
+    }
+    counts.push(data2.length + ' ' + name.toLowerCase());
+  });
+  return counts;
+}
+
 /** Columns added in later versions go at the end of an existing tab (nothing is moved). */
 function addMissingColumns_(sh, cols) {
   var have = sh.getRange(1, 1, 1, Math.max(1, sh.getLastColumn())).getValues()[0].map(String);
@@ -339,12 +392,17 @@ function sheetRowsFromData_(d) {
     push('Projects', { id: p.id, coalition_id: coalitionId, host_org_id: hostId || p.host_org_id, name: p.name,
       description: p.description, status: p.status, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags),
       link: p.link, public_contact: p.public_contact, location: p.location, online: bool(p.online),
-      lat: num6(p.lat), lng: num6(p.lng) });
+      lat: num6(p.lat), lng: num6(p.lng), needs_info: p.needs_info ? 'TRUE' : '' });
   };
   var event = function (e, coalitionId, hostId) {
     push('Events', { id: e.id, coalition_id: coalitionId, host_org_id: hostId || e.host_org_id, name: e.name,
       description: e.description, date: e.date, end: e.end, location: e.location, online: bool(e.online),
-      lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact });
+      lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact,
+      recurrence: e.recurrence, needs_info: e.needs_info ? 'TRUE' : '' });
+  };
+  var action = function (a, coalitionId, hostId) {
+    push('Actions', { id: a.id, coalition_id: coalitionId, host_org_id: hostId || a.host_org_id, kind: a.kind, name: a.name,
+      urgency: a.urgency, skills_needed: L(a.skills_needed), deadline: a.deadline, description: a.description, link: a.link, needs_info: a.needs_info ? 'TRUE' : '' });
   };
   d.coalitions.forEach(function (c) {
     push('Coalitions', { id: c.id, name: c.name, abbrev: c.abbrev, description: c.description, focus_tags: L(c.focus_tags),
@@ -352,14 +410,12 @@ function sheetRowsFromData_(d) {
       logo: c.logo, website: c.website });
     (c.projects || []).forEach(function (p) { project(p, c.id, ''); });
     (c.events || []).forEach(function (e) { event(e, c.id, ''); });
-    (c.actions || []).forEach(function (a) {
-      push('Actions', { id: a.id, coalition_id: c.id, kind: a.kind, name: a.name, urgency: a.urgency,
-        skills_needed: L(a.skills_needed), deadline: a.deadline });
-    });
+    (c.actions || []).forEach(function (a) { action(a, c.id, ''); });
   });
   d.organizations.forEach(function (o) {
     (o.projects || []).forEach(function (p) { project(p, '', o.id); });
     (o.events || []).forEach(function (e) { event(e, '', o.id); });
+    (o.actions || []).forEach(function (a) { action(a, '', o.id); });
     var prof = o.profile || {};
     var row = { id: o.id, name: o.name, abbrev: o.abbrev, type: o.type, geographic_focus: o.geographic_focus,
       description: o.description, coalition_ids: L(o.coalition_ids), topic_tags: L(o.topic_tags), website: o.website,
@@ -391,6 +447,7 @@ function buildForms(dataLoaded) {
     { key: 'FORM_ORG', title: 'MA Climate Coalition Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
     { key: 'FORM_EVENT', title: 'MA Climate Coalition Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
     { key: 'FORM_PROJECT', title: 'MA Climate Coalition Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
+    { key: 'FORM_ACTION', title: 'MA Climate Coalition Map — Add or edit an action or volunteer opportunity', build: buildActionForm_, tab: 'Responses: Actions', signIn: true },
     { key: 'FORM_FEEDBACK', title: 'MA Climate Coalition Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
   ];
 
@@ -422,7 +479,7 @@ function buildForms(dataLoaded) {
     (dataLoaded === true ? 'Loaded the current map data into the tabs.\n\n' : '') +
     (built.length
       ? 'Built and shared with the core team:\n• ' + built.join('\n• ') + '\n\nLinks are on the Start Here tab.'
-      : 'All four forms already exist. Links are on the Start Here tab.')
+      : 'All the forms already exist. Links are on the Start Here tab.')
   );
 }
 
@@ -615,10 +672,21 @@ function upgradeOrgForm_(form) {
 /** Older event forms had no end time; add it right after the start time (safe to run again). */
 function upgradeEventForm_(form) {
   var items = form.getItems();
-  if (items.some(function (it) { return it.getTitle() === Q.eventEndTime; })) return;
+  var has = function (title) { return items.some(function (it) { return it.getTitle() === title; }); };
   var start = items.filter(function (it) { return it.getTitle() === Q.eventTime; })[0];
-  var end = form.addTimeItem().setTitle(Q.eventEndTime);
-  if (start) form.moveItem(end.getIndex(), start.getIndex() + 1);
+  if (!has(Q.eventEndTime)) {
+    var end = form.addTimeItem().setTitle(Q.eventEndTime);
+    if (start) form.moveItem(end.getIndex(), start.getIndex() + 1);
+  }
+  if (!has(Q.eventRecurrence)) {
+    var rec = addRecurrence_(form);
+    var last = form.getItems().filter(function (it) { return it.getTitle() === Q.eventEndTime; })[0];
+    if (last) form.moveItem(rec.getIndex(), last.getIndex() + 1);
+  }
+}
+function addRecurrence_(form) {
+  return form.addTextItem().setTitle(Q.eventRecurrence)
+    .setHelpText('For weekly vigils, monthly meetings and the like, say when it repeats, e.g. "Every Saturday, 12-1 PM" or "Second Monday of each month, 7 PM". The date and start time above should be the next occurrence.');
 }
 
 function buildEventForm_(form) {
@@ -632,11 +700,33 @@ function buildEventForm_(form) {
   form.addDateItem().setTitle(Q.eventDate);
   form.addTimeItem().setTitle(Q.eventTime);
   form.addTimeItem().setTitle(Q.eventEndTime);
+  addRecurrence_(form);
   addLocation_(form, 'event');
   addTags_(form);
   form.addTextItem().setTitle(Q.link);
   addPublicContact_(form);
   addRemove_(form, 'event');
+}
+
+function buildActionForm_(form) {
+  header_(form,
+    "Use this form to add something people can do to help (sign a petition, contact a legislator, show up, volunteer) or to update or remove one that's already on the map. " +
+    'Things with a fixed date and time belong in the event form; ongoing campaigns and programs belong in the project form.\n\n' +
+    OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE + '\n\n' + SIGNIN_NOTE);
+  addSelector_(form, Q.whichAction, 'Pick one to update it, or choose "' + NEW_ACTION + '".', NEW_ACTION);
+  addOwner_(form, 'action');
+  form.addTextItem().setTitle(Q.actionName);
+  form.addParagraphTextItem().setTitle(Q.actionDesc);
+  form.addMultipleChoiceItem().setTitle(Q.actionKind).setChoiceValues(ACTION_KINDS.map(function (k) { return k[0]; }));
+  form.addMultipleChoiceItem().setTitle(Q.actionUrgency).setChoiceValues(URGENCIES.map(function (k) { return k[0]; }));
+  form.addDateItem().setTitle(Q.actionDeadline);
+  form.addCheckboxItem().setTitle(Q.skills)
+    .setHelpText('If you answer this, check everything you need — it replaces the current list.')
+    .setChoiceValues(BASE_SKILLS.map(capitalize_)).showOtherOption(true);
+  form.addTextItem().setTitle(Q.link)
+    .setHelpText('Where people go to do it: the petition, sign-up or info page.');
+  addPublicContact_(form);
+  addRemove_(form, 'action');
 }
 
 function buildProjectForm_(form) {
@@ -709,6 +799,7 @@ function refreshDropdowns() {
   var eventLabels = labelsOf('event', t.events.filter(visible)
     .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); }));
   var projectLabels = labelsOf('project', t.projects.filter(visible).sort(byName_));
+  var actionLabels = labelsOf('action', t.actions.filter(visible).sort(byName_));
 
   var tags = uniq_(BASE_TAGS.concat(
     flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); })),
@@ -740,13 +831,15 @@ function refreshDropdowns() {
   set('FORM_ORG', Q.worksWithGrid, orgLabels);
   set('FORM_EVENT', Q.whichEvent, [NEW_EVENT].concat(eventLabels));
   set('FORM_PROJECT', Q.whichProject, [NEW_PROJECT].concat(projectLabels));
-  ['FORM_EVENT', 'FORM_PROJECT'].forEach(function (k) {
+  set('FORM_ACTION', Q.whichAction, [NEW_ACTION].concat(actionLabels));
+  ['FORM_EVENT', 'FORM_PROJECT', 'FORM_ACTION'].forEach(function (k) {
     set(k, Q.hostOrg, [NONE].concat(orgLabels));
     set(k, Q.coalition, [NONE].concat(coalitionLabels));
   });
   // "Youth serving" is one of the topic checkboxes (it also sets the org's youth_serving flag).
   ['FORM_ORG', 'FORM_EVENT', 'FORM_PROJECT'].forEach(function (k) { set(k, Q.tags, tags); });
   set('FORM_PROJECT', Q.skills, skills);
+  set('FORM_ACTION', Q.skills, skills);
 }
 
 /**
@@ -760,11 +853,12 @@ var LABEL_BASE_ = {
   coalition: function (c) { return str_(c.name) + (str_(c.abbrev) ? ' (' + str_(c.abbrev) + ')' : ''); },
   event: function (e) { return str_(e.name) + ' — ' + shortDate_(e.date); },
   project: function (p) { return str_(p.name); },
+  action: function (a) { return str_(a.name); },
 };
 
 /** { byId: {kind: {id: label}}, byLabel: {kind: {label: id}} } for all rows (hidden ones too). */
 function buildLabelIndex_(t) {
-  var tables = { org: t.orgs, coalition: t.coalitions, event: t.events, project: t.projects };
+  var tables = { org: t.orgs, coalition: t.coalitions, event: t.events, project: t.projects, action: t.actions };
   var idx = { byId: {}, byLabel: {} };
   Object.keys(tables).forEach(function (kind) {
     var rows = tables[kind].filter(function (r) { return str_(r.id); });
@@ -793,6 +887,7 @@ function handleSubmit(e) {
       formId === props.getProperty('FORM_ORG') ? 'org' :
       formId === props.getProperty('FORM_EVENT') ? 'event' :
       formId === props.getProperty('FORM_PROJECT') ? 'project' :
+      formId === props.getProperty('FORM_ACTION') ? 'action' :
       formId === props.getProperty('FORM_FEEDBACK') ? 'feedback' : null;
     if (!kind) return;
     var email = '';
@@ -817,7 +912,7 @@ function processSubmission_(kind, a, email, approver) {
     queueForReview_(kind, a, email, target, access.reason);
     return;
   }
-  var result = kind === 'org' ? saveOrg_(a, t) : kind === 'event' ? saveEvent_(a, t) : saveProject_(a, t);
+  var result = kind === 'org' ? saveOrg_(a, t) : kind === 'event' ? saveEvent_(a, t) : kind === 'action' ? saveAction_(a, t) : saveProject_(a, t);
   var flag = approver ? 'approved by ' + approver : '';
   logChange_(email, FORM_NAMES[kind], result.action, flag, result.type, result.id, result.name, result.changes);
   // An approved new org: its submitter becomes that org's point-person.
@@ -826,14 +921,14 @@ function processSubmission_(kind, a, email, approver) {
   refreshDropdowns();
 }
 
-var FORM_NAMES = { org: 'Update your organization', event: 'Add or edit an event', project: 'Add or edit a project', feedback: 'Send feedback' };
+var FORM_NAMES = { org: 'Update your organization', event: 'Add or edit an event', project: 'Add or edit a project', action: 'Add or edit an action or volunteer opportunity', feedback: 'Send feedback' };
 
 /** Which record a submission is about, and who owns it now / after the change. */
 function describeTarget_(kind, a, t) {
-  var sel = kind === 'org' ? a[Q.whichOrg] : kind === 'event' ? a[Q.whichEvent] : a[Q.whichProject];
-  var isNew = sel === NEW_ORG || sel === NEW_EVENT || sel === NEW_PROJECT;
+  var sel = kind === 'org' ? a[Q.whichOrg] : kind === 'event' ? a[Q.whichEvent] : kind === 'action' ? a[Q.whichAction] : a[Q.whichProject];
+  var isNew = sel === NEW_ORG || sel === NEW_EVENT || sel === NEW_PROJECT || sel === NEW_ACTION;
   var id = isNew ? '' : idFromLabel_(sel, kind);
-  var rows = kind === 'org' ? t.orgs : kind === 'event' ? t.events : t.projects;
+  var rows = kind === 'org' ? t.orgs : kind === 'event' ? t.events : kind === 'action' ? t.actions : t.projects;
   var rec = id ? findById_(rows, id) : null;
   var target = { kind: kind, isNew: isNew, id: id, label: sel, record: rec, owners: { orgs: [], coalitions: [] }, newOwners: { orgs: [], coalitions: [] } };
   if (kind === 'org') {
@@ -1090,6 +1185,7 @@ function saveEvent_(a, t) {
   put_(patch, 'description', a[Q.eventDesc]);
   putTags_(patch, a[Q.tags]);
   put_(patch, 'link', a[Q.link]);
+  put_(patch, 'recurrence', a[Q.eventRecurrence]);
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
   var existing = a[Q.whichEvent] === NEW_EVENT ? null : findById_(t.events, idFromLabel_(a[Q.whichEvent], 'event'));
@@ -1106,7 +1202,8 @@ function saveEvent_(a, t) {
     var day = (patch.date || (existing ? String(existing.date) : '')).slice(0, 10);
     if (day) patch.end = day + 'T' + endTime + ':00';
   }
-  if (patch.end) addMissingColumns_(ss_().getSheetByName(TAB.events), COLS[TAB.events]);
+  if (!isRemove_(a)) patch.needs_info = 'FALSE'; // a point person just reviewed it
+  addMissingColumns_(ss_().getSheetByName(TAB.events), COLS[TAB.events]);
   return upsert_(TAB.events, 'event', a[Q.whichEvent], NEW_EVENT, patch);
 }
 
@@ -1125,7 +1222,28 @@ function saveProject_(a, t) {
   if (isRemove_(a)) patch.hidden = 'TRUE';
   var existing = a[Q.whichProject] === NEW_PROJECT ? null : findById_(t.projects, idFromLabel_(a[Q.whichProject], 'project'));
   locationPatch_(patch, a, existing);
+  if (!isRemove_(a)) patch.needs_info = 'FALSE'; // a point person just reviewed it
+  addMissingColumns_(ss_().getSheetByName(TAB.projects), COLS[TAB.projects]);
   return upsert_(TAB.projects, 'project', a[Q.whichProject], NEW_PROJECT, patch);
+}
+
+function saveAction_(a, t) {
+  var patch = {};
+  ownerPatch_(patch, a);
+  put_(patch, 'name', a[Q.actionName]);
+  put_(patch, 'description', a[Q.actionDesc]);
+  if (a[Q.actionKind]) put_(patch, 'kind', lookup_(ACTION_KINDS, a[Q.actionKind]));
+  if (a[Q.actionUrgency]) put_(patch, 'urgency', lookup_(URGENCIES, a[Q.actionUrgency]));
+  put_(patch, 'deadline', a[Q.actionDeadline]);
+  if (asArray_(a[Q.skills]).length) {
+    patch.skills_needed = uniq_(asArray_(a[Q.skills]).map(function (s) { return String(s).trim().toLowerCase(); })).join(', ');
+  }
+  put_(patch, 'link', a[Q.link]);
+  put_(patch, 'public_contact', a[Q.publicContact]);
+  if (isRemove_(a)) patch.hidden = 'TRUE';
+  if (!isRemove_(a)) patch.needs_info = 'FALSE'; // a point person just reviewed it
+  addMissingColumns_(ss_().getSheetByName(TAB.actions), COLS[TAB.actions]);
+  return upsert_(TAB.actions, 'action', a[Q.whichAction], NEW_ACTION, patch);
 }
 
 function ownerPatch_(patch, a) {
@@ -1182,11 +1300,13 @@ function upsert_(tabName, recordType, selection, newLabel, patch) {
     var base = slug_(patch.name || (recordType === 'organization' ? 'new org' : 'new ' + recordType));
     if (recordType === 'event') base = 'ev_' + base;
     if (recordType === 'project') base = 'pr_' + base;
+    if (recordType === 'action') base = 'ac_' + base;
     id = uniqueId_(base.slice(0, 40), table.rows);
     var row = { id: id, last_activity: now };
     if (recordType === 'project' && !patch.status) row.status = 'active';
+    if (recordType === 'action' && !patch.kind) row.kind = 'task';
     if (!patch.name) { row.hidden = 'TRUE'; changes.push('hidden until it has a name'); }
-    if ((recordType === 'event' || recordType === 'project') && !patch.host_org_id && !patch.coalition_id) {
+    if ((recordType === 'event' || recordType === 'project' || recordType === 'action') && !patch.host_org_id && !patch.coalition_id) {
       changes.push('⚠ no organization or coalition picked — it will not show on the map until one is set');
     }
     Object.keys(patch).forEach(function (k) { row[k] = patch[k]; changes.push(k + ': ' + patch[k]); });
@@ -1245,7 +1365,7 @@ function buildDataFile_(t, generatedAt) {
     keys.forEach(function (k) {
       var v = src[k];
       if (k === 'topic_tags') { var l = list_(v); if (l.length) obj[k] = l; return; }
-      if (k === 'online' || k === 'remote') { if (isTrue_(v)) obj[k] = true; return; }
+      if (k === 'online' || k === 'remote' || k === 'needs_info') { if (isTrue_(v)) obj[k] = true; return; }
       if (k === 'lat' || k === 'lng') { if (str(v) && !isNaN(Number(v))) obj[k] = Number(v); return; }
       if (str(v)) obj[k] = str(v);
     });
@@ -1299,15 +1419,16 @@ function buildDataFile_(t, generatedAt) {
   var projects = group(t.projects, function (p) {
     return extra({ id: str(p.id), name: str(p.name), description: str(p.description),
       status: str(p.status) || 'active', skills_needed: list_(p.skills_needed) },
-      p, ['host_org_id', 'topic_tags', 'link', 'public_contact'].concat(place));
+      p, ['host_org_id', 'topic_tags', 'link', 'public_contact', 'needs_info'].concat(place));
   });
   var events = group(t.events, function (e) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
-      e, ['end', 'description', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
+      e, ['end', 'description', 'recurrence', 'needs_info', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
   });
-  var actions = group(t.actions.map(function (a) { var c = {}; for (var k in a) c[k] = a[k]; c.host_org_id = ''; return c; }), function (a) {
-    return { id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name), urgency: str(a.urgency) || 'medium',
-      skills_needed: list_(a.skills_needed), deadline: str(a.deadline) || null };
+  var actions = group(t.actions, function (a) {
+    return extra({ id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name),
+      skills_needed: list_(a.skills_needed), deadline: str(a.deadline) || null },
+      a, ['urgency', 'description', 'link', 'needs_info', 'host_org_id']);
   });
 
   var coalitions = t.coalitions.filter(function (c) { return c.id; }).map(function (c) {
@@ -1326,6 +1447,7 @@ function buildDataFile_(t, generatedAt) {
   orgs.forEach(function (o) {
     if (projects['o:' + o.id]) o.projects = projects['o:' + o.id];
     if (events['o:' + o.id]) o.events = events['o:' + o.id];
+    if (actions['o:' + o.id]) o.actions = actions['o:' + o.id];
   });
 
   var edges = [];
@@ -1418,6 +1540,7 @@ function writeLinks_() {
     ['Update your organization', 'FORM_ORG'],
     ['Add or edit an event', 'FORM_EVENT'],
     ['Add or edit a project', 'FORM_PROJECT'],
+    ['Add or edit an action or volunteer opportunity', 'FORM_ACTION'],
     ['Send feedback', 'FORM_FEEDBACK'],
   ].map(function (r) {
     var id = props.getProperty(r[1]);
@@ -1461,6 +1584,7 @@ function siteFormConfig_() {
     org: one('FORM_ORG', { orgEntry: Q.whichOrg }),
     event: one('FORM_EVENT', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition }),
     project: one('FORM_PROJECT', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition }),
+    action: one('FORM_ACTION', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition }),
     feedback: one('FORM_FEEDBACK'),
   };
 }

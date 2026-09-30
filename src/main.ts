@@ -1,5 +1,5 @@
 import "./styles.css";
-import type { DataFile, GraphNode } from "./types";
+import type { DataFile, GraphNode, Thought } from "./types";
 import { createTopbar, type TopTab } from "./topbar";
 import { createSidebar } from "./sidebar";
 import { createGraph } from "./graph";
@@ -39,6 +39,8 @@ async function main() {
     );
     return;
   }
+
+  await attachThoughts(data);
 
   let activeTab: TopTab = "map";
 
@@ -203,6 +205,7 @@ async function main() {
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
+      graphApi?.exitFocus();
       drawerApi?.close();
       graphApi?.setSelectedNode(null);
     }
@@ -232,6 +235,25 @@ async function loadData(): Promise<DataFile> {
     }
   }
   return get(SNAPSHOT_URL, 15000);
+}
+
+/**
+ * Public "thinking" bubbles live in public/thoughts.json ({ "<org or coalition id>": Thought[] }),
+ * separate from the sheet so each item can be reviewed and approved before it is published.
+ * Missing or malformed file = no thinking bubbles, never an error.
+ */
+async function attachThoughts(data: DataFile): Promise<void> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}thoughts.json`);
+    if (!res.ok) return;
+    const byId = (await res.json()) as Record<string, Thought[]>;
+    for (const n of [...data.coalitions, ...data.organizations]) {
+      const list = byId[n.id];
+      if (Array.isArray(list) && list.length) n.thoughts = list;
+    }
+  } catch {
+    /* optional */
+  }
 }
 
 main();

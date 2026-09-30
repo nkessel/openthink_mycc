@@ -9,6 +9,8 @@ export interface Project {
   status: ProjectStatus;
   skills_needed: string[];
   // Optional fields filled in through the MA Climate Coalition Map forms
+  /** We could not confirm this is current; shown with a "needs more information" notice until a point person updates it. */
+  needs_info?: boolean;
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
@@ -25,9 +27,13 @@ export interface CoalitionEvent {
   date: string;
   location: string;
   // Optional fields filled in through the MA Climate Coalition Map forms
+  /** A date with no time part ("2026-10-12") means the source did not post a time. */
+  /** Repeats on a schedule, e.g. "Every Saturday, 12-1 PM". `date` is then the next occurrence. */
+  recurrence?: string;
   /** End date-time (same day as `date`), if given. */
   end?: string;
   description?: string;
+  needs_info?: boolean;
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
@@ -37,13 +43,36 @@ export interface CoalitionEvent {
   lng?: number;
 }
 
+/**
+ * A piece of an org's or coalition's public thinking: a topic it is working through, a decision it made,
+ * or an open question. Shown as a "thinking" bubble when you zoom into the org. Everything in
+ * public/thoughts.json has been approved by the org for public display.
+ */
+export type ThoughtKind = "topic" | "decision" | "question" | "update";
+export interface Thought {
+  id: string;
+  kind: ThoughtKind;
+  text: string;
+  /** When it was discussed (ISO date). */
+  date?: string;
+  /** Where it came from, e.g. "MYCC full-coalition call, Sept 6". Shown so readers can trace it. */
+  source: string;
+  link?: string;
+}
+
 export interface Action {
   id: string;
   kind: ActionKind;
   name: string;
-  urgency: Urgency;
+  /** Optional: only shown when the source says how urgent it is. */
+  urgency?: Urgency;
   skills_needed: string[];
   deadline: string | null;
+  // Optional: actions can belong to an org as well as a coalition, and should link to where to act.
+  description?: string;
+  link?: string;
+  needs_info?: boolean;
+  host_org_id?: string;
 }
 
 export interface Coalition {
@@ -65,6 +94,8 @@ export interface Coalition {
   /** Relative path (logos/coalition_<id>.png) or an absolute image URL. */
   logo?: string;
   website?: string;
+  /** Public thinking (merged in from public/thoughts.json). */
+  thoughts?: Thought[];
 }
 
 export interface Organization {
@@ -92,6 +123,9 @@ export interface Organization {
   /** Projects/events that belong to this org rather than a coalition. */
   projects?: Project[];
   events?: CoalitionEvent[];
+  actions?: Action[];
+  /** Public thinking (merged in from public/thoughts.json). */
+  thoughts?: Thought[];
 }
 
 /** Org attributes from the MA Climate Coalition Map. Scores are 1–4. */

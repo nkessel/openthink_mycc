@@ -9,8 +9,9 @@ import type {
 } from "./types";
 import { initials, relTime, fmtEventTime, typeLabel } from "./util";
 import { h, clear } from "./dom";
+import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
-import { orgProjects, orgEvents } from "./owners";
+import { orgProjects, orgEvents, orgActions } from "./owners";
 import { suggestionsFor } from "./suggestions";
 
 type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
@@ -150,6 +151,7 @@ export function createDrawer(
             { id: "about", label: "About" },
             { id: "projects", label: "Projects" },
             { id: "events", label: "Events" },
+            { id: "actions", label: "Actions" },
             { id: "coalitions", label: "Connections" },
           ];
     // Ensure activeTab is valid for this node kind
@@ -175,11 +177,11 @@ export function createDrawer(
     if (node.kind === "coalition") {
       const c = node as Coalition;
       if (activeTab === "projects") {
-        renderProjects(body, c.projects);
+        renderProjects(body, c.projects, node);
       } else if (activeTab === "events") {
-        renderEvents(body, c.events);
+        renderEvents(body, c.events, node);
       } else if (activeTab === "actions") {
-        renderActions(body, c.actions);
+        renderActions(body, c.actions, node);
       }
     } else {
       const o = node as Organization;
@@ -191,9 +193,11 @@ export function createDrawer(
       } else if (activeTab === "suggested") {
         renderSuggestions(body, o);
       } else if (activeTab === "projects") {
-        renderProjects(body, orgProjects(data, o));
+        renderProjects(body, orgProjects(data, o), node);
       } else if (activeTab === "events") {
-        renderEvents(body, orgEvents(data, o));
+        renderEvents(body, orgEvents(data, o), node);
+      } else if (activeTab === "actions") {
+        renderActions(body, orgActions(data, o), node);
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
       }
@@ -201,7 +205,13 @@ export function createDrawer(
     return body;
   }
 
-  function renderProjects(body: HTMLElement, items: Project[]): void {
+  /** "More info" link, shown on every item that has a source link. */
+  function linkEl(link?: string): HTMLElement | null {
+    if (!link || !/^https?:\/\//.test(link)) return null;
+    return h("a", { class: "item-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗");
+  }
+
+  function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
     if (!items.length) {
       body.appendChild(h("div", { class: "empty" }, "No active projects."));
       return;
@@ -218,12 +228,14 @@ export function createDrawer(
             { class: "row" },
             h("span", { class: "pill kind" }, p.status),
           ),
+          linkEl(p.link),
+          staleNotice("project", owner, p.needs_info),
         ),
       );
     }
   }
 
-  function renderEvents(body: HTMLElement, items: CoalitionEvent[]): void {
+  function renderEvents(body: HTMLElement, items: CoalitionEvent[], owner: GraphNode): void {
     if (!items.length) {
       body.appendChild(h("div", { class: "empty" }, "No upcoming events."));
       return;
@@ -237,15 +249,17 @@ export function createDrawer(
           h(
             "div",
             { class: "row" },
-            h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end)),
-            h("span", { class: "pill kind" }, e.location),
+            h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
+            e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
+          linkEl(e.link),
+          staleNotice("event", owner, e.needs_info),
         ),
       );
     }
   }
 
-  function renderActions(body: HTMLElement, items: Action[]): void {
+  function renderActions(body: HTMLElement, items: Action[], owner: GraphNode): void {
     if (!items.length) {
       body.appendChild(h("div", { class: "empty" }, "No open actions."));
       return;
@@ -254,13 +268,9 @@ export function createDrawer(
       const row = h(
         "div",
         { class: "row" },
-        h(
-          "span",
-          { class: `pill ${a.urgency}` },
-          `${a.urgency} urgency`,
-        ),
-        h("span", { class: "pill kind" }, a.kind),
+        h("span", { class: "pill kind" }, a.kind === "role" ? "volunteer role" : "action"),
       );
+      if (a.urgency) row.appendChild(h("span", { class: `pill ${a.urgency}` }, `${a.urgency} urgency`));
       if (a.deadline) {
         row.appendChild(
           h("span", { class: "pill deadline" }, `by ${a.deadline}`),
@@ -274,7 +284,10 @@ export function createDrawer(
           "div",
           { class: "item" },
           h("div", { class: "name" }, a.name),
+          a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
+          linkEl(a.link),
+          staleNotice("action", owner, a.needs_info),
         ),
       );
     }
@@ -374,7 +387,7 @@ export function createDrawer(
     row("Type", typeLabel(org.type));
     row("Geographic focus", org.geographic_focus);
     row("Description", org.description);
-    row("Website", org.website ? h("a", { href: org.website, target: "_blank", rel: "noopener" }, org.website) : undefined);
+    row("Website", org.website ? h("a", { class: "org-website", href: org.website, target: "_blank", rel: "noopener noreferrer" }, org.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
     row("Contact", org.public_contact);
     row("Active membership", p.membership_size);
     row("EJ / frontline focus", score(p.ej_focus));
