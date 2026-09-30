@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T14:28:27.832Z",
+  "generated_at": "2026-09-30T20:13:20.010Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -1143,16 +1143,6 @@
           "host_org_id": "tree_boston"
         },
         {
-          "name": "Tree Planting at Malcolm X Park",
-          "link": "https://treeboston.org/events/",
-          "description": "Volunteer tree planting in Roxbury.",
-          "date": "2026-10-03T11:00:00",
-          "location": "Malcolm X Park, Roxbury",
-          "end": "2026-10-03T14:00:00",
-          "id": "tree_boston_e2",
-          "host_org_id": "tree_boston"
-        },
-        {
           "name": "Annual Fall Benefit: Branching Out 2026",
           "date": "2026-10-07T18:00:00",
           "location": "Southline Boston, 135 Morrissey Blvd, Dorchester, MA",
@@ -1163,16 +1153,6 @@
           "host_org_id": "tree_boston"
         },
         {
-          "name": "Branching Out 2026: Tree Boston Annual Fall Benefit",
-          "link": "https://treeboston.org/events/",
-          "description": "Evening of food, drink and tree-themed activities supporting tree equity in Boston.",
-          "date": "2026-10-07T18:00:00",
-          "location": "Southline Boston, 135 Morrissey Blvd, Dorchester",
-          "end": "2026-10-07T20:00:00",
-          "id": "tree_boston_e4",
-          "host_org_id": "tree_boston"
-        },
-        {
           "name": "Tree Giveaway at The Urban Farming Institute",
           "date": "2026-10-10T10:00:00",
           "location": "Urban Farming Institute, 487 Norfolk St, Mattapan, MA",
@@ -1180,16 +1160,6 @@
           "end": "2026-10-10T14:00",
           "description": "Free tree giveaway.",
           "id": "tree_boston_e5",
-          "host_org_id": "tree_boston"
-        },
-        {
-          "name": "Free Tree Giveaway at the Urban Farming Institute",
-          "link": "https://treeboston.org/events/",
-          "description": "Free tree giveaway for Boston residents in Mattapan.",
-          "date": "2026-10-10T10:00:00",
-          "location": "Urban Farming Institute, 487 Norfolk St, Mattapan",
-          "end": "2026-10-10T14:00:00",
-          "id": "tree_boston_e6",
           "host_org_id": "tree_boston"
         },
         {
@@ -1210,16 +1180,6 @@
           "end": "2026-10-24T14:00",
           "description": "Free tree giveaway.",
           "id": "tree_boston_e8",
-          "host_org_id": "tree_boston"
-        },
-        {
-          "name": "Free Tree Giveaway at Hyde Park Public Library",
-          "link": "https://treeboston.org/events/",
-          "description": "Free tree giveaway for Boston residents in Hyde Park.",
-          "date": "2026-10-24T10:00:00",
-          "location": "Hyde Park Branch Library, 35 Harvard Ave, Hyde Park",
-          "end": "2026-10-24T14:00:00",
-          "id": "tree_boston_e9",
           "host_org_id": "tree_boston"
         }
       ],
@@ -1785,16 +1745,6 @@
           "description": "Rescheduled from Sept 26 due to weather; volunteer check-in 9:30 AM; free lunch for first 100; tools provided.",
           "id": "massachusetts_interfaith_pow_e1",
           "host_org_id": "massachusetts_interfaith_power_and_light"
-        },
-        {
-          "name": "Hope Takes Root Tree Planting and Creation Care Service Day",
-          "link": "https://www.massipl.org/event/hope-takes-root",
-          "description": "Community tree planting, lunch for the first 100 participants, and educational activities at Costello Park in Lawrence. Rescheduled from Sept 26.",
-          "date": "2026-10-03T10:00:00",
-          "location": "Costello Park, Shawsheen Rd, Lawrence, MA",
-          "end": "2026-10-03T14:00:00",
-          "id": "massachusetts_interfaith_pow_e2",
-          "host_org_id": "massachusetts_interfaith_power_and_light"
         }
       ],
       "actions": [
@@ -2192,6 +2142,51 @@
           "lng": -72.669,
           "link": "https://climateactionnowma.org",
           "host_org_id": "climate_action_now_western_ma"
+        },
+        {
+          "id": "ev_can_1",
+          "name": "Sierra Club Forest Protection Team Monthly Meeting",
+          "date": "2026-10-08T19:00:00",
+          "location": "Virtual (Zoom)",
+          "link": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
+          "recurrence": "Second Thursday of each month, 7:00 PM",
+          "host_org_id": "climate_action_now_western_ma"
+        },
+        {
+          "id": "ev_can_2",
+          "name": "Racism, White Supremacy and Climate Justice Working Group Meeting",
+          "date": "2026-10-12T18:00:00",
+          "location": "Virtual (Zoom)",
+          "link": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
+          "recurrence": "Second Monday of each month, 6:00 PM",
+          "host_org_id": "climate_action_now_western_ma"
+        },
+        {
+          "id": "ev_can_3",
+          "name": "Wildlands Campaign Working Group Meeting",
+          "date": "2026-10-14T19:00:00",
+          "location": "Virtual (Zoom)",
+          "link": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
+          "recurrence": "Second Wednesday of each month, 7:00 PM",
+          "host_org_id": "climate_action_now_western_ma"
+        },
+        {
+          "id": "ev_can_4",
+          "name": "Monthly Gathering - 4th Monday",
+          "date": "2026-10-26T19:00:00",
+          "location": "Virtual (Zoom)",
+          "link": "https://climateactionnowma.org/event/monthly-gathering-4th-monday/2026-10-26/",
+          "recurrence": "Fourth Monday of each month, 7:00 PM",
+          "host_org_id": "climate_action_now_western_ma"
+        },
+        {
+          "id": "ev_can_5",
+          "name": "MA Pollinator Network monthly session",
+          "date": "2026-10-27T19:00:00",
+          "location": "Virtual (Zoom)",
+          "link": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
+          "recurrence": "Last Tuesday of each month, 7:00 PM",
+          "host_org_id": "climate_action_now_western_ma"
         }
       ]
     },
@@ -2289,17 +2284,6 @@
           "end": "2026-10-14T20:00",
           "description": "Partner event shared from MassEnergize on the Milton Community calendar.",
           "id": "sustainable_milton_e3",
-          "host_org_id": "sustainable_milton"
-        },
-        {
-          "name": "Emerging Clean Energy Tech: Balcony Solar, Window Heat Pumps and More",
-          "link": "https://events.sustainablemilton.org/event/emerging-clean-energy-tech-balcony-solar-window-heat-pump-more/",
-          "description": "Online webinar on newer home energy technologies including balcony solar, window-unit heat pumps and battery storage. Shared from Massenergize Community.",
-          "date": "2026-10-14T19:00:00",
-          "location": "Online",
-          "online": true,
-          "end": "2026-10-14T20:00:00",
-          "id": "sustainable_milton_e4",
           "host_org_id": "sustainable_milton"
         },
         {
@@ -3108,18 +3092,13 @@
       ],
       "events": [
         {
-          "id": "sc_e_film_cambridge",
-          "name": "Forest film screening: Old Growth Forests, Nature's Biotic Pump",
+          "name": "Forest Film Screening: Old Growth Forests: Nature's Biotic Water Pump",
           "date": "2026-10-08T19:00:00",
-          "location": "Patagonia Cambridge, 39 Brattle St, Cambridge",
-          "description": "Doors at 7 pm with pizza (vegan options included); film, then a half-hour panel and Q&A. Raises money for the watershed forest campaign. RSVP required.",
-          "topic_tags": [
-            "forests",
-            "water"
-          ],
-          "lat": 42.37376,
-          "lng": -71.121039,
-          "link": "https://www.sierraclub.org/massachusetts/protect-quabbin-wachusett-and-ware-watersheds",
+          "location": "Patagonia Cambridge, Brattle St, Cambridge, MA",
+          "link": "https://act.sierraclub.org/events/details?formcampaignid=701Po000025ortKIAQ",
+          "end": "2026-10-08T21:00",
+          "description": "Sierra Club MA Forest Protection Team film screening with panel Q&A; doors 7pm, film 7:30pm.",
+          "id": "sierra_club_e1",
           "host_org_id": "sierra_club"
         },
         {
@@ -3134,26 +3113,6 @@
             "water"
           ],
           "link": "http://bit.ly/OGForests",
-          "host_org_id": "sierra_club"
-        },
-        {
-          "name": "Forest Film Screening: Old Growth Forests: Nature's Biotic Water Pump",
-          "date": "2026-10-08T19:00:00",
-          "location": "Patagonia Cambridge, Brattle St, Cambridge, MA",
-          "link": "https://act.sierraclub.org/events/details?formcampaignid=701Po000025ortKIAQ",
-          "end": "2026-10-08T21:00",
-          "description": "Sierra Club MA Forest Protection Team film screening with panel Q&A; doors 7pm, film 7:30pm.",
-          "id": "sierra_club_e1",
-          "host_org_id": "sierra_club"
-        },
-        {
-          "name": "Film screening: Old Growth Forests: Nature's Biotic Pump",
-          "link": "https://www.savemassforests.com/",
-          "description": "Sierra Club Massachusetts Forest Protection Team film screening with panel discussion and Q&A; doors open 7 PM with pizza. RSVP required.",
-          "date": "2026-10-08T19:00:00",
-          "location": "Patagonia Cambridge, 39 Brattle St, Cambridge",
-          "end": "2026-10-08T21:00:00",
-          "id": "sierra_club_e2",
           "host_org_id": "sierra_club"
         },
         {
@@ -5032,16 +4991,6 @@
           "description": "Honoring Archbishop John C. Wester for nuclear abolition leadership.",
           "id": "greater_boston_physicians_fo_e2",
           "host_org_id": "greater_boston_physicians_for_social_responsibility"
-        },
-        {
-          "name": "9th Annual Global Health and Peace Awards",
-          "link": "https://gbpsr.org/events/",
-          "description": "Awards event jointly hosted by Greater Boston PSR and IPPNW at the Ikeda Center in Cambridge.",
-          "date": "2026-10-24T17:00:00",
-          "location": "Ikeda Center for Peace and Dialogue, 396 Harvard Street, Cambridge, MA",
-          "end": "2026-10-24T20:00:00",
-          "id": "greater_boston_physicians_fo_e3",
-          "host_org_id": "greater_boston_physicians_for_social_responsibility"
         }
       ]
     },
@@ -5188,16 +5137,6 @@
       ],
       "events": [
         {
-          "name": "Shave the Peak: Save Energy When It Matters Most",
-          "date": "2026-10-02T12:00:00",
-          "location": "Online",
-          "link": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
-          "online": true,
-          "description": "Webinar on peak demand and energy affordability.",
-          "id": "green_energy_consumers_allia_e1",
-          "host_org_id": "green_energy_consumers_alliance"
-        },
-        {
           "name": "Shave the Peak: Save Energy When It Matters Most (webinar)",
           "link": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
           "description": "Webinar on what peak electricity demand is, how it affects affordability, and what households can do to reduce it.",
@@ -5216,15 +5155,6 @@
           "online": true,
           "description": "Webinar on EV charging adaptors.",
           "id": "green_energy_consumers_allia_e3",
-          "host_org_id": "green_energy_consumers_alliance"
-        },
-        {
-          "name": "Harvest Your Energy Festival",
-          "date": "2026-10-17T12:00:00",
-          "location": "Riverbend Park, Medford, MA",
-          "link": "https://www.greenenergyconsumers.org/event/harvestfestival0",
-          "description": "GECA table at City of Medford's annual festival.",
-          "id": "green_energy_consumers_allia_e4",
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5526,16 +5456,6 @@
           "host_org_id": "mass_audubon"
         },
         {
-          "name": "Yes on 6 Text Banking Picnic",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "description": "Volunteer picnic and text-banking session for the Yes on 6 campaign; training, food and phone numbers provided.",
-          "date": "2026-10-03T13:00:00",
-          "location": "Drumlin Farm Wildlife Sanctuary, Lincoln",
-          "end": "2026-10-03T15:30:00",
-          "id": "mass_audubon_e5",
-          "host_org_id": "mass_audubon"
-        },
-        {
           "name": "Yes on 6 Picnic and Text Banking - Belmont",
           "date": "2026-10-04T13:00:00",
           "location": "Habitat Education Center, Belmont, MA",
@@ -5778,16 +5698,6 @@
           "host_org_id": "mount_grace_land_conservation_trust"
         },
         {
-          "name": "Four Corners Conservation Area Community Input Session and Site Walk",
-          "link": "https://www.mountgrace.org/get-involved/events/event/four-corners-conservation-area-community-input-sessions",
-          "description": "Site walk and community input session on the future of the Four Corners Conservation Area in Montague, focused on climate resilience and soil-health farming and forestry. A second session is October 19.",
-          "date": "2026-10-03T08:00:00",
-          "location": "Four Corners Conservation Area / Sawmill Herb Farm, Montague",
-          "end": "2026-10-03T11:00:00",
-          "id": "mount_grace_land_conservatio_e2",
-          "host_org_id": "mount_grace_land_conservation_trust"
-        },
-        {
           "name": "Four Corners Conservation Area Community Input Session 2",
           "date": "2026-10-19T17:00:00",
           "location": "Montague, MA (site walk 5-5:45 PM; session 6-8 PM at Sawmill Herb Farm)",
@@ -5805,16 +5715,6 @@
           "end": "2026-10-25T17:00",
           "description": "Keynote by Rand Wentworth; $20 per person, RSVP required; guided walk at 4 PM.",
           "id": "mount_grace_land_conservatio_e4",
-          "host_org_id": "mount_grace_land_conservation_trust"
-        },
-        {
-          "name": "Mount Grace 2026 Annual Meeting Celebration",
-          "link": "https://www.mountgrace.org/get-involved/events/rsvp-fee/2026-annual-meeting",
-          "description": "Annual meeting with keynote by Rand Wentworth at New Salem Cider, followed by a guided walk at 4:00 PM. Tickets are $20; free for children 12 and under.",
-          "date": "2026-10-25T14:00:00",
-          "location": "New Salem Cider, 67 S Main St, New Salem",
-          "end": "2026-10-25T17:00:00",
-          "id": "mount_grace_land_conservatio_e5",
           "host_org_id": "mount_grace_land_conservation_trust"
         }
       ],
@@ -5981,16 +5881,6 @@
           "end": "2026-10-13T19:00",
           "description": "PHMass Monthly Meeting; registration via Ticket Tailor.",
           "id": "passive_house_massachusetts_e1",
-          "host_org_id": "passive_house_massachusetts"
-        },
-        {
-          "name": "Simplifying Passive House Multifamily Certification with Tomas O'Leary",
-          "link": "https://phmass.org/event/simplifying-passive-house-multifamily-certification/",
-          "description": "Passive House Massachusetts monthly meeting on simplifying Passive House multifamily certification; tickets on sale.",
-          "date": "2026-10-13T17:30:00",
-          "location": "",
-          "end": "2026-10-13T19:00:00",
-          "id": "passive_house_massachusetts_e2",
           "host_org_id": "passive_house_massachusetts"
         },
         {
@@ -6255,16 +6145,6 @@
           "end": "2026-10-15T19:30",
           "description": "Free talk by George Wuerthner; Zoom registration required.",
           "id": "restore_the_north_woods_e2",
-          "host_org_id": "restore_the_north_woods"
-        },
-        {
-          "name": "Wildfire: Myths and Reality (George Wuerthner, Zoom)",
-          "link": "https://www.savemassforests.com/",
-          "description": "RESTORE board chair George Wuerthner presents on wildfire myths and reality as part of the Save Mass Forests speaker series.",
-          "date": "2026-10-15T18:30:00",
-          "location": "Online (Zoom)",
-          "online": true,
-          "id": "restore_the_north_woods_e3",
           "host_org_id": "restore_the_north_woods"
         }
       ],
@@ -6849,16 +6729,6 @@
           "host_org_id": "xr_boston"
         },
         {
-          "name": "XR Art Table at the HONK! Festival",
-          "link": "https://xrboston.org/action/xr-at-the-honk-festival/",
-          "description": "Extinction Rebellion art table at the HONK! Festival in Davis Square, coloring animal and insect masks and painting props for the HONK! Parade contingent. Volunteers welcome to help or stop by.",
-          "date": "2026-10-10T13:00:00",
-          "location": "Elm St, Davis Square, Somerville",
-          "end": "2026-10-10T16:00:00",
-          "id": "xr_boston_e6",
-          "host_org_id": "xr_boston"
-        },
-        {
           "name": "XR at the HONK Parade",
           "date": "2026-10-11T11:30:00",
           "location": "Herbert Street Lot, Somerville",
@@ -6875,16 +6745,6 @@
           "online": true,
           "description": "45-60 minute Zoom orientation to XR Boston.",
           "id": "xr_boston_e8",
-          "host_org_id": "xr_boston"
-        },
-        {
-          "name": "XR Boston Welcome Call",
-          "link": "https://xrboston.org/events/",
-          "description": "Online Zoom call (45-60 minutes) on how Extinction Rebellion works, what the Boston chapter has been doing and how to get involved. RSVP required.",
-          "date": "2026-10-13T19:30:00",
-          "location": "Online (Zoom)",
-          "online": true,
-          "id": "xr_boston_e9",
           "host_org_id": "xr_boston"
         },
         {
