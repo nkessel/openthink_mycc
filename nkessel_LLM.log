@@ -381,3 +381,9 @@ What / why
 - Checked: schema/ids/edges/sources all consistent; spot-checked 5 facts against live pages (Common Agenda 22/22 partners, T4VT members, EAN member sample 11/11, VNRC + VCV event dates/places) — all matched.
 - Cleaned: blanked placeholder last_activity dates (24), removed research notes from event locations; util.ts relTime shows "unknown" for blank dates. Tightened INSTRUCTIONS accordingly.
 - Gaps: Energy Action Network has ~80 nonprofit members, only 28 linked; VECAN's 100+ town energy committees mostly missing (map not readable); #ActOnClimateVT has no member list. Site is still MA-branded and its forms are MA's; a state switcher is not built.
+
+## 2026-10-01 — Map switcher (MA / VT / USA)
+- src/maps.ts: map registry (ma = live sheet + snapshot, vt = public/maps/vt.json, us = MA + VT merged). ?map=vt|us in the URL; plain link is always MA.
+- topbar: title shows the map name; right-click (or long-press on phones) opens "Switch map" (Massachusetts / Vermont / USA).
+- Non-MA maps have no forms yet: "Edit this…" becomes "Suggest a correction" → feedback form; + menu offers feedback only. Zip filter and town/county outlines are MA-only (hidden on VT); MA town names aren't matched for locations in other states; geographic view opens on the map's own groups; place search box follows the map.
+- Tested in Playwright: MA 8 coalitions/150 orgs, VT 6/49, USA 14/199; menu switches and URL updates; no page errors.

@@ -4,10 +4,13 @@ import type { GraphNode } from "./types";
 import { formUrl, type FormKind } from "./fab";
 import { FORMS } from "./forms.config";
 import { h } from "./dom";
+import { currentMap } from "./maps";
 
 /** A real button (an <a> styled as one) that opens the form for this item. */
 function editBtn(url: string, kind: string): HTMLElement {
-  return h("a", { class: "edit-btn", href: url, target: "_blank", rel: "noopener noreferrer" }, `Edit this ${kind}`);
+  // Maps without their own forms send people to the feedback form instead.
+  const label = currentMap.editable ? `Edit this ${kind}` : "Suggest a correction";
+  return h("a", { class: "edit-btn", href: url, target: "_blank", rel: "noopener noreferrer" }, label);
 }
 
 /** Events, projects and actions each have their own form (actions fall back to feedback until it is connected). */

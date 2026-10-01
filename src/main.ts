@@ -14,7 +14,7 @@ import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setupSidebarToggle } from "./sidebar";
-import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
+import { currentMap, MAPS, type MapDef } from "./maps";
 import { rollRecurringForward } from "./recurrence";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
@@ -36,6 +36,7 @@ function hideBoot() {
 }
 
 async function main() {
+  document.title = currentMap.fullTitle;
   const app = document.getElementById("app")!;
   clear(app);
 
@@ -287,7 +288,22 @@ async function main() {
 }
 
 /** Live data from the Google Sheet when configured, else the committed snapshot. */
-async function loadData(): Promise<DataFile> {
+async function loadData(map: MapDef = currentMap): Promise<DataFile> {
+  if (map.combine) {
+    // USA view: every state we have, side by side (a state that fails to load is skipped).
+    const parts = await Promise.all(map.combine.map((id) => loadData(MAPS[id]).catch(() => null)));
+    const got = parts.filter((p): p is DataFile => !!p);
+    if (!got.length) throw new Error("No state maps could be loaded");
+    const seen = new Set<string>();
+    const uniq = <T extends { id: string }>(xs: T[]) => xs.filter((x) => (seen.has(x.id) ? false : (seen.add(x.id), true)));
+    return {
+      generated_at: got.map((d) => d.generated_at).sort().pop() || "",
+      coalitions: uniq(got.flatMap((d) => d.coalitions)),
+      organizations: uniq(got.flatMap((d) => d.organizations)),
+      edges: got.flatMap((d) => d.edges || []),
+      org_links: got.flatMap((d) => d.org_links || []),
+    };
+  }
   const get = async (url: string, ms: number) => {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), ms);
@@ -301,14 +317,17 @@ async function loadData(): Promise<DataFile> {
       clearTimeout(timer);
     }
   };
-  if (LIVE_DATA_URL) {
+  let lastErr: unknown = null;
+  for (let i = 0; i < map.sources.length; i++) {
+    const last = i === map.sources.length - 1;
     try {
-      return await get(LIVE_DATA_URL, 8000);
+      return await get(map.sources[i], last ? 15000 : 8000);
     } catch (err) {
-      console.warn("Live data unavailable, using snapshot:", err);
+      lastErr = err;
+      if (!last) console.warn("Data source unavailable, trying the next one:", err);
     }
   }
-  return get(SNAPSHOT_URL, 15000);
+  throw lastErr instanceof Error ? lastErr : new Error("No data source");
 }
 
 /** Read a response body, reporting download progress to the splash when the size is known. */

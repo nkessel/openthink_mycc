@@ -1,5 +1,6 @@
 // Type-ahead search over coalitions, orgs, events and projects (used by the graph,
 // the geographic map, and the Organizations list).
+import { currentMap } from "./maps";
 import type { DataFile } from "./types";
 import { allEvents, allProjects } from "./owners";
 
@@ -163,11 +164,15 @@ export function createNodeSearch(
   return wrap;
 }
 
-/** Look up a place in Massachusetts (OpenStreetMap Nominatim; no key needed, light use only). */
+/** Place-search box for each map: west,north,east,south (null = anywhere in the US). */
+const PLACE_BOX: Record<string, string | null> = { ma: "-73.6,43.0,-69.8,41.2", vt: "-73.5,45.1,-71.4,42.7", us: null };
+
+/** Look up a place on the current map (OpenStreetMap Nominatim; no key needed, light use only). */
 export async function findPlaces(q: string): Promise<SearchItem[]> {
+  const box = PLACE_BOX[currentMap.id];
   const url =
     "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=4&countrycodes=us" +
-    "&viewbox=-73.6,43.0,-69.8,41.2&bounded=1&q=" + encodeURIComponent(q);
+    (box ? `&viewbox=${box}&bounded=1` : "") + "&q=" + encodeURIComponent(q);
   const res = await fetch(url, { headers: { Accept: "application/json" } });
   if (!res.ok) return [];
   const rows = (await res.json()) as { place_id: number; display_name: string; lat: string; lon: string }[];

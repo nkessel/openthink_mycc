@@ -1,5 +1,6 @@
 // Shared filters for the Events and Projects pages: merged comma-separated search, zip code + miles,
 // online/remote, "in view on the geographic map", free food, public vs affiliated-only, help wanted.
+import { currentMap } from "./maps";
 import { h } from "./dom";
 
 export interface Facts {
@@ -66,7 +67,9 @@ export function placeFor(item: { lat?: number; lng?: number; online?: boolean; l
   if (item.online) return {};
   if (item.lat !== undefined && item.lng !== undefined) return { lat: item.lat, lng: item.lng };
   const loc = item.location || "";
-  const hit = loc && towns ? towns.find((t) => t.re.test(loc)) : undefined;
+  // The town list is Massachusetts': don't put "Milton, VT" in Milton, MA.
+  const otherState = /,\s*(?!MA\b|Mass\b|Massachusetts\b)(?:[A-Z]{2}|Vermont|New Hampshire|New York|Connecticut|Rhode Island|Maine)\b/.test(loc);
+  const hit = loc && towns && !otherState ? towns.find((t) => t.re.test(loc)) : undefined;
   if (hit) return { lat: hit.at[0], lng: hit.at[1] };
   if (owner && owner.kind === "org" && !owner.remote && Number.isFinite(owner.lat) && Number.isFinite(owner.lng)) return { lat: owner.lat, lng: owner.lng };
   return {};
@@ -106,6 +109,8 @@ export function createItemFilters(opts: FilterOpts, onChange: () => void): ItemF
   const mileIn = h("input", { type: "range", min: "1", max: "100", step: "1", value: String(state.radius), class: "slider miles-in", "aria-label": "Miles from zip code" }) as HTMLInputElement;
   const zipNote = h("span", { class: "zip-note" }, "");
   const zipWrap = h("div", { class: "filter-group zip-group" }, zipIn, mileIn, mileLbl, zipNote);
+  // Zip-code centres are Massachusetts-only for now.
+  if (!currentMap.maGeo) zipWrap.style.display = "none";
   zipIn.addEventListener("input", async () => {
     state.zip = zipIn.value.replace(/\D/g, "").slice(0, 5);
     zipIn.value = state.zip;
