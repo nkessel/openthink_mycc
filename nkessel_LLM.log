@@ -374,3 +374,10 @@ What / why
 - Per Nathan: replaced the random quips with 11 warm lines about what the map is doing ("Gathering the coalitions…", "Getting the latest events…", …), shown in order instead of shuffled.
 - Loading lines edited per Nathan: "Checking in on projects…" (no "taking root"), dropped "Tracing the threads…", "Locating the towns across Massachusetts…", plus 4 new ones (14 total).
 - Made the new lines literal where possible (next meetings, newest member groups, this week's events, connecting organizations that work together).
+
+## 2026-10-01 — State expansion pilot: Vermont
+- research/state-pilot/INSTRUCTIONS.md: per-state agent brief (coalitions, members from their own pages, other key orgs, upcoming events/projects/actions; a source on every fact; output in data.json shape).
+- Ran one Sonnet research agent for Vermont (Nathan asked to prioritize VT over the planned RI/NY pilot): ~40 min, ~200 tool calls, ~300k tokens. Output research/state-pilot/vt.json: 6 coalitions, 49 orgs, 18 events, 14 projects, 6 actions, 75 memberships.
+- Checked: schema/ids/edges/sources all consistent; spot-checked 5 facts against live pages (Common Agenda 22/22 partners, T4VT members, EAN member sample 11/11, VNRC + VCV event dates/places) — all matched.
+- Cleaned: blanked placeholder last_activity dates (24), removed research notes from event locations; util.ts relTime shows "unknown" for blank dates. Tightened INSTRUCTIONS accordingly.
+- Gaps: Energy Action Network has ~80 nonprofit members, only 28 linked; VECAN's 100+ town energy committees mostly missing (map not readable); #ActOnClimateVT has no member list. Site is still MA-branded and its forms are MA's; a state switcher is not built.

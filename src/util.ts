@@ -16,6 +16,7 @@ export function initials(name: string, maxChars = 3): string {
 export function relTime(iso: string): string {
   const now = Date.now();
   const t = new Date(iso).getTime();
+  if (!iso || isNaN(t)) return "unknown"; // no dated activity found
   const diff = now - t;
   const s = Math.floor(diff / 1000);
   if (s < 60) return "just now";

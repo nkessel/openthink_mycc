@@ -1,0 +1,2605 @@
+{
+  "generated_at": "2026-10-01T00:00:00Z",
+  "state": "VT",
+  "coalitions": [
+    {
+      "id": "vt_environmental_common_agenda",
+      "name": "Vermont Environmental Common Agenda",
+      "abbrev": "Common Agenda",
+      "description": "Annual shared legislative agenda issued by Vermont Conservation Voters and 21 partner organizations covering democracy, resilient communities, transportation, food security, toxic-free communities and affordable clean energy. The 2026 edition (22 partners) came out Jan 14, 2026.",
+      "focus_tags": [
+        "climate",
+        "clean energy",
+        "democracy",
+        "transportation",
+        "legislative agenda"
+      ],
+      "geographic_scope": "Statewide",
+      "color": "#2563eb",
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "member_ids": [
+        "vt_connecticut_river_conservancy",
+        "vt_clf",
+        "vt_hunger_free_vermont",
+        "vt_lake_champlain_committee",
+        "vt_local_motion",
+        "vt_preservation_trust",
+        "vt_rev",
+        "vt_rad",
+        "vt_third_act",
+        "vt_350vermont",
+        "vt_trust_for_public_land",
+        "vt_vbsr",
+        "vt_vermont_center_for_ecostudies",
+        "vt_sierra_club",
+        "vt_vtcha",
+        "vt_vctn",
+        "vt_vcv",
+        "vt_vermont_trout_unlimited",
+        "vt_vtipl",
+        "vt_vnrc",
+        "vt_vpirg",
+        "vt_youth_lobby"
+      ],
+      "member_count": 22,
+      "website": "https://vermontconservationvoters.com/commonagenda26/",
+      "projects": [
+        {
+          "id": "vt_environmental_common_agenda_p_2026_agenda",
+          "name": "2026 Environmental Common Agenda",
+          "description": "Six shared priorities for the 2026 legislative session: protect democracy, build resilient communities, transportation solutions, food security, toxic-free communities and affordable clean energy.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://vermontconservationvoters.com/commonagenda26/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/commonagenda26/"
+          ]
+        }
+      ],
+      "events": [],
+      "actions": [],
+      "last_activity": "2026-01-14",
+      "sources": [
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://vermontbiz.com/news/2026/january/14/advocates-release-2026-environmental-common-agenda"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      }
+    },
+    {
+      "id": "vt_energy_action_network",
+      "name": "Energy Action Network",
+      "abbrev": "EAN",
+      "description": "Montpelier-based network of 200+ nonprofits, businesses, public agencies and other organizations working toward Vermont's climate and energy goals; staff act as neutral convener and it publishes the annual Progress Report for Vermont. Only EAN's nonprofit members that were verified with a location are linked here; its business, utility, higher-ed and agency members are omitted.",
+      "focus_tags": [
+        "energy",
+        "climate",
+        "collective impact",
+        "heating",
+        "transportation"
+      ],
+      "geographic_scope": "Statewide",
+      "color": "#16a34a",
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "member_ids": [
+        "vt_carshare_vermont",
+        "vt_capstone_community_action",
+        "vt_cvoeo",
+        "vt_clf",
+        "vt_drive_electric_vermont",
+        "vt_local_motion",
+        "vt_public_assets_institute",
+        "vt_preservation_trust",
+        "vt_rev",
+        "vt_rad",
+        "vt_shelburne_farms",
+        "vt_sustainable_woodstock",
+        "vt_third_act",
+        "vt_vbsr",
+        "vt_vcil",
+        "vt_vcrd",
+        "vt_veic",
+        "vt_vtcha",
+        "vt_vctn",
+        "vt_vcv",
+        "vt_vhcb",
+        "vt_vermont_passive_house",
+        "vt_vtipl",
+        "vt_vnrc",
+        "vt_vpirg",
+        "vt_vital_communities",
+        "vt_veep",
+        "vt_sierra_club"
+      ],
+      "member_count": 28,
+      "website": "https://eanvt.org",
+      "projects": [
+        {
+          "id": "vt_energy_action_network_p_thermal_energy_networks",
+          "name": "Thermal Energy Networks team",
+          "description": "Network action team building a coalition to speed up thermal energy networks in Vermont; produced a toolkit on how to develop one, with Vermont Community Thermal Networks.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://eanvt.org/network-action-teams/thermal-networks/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/network-action-teams/thermal-networks/"
+          ]
+        },
+        {
+          "id": "vt_energy_action_network_p_clean_affordable_vehicles",
+          "name": "Clean and Affordable Vehicle Collaborative",
+          "description": "EAN network action team listed on EAN's site.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://eanvt.org/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/"
+          ]
+        },
+        {
+          "id": "vt_energy_action_network_p_climate_workforce",
+          "name": "Climate Workforce Coalition",
+          "description": "EAN network action team listed on EAN's site.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://eanvt.org/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/"
+          ]
+        },
+        {
+          "id": "vt_energy_action_network_p_heat_pump_working_group",
+          "name": "Heat Pump Working Group",
+          "description": "EAN network action team listed on EAN's site.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://eanvt.org/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/"
+          ]
+        },
+        {
+          "id": "vt_energy_action_network_p_municipal_energy_code",
+          "name": "Municipal Energy Code Collaborative",
+          "description": "EAN network action team listed on EAN's site.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://eanvt.org/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/"
+          ]
+        },
+        {
+          "id": "vt_energy_action_network_p_energy_coaching_network",
+          "name": "Vermont-wide Energy Coaching Network",
+          "description": "EAN network action team listed on EAN's site.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://eanvt.org/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/"
+          ]
+        },
+        {
+          "id": "vt_energy_action_network_p_weatherization_at_scale",
+          "name": "Weatherization at Scale",
+          "description": "EAN network action team listed on EAN's site.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://eanvt.org/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/"
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "vt_energy_action_network_e_post_election_gathering_2026",
+          "name": "2026 EAN Post-Election Gathering",
+          "date": "2026-12-01T09:00:00",
+          "end": "2026-12-01T17:00:00",
+          "location": "Capitol Plaza, Montpelier, VT",
+          "online": false,
+          "description": "Hear from state officials and legislative leaders on energy priorities for 2027 and discuss how the network can collaborate; paid registration.",
+          "link": "https://eanvt.org/2026-ean-post-election-gathering/",
+          "verified": true,
+          "sources": [
+            "https://eanvt.org/2026-ean-post-election-gathering/",
+            "https://eanvt.org/events/"
+          ]
+        }
+      ],
+      "actions": [],
+      "last_activity": "2026-09-09",
+      "sources": [
+        "https://eanvt.org/about/people/network-members/",
+        "https://eanvt.org/",
+        "https://eanvt.org/events/",
+        "https://eanvt.org/network-action-teams/thermal-networks/"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      }
+    },
+    {
+      "id": "vt_vecan",
+      "name": "Vermont Energy & Climate Action Network",
+      "abbrev": "VECAN",
+      "description": "Network of 100+ Vermont town energy committees (since 2005) and the organizations that support them, coordinated by VNRC with Energy Action Network, Efficiency Vermont, Vital Communities and the Vermont Council on Rural Development. Its committee map is interactive and could not be read, so only committees whose VECAN directory page was seen are linked.",
+      "focus_tags": [
+        "town energy committees",
+        "local climate action",
+        "energy efficiency"
+      ],
+      "geographic_scope": "Statewide",
+      "color": "#f59e0b",
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "member_ids": [
+        "vt_vnrc",
+        "vt_efficiency_vermont",
+        "vt_vital_communities",
+        "vt_vcrd",
+        "vt_bennington_energy_committee"
+      ],
+      "member_count": 5,
+      "website": "https://www.vecan.net",
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "last_activity": "2026-06-09",
+      "sources": [
+        "https://vecan.net/about-us/",
+        "https://www.vecan.net/",
+        "https://www.vecan.net/enews-archive/june-9th-2026-vecan-e-news",
+        "https://vnrc.org/partnerships/",
+        "https://vnrc.org/community-planning-toolbox/tools/town-energy-committees/"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      }
+    },
+    {
+      "id": "vt_actonclimatevt",
+      "name": "#ActOnClimateVT",
+      "abbrev": "ActOnClimateVT",
+      "description": "Coalition of 30+ Vermont organizations that says it builds support for equitable, just climate solutions and credits itself with helping pass the 2020 Global Warming Solutions Act. The site names no members, and the latest dated activity found is the Jan 2020 platform launch.",
+      "focus_tags": [
+        "climate policy",
+        "equity",
+        "Global Warming Solutions Act"
+      ],
+      "geographic_scope": "Statewide",
+      "color": "#dc2626",
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "member_ids": [],
+      "member_count": 0,
+      "website": "https://www.actonclimatevt.org",
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "last_activity": "2020-01-14",
+      "sources": [
+        "https://www.actonclimatevt.org/about",
+        "https://www.vpirg.org/news/2020-plan-for-climate-action/"
+      ],
+      "profile": {
+        "inactive": true,
+        "geo_precision": "approx"
+      }
+    },
+    {
+      "id": "vt_t4vt",
+      "name": "Transportation for Vermonters",
+      "abbrev": "T4VT",
+      "description": "Cross-sector coalition convened by VNRC pushing for a sustainable, accessible, affordable transportation system in a rural state; launched in Nov 2017 and still testifying to the legislature in Feb 2026.",
+      "focus_tags": [
+        "transportation",
+        "clean transportation",
+        "access"
+      ],
+      "geographic_scope": "Statewide",
+      "color": "#7c3aed",
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "member_ids": [
+        "vt_aarp_vermont",
+        "vt_american_lung_association_vt",
+        "vt_carshare_vermont",
+        "vt_catma",
+        "vt_green_mountain_transit",
+        "vt_local_motion",
+        "vt_rev",
+        "vt_vcil",
+        "vt_sierra_club",
+        "vt_veep",
+        "vt_veic",
+        "vt_vnrc",
+        "vt_vpirg"
+      ],
+      "member_count": 13,
+      "website": "https://www.t4vt.org",
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "last_activity": "2026-02-03",
+      "sources": [
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
+        "https://vnrc.org/broad-new-transportation-advocacy-coalition-launches-committed-to-increasing-affordability-access-and-sustainability/",
+        "https://legislature.vermont.gov/Documents/2026/Workgroups/Senate%20Transportation/Transportation%20Issues/W~Kati%20Gallagher~T4VT%20Testimony~2-3-2026.pdf"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      }
+    },
+    {
+      "id": "vt_clean_communities_coalition",
+      "name": "Vermont Clean Communities (Clean Cities Coalition)",
+      "abbrev": "VTCC",
+      "description": "Burlington-based U.S. DOE Clean Cities coalition (designated since 2001) that works on clean, efficient transportation access through stakeholder partnerships. About 80 stakeholders are listed, mostly businesses, utilities, towns and agencies; only the nonprofit/advocacy ones with verified details are linked.",
+      "focus_tags": [
+        "clean transportation",
+        "alternative fuels",
+        "EV"
+      ],
+      "geographic_scope": "Statewide",
+      "color": "#0891b2",
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "member_ids": [
+        "vt_carshare_vermont",
+        "vt_rev",
+        "vt_sierra_club",
+        "vt_vnrc",
+        "vt_vital_communities",
+        "vt_vcrd",
+        "vt_veic"
+      ],
+      "member_count": 7,
+      "website": "https://vtcleancommunities.org",
+      "projects": [
+        {
+          "id": "vt_clean_communities_coalition_p_community_transportation_plans",
+          "name": "Community Driven Transportation Plans",
+          "description": "Transportation plans for the Homestead and Intervale communities published on VTCC's projects page.",
+          "status": "completed",
+          "skills_needed": [],
+          "link": "https://vtcleancommunities.org/projects/",
+          "verified": true,
+          "sources": [
+            "https://vtcleancommunities.org/projects/"
+          ]
+        }
+      ],
+      "events": [],
+      "actions": [],
+      "last_activity": "",
+      "sources": [
+        "https://vtcleancommunities.org/",
+        "https://vtcleancommunities.org/about/current-stakeholders/",
+        "https://vtcleancommunities.org/projects/"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      }
+    }
+  ],
+  "organizations": [
+    {
+      "id": "vt_vnrc",
+      "name": "Vermont Natural Resources Council",
+      "abbrev": "VNRC",
+      "type": "501c3",
+      "geographic_focus": "Statewide",
+      "description": "Statewide environmental nonprofit in Montpelier working on climate and clean energy, water, forests and wildlife, transportation and sustainable communities. It coordinates VECAN and Transportation for Vermonters.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network",
+        "vt_vecan",
+        "vt_t4vt",
+        "vt_clean_communities_coalition"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-09-28",
+      "website": "https://vnrc.org",
+      "topic_tags": [
+        "climate",
+        "clean energy",
+        "land use",
+        "water",
+        "forests",
+        "transportation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [
+        {
+          "id": "vt_vnrc_p_climate_dispatch",
+          "name": "Climate Dispatch video series",
+          "description": "Weekly video series live from the State House during the legislative session covering climate and clean energy bills.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://vnrc.org/category/news-stories/climate-dispatch/",
+          "verified": true,
+          "sources": [
+            "https://vnrc.org/",
+            "https://vnrc.org/category/news-stories/climate-dispatch/"
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "vt_vnrc_e_annual_celebration_2026",
+          "name": "VNRC 63rd Annual Celebration",
+          "date": "2026-10-07T17:30:00",
+          "end": "2026-10-07T19:30:00",
+          "location": "Holley Hall, Bristol, VT",
+          "online": false,
+          "description": "Community gathering honoring the 2026 Arthur Gibb Award and Local Leadership Award recipients, with food from local vendors.",
+          "link": "https://vnrc.org/2026-annual-celebration",
+          "verified": true,
+          "sources": [
+            "https://vnrc.org/2026-annual-celebration"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "vt_vnrc_a_legislative_intern_2027",
+          "kind": "role",
+          "name": "2027 legislative intern (VNRC / Vermont Conservation Voters / Vermont Planners Association)",
+          "skills_needed": [
+            "policy research",
+            "writing"
+          ],
+          "deadline": "2026-11-09",
+          "description": "Paid internship (Jan 11 to Apr 30, 2027) tracking environmental legislation at the State House; apply by emailing a resume and letter of interest.",
+          "link": "https://vnrc.org/join-our-team/",
+          "verified": true,
+          "sources": [
+            "https://vnrc.org/join-our-team/"
+          ]
+        }
+      ],
+      "sources": [
+        "https://vnrc.org/partnerships/",
+        "https://vnrc.org/category/news-stories/events/",
+        "https://vnrc.org/2026-annual-celebration",
+        "https://vnrc.org/join-our-team/",
+        "https://vecan.net/about-us/"
+      ]
+    },
+    {
+      "id": "vt_vpirg",
+      "name": "Vermont Public Interest Research Group",
+      "abbrev": "VPIRG",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Statewide consumer, environmental and democracy advocacy group in Montpelier; leads on clean energy and climate policy, and runs a grassroots canvass.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network",
+        "vt_t4vt"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-09-25",
+      "website": "https://www.vpirg.org",
+      "topic_tags": [
+        "climate",
+        "clean energy",
+        "democracy",
+        "consumer protection",
+        "zero waste"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [
+        {
+          "id": "vt_vpirg_e_democracy_town_hall_2026",
+          "name": "Democracy Town Hall: How to End Corporate Cash in Elections",
+          "date": "2026-10-14T18:00:00",
+          "location": "Montpelier, VT",
+          "online": false,
+          "description": "Public town hall on ending corporate spending in elections.",
+          "link": "https://www.vpirg.org/",
+          "verified": true,
+          "sources": [
+            "https://www.vpirg.org/"
+          ]
+        }
+      ],
+      "actions": [],
+      "sources": [
+        "https://www.vpirg.org/",
+        "https://www.vpirg.org/contact/"
+      ]
+    },
+    {
+      "id": "vt_vcv",
+      "name": "Vermont Conservation Voters",
+      "abbrev": "VCV",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Statewide political voice for the environment in Montpelier that endorses candidates, tracks votes, and convenes the annual Environmental Common Agenda. Founded in 1982.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-09-08",
+      "website": "https://vermontconservationvoters.com",
+      "topic_tags": [
+        "elections",
+        "climate",
+        "clean energy",
+        "democracy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [
+        {
+          "id": "vt_vcv_e_canvass_colchester",
+          "name": "Community Canvass Tour: Colchester",
+          "date": "2026-10-03T10:00:00",
+          "end": "2026-10-03T17:00:00",
+          "location": "Colchester, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-colchester/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-colchester/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_randolph",
+          "name": "Community Canvass Tour: Randolph",
+          "date": "2026-10-04T10:00:00",
+          "end": "2026-10-04T17:00:00",
+          "location": "Randolph, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-randolph/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-randolph/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_st_albans",
+          "name": "Community Canvass Tour: St. Albans",
+          "date": "2026-10-10T10:00:00",
+          "end": "2026-10-10T17:00:00",
+          "location": "St. Albans, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-st-albans/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-st-albans/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_hartford",
+          "name": "Community Canvass Tour: Hartford",
+          "date": "2026-10-11T10:00:00",
+          "end": "2026-10-11T17:00:00",
+          "location": "Hartford, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-hartford/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-hartford/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_manchester",
+          "name": "Community Canvass Tour: Manchester",
+          "date": "2026-10-17T10:00:00",
+          "end": "2026-10-17T17:00:00",
+          "location": "Manchester, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-manchester/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-manchester/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_milton",
+          "name": "Community Canvass Tour: Milton",
+          "date": "2026-10-18T10:00:00",
+          "end": "2026-10-18T17:00:00",
+          "location": "Milton, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-milton/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-milton/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_stjohnsbury",
+          "name": "Community Canvass Tour: St. Johnsbury",
+          "date": "2026-10-24T10:00:00",
+          "end": "2026-10-24T17:00:00",
+          "location": "St. Johnsbury, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-stjohnsbury/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-stjohnsbury/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_rutland",
+          "name": "Community Canvass Tour: Rutland",
+          "date": "2026-10-25T10:00:00",
+          "end": "2026-10-25T17:00:00",
+          "location": "Rutland, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-rutland/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-rutland/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_brattleboro",
+          "name": "Community Canvass Tour: Brattleboro",
+          "date": "2026-11-01T10:00:00",
+          "end": "2026-11-01T17:00:00",
+          "location": "Brattleboro, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-brattleboro/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-brattleboro/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_canvass_burlington",
+          "name": "Community Canvass Tour: Burlington",
+          "date": "2026-11-01T10:00:00",
+          "end": "2026-11-01T17:00:00",
+          "location": "Burlington, VT (location sent after you RSVP)",
+          "online": false,
+          "description": "VPIRG and VCV canvass training and door-knocking day to turn out voters for climate, democracy and economy candidates.",
+          "link": "https://vermontconservationvoters.com/event/community-canvass-tour-burlington/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/community-canvass-tour-burlington/"
+          ]
+        },
+        {
+          "id": "vt_vcv_e_pole_2_poll",
+          "name": "Pole 2 Poll: A GOTV Celebration",
+          "date": "2026-10-23T20:00:00",
+          "end": "2026-10-23T22:00:00",
+          "location": "South Burlington, VT",
+          "online": false,
+          "description": "Ticketed get-out-the-vote party benefiting Vermont Conservation Voters, Rights and Democracy and Planned Parenthood Vermont Action Fund.",
+          "link": "https://vermontconservationvoters.com/event/pole-2-poll-a-gotv-celebration/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/event/pole-2-poll-a-gotv-celebration/"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "vt_vcv_a_community_canvass",
+          "kind": "task",
+          "name": "Volunteer for the Community Canvass Tour (with VPIRG)",
+          "skills_needed": [
+            "canvassing"
+          ],
+          "deadline": null,
+          "description": "Day-long canvass trainings and door-knocking in ten Vermont communities through Nov 1, 2026; RSVP per town.",
+          "link": "https://vermontconservationvoters.com/vcv-partners-with-vpirg-for-fall-canvass-tour/",
+          "verified": true,
+          "sources": [
+            "https://vermontconservationvoters.com/vcv-partners-with-vpirg-for-fall-canvass-tour/"
+          ]
+        }
+      ],
+      "sources": [
+        "https://vermontconservationvoters.com/about/",
+        "https://vermontconservationvoters.com/",
+        "https://vermontconservationvoters.com/vcv-partners-with-vpirg-for-fall-canvass-tour/",
+        "https://vermontconservationvoters.com/calendar/"
+      ]
+    },
+    {
+      "id": "vt_350vermont",
+      "name": "350Vermont",
+      "abbrev": "350VT",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Statewide grassroots climate group based in Burlington; described as the primary driver of Vermont's Climate Superfund Act. Its own website blocks automated readers, so details come from partner pages and search listings.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "2026-04-11",
+      "website": "https://www.350vermont.org",
+      "topic_tags": [
+        "climate justice",
+        "fossil fuels",
+        "climate superfund"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vermontdailychronicle.com/meet-the-ngos-that-shape-vermonts-laws-this-saturday/amp/",
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://anrweb.vt.gov/PubDocs/ANR/ClimateCouncil/21310/350VT%20Climate%20Action%20Plan%20Comment%20Spring%202025%20(1).pdf"
+      ]
+    },
+    {
+      "id": "vt_sierra_club",
+      "name": "Sierra Club Vermont Chapter",
+      "abbrev": "Sierra Club VT",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Vermont chapter of the Sierra Club, working on clean transportation, climate and clean energy, and lands conservation and outings, with a legislative advocacy program.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network",
+        "vt_t4vt",
+        "vt_clean_communities_coalition"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-04-22",
+      "website": "https://www.sierraclub.org/vermont",
+      "topic_tags": [
+        "climate",
+        "clean energy",
+        "transportation",
+        "conservation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [
+        {
+          "id": "vt_sierra_club_a_chapter_treasurer",
+          "kind": "role",
+          "name": "Chapter Treasurer (volunteer)",
+          "skills_needed": [
+            "accounting"
+          ],
+          "deadline": null,
+          "description": "Accountant or financial professional sought to manage chapter finances, replacing a 20-year volunteer.",
+          "link": "https://www.sierraclub.org/vermont/contact-us-and-volunteer",
+          "verified": true,
+          "sources": [
+            "https://www.sierraclub.org/vermont/contact-us-and-volunteer"
+          ]
+        },
+        {
+          "id": "vt_sierra_club_a_chapter_secretary",
+          "kind": "role",
+          "name": "Chapter Secretary (volunteer)",
+          "skills_needed": [
+            "note-taking"
+          ],
+          "deadline": null,
+          "description": "Volunteer to record meeting minutes and maintain chapter archives.",
+          "link": "https://www.sierraclub.org/vermont/contact-us-and-volunteer",
+          "verified": true,
+          "sources": [
+            "https://www.sierraclub.org/vermont/contact-us-and-volunteer"
+          ]
+        }
+      ],
+      "sources": [
+        "https://www.sierraclub.org/vermont",
+        "https://www.sierraclub.org/vermont/contact-us-and-volunteer",
+        "https://vermontbiz.com/news/2026/april/22/vermont-advocates-stand-environment-earth-day"
+      ]
+    },
+    {
+      "id": "vt_rev",
+      "name": "Renewable Energy Vermont",
+      "abbrev": "REV",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Montpelier-based renewable energy association that advocates for solar, wind, hydro and storage and hosts an annual conference.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network",
+        "vt_t4vt",
+        "vt_clean_communities_coalition"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-09-18",
+      "website": "https://www.revermont.org",
+      "topic_tags": [
+        "renewable energy",
+        "solar",
+        "policy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [
+        {
+          "id": "vt_rev_e_rev2026_conference",
+          "name": "REV2026 Conference (25th annual)",
+          "date": "2026-10-14T07:30:00",
+          "end": "2026-10-14T18:00:00",
+          "location": "DoubleTree by Hilton Burlington, 870 Williston Road, South Burlington, VT",
+          "online": false,
+          "description": "Annual renewable energy conference with keynotes, breakouts on grid electrification, storage and workforce, and networking.",
+          "link": "https://www.revconference.org/",
+          "rsvp_link": "https://www.eventbrite.com/e/rev2026-conference-tickets-1994711475720",
+          "verified": true,
+          "sources": [
+            "https://www.revermont.org/",
+            "https://www.eventbrite.com/e/rev2026-conference-tickets-1994711475720"
+          ]
+        }
+      ],
+      "actions": [],
+      "sources": [
+        "https://www.revermont.org/",
+        "https://www.revermont.org/our-work/annual-conference/",
+        "https://www.eventbrite.com/e/rev2026-conference-tickets-1994711475720"
+      ]
+    },
+    {
+      "id": "vt_vtipl",
+      "name": "Vermont Interfaith Power & Light",
+      "abbrev": "VTIPL",
+      "type": "faith_org",
+      "geographic_focus": "Statewide",
+      "description": "Faith-based climate group that partners with 75+ faith communities and gives Climate Action Grants for building energy upgrades.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.4037,
+      "lng": -72.999,
+      "last_activity": "2026-09-19",
+      "website": "https://www.vtipl.org",
+      "topic_tags": [
+        "faith",
+        "climate",
+        "energy efficiency"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [
+        {
+          "id": "vt_vtipl_p_climate_action_grants",
+          "name": "Climate Action Grants for faith communities",
+          "description": "Grants to faith and spiritual communities in Vermont and twelve New Hampshire towns to lower the carbon footprint of their buildings (for example heat pumps, windows, lighting).",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://www.vtipl.org/",
+          "verified": true,
+          "sources": [
+            "https://www.vtipl.org/"
+          ]
+        }
+      ],
+      "events": [],
+      "actions": [
+        {
+          "id": "vt_vtipl_a_board_members",
+          "kind": "role",
+          "name": "Board member (several openings)",
+          "skills_needed": [],
+          "deadline": null,
+          "description": "VTIPL is recruiting board members with a religious or spiritual connection to Earth stewardship.",
+          "link": "https://www.vtipl.org/",
+          "verified": true,
+          "sources": [
+            "https://www.vtipl.org/"
+          ]
+        }
+      ],
+      "sources": [
+        "https://www.vtipl.org/",
+        "https://vtipl.org/faith-climate-action-day-2026/",
+        "https://vtipl.org/gatherings-for-creation/stmichaels/"
+      ]
+    },
+    {
+      "id": "vt_rad",
+      "name": "Rights & Democracy Vermont",
+      "abbrev": "RAD-VT",
+      "type": "501c4",
+      "geographic_focus": "Statewide",
+      "description": "Multi-issue grassroots membership organization (Vermont and New Hampshire) working on racial, economic, environmental and social justice, including climate justice.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "2026-06-24",
+      "website": "https://radmovement.org/vt/",
+      "topic_tags": [
+        "climate justice",
+        "racial justice",
+        "economic justice",
+        "democracy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://radmovement.org/",
+        "https://radmovement.org/vt/events/",
+        "https://radmovement.org/rad-and-coalition-partners-launch-vermont-renews/"
+      ]
+    },
+    {
+      "id": "vt_third_act",
+      "name": "Third Act Vermont",
+      "abbrev": "Third Act VT",
+      "type": "informal_group",
+      "geographic_focus": "Statewide",
+      "description": "Volunteer-run Vermont working group of the national Third Act initiative, organizing people over 60 on climate and democracy through regional groups, legislative advocacy and canvassing.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-09-10",
+      "website": "https://thirdact.org/vermont/",
+      "topic_tags": [
+        "elders",
+        "climate",
+        "democracy",
+        "climate finance"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [
+        {
+          "id": "vt_third_act_p_climate_finance",
+          "name": "Climate finance campaign",
+          "description": "One of Third Act Vermont's three campaign areas (with democracy and voting, and community power through utility oversight).",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://thirdact.org/vermont/about/",
+          "verified": true,
+          "sources": [
+            "https://thirdact.org/vermont/about/"
+          ]
+        },
+        {
+          "id": "vt_third_act_p_community_power",
+          "name": "Community power through utility oversight",
+          "description": "Advocacy with state legislators and the Public Utility Commission on climate policy and utility oversight.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://thirdact.org/vermont/about/",
+          "verified": true,
+          "sources": [
+            "https://thirdact.org/vermont/about/"
+          ]
+        }
+      ],
+      "events": [
+        {
+          "id": "vt_third_act_e_fifteen_minutes_2026_10_05",
+          "name": "Fifteen Minutes for Our Future",
+          "date": "2026-10-05T09:00:00",
+          "location": "Zoom",
+          "online": true,
+          "description": "Short kickoff call outlining the next easy, effective pro-democracy action.",
+          "link": "https://thirdact.org/vermont/events/fifteen-minutes-for-our-future-3/",
+          "verified": true,
+          "sources": [
+            "https://thirdact.org/vermont/events/"
+          ]
+        },
+        {
+          "id": "vt_third_act_e_new_member_welcome_2026_10_05",
+          "name": "New Member Welcome Meeting",
+          "date": "2026-10-05T17:00:00",
+          "location": "Zoom",
+          "online": true,
+          "description": "Welcome session for people new to Third Act Vermont.",
+          "link": "https://thirdact.org/vermont/events/new-member-welcome-meeting/",
+          "verified": true,
+          "sources": [
+            "https://thirdact.org/vermont/events/"
+          ]
+        },
+        {
+          "id": "vt_third_act_e_corporate_money_2026_10_14",
+          "name": "Corporate Money in Politics event",
+          "date": "2026-10-14T18:00:00",
+          "end": "2026-10-14T19:30:00",
+          "location": "Unitarian Church of Montpelier, 130 Main Street, Montpelier, VT",
+          "online": false,
+          "description": "Evening event on corporate money in politics (likely the same Oct 14 Montpelier gathering VPIRG advertises as a Democracy Town Hall; the two pages do not cross-reference).",
+          "link": "https://thirdact.org/vermont/",
+          "verified": true,
+          "sources": [
+            "https://thirdact.org/vermont/"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "vt_third_act_a_join_regional_group",
+          "kind": "role",
+          "name": "Join a regional group or action team",
+          "skills_needed": [],
+          "deadline": null,
+          "description": "Volunteers can join county-based groups, the legislative action team, or canvassing efforts by emailing vermont@thirdact.org.",
+          "link": "https://thirdact.org/vermont/",
+          "verified": true,
+          "sources": [
+            "https://thirdact.org/vermont/",
+            "https://thirdact.org/vermont/about/"
+          ]
+        }
+      ],
+      "sources": [
+        "https://thirdact.org/vermont/",
+        "https://thirdact.org/vermont/about/",
+        "https://thirdact.org/vermont/events/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_youth_lobby",
+      "name": "Youth Lobby",
+      "abbrev": "Youth Lobby",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Vermont youth advocacy group focused on climate action and justice; runs the annual Rally for the Planet and trainings such as how to write your legislator. Its page lists no fall 2026 events.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-03-12",
+      "website": "https://youthlobby.org",
+      "topic_tags": [
+        "youth",
+        "climate",
+        "legislative advocacy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://youthlobby.org/",
+        "https://youthlobby.org/tag/climate/",
+        "https://www.orcamedia.net/show/vermont-youth-climate-lobby-rally-planet-3122026"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_vtcha",
+      "name": "Vermont Climate & Health Alliance",
+      "abbrev": "VTCHA",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Network of Vermont physicians, nurses, therapists, veterinarians and other health professionals who inform the public and lawmakers about climate change and health and push for a fast shift off fossil fuels.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-01-14",
+      "website": "https://www.vtcha.org",
+      "topic_tags": [
+        "health",
+        "climate",
+        "policy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vtcha.org/about",
+        "https://www.vtcha.org/",
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_vctn",
+      "name": "Vermont Community Thermal Networks",
+      "abbrev": "VCTN",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Statewide group advancing community-led thermal energy networks (shared ground-source heat loops) and coordinating with Vermont organizations to scale them.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-01-14",
+      "website": "https://www.vctn.org",
+      "topic_tags": [
+        "thermal energy networks",
+        "heating",
+        "decarbonization"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://buildingdecarb.org/tens-directory",
+        "https://eanvt.org/network-action-teams/thermal-networks/",
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_vbsr",
+      "name": "Vermont Businesses for Social Responsibility",
+      "abbrev": "VBSR",
+      "type": "business",
+      "geographic_focus": "Statewide",
+      "description": "Burlington-based business network that uses business power for social and environmental impact, with an advocacy program on climate and economic policy.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "2026-04-22",
+      "website": "https://www.vbsr.org",
+      "topic_tags": [
+        "business",
+        "climate policy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vbsr.org/",
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://vermontbiz.com/news/2026/april/22/vermont-advocates-stand-environment-earth-day"
+      ]
+    },
+    {
+      "id": "vt_clf",
+      "name": "Conservation Law Foundation (Vermont)",
+      "abbrev": "CLF VT",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Vermont office of the regional environmental law and advocacy organization CLF, based in Montpelier.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-01-14",
+      "website": "https://www.clf.org/vermont/",
+      "topic_tags": [
+        "environmental law",
+        "climate",
+        "environmental justice"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.clf.org/vermont/",
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ]
+    },
+    {
+      "id": "vt_lake_champlain_committee",
+      "name": "Lake Champlain Committee",
+      "abbrev": "LCC",
+      "type": "unknown",
+      "geographic_focus": "Lake Champlain basin",
+      "description": "Burlington-based advocacy group working since 1963 for a healthy, accessible Lake Champlain; a partner on the Environmental Common Agenda.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "2026-06-10",
+      "website": "https://www.lakechamplaincommittee.org",
+      "topic_tags": [
+        "water",
+        "lakes",
+        "climate resilience"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.lakechamplaincommittee.org/",
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://www.vecan.net/enews-archive/june-9th-2026-vecan-e-news"
+      ]
+    },
+    {
+      "id": "vt_connecticut_river_conservancy",
+      "name": "Connecticut River Conservancy",
+      "abbrev": "CRC",
+      "type": "501c3",
+      "geographic_focus": "Connecticut River watershed (NH, VT, MA, CT)",
+      "description": "Nonprofit that restores and advocates for clean water, healthy habitat and resilient communities across the Connecticut River watershed; a partner on the Vermont Environmental Common Agenda. No Vermont office address was found.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-01-14",
+      "website": "https://www.ctriver.org",
+      "topic_tags": [
+        "rivers",
+        "water",
+        "resilience"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.ctriver.org/",
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_hunger_free_vermont",
+      "name": "Hunger Free Vermont",
+      "abbrev": "HFV",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Anti-hunger and food-security advocacy organization in South Burlington; joined the Environmental Common Agenda as a new partner in 2026 and co-sponsored the 2026 Vermont Changemakers Summit.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 44.467,
+      "lng": -73.171,
+      "last_activity": "2026-04-11",
+      "website": "https://www.hungerfreevt.org",
+      "topic_tags": [
+        "food security",
+        "community resilience"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://vermontbiz.com/company/hunger-free-vermont",
+        "https://vermontdailychronicle.com/meet-the-ngos-that-shape-vermonts-laws-this-saturday/amp/"
+      ]
+    },
+    {
+      "id": "vt_local_motion",
+      "name": "Local Motion",
+      "abbrev": "Local Motion",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Burlington nonprofit advocating for walking and biking; a member of Transportation for Vermonters and Energy Action Network and a 2026 Common Agenda partner.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network",
+        "vt_t4vt"
+      ],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "2026-01-14",
+      "website": "https://www.localmotion.org",
+      "topic_tags": [
+        "biking",
+        "walking",
+        "clean transportation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.localmotion.org/contact_us",
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_preservation_trust",
+      "name": "Preservation Trust of Vermont",
+      "abbrev": "PTV",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Montpelier-based historic preservation nonprofit; a partner on the Environmental Common Agenda and an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda",
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-01-14",
+      "website": "https://www.ptvermont.org",
+      "topic_tags": [
+        "historic preservation",
+        "sustainable communities"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.ptvermont.org/",
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_trust_for_public_land",
+      "name": "Trust for Public Land (Vermont)",
+      "abbrev": "TPL VT",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Vermont office of the national land conservation nonprofit, at 3 Shipman Place in Montpelier; works on protected land and community forests.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-01-14",
+      "website": "https://www.tpl.org/state/vermont",
+      "topic_tags": [
+        "land conservation",
+        "parks"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.tpl.org/state/vermont",
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ]
+    },
+    {
+      "id": "vt_vermont_center_for_ecostudies",
+      "name": "Vermont Center for Ecostudies",
+      "abbrev": "VCE",
+      "type": "unknown",
+      "geographic_focus": "Statewide / Americas",
+      "description": "Wildlife research and conservation nonprofit in White River Junction, a 2026 Common Agenda partner.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 43.6489,
+      "lng": -72.3189,
+      "last_activity": "2026-01-14",
+      "website": "https://vtecostudies.org",
+      "topic_tags": [
+        "wildlife",
+        "conservation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vtecostudies.org/",
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ]
+    },
+    {
+      "id": "vt_vermont_trout_unlimited",
+      "name": "Vermont Council of Trout Unlimited",
+      "abbrev": "VT TU",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Statewide council of Trout Unlimited chapters; a partner on the Environmental Common Agenda. No headquarters address was found.",
+      "coalition_ids": [
+        "vt_environmental_common_agenda"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "2026-01-14",
+      "website": "https://www.vttucouncil.org",
+      "topic_tags": [
+        "coldwater fisheries",
+        "conservation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vttucouncil.org/",
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_carshare_vermont",
+      "name": "CarShare Vermont",
+      "abbrev": "CarShare VT",
+      "type": "unknown",
+      "geographic_focus": "Burlington area",
+      "description": "Car-sharing service in the Burlington area; a member of Transportation for Vermonters, Energy Action Network and Vermont Clean Communities.",
+      "coalition_ids": [
+        "vt_energy_action_network",
+        "vt_t4vt",
+        "vt_clean_communities_coalition"
+      ],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "",
+      "website": "https://www.carsharevt.org",
+      "topic_tags": [
+        "car sharing",
+        "clean transportation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.carsharevt.org/",
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
+        "https://eanvt.org/about/people/network-members/",
+        "https://vtcleancommunities.org/about/current-stakeholders/"
+      ]
+    },
+    {
+      "id": "vt_capstone_community_action",
+      "name": "Capstone Community Action",
+      "abbrev": "Capstone",
+      "type": "unknown",
+      "geographic_focus": "Central Vermont",
+      "description": "Community action agency in Barre providing services to bridge connections and move households toward self-sufficiency; an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 44.197,
+      "lng": -72.502,
+      "last_activity": "",
+      "website": "https://www.capstonevt.org",
+      "topic_tags": [
+        "community action",
+        "low-income",
+        "energy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.capstonevt.org",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_cvoeo",
+      "name": "Champlain Valley Office of Economic Opportunity",
+      "abbrev": "CVOEO",
+      "type": "unknown",
+      "geographic_focus": "Chittenden County and beyond",
+      "description": "Burlington community action agency that works on economic, social, racial and environmental justice; an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "",
+      "website": "https://www.cvoeo.org",
+      "topic_tags": [
+        "economic justice",
+        "environmental justice"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.cvoeo.org",
+        "https://www.cvoeo.org/contact",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_drive_electric_vermont",
+      "name": "Drive Electric Vermont",
+      "abbrev": "DEV",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Winooski-based electric vehicle information and outreach program; an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 44.4909,
+      "lng": -73.1853,
+      "last_activity": "",
+      "website": "https://www.driveelectricvt.com",
+      "topic_tags": [
+        "electric vehicles",
+        "clean transportation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.driveelectricvt.com/about-us",
+        "https://eanvt.org/about/people/network-members/",
+        "https://eanvt.org/events/replace-your-ride/"
+      ]
+    },
+    {
+      "id": "vt_public_assets_institute",
+      "name": "Public Assets Institute",
+      "abbrev": "PAI",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Montpelier nonprofit providing tax, budget and economic data and analysis to advance equitable policies; an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://www.publicassets.org",
+      "topic_tags": [
+        "budget analysis",
+        "economic equity"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.publicassets.org",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_shelburne_farms",
+      "name": "Shelburne Farms",
+      "abbrev": "Shelburne Farms",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Shelburne-based nonprofit listed among Energy Action Network's nonprofit members.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 44.3806,
+      "lng": -73.2271,
+      "last_activity": "",
+      "website": "https://www.shelburnefarms.org",
+      "topic_tags": [
+        "education",
+        "agriculture"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.shelburnefarms.org/",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_sustainable_woodstock",
+      "name": "Sustainable Woodstock",
+      "abbrev": "Sustainable Woodstock",
+      "type": "unknown",
+      "geographic_focus": "Woodstock area",
+      "description": "Community group in Woodstock that aims to inspire, educate and empower people to live environmentally, economically and socially responsible lives; an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 43.624,
+      "lng": -72.5187,
+      "last_activity": "",
+      "website": "https://www.sustainablewoodstock.org",
+      "topic_tags": [
+        "community sustainability"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.sustainablewoodstock.org",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_vcil",
+      "name": "Vermont Center for Independent Living",
+      "abbrev": "VCIL",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Montpelier disability-rights organization run by and for people with disabilities; a member of Transportation for Vermonters and Energy Action Network.",
+      "coalition_ids": [
+        "vt_energy_action_network",
+        "vt_t4vt"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://www.vcil.org",
+      "topic_tags": [
+        "disability",
+        "accessible transportation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vcil.org",
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_vcrd",
+      "name": "Vermont Council on Rural Development",
+      "abbrev": "VCRD",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Montpelier nonprofit supporting community development; one of the five supporting organizations of VECAN and an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network",
+        "vt_vecan",
+        "vt_clean_communities_coalition"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://www.vtrural.org",
+      "topic_tags": [
+        "rural development",
+        "community leadership"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vtrural.org",
+        "https://vecan.net/about-us/",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_veic",
+      "name": "Vermont Energy Investment Corporation",
+      "abbrev": "VEIC",
+      "type": "unknown",
+      "geographic_focus": "Statewide / national",
+      "description": "Winooski nonprofit that runs Efficiency Vermont and works on energy efficiency, renewables and clean transportation; a member of Transportation for Vermonters, Energy Action Network and Vermont Clean Communities.",
+      "coalition_ids": [
+        "vt_energy_action_network",
+        "vt_t4vt",
+        "vt_clean_communities_coalition"
+      ],
+      "lat": 44.4909,
+      "lng": -73.1853,
+      "last_activity": "",
+      "website": "https://www.veic.org",
+      "topic_tags": [
+        "energy efficiency",
+        "clean energy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Vermont_Energy_Investment_Corporation",
+        "https://www.veic.org",
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_efficiency_vermont",
+      "name": "Efficiency Vermont",
+      "abbrev": "Efficiency VT",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Statewide energy efficiency program (operated by VEIC) offering rebates and services; one of the five supporting organizations of VECAN.",
+      "coalition_ids": [
+        "vt_vecan"
+      ],
+      "lat": 44.4909,
+      "lng": -73.1853,
+      "last_activity": "",
+      "website": "https://www.efficiencyvermont.com",
+      "topic_tags": [
+        "energy efficiency"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.efficiencyvermont.com/contact",
+        "https://vecan.net/about-us/",
+        "https://en.wikipedia.org/wiki/Vermont_Energy_Investment_Corporation"
+      ]
+    },
+    {
+      "id": "vt_vital_communities",
+      "name": "Vital Communities",
+      "abbrev": "Vital Communities",
+      "type": "unknown",
+      "geographic_focus": "Upper Valley (VT/NH)",
+      "description": "White River Junction regional nonprofit that supports Upper Valley town energy committees and takes part in VECAN, EAN and regional climate workgroups.",
+      "coalition_ids": [
+        "vt_energy_action_network",
+        "vt_vecan",
+        "vt_clean_communities_coalition"
+      ],
+      "lat": 43.6489,
+      "lng": -72.3189,
+      "last_activity": "",
+      "website": "https://vitalcommunities.org",
+      "topic_tags": [
+        "town energy committees",
+        "regional climate networks"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vitalcommunities.org/about/contact/",
+        "https://vitalcommunities.org/climate-energy/climate-energy-networks/",
+        "https://vecan.net/about-us/"
+      ]
+    },
+    {
+      "id": "vt_vhcb",
+      "name": "Vermont Housing & Conservation Board",
+      "abbrev": "VHCB",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Montpelier board that invests in permanently affordable housing and land conservation; an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://www.vhcb.org",
+      "topic_tags": [
+        "housing",
+        "conservation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vhcb.org",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_vermont_passive_house",
+      "name": "Vermont Passive House",
+      "abbrev": "VT Passive House",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Montpelier-based group promoting Passive House building; an Energy Action Network member.",
+      "coalition_ids": [
+        "vt_energy_action_network"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://www.vermontpassivehouse.org",
+      "topic_tags": [
+        "passive house",
+        "building efficiency"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vermontpassivehouse.org",
+        "https://eanvt.org/about/people/network-members/"
+      ]
+    },
+    {
+      "id": "vt_veep",
+      "name": "Vermont Energy Education Program",
+      "abbrev": "VEEP",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Energy education organization; a member of Transportation for Vermonters and Energy Action Network. No location was found.",
+      "coalition_ids": [
+        "vt_energy_action_network",
+        "vt_t4vt"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "topic_tags": [
+        "energy education"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
+        "https://eanvt.org/about/people/network-members/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_catma",
+      "name": "Chittenden Area Transportation Management Association",
+      "abbrev": "CATMA",
+      "type": "unknown",
+      "geographic_focus": "Chittenden County",
+      "description": "Winooski transportation management association; its site says it grew out of a 1992 agreement among Champlain College, UVM Medical Center and UVM to share transportation programs. A member of Transportation for Vermonters.",
+      "coalition_ids": [
+        "vt_t4vt"
+      ],
+      "lat": 44.4909,
+      "lng": -73.1853,
+      "last_activity": "",
+      "website": "https://catmavt.org",
+      "topic_tags": [
+        "transportation demand management"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://catmavt.org/about-us/",
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/"
+      ]
+    },
+    {
+      "id": "vt_aarp_vermont",
+      "name": "AARP Vermont",
+      "abbrev": "AARP VT",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Vermont state office of AARP; a member of Transportation for Vermonters. No address was checked.",
+      "coalition_ids": [
+        "vt_t4vt"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "topic_tags": [
+        "older adults",
+        "transportation"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_american_lung_association_vt",
+      "name": "American Lung Association in Vermont",
+      "abbrev": "ALA VT",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Vermont office of the American Lung Association; a member of Transportation for Vermonters. No address was checked.",
+      "coalition_ids": [
+        "vt_t4vt"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "topic_tags": [
+        "air quality",
+        "health"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_green_mountain_transit",
+      "name": "Green Mountain Transit",
+      "abbrev": "GMT",
+      "type": "unknown",
+      "geographic_focus": "Northwest and central Vermont",
+      "description": "Regional public transit provider; a member of Transportation for Vermonters. No address was checked.",
+      "coalition_ids": [
+        "vt_t4vt"
+      ],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "topic_tags": [
+        "public transit"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://vnrc.org/sustainable-communities/transportation-for-vermonters/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_sunrise_vermont",
+      "name": "Sunrise Vermont",
+      "abbrev": "Sunrise VT",
+      "type": "informal_group",
+      "geographic_focus": "Vermont",
+      "description": "Sunrise Movement hub listed on Action Network for Vermont. The page shows no events or dated activity, so activity could not be confirmed.",
+      "coalition_ids": [],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://actionnetwork.org/groups/sunrise-vermont",
+      "topic_tags": [
+        "youth",
+        "climate"
+      ],
+      "profile": {
+        "geo_precision": "approx",
+        "inactive": true
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://actionnetwork.org/groups/sunrise-vermont"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_ccl_vermont_at_large",
+      "name": "Citizens' Climate Lobby - Vermont At Large",
+      "abbrev": "CCL VT",
+      "type": "informal_group",
+      "geographic_focus": "Vermont outside Burlington and the Upper Valley",
+      "description": "Active Citizens' Climate Lobby chapter covering Vermont outside greater Burlington and the Upper Valley; volunteers meet with elected officials to build support for climate laws.",
+      "coalition_ids": [],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://citizensclimatelobby.org/chapters/Vermont_-_At_Large/",
+      "topic_tags": [
+        "climate lobbying"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://citizensclimatelobby.org/chapters/Vermont_-_At_Large/",
+        "https://citizensclimatelobby.org/about-ccl/chapters/"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_ccl_university_of_vermont",
+      "name": "Citizens' Climate Lobby - University of Vermont",
+      "abbrev": "CCL UVM",
+      "type": "campus_group",
+      "geographic_focus": "Burlington",
+      "description": "Campus chapter of Citizens' Climate Lobby at the University of Vermont, listed as active.",
+      "coalition_ids": [],
+      "lat": 44.4759,
+      "lng": -73.2121,
+      "last_activity": "",
+      "website": "https://citizensclimatelobby.org/chapters/VT_University_of_Vermont",
+      "topic_tags": [
+        "climate lobbying",
+        "students"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://citizensclimatelobby.org/about-ccl/chapters/"
+      ]
+    },
+    {
+      "id": "vt_releaf_collective",
+      "name": "Vermont Releaf Collective (becoming Liberation Ecosystem)",
+      "abbrev": "Releaf",
+      "type": "unknown",
+      "geographic_focus": "Statewide",
+      "description": "Group connecting and amplifying people of color in Vermont around land, environment, agriculture and foodways; its site says it is transitioning to a new identity, Liberation Ecosystem.",
+      "coalition_ids": [],
+      "lat": 44.2601,
+      "lng": -72.5754,
+      "last_activity": "",
+      "website": "https://www.vtreleafcollective.org/",
+      "topic_tags": [
+        "environmental justice",
+        "BIPOC",
+        "land",
+        "food"
+      ],
+      "profile": {
+        "geo_precision": "approx",
+        "inactive": true
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.vtreleafcollective.org/",
+        "https://legislature.vermont.gov/Documents/2022/WorkGroups/House%20Natural/Bills/S.148/Witness%20Documents/S.148~Elena%20Mihaly~Vermont%20Organization%20Sign-On%20Letter~3-16-2022.pdf"
+      ],
+      "remote": true
+    },
+    {
+      "id": "vt_bennington_energy_committee",
+      "name": "Bennington Energy Committee",
+      "abbrev": "Bennington EC",
+      "type": "government",
+      "geographic_focus": "Town of Bennington",
+      "description": "Select Board committee that implements Bennington's Town Energy Plan, advocates for conservation and renewables, and promotes composting to cut methane; listed in VECAN's committee directory.",
+      "coalition_ids": [
+        "vt_vecan"
+      ],
+      "lat": 42.8781,
+      "lng": -73.1968,
+      "last_activity": "2026-08-05",
+      "website": "https://www.benningtonvt.org/government/boards___commissions/energy_committee.php",
+      "topic_tags": [
+        "town energy plan",
+        "efficiency",
+        "composting"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.benningtonvt.org/government/boards___commissions/energy_committee.php",
+        "https://vecan.net/energy-committee-location/bennington-energy-committee/"
+      ]
+    },
+    {
+      "id": "vt_charlotte_energy_committee",
+      "name": "Charlotte Energy & Climate Action Committee",
+      "abbrev": "Charlotte ECAC",
+      "type": "government",
+      "geographic_focus": "Town of Charlotte",
+      "description": "Town committee working on energy since 2010; championed the 2025-26 Town Energy Modernization Project (rooftop solar and heat pumps for town buildings). Not confirmed as a VECAN listing.",
+      "coalition_ids": [],
+      "lat": 44.31,
+      "lng": -73.261,
+      "last_activity": "2025-12-09",
+      "website": "https://www.charlotteenergy.org",
+      "topic_tags": [
+        "town energy",
+        "solar",
+        "heat pumps"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [
+        {
+          "id": "vt_charlotte_energy_committee_p_energy_modernization",
+          "name": "Town Energy Modernization Project",
+          "description": "Adds 80 kW of solar on the fire and rescue station and swaps aging furnaces and air conditioners for cold-climate heat pumps; approved Dec 9, 2025, with work planned for spring to summer 2026.",
+          "status": "active",
+          "skills_needed": [],
+          "link": "https://www.charlotteenergy.org/modernization",
+          "verified": true,
+          "sources": [
+            "https://www.charlotteenergy.org/modernization"
+          ]
+        }
+      ],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.charlotteenergy.org/",
+        "https://www.charlotteenergy.org/modernization",
+        "https://www.charlottenewsvt.org/2025/12/04/selectboard-chooses-haste-for-energy-modernization-project/"
+      ]
+    },
+    {
+      "id": "vt_middlebury_energy_committee",
+      "name": "Middlebury Energy Committee",
+      "abbrev": "Middlebury EC",
+      "type": "government",
+      "geographic_focus": "Town of Middlebury",
+      "description": "Selectboard-appointed committee that promotes energy savings and lower emissions in Middlebury through efficiency, renewables and transportation planning; a 2026 news report says it was regrouping. Not confirmed as a VECAN listing.",
+      "coalition_ids": [],
+      "lat": 44.0153,
+      "lng": -73.1673,
+      "last_activity": "2026-08-06",
+      "website": "https://www.townofmiddlebury.org/government/boards_and_commissions/energy_committee/index.php",
+      "topic_tags": [
+        "town energy",
+        "efficiency",
+        "renewables"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://www.townofmiddlebury.org/government/boards_and_commissions/energy_committee/index.php",
+        "https://www.addisonindependent.com/2026/08/06/middlebury-energy-panel-regroups/"
+      ]
+    },
+    {
+      "id": "vt_marshfield_energy_committee",
+      "name": "Marshfield Energy Committee",
+      "abbrev": "Marshfield EC",
+      "type": "government",
+      "geographic_focus": "Town of Marshfield",
+      "description": "Marshfield's town energy committee, which posts regular minutes on the town site (seen from 2023 through Sept 2025, with a 2026 minutes page). Details come from search listings only because the town site blocks automated readers.",
+      "coalition_ids": [],
+      "lat": 44.335,
+      "lng": -72.359,
+      "last_activity": "2025-09-01",
+      "website": "https://marshfieldvt.gov/?SEC=CC701CB5-CF6F-43C9-B1AE-462D78C0CA5A",
+      "topic_tags": [
+        "town energy"
+      ],
+      "profile": {
+        "geo_precision": "approx"
+      },
+      "projects": [],
+      "events": [],
+      "actions": [],
+      "sources": [
+        "https://marshfieldvt.gov/?SEC=CC701CB5-CF6F-43C9-B1AE-462D78C0CA5A",
+        "https://marshfieldvt.gov/vertical/sites/%7BDE838A07-5D57-4E6F-95DF-7C05B7FB1126%7D/uploads/20250901_ECCCC_Notes.pdf"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_connecticut_river_conservancy"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_clf"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_hunger_free_vermont"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_lake_champlain_committee"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_local_motion"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_preservation_trust"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_rev"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_rad"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_third_act"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_350vermont"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_trust_for_public_land"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vbsr"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vermont_center_for_ecostudies"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_sierra_club"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vtcha"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vctn"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vcv"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vermont_trout_unlimited"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vtipl"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vnrc"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_vpirg"
+    },
+    {
+      "source": "vt_environmental_common_agenda",
+      "target": "vt_youth_lobby"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_carshare_vermont"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_capstone_community_action"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_cvoeo"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_clf"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_drive_electric_vermont"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_local_motion"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_public_assets_institute"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_preservation_trust"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_rev"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_rad"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_shelburne_farms"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_sustainable_woodstock"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_third_act"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vbsr"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vcil"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vcrd"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_veic"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vtcha"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vctn"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vcv"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vhcb"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vermont_passive_house"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vtipl"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vnrc"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vpirg"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_vital_communities"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_veep"
+    },
+    {
+      "source": "vt_energy_action_network",
+      "target": "vt_sierra_club"
+    },
+    {
+      "source": "vt_vecan",
+      "target": "vt_vnrc"
+    },
+    {
+      "source": "vt_vecan",
+      "target": "vt_efficiency_vermont"
+    },
+    {
+      "source": "vt_vecan",
+      "target": "vt_vital_communities"
+    },
+    {
+      "source": "vt_vecan",
+      "target": "vt_vcrd"
+    },
+    {
+      "source": "vt_vecan",
+      "target": "vt_bennington_energy_committee"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_aarp_vermont"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_american_lung_association_vt"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_carshare_vermont"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_catma"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_green_mountain_transit"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_local_motion"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_rev"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_vcil"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_sierra_club"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_veep"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_veic"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_vnrc"
+    },
+    {
+      "source": "vt_t4vt",
+      "target": "vt_vpirg"
+    },
+    {
+      "source": "vt_clean_communities_coalition",
+      "target": "vt_carshare_vermont"
+    },
+    {
+      "source": "vt_clean_communities_coalition",
+      "target": "vt_rev"
+    },
+    {
+      "source": "vt_clean_communities_coalition",
+      "target": "vt_sierra_club"
+    },
+    {
+      "source": "vt_clean_communities_coalition",
+      "target": "vt_vnrc"
+    },
+    {
+      "source": "vt_clean_communities_coalition",
+      "target": "vt_vital_communities"
+    },
+    {
+      "source": "vt_clean_communities_coalition",
+      "target": "vt_vcrd"
+    },
+    {
+      "source": "vt_clean_communities_coalition",
+      "target": "vt_veic"
+    }
+  ],
+  "notes": "METHOD: WebSearch/WebFetch plus plain curl for sites whose robots.txt allows crawlers; I did not read sites whose robots.txt blocks AI crawlers or that return 403/429 (350vermont.org, vecan.net committee pages, actonclimatevt.org, t4vt.org, vctn.org, hungerfreevt.org, marshfieldvt.gov, addisonindependent.com). For those, facts come from search-result titles, snippets or partner pages and are marked as such. COALITIONS WITH NO PUBLIC MEMBER LIST: #ActOnClimateVT (site says 30+ organizations, names none; the 2019 and 2020 platform signer lists on VNRC/VPIRG pages predate the brand and are not used). PARTIAL MEMBER LISTS: T4VT lists 14 members; 13 are linked and the 14th, Vermont Clean Cities Coalition, is modelled as the separate coalition vt_clean_communities_coalition. Energy Action Network (200+ members; only 28 nonprofit members linked), Vermont Clean Communities (about 80 stakeholders, 7 linked), VECAN (100+ committees; its map is interactive, so only the 4 named supporting orgs and one committee page seen in search results are linked). NOT INCLUDED: Energy Independent Vermont (VPIRG-run carbon-pricing coalition, 23 partners, page last modified May 2017; dormant), Vermont Renews (2021 Green New Deal-style coalition of RAD, 350VT, Sunrise, Migrant Justice, NOFA and others; no 2025-26 activity seen), Fair Share for Vermont and the 2026 Changemakers Summit co-sponsor group (tax and multi-issue, not climate-specific), Vermont Climate Council (state body), Vermont Climate Solutions Caucus (legislators), Vermont Interfaith Action (faith coalition whose own pages do not mention climate). ABSENT OR UNVERIFIABLE: Mothers Out Front (Vermont not found on the static local-teams page; the page may be script-rendered), Sunrise hubs (the sunrisemovement.org hub list is script-rendered; only an Action Network group page and an apparently dormant Sunrise Middlebury site were found; Middlebury not included because it showed no dates), 350Vermont local nodes, CCL Burlington/Upper Valley chapters (CCL's list shows only At Large and UVM), a state EJ coalition (none found; Rights & Democracy, Vermont Releaf Collective and CVOEO are the closest, and a 2022 EJ bill sign-on letter listed 33 groups including the Vermont Racial Justice Alliance and Rural EJOICE, which were not researched further). TOWN ENERGY COMMITTEES: only 4 included (Bennington, Charlotte, Middlebury, Marshfield) because they showed dated 2025-26 evidence; Richmond Climate Action Committee, Montpelier Energy Advisory Committee (not currently meeting) and others were rejected for staleness. Only Bennington was confirmed in VECAN's directory. COORDINATES: all lat/lng are town centres (geo_precision approx), including offices with street addresses. Orgs flagged remote have no verified location and sit on Montpelier. LAST_ACTIVITY: orgs seen only on a coalition membership list use 2026-10-01 (date the listing was read), which is not an activity date. Sunrise Vermont and Vermont Releaf Collective have last_activity null and inactive true because no dated activity was seen. DOUBTFUL: the Third Act (Oct 14, Unitarian Church of Montpelier) and VPIRG (Oct 14, 6 PM, Montpelier) events are probably the same event but neither page says so; Youth Lobby's 2026-03-12 date comes from a search-result title; Middlebury and Marshfield committee dates come from search listings; Third Act's Friday overpass actions through Nov 3 were reported only by a page summary and left out; WebFetch summaries (small model) were used for several lists, so spot-check the EAN, T4VT and Common Agenda member lists against the pages. Org 'type' is 'unknown' unless the source says 501c3/501c4, a faith group, government or an informal group. | REVIEW (Claude, 2026-10-01): last_activity blanked for orgs only seen on membership lists (was the research date). Spot-checked against live pages: Common Agenda partners (22/22), T4VT members, EAN membership sample (11/11), VNRC 10/7 event, VCV canvass 10/3 event: all matched."
+}
