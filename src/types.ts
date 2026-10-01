@@ -21,6 +21,12 @@ export interface Project {
   online?: boolean;
   lat?: number;
   lng?: number;
+  /** Free food is provided. */
+  free_food?: boolean;
+  /** Only members / affiliates can join (default: open to the public). */
+  affiliated_only?: boolean;
+  /** The group is looking for help with this (default: yes). */
+  help_wanted?: boolean;
 }
 
 export interface CoalitionEvent {
@@ -49,6 +55,10 @@ export interface CoalitionEvent {
   online?: boolean;
   lat?: number;
   lng?: number;
+  /** Free food is provided. */
+  free_food?: boolean;
+  /** Only members / affiliates can come (default: open to the public). */
+  affiliated_only?: boolean;
 }
 
 /**

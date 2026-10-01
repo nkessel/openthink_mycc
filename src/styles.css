@@ -2015,3 +2015,14 @@ text.sat-more { fill: var(--text-dim); }
 }
 .stale-notice .edit-btn:hover { background: #7dd3fc; border-color: #7dd3fc; }
 .stale-notice.verified .edit-btn { margin-top: 0; margin-left: 4px; }
+
+/* Events / Projects filter row */
+.item-filters { gap: 10px 16px; padding-top: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
+.item-filters .filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.item-filters .zip-in { width: 96px; }
+.item-filters .miles-in { width: 120px; }
+.item-filters .miles-lbl, .item-filters .range-lbl, .item-filters .zip-note { font-size: 12px; color: var(--text-dim); }
+.item-filters .range-in { width: 190px; }
+.geo-bounds .filters { margin-top: 4px; }
+.geo-bounds .chip { background: var(--panel-2, #1f2937); color: var(--text, #e5e7eb); border: 1px solid var(--border, #334155); border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; }
+.geo-bounds .chip.active { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }

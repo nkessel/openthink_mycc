@@ -87,6 +87,9 @@ var Q = {
   coalition: 'Coalition',
   location: 'Location',
   online: 'Is this online or remote?',
+  freeFood: 'Is free food provided?',
+  who: 'Who can come / take part?',
+  helpWanted: 'Are you looking for help with this?',
   // org
   whichOrg: 'Which organization is this about?',
   orgName: 'Organization name',
@@ -179,9 +182,10 @@ var COLS = {
     'coalition_weights'].concat(PROFILE_COLS),
   'Connections': ['from_org', 'to_org', 'frequency', 'updated_at', 'reported_by'],
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
-    'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info', 'verified'],
+    'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info', 'verified',
+    'free_food', 'affiliated_only', 'help_wanted'],
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
-    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info', 'verified', 'rsvp_link'],
+    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info', 'verified', 'rsvp_link', 'free_food', 'affiliated_only'],
   'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden', 'host_org_id',
     'description', 'link', 'needs_info', 'verified'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
@@ -403,13 +407,15 @@ function sheetRowsFromData_(d) {
     push('Projects', { id: p.id, coalition_id: coalitionId, host_org_id: hostId || p.host_org_id, name: p.name,
       description: p.description, status: p.status, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags),
       link: p.link, public_contact: p.public_contact, location: p.location, online: bool(p.online),
-      lat: num6(p.lat), lng: num6(p.lng), needs_info: p.needs_info ? 'TRUE' : '', verified: p.verified ? 'TRUE' : '' });
+      lat: num6(p.lat), lng: num6(p.lng), needs_info: p.needs_info ? 'TRUE' : '', verified: p.verified ? 'TRUE' : '',
+      free_food: p.free_food ? 'TRUE' : '', affiliated_only: p.affiliated_only ? 'TRUE' : '', help_wanted: bool(p.help_wanted) });
   };
   var event = function (e, coalitionId, hostId) {
     push('Events', { id: e.id, coalition_id: coalitionId, host_org_id: hostId || e.host_org_id, name: e.name,
       description: e.description, date: e.date, end: e.end, location: e.location, online: bool(e.online),
       lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact,
-      recurrence: e.recurrence, rsvp_link: e.rsvp_link, needs_info: e.needs_info ? 'TRUE' : '', verified: e.verified ? 'TRUE' : '' });
+      recurrence: e.recurrence, rsvp_link: e.rsvp_link, needs_info: e.needs_info ? 'TRUE' : '', verified: e.verified ? 'TRUE' : '',
+      free_food: e.free_food ? 'TRUE' : '', affiliated_only: e.affiliated_only ? 'TRUE' : '' });
   };
   var action = function (a, coalitionId, hostId) {
     push('Actions', { id: a.id, coalition_id: coalitionId, host_org_id: hostId || a.host_org_id, kind: a.kind, name: a.name,
@@ -470,6 +476,7 @@ function buildForms(dataLoaded) {
       if (s.key === 'FORM_ORG') upgradeOrgForm_(existing);
       if (s.key === 'FORM_FEEDBACK') upgradeFeedbackForm_(existing);
       if (s.key === 'FORM_EVENT') upgradeEventForm_(existing);
+      if (s.key === 'FORM_PROJECT') upgradeProjectForm_(existing);
       return;
     }
     var form = FormApp.create(s.title);
@@ -760,7 +767,9 @@ function seedTopics_() {
 }
 
 /** Older event forms had no end time; add it right after the start time (safe to run again). */
+function upgradeProjectForm_(form) { addAttendanceQuestions_(form, true); }
 function upgradeEventForm_(form) {
+  addAttendanceQuestions_(form, false);
   var items = form.getItems();
   var has = function (title) { return items.some(function (it) { return it.getTitle() === title; }); };
   var start = items.filter(function (it) { return it.getTitle() === Q.eventTime; })[0];
@@ -795,6 +804,7 @@ function buildEventForm_(form) {
   addTags_(form);
   form.addTextItem().setTitle(Q.rsvp).setHelpText('A page where people sign up, e.g. Eventbrite or Mobilize. Leave blank if no sign-up is needed.');
   form.addTextItem().setTitle(Q.link);
+  addAttendanceQuestions_(form, false);
   addPublicContact_(form);
   addRemove_(form, 'event');
 }
@@ -836,6 +846,7 @@ function buildProjectForm_(form) {
   addLocation_(form, 'project');
   addTags_(form);
   form.addTextItem().setTitle(Q.link);
+  addAttendanceQuestions_(form, true);
   addPublicContact_(form);
   addRemove_(form, 'project');
 }
@@ -1430,6 +1441,24 @@ function freqWeight_(key) {
   return 0;
 }
 
+/** Free food / who can come (/ help wanted for projects): only what was answered is changed. */
+function attendancePatch_(patch, a, isProject) {
+  if (a[Q.freeFood]) patch.free_food = a[Q.freeFood] === 'Yes' ? 'TRUE' : 'FALSE';
+  if (a[Q.who]) patch.affiliated_only = /affiliated/i.test(a[Q.who]) ? 'TRUE' : 'FALSE';
+  if (isProject && a[Q.helpWanted]) patch.help_wanted = a[Q.helpWanted] === 'Yes' ? 'TRUE' : 'FALSE';
+}
+var WHO_CAN = ['Open to the public', 'Affiliated members only'];
+/** Adds the free-food / who-can-come (/ help-wanted) questions if the form doesn't have them yet, just before the link question. */
+function addAttendanceQuestions_(form, isProject) {
+  var items = form.getItems();
+  var has = function (title) { return items.some(function (it) { return it.getTitle() === title; }); };
+  var link = items.filter(function (it) { return it.getTitle() === Q.link; })[0];
+  var place = function (item) { if (link) form.moveItem(item.getIndex(), link.getIndex()); };
+  if (!has(Q.freeFood)) place(form.addMultipleChoiceItem().setTitle(Q.freeFood).setChoiceValues(['Yes', 'No']));
+  if (!has(Q.who)) place(form.addMultipleChoiceItem().setTitle(Q.who).setChoiceValues(WHO_CAN)
+    .setHelpText('Most things are open to everyone. Choose "Affiliated members only" for something just for your members.'));
+  if (isProject && !has(Q.helpWanted)) place(form.addMultipleChoiceItem().setTitle(Q.helpWanted).setChoiceValues(['Yes', 'No']));
+}
 function saveEvent_(a, t) {
   var patch = {};
   ownerPatch_(patch, a);
@@ -1437,6 +1466,7 @@ function saveEvent_(a, t) {
   put_(patch, 'description', a[Q.eventDesc]);
   putTags_(patch, a[Q.tags], a[Q.moreTopics]);
   put_(patch, 'rsvp_link', a[Q.rsvp]);
+  attendancePatch_(patch, a, false);
   put_(patch, 'link', a[Q.link]);
   put_(patch, 'recurrence', a[Q.eventRecurrence]);
   put_(patch, 'public_contact', a[Q.publicContact]);
@@ -1465,6 +1495,7 @@ function saveProject_(a, t) {
   ownerPatch_(patch, a);
   put_(patch, 'name', a[Q.projectName]);
   put_(patch, 'description', a[Q.projectDesc]);
+  attendancePatch_(patch, a, true);
   if (a[Q.projectStatus]) put_(patch, 'status', lookup_(STATUSES, a[Q.projectStatus]));
   if (asArray_(a[Q.skills]).length) {
     patch.skills_needed = uniq_(asArray_(a[Q.skills]).map(function (s) { return String(s).trim().toLowerCase(); })).join(', ');
@@ -1618,7 +1649,8 @@ function buildDataFile_(t, generatedAt) {
     keys.forEach(function (k) {
       var v = src[k];
       if (k === 'topic_tags') { var l = list_(v); if (l.length) obj[k] = l; return; }
-      if (k === 'online' || k === 'remote' || k === 'needs_info' || k === 'verified') { if (isTrue_(v)) obj[k] = true; return; }
+      if (k === 'online' || k === 'remote' || k === 'needs_info' || k === 'verified' || k === 'free_food' || k === 'affiliated_only') { if (isTrue_(v)) obj[k] = true; return; }
+      if (k === 'help_wanted') { if (str(v)) obj[k] = isTrue_(v); return; } // blank = yes, so only an explicit answer is kept
       if (k === 'lat' || k === 'lng') { if (str(v) && !isNaN(Number(v))) obj[k] = Number(v); return; }
       if (str(v)) obj[k] = str(v);
     });
@@ -1672,11 +1704,11 @@ function buildDataFile_(t, generatedAt) {
   var projects = group(t.projects, function (p) {
     return extra({ id: str(p.id), name: str(p.name), description: str(p.description),
       status: str(p.status) || 'active', skills_needed: list_(p.skills_needed) },
-      p, ['host_org_id', 'topic_tags', 'link', 'public_contact', 'needs_info', 'verified'].concat(place));
+      p, ['host_org_id', 'topic_tags', 'link', 'public_contact', 'needs_info', 'verified', 'free_food', 'affiliated_only', 'help_wanted'].concat(place));
   });
   var events = group(t.events, function (e) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
-      e, ['end', 'description', 'recurrence', 'needs_info', 'verified', 'host_org_id', 'topic_tags', 'link', 'rsvp_link', 'public_contact', 'online', 'lat', 'lng']);
+      e, ['end', 'description', 'recurrence', 'needs_info', 'verified', 'host_org_id', 'topic_tags', 'link', 'rsvp_link', 'public_contact', 'online', 'lat', 'lng', 'free_food', 'affiliated_only']);
   });
   var actions = group(t.actions, function (a) {
     return extra({ id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name),

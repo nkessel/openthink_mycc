@@ -3,6 +3,7 @@
 import type { DataFile, GraphNode, Organization } from "./types";
 import { h, clear } from "./dom";
 import { initials, typeLabel, typeList } from "./util";
+import { termsMatch } from "./itemfilters";
 import { computeSuggestions } from "./suggestions";
 
 export interface OrgsView {
@@ -37,7 +38,7 @@ export function createOrgsView(data: DataFile, cb: OrgsCallbacks): OrgsView {
   toolbar.appendChild(h("h2", {}, "Organizations"));
   const count = h("span", { class: "count" }, "");
   toolbar.appendChild(count);
-  const search = h("input", { class: "search", type: "search", placeholder: "Search organizations, towns, or topics…" }) as HTMLInputElement;
+  const search = h("input", { class: "search", type: "search", placeholder: "Search names, towns, topics… (separate with commas)" }) as HTMLInputElement;
   search.addEventListener("input", () => { q = search.value.trim().toLowerCase(); render(); });
   toolbar.appendChild(search);
 
@@ -86,7 +87,7 @@ export function createOrgsView(data: DataFile, cb: OrgsCallbacks): OrgsView {
     if (youthOnly && !o.profile?.youth_serving) return false;
     if (!q) return true;
     const hay = `${o.name} ${o.abbrev || ""} ${o.geographic_focus} ${o.description} ${(o.topic_tags || []).join(" ")}`.toLowerCase();
-    return q.split(/\s+/).every((w) => hay.includes(w));
+    return termsMatch(q, hay);
   }
 
   function badge(o: Organization): HTMLElement {

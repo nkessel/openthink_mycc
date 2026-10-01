@@ -2,6 +2,7 @@ import type { DataFile, Project, GraphNode } from "./types";
 import { allProjects, ownerBadge, type Owner } from "./owners";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
+import { createItemFilters, placeFor, termsMatch } from "./itemfilters";
 
 export interface ProjectsView {
   el: HTMLElement;
@@ -44,7 +45,7 @@ export function createProjectsView(
   const search = h("input", {
     class: "search",
     type: "search",
-    placeholder: "Search projects, coalitions, or orgs…",
+    placeholder: "Search topics, names, places… (separate with commas)",
   }) as HTMLInputElement;
   search.addEventListener("input", () => {
     q = search.value.trim().toLowerCase();
@@ -75,6 +76,9 @@ export function createProjectsView(
   }
   toolbar.appendChild(statusFilters);
   wrap.appendChild(toolbar);
+
+  const itemFilters = createItemFilters({ online: true, inView: true, freeFood: true, publicSwitch: true, helpWanted: true }, () => render());
+  wrap.appendChild(itemFilters.el);
 
   // Second toolbar row for skill chips (so they wrap nicely)
   const skillBar = h("div", {
@@ -120,13 +124,10 @@ export function createProjectsView(
       }
       if (!any) return false;
     }
-    if (!q) return true;
-    return (
-      r.project.name.toLowerCase().includes(q) ||
-      r.project.description.toLowerCase().includes(q) ||
-      r.owner.name.toLowerCase().includes(q) ||
-      r.owner.abbrev.toLowerCase().includes(q)
-    );
+    const p = r.project;
+    const hay = `${p.name} ${p.description} ${p.location || ""} ${(p.topic_tags || []).join(" ")} ${(p.skills_needed || []).join(" ")} ${r.owner.name} ${r.owner.abbrev}`;
+    if (q && !termsMatch(q, hay)) return false;
+    return itemFilters.test({ hay, ...placeFor(p, r.owner.node as { lat?: number; lng?: number; remote?: boolean; kind?: string }), online: p.online, free_food: p.free_food, affiliated_only: p.affiliated_only, help_wanted: p.help_wanted });
   }
 
   function render() {
