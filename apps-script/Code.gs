@@ -521,6 +521,16 @@ function publish_(form) {
   form.setAcceptingResponses(true);
 }
 
+/** FormApp.openById sometimes fails with a transient "Unexpected error" after many form edits; retry a few times. */
+function openForm_(id) {
+  for (var i = 0; ; i++) {
+    try { return FormApp.openById(id); } catch (e) {
+      if (i >= 3) throw e;
+      Utilities.sleep(1500 * (i + 1));
+    }
+  }
+}
+
 function formExists_(id) {
   try { FormApp.openById(id); return true; } catch (e) { return false; }
 }
@@ -1830,7 +1840,7 @@ function writeLinks_() {
   ].map(function (r) {
     var id = props.getProperty(r[1]);
     if (!id) return [r[0], '(not built)'];
-    var f = FormApp.openById(id);
+    var f = openForm_(id);
     var link = f.getPublishedUrl();
     try { link = f.shortenFormUrl(link); } catch (e) { /* keep the long link */ }
     return [r[0], link + '    (edit: ' + f.getEditUrl() + ')'];
@@ -1850,8 +1860,17 @@ function siteFormConfig_() {
     var items = form.getItems();
     for (var i = 0; i < items.length; i++) {
       if (items[i].getTitle() !== title) continue;
-      var li = items[i].asListItem();
-      var url = form.createResponse().withItemResponse(li.createResponse(li.getChoices()[0].getValue())).toPrefilledUrl();
+      // Dropdowns became typed text boxes ("Switch forms to typed answers"), so handle both.
+      var it = items[i];
+      var type = it.getType();
+      var resp;
+      if (type === FormApp.ItemType.LIST) { var li = it.asListItem(); resp = li.createResponse(li.getChoices()[0].getValue()); }
+      else if (type === FormApp.ItemType.TEXT) resp = it.asTextItem().createResponse('x');
+      else if (type === FormApp.ItemType.PARAGRAPH_TEXT) resp = it.asParagraphTextItem().createResponse('x');
+      else if (type === FormApp.ItemType.CHECKBOX) { var cb = it.asCheckboxItem(); resp = cb.createResponse([cb.getChoices()[0].getValue()]); }
+      else if (type === FormApp.ItemType.MULTIPLE_CHOICE) { var mc = it.asMultipleChoiceItem(); resp = mc.createResponse(mc.getChoices()[0].getValue()); }
+      else return '';
+      var url = form.createResponse().withItemResponse(resp).toPrefilledUrl();
       var m = /[?&](entry\.\d+)=/.exec(url);
       return m ? m[1] : '';
     }
@@ -1860,7 +1879,7 @@ function siteFormConfig_() {
   var one = function (key, fields) {
     var id = props.getProperty(key);
     if (!id) return { url: '' };
-    var f = FormApp.openById(id);
+    var f = openForm_(id);
     var out = { url: f.getPublishedUrl() };
     Object.keys(fields || {}).forEach(function (k) { out[k] = entry(f, fields[k]); });
     return out;
