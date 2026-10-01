@@ -2006,3 +2006,28 @@ text.sat-more { fill: var(--text-dim); }
 .detail-links { display:flex; flex-wrap:wrap; gap:4px 0; margin:10px 0; }
 .detail-map-btn { margin-top:12px; appearance:none; border:1px solid var(--border); background:var(--bg-elev-2); color:var(--text); border-radius:999px; padding:7px 14px; font:inherit; cursor:pointer; }
 .detail-map-btn:hover { border-color:var(--accent); }
+
+/* "Edit this event / project / action": a real button, below the warning text */
+.stale-notice .edit-btn, .stale-notice.verified .edit-btn {
+  display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; line-height: 1.2; text-decoration: none; white-space: nowrap;
+  color: #0f172a; background: #38bdf8; border: 1px solid #38bdf8; cursor: pointer;
+}
+.stale-notice .edit-btn:hover { background: #7dd3fc; border-color: #7dd3fc; }
+.stale-notice.verified .edit-btn { margin-top: 0; margin-left: 4px; }
+
+/* Events / Projects filter row */
+.item-filters { gap: 10px 16px; padding-top: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
+.item-filters .filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.item-filters .zip-in { width: 96px; }
+.item-filters .miles-in { width: 120px; }
+.item-filters .miles-lbl, .item-filters .range-lbl, .item-filters .zip-note { font-size: 12px; color: var(--text-dim); }
+.item-filters .range-in { width: 190px; }
+.geo-bounds .filters { margin-top: 4px; }
+.geo-bounds .chip { background: var(--panel-2, #1f2937); color: var(--text, #e5e7eb); border: 1px solid var(--border, #334155); border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; }
+.geo-bounds .chip.active { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }
+
+.reset-map-btn { appearance:none; border:1px solid var(--border); border-radius:999px; background:var(--bg-elev); color:var(--text-dim); font:inherit; font-size:12px; padding:6px 12px; cursor:pointer; align-self:flex-start; }
+.reset-map-btn:hover { color:var(--text); }
+.node-org.member-ring, .node-org.member-ring.partner { opacity: 1; }
+.node-org.member-ring .node-name { display: block; }

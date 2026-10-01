@@ -331,3 +331,30 @@ What / why
 - Events tab: clicking an event opens a detail card (description, RSVP, More info, contact, topics) instead of jumping to the map; calendar chips do the same; "See <org> on the map" button inside it.
 - Apps Script: typed answers. Org pickers and the works-with grid become typed questions matched to the org list (typos, short names, filler words); a "More topics" box takes any number of topics matched against a new Topics tab; anything that matches nothing is saved on a new Unmatched Input tab. Unmatched host org = held in Needs Review (admin fixes the name in the payload, then approves). Menu: "Switch forms to typed answers (orgs + topics)" converts the existing forms in place. Tests added (typo match, typed topics, unmatched logging, review hold + approval).
 - Why: Nathan's requests (form with no topic cap and cross-referencing; sidebar/bubble changes; RSVP; event detail card; fewer warnings).
+
+## 2026-10-01 (3) — change-log batch: loading screen, size by connections, toggles, multi-type, action autofill, Actions tab (branch claude/change-log-batch3)
+- Loading screen: index.html shows a bubble-orbit splash ("Please wait, loading the map…") from the first byte; main.ts fades it out once the first frame is drawn (also on a data error). Reduced-motion users get a still version.
+- New setting "Group size follows connected orgs" (0..1, default 0.5): coalition radius blends from one uniform size (0) to the member-count size (1) so big coalitions aren't huge.
+- Arrows toggle removed (arrows were always off). "Text fade threshold" slider replaced by a "Show text" on/off toggle at the top of the settings bar.
+- Org type is now several-choice on the form (checkboxes + write-in Other); stored comma-separated ("501c3, faith_org"). Site: typeList()/typeLabel() split it; Organizations filter, group colouring and suggestions match any of the types. Existing forms are converted by upgradeOrgForm_ (run "Switch forms..." / the upgrade menu item).
+- Action/event/project autofill: the "Which … is this about?" question ids (entry.1447795421 event, entry.378180696 project, entry.1959573726 action, read from the live forms) are in forms.config.ts as itemEntry; "Update this info" links now pass the clicked item, labelled exactly as the dropdown is (events "Name — Mon D, YYYY"; " [id]" only when labels clash). Recurring events keep their sheet date (sheet_date) for this. Code.gs also exports itemEntry in the "For the site" JSON.
+- Events / Projects / (new) Actions pages show the org's logo instead of initials when it has one.
+- New "Actions" tab (actions.ts): search, Take action / Volunteer roles filter, skills filter, same cards.
+- Why: Nathan's change-request list in the Google Doc.
+- "Update this info" links are now a real button, "Edit this event / project / action" (notice.ts editBtn + CSS), shown under the warning / verified note. Why: Nathan asked for a button.
+- Google Doc tab "current Map V1 Change request log": deleted every item now implemented (loading screen, weight by connections, arrows toggle, show-text toggle, which-org / works-with typing, multi-select org type, action autofill, database id in org names — the id only appears on a duplicate name now, and the dropdown is gone with typed answers).
+- Filters (src/itemfilters.ts) on Events and Projects: merged search over name, description, location, topics, owner — commas = AND of terms ("solar, boston"); zip code + "within N miles" slider (bundled MA zip table public/geo/ma-zips.json); include online/remote; only what's in view on the Geographic map; free food; open-to-public vs affiliated-only; events also have a date + time range (repeating events match any occurrence); projects have "Help wanted only" (default on). Organizations search is merged/comma-aware too.
+- Most events/projects have no coordinates (3 of 275), so items are placed approximately for filtering: the town named in `location` (public/geo/ma-town-centroids.json), else the org's HQ. Map pins still use real coordinates only.
+- New optional fields, end to end: free_food, affiliated_only (events + projects), help_wanted (projects; blank = yes). Types, Code.gs (columns, export/import, buildDataFile_, save, form questions via addAttendanceQuestions_, upgrade path), tests.
+- Geographic tab: Boundaries (None / Towns / Counties; click one to zoom; MassGIS-derived outlines, simplified, public/geo/), "Show list of events in view", all org dots one size that grows with zoom, coalitions with no member locations are no longer pinned. Voting districts are NOT done (need a boundary source).
+- Why: Nathan's change-request list; answers: add all three fields, towns + counties, bundled zip table with a miles slider.
+
+## 2026-10-01 — Reset map button, empty-view auto reset, loading bar
+- graph.ts: "⟲ Reset map" button next to the Items on/off switch; ensureInView() refits the network when no nodes are on screen (checked after every pan/zoom, every 3 s, on resize, and when switching to the Map tab). Tested in Playwright: dragged the map far off screen, it returned within ~4 s.
+- index.html: loading splash now also has a sliding progress bar (user said loading bars are helpful).
+- Uncertainty: I could not reproduce the black screen itself; this covers panned-away and hidden-tab cases. If it is a different cause (e.g. a WebGL/GPU issue) it won't help.
+
+## 2026-10-01 — Coalition zoom: member orgs on an outer ring
+- graph.ts enterFocus: for a coalition, member orgs are pinned (fx/fy) on a ring outside the items ring (memberR), shown at full opacity (.member-ring) instead of greyed; released on exit/refocus. Other nodes are pushed out past memberR; zoom fit uses memberR.
+- Tested in Playwright with Mass Power Forward (104 members): ring renders, no page errors, class cleared on exit.
+- Uncertainty: with 100+ members, org names are tiny at the fitted zoom (logos show); zoom in to read.

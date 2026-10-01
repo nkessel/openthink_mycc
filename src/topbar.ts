@@ -1,6 +1,6 @@
 import { h } from "./dom";
 
-export type TopTab = "map" | "geo" | "orgs" | "events" | "projects";
+export type TopTab = "map" | "geo" | "orgs" | "events" | "projects" | "actions";
 
 export interface TopbarCallbacks {
   onTabChange(tab: TopTab): void;
@@ -30,6 +30,7 @@ export function createTopbar(
     { id: "orgs", label: "Organizations" },
     { id: "events", label: "Events" },
     { id: "projects", label: "Projects" },
+    { id: "actions", label: "Actions" },
   ];
   const buttons = new Map<TopTab, HTMLElement>();
 

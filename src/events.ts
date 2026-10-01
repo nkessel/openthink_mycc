@@ -1,9 +1,10 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
-import { allEvents, type Owner } from "./owners";
+import { allEvents, ownerBadge, type Owner } from "./owners";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { occursOn, parseRecurrence } from "./recurrence";
 import { fmtEventTime, hasTime, parseEventDate } from "./util";
+import { createItemFilters, placeFor, termsMatch, type Facts } from "./itemfilters";
 
 export interface EventsView {
   el: HTMLElement;
@@ -52,7 +53,7 @@ export function createEventsView(
   const search = h("input", {
     class: "search",
     type: "search",
-    placeholder: "Search events, locations, coalitions, or orgs…",
+    placeholder: "Search topics, names, places… (separate with commas)",
   }) as HTMLInputElement;
   search.addEventListener("input", () => {
     q = search.value.trim().toLowerCase();
@@ -103,6 +104,46 @@ export function createEventsView(
   toolbar.appendChild(modes);
   wrap.appendChild(toolbar);
 
+  // ---- Filters: zip + miles, online, in view on the map, free food, public / affiliated-only, date + time range ----
+  const itemFilters = createItemFilters({ online: true, inView: true, freeFood: true, publicSwitch: true }, () => render());
+  let rangeFrom = "";
+  let rangeTo = "";
+  const fromIn = h("input", { type: "datetime-local", class: "search range-in", "aria-label": "From" }) as HTMLInputElement;
+  const toIn = h("input", { type: "datetime-local", class: "search range-in", "aria-label": "Until" }) as HTMLInputElement;
+  fromIn.addEventListener("change", () => { rangeFrom = fromIn.value; render(); });
+  toIn.addEventListener("change", () => { rangeTo = toIn.value; render(); });
+  const clearRange = h("button", { class: "chip", type: "button" }, "Clear dates");
+  clearRange.addEventListener("click", () => { fromIn.value = toIn.value = rangeFrom = rangeTo = ""; render(); });
+  itemFilters.el.append(h("div", { class: "filter-group range-group" }, h("span", { class: "range-lbl" }, "From"), fromIn, h("span", { class: "range-lbl" }, "until"), toIn, clearRange));
+  wrap.appendChild(itemFilters.el);
+
+  const factsOf = (r: Row): Facts => ({
+    hay: `${r.event.name} ${r.event.location || ""} ${r.event.description || ""} ${(r.event.topic_tags || []).join(" ")} ${r.owner.name} ${r.owner.abbrev}`,
+    ...placeFor(r.event, r.owner.node as { lat?: number; lng?: number; remote?: boolean; kind?: string }), online: r.event.online,
+    free_food: r.event.free_food, affiliated_only: r.event.affiliated_only,
+  });
+
+  /** Does the event (or, if it repeats, one of its occurrences) fall inside the chosen date + time range? */
+  function inRange(r: Row): boolean {
+    if (!rangeFrom && !rangeTo) return true;
+    const from = rangeFrom ? new Date(rangeFrom) : null;
+    const to = rangeTo ? new Date(rangeTo) : null;
+    const start = parseEventDate(r.event.date);
+    const rule = r.event.recurrence ? parseRecurrence(r.event.recurrence) : null;
+    const ok = (t: Date) => (!from || t >= from) && (!to || t <= to);
+    if (!rule) return ok(start);
+    // Repeating: look at each day in the range (capped at a year) and compare the time of day.
+    const first = from ? new Date(from.getFullYear(), from.getMonth(), from.getDate()) : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    for (let i = 0; i < 366; i++) {
+      const d = new Date(first.getFullYear(), first.getMonth(), first.getDate() + i);
+      if (to && d > to) break;
+      if (!occursOn(rule, start, d)) continue;
+      const t = new Date(d.getFullYear(), d.getMonth(), d.getDate(), start.getHours(), start.getMinutes());
+      if (ok(t)) return true;
+    }
+    return false;
+  }
+
   // ---- Body ----
   const body = h("div", { class: "list-body" });
   wrap.appendChild(body);
@@ -113,15 +154,7 @@ export function createEventsView(
   const dayKey = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
   function renderCalendar() {
-    const visible = rows.filter((r) => {
-      if (!q) return true;
-      return (
-        r.event.name.toLowerCase().includes(q) ||
-        r.event.location.toLowerCase().includes(q) ||
-        r.owner.name.toLowerCase().includes(q) ||
-        r.owner.abbrev.toLowerCase().includes(q)
-      );
-    });
+    const visible = rows.filter((r) => (!q || termsMatch(q, factsOf(r).hay)) && itemFilters.test(factsOf(r)));
     const calWrap = h("div", { class: "cal-wrap" });
     body.appendChild(calWrap);
     // Every day of the 6-week grid, with the events that land on it (recurring ones expanded).
@@ -191,13 +224,10 @@ export function createEventsView(
   function matches(r: Row): boolean {
     if (timeFilter === "upcoming" && !r.isUpcoming) return false;
     if (timeFilter === "past" && r.isUpcoming) return false;
-    if (!q) return true;
-    return (
-      r.event.name.toLowerCase().includes(q) ||
-      r.event.location.toLowerCase().includes(q) ||
-      r.owner.name.toLowerCase().includes(q) ||
-      r.owner.abbrev.toLowerCase().includes(q)
-    );
+    const f = factsOf(r);
+    if (q && !termsMatch(q, f.hay)) return false;
+    if (!itemFilters.test(f)) return false;
+    return inRange(r);
   }
 
   function render() {
@@ -226,7 +256,7 @@ export function createEventsView(
     const card = h("div", { class: "detail-card", role: "dialog", "aria-label": e.name },
       x,
       h("div", { class: "head" },
-        h("div", { class: "coalition-badge", style: `background:${r.owner.color}` }, r.owner.abbrev),
+        ownerBadge(r.owner),
         h("div", { class: "coalition-name" }, r.owner.name)),
       h("h3", {}, e.name),
       h("div", { class: "meta-row" },
@@ -240,7 +270,7 @@ export function createEventsView(
       h("div", { class: "detail-links" },
         safe(e.rsvp_link) ? h("a", { class: "item-link rsvp-link", href: e.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗") : null,
         safe(e.link) ? h("a", { class: "item-link", href: e.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗") : null),
-      staleNotice("event", r.owner.node, e.needs_info, e.verified),
+      staleNotice("event", r.owner.node, e.needs_info, e.verified, e),
       toMap);
     const overlay = h("div", { class: "detail-overlay" }, card);
     overlay.addEventListener("click", (ev) => { if (ev.target === overlay) close(); });
@@ -256,14 +286,7 @@ export function createEventsView(
         h(
           "div",
           { class: "head" },
-          h(
-            "div",
-            {
-              class: "coalition-badge",
-              style: `background:${r.owner.color}`,
-            },
-            r.owner.abbrev,
-          ),
+          ownerBadge(r.owner),
           h("div", { class: "coalition-name" }, r.owner.name),
         ),
         h("div", { class: "name" }, r.event.name),
@@ -280,7 +303,7 @@ export function createEventsView(
         r.event.link && /^https?:\/\//.test(r.event.link)
           ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
           : null,
-        staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified),
+        staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified, r.event),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
       card.addEventListener("click", () => showDetail(r));

@@ -3,6 +3,7 @@
 // org-owned items (no coalition) live in organization.projects/events.
 import type { Action, CoalitionEvent, DataFile, GraphNode, Organization, Project } from "./types";
 import { initials } from "./util";
+import { h } from "./dom";
 
 export interface Owner {
   node: GraphNode;
@@ -26,6 +27,20 @@ export function allProjects(data: DataFile): { project: Project; owner: Owner }[
   for (const c of data.coalitions) for (const p of c.projects) rows.push({ project: p, owner: ownerOfCoalition(c) });
   for (const o of data.organizations) for (const p of o.projects || []) rows.push({ project: p, owner: ownerOfOrg(o) });
   return rows;
+}
+
+export function allActions(data: DataFile): { action: Action; owner: Owner }[] {
+  const rows: { action: Action; owner: Owner }[] = [];
+  for (const c of data.coalitions) for (const a of c.actions || []) rows.push({ action: a, owner: ownerOfCoalition(c) });
+  for (const o of data.organizations) for (const a of o.actions || []) rows.push({ action: a, owner: ownerOfOrg(o) });
+  return rows;
+}
+
+/** The owner's logo when it has one, otherwise its colored initials. */
+export function ownerBadge(owner: Owner): HTMLElement {
+  const logo = (owner.node as { logo?: string }).logo;
+  if (logo) return h("div", { class: "coalition-badge logo" }, h("img", { src: logo, alt: "" }));
+  return h("div", { class: "coalition-badge", style: `background:${owner.color}` }, owner.abbrev);
 }
 
 export function allEvents(data: DataFile): { event: CoalitionEvent; owner: Owner }[] {

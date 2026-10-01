@@ -42,7 +42,10 @@ export interface GraphSettings {
   nodeSize: number; // 0.5..2
   linkThickness: number; // 0.5..4 (px)
   textFadeThreshold: number; // 0..1; below this zoom scale, hide names
-  arrows: boolean;
+  /** Show group / org names on the map (off hides them all). */
+  showText: boolean;
+  /** 0..1: how much a coalition's size follows its number of connected orgs (0 = all the same size). */
+  weightConnections: number;
   /** Bubbles for events / projects / actions appear around a group when it is opened. */
   showBubbles: boolean;
   /** How much each kind of activity adds to a group's size (0 = ignore it). */
@@ -65,7 +68,8 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   nodeSize: 1,
   linkThickness: 1,
   textFadeThreshold: 0.5,
-  arrows: false,
+  showText: true,
+  weightConnections: 0.5,
   showBubbles: true,
   weightEvents: 0,
   weightProjects: 0,
@@ -86,6 +90,8 @@ export interface Graph {
   enterFocus(id: string): void;
   /** Leave the zoomed-in view and return to the whole network. */
   exitFocus(): void;
+  /** Reset the view if nothing is on screen. */
+  ensureInView(): void;
   /** The "org-to-org connections" checkbox, for the host page to place (the sidebar). */
   orgLinkToggle(): HTMLElement;
   updateSettings(partial: Partial<GraphSettings>): void;
@@ -96,6 +102,8 @@ export interface Graph {
 }
 
 const COALITION_LABEL_FONT_SIZE = 14;
+/** Size every coalition shrinks / grows toward when "size by connected orgs" is turned down. */
+const UNIFORM_COALITION_R = 48;
 const ORG_LABEL_FONT_SIZE = 10;
 /** Logo size as a share of the node radius: fills the circle (no white rim). */
 const LOGO_SCALE = 1;
@@ -184,6 +192,16 @@ export function createGraph(
     viewSwitch.appendChild(viewBtns[k]);
   }
   overlay.appendChild(viewSwitch);
+  const resetBtn = document.createElement("button");
+  resetBtn.type = "button";
+  resetBtn.className = "reset-map-btn";
+  resetBtn.textContent = "⟲ Reset map";
+  resetBtn.title = "Zoom out to show the whole network again";
+  resetBtn.addEventListener("click", () => {
+    if (focusId) exitFocus();
+    else fitToView(true);
+  });
+  overlay.appendChild(resetBtn);
   function syncViewSwitch() {
     viewBtns.bubbles.classList.toggle("active", settings.showBubbles);
     viewBtns.classic.classList.toggle("active", !settings.showBubbles);
@@ -246,13 +264,17 @@ export function createGraph(
       tooltip.hide();
       if (event.sourceEvent) focusCard.style.display = "none";
     })
-    .on("end", () => queueDetail());
+    .on("end", () => { queueDetail(); ensureInView(); });
 
   let currentZoomScale = 1;
   let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
   function applyTextFade() {
     // The threshold slider value 0..1 maps to a zoom scale 0.2..2.5.
     // Below that scale, node-name labels fade out.
+    if (!settings.showText) {
+      nodeLayer.selectAll<SVGTextElement, GraphNode>("text.node-name").style("opacity", 0);
+      return;
+    }
     const threshold = 0.2 + settings.textFadeThreshold * 2.3;
     const k = currentZoomScale;
     // Smooth fade across a small window for nicer transition.
@@ -330,7 +352,11 @@ export function createGraph(
     return Math.min(2.8, 0.8 + 0.3 * Math.sqrt(v)); // no activity → a bit smaller; the more, the bigger
   }
   function nodeRadiusOf(n: GraphNode): number {
-    const base = n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
+    let base: number;
+    if (n.kind === "coalition") {
+      const w = settings.weightConnections;
+      base = UNIFORM_COALITION_R + (coalitionRadius(n) - UNIFORM_COALITION_R) * w;
+    } else base = orgRadius(n);
     return base * settings.nodeSize * sizeFactor(n);
   }
 
@@ -779,6 +805,19 @@ export function createGraph(
     fitToView(false);
   }, 2500);
 
+  /** If nothing is on screen (panned away, zoomed past everything, or the pane was hidden), reset the view. */
+  function ensureInView() {
+    if (focusId) return;
+    const wr = wrap.getBoundingClientRect();
+    if (wr.width < 50 || wr.height < 50) return; // hidden tab; check again when shown
+    const nr = nodeLayer.node()!.getBoundingClientRect();
+    const empty = nr.width === 0 && nr.height === 0;
+    const off = nr.right < wr.left + 20 || nr.left > wr.right - 20 || nr.bottom < wr.top + 20 || nr.top > wr.bottom - 20;
+    if (empty || off) fitToView(true);
+  }
+  setInterval(ensureInView, 3000);
+  window.addEventListener("resize", () => setTimeout(ensureInView, 200));
+
   function fitToView(animate = true) {
     let xs: number[] = [];
     let ys: number[] = [];
@@ -868,6 +907,7 @@ export function createGraph(
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   let focusId: string | null = null;
+  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, held on an outer ring while it is in focus
   const focusBar = h("div", { class: "focus-bar" });
   const focusCard = h("div", { class: "focus-card" });
   focusBar.style.display = "none";
@@ -1048,6 +1088,7 @@ export function createGraph(
       return;
     }
     if (focusId && focusId !== id) exitFocus(false);
+    for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     focusId = id;
     nodeSel.classed("sats-hidden", (d) => d.id === id); // its items are already bubbles around it
     const cx = n.x ?? 0;
@@ -1060,7 +1101,35 @@ export function createGraph(
     const nodeR = nodeRadiusOf(n);
     const ringR = bubbles.length ? Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI)) : nodeR + 40;
     // Room a bubble's text needs beyond the ring; everything else is moved out past this.
-    const clearR = bubbles.length ? ringR + 230 : nodeR + 120;
+    let clearR = bubbles.length ? ringR + 230 : nodeR + 120;
+
+    // A coalition's member orgs sit, at full strength, on a bigger ring outside the items ring.
+    pinnedMembers = [];
+    let memberR = 0;
+    if (n.kind === "coalition") {
+      const seen = new Set<string>();
+      for (const l of allLinks) {
+        if (l.kind !== "membership") continue;
+        const sid = typeof l.source === "string" ? l.source : l.source.id;
+        const tid = typeof l.target === "string" ? l.target : l.target.id;
+        if (sid !== id || seen.has(tid)) continue;
+        seen.add(tid);
+        const o = nodeById.get(tid);
+        if (o && o.kind === "org") pinnedMembers.push(o);
+      }
+      if (pinnedMembers.length) {
+        memberR = Math.max(
+          (bubbles.length ? ringR + 270 : nodeR + 150),
+          (pinnedMembers.length * 52) / (2 * Math.PI),
+        );
+        pinnedMembers.forEach((o, i) => {
+          const a = (2 * Math.PI * i) / pinnedMembers.length - Math.PI / 2;
+          o.fx = cx + Math.cos(a) * memberR;
+          o.fy = cy + Math.sin(a) * memberR;
+        });
+        clearR = memberR + 70;
+      }
+    }
 
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
@@ -1121,7 +1190,8 @@ export function createGraph(
     nodeSel
       .classed("faded", (d) => d.id !== id && !partners.has(d.id))
       .classed("partner", (d) => partners.has(d.id))
-      .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12);
+      .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12 && !pinnedMembers.includes(d))
+      .classed("member-ring", (d) => pinnedMembers.includes(d));
     linkSel.classed("faded", (l) => {
       const s = typeof l.source === "string" ? l.source : l.source.id;
       const t = typeof l.target === "string" ? l.target : l.target.id;
@@ -1133,7 +1203,7 @@ export function createGraph(
       const f = nodeById.get(id);
       if (!f) return;
       for (const o of allNodes) {
-        if (o === f) continue;
+        if (o === f || pinnedMembers.includes(o)) continue;
         const dx = (o.x ?? 0) - (f.x ?? 0);
         const dy = (o.y ?? 0) - (f.y ?? 0);
         const d = Math.hypot(dx, dy) || 1;
@@ -1182,7 +1252,7 @@ export function createGraph(
     const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
     const scale = Math.max(
       0.35,
-      Math.min(2.2, (w - panel) / (2 * (ringR + 230)), vh / (2 * (ringR + 90))),
+      Math.min(2.2, (w - panel) / (2 * ((memberR || ringR) + 230)), vh / (2 * ((memberR || ringR) + 90))),
     );
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
@@ -1198,7 +1268,9 @@ export function createGraph(
       n.fy = null;
     }
     focusId = null;
-    nodeSel.classed("sats-hidden", false);
+    for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
+    pinnedMembers = [];
+    nodeSel.classed("sats-hidden", false).classed("member-ring", false);
     sim.force("focusPush", null);
     // Bubbles fold back into the group, then disappear.
     if (fit) {
@@ -1249,6 +1321,9 @@ export function createGraph(
     exitFocus() {
       exitFocus();
     },
+    ensureInView() {
+      ensureInView();
+    },
     updateSettings(partial) {
       const before = { ...settings };
       settings = { ...settings, ...partial };
@@ -1272,7 +1347,7 @@ export function createGraph(
         }
         refreshSats();
       }
-      if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined) {
+      if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
         applyVisualSettings();
         sim.alpha(0.4).restart();
@@ -1290,7 +1365,7 @@ export function createGraph(
       if (partial.linkThickness !== undefined) {
         linkSel.attr("stroke-width", linkWidthFor);
       }
-      if (partial.textFadeThreshold !== undefined) {
+      if (partial.textFadeThreshold !== undefined || partial.showText !== undefined) {
         applyTextFade();
       }
       // If any force changed, re-energize the sim

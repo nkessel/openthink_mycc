@@ -4,6 +4,7 @@ import type { DataFile, GraphNode } from "./types";
 import { h } from "./dom";
 import { initials, typeLabel } from "./util";
 import { allEvents, allProjects, type Owner } from "./owners";
+import { loadTowns, placeFor, setMapBounds } from "./itemfilters";
 import { createNodeSearch, everythingForSearch, findPlaces, type SearchItem } from "./search";
 
 export interface GeographicView {
@@ -72,6 +73,26 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   const nearList = h("div", { class: "geo-near-list" });
   panel.appendChild(nearList);
 
+  // Town / county outlines: click one to zoom to it.
+  const boundsBox = h("div", { class: "geo-layers geo-bounds" }, h("h3", {}, "Boundaries"));
+  const boundChoices: { id: "none" | "towns" | "counties"; label: string }[] = [
+    { id: "none", label: "None" }, { id: "towns", label: "Towns" }, { id: "counties", label: "Counties" },
+  ];
+  const boundBtns = new Map<string, HTMLElement>();
+  const boundRow = h("div", { class: "filters" });
+  for (const b of boundChoices) {
+    const btn = h("button", { class: `chip ${b.id === "none" ? "active" : ""}`, type: "button" }, b.label);
+    btn.addEventListener("click", () => { setBoundary(b.id); });
+    boundBtns.set(b.id, btn);
+    boundRow.appendChild(btn);
+  }
+  boundsBox.appendChild(boundRow);
+  boundsBox.appendChild(h("div", { class: "geo-note" }, "Voting districts aren't on the map yet."));
+  panel.insertBefore(boundsBox, nearBtn);
+
+  const inViewBtn = h("button", { class: "geo-near", type: "button" }, "Show list of events in view");
+  panel.insertBefore(inViewBtn, nearBtn);
+
   let map: L.Map | null = null;
   const groups: Record<LayerKey, L.LayerGroup> = {
     coalitions: L.layerGroup(), orgs: L.layerGroup(), events: L.layerGroup(), projects: L.layerGroup(),
@@ -88,6 +109,62 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     else groups[key].remove();
   }
 
+  let boundaryLayer: L.GeoJSON | null = null;
+  const boundaryCache = new Map<string, unknown>();
+  let boundarySeq = 0;
+  async function setBoundary(kind: "none" | "towns" | "counties") {
+    for (const [id, el] of boundBtns) el.classList.toggle("active", id === kind);
+    const seq = ++boundarySeq;
+    const m = ensureMap();
+    boundaryLayer?.remove();
+    boundaryLayer = null;
+    if (kind === "none") return;
+    let json = boundaryCache.get(kind);
+    if (!json) {
+      try {
+        json = await (await fetch(`${import.meta.env.BASE_URL}geo/ma-${kind}.geojson`)).json();
+        boundaryCache.set(kind, json);
+      } catch (_) { return; }
+    }
+    if (seq !== boundarySeq) return; // a newer choice replaced this one
+    const base: L.PathOptions = { color: "#94a3b8", weight: kind === "towns" ? 0.8 : 1.5, opacity: 0.7, fillColor: "#38bdf8", fillOpacity: 0.02 };
+    boundaryLayer = L.geoJSON(json as GeoJSON.GeoJsonObject, {
+      style: () => base,
+      onEachFeature: (f, layer) => {
+        const p = f.properties as { name?: string; county?: string };
+        const name = kind === "towns" ? `${p.name}${p.county ? `, ${p.county} County` : ""}` : `${p.county} County`;
+        layer.bindTooltip(escapeHTML(name), { sticky: true });
+        layer.on("mouseover", () => (layer as L.Path).setStyle({ fillOpacity: 0.12, weight: 2 }));
+        layer.on("mouseout", () => (layer as L.Path).setStyle(base));
+        layer.on("click", (e) => {
+          L.DomEvent.stopPropagation(e);
+          m.fitBounds((layer as L.Polygon).getBounds(), { padding: [30, 30], maxZoom: 14 });
+        });
+      },
+    }).addTo(m);
+    boundaryLayer.bringToBack();
+  }
+
+  inViewBtn.addEventListener("click", async () => {
+    const m = ensureMap();
+    await loadTowns();
+    const b = m.getBounds();
+    // Events with no exact pin are placed at the town in their location (or their org's HQ), so the list isn't nearly empty.
+    const rows = allEvents(data)
+      .map(({ event: e, owner }) => ({ e, owner, at: placeFor(e, owner.node as { lat?: number; lng?: number; remote?: boolean; kind?: string }), exact: e.lat !== undefined }))
+      .filter((r) => r.at.lat !== undefined && b.contains([r.at.lat!, r.at.lng!]))
+      .sort((a, c) => a.e.date.localeCompare(c.e.date));
+    nearList.replaceChildren(
+      h("div", { class: "geo-near-head" }, `${rows.length} event${rows.length === 1 ? "" : "s"} in view (some placed by town)`),
+      ...rows.slice(0, 40).map(({ e, owner, at }) => {
+        const el = h("button", { class: "geo-near-row", type: "button" },
+          h("span", { class: "n" }, e.name), h("span", { class: "k" }, `${e.date.slice(0, 10)} · ${e.location || owner.name}`));
+        el.addEventListener("click", () => { m.setView([at.lat!, at.lng!], Math.max(m.getZoom(), 12)); cb.onNodeClick(owner.node); });
+        return el;
+      }),
+    );
+  });
+
   function ownerLine(owner: Owner): string {
     return `${escapeHTML(owner.name)}`;
   }
@@ -95,6 +172,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   function pinIcon(cls: string, glyph: string): L.DivIcon {
     return L.divIcon({ className: "", iconSize: [18, 18], iconAnchor: [9, 9], html: `<div class="geo-pin ${cls}">${glyph}</div>` });
   }
+
+  /** Every organization is the same size: easy to see, a little bigger as you zoom in. */
+  const orgRadiusAt = (zoom: number) => Math.max(5, Math.min(13, 3 + (zoom - 6) * 1.1));
 
   function ensureMap() {
     if (map) return map;
@@ -109,6 +189,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
 
     // Coalitions (large colored circles with abbrev label)
     for (const c of data.coalitions) {
+      if (!c.member_count) continue; // no member locations to place it by
       const r = 14 + Math.sqrt(c.member_count) * 2.5;
       const labelNode = document.createElement("div");
       labelNode.className = "geo-coalition-label";
@@ -131,7 +212,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     // Organizations (HQ pins; remote orgs are skipped)
     for (const o of pinnedOrgs) {
       const dot = L.circleMarker([o.lat, o.lng], {
-        radius: 4, color: "#94a3b8", weight: 1, opacity: 0.8, fillColor: "#2a2a36", fillOpacity: 0.95,
+        radius: orgRadiusAt(map.getZoom()), color: "#94a3b8", weight: 1, opacity: 0.8, fillColor: "#2a2a36", fillOpacity: 0.95,
       });
       const approx = o.profile?.geo_precision === "approx" ? " · approximate location" : "";
       dot.bindTooltip(
@@ -142,6 +223,11 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
       dot.addTo(groups.orgs);
       orgMarkers.set(o.id, dot);
     }
+
+    map.on("zoomend", () => { const r = orgRadiusAt(map!.getZoom()); for (const d of orgMarkers.values()) d.setRadius(r); });
+    const publishBounds = () => { const b = map!.getBounds(); setMapBounds({ south: b.getSouth(), west: b.getWest(), north: b.getNorth(), east: b.getEast() }); };
+    map.on("moveend", publishBounds);
+    publishBounds();
 
     // Events + projects (only those with an in-person location)
     for (const { event: e, owner } of events) {

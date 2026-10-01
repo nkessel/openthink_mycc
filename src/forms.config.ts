@@ -10,6 +10,8 @@ export interface FormLink {
   orgEntry?: string;
   hostOrgEntry?: string;
   coalitionEntry?: string;
+  /** The "Which event / project / action is this about?" question, so a map click can pre-select that item. */
+  itemEntry?: string;
 }
 
 export const FORMS: Record<"org" | "event" | "project" | "action" | "feedback", FormLink> = {
@@ -21,16 +23,19 @@ export const FORMS: Record<"org" | "event" | "project" | "action" | "feedback", 
     url: "https://docs.google.com/forms/d/e/1FAIpQLSe6jLOWOLU0sZdsiqMcfABsQpSRKyXWocWi4nj_ZRDVtNfxUQ/viewform",
     hostOrgEntry: "entry.250607576",
     coalitionEntry: "entry.1780232957",
+    itemEntry: "entry.1447795421",
   },
   project: {
     url: "https://docs.google.com/forms/d/e/1FAIpQLSe4CpR61Iklqh4U24rcEtqs-0XyxkaMYd2jcMmymHGuFRqM2g/viewform",
     hostOrgEntry: "entry.207544512",
     coalitionEntry: "entry.13985344",
+    itemEntry: "entry.378180696",
   },
   action: {
     url: "https://docs.google.com/forms/d/e/1FAIpQLSeLrAB0TWK_wPxRTalxvTH8lWuQywrjKTTfEem237X3CdcvXg/viewform",
     hostOrgEntry: "entry.973662534",
     coalitionEntry: "entry.711840281",
+    itemEntry: "entry.1959573726",
   },
   feedback: {
     url: "https://docs.google.com/forms/d/e/1FAIpQLScwazw1P9rbQT4KAoUn0DSuI6B9Lpdx-kcrZXdZV45-HlAVKw/viewform",

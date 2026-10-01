@@ -21,12 +21,20 @@ export interface Project {
   online?: boolean;
   lat?: number;
   lng?: number;
+  /** Free food is provided. */
+  free_food?: boolean;
+  /** Only members / affiliates can join (default: open to the public). */
+  affiliated_only?: boolean;
+  /** The group is looking for help with this (default: yes). */
+  help_wanted?: boolean;
 }
 
 export interface CoalitionEvent {
   id: string;
   name: string;
   date: string;
+  /** The date as stored in the sheet, kept when a recurring event's date is rolled forward (form labels use it). */
+  sheet_date?: string;
   location: string;
   // Optional fields filled in through the MA Climate Coalition Map forms
   /** A date with no time part ("2026-10-12") means the source did not post a time. */
@@ -47,6 +55,10 @@ export interface CoalitionEvent {
   online?: boolean;
   lat?: number;
   lng?: number;
+  /** Free food is provided. */
+  free_food?: boolean;
+  /** Only members / affiliates can come (default: open to the public). */
+  affiliated_only?: boolean;
 }
 
 /**

@@ -77,7 +77,14 @@ export function orgRadius(_o: Organization): number {
   return 20; // was 14; bigger so logos read at the default zoom
 }
 
+/** An org can have several types, stored comma-separated ("501c3, faith_org"). */
+export function typeList(t: string | undefined): string[] {
+  return (t || "").split(",").map((x) => x.trim()).filter(Boolean);
+}
+
 export function typeLabel(t: string): string {
+  const parts = typeList(t);
+  if (parts.length > 1) return parts.map(typeLabel).join(" + ");
   const map: Record<string, string> = {
     "501c3": "501(c)(3)",
     "501c4": "501(c)(4)",

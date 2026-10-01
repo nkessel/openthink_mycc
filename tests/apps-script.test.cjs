@@ -195,12 +195,19 @@ assert.match(review().at(-1).reason, /^UNAUTHORIZED/);
 
 // coalition lead edits a coalition event (time only) and adds an online project
 submit("fe", "lead@mycc.org", { [Q.whichEvent]: "MYCC full-coalition call — Oct 4, 2026 [mycc_e_call_1004]", [Q.eventTime]: "19:30" });
-submit("fp", "lead@mycc.org", { [Q.whichProject]: NEW_PROJECT, [Q.coalition]: MYCC, [Q.projectName]: "Virtual Teach-in", [Q.location]: "Zoom", [Q.online]: "Yes" });
+submit("fp", "lead@mycc.org", { [Q.whichProject]: NEW_PROJECT, [Q.coalition]: MYCC, [Q.projectName]: "Virtual Teach-in", [Q.location]: "Zoom", [Q.online]: "Yes",
+  [Q.freeFood]: "No", [Q.who]: "Affiliated members only", [Q.helpWanted]: "No" });
+submit("fe", "lead@mycc.org", { [Q.whichEvent]: "MYCC full-coalition call — Oct 4, 2026 [mycc_e_call_1004]", [Q.freeFood]: "Yes", [Q.who]: "Open to the public" });
 d = data();
 const mycc = d.coalitions.find((c) => c.id === "mycc");
 assert.equal(mycc.events.find((e) => e.id === "mycc_e_call_1004").date, "2026-10-04T19:30:00");
 const vp = mycc.projects.find((p) => p.name === "Virtual Teach-in");
 assert.ok(vp.online && vp.lat === undefined, "online project has no pin");
+assert.equal(vp.affiliated_only, true, "affiliated-only project flag");
+assert.equal(vp.help_wanted, false, "explicit 'no help wanted' is kept");
+assert.equal(vp.free_food, undefined, "free food 'No' is just absent");
+assert.equal(mycc.events.find((e) => e.id === "mycc_e_call_1004").free_food, true, "free food event flag");
+assert.equal(mycc.events.find((e) => e.id === "mycc_e_call_1004").affiliated_only, undefined, "public event has no affiliated flag");
 
 // recurring event + actions form: an org editor adds an action, a non-owner is queued, and an admin removes one
 submit("fe", "lead@mycc.org", { [Q.whichEvent]: NEW_EVENT, [Q.coalition]: MYCC, [Q.eventName]: "Weekly vigil", [Q.eventDate]: "2026-10-03", [Q.eventTime]: "12:00", [Q.eventRecurrence]: "Every Saturday, 12-1 PM" });
@@ -232,7 +239,7 @@ assert.equal(book["Feedback"].length, 2);
 assert.equal(log().at(-1).record_type, "feedback");
 
 // every submission is in the Change Log
-const submissions = 19;
+const submissions = 20;
 assert.equal(log().length, submissions, `expected one Change Log row per submission (+ approval), got ${log().length}`);
 // the grid version of "who you work with": one row per org, strongest ticked column wins, blank rows = no contact
 submit("fo", "point@bls.org", {
@@ -319,11 +326,13 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const before = unmatched().length;
   submit("fo", "nathandkessel@gmail.com", {
     [Q.whichOrg]: "boston latin school youth climate action netwrk",
+    [Q.orgType]: ["Nonprofit — 501(c)(3)", "Faith community", "Nonprofit — 501(c)(3)", "Mutual aid"],
     [Q.moreTopics]: "clean energy, Tree planting, quantum basket weaving",
     [Q.worksWithText]: `${other.name} — monthly\nTotally Made Up Collective, yearly`,
   });
   d = data();
   org = d.organizations.find((o) => o.id === bls.id);
+  assert.equal(org.type, "501c3, faith_org, mutual_aid", "several org types are kept, comma-separated, without repeats");
   assert.ok(org.topic_tags.includes("clean_energy") && org.topic_tags.includes("tree_planting"), "typed topics matched");
   assert.ok(!org.topic_tags.includes("quantum_basket_weaving"), "unmatched topic is not added");
   const logged = unmatched().slice(before);

@@ -4,8 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MA Climate Coalition Map</title>
+      <style>
+      #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
+      #boot.done{opacity:0;pointer-events:none}
+      #boot .orbit{position:relative;width:120px;height:120px}
+      #boot .orbit i{position:absolute;left:50%;top:50%;border-radius:50%;opacity:.9;animation:boot-float 2.4s ease-in-out infinite}
+      #boot .orbit i:nth-child(1){width:44px;height:44px;margin:-22px;background:#38bdf8}
+      #boot .orbit i:nth-child(2){width:22px;height:22px;margin:-11px 0 0 -11px;background:#34d399;animation:boot-orbit 2.6s linear infinite}
+      #boot .orbit i:nth-child(3){width:14px;height:14px;margin:-7px 0 0 -7px;background:#fbbf24;animation:boot-orbit 3.8s linear infinite reverse}
+      #boot .orbit i:nth-child(4){width:10px;height:10px;margin:-5px 0 0 -5px;background:#f472b6;animation:boot-orbit 1.9s linear infinite}
+      #boot .bar{width:200px;height:4px;border-radius:2px;background:#1e293b;overflow:hidden}
+      #boot .bar b{display:block;width:40%;height:100%;border-radius:2px;background:#38bdf8;animation:boot-bar 1.3s ease-in-out infinite}
+      @keyframes boot-bar{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+      @keyframes boot-orbit{from{transform:rotate(0) translateX(50px)}to{transform:rotate(360deg) translateX(50px)}}
+      @keyframes boot-float{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+      @media (prefers-reduced-motion:reduce){#boot .orbit i{animation:none}#boot .orbit i:nth-child(n+2){transform:translateX(50px)}}
+    </style>
   </head>
   <body>
+    <div id="boot" role="status" aria-live="polite"><div class="orbit"><i></i><i></i><i></i><i></i></div><div>Please wait, loading the map&hellip;</div><div class="bar"><b></b></div></div>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

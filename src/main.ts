@@ -8,13 +8,22 @@ import { createDrawer } from "./drawer";
 import { createGeographicView } from "./geographic";
 import { createEventsView } from "./events";
 import { createProjectsView } from "./projects";
+import { createActionsView } from "./actions";
 import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
-import { createFab, setFormLabelData } from "./fab";
+import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setupSidebarToggle } from "./sidebar";
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
 import { rollRecurringForward } from "./recurrence";
+
+/** Fade out the splash that index.html shows while the data and map load. */
+function hideBoot() {
+  const el = document.getElementById("boot");
+  if (!el) return;
+  el.classList.add("done");
+  setTimeout(() => el.remove(), 600);
+}
 
 async function main() {
   const app = document.getElementById("app")!;
@@ -212,6 +221,23 @@ async function main() {
   projectsView.el.style.inset = "0";
   content.appendChild(projectsView.el);
 
+  // ----- Actions & volunteer opportunities view -----
+  const actionsView = createActionsView(data, {
+    onCoalitionClick: (node) => {
+      setTab("map");
+      setTimeout(() => {
+        if (!trayWouldBlockMap()) drawerApi!.open(node);
+        graphApi!.setSelectedNode(node);
+        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
+      }, 60);
+    },
+  });
+  actionsView.el.style.display = "none";
+  actionsView.el.style.height = "100%";
+  actionsView.el.style.position = "absolute";
+  actionsView.el.style.inset = "0";
+  content.appendChild(actionsView.el);
+
   function setTab(tab: TopTab) {
     activeTab = tab;
     topbar.setActive(tab);
@@ -220,7 +246,9 @@ async function main() {
     eventsView.el.style.display = tab === "events" ? "grid" : "none";
     orgsView.el.style.display = tab === "orgs" ? "grid" : "none";
     projectsView.el.style.display = tab === "projects" ? "grid" : "none";
+    actionsView.el.style.display = tab === "actions" ? "grid" : "none";
     if (tab === "geo") geoView.invalidate();
+    if (tab === "map") setTimeout(() => graphApi?.ensureInView(), 150);
     if (tab !== "map") {
       tooltip.hide();
       // The org details panel belongs to the map; don't leave it floating over the other tabs.
@@ -232,6 +260,7 @@ async function main() {
 
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
   setFormLabelData(data.organizations);
+  setItemLabelData([...data.coalitions, ...data.organizations]);
   createFab(content, () => drawerApi?.current() ?? null);
 
   // Escape closes drawer
@@ -288,4 +317,4 @@ async function attachThoughts(data: DataFile): Promise<void> {
   }
 }
 
-main();
+main().finally(() => requestAnimationFrame(() => requestAnimationFrame(hideBoot)));
