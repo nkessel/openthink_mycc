@@ -1,0 +1,340 @@
+{
+ "orgs": {
+  "andover_climate_lobby": {
+   "description": "Student initiative of the Phillips Academy Sustainability Coalition that takes students to the Massachusetts State House to lobby legislators to co-sponsor climate bills.",
+   "type": "school_club",
+   "geographic_focus": "Andover",
+   "sources": [
+    "https://phillipian.net/2024/02/09/andover-students-join-climate-lobby-to-bring-youth-voice-to-massachusetts-state-house/"
+   ]
+  },
+  "belmont_high_school_climate_club": {
+   "description": "Student club at Belmont High School that runs a lunchtime composting program and pushes for less waste across Belmont schools.",
+   "type": "school_club",
+   "website": "https://www.belmont.k12.ma.us/o/bhs/page/activities-and-clubs/",
+   "geographic_focus": "Belmont",
+   "sources": [
+    "https://belmontvoice.org/in-belmont-students-lead-the-composting-charge/",
+    "https://www.belmont.k12.ma.us/o/bhs/page/activities-and-clubs/"
+   ]
+  },
+  "northfield_mount_hermon_ecoleaders": {
+   "description": "Student environmental group at Northfield Mount Hermon School that runs climate education events, voter and lobbying activities and upcycling workshops, and hosted a 2024 interschool youth climate summit.",
+   "type": "school_club",
+   "website": "https://www.nmhschool.org/purpose/sustainability",
+   "geographic_focus": "Northfield Mount Hermon School",
+   "sources": [
+    "https://www.nmhschool.org/about-us/news/nmh-news/post-details/~board/news-and-events-board/post/ecoleaders-organize-youth-climate-summit",
+    "https://www.nmhschool.org/purpose/sustainability"
+   ]
+  },
+  "salem_high_school_sustainability_club": {
+   "description": "Student environmental club at Salem High School that lobbies at the State House for air quality, climate education and anti-gas-expansion bills; supported by Salem SAFE.",
+   "type": "school_club",
+   "geographic_focus": "Salem",
+   "sources": [
+    "https://salemsafe.org/2026/02/19/salem-high-school-environmental-club-shows-up-at-advocacy-day-2026/",
+    "https://spssalemhs.salemk12.org/programs-and-culture/student-activities/"
+   ]
+  },
+  "students_for_environmental_action_at_weston_high_school": {
+   "description": "Student club at Weston High School that runs recycling and composting, removes invasive plants, grows lettuce in the school greenhouse and lobbies state legislators on climate bills.",
+   "type": "school_club",
+   "website": "https://www.westonschools.org/high/student-activities-overview-handbook/students-for-environmental-action/",
+   "geographic_focus": "Weston",
+   "sources": [
+    "https://www.westonschools.org/high/student-activities-overview-handbook/students-for-environmental-action/"
+   ]
+  },
+  "newton_south_high_school_environmental_club": {
+   "description": "Student club at Newton South High School for discussing and learning about climate change and environmental issues.",
+   "type": "school_club",
+   "geographic_focus": "Newton",
+   "sources": [
+    "https://newtonsouthptso.org/wp-content/uploads/2020/09/Newton-South-2020-21-Clubs-and-Activities.pdf"
+   ]
+  },
+  "andover_high_school_environmental_club": {
+   "description": "Student club at Andover High School that runs recycling, composting, garden and e-waste projects and helps other schools start composting.",
+   "type": "school_club",
+   "geographic_focus": "Andover",
+   "sources": [
+    "https://projectgreenschools.org/chapter-profile/andover-high-school-environmental-club/"
+   ]
+  },
+  "belmont_hill_sustainability_club": {
+   "description": "Student group at Belmont Hill School (Upper School Sustainability Group) that educates the school community on environmental issues and promotes sustainable change on campus.",
+   "type": "school_club",
+   "website": "https://www.belmonthill.org/academics/sustainability-at-belmont-hill/environmental-courses-groups-and-trips",
+   "geographic_focus": "Belmont",
+   "sources": [
+    "https://www.belmonthill.org/academics/sustainability-at-belmont-hill/environmental-courses-groups-and-trips"
+   ]
+  },
+  "lorax_at_milton_academy": {
+   "description": "Student environmental group at Milton Academy, founded in 1987, that raises ecological awareness and promotes responsible practices on campus through discussion and education.",
+   "type": "school_club",
+   "website": "https://www.milton.edu/about/sustainability-at-milton/student-involvement/",
+   "geographic_focus": "Milton",
+   "sources": [
+    "https://www.milton.edu/about/sustainability-at-milton/student-involvement/"
+   ]
+  },
+  "boston_latin_school_youthcan": {
+   "description": "After-school climate club at Boston Latin School that runs a youth climate summit, campaigns for sustainability education in grades 7-12 and coordinates a network of youth climate groups at other Massachusetts schools.",
+   "type": "school_club",
+   "website": "https://www.bostonlatinschoolyouthcan.org/about.html",
+   "geographic_focus": "Boston",
+   "sources": [
+    "https://www.bostonlatinschoolyouthcan.org/about.html"
+   ]
+  },
+  "boston_university_environmental_student_organization": {
+   "description": "Student group at Boston University that holds community service outings, nature trips, guest speakers and documentary screenings to raise awareness of environmental issues.",
+   "type": "campus_group",
+   "website": "https://www.bu.edu/earth/community/student-organizations/environmental-student-organization-eso/",
+   "geographic_focus": "Boston University",
+   "sources": [
+    "https://www.bu.edu/earth/community/student-organizations/environmental-student-organization-eso/"
+   ]
+  },
+  "four_rivers_climate_club": {
+   "description": "Student club at Four Rivers Charter Public School in Greenfield, formed in March 2024, that organizes litter cleanups and climate activism events.",
+   "type": "school_club",
+   "geographic_focus": "Greenfield",
+   "sources": [
+    "https://www.hitchcockcenter.org/category/in-the-news/page/2/",
+    "https://fourriverscharter.org/currents-12-11-25/"
+   ]
+  },
+  "youth_climate_action_now": {
+   "description": "Youth-led group under Climate Action Now that holds monthly workshops, webinars, creative events and advocacy training to get young people involved in climate action.",
+   "type": "informal_group",
+   "geographic_focus": "Western Massachusetts",
+   "sources": [
+    "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/"
+   ]
+  },
+  "alternatives_for_community_and_environment": {
+   "description": "Roxbury-based environmental justice organization, founded in 1994, that does community organizing, youth leadership, transit advocacy and legal support for low-income communities and communities of color.",
+   "type": "501c3",
+   "website": "https://ace-ej.org/",
+   "geographic_focus": "Roxbury and Greater Boston",
+   "sources": [
+    "https://ace-ej.org/what-we-do/programs/",
+    "https://www.guidestar.org/profile/04-3228509"
+   ]
+  },
+  "greenroots_eco": {
+   "description": "Youth leadership program of GreenRoots in Chelsea where high school students run environmental justice campaigns on water quality, heat, murals and youth organizing.",
+   "type": "501c3",
+   "website": "https://www.greenrootsej.org/our-work/youth-leadership",
+   "geographic_focus": "Chelsea",
+   "sources": [
+    "https://www.greenrootsej.org/our-work/youth-leadership",
+    "https://grassrootsfund.org/groups/environmental-chelsea-organizers-via-greenroots-inc"
+   ]
+  },
+  "tree_boston": {
+   "description": "Dorchester-based nonprofit (formerly Speak for the Trees) that plants and cares for trees and advocates for tree equity in Boston neighborhoods, including a teen urban tree corps.",
+   "type": "501c3",
+   "geographic_focus": "Boston",
+   "sources": [
+    "https://treeboston.org/inthenews/",
+    "https://www.guidestar.org/profile/82-5492599"
+   ]
+  },
+  "boston_student_advisory_council": {
+   "description": "Citywide council of Boston Public Schools students that advocates on student issues; climate justice has been a focus, including helping write the district's climate change curriculum.",
+   "type": "government",
+   "geographic_focus": "Boston",
+   "sources": [
+    "https://www.greenovateboston.org/boston_public_schools_students_help_develop_climate_change_curriculum/"
+   ]
+  },
+  "masscosh_tlaw_climate_change_and_environmental_justice_team": {
+   "description": "Youth program of MassCOSH that trains Boston teens as peer educators and organizers on workplace rights and safety, with a goal of building young labor and environmental justice activists.",
+   "geographic_focus": "Boston",
+   "sources": [
+    "https://www.masscosh.org/program-initiatives/teens-lead-at-work"
+   ]
+  },
+  "clean_water_action": {
+   "description": "Advocacy organization with Boston and Northampton offices that organizes and lobbies in Massachusetts on toxic chemicals, clean energy and climate justice, lead in water, waste reduction and civic engagement.",
+   "type": "501c4",
+   "website": "https://cleanwater.org/states/massachusetts",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://cleanwater.org/states/massachusetts",
+    "https://en.wikipedia.org/wiki/Clean_Water_Action"
+   ]
+  },
+  "youth_action_collaborative_alumni_node_at_clean_water_action": {
+   "description": "Clean Water Action program that trains high school students from environmental justice communities as advocates on climate justice, PFAS, lead and zero waste; started with a Malden High School cohort, with an alumni chapter planned.",
+   "geographic_focus": "Malden",
+   "sources": [
+    "https://cleanwater.org/ma-youth-action-collaborative"
+   ]
+  },
+  "sustainable_sharon_coalition_youth": {
+   "description": "High-school-age interest group within the Sustainable Sharon Coalition, a volunteer-led environmental nonprofit in Sharon.",
+   "geographic_focus": "Sharon",
+   "sources": [
+    "https://www.sustainablesharon.org/about/interest-groups",
+    "https://www.sustainablesharon.org/about"
+   ]
+  },
+  "masspirg": {
+   "description": "State advocacy group of the PIRG network that lobbies on consumer protection, waste reduction, transportation and clean energy, and runs campus chapters.",
+   "type": "501c4",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.influencewatch.org/non-profit/massachusetts-public-interest-research-group/",
+    "https://www.guidestar.org/profile/04-2536325"
+   ]
+  },
+  "masspirg_amherst": {
+   "description": "UMass Amherst chapter of the student-run MASSPIRG, active since 1972, with campaigns on campus renewable energy, pollinators, textbook costs and voter registration.",
+   "type": "campus_group",
+   "geographic_focus": "UMass Amherst",
+   "sources": [
+    "https://sbspathways.umass.edu/organizations/masspirg/"
+   ]
+  },
+  "vietaid": {
+   "description": "Community development corporation in Fields Corner, Dorchester, serving the Vietnamese American community with civic engagement, affordable housing, small business help and child care.",
+   "type": "501c3",
+   "website": "https://vietaid.org/",
+   "geographic_focus": "Dorchester",
+   "sources": [
+    "https://vietaid.org/",
+    "https://www.guidestar.org/profile/04-3289039"
+   ]
+  },
+  "mothers_out_front": {
+   "description": "Network of mothers and other caregivers organizing for climate justice; in Massachusetts its main campaign pushes to end new gas pipelines and move neighborhoods to clean heat.",
+   "type": "501c3",
+   "website": "https://mothersoutfront.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.mothersoutfront.org/team/massachusetts/",
+    "https://mothersoutfront.org/"
+   ]
+  },
+  "healthlink": {
+   "description": "Grassroots environmental group based in Swampscott focused on reducing pollution and toxins, especially power plant and air pollution, and promoting renewable energy.",
+   "geographic_focus": "North Shore",
+   "sources": [
+    "https://www.citizensinaction.org/about-the-bill-board-97.html"
+   ]
+  },
+  "jewish_climate_action_network": {
+   "description": "Boston-area Jewish group, founded in 2013, that runs climate education, joins marches and legislative campaigns, and helps synagogues cut energy use and divest from fossil fuels.",
+   "type": "faith_org",
+   "website": "https://jewishclimate.org/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://jewishclimate.org/actions/learn-about-jcan-ma/",
+    "https://grassrootsfund.org/groups/jewish-climate-action-network-ma"
+   ]
+  },
+  "massachusetts_interfaith_power_and_light": {
+   "description": "Faith-based nonprofit, founded in 2002, that helps houses of worship cut emissions and organizes people of faith for climate advocacy and climate justice.",
+   "type": "501c3, faith_org",
+   "website": "https://www.massipl.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.massipl.org/welcome",
+    "https://www.guidestar.org/profile/32-0022524"
+   ]
+  },
+  "the_enviro_show_on_wxoj_lp_103_3_fm": {
+   "description": "Biweekly environmental news and commentary radio show on Valley Free Radio (WXOJ-LP 103.3 FM, Florence), also broadcast in Greenfield and North Adams, covering climate, conservation and local ecology.",
+   "website": "http://envirosho.blogspot.com/",
+   "geographic_focus": "Western Massachusetts",
+   "sources": [
+    "https://rss.com/podcasts/enviroshow/",
+    "https://envirosho.blogspot.com/2023/?m=0"
+   ]
+  },
+  "xr_youth": {
+   "description": "Youth counterpart of Extinction Rebellion Massachusetts for people 18 and under, using nonviolent direct action to demand government action on the climate emergency.",
+   "type": "informal_group",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://honkfest.org/community/extinction-rebellion-youth-boston/"
+   ]
+  },
+  "act_on_mass": {
+   "description": "Massachusetts advocacy group that tracks and backs state legislation (including climate bills such as the Climate Change Superfund bill) and runs campaigns on legislative accountability and transparency.",
+   "website": "https://actonmass.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://actonmass.org/issues/climate/"
+   ]
+  },
+  "massachusetts_climate_action_network": {
+   "description": "Network that supports local climate action town by town through local chapters, working with 40+ communities on decarbonization and electrification and advocating on state energy and climate policy.",
+   "type": "501c3",
+   "website": "https://www.massclimateaction.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.massclimateaction.org/",
+    "https://www.guidestar.org/profile/26-3880797"
+   ]
+  },
+  "sustainable_milton": {
+   "description": "Neighbor-driven nonprofit in Milton, founded in 2006, that runs composting, green electricity, waste reduction and cleanup programs and advocates for local climate action.",
+   "website": "https://www.sustainablemilton.org/",
+   "geographic_focus": "Milton",
+   "sources": [
+    "https://www.sustainablemilton.org/",
+    "https://www.sustainablemilton.org/post/milton-high-s-earth-club"
+   ]
+  },
+  "salem_alliance_for_the_environment": {
+   "description": "Salem environmental advocacy group working on air quality, wind and public power, heat resilience, environmental justice and gas leaks; also supports Salem High School's environmental club.",
+   "website": "https://salemsafe.org/",
+   "geographic_focus": "Salem",
+   "sources": [
+    "https://salemsafe.org/blog/",
+    "https://salemsafe.org/2026/02/19/salem-high-school-environmental-club-shows-up-at-advocacy-day-2026/"
+   ]
+  },
+  "conservation_law_foundation": {
+   "description": "New England environmental advocacy group, founded in 1966 and headquartered in Boston, that uses law, science and policy on clean energy, clean air and water, oceans and environmental justice.",
+   "geographic_focus": "New England",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Conservation_Law_Foundation"
+   ]
+  },
+  "climate_action_now_western_ma": {
+   "description": "Grassroots volunteer group in Western Massachusetts focused on climate justice organizing and public education; its youth wing is Youth Climate Action Now.",
+   "geographic_focus": "Western Massachusetts",
+   "sources": [
+    "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/"
+   ]
+  },
+  "greenroots": {
+   "description": "Chelsea environmental justice organization, about 30 years old, that restores salt marsh, builds parks and waterfront access and works to improve Chelsea Creek water quality, with a youth leadership program.",
+   "geographic_focus": "Chelsea and East Boston",
+   "sources": [
+    "https://www.greenrootsej.org/our-work/youth-leadership"
+   ]
+  },
+  "roxbury_environmental_empowerment_project_by_alternatives_fo": {
+   "description": "Youth-led environmental justice organizing program of ACE that builds leadership among young people of color from Roxbury, Dorchester and Mattapan; led the campaign for Boston's 2015 diesel emissions ordinance.",
+   "type": "501c3",
+   "geographic_focus": "Roxbury, Dorchester, Mattapan",
+   "sources": [
+    "https://ace-ej.org/what-we-do/programs/",
+    "https://www.guidestar.org/profile/04-3228509"
+   ]
+  }
+ },
+ "not_found": [
+  "ma_youth_for_climate_justice",
+  "masspirg_boston"
+ ],
+ "notes": "salem_high_school_sustainability_club: sources name the club 'Environmental Club' (and the school also lists a 'Climate Change and Advocacy Club'); assumed same group as the MYCC member, not certain. REEP/Greenroots ECO typed 501c3 because they are programs of 501c3 parents. WEB SEARCH BUDGET EXHAUSTED (200/200 session calls) after ~org 32; remaining orgs filled only from WebFetch of URLs I already knew/was permitted to fetch. masspirg: GuideStar page implied 501c3 (likely the Education Fund) vs InfluenceWatch 501c4; went with c4. healthlink: only a 2007 page found, activity status unknown. xr_youth: only the 2021-era honkfest listing read. masspirg_boston: masspirgstudents.org lists no Boston chapter (only Boston College organizer); left not found. INCOMPLETE: the session WebSearch budget (200/200) ran out partway, and WebFetch refused most URLs that had not appeared in search results (PROVENANCE_REQUIRED), so these 35 orgs were NOT researched (they are not in not_found): 350ma, 350ma_berkshires, 350ma_cape_cod, 350ma_central_mass, american_friends_service_committee_northeast_region, arise_for_social_justice, balanced_rock_investment_advisors, ben_hillman_and_company, berkshire_environmental_action_team, bodhisara_dharma_community, canton_residents_for_a_sustainable_equitable_future, climate_action_brookline, climate_code_blue, climate_xchange, coalition_for_social_justice, elders_climate_action_mass, environment_massachusetts, food_and_water_watch, fore_river_residents_against_the_compressor_station, jewish_alliance_for_law_and_social_action, mass_audubon_wellfleet_bay_wildlife_sanctuary, mass_audubon_wma, mit_sea, north_american_indian_center_of_boston, partnership_for_policy_integrity, pipeline_awareness_network_ne, sierra_club, slingshot, sunrise_amherst, sunrise_boston, sunrise_ipswich, sunrise_lexington, sunrise_western_mass, unitarian_universalist_mass_action, xr_western_mass."
+}

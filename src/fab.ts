@@ -3,6 +3,7 @@
 import type { Coalition, GraphNode, Organization } from "./types";
 import { FORMS, type FormLink } from "./forms.config";
 import { h } from "./dom";
+import { currentMap } from "./maps";
 
 export type FormKind = keyof typeof FORMS;
 
@@ -49,6 +50,8 @@ export const coalitionLabel = (c: Coalition) => (c.abbrev ? `${c.name} (${c.abbr
 
 /** Form URL, pre-filled for the given org/coalition when possible. null = forms not set up. */
 export function formUrl(kind: FormKind, context: GraphNode | null = null, item: Item | null = null): string | null {
+  // Only Massachusetts has its own forms + sheet; elsewhere every suggestion goes to the feedback form.
+  if (!currentMap.editable) return FORMS.feedback.url || null;
   const f: FormLink = FORMS[kind];
   if (!f.url) return null;
   const params = new URLSearchParams();
@@ -95,6 +98,11 @@ export function createFab(parent: HTMLElement, getContext: () => GraphNode | nul
 
   function render() {
     menu.replaceChildren();
+    if (!currentMap.editable) {
+      menu.appendChild(item("feedback", "Suggest a correction or addition", `The ${currentMap.name} map isn't connected to its own forms yet`));
+      menu.appendChild(item("feedback", "Send feedback", "Bugs, ideas, questions"));
+      return;
+    }
     const ctx = getContext();
     const org = ctx?.kind === "org" ? ctx : null;
     const coalition = ctx?.kind === "coalition" ? ctx : null;

@@ -92,6 +92,8 @@ export interface ControlsPanel {
   initialState(): ControlsState;
   /** Returns the GroupRules corresponding to active groups, for graph.setGroups(). */
   activeRules(): GroupRule[];
+  /** Where extra advanced options (e.g. the org-to-org links toggle) go. */
+  advancedContainer(): HTMLElement;
 }
 
 export function createControls(
@@ -263,8 +265,17 @@ export function createControls(
   });
   parent.appendChild(sizeSection);
 
+  // ---- Advanced display settings (closed by default; added to the panel last) ----
+  const { section: advSection, body: advBody } = makeSection("Advanced display settings", false);
+  advSection.classList.add("advanced");
+  const advExtras = h("div", { class: "adv-extras" });
+  advBody.appendChild(advExtras);
+  const subHead = (t: string) => h("div", { class: "adv-subhead" }, t);
+
   // ---- Forces ----
-  const { section: forcesSection, body: forcesBody } = makeSection("Forces");
+  const forcesBody = h("div", { class: "adv-group" });
+  advBody.appendChild(subHead("Forces"));
+  advBody.appendChild(forcesBody);
   forcesBody.appendChild(
     makeSlider("Centre force", state.settings.centerForce, (v) => {
       state.settings.centerForce = v;
@@ -293,10 +304,9 @@ export function createControls(
       saveState(state);
     }),
   );
-  parent.appendChild(forcesSection);
 
-  // ---- Groups ----
-  const { section: groupsSection, body: groupsBody } = makeSection("Groups");
+  // ---- Group types ----
+  const { section: groupsSection, body: groupsBody } = makeSection("Group Types");
 
   function renderGroups() {
     clear(groupsBody);
@@ -345,8 +355,10 @@ export function createControls(
   renderGroups();
   parent.appendChild(groupsSection);
 
-  // ---- Display ----
-  const { section: displaySection, body: displayBody } = makeSection("Display");
+  // ---- Display (inside Advanced) ----
+  const displayBody = h("div", { class: "adv-group" });
+  advBody.appendChild(subHead("Display"));
+  advBody.appendChild(displayBody);
   displayBody.appendChild(
     makeSlider("Node size", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;
@@ -387,7 +399,7 @@ export function createControls(
   });
   displayBody.appendChild(resetBtn);
 
-  parent.appendChild(displaySection);
+  parent.appendChild(advSection);
 
   // Suppress unused-import warning for typeLabel (kept for future use in group labels)
   void typeLabel;
@@ -398,6 +410,9 @@ export function createControls(
     },
     activeRules() {
       return activeRulesFromSpecs(state.groups);
+    },
+    advancedContainer() {
+      return advExtras;
     },
   };
 }

@@ -374,3 +374,35 @@ What / why
 - Per Nathan: replaced the random quips with 11 warm lines about what the map is doing ("Gathering the coalitions…", "Getting the latest events…", …), shown in order instead of shuffled.
 - Loading lines edited per Nathan: "Checking in on projects…" (no "taking root"), dropped "Tracing the threads…", "Locating the towns across Massachusetts…", plus 4 new ones (14 total).
 - Made the new lines literal where possible (next meetings, newest member groups, this week's events, connecting organizations that work together).
+
+## 2026-10-01 — State expansion pilot: Vermont
+- research/state-pilot/INSTRUCTIONS.md: per-state agent brief (coalitions, members from their own pages, other key orgs, upcoming events/projects/actions; a source on every fact; output in data.json shape).
+- Ran one Sonnet research agent for Vermont (Nathan asked to prioritize VT over the planned RI/NY pilot): ~40 min, ~200 tool calls, ~300k tokens. Output research/state-pilot/vt.json: 6 coalitions, 49 orgs, 18 events, 14 projects, 6 actions, 75 memberships.
+- Checked: schema/ids/edges/sources all consistent; spot-checked 5 facts against live pages (Common Agenda 22/22 partners, T4VT members, EAN member sample 11/11, VNRC + VCV event dates/places) — all matched.
+- Cleaned: blanked placeholder last_activity dates (24), removed research notes from event locations; util.ts relTime shows "unknown" for blank dates. Tightened INSTRUCTIONS accordingly.
+- Gaps: Energy Action Network has ~80 nonprofit members, only 28 linked; VECAN's 100+ town energy committees mostly missing (map not readable); #ActOnClimateVT has no member list. Site is still MA-branded and its forms are MA's; a state switcher is not built.
+
+## 2026-10-01 — Map switcher (MA / VT / USA)
+- src/maps.ts: map registry (ma = live sheet + snapshot, vt = public/maps/vt.json, us = MA + VT merged). ?map=vt|us in the URL; plain link is always MA.
+- topbar: title shows the map name; right-click (or long-press on phones) opens "Switch map" (Massachusetts / Vermont / USA).
+- Non-MA maps have no forms yet: "Edit this…" becomes "Suggest a correction" → feedback form; + menu offers feedback only. Zip filter and town/county outlines are MA-only (hidden on VT); MA town names aren't matched for locations in other states; geographic view opens on the map's own groups; place search box follows the map.
+- Tested in Playwright: MA 8 coalitions/150 orgs, VT 6/49, USA 14/199; menu switches and URL updates; no page errors.
+- Gap filling (Sonnet research agents, a source on every field):
+  - Vermont: +1 coalition (Vermont EJ Network, no public member list), 49 → 100 orgs (+23 EAN non-profit members, +17 town energy committees, +9 350Vermont nodes, VT Racial Justice Alliance, REJOICE), +9 events, lat/lng on all 24 physical events, 17 real last_activity dates. Copied to public/maps/vt.json.
+  - Massachusetts: 114 descriptions, 114 geographic focus, 52 types, 57 websites, Springfield Climate Justice Coalition description; merged into public/data.json only where blank. Still missing: 36 descriptions (34 never researched: the session's 200-web-search cap ran out), 87 types, 43 websites; Cross Campus Climate Coalition not found.
+  - Spot-checked against live pages: Green Cambridge, JCAN-MA (founding year + activities) — both matched.
+- Apps Script: "Fill in missing details (logos, websites, descriptions) from GitHub" now also fills blank description / type ("unknown" counts as blank) / geographic_focus for orgs and blank coalition descriptions; never overwrites. Test added.
+
+## 2026-10-01 — Scheduled continuation
+- research/BACKLOG.md: ordered backlog (MA/VT data gaps, next states NH→ME→RI→CT→NY→NJ→PA, site items). A scheduled task works the first unchecked item each run and pushes a branch for review (never merges).
+- topbar: switcher lists every map in MAPS (USA last), so adding a state only touches maps.ts + search.ts.
+
+## 2026-10-01 — Missed change requests (found by re-reading the 2026-10-01 change-log tab)
+- I had deleted these doc lines earlier without building them; now done:
+  - Sidebar header "Map settings" stays at the top while scrolling, with the Hide button beside it.
+  - "Groups" section renamed "Group Types".
+  - "Advanced display settings" section, closed by default, last in the panel: Forces, Display (node size, link thickness, Animate, Reset) and the org-to-org connections toggle.
+  - Legend moved from the sidebar onto the map (bottom-left, click "Legend" to fold); adds the org-to-org line.
+  - "Last active" → "Last updated" in the details panel and tooltips (was ticked in the doc but never changed).
+- Audit of the rest of that tab: everything else is built, except voting-district outlines (no data source yet) and the form item "Organization => project, branching" (unclear what's wanted). The long "Which organization?" dropdown was solved with typed names + fuzzy matching rather than the suggested org numbers.
+- Tested in Playwright: sections order/titles, Advanced closed by default, header visible after scrolling, Hide still works, no page errors.

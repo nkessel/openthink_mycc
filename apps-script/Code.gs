@@ -230,7 +230,7 @@ function onOpen() {
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
     .addItem('Switch forms to typed answers (orgs + topics)', 'typeAnswersOnForms')
     .addItem('Show form + data links', 'showLinks')
-    .addItem('Fill in missing logos + websites from GitHub', 'fillLogosFromGitHub')
+    .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
     .addToUi();
 }
 
@@ -242,7 +242,7 @@ function onOpen() {
 function fillLogosFromGitHub() {
   var data = JSON.parse(UrlFetchApp.fetch(SEED_URL).getContentText());
   var result = fillLogos_(data);
-  var msg = 'Filled ' + result.logos + ' logo(s) and ' + result.websites + ' website(s) from GitHub.';
+  var msg = 'Filled ' + result.logos + ' logo(s), ' + result.websites + ' website(s) and ' + (result.details || 0) + ' other detail(s) (descriptions, types, focus) from GitHub. Only empty cells were filled.';
   try { SpreadsheetApp.getUi().alert(msg); } catch (e) { /* run from the editor */ }
   return msg;
 }
@@ -261,6 +261,7 @@ function fillCoalitionLogos_(data, counts) {
     var updates = {};
     if (!str_(r.logo) && src.logo) { updates.logo = src.logo; counts.logos++; }
     if (!str_(r.website) && src.website) { updates.website = src.website; counts.websites++; }
+    if (!str_(r.description) && src.description) { updates.description = src.description; counts.details = (counts.details || 0) + 1; }
     if (!Object.keys(updates).length) return;
     writeFields_(sheet, table.headers, r._row, updates);
     logChange_('', 'Fill from GitHub', 'updated', '', 'coalition', str_(r.id), str_(r.name),
@@ -273,7 +274,7 @@ function fillLogos_(data) {
   var table = readTable_(sheet);
   var byId = {};
   data.organizations.forEach(function (o) { byId[o.id] = o; });
-  var counts = { logos: 0, websites: 0 };
+  var counts = { logos: 0, websites: 0, details: 0 };
   fillCoalitionLogos_(data, counts);
   table.rows.forEach(function (r) {
     var src = byId[str_(r.id)];
@@ -281,6 +282,10 @@ function fillLogos_(data) {
     var updates = {};
     if (!str_(r.logo) && src.logo) { updates.logo = src.logo; counts.logos++; }
     if (!str_(r.website) && src.website) { updates.website = src.website; counts.websites++; }
+    // Researched details (research/ma-gaps): only into empty cells, never over what people entered.
+    if (!str_(r.description) && src.description) { updates.description = src.description; counts.details++; }
+    if ((!str_(r.type) || str_(r.type) === 'unknown') && src.type && src.type !== 'unknown') { updates.type = src.type; counts.details++; }
+    if (!str_(r.geographic_focus) && src.geographic_focus) { updates.geographic_focus = src.geographic_focus; counts.details++; }
     if (!Object.keys(updates).length) return;
     writeFields_(sheet, table.headers, r._row, updates);
     logChange_('', 'Fill from GitHub', 'updated', '', 'organization', str_(r.id), str_(r.name),

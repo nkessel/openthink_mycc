@@ -1,6 +1,7 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { DataFile, GraphNode } from "./types";
+import { currentMap } from "./maps";
 import { h } from "./dom";
 import { initials, typeLabel } from "./util";
 import { allEvents, allProjects, type Owner } from "./owners";
@@ -24,6 +25,14 @@ const MA_BOUNDS: L.LatLngBoundsExpression = [
 ];
 
 export function createGeographicView(data: DataFile, cb: GeoCallbacks): GeographicView {
+  /** Massachusetts opens on the state; other maps open on wherever their groups are. */
+  function startBounds(): L.LatLngBoundsExpression {
+    if (currentMap.id === "ma") return MA_BOUNDS;
+    const pts = [...data.coalitions, ...data.organizations]
+      .filter((n) => !(n as { remote?: boolean }).remote && Number.isFinite(n.lat) && Number.isFinite(n.lng) && (n.lat !== 0 || n.lng !== 0))
+      .map((n) => [n.lat, n.lng] as [number, number]);
+    return pts.length ? L.latLngBounds(pts).pad(0.08) : MA_BOUNDS;
+  }
   const wrap = h("div", { class: "geo-wrap" });
   const mapEl = h("div", { class: "geo-map" });
   wrap.appendChild(mapEl);
@@ -88,7 +97,8 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   }
   boundsBox.appendChild(boundRow);
   boundsBox.appendChild(h("div", { class: "geo-note" }, "Voting districts aren't on the map yet."));
-  panel.insertBefore(boundsBox, nearBtn);
+  // The town/county outlines are Massachusetts-only for now.
+  if (currentMap.id === "ma" || currentMap.id === "us") panel.insertBefore(boundsBox, nearBtn);
 
   const inViewBtn = h("button", { class: "geo-near", type: "button" }, "Show list of events in view");
   panel.insertBefore(inViewBtn, nearBtn);
@@ -179,7 +189,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   function ensureMap() {
     if (map) return map;
     map = L.map(mapEl, { zoomControl: true, attributionControl: true });
-    map.fitBounds(MA_BOUNDS, { padding: [20, 20] });
+    map.fitBounds(startBounds(), { padding: [20, 20] });
     // OpenStreetMap's own tiles need no API key (CARTO's now do). They're light, so CSS
     // (.geo-view .leaflet-tile-pane) darkens them to match the site.
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

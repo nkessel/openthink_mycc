@@ -1,0 +1,948 @@
+[
+ {
+  "id": "boston_catholic_climate_movement",
+  "name": "Boston Catholic Climate Movement",
+  "abbrev": "BCCM",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "boston_climate_action_network",
+  "name": "Boston Climate Action Network",
+  "abbrev": "BostonCAN",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "cape_downwinders",
+  "name": "Cape Downwinders",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.003,
+   -70.667
+  ]
+ },
+ {
+  "id": "cero_cooperative",
+  "name": "Cooperative, Energy, Recycling, and Organics Cooperative",
+  "abbrev": "CERO Co-op",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.331,
+   -71.067
+  ]
+ },
+ {
+  "id": "charles_river_watershed_association",
+  "name": "Charles River Watershed Association",
+  "abbrev": "CRWA",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.355,
+   -71.063
+  ]
+ },
+ {
+  "id": "citizens_awareness_network",
+  "name": "Citizens Awareness Network",
+  "abbrev": "CAN",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.674,
+   -72.882
+  ]
+ },
+ {
+  "id": "the_climate_reality_project_massachusetts_southcoast",
+  "name": "The Climate Reality Project Massachusetts Southcoast",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   41.636,
+   -70.934
+  ]
+ },
+ {
+  "id": "the_climate_reality_project_boston_metro_chapter",
+  "name": "The Climate Reality Project Boston Metro Chapter",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "co_op_power_inc",
+  "name": "Co-op Power, Inc",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.33,
+   -72.677
+  ]
+ },
+ {
+  "id": "community_labor_united",
+  "name": "Community Labor United",
+  "abbrev": "CLU",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.358,
+   -71.062
+  ]
+ },
+ {
+  "id": "concerned_citizens_of_franklin_county",
+  "name": "Concerned Citizens of Franklin County",
+  "abbrev": "CCFC",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.588,
+   -72.6
+  ]
+ },
+ {
+  "id": "environmental_league_of_ma",
+  "name": "Environmental League of Massachusetts",
+  "abbrev": "ELM",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Environmental Justice Legislative Table"
+  ],
+  "near": [
+   42.358,
+   -71.059
+  ]
+ },
+ {
+  "id": "faith_science_alliance",
+  "name": "Faith Science Alliance",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "fccpr_climate_crisis_task_force",
+  "name": "Franklin County Continuing the Political Revolution Climate Crisis Task Force",
+  "abbrev": "Franklin County CPR Climate Crisis Task Force",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.588,
+   -72.6
+  ]
+ },
+ {
+  "id": "first_parish_in_concord_environmental_team",
+  "name": "First Parish in Concord  Environmental Team",
+  "abbrev": "First Parish in Concord ET",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.46,
+   -71.349
+  ]
+ },
+ {
+  "id": "greater_boston_physicians_for_social_responsibility",
+  "name": "Greater Boston Physicians for Social Responsibility",
+  "abbrev": "Greater Boston PSR",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.374,
+   -71.11
+  ]
+ },
+ {
+  "id": "green_cambridge",
+  "name": "Green Cambridge",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.374,
+   -71.11
+  ]
+ },
+ {
+  "id": "green_energy_consumers_alliance",
+  "name": "Green Energy Consumers Alliance",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Environmental Justice Legislative Table"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "green_newton",
+  "name": "Green Newton",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.337,
+   -71.209
+  ]
+ },
+ {
+  "id": "hands_across_the_river_coalition_inc",
+  "name": "Hands Across the River Coalition, Inc.",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "islamic_society_of_boston_cultural_center",
+  "name": "Islamic Society of Boston Cultural Center",
+  "abbrev": "ISCBCC",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.331,
+   -71.093
+  ]
+ },
+ {
+  "id": "kearsarge_energy",
+  "name": "Kearsarge Energy",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.363,
+   -71.143
+  ]
+ },
+ {
+  "id": "longmeadow_pipeline_awareness_group",
+  "name": "Longmeadow Pipeline Awareness Group",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.05,
+   -72.572
+  ]
+ },
+ {
+  "id": "mass_audubon",
+  "name": "Massachusetts Audubon Society",
+  "abbrev": "Mass Audubon",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.41,
+   -71.328
+  ]
+ },
+ {
+  "id": "mass_divest_coalition",
+  "name": "Mass Divest Coalition",
+  "abbrev": "",
+  "website": "https://massdivest.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "massachusetts_peace_action",
+  "name": "Massachusetts Peace Action",
+  "abbrev": "MAPA",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.391,
+   -71.121
+  ]
+ },
+ {
+  "id": "mount_grace_land_conservation_trust",
+  "name": "Mount Grace Land Conservation Trust",
+  "abbrev": "Mount Grace",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.623,
+   -72.219
+  ]
+ },
+ {
+  "id": "no_fracked_gas_in_mass",
+  "name": "No Fracked Gas in Mass",
+  "abbrev": "NFGiM",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.276,
+   -71.166
+  ]
+ },
+ {
+  "id": "no_sharon_gas_pipeline_clean_energy_now",
+  "name": "No Sharon Gas Pipeline | Clean Energy Now",
+  "abbrev": "",
+  "website": "https://nosharongaspipeline.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.123,
+   -71.179
+  ]
+ },
+ {
+  "id": "october_engineering_llc",
+  "name": "October Engineering LLC",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "passive_house_massachusetts",
+  "name": "Passive House Massachusetts",
+  "abbrev": "PHMass",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.359,
+   -71.053
+  ]
+ },
+ {
+  "id": "pilgrim_coalition",
+  "name": "Pilgrim Coalition",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.027,
+   -70.677
+  ]
+ },
+ {
+  "id": "pilgrim_watch",
+  "name": "Pilgrim Watch",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.027,
+   -70.677
+  ]
+ },
+ {
+  "id": "progressive_democrats_of_mass",
+  "name": "Progressive Democrats of Mass",
+  "abbrev": "PDM",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.358,
+   -71.062
+  ]
+ },
+ {
+  "id": "quincy_climate_action_network",
+  "name": "Quincy Climate Action Network",
+  "abbrev": "QCAN",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.253,
+   -71.002
+  ]
+ },
+ {
+  "id": "resonant_energy",
+  "name": "Resonant Energy",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.352,
+   -71.06
+  ]
+ },
+ {
+  "id": "restore_the_north_woods",
+  "name": "RESTORE: The North Woods",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.374,
+   -71.11
+  ]
+ },
+ {
+  "id": "solar_design_associates",
+  "name": "Solar Design Associates",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.537,
+   -71.575
+  ]
+ },
+ {
+  "id": "solstice_initiative",
+  "name": "Solstice Initiative",
+  "abbrev": "",
+  "website": "https://solstice.us/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "south_coast_neighbors_united",
+  "name": "South Coast Neighbors United",
+  "abbrev": "",
+  "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   41.633,
+   -70.933
+  ]
+ },
+ {
+  "id": "sunwealth",
+  "name": "Sunwealth",
+  "abbrev": "",
+  "website": "https://www.sunwealth.com/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.392,
+   -71.123
+  ]
+ },
+ {
+  "id": "sustainable_sharon_coalition",
+  "name": "Sustainable Sharon Coalition",
+  "abbrev": "",
+  "website": "https://www.sustainablesharon.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.123,
+   -71.179
+  ]
+ },
+ {
+  "id": "sustainable_sudbury",
+  "name": "Sustainable Sudbury",
+  "abbrev": "",
+  "website": "https://www.sustainablesudbury.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.383,
+   -71.416
+  ]
+ },
+ {
+  "id": "take_back_the_grid",
+  "name": "Take Back the Grid",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "upper_cape_women_s_coalition",
+  "name": "Upper Cape Women's Coalition",
+  "abbrev": "UCCW",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   41.669,
+   -70.549
+  ]
+ },
+ {
+  "id": "vineyard_power_cooperative",
+  "name": "Vineyard Power Cooperative",
+  "abbrev": "",
+  "website": "https://www.vineyardpower.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   41.445,
+   -70.619
+  ]
+ },
+ {
+  "id": "watertown_citizens_for_peace_justice_and_the_environment",
+  "name": "Watertown Citizens for Peace, Justice, and the Environment",
+  "abbrev": "",
+  "website": "https://watertowncitizens.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.371,
+   -71.183
+  ]
+ },
+ {
+  "id": "wendell_state_forest_alliance",
+  "name": "Wendell State Forest Alliance",
+  "abbrev": "WSFA",
+  "website": "https://www.wendellforest.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.562,
+   -72.406
+  ]
+ },
+ {
+  "id": "xr_boston",
+  "name": "Extinction Rebellion Boston",
+  "abbrev": "XR Boston",
+  "website": "https://xrboston.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "league_of_women_voters_of_massachusetts",
+  "name": "League of Women Voters of Massachusetts",
+  "abbrev": "LWVMA",
+  "website": "https://lwvma.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.364,
+   -71.06
+  ]
+ },
+ {
+  "id": "neighbor_to_neighbor_massachusetts",
+  "name": "Neighbor to Neighbor Massachusetts",
+  "abbrev": "N2N",
+  "website": "https://n2nma.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Springfield Climate Justice Coalition",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.102,
+   -72.589
+  ]
+ },
+ {
+  "id": "community_action_works",
+  "name": "Community Action Works",
+  "abbrev": "",
+  "website": "https://communityactionworks.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Environmental Justice Legislative Table",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.357,
+   -71.058
+  ]
+ },
+ {
+  "id": "21st_century_schools_fund",
+  "name": "21st Century Schools Fund",
+  "abbrev": "",
+  "website": "https://www.21csf.org/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "acadia_center",
+  "name": "Acadia Center",
+  "abbrev": "",
+  "website": "https://acadiacenter.org/",
+  "coalitions": [],
+  "near": [
+   42.358,
+   -71.059
+  ]
+ },
+ {
+  "id": "aft_mass",
+  "name": "American Federation of Teachers Massachusetts",
+  "abbrev": "AFT-Mass",
+  "website": "https://ma.aft.org/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "alliance_for_business_leadership",
+  "name": "Alliance for Business Leadership",
+  "abbrev": "ABL",
+  "website": "https://www.ablmass.org/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "center_for_green_schools_at_us_gbc",
+  "name": "Center for Green Schools at the U.S. Green Building Council",
+  "abbrev": "Center for Green Schools at US GBC",
+  "website": "https://www.centerforgreenschools.org/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "chinese_progressive_association",
+  "name": "Chinese Progressive Association",
+  "abbrev": "CPA",
+  "website": "https://cpaboston.org/",
+  "coalitions": [
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.349,
+   -71.063
+  ]
+ },
+ {
+  "id": "citizens_climate_lobby",
+  "name": "Citizens Climate Lobby",
+  "abbrev": "CCL",
+  "website": "",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "citizens_climate_lobby_boston",
+  "name": "Citizens Climate Lobby",
+  "abbrev": "CCL",
+  "website": "",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "citizens_climate_lobby_south_shore_cape_and_islands",
+  "name": "Citizens Climate Lobby",
+  "abbrev": "CCL",
+  "website": "",
+  "coalitions": [],
+  "near": [
+   42.083,
+   -70.602
+  ]
+ },
+ {
+  "id": "citizens_climate_lobby_north_shore_chapter",
+  "name": "Citizens' Climate Lobby - North Shore Chapter",
+  "abbrev": "CCL North Shore",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.52,
+   -70.897
+  ]
+ },
+ {
+  "id": "collaborative_for_high_performance_schools",
+  "name": "Collaborative for High Performance Schools",
+  "abbrev": "CHPS",
+  "website": "https://chps.net/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "cooler_communities",
+  "name": "Cooler Communities",
+  "abbrev": "",
+  "website": "https://coolercommunities.org/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "franklin_county_and_north_quabbin_community_health_improveme",
+  "name": "Franklin County & North Quabbin Community Health Improvement Planning Network",
+  "abbrev": "FRCOG CHIP",
+  "website": "https://frcog.org/",
+  "coalitions": [],
+  "near": [
+   42.588,
+   -72.6
+  ]
+ },
+ {
+  "id": "green_weymouth",
+  "name": "Green Weymouth",
+  "abbrev": "",
+  "website": "https://greenweymouth.com/",
+  "coalitions": [],
+  "near": [
+   42.222,
+   -70.939
+  ]
+ },
+ {
+  "id": "ma_senior_action",
+  "name": "Massachusetts Senior Action Council",
+  "abbrev": "MA Senior Action",
+  "website": "https://www.masssenioraction.org/",
+  "coalitions": [
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.278,
+   -71.039
+  ]
+ },
+ {
+  "id": "mass_facilities_administrators_association",
+  "name": "Mass Facilities Administrators Association",
+  "abbrev": "MFAA",
+  "website": "https://massfacilities.com/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "massachusetts_jobs_with_justice",
+  "name": "Massachusetts Jobs with Justice",
+  "abbrev": "Mass JWJ",
+  "website": "https://www.massjwj.net/",
+  "coalitions": [
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.322,
+   -71.109
+  ]
+ },
+ {
+  "id": "metropolitan_area_planning_council",
+  "name": "Metropolitan Area Planning Council",
+  "abbrev": "MAPC",
+  "website": "https://www.mapc.org/",
+  "coalitions": [],
+  "near": [
+   42.355,
+   -71.061
+  ]
+ },
+ {
+  "id": "mtacan",
+  "name": "Massachusetts Teachers Association Climate Action Network",
+  "abbrev": "MTACAN",
+  "website": "https://massteacher.org/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "northeast_climate_justice_research_collaborative",
+  "name": "Northeast Climate Justice Research Collaborative",
+  "abbrev": "CJ-JT Collaborative",
+  "website": "https://www.umb.edu/ssl/",
+  "coalitions": [],
+  "near": [
+   42.374,
+   -71.11
+  ]
+ },
+ {
+  "id": "pioneer_valley_asthma_coalition",
+  "name": "Pioneer Valley Asthma Coalition",
+  "abbrev": "PVAC",
+  "website": "https://www.pvasthmacoalition.org/",
+  "coalitions": [],
+  "near": [
+   42.101,
+   -72.586
+  ]
+ },
+ {
+  "id": "sustainable_business_network_of_massachusetts",
+  "name": "Sustainable Business Network of Massachusetts",
+  "abbrev": "SBN",
+  "website": "https://www.sbnmass.org/",
+  "coalitions": [],
+  "near": [
+   42.366,
+   -71.103
+  ]
+ },
+ {
+  "id": "undauntedk12",
+  "name": "UndauntedK12",
+  "abbrev": "",
+  "website": "https://www.undauntedk12.org/",
+  "coalitions": [],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ }
+]

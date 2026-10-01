@@ -6,7 +6,7 @@ export interface Sidebar {
   getVisibleCoalitions(): Set<string>;
   /** Extra filters, right under the coalitions list. */
   filtersContainer(): HTMLElement;
-  /** A mount point below the coalitions list, above the legend. */
+  /** A mount point below the coalitions list. */
   controlsContainer(): HTMLElement;
   element(): HTMLElement;
 }
@@ -25,7 +25,9 @@ export function setupSidebarToggle(view: HTMLElement, aside: HTMLElement, graphA
 
   const hideBtn = h("button", { class: "sidebar-hide", type: "button", "aria-label": "Hide panel", title: "Hide panel" }, "‹ Hide");
   const showBtn = h("button", { class: "sidebar-show", type: "button", "aria-label": "Show filters and settings", title: "Show filters and settings" }, "☰ Filters");
-  aside.prepend(hideBtn);
+  // A header that stays at the top while the panel scrolls, with the hide button always next to it.
+  const head = h("div", { class: "sidebar-head" }, h("span", { class: "sidebar-title" }, "Map settings"), hideBtn);
+  aside.prepend(head);
   graphArea.appendChild(showBtn);
 
   const set = (collapsed: boolean, remember: boolean) => {
@@ -64,11 +66,9 @@ export function createSidebar(
   const coalitionsBlock = h("div", { class: "coalitions-block" });
   const filtersBlock = h("div", { class: "filters-block" });
   const controlsBlock = h("div", { class: "controls-block" });
-  const legendBlock = h("div", { class: "legend-block" });
   aside.appendChild(coalitionsBlock);
   aside.appendChild(filtersBlock);
   aside.appendChild(controlsBlock);
-  aside.appendChild(legendBlock);
 
   function renderCoalitions() {
     clear(coalitionsBlock);
@@ -114,48 +114,7 @@ export function createSidebar(
     coalitionsBlock.appendChild(actions);
   }
 
-  function renderLegend() {
-    clear(legendBlock);
-    const legend = h("div", { class: "legend" });
-    legend.appendChild(h("h3", {}, "Legend"));
-    legend.appendChild(
-      h(
-        "div",
-        { class: "row" },
-        h("div", {
-          class: "swatch",
-          style: "width:22px;height:22px",
-        }),
-        h("div", {}, "Coalition (size ∝ member groups)"),
-      ),
-    );
-    legend.appendChild(
-      h(
-        "div",
-        { class: "row" },
-        h("div", {
-          class: "swatch",
-          style: "width:10px;height:10px",
-        }),
-        h("div", {}, "Member organization"),
-      ),
-    );
-    legend.appendChild(
-      h(
-        "div",
-        { class: "row" },
-        h("div", {
-          style:
-            "width:24px;height:1px;background:rgba(255,255,255,0.3);align-self:center",
-        }),
-        h("div", {}, "Membership edge"),
-      ),
-    );
-    legendBlock.appendChild(legend);
-  }
-
   renderCoalitions();
-  renderLegend();
 
   return {
     setVisibleCoalitions(ids) {
@@ -175,4 +134,27 @@ export function createSidebar(
       return aside;
     },
   };
+}
+
+/** The key to the network map, shown on the map itself (bottom-left); click its title to fold it. */
+export function createMapLegend(parent: HTMLElement): HTMLElement {
+  const legend = h("div", { class: "map-legend open" });
+  const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": "true" }, "Legend");
+  head.addEventListener("click", () => {
+    const open = !legend.classList.contains("open");
+    legend.classList.toggle("open", open);
+    head.setAttribute("aria-expanded", String(open));
+  });
+  const row = (mark: HTMLElement, text: string) => h("div", { class: "row" }, mark, h("span", {}, text));
+  legend.append(
+    head,
+    h("div", { class: "map-legend-body" },
+      row(h("span", { class: "swatch", style: "width:18px;height:18px" }), "Coalition (size = member groups)"),
+      row(h("span", { class: "swatch", style: "width:9px;height:9px" }), "Organization"),
+      row(h("span", { class: "line" }), "Member of a coalition"),
+      row(h("span", { class: "line org" }), "Orgs that work together"),
+    ),
+  );
+  parent.appendChild(legend);
+  return legend;
 }
