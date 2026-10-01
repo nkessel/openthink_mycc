@@ -358,3 +358,9 @@ What / why
 - graph.ts enterFocus: for a coalition, member orgs are pinned (fx/fy) on a ring outside the items ring (memberR), shown at full opacity (.member-ring) instead of greyed; released on exit/refocus. Other nodes are pushed out past memberR; zoom fit uses memberR.
 - Tested in Playwright with Mass Power Forward (104 members): ring renders, no page errors, class cleared on exit.
 - Uncertainty: with 100+ members, org names are tiny at the fitted zoom (logos show); zoom in to read.
+
+## 2026-10-01 — Apps Script go-live (with Nathan's OK) + link-writer fix
+- In the browser: replaced Code.gs in the Apps Script project with the merged version, saved, deployed as version 5 on the existing web app (URL unchanged).
+- Ran "Set up sheet + forms": form upgrades + dropdown refresh ran, then failed at the final writeLinks_ step with a transient FormApp.openById "Unexpected error". Re-ran "Show form + data links" OK, then "Switch forms to typed answers" (8 questions changed), then "Replace projects, events and actions from the repo" (154 projects, 121 events, 68 actions).
+- Bug found: after the typed-answers switch, "Show form + data links" failed ("Invalid conversion for item type: TEXT") because siteFormConfig_ assumed dropdowns. Fixed to handle TEXT/PARAGRAPH/CHECKBOX/MULTIPLE_CHOICE; added openForm_ retry for the transient openById error. New test covers both.
+- Follow-up: the typed-answers swap changed some entry ids, so src/forms.config.ts needs the new ids from Start Here.

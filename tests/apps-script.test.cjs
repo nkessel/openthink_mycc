@@ -368,3 +368,47 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.ok(JSON.stringify(data()).includes("Ghost event"), "approved once the org is fixed");
   console.log("typed answers (orgs + topics + unmatched log) OK");
 }
+
+// 7. site form config: entry ids come out for typed (TEXT) questions too, and a flaky openById is retried
+{
+  const T = { LIST: "LIST", TEXT: "TEXT", CHECKBOX: "CHECKBOX", PARAGRAPH_TEXT: "PARAGRAPH_TEXT", MULTIPLE_CHOICE: "MULTIPLE_CHOICE" };
+  let n = 100;
+  const mkItem = (title, type) => {
+    const id = n++;
+    const resp = () => ({ id });
+    const choice = { getValue: () => "x" };
+    return {
+      getTitle: () => title, getType: () => type,
+      asListItem: () => { if (type !== T.LIST) throw new Error("Invalid conversion for item type: " + type); return { createResponse: resp, getChoices: () => [choice] }; },
+      asTextItem: () => ({ createResponse: resp }),
+      asParagraphTextItem: () => ({ createResponse: resp }),
+      asCheckboxItem: () => ({ createResponse: resp, getChoices: () => [choice] }),
+      asMultipleChoiceItem: () => ({ createResponse: resp, getChoices: () => [choice] }),
+    };
+  };
+  const mkForm = (items) => ({
+    getItems: () => items,
+    getPublishedUrl: () => "https://form",
+    createResponse: () => { let id; const r = { withItemResponse: (x) => { id = x.id; return r; }, toPrefilledUrl: () => `https://form?usp=pp_url&entry.${id}=x` }; return r; },
+  });
+  const forms = {
+    o: mkForm([mkItem(Q.whichOrg, T.TEXT)]),
+    e: mkForm([mkItem(Q.hostOrg, T.TEXT), mkItem(Q.coalition, T.LIST), mkItem(Q.whichEvent, T.LIST)]),
+    p: mkForm([mkItem(Q.hostOrg, T.TEXT), mkItem(Q.coalition, T.LIST), mkItem(Q.whichProject, T.LIST)]),
+    a: mkForm([mkItem(Q.hostOrg, T.TEXT), mkItem(Q.coalition, T.LIST), mkItem(Q.whichAction, T.LIST)]),
+    f: mkForm([]),
+  };
+  let flaky = 2;
+  ctx.FormApp = { ItemType: T, openById: (id) => { if (id === "e" && flaky-- > 0) throw new Error("Unexpected error while getting the method or property openById on object FormApp."); return forms[id]; } };
+  ctx.Utilities = { sleep: () => {} };
+  Object.assign(props, { FORM_ORG: "o", FORM_EVENT: "e", FORM_PROJECT: "p", FORM_ACTION: "a", FORM_FEEDBACK: "f" });
+  const cfg = J(G("siteFormConfig_")());
+  assert.match(cfg.org.orgEntry, /^entry\.\d+$/);
+  for (const k of ["event", "project", "action"]) {
+    assert.match(cfg[k].hostOrgEntry, /^entry\.\d+$/, k + " host org (typed)");
+    assert.match(cfg[k].coalitionEntry, /^entry\.\d+$/);
+    assert.match(cfg[k].itemEntry, /^entry\.\d+$/);
+  }
+  assert.equal(flaky, -1, "retried past two transient failures");
+  console.log("site form config with typed questions OK");
+}
