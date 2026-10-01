@@ -17,12 +17,22 @@ import { setupSidebarToggle } from "./sidebar";
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
 import { rollRecurringForward } from "./recurrence";
 
-/** Fade out the splash that index.html shows while the data and map load. */
+// The splash in index.html shows a progress bar; these tell it how far along we really are.
+type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDone?: () => void };
+const bootWin = window as BootWindow;
+function bootProgress(p: number, label?: string) {
+  bootWin.bootProgress?.(p, label);
+}
+
+/** Fill the bar, then fade out the splash that index.html shows while the data and map load. */
 function hideBoot() {
   const el = document.getElementById("boot");
   if (!el) return;
-  el.classList.add("done");
-  setTimeout(() => el.remove(), 600);
+  bootWin.bootDone?.();
+  setTimeout(() => {
+    el.classList.add("done");
+    setTimeout(() => el.remove(), 600);
+  }, 250);
 }
 
 async function main() {
@@ -32,6 +42,7 @@ async function main() {
   // Fetch data
   let data: DataFile;
   try {
+    bootProgress(0.03, "Fetching the latest data\u2026");
     data = await loadData();
   } catch (err) {
     createTopbar(app, { onTabChange: () => {} });
@@ -50,6 +61,7 @@ async function main() {
     return;
   }
 
+  bootProgress(0.8, "Drawing the map\u2026");
   await attachThoughts(data);
   // Recurring events carry one stored date; show their next occurrence.
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
@@ -139,6 +151,7 @@ async function main() {
     },
   });
   graphApi.setVisibleCoalitions(sidebar.getVisibleCoalitions());
+  bootProgress(0.9, "Setting up the tabs\u2026");
 
   // Filters that aren't coalitions go right under the coalition list.
   sidebar.filtersContainer().appendChild(graphApi.orgLinkToggle());
@@ -281,7 +294,7 @@ async function loadData(): Promise<DataFile> {
     try {
       const res = await fetch(url, { signal: ctrl.signal });
       if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
-      const d = (await res.json()) as DataFile;
+      const d = JSON.parse(await readWithProgress(res)) as DataFile;
       if (!Array.isArray(d.coalitions) || !Array.isArray(d.organizations)) throw new Error("bad data");
       return d;
     } finally {
@@ -296,6 +309,30 @@ async function loadData(): Promise<DataFile> {
     }
   }
   return get(SNAPSHOT_URL, 15000);
+}
+
+/** Read a response body, reporting download progress to the splash when the size is known. */
+async function readWithProgress(res: Response): Promise<string> {
+  const total = Number(res.headers.get("content-length")) || 0;
+  if (!res.body || !total) return res.text();
+  const reader = res.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let got = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    got += value.length;
+    // content-length can be the compressed size, so cap the share this step may claim
+    bootProgress(0.05 + Math.min(1, got / total) * 0.7);
+  }
+  const all = new Uint8Array(got);
+  let at = 0;
+  for (const c of chunks) {
+    all.set(c, at);
+    at += c.length;
+  }
+  return new TextDecoder().decode(all);
 }
 
 /**
