@@ -341,3 +341,5 @@ What / why
 - Events / Projects / (new) Actions pages show the org's logo instead of initials when it has one.
 - New "Actions" tab (actions.ts): search, Take action / Volunteer roles filter, skills filter, same cards.
 - Why: Nathan's change-request list in the Google Doc.
+- "Update this info" links are now a real button, "Edit this event / project / action" (notice.ts editBtn + CSS), shown under the warning / verified note. Why: Nathan asked for a button.
+- Google Doc tab "current Map V1 Change request log": deleted every item now implemented (loading screen, weight by connections, arrows toggle, show-text toggle, which-org / works-with typing, multi-select org type, action autofill, database id in org names — the id only appears on a duplicate name now, and the dropdown is gone with typed answers).

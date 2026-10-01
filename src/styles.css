@@ -2006,3 +2006,12 @@ text.sat-more { fill: var(--text-dim); }
 .detail-links { display:flex; flex-wrap:wrap; gap:4px 0; margin:10px 0; }
 .detail-map-btn { margin-top:12px; appearance:none; border:1px solid var(--border); background:var(--bg-elev-2); color:var(--text); border-radius:999px; padding:7px 14px; font:inherit; cursor:pointer; }
 .detail-map-btn:hover { border-color:var(--accent); }
+
+/* "Edit this event / project / action": a real button, below the warning text */
+.stale-notice .edit-btn, .stale-notice.verified .edit-btn {
+  display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; line-height: 1.2; text-decoration: none; white-space: nowrap;
+  color: #0f172a; background: #38bdf8; border: 1px solid #38bdf8; cursor: pointer;
+}
+.stale-notice .edit-btn:hover { background: #7dd3fc; border-color: #7dd3fc; }
+.stale-notice.verified .edit-btn { margin-top: 0; margin-left: 4px; }
