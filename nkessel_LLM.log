@@ -373,3 +373,4 @@ What / why
 - Added playful loading "reasons" under the stage label (23 climate/organizing quips, shuffled, one every 2.2 s with a fade). Tested: rotates, splash still removed, no errors.
 - Per Nathan: replaced the random quips with 11 warm lines about what the map is doing ("Gathering the coalitions…", "Getting the latest events…", …), shown in order instead of shuffled.
 - Loading lines edited per Nathan: "Checking in on projects…" (no "taking root"), dropped "Tracing the threads…", "Locating the towns across Massachusetts…", plus 4 new ones (14 total).
+- Made the new lines literal where possible (next meetings, newest member groups, this week's events, connecting organizations that work together).
