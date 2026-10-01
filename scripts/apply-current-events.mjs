@@ -207,6 +207,16 @@ const jaccard = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].fil
 const sameTitle = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].filter((w) => B.has(w)).length; return i / (A.size + B.size - i || 1) >= 0.7 || i / Math.max(1, Math.min(A.size, B.size)) >= 0.8; };
 const richness = (e) => (e.date.length > 10 ? 4 : 0) + (e.link ? 2 : 0) + (e.description ? 1 : 0) + (e.location ? 1 : 0) + (e.end ? 1 : 0);
 const droppedDups = [];
+// Duplicates a human spotted that the wording-based check can't tell apart (same owner, same start time, same kind of event).
+const MANUAL_DROPS = [{ owner: "xr_boston", name: "Drop-in Climate Justice Art Build" }];
+for (const { owner: oid, name } of MANUAL_DROPS) {
+  const o = [...data.coalitions, ...data.organizations].find((x) => x.id === oid);
+  if (o?.events) {
+    const before = o.events.length;
+    o.events = o.events.filter((e) => e.name !== name);
+    if (o.events.length < before) droppedDups.push(`${oid}: "${name}" (manual)`);
+  }
+}
 for (const owner of [...data.coalitions, ...data.organizations]) {
   const kept = [];
   for (const e of owner.events || []) {

@@ -303,3 +303,10 @@ What / why
 - Replaced the "Make groups bigger by" dropdown with a "Size by activity" section near the top of the sidebar: three sliders (events, projects, actions & volunteer roles), 0 = ignore, size grows with the square root of the weighted total.
 - Why: Nathan's feedback. Checked with Playwright (calendar wide + narrow, bubbles, slider changed a node's radius 20 -> 30.7; no JS errors).
 - Also: switching away from the Map tab now closes the org details panel and leaves zoom (it used to float over Events/Orgs/Projects). Clicking an item from those tabs still jumps to the map and opens it. Checked with Playwright.
+
+## 2026-09-30 — Bubbles/Classic switch + loose ends (branch claude/view-toggle-cleanup)
+- Map: a clear "● Bubbles | Classic" switch under the search box (also "Switch to Classic view" in the zoomed-in header). Classic = the plain network: clicking a group just opens its details panel (no zoom, no bubbles, nothing pushed away). Choice is remembered (localStorage openthink.bubbles); controls panel no longer carries this setting.
+- Data: removed the duplicate Sierra Club Quabbin project (kept the one sourced from the CAN newsletter with the sierraclub.org link); manual drop for XR Boston's "Drop-in Climate Justice Art Build" (same time/place as the Mystic art build). Re-checked all same-start-time pairs; the only other hit (Senior Action Council chapter meetings) is legitimately separate.
+- Climate Action Now: verified all 5 series against climateactionnowma.org/events/ (dates, times) and added end times/recurrence ranges (confidence 0.95). The site also offers "Subscribe To Calendar" (ICS) which could be used for automatic sync later.
+- Event form checked: it has End time and "Does it repeat?".
+- Why: Nathan asked to do everything + add a clear Bubbles/Classic toggle. Checked with Playwright (toggle, persistence, no JS errors).

@@ -124,7 +124,11 @@ async function main() {
 
   // Controls panel (Forces / Display / Groups) — mounts inside the sidebar
   createControls(sidebar.controlsContainer(), {
-    onSettingsChange: (partial) => graphApi!.updateSettings(partial),
+    // The Bubbles/Classic switch lives on the map itself, so saved control state never overrides it.
+    onSettingsChange: (partial) => {
+      const { showBubbles: _ignored, ...rest } = partial;
+      graphApi!.updateSettings(rest);
+    },
     onGroupsChange: (rules) => graphApi!.setGroups(rules),
     onAnimate: () => graphApi!.kickSimulation(),
   });

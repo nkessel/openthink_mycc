@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T20:13:20.010Z",
+  "generated_at": "2026-10-01T00:47:17.569Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -2149,7 +2149,8 @@
           "date": "2026-10-08T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
-          "recurrence": "Second Thursday of each month, 7:00 PM",
+          "recurrence": "Second Thursday of each month, 7:00-8:30 PM",
+          "end": "2026-10-08T20:30:00",
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2158,7 +2159,8 @@
           "date": "2026-10-12T18:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
-          "recurrence": "Second Monday of each month, 6:00 PM",
+          "recurrence": "Second Monday of each month, 6:00-7:30 PM",
+          "end": "2026-10-12T19:30:00",
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2167,7 +2169,8 @@
           "date": "2026-10-14T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
-          "recurrence": "Second Wednesday of each month, 7:00 PM",
+          "recurrence": "Second Wednesday of each month, 7:00-8:30 PM",
+          "end": "2026-10-14T20:30:00",
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2176,7 +2179,8 @@
           "date": "2026-10-26T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/monthly-gathering-4th-monday/2026-10-26/",
-          "recurrence": "Fourth Monday of each month, 7:00 PM",
+          "recurrence": "Fourth Monday of each month, 7:00-8:30 PM",
+          "end": "2026-10-26T20:30:00",
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2185,7 +2189,8 @@
           "date": "2026-10-27T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
-          "recurrence": "Last Tuesday of each month, 7:00 PM",
+          "recurrence": "Last Tuesday of each month, 7:00-8:00 PM",
+          "end": "2026-10-27T20:00:00",
           "host_org_id": "climate_action_now_western_ma"
         }
       ]
@@ -3079,15 +3084,6 @@
           ],
           "link": "https://www.sierraclub.org/massachusetts/protect-quabbin-wachusett-and-ware-watersheds",
           "host_org_id": "sierra_club"
-        },
-        {
-          "name": "Protect Quabbin, Wachusett and Ware watersheds as forest reserves",
-          "link": "https://www.savemassforests.com/",
-          "description": "Sierra Club Massachusetts Forest Protection Team campaign for permanent forest reserves with minimal human intervention on the Quabbin, Ware and Wachusett watershed lands.",
-          "status": "active",
-          "id": "sierra_club_p1",
-          "host_org_id": "sierra_club",
-          "skills_needed": []
         }
       ],
       "events": [
@@ -6755,17 +6751,6 @@
           "end": "2026-10-25T12:00",
           "description": "Monthly climate justice art build for upcoming actions.",
           "id": "xr_boston_e10",
-          "host_org_id": "xr_boston"
-        },
-        {
-          "name": "Drop-in Climate Justice Art Build",
-          "link": "https://xrboston.org/events/",
-          "description": "Monthly climate justice art build at Mystic Open Studios in Arlington.",
-          "date": "2026-10-25T10:00:00",
-          "location": "Mystic Open Studios, Arlington",
-          "end": "2026-10-25T12:00:00",
-          "recurrence": "Monthly; next Sunday, Oct 25, 10 AM-noon",
-          "id": "xr_boston_e11",
           "host_org_id": "xr_boston"
         },
         {

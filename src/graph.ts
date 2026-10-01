@@ -149,6 +149,34 @@ export function createGraph(
       api.setSelectedNode(n);
     }),
   );
+  // View switch: "Bubbles" zooms into a group and shows its events/projects/actions around it;
+  // "Classic" is the plain network (clicking a group just opens its details panel).
+  const viewSwitch = document.createElement("div");
+  viewSwitch.className = "view-switch";
+  viewSwitch.setAttribute("role", "group");
+  viewSwitch.setAttribute("aria-label", "Map view");
+  const viewBtns: Record<"bubbles" | "classic", HTMLButtonElement> = {
+    bubbles: document.createElement("button"),
+    classic: document.createElement("button"),
+  };
+  viewBtns.bubbles.textContent = "● Bubbles";
+  viewBtns.bubbles.title = "Zoom into a group and see its events, projects and actions as bubbles";
+  viewBtns.classic.textContent = "Classic";
+  viewBtns.classic.title = "Plain network: clicking a group just opens its details";
+  for (const k of ["bubbles", "classic"] as const) {
+    viewBtns[k].type = "button";
+    viewBtns[k].addEventListener("click", () => setViewMode(k === "bubbles"));
+    viewSwitch.appendChild(viewBtns[k]);
+  }
+  overlay.appendChild(viewSwitch);
+  function syncViewSwitch() {
+    viewBtns.bubbles.classList.toggle("active", settings.showBubbles);
+    viewBtns.classic.classList.toggle("active", !settings.showBubbles);
+  }
+  function setViewMode(bubbles: boolean) {
+    api.updateSettings({ showBubbles: bubbles });
+    try { localStorage.setItem("openthink.bubbles", bubbles ? "1" : "0"); } catch (_) { /* private mode */ }
+  }
   // Org-to-org toggle: built here (it drives the graph), shown in the sidebar with the other filters.
   const toggle = document.createElement("label");
   toggle.className = "org-link-toggle";
@@ -226,6 +254,7 @@ export function createGraph(
 
   // ----- Settings (mutable) -----
   let settings: GraphSettings = { ...DEFAULT_GRAPH_SETTINGS };
+  try { if (localStorage.getItem("openthink.bubbles") === "0") settings.showBubbles = false; } catch (_) { /* ignore */ }
   let groups: GroupRule[] = [];
 
   // Helpers to compute the actual force strengths from normalized 0..1 sliders.
@@ -515,7 +544,7 @@ export function createGraph(
         return;
       }
       cb.onNodeClick(d);
-      enterFocus(d.id);
+      if (settings.showBubbles) enterFocus(d.id);
     });
 
   // Clicking the background closes selection and zooms back out
@@ -823,6 +852,14 @@ export function createGraph(
   function enterFocus(id: string) {
     const n = nodeById.get(id);
     if (!n) return;
+    if (!settings.showBubbles) {
+      // Classic view: just bring the group to the middle, no bubbles.
+      const { w, h: vh } = dimensions();
+      const panel = w > 900 ? 420 : 0;
+      const k = Math.max(currentZoomScale, 0.8);
+      svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(-(n.x ?? 0) * k - panel / 2, -(n.y ?? 0) * k).scale(k));
+      return;
+    }
     if (focusId && focusId !== id) exitFocus(false);
     focusId = id;
     const cx = n.x ?? 0;
@@ -933,9 +970,10 @@ export function createGraph(
       h("span", { class: "lg k-action" }, `Actions ${count("action")}`),
     );
     focusBar.appendChild(legend);
-    if (!settings.showBubbles) {
-      focusBar.appendChild(h("div", { class: "focus-note" }, "Bubbles are hidden. Turn on “Show events, projects & actions” in Display settings to see them."));
-    } else if (!count("thought")) {
+    const classicBtn = h("button", { class: "focus-back", type: "button", title: "Turn off bubbles: plain network, clicking a group just opens its details" }, "Switch to Classic view");
+    classicBtn.addEventListener("click", () => setViewMode(false));
+    focusBar.appendChild(classicBtn);
+    if (!count("thought")) {
       focusBar.appendChild(h("div", { class: "focus-note" },
         "No public thinking shared yet. Point people can add it with the + button; nothing appears here until the group approves it."));
     }
@@ -1035,7 +1073,10 @@ export function createGraph(
         applyVisualSettings();
         sim.alpha(0.4).restart();
       }
-      if (partial.showBubbles !== undefined && focusId) enterFocus(focusId);
+      if (partial.showBubbles !== undefined) {
+        if (!settings.showBubbles && focusId) exitFocus(); // Classic: fold everything back to the plain network
+        syncViewSwitch();
+      }
       if (partial.nodeSize !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
         applyVisualSettings();
@@ -1065,6 +1106,7 @@ export function createGraph(
     },
   };
 
+  syncViewSwitch();
   return api;
 }
 

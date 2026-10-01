@@ -1939,3 +1939,8 @@ body {
 .bubble.b-action .bubble-type { fill: var(--k-action); }
 .bubble.b-thought .bubble-type { fill: var(--k-thought); }
 .ctrl-hint { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; line-height: 1.4; }
+
+.view-switch { display:inline-flex; align-self:flex-start; border:1px solid var(--border); border-radius:999px; overflow:hidden; background:var(--bg-elev); vertical-align:middle; }
+.view-switch button { appearance:none; border:none; background:transparent; color:var(--text-dim); font:inherit; font-size:12px; padding:6px 12px; cursor:pointer; }
+.view-switch button:hover { color:var(--text); }
+.view-switch button.active { background:var(--accent); color:#04121a; font-weight:600; }

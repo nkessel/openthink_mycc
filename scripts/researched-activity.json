@@ -1389,16 +1389,7 @@
         "id": "sierra_club_e3"
       }
     ],
-    "projects": [
-      {
-        "name": "Protect Quabbin, Wachusett and Ware watersheds as forest reserves",
-        "link": "https://www.savemassforests.com/",
-        "confidence": 0.8,
-        "description": "Sierra Club Massachusetts Forest Protection Team campaign for permanent forest reserves with minimal human intervention on the Quabbin, Ware and Wachusett watershed lands.",
-        "status": "active",
-        "id": "sierra_club_p1"
-      }
-    ],
+    "projects": [],
     "actions": [
       {
         "name": "Sign petition to protect Quabbin, Ware and Wachusett watershed forests",
@@ -3607,8 +3598,9 @@
         "date": "2026-10-08T19:00:00",
         "location": "Virtual (Zoom)",
         "link": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
-        "recurrence": "Second Thursday of each month, 7:00 PM",
-        "confidence": 0.85
+        "recurrence": "Second Thursday of each month, 7:00-8:30 PM",
+        "confidence": 0.95,
+        "end": "2026-10-08T20:30:00"
       },
       {
         "id": "ev_can_2",
@@ -3616,8 +3608,9 @@
         "date": "2026-10-12T18:00:00",
         "location": "Virtual (Zoom)",
         "link": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
-        "recurrence": "Second Monday of each month, 6:00 PM",
-        "confidence": 0.85
+        "recurrence": "Second Monday of each month, 6:00-7:30 PM",
+        "confidence": 0.95,
+        "end": "2026-10-12T19:30:00"
       },
       {
         "id": "ev_can_3",
@@ -3625,8 +3618,9 @@
         "date": "2026-10-14T19:00:00",
         "location": "Virtual (Zoom)",
         "link": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
-        "recurrence": "Second Wednesday of each month, 7:00 PM",
-        "confidence": 0.85
+        "recurrence": "Second Wednesday of each month, 7:00-8:30 PM",
+        "confidence": 0.95,
+        "end": "2026-10-14T20:30:00"
       },
       {
         "id": "ev_can_4",
@@ -3634,8 +3628,9 @@
         "date": "2026-10-26T19:00:00",
         "location": "Virtual (Zoom)",
         "link": "https://climateactionnowma.org/event/monthly-gathering-4th-monday/2026-10-26/",
-        "recurrence": "Fourth Monday of each month, 7:00 PM",
-        "confidence": 0.85
+        "recurrence": "Fourth Monday of each month, 7:00-8:30 PM",
+        "confidence": 0.95,
+        "end": "2026-10-26T20:30:00"
       },
       {
         "id": "ev_can_5",
@@ -3643,8 +3638,9 @@
         "date": "2026-10-27T19:00:00",
         "location": "Virtual (Zoom)",
         "link": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
-        "recurrence": "Last Tuesday of each month, 7:00 PM",
-        "confidence": 0.85
+        "recurrence": "Last Tuesday of each month, 7:00-8:00 PM",
+        "confidence": 0.95,
+        "end": "2026-10-27T20:00:00"
       }
     ],
     "projects": [

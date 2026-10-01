@@ -287,13 +287,6 @@ export function createControls(
     }),
   );
   displayBody.appendChild(
-    makeToggle("Show events, projects & actions around a group when you open it", state.settings.showBubbles, (v) => {
-      state.settings.showBubbles = v;
-      cb.onSettingsChange({ showBubbles: v });
-      saveState(state);
-    }),
-  );
-  displayBody.appendChild(
     makeSlider("Node size", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;
       cb.onSettingsChange({ nodeSize: v });
