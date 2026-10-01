@@ -238,7 +238,7 @@ export function createEventsView(
         r.event.link && /^https?:\/\//.test(r.event.link)
           ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
           : null,
-        staleNotice("event", r.owner.node, r.event.needs_info),
+        staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
       card.addEventListener("click", () => {

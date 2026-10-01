@@ -175,10 +175,30 @@ export function createControls(
   }
 
   // ---- Size by activity ----
-  const { section: sizeSection, body: sizeBody } = makeSection("Size by activity");
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Make groups with more going on bigger. Raise a slider to count that kind of work; 0 ignores it."));
-  for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
+  const { section: sizeSection, body: sizeBody } = makeSection("Bubbles & size");
+  // Bubbles / Classic switch, sitting directly above the sliders it governs.
+  let bubblesOn = true;
+  try { bubblesOn = localStorage.getItem("openthink.bubbles") !== "0"; } catch (_) { /* ignore */ }
+  const seg = h("div", { class: "view-switch wide", role: "group", "aria-label": "Map view" });
+  const segBubbles = h("button", { type: "button", title: "Zoom in and show its events, projects and actions as bubbles around it" }, "Show its work");
+  const segClassic = h("button", { type: "button", title: "No zoom or bubbles: clicking a group just opens its details panel" }, "Details only");
+  seg.append(segBubbles, segClassic);
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "When you click a group:"));
+  sizeBody.appendChild(seg);
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Always show on the map, even when no group is open:"));
+  for (const [label, key] of [["All events", "showAllEvents"], ["All projects", "showAllProjects"], ["All actions & volunteer roles", "showAllActions"]] as const) {
     sizeBody.appendChild(
+      makeToggle(label, state.settings[key], (v) => {
+        state.settings[key] = v;
+        cb.onSettingsChange({ [key]: v });
+        saveState(state);
+      }),
+    );
+  }
+  const sliderBox = h("div", { class: "weight-sliders" });
+  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Make groups with more going on bigger. Raise a slider to count that kind of work; 0 ignores it."));
+  for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
+    sliderBox.appendChild(
       makeSlider(label, state.settings[key], (v) => {
         state.settings[key] = v;
         cb.onSettingsChange({ [key]: v });
@@ -186,6 +206,18 @@ export function createControls(
       }, { min: 0, max: 3, step: 0.1 }),
     );
   }
+  sizeBody.appendChild(sliderBox);
+  function syncBubbles(on: boolean) {
+    bubblesOn = on;
+    segBubbles.classList.toggle("active", on);
+    segClassic.classList.toggle("active", !on);
+    sliderBox.classList.toggle("disabled", !on);
+    sliderBox.querySelectorAll("input").forEach((i) => ((i as HTMLInputElement).disabled = !on));
+  }
+  syncBubbles(bubblesOn);
+  segBubbles.addEventListener("click", () => window.dispatchEvent(new CustomEvent("openthink:setview", { detail: { bubbles: true } })));
+  segClassic.addEventListener("click", () => window.dispatchEvent(new CustomEvent("openthink:setview", { detail: { bubbles: false } })));
+  window.addEventListener("openthink:viewmode", (e) => syncBubbles(!!(e as CustomEvent).detail?.bubbles));
   parent.appendChild(sizeSection);
 
   // ---- Forces ----
@@ -283,13 +315,6 @@ export function createControls(
     makeSlider("Text fade threshold", state.settings.textFadeThreshold, (v) => {
       state.settings.textFadeThreshold = v;
       cb.onSettingsChange({ textFadeThreshold: v });
-      saveState(state);
-    }),
-  );
-  displayBody.appendChild(
-    makeToggle("Show events, projects & actions around a group when you open it", state.settings.showBubbles, (v) => {
-      state.settings.showBubbles = v;
-      cb.onSettingsChange({ showBubbles: v });
       saveState(state);
     }),
   );

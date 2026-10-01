@@ -140,18 +140,23 @@ export function createDrawer(
 
   function renderTabs(node: GraphNode): HTMLElement {
     const tabs = h("div", { class: "drawer-tabs" });
+    const n = {
+      projects: node.kind === "coalition" ? node.projects.length : orgProjects(data, node).length,
+      events: node.kind === "coalition" ? node.events.length : orgEvents(data, node).length,
+      actions: node.kind === "coalition" ? node.actions.length : orgActions(data, node).length,
+    };
     const tabList: { id: DrawerTab; label: string }[] =
       node.kind === "coalition"
         ? [
-            { id: "projects", label: "Projects" },
-            { id: "events", label: "Events" },
-            { id: "actions", label: "Actions" },
+            { id: "projects", label: `Projects (${n.projects})` },
+            { id: "events", label: `Events (${n.events})` },
+            { id: "actions", label: `Actions (${n.actions})` },
           ]
         : [
             { id: "about", label: "About" },
-            { id: "projects", label: "Projects" },
-            { id: "events", label: "Events" },
-            { id: "actions", label: "Actions" },
+            { id: "projects", label: `Projects (${n.projects})` },
+            { id: "events", label: `Events (${n.events})` },
+            { id: "actions", label: `Actions (${n.actions})` },
             { id: "coalitions", label: "Connections" },
           ];
     // Ensure activeTab is valid for this node kind
@@ -229,7 +234,7 @@ export function createDrawer(
             h("span", { class: "pill kind" }, p.status),
           ),
           linkEl(p.link),
-          staleNotice("project", owner, p.needs_info),
+          staleNotice("project", owner, p.needs_info, p.verified),
         ),
       );
     }
@@ -253,7 +258,7 @@ export function createDrawer(
             e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
           linkEl(e.link),
-          staleNotice("event", owner, e.needs_info),
+          staleNotice("event", owner, e.needs_info, e.verified),
         ),
       );
     }
@@ -287,7 +292,7 @@ export function createDrawer(
           a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
           linkEl(a.link),
-          staleNotice("action", owner, a.needs_info),
+          staleNotice("action", owner, a.needs_info, a.verified),
         ),
       );
     }

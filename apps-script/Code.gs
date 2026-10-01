@@ -174,11 +174,11 @@ var COLS = {
     'coalition_weights'].concat(PROFILE_COLS),
   'Connections': ['from_org', 'to_org', 'frequency', 'updated_at', 'reported_by'],
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
-    'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info'],
+    'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info', 'verified'],
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
-    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info'],
+    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info', 'verified'],
   'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden', 'host_org_id',
-    'description', 'link', 'needs_info'],
+    'description', 'link', 'needs_info', 'verified'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
     'reviewed_at', 'payload'],
@@ -392,17 +392,17 @@ function sheetRowsFromData_(d) {
     push('Projects', { id: p.id, coalition_id: coalitionId, host_org_id: hostId || p.host_org_id, name: p.name,
       description: p.description, status: p.status, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags),
       link: p.link, public_contact: p.public_contact, location: p.location, online: bool(p.online),
-      lat: num6(p.lat), lng: num6(p.lng), needs_info: p.needs_info ? 'TRUE' : '' });
+      lat: num6(p.lat), lng: num6(p.lng), needs_info: p.needs_info ? 'TRUE' : '', verified: p.verified ? 'TRUE' : '' });
   };
   var event = function (e, coalitionId, hostId) {
     push('Events', { id: e.id, coalition_id: coalitionId, host_org_id: hostId || e.host_org_id, name: e.name,
       description: e.description, date: e.date, end: e.end, location: e.location, online: bool(e.online),
       lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact,
-      recurrence: e.recurrence, needs_info: e.needs_info ? 'TRUE' : '' });
+      recurrence: e.recurrence, needs_info: e.needs_info ? 'TRUE' : '', verified: e.verified ? 'TRUE' : '' });
   };
   var action = function (a, coalitionId, hostId) {
     push('Actions', { id: a.id, coalition_id: coalitionId, host_org_id: hostId || a.host_org_id, kind: a.kind, name: a.name,
-      urgency: a.urgency, skills_needed: L(a.skills_needed), deadline: a.deadline, description: a.description, link: a.link, needs_info: a.needs_info ? 'TRUE' : '' });
+      urgency: a.urgency, skills_needed: L(a.skills_needed), deadline: a.deadline, description: a.description, link: a.link, needs_info: a.needs_info ? 'TRUE' : '', verified: a.verified ? 'TRUE' : '' });
   };
   d.coalitions.forEach(function (c) {
     push('Coalitions', { id: c.id, name: c.name, abbrev: c.abbrev, description: c.description, focus_tags: L(c.focus_tags),
@@ -1202,7 +1202,7 @@ function saveEvent_(a, t) {
     var day = (patch.date || (existing ? String(existing.date) : '')).slice(0, 10);
     if (day) patch.end = day + 'T' + endTime + ':00';
   }
-  if (!isRemove_(a)) patch.needs_info = 'FALSE'; // a point person just reviewed it
+  if (!isRemove_(a)) { patch.needs_info = 'FALSE'; patch.verified = 'TRUE'; } // a point person just reviewed it
   addMissingColumns_(ss_().getSheetByName(TAB.events), COLS[TAB.events]);
   return upsert_(TAB.events, 'event', a[Q.whichEvent], NEW_EVENT, patch);
 }
@@ -1222,7 +1222,7 @@ function saveProject_(a, t) {
   if (isRemove_(a)) patch.hidden = 'TRUE';
   var existing = a[Q.whichProject] === NEW_PROJECT ? null : findById_(t.projects, idFromLabel_(a[Q.whichProject], 'project'));
   locationPatch_(patch, a, existing);
-  if (!isRemove_(a)) patch.needs_info = 'FALSE'; // a point person just reviewed it
+  if (!isRemove_(a)) { patch.needs_info = 'FALSE'; patch.verified = 'TRUE'; } // a point person just reviewed it
   addMissingColumns_(ss_().getSheetByName(TAB.projects), COLS[TAB.projects]);
   return upsert_(TAB.projects, 'project', a[Q.whichProject], NEW_PROJECT, patch);
 }
@@ -1241,7 +1241,7 @@ function saveAction_(a, t) {
   put_(patch, 'link', a[Q.link]);
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
-  if (!isRemove_(a)) patch.needs_info = 'FALSE'; // a point person just reviewed it
+  if (!isRemove_(a)) { patch.needs_info = 'FALSE'; patch.verified = 'TRUE'; } // a point person just reviewed it
   addMissingColumns_(ss_().getSheetByName(TAB.actions), COLS[TAB.actions]);
   return upsert_(TAB.actions, 'action', a[Q.whichAction], NEW_ACTION, patch);
 }
@@ -1365,7 +1365,7 @@ function buildDataFile_(t, generatedAt) {
     keys.forEach(function (k) {
       var v = src[k];
       if (k === 'topic_tags') { var l = list_(v); if (l.length) obj[k] = l; return; }
-      if (k === 'online' || k === 'remote' || k === 'needs_info') { if (isTrue_(v)) obj[k] = true; return; }
+      if (k === 'online' || k === 'remote' || k === 'needs_info' || k === 'verified') { if (isTrue_(v)) obj[k] = true; return; }
       if (k === 'lat' || k === 'lng') { if (str(v) && !isNaN(Number(v))) obj[k] = Number(v); return; }
       if (str(v)) obj[k] = str(v);
     });
@@ -1419,16 +1419,16 @@ function buildDataFile_(t, generatedAt) {
   var projects = group(t.projects, function (p) {
     return extra({ id: str(p.id), name: str(p.name), description: str(p.description),
       status: str(p.status) || 'active', skills_needed: list_(p.skills_needed) },
-      p, ['host_org_id', 'topic_tags', 'link', 'public_contact', 'needs_info'].concat(place));
+      p, ['host_org_id', 'topic_tags', 'link', 'public_contact', 'needs_info', 'verified'].concat(place));
   });
   var events = group(t.events, function (e) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
-      e, ['end', 'description', 'recurrence', 'needs_info', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
+      e, ['end', 'description', 'recurrence', 'needs_info', 'verified', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
   });
   var actions = group(t.actions, function (a) {
     return extra({ id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name),
       skills_needed: list_(a.skills_needed), deadline: str(a.deadline) || null },
-      a, ['urgency', 'description', 'link', 'needs_info', 'host_org_id']);
+      a, ['urgency', 'description', 'link', 'needs_info', 'verified', 'host_org_id']);
   });
 
   var coalitions = t.coalitions.filter(function (c) { return c.id; }).map(function (c) {

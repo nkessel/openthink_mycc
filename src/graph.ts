@@ -11,6 +11,7 @@ import type {
   Action,
 } from "./types";
 import { h } from "./dom";
+import { typeIcon } from "./icons";
 import { staleNotice } from "./notice";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
@@ -22,6 +23,8 @@ export interface GraphCallbacks {
   onNodeClick(node: GraphNode): void;
   /** The open group was clicked again: it collapsed. */
   onNodeDeselect?(node: GraphNode): void;
+  /** The summary card at the top was tapped: show the full details panel. */
+  onOpenDetails?(node: GraphNode): void;
 }
 
 export interface GroupRule {
@@ -46,6 +49,10 @@ export interface GraphSettings {
   weightEvents: number;
   weightProjects: number;
   weightActions: number;
+  /** Always show every group's events / projects / actions as small dots around it, even when nothing is open. */
+  showAllEvents: boolean;
+  showAllProjects: boolean;
+  showAllActions: boolean;
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
@@ -61,6 +68,9 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   weightEvents: 0,
   weightProjects: 0,
   weightActions: 0,
+  showAllEvents: false,
+  showAllProjects: false,
+  showAllActions: false,
 };
 
 export interface Graph {
@@ -78,6 +88,8 @@ export interface Graph {
   updateSettings(partial: Partial<GraphSettings>): void;
   setGroups(groups: GroupRule[]): void;
   kickSimulation(): void;
+  /** True when groups open with bubbles (the new view); false for the Classic network. */
+  bubblesOn(): boolean;
 }
 
 const COALITION_LABEL_FONT_SIZE = 14;
@@ -149,6 +161,36 @@ export function createGraph(
       api.setSelectedNode(n);
     }),
   );
+  // View switch: "Bubbles" zooms into a group and shows its events/projects/actions around it;
+  // "Classic" is the plain network (clicking a group just opens its details panel).
+  const viewSwitch = document.createElement("div");
+  viewSwitch.className = "view-switch";
+  viewSwitch.setAttribute("role", "group");
+  viewSwitch.setAttribute("aria-label", "Map view");
+  const viewBtns: Record<"bubbles" | "classic", HTMLButtonElement> = {
+    bubbles: document.createElement("button"),
+    classic: document.createElement("button"),
+  };
+  viewBtns.bubbles.textContent = "Show its work";
+  viewBtns.bubbles.title = "When you click a group: zoom in and show its events, projects and actions as bubbles";
+  viewBtns.classic.textContent = "Details only";
+  viewBtns.classic.title = "When you click a group: just open its details panel (no zoom, no bubbles)";
+  for (const k of ["bubbles", "classic"] as const) {
+    viewBtns[k].type = "button";
+    viewBtns[k].addEventListener("click", () => setViewMode(k === "bubbles"));
+    viewSwitch.appendChild(viewBtns[k]);
+  }
+  overlay.appendChild(viewSwitch);
+  function syncViewSwitch() {
+    viewBtns.bubbles.classList.toggle("active", settings.showBubbles);
+    viewBtns.classic.classList.toggle("active", !settings.showBubbles);
+  }
+  // The sidebar has its own copy of this switch (above the size sliders); it talks to us through window events.
+  window.addEventListener("openthink:setview", (e) => setViewMode(!!(e as CustomEvent).detail?.bubbles));
+  function setViewMode(bubbles: boolean) {
+    api.updateSettings({ showBubbles: bubbles });
+    try { localStorage.setItem("openthink.bubbles", bubbles ? "1" : "0"); } catch (_) { /* private mode */ }
+  }
   // Org-to-org toggle: built here (it drives the graph), shown in the sidebar with the other filters.
   const toggle = document.createElement("label");
   toggle.className = "org-link-toggle";
@@ -226,6 +268,7 @@ export function createGraph(
 
   // ----- Settings (mutable) -----
   let settings: GraphSettings = { ...DEFAULT_GRAPH_SETTINGS };
+  try { if (localStorage.getItem("openthink.bubbles") === "0") settings.showBubbles = false; } catch (_) { /* ignore */ }
   let groups: GroupRule[] = [];
 
   // Helpers to compute the actual force strengths from normalized 0..1 sliders.
@@ -451,6 +494,36 @@ export function createGraph(
     }
   });
 
+  // ----- Always-on dots: each group's events / projects / actions as little moons, even when nothing is open -----
+  const SAT_MAX = 14;
+  function renderSatellites() {
+    const kinds: { key: "showAllProjects" | "showAllEvents" | "showAllActions"; kind: "project" | "event" | "action" }[] = [
+      { key: "showAllProjects", kind: "project" },
+      { key: "showAllEvents", kind: "event" },
+      { key: "showAllActions", kind: "action" },
+    ];
+    nodeSel.each(function (this: SVGGElement, d) {
+      const sel = d3.select(this);
+      sel.selectAll("g.sats").remove();
+      const active = kinds.filter((k) => settings[k.key]);
+      if (!active.length) return;
+      const g = sel.append("g").attr("class", "sats").style("pointer-events", "none");
+      const c = countsOf(d);
+      const r0 = nodeRadiusOf(d);
+      active.forEach((k, ring) => {
+        const n = c[k.kind === "project" ? "projects" : k.kind === "event" ? "events" : "actions"];
+        if (!n) return;
+        const shown = Math.min(n, SAT_MAX);
+        const rr = r0 + 7 + ring * 8;
+        for (let i = 0; i < shown; i++) {
+          const a = (2 * Math.PI * i) / shown - Math.PI / 2 + ring * 0.35;
+          g.append("circle").attr("class", `sat sat-${k.kind}`).attr("cx", Math.cos(a) * rr).attr("cy", Math.sin(a) * rr).attr("r", 3.2);
+        }
+        if (n > SAT_MAX) g.append("text").attr("class", `sat-more sat-${k.kind}`).attr("x", 0).attr("y", -rr - 5).text(`+${n - SAT_MAX}`);
+      });
+    });
+  }
+
   // ----- Apply visual settings (radii, halos, link thickness, fade) -----
   function applyVisualSettings() {
     // Update circle radii + label y-positions based on node-size multiplier
@@ -488,6 +561,7 @@ export function createGraph(
     });
     // Link thickness (org-to-org links scale with how often they work together)
     linkSel.attr("stroke-width", linkWidthFor);
+    renderSatellites();
   }
   // Apply on initial render
   applyVisualSettings();
@@ -515,7 +589,7 @@ export function createGraph(
         return;
       }
       cb.onNodeClick(d);
-      enterFocus(d.id);
+      if (settings.showBubbles) enterFocus(d.id);
     });
 
   // Clicking the background closes selection and zooms back out
@@ -696,7 +770,7 @@ export function createGraph(
         id: p.id, kind: "project", label: shorten(p.name, 34), glyph: "", subtitle: p.location ? shorten(p.location, 38) : undefined, r: BUBBLE_R, item: p,
       })),
       ...sortedEvents.map((e): Bubble => ({
-        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: e.recurrence ? "↻" : "",
+        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: "",
         subtitle: shorten([fmtShortDate(e.date), e.location].filter(Boolean).join(" · "), 42), r: BUBBLE_R - 2, item: e,
       })),
       ...actions.map((a): Bubble => ({
@@ -755,7 +829,7 @@ export function createGraph(
     if (link && /^https?:\/\//.test(link)) {
       focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
     }
-    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, focusId ? nodeById.get(focusId) ?? null : null, (b.item as { needs_info?: boolean }).needs_info));
+    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, focusId ? nodeById.get(focusId) ?? null : null, (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified));
     focusCard.style.visibility = "hidden";
     focusCard.style.display = "block";
     placeCard(anchor);
@@ -791,16 +865,15 @@ export function createGraph(
   const LABEL_PX = 6; // rough width of one label character, for hit areas and spacing
 
   // Icons drawn inside the bubbles, centred on (0,0): a calendar, a team of people, a checkmark.
-  function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind | "volunteer") {
+  function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind | "volunteer", date?: string) {
     const ic = g.append("g").attr("class", "bubble-icon");
     if (kind === "event") {
-      ic.append("rect").attr("x", -8).attr("y", -7).attr("width", 16).attr("height", 15).attr("rx", 2.5);
-      ic.append("line").attr("x1", -8).attr("x2", 8).attr("y1", -2).attr("y2", -2);
-      ic.append("line").attr("x1", -4).attr("x2", -4).attr("y1", -10).attr("y2", -5);
-      ic.append("line").attr("x1", 4).attr("x2", 4).attr("y1", -10).attr("y2", -5);
-      ic.append("circle").attr("class", "dot").attr("cx", -3).attr("cy", 3).attr("r", 1);
-      ic.append("circle").attr("class", "dot").attr("cx", 1).attr("cy", 3).attr("r", 1);
-      ic.append("circle").attr("class", "dot").attr("cx", 5).attr("cy", 3).attr("r", 1);
+      // A little calendar page showing the actual date: month on the band, day number below.
+      const d = date ? parseEventDate(date) : null;
+      ic.append("rect").attr("x", -10).attr("y", -11).attr("width", 20).attr("height", 21).attr("rx", 3);
+      ic.append("rect").attr("class", "cal-band").attr("x", -10).attr("y", -11).attr("width", 20).attr("height", 7).attr("rx", 3);
+      ic.append("text").attr("class", "cal-month").attr("y", -5.6).text(d ? d.toLocaleDateString("en-US", { month: "short" }).toUpperCase() : "");
+      ic.append("text").attr("class", "cal-day").attr("y", 6.5).text(d ? String(d.getDate()) : "");
     } else if (kind === "project") {
       // a seedling: two leaves on a stem, in soil
       ic.append("path").attr("d", "M-8 9 H8");
@@ -823,6 +896,14 @@ export function createGraph(
   function enterFocus(id: string) {
     const n = nodeById.get(id);
     if (!n) return;
+    if (!settings.showBubbles) {
+      // Classic view: just bring the group to the middle, no bubbles.
+      const { w, h: vh } = dimensions();
+      const panel = w > 900 ? 420 : 0;
+      const k = Math.max(currentZoomScale, 0.8);
+      svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(-(n.x ?? 0) * k - panel / 2, -(n.y ?? 0) * k).scale(k));
+      return;
+    }
     if (focusId && focusId !== id) exitFocus(false);
     focusId = id;
     const cx = n.x ?? 0;
@@ -863,10 +944,21 @@ export function createGraph(
       if (b.kind === "thought") g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
       else {
         const isRole = b.kind === "action" && (b.item as Action).kind === "role";
-        drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : b.kind);
+        drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : b.kind, b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
         const word = isRole ? "VOLUNTEER" : b.kind.toUpperCase();
         g.append("text").attr("class", "bubble-type").attr("y", b.r + 10).text(word);
-        if (b.glyph) g.append("text").attr("class", "bubble-badge").attr("x", b.r - 3).attr("y", -b.r + 7).text(b.glyph);
+        if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) {
+          // Recurring: the bubble's border is a ring of ↻ symbols instead of a plain line.
+          const n = Math.max(8, Math.round((2 * Math.PI * b.r) / 8.5));
+          const pid = `ring-${b.id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
+          const rr = b.r - 4.5;
+          g.classed("recurring", true);
+          g.append("path").attr("id", pid).attr("fill", "none").attr("stroke", "none")
+            .attr("d", `M ${-rr} 0 a ${rr} ${rr} 0 1 1 ${2 * rr} 0 a ${rr} ${rr} 0 1 1 ${-2 * rr} 0`);
+          g.append("text").attr("class", "recur-ring")
+            .append("textPath").attr("href", `#${pid}`).attr("textLength", 2 * Math.PI * rr - 2).attr("lengthAdjust", "spacing")
+            .text("↻".repeat(n));
+        }
       }
       const label = g.append("text")
         .attr("class", "bubble-label")
@@ -926,19 +1018,28 @@ export function createGraph(
     back.addEventListener("click", () => exitFocus());
     focusBar.appendChild(back);
     focusBar.appendChild(h("strong", { class: "focus-title" }, n.name));
+    const stat = (k: "project" | "event" | "action", label: string) =>
+      h("span", { class: `lg k-${k}`, title: label, "aria-label": `${label} ${count(k)}` }, typeIcon(k, 16), h("b", {}, String(count(k))));
     const legend = h("div", { class: "focus-legend" },
-      h("span", { class: "lg k-thought" }, `Thinking ${count("thought")}`),
-      h("span", { class: "lg k-project" }, `Projects ${count("project")}`),
-      h("span", { class: "lg k-event" }, `Events ${count("event")}`),
-      h("span", { class: "lg k-action" }, `Actions ${count("action")}`),
+      count("thought") ? h("span", { class: "lg k-thought" }, `Thinking ${count("thought")}`) : null,
+      stat("project", "Projects"),
+      stat("event", "Events"),
+      stat("action", "Actions"),
     );
     focusBar.appendChild(legend);
-    if (!settings.showBubbles) {
-      focusBar.appendChild(h("div", { class: "focus-note" }, "Bubbles are hidden. Turn on “Show events, projects & actions” in Display settings to see them."));
-    } else if (!count("thought")) {
+    const classicBtn = h("button", { class: "focus-back", type: "button", title: "Stop showing bubbles when a group is clicked; just open its details panel" }, "Details only (no bubbles)");
+    classicBtn.addEventListener("click", () => setViewMode(false));
+    focusBar.appendChild(classicBtn);
+    if (!count("thought")) {
       focusBar.appendChild(h("div", { class: "focus-note" },
         "No public thinking shared yet. Point people can add it with the + button; nothing appears here until the group approves it."));
     }
+    focusBar.appendChild(h("span", { class: "focus-more" }, "Details ›"));
+    focusBar.classList.add("tappable");
+    focusBar.onclick = (ev) => {
+      if ((ev.target as HTMLElement).closest("button")) return;
+      cb.onOpenDetails?.(n);
+    };
     focusBar.style.display = "flex";
     focusCard.style.display = "none";
 
@@ -1030,12 +1131,19 @@ export function createGraph(
         xForce.strength(centerForceStrength());
         yForce.strength(centerForceStrength());
       }
+      if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined) {
+        renderSatellites();
+      }
       if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
         applyVisualSettings();
         sim.alpha(0.4).restart();
       }
-      if (partial.showBubbles !== undefined && focusId) enterFocus(focusId);
+      if (partial.showBubbles !== undefined) {
+        if (!settings.showBubbles && focusId) exitFocus(); // Classic: fold everything back to the plain network
+        syncViewSwitch();
+        window.dispatchEvent(new CustomEvent("openthink:viewmode", { detail: { bubbles: settings.showBubbles } }));
+      }
       if (partial.nodeSize !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
         applyVisualSettings();
@@ -1063,8 +1171,12 @@ export function createGraph(
     kickSimulation() {
       sim.alpha(1).restart();
     },
+    bubblesOn() {
+      return settings.showBubbles;
+    },
   };
 
+  syncViewSwitch();
   return api;
 }
 

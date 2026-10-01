@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T20:13:20.010Z",
+  "generated_at": "2026-10-01T12:57:24.951Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -1057,6 +1057,7 @@
           "end": "2026-10-09T16:00",
           "description": "10-hour OSHA construction safety course (page text in Spanish).",
           "id": "masscosh_tlaw_climate_change_e1",
+          "verified": true,
           "host_org_id": "masscosh_tlaw_climate_change_and_environmental_justice_team"
         },
         {
@@ -1067,6 +1068,7 @@
           "end": "2026-10-23T21:30",
           "description": "50th anniversary celebration honoring leaders in the labor health and safety movement; tickets via Zeffy.",
           "id": "masscosh_tlaw_climate_change_e2",
+          "verified": true,
           "host_org_id": "masscosh_tlaw_climate_change_and_environmental_justice_team"
         }
       ],
@@ -1140,6 +1142,7 @@
           "end": "2026-10-03T14:00",
           "description": "Volunteer tree planting event.",
           "id": "tree_boston_e1",
+          "verified": true,
           "host_org_id": "tree_boston"
         },
         {
@@ -1150,6 +1153,7 @@
           "end": "2026-10-07T20:00",
           "description": "Food, drink and tree-themed activities to support Tree Equity in Boston.",
           "id": "tree_boston_e3",
+          "verified": true,
           "host_org_id": "tree_boston"
         },
         {
@@ -1160,6 +1164,7 @@
           "end": "2026-10-10T14:00",
           "description": "Free tree giveaway.",
           "id": "tree_boston_e5",
+          "verified": true,
           "host_org_id": "tree_boston"
         },
         {
@@ -1170,6 +1175,7 @@
           "end": "2026-10-23T09:00",
           "description": "Stadium-climb fundraiser; Tree Boston is first nonprofit partner for the Reach Green Stadium Challenge.",
           "id": "tree_boston_e7",
+          "verified": true,
           "host_org_id": "tree_boston"
         },
         {
@@ -1180,6 +1186,7 @@
           "end": "2026-10-24T14:00",
           "description": "Free tree giveaway.",
           "id": "tree_boston_e8",
+          "verified": true,
           "host_org_id": "tree_boston"
         }
       ],
@@ -1623,6 +1630,7 @@
           "end": "2026-10-15T20:00",
           "description": "Mothers Out Front Campaign Team virtual presentation and action on data centers.",
           "id": "jewish_climate_action_networ_e4",
+          "verified": true,
           "host_org_id": "jewish_climate_action_network"
         },
         {
@@ -1633,6 +1641,7 @@
           "end": "2026-10-24T15:00",
           "description": "Hosted by Boston Public Library, listed on JCAN calendar.",
           "id": "jewish_climate_action_networ_e6",
+          "verified": true,
           "host_org_id": "jewish_climate_action_network"
         }
       ],
@@ -1744,6 +1753,7 @@
           "end": "2026-10-03T14:00",
           "description": "Rescheduled from Sept 26 due to weather; volunteer check-in 9:30 AM; free lunch for first 100; tools provided.",
           "id": "massachusetts_interfaith_pow_e1",
+          "verified": true,
           "host_org_id": "massachusetts_interfaith_power_and_light"
         }
       ],
@@ -1998,6 +2008,7 @@
           "online": true,
           "end": "2026-09-30T16:00:00",
           "id": "climate_xchange_e1",
+          "verified": true,
           "host_org_id": "climate_xchange"
         },
         {
@@ -2009,6 +2020,7 @@
           "online": true,
           "end": "2026-10-08T15:00:00",
           "id": "climate_xchange_e2",
+          "verified": true,
           "host_org_id": "climate_xchange"
         },
         {
@@ -2020,6 +2032,7 @@
           "online": true,
           "end": "2026-10-28T16:00:00",
           "id": "climate_xchange_e3",
+          "verified": true,
           "host_org_id": "climate_xchange"
         }
       ]
@@ -2149,7 +2162,9 @@
           "date": "2026-10-08T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
-          "recurrence": "Second Thursday of each month, 7:00 PM",
+          "recurrence": "Second Thursday of each month, 7:00-8:30 PM",
+          "end": "2026-10-08T20:30:00",
+          "verified": true,
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2158,7 +2173,9 @@
           "date": "2026-10-12T18:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
-          "recurrence": "Second Monday of each month, 6:00 PM",
+          "recurrence": "Second Monday of each month, 6:00-7:30 PM",
+          "end": "2026-10-12T19:30:00",
+          "verified": true,
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2167,7 +2184,9 @@
           "date": "2026-10-14T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
-          "recurrence": "Second Wednesday of each month, 7:00 PM",
+          "recurrence": "Second Wednesday of each month, 7:00-8:30 PM",
+          "end": "2026-10-14T20:30:00",
+          "verified": true,
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2176,7 +2195,9 @@
           "date": "2026-10-26T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/monthly-gathering-4th-monday/2026-10-26/",
-          "recurrence": "Fourth Monday of each month, 7:00 PM",
+          "recurrence": "Fourth Monday of each month, 7:00-8:30 PM",
+          "end": "2026-10-26T20:30:00",
+          "verified": true,
           "host_org_id": "climate_action_now_western_ma"
         },
         {
@@ -2185,7 +2206,9 @@
           "date": "2026-10-27T19:00:00",
           "location": "Virtual (Zoom)",
           "link": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
-          "recurrence": "Last Tuesday of each month, 7:00 PM",
+          "recurrence": "Last Tuesday of each month, 7:00-8:00 PM",
+          "end": "2026-10-27T20:00:00",
+          "verified": true,
           "host_org_id": "climate_action_now_western_ma"
         }
       ]
@@ -2284,6 +2307,7 @@
           "end": "2026-10-14T20:00",
           "description": "Partner event shared from MassEnergize on the Milton Community calendar.",
           "id": "sustainable_milton_e3",
+          "verified": true,
           "host_org_id": "sustainable_milton"
         },
         {
@@ -2392,6 +2416,7 @@
           "end": "2026-10-01T18:30",
           "description": "Naturalist-guided canoe trip (adults).",
           "id": "mass_audubon_wma_e1",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2402,6 +2427,7 @@
           "end": "2026-10-03T12:00",
           "description": "Adult program.",
           "id": "mass_audubon_wma_e2",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2412,6 +2438,7 @@
           "end": "2026-10-03T12:00",
           "description": "Family program.",
           "id": "mass_audubon_wma_e3",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2422,6 +2449,7 @@
           "end": "2026-10-03T15:30",
           "description": "Adult walk.",
           "id": "mass_audubon_wma_e4",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2432,6 +2460,7 @@
           "end": "2026-10-04T11:00",
           "description": "Beginner birding walk.",
           "id": "mass_audubon_wma_e5",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2442,6 +2471,7 @@
           "end": "2026-10-04T12:00",
           "description": "Guided hawk watch.",
           "id": "mass_audubon_wma_e6",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2452,6 +2482,7 @@
           "end": "2026-10-07T12:00",
           "description": "Adult tree ID walk.",
           "id": "mass_audubon_wma_e7",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2462,6 +2493,7 @@
           "end": "2026-10-09T11:00",
           "description": "Family walk.",
           "id": "mass_audubon_wma_e9",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2472,6 +2504,7 @@
           "end": "2026-10-09T11:30",
           "description": "Toddler program.",
           "id": "mass_audubon_wma_e10",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2482,6 +2515,7 @@
           "end": "2026-10-10T11:00",
           "description": "Canoe trip (adults).",
           "id": "mass_audubon_wma_e11",
+          "verified": true,
           "host_org_id": "mass_audubon_wma"
         },
         {
@@ -2550,6 +2584,7 @@
           "end": "2026-10-03T16:00",
           "description": "Adults & families, ages 0-17.",
           "id": "mass_audubon_wellfleet_bay_w_e2",
+          "verified": true,
           "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         },
         {
@@ -2570,6 +2605,7 @@
           "link": "https://www.massaudubon.org/programs/wellfleet-bay/101695-field-school-hidden-cape-cod-a-fall-hiking-weekend",
           "description": "2 classes starting Oct 17, 10am-9pm; adults.",
           "id": "mass_audubon_wellfleet_bay_w_e4",
+          "verified": true,
           "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         }
       ],
@@ -2829,6 +2865,7 @@
           "end": "2026-10-06T16:00",
           "description": "Election-readiness summit with faith, labor, community partners (not climate specific).",
           "id": "unitarian_universalist_mass__e2",
+          "verified": true,
           "host_org_id": "unitarian_universalist_mass_action"
         },
         {
@@ -3079,15 +3116,6 @@
           ],
           "link": "https://www.sierraclub.org/massachusetts/protect-quabbin-wachusett-and-ware-watersheds",
           "host_org_id": "sierra_club"
-        },
-        {
-          "name": "Protect Quabbin, Wachusett and Ware watersheds as forest reserves",
-          "link": "https://www.savemassforests.com/",
-          "description": "Sierra Club Massachusetts Forest Protection Team campaign for permanent forest reserves with minimal human intervention on the Quabbin, Ware and Wachusett watershed lands.",
-          "status": "active",
-          "id": "sierra_club_p1",
-          "host_org_id": "sierra_club",
-          "skills_needed": []
         }
       ],
       "events": [
@@ -3099,6 +3127,7 @@
           "end": "2026-10-08T21:00",
           "description": "Sierra Club MA Forest Protection Team film screening with panel Q&A; doors 7pm, film 7:30pm.",
           "id": "sierra_club_e1",
+          "verified": true,
           "host_org_id": "sierra_club"
         },
         {
@@ -3807,6 +3836,7 @@
           "link": "https://www.foodandwaterwatch.org/events/",
           "description": "Listed as Featured Event; Meeting hosted by Food & Water Action.",
           "id": "food_and_water_watch_e1",
+          "verified": true,
           "host_org_id": "food_and_water_watch"
         },
         {
@@ -3816,6 +3846,7 @@
           "link": "https://www.foodandwaterwatch.org/events/",
           "description": "Hosted by Food & Water Watch; listed as Featured Event.",
           "id": "food_and_water_watch_e2",
+          "verified": true,
           "host_org_id": "food_and_water_watch"
         }
       ]
@@ -4346,6 +4377,7 @@
           "end": "2026-10-28T20:00",
           "description": "Public hearing to comment for a sewage-free Charles.",
           "id": "charles_river_watershed_asso_e1",
+          "verified": true,
           "host_org_id": "charles_river_watershed_association"
         },
         {
@@ -4356,6 +4388,7 @@
           "end": "2026-11-19T16:00",
           "description": "Inaugural convening on bringing swimming beaches back to the Lower Charles.",
           "id": "charles_river_watershed_asso_e2",
+          "verified": true,
           "host_org_id": "charles_river_watershed_association"
         },
         {
@@ -4476,6 +4509,7 @@
           "location": "UMass Lowell, Martin T. Meehan Student Center, 100 Meehan Way, Lowell",
           "end": "2026-09-30T10:00:00",
           "id": "citizens_awareness_network_e1",
+          "verified": true,
           "host_org_id": "citizens_awareness_network"
         }
       ],
@@ -4835,6 +4869,7 @@
           "end": "2027-05-20T20:00",
           "description": "Annual celebration recognizing Commonwealth Environmental Leadership Awardees; 5:30-8:00 PM.",
           "id": "environmental_league_of_ma_e1",
+          "verified": true,
           "host_org_id": "environmental_league_of_ma"
         }
       ]
@@ -4990,6 +5025,7 @@
           "end": "2026-10-24T20:00",
           "description": "Honoring Archbishop John C. Wester for nuclear abolition leadership.",
           "id": "greater_boston_physicians_fo_e2",
+          "verified": true,
           "host_org_id": "greater_boston_physicians_for_social_responsibility"
         }
       ]
@@ -5055,6 +5091,7 @@
           "location": "Alewife Brook Reservation DCR parking lot, 2-8 Acorn Park Dr, Cambridge",
           "end": "2026-10-04T16:00:00",
           "id": "green_cambridge_e1",
+          "verified": true,
           "host_org_id": "green_cambridge"
         }
       ],
@@ -5145,6 +5182,7 @@
           "online": true,
           "end": "2026-10-02T13:00:00",
           "id": "green_energy_consumers_allia_e2",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5155,6 +5193,7 @@
           "online": true,
           "description": "Webinar on EV charging adaptors.",
           "id": "green_energy_consumers_allia_e3",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5175,6 +5214,7 @@
           "online": true,
           "description": "Overview of heat pump rates in MA with DOER.",
           "id": "green_energy_consumers_allia_e6",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5185,6 +5225,7 @@
           "online": true,
           "description": "Webinar on clean energy technologies for households.",
           "id": "green_energy_consumers_allia_e7",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5195,6 +5236,7 @@
           "online": true,
           "description": "Webinar on EV road trip planning tools.",
           "id": "green_energy_consumers_allia_e8",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5204,6 +5246,7 @@
           "link": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
           "description": "Evening of networking and clean energy conversations.",
           "id": "green_energy_consumers_allia_e9",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5214,6 +5257,7 @@
           "online": true,
           "description": "Webinar on EVs in cold weather (online per series; location not verified on page).",
           "id": "green_energy_consumers_allia_e10",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         },
         {
@@ -5224,6 +5268,7 @@
           "online": true,
           "description": "Webinar on long-term EV battery health (online per series; location not verified on page).",
           "id": "green_energy_consumers_allia_e11",
+          "verified": true,
           "host_org_id": "green_energy_consumers_alliance"
         }
       ],
@@ -5423,6 +5468,7 @@
           "end": "2026-09-30T12:30",
           "description": "Joppa Flats program, fee applies.",
           "id": "mass_audubon_e1",
+          "verified": true,
           "host_org_id": "mass_audubon"
         },
         {
@@ -5433,6 +5479,7 @@
           "end": "2026-09-30T11:30",
           "description": "Fee applies.",
           "id": "mass_audubon_e2",
+          "verified": true,
           "host_org_id": "mass_audubon"
         },
         {
@@ -5443,6 +5490,7 @@
           "end": "2026-10-01T09:30",
           "description": "Fee applies.",
           "id": "mass_audubon_e3",
+          "verified": true,
           "host_org_id": "mass_audubon"
         },
         {
@@ -5453,6 +5501,7 @@
           "end": "2026-10-03T15:30",
           "description": "Volunteer text banking for Question 6 (Nature for All Fund); training and food provided.",
           "id": "mass_audubon_e4",
+          "verified": true,
           "host_org_id": "mass_audubon"
         },
         {
@@ -5463,6 +5512,7 @@
           "end": "2026-10-04T15:30",
           "description": "Volunteer text banking for Question 6.",
           "id": "mass_audubon_e6",
+          "verified": true,
           "host_org_id": "mass_audubon"
         },
         {
@@ -5473,6 +5523,7 @@
           "end": "2026-10-10T14:30",
           "description": "Volunteer text banking for Question 6.",
           "id": "mass_audubon_e8",
+          "verified": true,
           "host_org_id": "mass_audubon"
         },
         {
@@ -5483,6 +5534,7 @@
           "end": "2026-10-10T15:30",
           "description": "Volunteer text banking for Question 6.",
           "id": "mass_audubon_e10",
+          "verified": true,
           "host_org_id": "mass_audubon"
         },
         {
@@ -5493,6 +5545,7 @@
           "end": "2026-10-11T15:00",
           "description": "Volunteer text banking for Question 6.",
           "id": "mass_audubon_e11",
+          "verified": true,
           "host_org_id": "mass_audubon"
         }
       ],
@@ -5596,6 +5649,7 @@
           "end": "2026-09-30T10:00",
           "description": "Organizer: Commonwealth Coalition for Democracy and Safe Energy.",
           "id": "massachusetts_peace_action_e1",
+          "verified": true,
           "host_org_id": "massachusetts_peace_action"
         },
         {
@@ -5606,6 +5660,7 @@
           "end": "2026-10-03T14:00",
           "description": "Rescheduled from Sept 26; protest against wars and profits of war contractors and oil companies.",
           "id": "massachusetts_peace_action_e2",
+          "verified": true,
           "host_org_id": "massachusetts_peace_action"
         },
         {
@@ -5616,6 +5671,7 @@
           "end": "2026-10-03T16:00",
           "description": "Peace and climate film screening.",
           "id": "massachusetts_peace_action_e3",
+          "verified": true,
           "host_org_id": "massachusetts_peace_action"
         },
         {
@@ -5626,6 +5682,7 @@
           "end": "2026-10-04T15:00",
           "description": "Tabling/installation on the human cost of war; postcards to Congress members.",
           "id": "massachusetts_peace_action_e4",
+          "verified": true,
           "host_org_id": "massachusetts_peace_action"
         },
         {
@@ -5637,6 +5694,7 @@
           "end": "2026-10-05T20:30",
           "description": "With Progressive Massachusetts.",
           "id": "massachusetts_peace_action_e5",
+          "verified": true,
           "host_org_id": "massachusetts_peace_action"
         },
         {
@@ -5648,6 +5706,7 @@
           "end": "2026-10-08T20:00",
           "description": "Category: Peace and Climate.",
           "id": "massachusetts_peace_action_e6",
+          "verified": true,
           "host_org_id": "massachusetts_peace_action"
         }
       ]
@@ -5695,6 +5754,7 @@
           "end": "2026-10-03T11:00",
           "description": "Community input on future of Four Corners Conservation Area.",
           "id": "mount_grace_land_conservatio_e1",
+          "verified": true,
           "host_org_id": "mount_grace_land_conservation_trust"
         },
         {
@@ -5705,6 +5765,7 @@
           "end": "2026-10-19T20:00",
           "description": "Second community input session; a November date is TBD.",
           "id": "mount_grace_land_conservatio_e3",
+          "verified": true,
           "host_org_id": "mount_grace_land_conservation_trust"
         },
         {
@@ -5715,6 +5776,7 @@
           "end": "2026-10-25T17:00",
           "description": "Keynote by Rand Wentworth; $20 per person, RSVP required; guided walk at 4 PM.",
           "id": "mount_grace_land_conservatio_e4",
+          "verified": true,
           "host_org_id": "mount_grace_land_conservation_trust"
         }
       ],
@@ -5881,6 +5943,7 @@
           "end": "2026-10-13T19:00",
           "description": "PHMass Monthly Meeting; registration via Ticket Tailor.",
           "id": "passive_house_massachusetts_e1",
+          "verified": true,
           "host_org_id": "passive_house_massachusetts"
         },
         {
@@ -5891,6 +5954,7 @@
           "end": "2026-11-04T21:30",
           "description": "Partner event organized by Built Environment Plus (https://builtenvironmentplus.org/greenbuildingshowcase/).",
           "id": "passive_house_massachusetts_e3",
+          "verified": true,
           "host_org_id": "passive_house_massachusetts"
         },
         {
@@ -6145,6 +6209,7 @@
           "end": "2026-10-15T19:30",
           "description": "Free talk by George Wuerthner; Zoom registration required.",
           "id": "restore_the_north_woods_e2",
+          "verified": true,
           "host_org_id": "restore_the_north_woods"
         }
       ],
@@ -6685,6 +6750,7 @@
           "end": "2026-10-01T09:30",
           "description": "Rally opposing the Northeast Energy & Commerce Association gas conference and Gov. Healey's 'all-of-the-above' energy language.",
           "id": "xr_boston_e1",
+          "verified": true,
           "host_org_id": "xr_boston"
         },
         {
@@ -6726,6 +6792,7 @@
           "end": "2026-10-10T16:00",
           "description": "XR Art Table at HONK! Festival, 1-4pm; volunteers welcome.",
           "id": "xr_boston_e5",
+          "verified": true,
           "host_org_id": "xr_boston"
         },
         {
@@ -6735,6 +6802,7 @@
           "link": "https://xrboston.org/action/xr-at-the-honk-parade/",
           "description": "March with XR in the HONK! Parade (theme: Our Home Is On Fire).",
           "id": "xr_boston_e7",
+          "verified": true,
           "host_org_id": "xr_boston"
         },
         {
@@ -6745,6 +6813,7 @@
           "online": true,
           "description": "45-60 minute Zoom orientation to XR Boston.",
           "id": "xr_boston_e8",
+          "verified": true,
           "host_org_id": "xr_boston"
         },
         {
@@ -6755,17 +6824,7 @@
           "end": "2026-10-25T12:00",
           "description": "Monthly climate justice art build for upcoming actions.",
           "id": "xr_boston_e10",
-          "host_org_id": "xr_boston"
-        },
-        {
-          "name": "Drop-in Climate Justice Art Build",
-          "link": "https://xrboston.org/events/",
-          "description": "Monthly climate justice art build at Mystic Open Studios in Arlington.",
-          "date": "2026-10-25T10:00:00",
-          "location": "Mystic Open Studios, Arlington",
-          "end": "2026-10-25T12:00:00",
-          "recurrence": "Monthly; next Sunday, Oct 25, 10 AM-noon",
-          "id": "xr_boston_e11",
+          "verified": true,
           "host_org_id": "xr_boston"
         },
         {
@@ -6775,6 +6834,7 @@
           "link": "https://xrboston.org/action/route-2-rebels-affinity-group-gathering3/",
           "description": "Affinity group for Arlington/Waltham/Lexington/Belmont area XR members.",
           "id": "xr_boston_e12",
+          "verified": true,
           "host_org_id": "xr_boston"
         }
       ]
@@ -7054,6 +7114,7 @@
           "end": "2027-04-09T22:00",
           "description": "Union event, not climate-specific.",
           "id": "aft_mass_e1",
+          "verified": true,
           "host_org_id": "aft_mass"
         }
       ],
@@ -7205,6 +7266,7 @@
           "link": "https://community.citizensclimate.org/groups/events/1153",
           "description": "Tabling; chapter's application for a spot still pending per page; listed 7:30am PDT (=10:30am ET).",
           "id": "citizens_climate_lobby_e2",
+          "verified": true,
           "host_org_id": "citizens_climate_lobby"
         },
         {

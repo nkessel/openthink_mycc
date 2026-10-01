@@ -107,8 +107,17 @@ async function main() {
     },
   });
 
+  // On a phone the details tray would cover the group you just opened, so with bubbles on we show only
+  // the small summary card at the top; tapping it (or switching to Classic) opens the tray.
+  const isMobile = () => window.innerWidth <= 900;
+  const trayWouldBlockMap = () => isMobile() && !!graphApi?.bubblesOn();
   graphApi = createGraph(graphContainer, data, tooltip, {
     onNodeClick: (node) => {
+      if (trayWouldBlockMap()) drawerApi!.close();
+      else drawerApi!.open(node);
+      graphApi!.setSelectedNode(node);
+    },
+    onOpenDetails: (node) => {
       drawerApi!.open(node);
       graphApi!.setSelectedNode(node);
     },
@@ -124,7 +133,11 @@ async function main() {
 
   // Controls panel (Forces / Display / Groups) — mounts inside the sidebar
   createControls(sidebar.controlsContainer(), {
-    onSettingsChange: (partial) => graphApi!.updateSettings(partial),
+    // The Bubbles/Classic switch lives on the map itself, so saved control state never overrides it.
+    onSettingsChange: (partial) => {
+      const { showBubbles: _ignored, ...rest } = partial;
+      graphApi!.updateSettings(rest);
+    },
     onGroupsChange: (rules) => graphApi!.setGroups(rules),
     onAnimate: () => graphApi!.kickSimulation(),
   });
@@ -154,9 +167,9 @@ async function main() {
       setTab("map");
       // Defer drawer open so the map is visible first
       setTimeout(() => {
-        drawerApi!.open(node);
+        if (!trayWouldBlockMap()) drawerApi!.open(node);
         graphApi!.setSelectedNode(node);
-        if (node.kind === "coalition") graphApi!.focusOnCoalition(node.id);
+        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
       }, 60);
     },
   });
@@ -184,9 +197,9 @@ async function main() {
     onCoalitionClick: (node) => {
       setTab("map");
       setTimeout(() => {
-        drawerApi!.open(node);
+        if (!trayWouldBlockMap()) drawerApi!.open(node);
         graphApi!.setSelectedNode(node);
-        if (node.kind === "coalition") graphApi!.focusOnCoalition(node.id);
+        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
       }, 60);
     },
   });

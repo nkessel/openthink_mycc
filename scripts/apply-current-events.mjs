@@ -190,7 +190,10 @@ for (const [id, items] of Object.entries(researched)) {
   const o = byId(data.organizations, id);
   for (const kind of ["projects", "events", "actions"]) {
     const have = o[kind] || [];
-    for (const { confidence: _c, ...it } of items[kind] || []) {
+    for (const { confidence, ...it } of items[kind] || []) {
+      // Events whose own page names them clearly (confidence >= 0.95, and a link deeper than a homepage) lose the
+      // "may be out of date" warning. Everything else keeps it.
+      if (kind === "events" && confidence >= 0.95 && it.link && new URL(it.link).pathname.replace(/\//g, "").length > 0 && !it.needs_info) it.verified = true;
       if (!have.some((h) => norm(h.name) === norm(it.name))) have.push(it);
     }
     if (have.length) o[kind] = have;
@@ -207,6 +210,16 @@ const jaccard = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].fil
 const sameTitle = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].filter((w) => B.has(w)).length; return i / (A.size + B.size - i || 1) >= 0.7 || i / Math.max(1, Math.min(A.size, B.size)) >= 0.8; };
 const richness = (e) => (e.date.length > 10 ? 4 : 0) + (e.link ? 2 : 0) + (e.description ? 1 : 0) + (e.location ? 1 : 0) + (e.end ? 1 : 0);
 const droppedDups = [];
+// Duplicates a human spotted that the wording-based check can't tell apart (same owner, same start time, same kind of event).
+const MANUAL_DROPS = [{ owner: "xr_boston", name: "Drop-in Climate Justice Art Build" }];
+for (const { owner: oid, name } of MANUAL_DROPS) {
+  const o = [...data.coalitions, ...data.organizations].find((x) => x.id === oid);
+  if (o?.events) {
+    const before = o.events.length;
+    o.events = o.events.filter((e) => e.name !== name);
+    if (o.events.length < before) droppedDups.push(`${oid}: "${name}" (manual)`);
+  }
+}
 for (const owner of [...data.coalitions, ...data.organizations]) {
   const kept = [];
   for (const e of owner.events || []) {
@@ -258,13 +271,13 @@ if (csvDir) {
   const esc = (v) => { v = v ?? ""; v = String(v); return /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v; };
   const L = (xs) => (xs || []).join(", ");
   const bool = (x) => (x === undefined ? "" : x ? "TRUE" : "FALSE");
-  const P = ["id", "coalition_id", "host_org_id", "name", "description", "status", "skills_needed", "topic_tags", "link", "public_contact", "location", "online", "lat", "lng", "last_activity", "hidden", "needs_info"];
-  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end", "recurrence", "needs_info"];
-  const A = ["id", "coalition_id", "kind", "name", "urgency", "skills_needed", "deadline", "hidden", "host_org_id", "description", "link", "needs_info"];
+  const P = ["id", "coalition_id", "host_org_id", "name", "description", "status", "skills_needed", "topic_tags", "link", "public_contact", "location", "online", "lat", "lng", "last_activity", "hidden", "needs_info", "verified"];
+  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end", "recurrence", "needs_info", "verified"];
+  const A = ["id", "coalition_id", "kind", "name", "urgency", "skills_needed", "deadline", "hidden", "host_org_id", "description", "link", "needs_info", "verified"];
   const rowsP = [P], rowsE = [E], rowsA = [A];
-  const addA = (a, cid, oid) => rowsA.push(A.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(a.skills_needed), needs_info: a.needs_info ? "TRUE" : "" }[k] ?? a[k])));
-  const addP = (p, cid, oid) => rowsP.push(P.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags), online: bool(p.online), needs_info: p.needs_info ? "TRUE" : "" }[k] ?? p[k])));
-  const addE = (e, cid, oid) => rowsE.push(E.map((k) => ({ coalition_id: cid, host_org_id: oid, topic_tags: L(e.topic_tags), online: bool(e.online), needs_info: e.needs_info ? "TRUE" : "" }[k] ?? e[k])));
+  const addA = (a, cid, oid) => rowsA.push(A.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(a.skills_needed), needs_info: a.needs_info ? "TRUE" : "", verified: a.verified ? "TRUE" : "" }[k] ?? a[k])));
+  const addP = (p, cid, oid) => rowsP.push(P.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(p.skills_needed), topic_tags: L(p.topic_tags), online: bool(p.online), needs_info: p.needs_info ? "TRUE" : "", verified: p.verified ? "TRUE" : "" }[k] ?? p[k])));
+  const addE = (e, cid, oid) => rowsE.push(E.map((k) => ({ coalition_id: cid, host_org_id: oid, topic_tags: L(e.topic_tags), online: bool(e.online), needs_info: e.needs_info ? "TRUE" : "", verified: e.verified ? "TRUE" : "" }[k] ?? e[k])));
   for (const c of data.coalitions) { c.projects.forEach((p) => addP(p, c.id, "")); c.events.forEach((e) => addE(e, c.id, "")); c.actions.forEach((a) => addA(a, c.id, "")); }
   for (const o of data.organizations) { (o.projects || []).forEach((p) => addP(p, "", o.id)); (o.events || []).forEach((e) => addE(e, "", o.id)); (o.actions || []).forEach((a) => addA(a, "", o.id)); }
   writeFileSync(`${csvDir}/Projects.csv`, rowsP.map((r) => r.map(esc).join(",")).join("\n") + "\n");
