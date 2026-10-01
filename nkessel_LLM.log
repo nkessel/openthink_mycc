@@ -392,3 +392,7 @@ What / why
   - Massachusetts: 114 descriptions, 114 geographic focus, 52 types, 57 websites, Springfield Climate Justice Coalition description; merged into public/data.json only where blank. Still missing: 36 descriptions (34 never researched: the session's 200-web-search cap ran out), 87 types, 43 websites; Cross Campus Climate Coalition not found.
   - Spot-checked against live pages: Green Cambridge, JCAN-MA (founding year + activities) — both matched.
 - Apps Script: "Fill in missing details (logos, websites, descriptions) from GitHub" now also fills blank description / type ("unknown" counts as blank) / geographic_focus for orgs and blank coalition descriptions; never overwrites. Test added.
+
+## 2026-10-01 — Scheduled continuation
+- research/BACKLOG.md: ordered backlog (MA/VT data gaps, next states NH→ME→RI→CT→NY→NJ→PA, site items). A scheduled task works the first unchecked item each run and pushes a branch for review (never merges).
+- topbar: switcher lists every map in MAPS (USA last), so adding a state only touches maps.ts + search.ts.

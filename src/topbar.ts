@@ -28,7 +28,9 @@ export function createTopbar(
   // Right-click (or long-press on a phone) the title to switch between maps.
   const mapMenu = h("div", { class: "map-menu", role: "menu", "aria-label": "Switch map" });
   mapMenu.appendChild(h("div", { class: "map-menu-head" }, "Switch map"));
-  for (const id of ["ma", "vt", "us"] as MapId[]) {
+  // States in the order they're listed in maps.ts, with the USA view last.
+  const ids = (Object.keys(MAPS) as MapId[]).sort((a, b) => Number(a === "us") - Number(b === "us"));
+  for (const id of ids) {
     const m = MAPS[id];
     const opt = h("button", { class: `map-opt ${id === currentMap.id ? "active" : ""}`, type: "button", role: "menuitemradio", "aria-checked": String(id === currentMap.id) },
       h("span", { class: "map-opt-check" }, id === currentMap.id ? "●" : ""), `${m.name} map`);
