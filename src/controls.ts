@@ -174,20 +174,32 @@ export function createControls(
     return { section, body };
   }
 
-  // ---- Size by activity ----
-  const { section: sizeSection, body: sizeBody } = makeSection("Bubbles & size");
-  // Bubbles / Classic switch, sitting directly above the sliders it governs.
-  let bubblesOn = true;
-  try { bubblesOn = localStorage.getItem("openthink.bubbles") !== "0"; } catch (_) { /* ignore */ }
-  const seg = h("div", { class: "view-switch wide", role: "group", "aria-label": "Map view" });
-  const segBubbles = h("button", { type: "button", title: "Zoom in and show its events, projects and actions as bubbles around it" }, "Show its work");
-  const segClassic = h("button", { type: "button", title: "No zoom or bubbles: clicking a group just opens its details panel" }, "Details only");
-  seg.append(segBubbles, segClassic);
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "When you click a group:"));
-  sizeBody.appendChild(seg);
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Always show on the map, even when no group is open:"));
-  for (const [label, key] of [["All events", "showAllEvents"], ["All projects", "showAllProjects"], ["All actions & volunteer roles", "showAllActions"]] as const) {
-    sizeBody.appendChild(
+  // ---- Projects, Events, and Actions ----
+  const { section: sizeSection, body: sizeBody } = makeSection("Projects, Events, and Actions");
+  let itemsOn = true;
+  try { itemsOn = localStorage.getItem("openthink.bubbles") !== "0"; } catch (_) { /* ignore */ }
+
+  // 1. Master switch: show events, projects & actions at all.
+  const masterRow = makeToggle("Show events, projects & actions", itemsOn, (v) => {
+    window.dispatchEvent(new CustomEvent("openthink:setview", { detail: { bubbles: v } }));
+  });
+  const masterSwitch = masterRow.querySelector<HTMLElement>(".switch")!;
+  sizeBody.appendChild(masterRow);
+
+  // 2. One two-sided switch: items appear when you click a group, or are always on the map.
+  const dependent = h("div", { class: "items-dependent" });
+  dependent.appendChild(h("div", { class: "ctrl-hint sub" }, "Show them:"));
+  const seg = h("div", { class: "view-switch wide", role: "group", "aria-label": "When to show items" });
+  const segClick = h("button", { type: "button", title: "Items appear around a group only when you click it" }, "On click");
+  const segAlways = h("button", { type: "button", title: "Items stay on the map around every group; zoom in and they become full bubbles" }, "Always on");
+  seg.append(segClick, segAlways);
+  dependent.appendChild(seg);
+
+  // 3. Which kinds to show (only when "Always on").
+  const kindBox = h("div", { class: "kind-toggles" });
+  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Show on the map:"));
+  for (const [label, key] of [["Events", "showAllEvents"], ["Projects", "showAllProjects"], ["Actions & volunteer roles", "showAllActions"]] as const) {
+    kindBox.appendChild(
       makeToggle(label, state.settings[key], (v) => {
         state.settings[key] = v;
         cb.onSettingsChange({ [key]: v });
@@ -195,6 +207,8 @@ export function createControls(
       }),
     );
   }
+  dependent.appendChild(kindBox);
+
   const sliderBox = h("div", { class: "weight-sliders" });
   sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Make groups with more going on bigger. Raise a slider to count that kind of work; 0 ignores it."));
   for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
@@ -206,18 +220,30 @@ export function createControls(
       }, { min: 0, max: 3, step: 0.1 }),
     );
   }
-  sizeBody.appendChild(sliderBox);
-  function syncBubbles(on: boolean) {
-    bubblesOn = on;
-    segBubbles.classList.toggle("active", on);
-    segClassic.classList.toggle("active", !on);
-    sliderBox.classList.toggle("disabled", !on);
-    sliderBox.querySelectorAll("input").forEach((i) => ((i as HTMLInputElement).disabled = !on));
+  dependent.appendChild(sliderBox);
+  sizeBody.appendChild(dependent);
+
+  function syncItems() {
+    masterSwitch.classList.toggle("on", itemsOn);
+    dependent.classList.toggle("disabled", !itemsOn);
+    segClick.classList.toggle("active", !state.settings.alwaysShow);
+    segAlways.classList.toggle("active", state.settings.alwaysShow);
+    kindBox.style.display = state.settings.alwaysShow ? "" : "none";
+    dependent.querySelectorAll("input,button").forEach((i) => ((i as HTMLInputElement).disabled = !itemsOn));
   }
-  syncBubbles(bubblesOn);
-  segBubbles.addEventListener("click", () => window.dispatchEvent(new CustomEvent("openthink:setview", { detail: { bubbles: true } })));
-  segClassic.addEventListener("click", () => window.dispatchEvent(new CustomEvent("openthink:setview", { detail: { bubbles: false } })));
-  window.addEventListener("openthink:viewmode", (e) => syncBubbles(!!(e as CustomEvent).detail?.bubbles));
+  function setAlways(v: boolean) {
+    state.settings.alwaysShow = v;
+    cb.onSettingsChange({ alwaysShow: v });
+    saveState(state);
+    syncItems();
+  }
+  segClick.addEventListener("click", () => setAlways(false));
+  segAlways.addEventListener("click", () => setAlways(true));
+  syncItems();
+  window.addEventListener("openthink:viewmode", (e) => {
+    itemsOn = !!(e as CustomEvent).detail?.bubbles;
+    syncItems();
+  });
   parent.appendChild(sizeSection);
 
   // ---- Forces ----

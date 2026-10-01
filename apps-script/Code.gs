@@ -42,6 +42,8 @@ var TAB = {
   actions: 'Actions',
   editors: 'Editors',
   review: 'Needs Review',
+  topics: 'Topics',
+  unmatched: 'Unmatched Input',
   feedback: 'Feedback',
   log: 'Change Log',
 };
@@ -113,6 +115,9 @@ var Q = {
   eventTime: 'Start time',
   eventEndTime: 'End time',
   eventRecurrence: 'Does it repeat? (leave blank for a one-time event)',
+  rsvp: 'RSVP / sign-up link (only if people need to register)',
+  moreTopics: 'More topics (type as many as you like, separated by commas)',
+  worksWithText: 'Organizations you work with (one per line, how often is optional)',
   // project
   whichProject: 'Which project is this about?',
   projectName: 'Project name',
@@ -176,10 +181,14 @@ var COLS = {
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
     'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info', 'verified'],
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
-    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info', 'verified'],
+    'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info', 'verified', 'rsvp_link'],
   'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden', 'host_org_id',
     'description', 'link', 'needs_info', 'verified'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
+  // The master topic list (any length). People type topics on the forms; typed text is matched against name + aliases.
+  'Topics': ['name', 'aliases', 'notes'],
+  // Typed organization or topic names that matched nothing. Add the right alias on Topics (or fix the org) and mark it resolved.
+  'Unmatched Input': ['logged_at', 'email', 'form', 'what', 'field', 'typed', 'closest_match', 'status', 'resolution'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
     'reviewed_at', 'payload'],
   'Feedback': ['submitted_at', 'type', 'area', 'message', 'name', 'email', 'ok_to_follow_up', 'status', 'notes', 'phone'],
@@ -215,6 +224,7 @@ function onOpen() {
     .addItem('Set up sheet + forms (run once)', 'setUp')
     .addItem('Replace projects, events and actions from the repo', 'replaceActivityFromRepo')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
+    .addItem('Switch forms to typed answers (orgs + topics)', 'typeAnswersOnForms')
     .addItem('Show form + data links', 'showLinks')
     .addItem('Fill in missing logos + websites from GitHub', 'fillLogosFromGitHub')
     .addToUi();
@@ -371,6 +381,7 @@ function seedSheet_(ss) {
     var desc = COLS[name].indexOf('description');
     if (desc !== -1) sh.setColumnWidth(desc + 1, 420);
   });
+  seedTopics_();
   var review = ss.getSheetByName(TAB.review);
   review.getRange(2, COLS[TAB.review].indexOf('approve') + 1, 500, 1).insertCheckboxes();
   // Private tabs: only visible to people the sheet is shared with, but keep them out of the way.
@@ -398,7 +409,7 @@ function sheetRowsFromData_(d) {
     push('Events', { id: e.id, coalition_id: coalitionId, host_org_id: hostId || e.host_org_id, name: e.name,
       description: e.description, date: e.date, end: e.end, location: e.location, online: bool(e.online),
       lat: num6(e.lat), lng: num6(e.lng), topic_tags: L(e.topic_tags), link: e.link, public_contact: e.public_contact,
-      recurrence: e.recurrence, needs_info: e.needs_info ? 'TRUE' : '', verified: e.verified ? 'TRUE' : '' });
+      recurrence: e.recurrence, rsvp_link: e.rsvp_link, needs_info: e.needs_info ? 'TRUE' : '', verified: e.verified ? 'TRUE' : '' });
   };
   var action = function (a, coalitionId, hostId) {
     push('Actions', { id: a.id, coalition_id: coalitionId, host_org_id: hostId || a.host_org_id, kind: a.kind, name: a.name,
@@ -531,6 +542,26 @@ function addTags_(form) {
   form.addCheckboxItem().setTitle(Q.tags)
     .setHelpText('Pick any that fit, or add your own under "Other". Answering replaces the current tags.')
     .setChoiceValues(BASE_TAGS.map(humanize_)).showOtherOption(true);
+  addMoreTopics_(form);
+}
+/** Type any number of topics; each is matched against the master Topics list. Anything that doesn't match is saved for the team to review. */
+function addMoreTopics_(form) {
+  return form.addParagraphTextItem().setTitle(Q.moreTopics)
+    .setHelpText('Start typing the topics you work on, separated by commas (e.g. "solar, tree planting, composting"). We match them to our topic list; anything we don\'t recognise is saved for the team to review.');
+}
+function addWhichOrgText_(form, what) {
+  return form.addTextItem().setTitle(Q.whichOrg).setRequired(true)
+    .setHelpText('Type the name or short name of your organization (e.g. "MYCC"). We match it to the list, so small typos are fine. ' +
+      'If it is not on the map yet, type "new".');
+}
+function addHostOrgText_(form, what) {
+  return form.addTextItem().setTitle(Q.hostOrg)
+    .setHelpText('The organization running the ' + what + ': type its name or short name. Leave blank for a coalition\'s own ' + what + '.');
+}
+function addWorksWithText_(form) {
+  return form.addParagraphTextItem().setTitle(Q.worksWithText)
+    .setHelpText('One organization per line, with how often you work together if you like, e.g.\nSunrise Boston — monthly\nMass Power Forward — a few times a year\n' +
+      'Leave blank to keep your current answers; if you type anything, it replaces your current list.');
 }
 function addPublicContact_(form) {
   form.addTextItem().setTitle(Q.publicContact)
@@ -551,8 +582,7 @@ function addLocation_(form, what) {
     .setHelpText('Online or remote ' + what + 's are listed but get no map pin.');
 }
 function addOwner_(form, what) {
-  form.addListItem().setTitle(Q.hostOrg).setChoiceValues([NONE])
-    .setHelpText('The organization running the ' + what + '. Pick an organization, a coalition, or both.');
+  addHostOrgText_(form, what);
   form.addListItem().setTitle(Q.coalition).setChoiceValues([NONE])
     .setHelpText('If the ' + what + ' is part of a coalition\'s work. Leave as "None" for an organization\'s own ' + what + '.');
 }
@@ -561,7 +591,7 @@ function buildOrgForm_(form) {
   header_(form,
     'Use this form to add your organization to the MA Climate Coalition Map, or to fill in and correct what we already have.\n\n' +
     OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE + '\n\n' + SIGNIN_NOTE);
-  addSelector_(form, Q.whichOrg, 'Pick your organization to update it, or choose "' + NEW_ORG + '".', NEW_ORG);
+  addWhichOrgText_(form);
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
   form.addTextItem().setTitle(Q.orgAbbrev).setHelpText('e.g. MYCC, BLS YouthCAN');
   addPointPerson_(form);
@@ -581,7 +611,7 @@ function buildOrgForm_(form) {
 
   form.addPageBreakItem().setTitle(WORKS_WITH_PAGE)
     .setHelpText('Which organizations do you work with, and how often? This draws the connections between organizations on the map.');
-  addWorksWithGrid_(form);
+  addWorksWithText_(form);
 
   form.addPageBreakItem().setTitle('Anything else');
   addRemove_(form, 'organization');
@@ -669,6 +699,65 @@ function upgradeOrgForm_(form) {
   });
 }
 
+/**
+ * Menu: turn the organization pickers on the existing forms into type-and-match questions and add the
+ * "More topics" box. Safe to run again. (Needed once, because a dropdown can't be turned into a text box.)
+ */
+function typeAnswersOnForms() {
+  var props = PropertiesService.getScriptProperties();
+  var swapped = 0;
+  var swap = function (form, title, make) {
+    form.getItems().filter(function (it) { return it.getTitle() === title && it.getType() !== FormApp.ItemType.TEXT && it.getType() !== FormApp.ItemType.PARAGRAPH_TEXT; })
+      .forEach(function (it) {
+        var at = it.getIndex();
+        form.deleteItem(it);
+        form.moveItem(make().getIndex(), at);
+        swapped++;
+      });
+  };
+  var addTopicsBox = function (form) {
+    var items = form.getItems();
+    if (items.some(function (it) { return it.getTitle() === Q.moreTopics; })) return;
+    var tags = items.filter(function (it) { return it.getTitle() === Q.tags; })[0];
+    var box = addMoreTopics_(form);
+    if (tags) form.moveItem(box.getIndex(), tags.getIndex() + 1);
+    swapped++;
+  };
+  var org = props.getProperty('FORM_ORG');
+  if (org) {
+    var f = FormApp.openById(org);
+    swap(f, Q.whichOrg, function () { return addWhichOrgText_(f); });
+    swap(f, Q.worksWithGrid, function () { return addWorksWithText_(f); });
+    addTopicsBox(f);
+  }
+  ['FORM_EVENT', 'FORM_PROJECT', 'FORM_ACTION'].forEach(function (k) {
+    var id = props.getProperty(k);
+    if (!id) return;
+    var form = FormApp.openById(id);
+    var what = k === 'FORM_EVENT' ? 'event' : k === 'FORM_PROJECT' ? 'project' : 'action';
+    swap(form, Q.hostOrg, function () { return addHostOrgText_(form, what); });
+    if (k !== 'FORM_ACTION') addTopicsBox(form);
+  });
+  var ss = ss_();
+  [TAB.topics, TAB.unmatched].forEach(function (name) {
+    var sh = ss.getSheetByName(name) || ss.insertSheet(name);
+    if (sh.getLastRow() === 0) {
+      sh.getRange(1, 1, 1, COLS[name].length).setValues([COLS[name]]).setFontWeight('bold').setFontColor('#ffffff').setBackground('#1f2937');
+      sh.setFrozenRows(1);
+    }
+  });
+  seedTopics_();
+  SpreadsheetApp.getUi().alert('Done: ' + swapped + ' question(s) changed. The forms now take typed organizations and topics; anything that does not match is saved on the "' + TAB.unmatched + '" tab.');
+}
+/** Put the built-in topics on the Topics tab if it is empty (the team pastes the full list there). */
+function seedTopics_() {
+  var sh = ss_().getSheetByName(TAB.topics);
+  if (!sh || sh.getLastRow() > 1) return;
+  var t = readAll_();
+  var names = topicCandidates_(t).map(function (c) { return [c.names[0], '', '']; });
+  if (names.length) sh.getRange(2, 1, names.length, 3).setValues(names);
+}
+
 /** Older event forms had no end time; add it right after the start time (safe to run again). */
 function upgradeEventForm_(form) {
   var items = form.getItems();
@@ -703,6 +792,7 @@ function buildEventForm_(form) {
   addRecurrence_(form);
   addLocation_(form, 'event');
   addTags_(form);
+  form.addTextItem().setTitle(Q.rsvp).setHelpText('A page where people sign up, e.g. Eventbrite or Mobilize. Leave blank if no sign-up is needed.');
   form.addTextItem().setTitle(Q.link);
   addPublicContact_(form);
   addRemove_(form, 'event');
@@ -872,9 +962,106 @@ function buildLabelIndex_(t) {
       idx.byLabel[kind][label] = str_(r.id);
     });
   });
+  // what typed text is matched against: the label, the short name, and the id
+  idx.cands = {};
+  ['org', 'coalition'].forEach(function (kind) {
+    idx.cands[kind] = tables[kind].filter(function (r) { return str_(r.id) && !(kind === 'org' && isTrue_(r.hidden)); }).map(function (r) {
+      return { id: str_(r.id), names: [idx.byId[kind][str_(r.id)], str_(r.name), str_(r.abbrev), str_(r.id).replace(/_/g, ' ')].filter(Boolean) };
+    });
+  });
   return idx;
 }
 var LABEL_INDEX_ = null;
+/** Typed names that matched nothing during the current submission (see idFromLabel_). */
+var MISSES_ = [];
+/** Who/what is being processed, so deep helpers can log unmatched input. */
+var CUR_ = { email: '', kind: '' };
+
+// ---------------------------------------------------------------- typed answers: matching
+/** lower-case, no accents/punctuation, filler words dropped: "The Sierra Club, MA" ~ "sierra club ma". */
+function normText_(s) {
+  return String(s === undefined || s === null ? '' : s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')
+    .replace(/&/g, ' and ').replace(/\b(the|of|a|an|and|for|in|at)\b/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+function editDistance_(a, b) {
+  var prev = [], i, j;
+  for (j = 0; j <= b.length; j++) prev[j] = j;
+  for (i = 1; i <= a.length; i++) {
+    var cur = [i];
+    for (j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+    prev = cur;
+  }
+  return prev[b.length];
+}
+/** 0..1: 1 = same after normalising; otherwise the better of word overlap and spelling closeness. */
+function similarity_(x, y) {
+  var a = normText_(x), b = normText_(y);
+  if (!a || !b) return 0;
+  if (a === b) return 1;
+  var ta = a.split(' '), tb = b.split(' ');
+  var inter = ta.filter(function (w) { return tb.indexOf(w) !== -1; }).length;
+  var jac = inter / (ta.length + tb.length - inter);
+  var lev = 1 - editDistance_(a, b) / Math.max(a.length, b.length);
+  return Math.max(jac, lev);
+}
+var MATCH_MIN = 0.88; // accept only a clear match
+var MATCH_GAP = 0.06; // ...that is clearly better than the runner-up
+/**
+ * cands: [{ id, names: [..] }]. Returns { id, score, closest: [labels] }; id is '' unless the best
+ * candidate is a clear match (so a typo like "Sunrise Bostn" matches, but "Sunrise" alone is ambiguous).
+ */
+function matchTyped_(text, cands) {
+  var scored = cands.map(function (c) {
+    var best = 0;
+    c.names.forEach(function (n) { best = Math.max(best, similarity_(text, n)); });
+    return { id: c.id, label: c.names[0], score: best };
+  }).sort(function (p, q) { return q.score - p.score; });
+  var top = scored[0], next = scored[1];
+  var closest = scored.slice(0, 3).filter(function (c) { return c.score > 0.35; }).map(function (c) { return c.label; });
+  if (top && top.score >= MATCH_MIN && (!next || top.score === 1 || top.score - next.score >= MATCH_GAP)) {
+    return { id: top.id, score: top.score, closest: closest };
+  }
+  return { id: '', score: top ? top.score : 0, closest: closest };
+}
+
+/** Topics people can type: the Topics tab (name + aliases), the built-in tags, and every tag already in use. */
+function topicCandidates_(t) {
+  var seen = {}, out = [];
+  var add = function (name, aliases) {
+    var id = slug_(name);
+    if (!id || seen[id]) return;
+    seen[id] = true;
+    out.push({ id: id, names: [humanize_(id) === name ? name : name].concat(list_(aliases)) });
+  };
+  (t.topics || []).forEach(function (r) { if (str_(r.name)) add(str_(r.name), String(r.aliases || '').split(/[,;|]/)); });
+  BASE_TAGS.forEach(function (x) { add(humanize_(x), []); });
+  var used = flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); }).concat(
+    t.orgs.map(function (r) { return list_(r.topic_tags); }),
+    t.events.map(function (r) { return list_(r.topic_tags); }),
+    t.projects.map(function (r) { return list_(r.topic_tags); })));
+  used.forEach(function (x) { add(humanize_(x), []); });
+  return out;
+}
+/** Typed topics → { slugs: [matched], missed: [{typed, closest}] }. */
+function resolveTopics_(text, t) {
+  var out = { slugs: [], missed: [] };
+  var parts = String(text === undefined || text === null ? '' : text).split(/[,;\n]+/).map(function (x) { return x.trim(); }).filter(Boolean);
+  if (!parts.length) return out;
+  var cands = topicCandidates_(t);
+  parts.forEach(function (typed) {
+    var m = matchTyped_(typed, cands);
+    if (m.id) out.slugs.push(m.id); else out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
+  });
+  return out;
+}
+
+/** Append a row to the Unmatched Input tab so the team can review what people typed. */
+function logUnmatched_(email, kind, what, field, typed, closest) {
+  var sheet = ss_().getSheetByName(TAB.unmatched);
+  if (!sheet) return;
+  appendObject_(sheet, { logged_at: nowIso_(), email: email || '', form: FORM_NAMES[kind] || kind, what: what, field: field,
+    typed: typed, closest_match: closest || '', status: 'new', resolution: '' });
+}
 
 // ---------------------------------------------------------------- submissions
 function handleSubmit(e) {
@@ -906,6 +1093,19 @@ function processSubmission_(kind, a, email, approver) {
   if (kind === 'feedback') return saveFeedback_(a, email);
   var t = readAll_();
   LABEL_INDEX_ = buildLabelIndex_(t); // match labels against the sheet as it is now
+  MISSES_ = [];
+  CUR_ = { email: email, kind: kind };
+  var miss = normalizeTyped_(kind, a, approver);
+  if (miss && approver) {
+    // The host org still matches nothing: the admin must correct it (edit the organization in the payload) first.
+    return { ok: false, reason: 'The organization "' + miss.typed + '" still matches nothing. Fix the name in the payload cell (or add the org), then tick approve again.' };
+  }
+  if (miss) {
+    // Typed an organization we can't find: keep the words for the team and hold the submission for review.
+    logUnmatched_(email, kind, 'organization', miss.field, miss.typed, miss.closest);
+    queueForReview_(kind, a, email, { label: miss.typed, id: '' }, 'UNMATCHED ORG — "' + miss.typed + '" is not on the list' + (miss.closest ? ' (closest: ' + miss.closest + ')' : ''));
+    return;
+  }
   var target = describeTarget_(kind, a, t);
   var access = approver ? { ok: true } : authorize_(email, kind, a, target, t);
   if (!access.ok) {
@@ -919,6 +1119,28 @@ function processSubmission_(kind, a, email, approver) {
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
   if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
   refreshDropdowns();
+}
+
+/**
+ * People may now type the organization instead of picking it. Turns typed text into the list's own
+ * label (so everything after this works as before). Returns null, or { field, typed, closest } when
+ * it matched nothing. An admin approving such a submission treats it as a new org (org form) or as
+ * "no host org" (event/project/action forms).
+ */
+function normalizeTyped_(kind, a, approver) {
+  var field = kind === 'org' ? Q.whichOrg : Q.hostOrg;
+  var typed = str_(a[field]);
+  if (!typed || typed === NONE || typed === NEW_ORG) return null;
+  if (kind === 'org' && /^\s*(new|add|add (a )?new( org(anization)?)?|none of these)\s*\.?\s*$/i.test(typed)) { a[field] = NEW_ORG; return null; }
+  var before = MISSES_.length;
+  var id = idFromLabel_(typed, 'org');
+  if (id && LABEL_INDEX_.byId.org[id]) { a[field] = LABEL_INDEX_.byId.org[id]; return null; }
+  var closest = MISSES_.length > before ? MISSES_[MISSES_.length - 1].closest : '';
+  if (approver && kind === 'org') {
+    a[field] = NEW_ORG; if (!str_(a[Q.orgName])) a[Q.orgName] = typed; // approving = "yes, it is a new organization"
+    return null;
+  }
+  return { field: field, typed: typed, closest: closest };
 }
 
 var FORM_NAMES = { org: 'Update your organization', event: 'Add or edit an event', project: 'Add or edit a project', action: 'Add or edit an action or volunteer opportunity', feedback: 'Send feedback' };
@@ -1071,7 +1293,12 @@ function onReviewEdit(e) {
   lock.waitLock(30000);
   try {
     var p = JSON.parse(rec.payload);
-    processSubmission_(p.kind, p.answers, p.email, reviewer || 'admin');
+    var res = processSubmission_(p.kind, p.answers, p.email, reviewer || 'admin');
+    if (res && res.ok === false) {
+      e.range.setValue(false);
+      SpreadsheetApp.getActive().toast(res.reason);
+      return;
+    }
     writeFields_(sheet, headers, row, { status: 'approved', reviewed_at: nowIso_() });
   } finally {
     lock.releaseLock();
@@ -1105,7 +1332,7 @@ function saveOrg_(a, t) {
   if (asArray_(a[Q.orgCoalitions]).length) {
     patch.coalition_ids = asArray_(a[Q.orgCoalitions]).map(function (l) { return idFromLabel_(l, 'coalition'); }).filter(Boolean).join(', ');
   }
-  putTags_(patch, a[Q.tags]);
+  putTags_(patch, a[Q.tags], a[Q.moreTopics]);
   put_(patch, 'website', a[Q.website]);
   if (a[Q.logo]) put_(patch, 'logo', driveImage_(String(a[Q.logo]).trim()));
   if (a[Q.youth]) patch.youth_serving = a[Q.youth] === 'Yes' ? 'TRUE' : 'FALSE';
@@ -1157,7 +1384,20 @@ function saveConnections_(orgId, a) {
       if (to && to !== orgId) picked.push({ to: to, freq: f[2], label: f[0] });
     });
   });
-  if (!picked.length) return '';
+  // Typed list: one organization per line, optionally followed by how often ("Sunrise Boston — monthly").
+  var missedLines = [];
+  String(a[Q.worksWithText] || '').split(/\n|;/).map(function (x) { return x.trim(); }).filter(Boolean).forEach(function (line) {
+    var f = freqFromText_(line);
+    var name = line.replace(/\s*[-–—:(,]\s*(every week|weekly|monthly|every month|quarterly|few times( a year)?|a few times a year|yearly|annually|once a year|rarely).*$/i, '').replace(/\s*[-–—:(]\s*$/, '').trim();
+    var before = MISSES_.length;
+    var to = idFromLabel_(name, 'org');
+    if (to && to !== orgId) picked.push({ to: to, freq: f[2], label: f[0] });
+    else if (!to) {
+      missedLines.push(name);
+      logUnmatched_(CUR_.email, CUR_.kind, 'organization', Q.worksWithText, line, MISSES_.length > before ? MISSES_[MISSES_.length - 1].closest : '');
+    }
+  });
+  if (!picked.length) return missedLines.length ? 'works with: none matched (' + missedLines.join(', ') + ' logged for review)' : '';
   // strongest answer wins if an org was ticked twice
   var byTo = {};
   picked.forEach(function (p) { if (!byTo[p.to] || freqWeight_(p.freq) > freqWeight_(byTo[p.to].freq)) byTo[p.to] = p; });
@@ -1170,9 +1410,18 @@ function saveConnections_(orgId, a) {
     appendObject_(sheet, { from_org: orgId, to_org: to, frequency: byTo[to].freq, updated_at: now, reported_by: orgId });
   });
   return 'works with: ' + Object.keys(byTo).map(function (to) { return to + ' (' + byTo[to].label.toLowerCase() + ')'; }).join(', ') +
-    (mine.length ? ' — replaced ' + mine.length + ' earlier answer(s)' : '');
+    (mine.length ? ' — replaced ' + mine.length + ' earlier answer(s)' : '') +
+    (missedLines.length ? ' — not matched, logged for review: ' + missedLines.join(', ') : '');
 }
 
+/** "monthly", "every week", "a few times a year", "yearly" → a FREQUENCIES entry (default: a few times a year). */
+function freqFromText_(text) {
+  var x = String(text).toLowerCase();
+  if (/every week|weekly/.test(x)) return FREQUENCIES[0];
+  if (/every month|monthly/.test(x)) return FREQUENCIES[1];
+  if (/yearly|annual|once a year|rarely/.test(x)) return FREQUENCIES[3];
+  return FREQUENCIES[2];
+}
 function freqWeight_(key) {
   for (var i = 0; i < FREQUENCIES.length; i++) if (FREQUENCIES[i][2] === key) return FREQUENCIES[i][1];
   return 0;
@@ -1183,7 +1432,8 @@ function saveEvent_(a, t) {
   ownerPatch_(patch, a);
   put_(patch, 'name', a[Q.eventName]);
   put_(patch, 'description', a[Q.eventDesc]);
-  putTags_(patch, a[Q.tags]);
+  putTags_(patch, a[Q.tags], a[Q.moreTopics]);
+  put_(patch, 'rsvp_link', a[Q.rsvp]);
   put_(patch, 'link', a[Q.link]);
   put_(patch, 'recurrence', a[Q.eventRecurrence]);
   put_(patch, 'public_contact', a[Q.publicContact]);
@@ -1216,7 +1466,7 @@ function saveProject_(a, t) {
   if (asArray_(a[Q.skills]).length) {
     patch.skills_needed = uniq_(asArray_(a[Q.skills]).map(function (s) { return String(s).trim().toLowerCase(); })).join(', ');
   }
-  putTags_(patch, a[Q.tags]);
+  putTags_(patch, a[Q.tags], a[Q.moreTopics]);
   put_(patch, 'link', a[Q.link]);
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
@@ -1423,7 +1673,7 @@ function buildDataFile_(t, generatedAt) {
   });
   var events = group(t.events, function (e) {
     return extra({ id: str(e.id), name: str(e.name), date: str(e.date), location: str(e.location) },
-      e, ['end', 'description', 'recurrence', 'needs_info', 'verified', 'host_org_id', 'topic_tags', 'link', 'public_contact', 'online', 'lat', 'lng']);
+      e, ['end', 'description', 'recurrence', 'needs_info', 'verified', 'host_org_id', 'topic_tags', 'link', 'rsvp_link', 'public_contact', 'online', 'lat', 'lng']);
   });
   var actions = group(t.actions, function (a) {
     return extra({ id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name),
@@ -1481,7 +1731,7 @@ function readAll_() {
   var r = function (name) { var sh = ss.getSheetByName(name); return sh ? readTable_(sh).rows : []; };
   return {
     coalitions: r(TAB.coalitions), orgs: r(TAB.orgs), connections: r(TAB.connections), projects: r(TAB.projects),
-    events: r(TAB.events), actions: r(TAB.actions), editors: r(TAB.editors),
+    events: r(TAB.events), actions: r(TAB.actions), editors: r(TAB.editors), topics: r(TAB.topics),
   };
 }
 
@@ -1628,8 +1878,15 @@ function put_(obj, key, v) {
   var s = String(v).trim();
   if (s) obj[key] = s;
 }
-function putTags_(patch, v) {
+/** Topic tags = ticked boxes + any typed topics that match the Topics list. Typed topics that match nothing
+ *  go to the Unmatched Input tab (no limit on how many topics a form can carry). */
+function putTags_(patch, v, typed) {
   var arr = asArray_(v).map(slug_).filter(Boolean);
+  if (str_(typed)) {
+    var r = resolveTopics_(typed, readAll_());
+    arr = arr.concat(r.slugs);
+    r.missed.forEach(function (m) { logUnmatched_(CUR_.email, CUR_.kind, 'topic', Q.moreTopics, m.typed, m.closest); });
+  }
   if (arr.length) patch.topic_tags = uniq_(arr).join(', ');
 }
 function isRemove_(a) { return asArray_(a[Q.remove]).indexOf(REMOVE_YES) !== -1; }
@@ -1650,7 +1907,14 @@ function idFromLabel_(label, kind) {
   if (m) return m[1];
   if (!text || !kind) return '';
   if (!LABEL_INDEX_) LABEL_INDEX_ = buildLabelIndex_(readAll_());
-  return LABEL_INDEX_.byLabel[kind][text] || '';
+  if (LABEL_INDEX_.byLabel[kind][text]) return LABEL_INDEX_.byLabel[kind][text];
+  // Typed instead of picked: match the text against the list (typos, short names, "the" etc.).
+  if (LABEL_INDEX_.cands && LABEL_INDEX_.cands[kind]) {
+    var hit = matchTyped_(text, LABEL_INDEX_.cands[kind]);
+    if (hit.id) return hit.id;
+    MISSES_.push({ kind: kind, typed: text, closest: hit.closest.join(' | ') });
+  }
+  return '';
 }
 function findById_(rows, id) { for (var i = 0; i < rows.length; i++) if (String(rows[i].id) === id) return rows[i]; return null; }
 function lookup_(pairs, label) { for (var i = 0; i < pairs.length; i++) if (pairs[i][0] === label) return pairs[i][1]; return slug_(label); }

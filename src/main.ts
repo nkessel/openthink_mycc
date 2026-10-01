@@ -14,6 +14,7 @@ import { h, clear } from "./dom";
 import { createFab, setFormLabelData } from "./fab";
 import { setupSidebarToggle } from "./sidebar";
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
+import { rollRecurringForward } from "./recurrence";
 
 async function main() {
   const app = document.getElementById("app")!;
@@ -41,6 +42,8 @@ async function main() {
   }
 
   await attachThoughts(data);
+  // Recurring events carry one stored date; show their next occurrence.
+  for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
 
   let activeTab: TopTab = "map";
 

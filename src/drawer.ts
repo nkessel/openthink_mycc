@@ -157,7 +157,6 @@ export function createDrawer(
             { id: "projects", label: `Projects (${n.projects})` },
             { id: "events", label: `Events (${n.events})` },
             { id: "actions", label: `Actions (${n.actions})` },
-            { id: "coalitions", label: "Connections" },
           ];
     // Ensure activeTab is valid for this node kind
     if (!tabList.find((t) => t.id === activeTab)) {
@@ -205,6 +204,11 @@ export function createDrawer(
         renderActions(body, orgActions(data, o), node);
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
+        // Connections live at the end of About (they used to be a fifth tab that wrapped the tab row).
+        body.appendChild(h("div", { class: "section-label" }, "Connections"));
+        renderCoalitionList(body, o);
+        body.appendChild(h("div", { class: "section-label" }, "Suggested connections"));
+        renderSuggestions(body, o);
       }
     }
     return body;
@@ -214,6 +218,12 @@ export function createDrawer(
   function linkEl(link?: string): HTMLElement | null {
     if (!link || !/^https?:\/\//.test(link)) return null;
     return h("a", { class: "item-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗");
+  }
+
+  /** "RSVP" link for events that have a sign-up page; shown before the general "More info" link. */
+  function rsvpEl(link?: string): HTMLElement | null {
+    if (!link || !/^https?:\/\//.test(link)) return null;
+    return h("a", { class: "item-link rsvp-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗");
   }
 
   function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
@@ -257,6 +267,7 @@ export function createDrawer(
             h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
             e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
+          rsvpEl(e.rsvp_link),
           linkEl(e.link),
           staleNotice("event", owner, e.needs_info, e.verified),
         ),

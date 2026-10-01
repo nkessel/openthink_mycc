@@ -161,7 +161,9 @@ export function createEventsView(
       const evs = byDay.get(k) || [];
       const cell = h("div", { class: `cal-day ${d.getMonth() !== monthStart.getMonth() ? "other" : ""} ${k === todayKey ? "today" : ""} ${k === selectedDay ? "selected" : ""}` }, h("div", { class: "cal-num" }, String(d.getDate())));
       for (const r of evs.slice(0, 3)) {
-        cell.appendChild(h("div", { class: "cal-ev", style: `border-left-color:${r.owner.color}`, title: r.event.name }, (r.event.recurrence ? "↻ " : "") + r.event.name));
+        const chip = h("div", { class: "cal-ev", style: `border-left-color:${r.owner.color}`, title: r.event.name }, (r.event.recurrence ? "↻ " : "") + r.event.name);
+        chip.addEventListener("click", (ev) => { ev.stopPropagation(); selectedDay = k; showDetail(r); });
+        cell.appendChild(chip);
       }
       if (evs.length > 3) cell.appendChild(h("div", { class: "cal-more" }, `+${evs.length - 3} more`));
       if (evs.length) {
@@ -210,6 +212,43 @@ export function createEventsView(
     for (const r of filtered) body.appendChild(eventCard(r));
   }
 
+  /** A detail card over the Events tab: everything we know about the event, without leaving the page. */
+  function showDetail(r: Row) {
+    wrap.querySelectorAll(".detail-overlay").forEach((n) => n.remove());
+    const e = r.event;
+    const close = () => { overlay.remove(); document.removeEventListener("keydown", onKey, true); };
+    const onKey = (ev: KeyboardEvent) => { if (ev.key === "Escape") { ev.stopPropagation(); close(); } };
+    const x = h("button", { class: "detail-close", type: "button", "aria-label": "Close" }, "×");
+    x.addEventListener("click", close);
+    const toMap = h("button", { class: "detail-map-btn", type: "button" }, `See ${r.owner.name} on the map`);
+    toMap.addEventListener("click", () => { close(); cb.onCoalitionClick(r.owner.node); });
+    const safe = (u?: string) => !!u && /^https?:\/\//.test(u);
+    const card = h("div", { class: "detail-card", role: "dialog", "aria-label": e.name },
+      x,
+      h("div", { class: "head" },
+        h("div", { class: "coalition-badge", style: `background:${r.owner.color}` }, r.owner.abbrev),
+        h("div", { class: "coalition-name" }, r.owner.name)),
+      h("h3", {}, e.name),
+      h("div", { class: "meta-row" },
+        h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
+        e.location ? h("span", { class: "pill kind" }, e.location) : null,
+        e.online ? h("span", { class: "pill" }, "online") : null,
+        !r.isUpcoming ? h("span", { class: "pill" }, "past") : null),
+      e.description ? h("p", { class: "detail-desc" }, e.description) : null,
+      e.topic_tags && e.topic_tags.length ? h("div", { class: "detail-tags" }, e.topic_tags.map((t) => t.replace(/_/g, " ")).join(" · ")) : null,
+      e.public_contact ? h("div", { class: "detail-contact" }, `Contact: ${e.public_contact}`) : null,
+      h("div", { class: "detail-links" },
+        safe(e.rsvp_link) ? h("a", { class: "item-link rsvp-link", href: e.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗") : null,
+        safe(e.link) ? h("a", { class: "item-link", href: e.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗") : null),
+      staleNotice("event", r.owner.node, e.needs_info, e.verified),
+      toMap);
+    const overlay = h("div", { class: "detail-overlay" }, card);
+    overlay.addEventListener("click", (ev) => { if (ev.target === overlay) close(); });
+    document.addEventListener("keydown", onKey, true);
+    wrap.appendChild(overlay);
+    x.focus();
+  }
+
   function eventCard(r: Row): HTMLElement {
       const card = h(
         "div",
@@ -235,15 +274,16 @@ export function createEventsView(
           h("span", { class: "pill kind" }, r.event.location),
           !r.isUpcoming && h("span", { class: "pill" }, "past"),
         ),
+        r.event.rsvp_link && /^https?:\/\//.test(r.event.rsvp_link)
+          ? h("a", { class: "item-link rsvp-link", href: r.event.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗")
+          : null,
         r.event.link && /^https?:\/\//.test(r.event.link)
           ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
           : null,
         staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
-      card.addEventListener("click", () => {
-        cb.onCoalitionClick(r.owner.node);
-      });
+      card.addEventListener("click", () => showDetail(r));
       return card;
   }
 

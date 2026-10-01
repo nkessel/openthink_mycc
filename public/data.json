@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T12:57:24.951Z",
+  "generated_at": "2026-10-01T14:36:07.403Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -2296,7 +2296,8 @@
           "end": "2026-10-05T10:30:00",
           "recurrence": "Monthly on the first Monday, 9:30-10:30 AM",
           "id": "sustainable_milton_e2",
-          "host_org_id": "sustainable_milton"
+          "host_org_id": "sustainable_milton",
+          "verified": true
         },
         {
           "name": "Emerging Clean Energy Tech: Balcony Solar, Window Heat Pump & More",
@@ -2678,7 +2679,8 @@
           "location": "Odell Veterans Memorial Park, 56-98 Broadway, Beverly, MA",
           "end": "2026-10-17T12:30:00",
           "id": "sunrise_boston_e1",
-          "host_org_id": "sunrise_boston"
+          "host_org_id": "sunrise_boston",
+          "rsvp_link": "https://www.mobilize.us/sunrisemovement/event/976143/"
         }
       ]
     },
@@ -3128,7 +3130,8 @@
           "description": "Sierra Club MA Forest Protection Team film screening with panel Q&A; doors 7pm, film 7:30pm.",
           "id": "sierra_club_e1",
           "verified": true,
-          "host_org_id": "sierra_club"
+          "host_org_id": "sierra_club",
+          "rsvp_link": "https://act.sierraclub.org/events/details?formcampaignid=701Po000025ortKIAQ"
         },
         {
           "id": "sc_e_film_virtual",
@@ -4619,7 +4622,9 @@
           "end": "2026-09-30T09:00:00",
           "recurrence": "Every Wednesday, 8:00-9:00 AM",
           "id": "the_climate_reality_project__e1",
-          "host_org_id": "the_climate_reality_project_boston_metro_chapter"
+          "host_org_id": "the_climate_reality_project_boston_metro_chapter",
+          "rsvp_link": "https://actionnetwork.org/events/8526-hanscom-standout",
+          "verified": true
         }
       ],
       "actions": [
@@ -5092,7 +5097,8 @@
           "end": "2026-10-04T16:00:00",
           "id": "green_cambridge_e1",
           "verified": true,
-          "host_org_id": "green_cambridge"
+          "host_org_id": "green_cambridge",
+          "rsvp_link": "https://www.eventbrite.com/e/alewife-brook-reservation-trash-cleanup-tickets-2002136689735"
         }
       ],
       "actions": [
@@ -5204,7 +5210,8 @@
           "location": "Riverbend Park, Freedom Way, Medford, MA",
           "end": "2026-10-17T15:00:00",
           "id": "green_energy_consumers_allia_e5",
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "verified": true
         },
         {
           "name": "Heat Pumps & Time-Varying Rates",
@@ -6639,7 +6646,8 @@
           "location": "Hosmer Elementary School, 1 Concord Road, Watertown",
           "end": "2026-10-11T15:00:00",
           "id": "watertown_citizens_for_peace_e2",
-          "host_org_id": "watertown_citizens_for_peace_justice_and_the_environment"
+          "host_org_id": "watertown_citizens_for_peace_justice_and_the_environment",
+          "verified": true
         },
         {
           "name": "Palestine Festival",
@@ -6649,7 +6657,8 @@
           "location": "Saltonstall Park, 149 Main Street, Watertown",
           "end": "2026-10-18T18:00:00",
           "id": "watertown_citizens_for_peace_e3",
-          "host_org_id": "watertown_citizens_for_peace_justice_and_the_environment"
+          "host_org_id": "watertown_citizens_for_peace_justice_and_the_environment",
+          "verified": true
         }
       ]
     },
@@ -7279,7 +7288,8 @@
           "end": "2026-10-21T19:30:00",
           "recurrence": "Third Wednesday of every month, 6:00-7:30 PM",
           "id": "citizens_climate_lobby_e3",
-          "host_org_id": "citizens_climate_lobby"
+          "host_org_id": "citizens_climate_lobby",
+          "verified": true
         }
       ]
     },

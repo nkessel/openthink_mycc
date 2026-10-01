@@ -8,6 +8,7 @@
 // Coalition-owned entries live on the coalition; org-owned ones live on the org (projects/events arrays).
 // Only public info: no personal contacts. `lat`/`lng` on in-person events are approximate where noted.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+const CONF = new Map(); // event id -> research confidence, for the verified pass at the end
 import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -193,6 +194,7 @@ for (const [id, items] of Object.entries(researched)) {
     for (const { confidence, ...it } of items[kind] || []) {
       // Events whose own page names them clearly (confidence >= 0.95, and a link deeper than a homepage) lose the
       // "may be out of date" warning. Everything else keeps it.
+      if (kind === "events") CONF.set(it.id, confidence);
       if (kind === "events" && confidence >= 0.95 && it.link && new URL(it.link).pathname.replace(/\//g, "").length > 0 && !it.needs_info) it.verified = true;
       if (!have.some((h) => norm(h.name) === norm(it.name))) have.push(it);
     }
@@ -259,6 +261,18 @@ for (const o of data.organizations) {
   }
 }
 data.generated_at = new Date().toISOString();
+// Events linked straight to a sign-up platform get that link as their RSVP link too.
+const RSVP_HOSTS = /(^|\.)(eventbrite\.com|lu\.ma|everyaction\.com)$/i;
+const isRsvp = (u) => { try { const x = new URL(u); return RSVP_HOSTS.test(x.hostname) || (/(^|\.)mobilize\.us$/i.test(x.hostname) && x.pathname.includes("/event/")) || (x.hostname === "actionnetwork.org" && x.pathname.startsWith("/events/")) || (x.hostname === "act.sierraclub.org" && x.pathname.startsWith("/events")); } catch { return false; } };
+for (const n of [...data.coalitions, ...data.organizations]) for (const e of n.events || []) if (e.link && !e.rsvp_link && isRsvp(e.link)) e.rsvp_link = e.link;
+// "Clearly happening": the warning also goes away for events with their own page on the group's site (a /event/... path)
+// at confidence >= 0.9, and for anything with a sign-up page (RSVP link) at >= 0.8.
+const ownPage = (u) => { try { const p = new URL(u).pathname.split("/").filter(Boolean); return /event/i.test(u) && p.length >= 2; } catch { return false; } };
+for (const n of [...data.coalitions, ...data.organizations]) for (const e of n.events || []) {
+  const c = CONF.get(e.id);
+  if (e.verified || e.needs_info || !e.link || c === undefined) continue;
+  if ((c >= 0.9 && ownPage(e.link)) || (c >= 0.8 && e.rsvp_link)) e.verified = true;
+}
 writeFileSync(DATA, JSON.stringify(data, null, 2) + "\n");
 
 const n = (f) => data.coalitions.reduce((s, c) => s + f(c).length, 0) + data.organizations.reduce((s, o) => s + f(o).length, 0);
@@ -272,7 +286,7 @@ if (csvDir) {
   const L = (xs) => (xs || []).join(", ");
   const bool = (x) => (x === undefined ? "" : x ? "TRUE" : "FALSE");
   const P = ["id", "coalition_id", "host_org_id", "name", "description", "status", "skills_needed", "topic_tags", "link", "public_contact", "location", "online", "lat", "lng", "last_activity", "hidden", "needs_info", "verified"];
-  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end", "recurrence", "needs_info", "verified"];
+  const E = ["id", "coalition_id", "host_org_id", "name", "description", "date", "location", "online", "lat", "lng", "topic_tags", "link", "public_contact", "last_activity", "hidden", "end", "recurrence", "needs_info", "verified", "rsvp_link"];
   const A = ["id", "coalition_id", "kind", "name", "urgency", "skills_needed", "deadline", "hidden", "host_org_id", "description", "link", "needs_info", "verified"];
   const rowsP = [P], rowsE = [E], rowsA = [A];
   const addA = (a, cid, oid) => rowsA.push(A.map((k) => ({ coalition_id: cid, host_org_id: oid, skills_needed: L(a.skills_needed), needs_info: a.needs_info ? "TRUE" : "", verified: a.verified ? "TRUE" : "" }[k] ?? a[k])));
