@@ -10,6 +10,8 @@
       #boot canvas{width:240px;height:170px}
       #boot .bar{width:240px;height:6px;border-radius:3px;background:#1e293b;overflow:hidden}
       #boot .bar b{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width .25s linear}
+      #boot .boot-quip{font-size:13px;color:#7dd3fc;font-style:italic;min-height:1.3em;transition:opacity .35s ease;text-align:center;padding:0 16px}
+      #boot .boot-quip.fade{opacity:0}
       #boot .boot-left{font-size:12px;color:#94a3b8;min-height:1.2em;font-variant-numeric:tabular-nums}
     </style>
   </head>
@@ -17,6 +19,7 @@
     <div id="boot" role="status" aria-live="polite">
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
       <div class="boot-msg">Loading the map&hellip;</div>
+      <div class="boot-quip" aria-hidden="true"></div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
       <div class="boot-left"></div>
     </div>
@@ -110,6 +113,26 @@
           var s = Math.ceil(secondsLeft(p) / 1000);
           left.textContent = s > 1 ? "About " + s + " seconds left" : "Almost there\u2026";
         }
+        // Playful "reasons" while it loads, shuffled, one every couple of seconds.
+        var QUIPS = [
+          "Composting stale data\u2026", "Untangling coalition yarn\u2026", "Watering the seedling projects\u2026",
+          "Teaching orgs to hold hands\u2026", "Counting heat pumps\u2026", "Charging the e-bikes\u2026",
+          "Planting tree nodes\u2026", "Asking the sun for more pixels\u2026", "Weatherizing the bubbles\u2026",
+          "Rounding up volunteers\u2026", "Folding flyers for the rally\u2026", "Petitioning the server\u2026",
+          "Carpooling the data here\u2026", "Spinning up the wind turbines\u2026", "Reheating the potluck\u2026",
+          "Mapping who knows whom\u2026", "Sorting the recycling\u2026", "Booking the church basement\u2026",
+          "Making the coffee for the 7pm meeting\u2026", "Saying hi to every town in Massachusetts\u2026",
+          "Taking the commuter rail (with delays)\u2026", "Unpacking reusable bags\u2026", "Bubbles dividing like good ideas\u2026"
+        ];
+        for (var qi = QUIPS.length - 1; qi > 0; qi--) { var qj = Math.floor(Math.random() * (qi + 1)); var tq = QUIPS[qi]; QUIPS[qi] = QUIPS[qj]; QUIPS[qj] = tq; }
+        var quip = boot.querySelector(".boot-quip"), qn = 0;
+        quip.textContent = QUIPS[0];
+        var quipTimer = setInterval(function () {
+          if (!document.body.contains(boot) || finished) { clearInterval(quipTimer); return; }
+          quip.classList.add("fade");
+          setTimeout(function () { qn = (qn + 1) % QUIPS.length; quip.textContent = QUIPS[qn]; quip.classList.remove("fade"); }, 350);
+        }, 2200);
+
         var last = 0;
         function frame(t) {
           if (!document.body.contains(boot)) return;
