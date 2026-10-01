@@ -907,6 +907,7 @@ export function createGraph(
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   let focusId: string | null = null;
+  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, held on an outer ring while it is in focus
   const focusBar = h("div", { class: "focus-bar" });
   const focusCard = h("div", { class: "focus-card" });
   focusBar.style.display = "none";
@@ -1087,6 +1088,7 @@ export function createGraph(
       return;
     }
     if (focusId && focusId !== id) exitFocus(false);
+    for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     focusId = id;
     nodeSel.classed("sats-hidden", (d) => d.id === id); // its items are already bubbles around it
     const cx = n.x ?? 0;
@@ -1099,7 +1101,35 @@ export function createGraph(
     const nodeR = nodeRadiusOf(n);
     const ringR = bubbles.length ? Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI)) : nodeR + 40;
     // Room a bubble's text needs beyond the ring; everything else is moved out past this.
-    const clearR = bubbles.length ? ringR + 230 : nodeR + 120;
+    let clearR = bubbles.length ? ringR + 230 : nodeR + 120;
+
+    // A coalition's member orgs sit, at full strength, on a bigger ring outside the items ring.
+    pinnedMembers = [];
+    let memberR = 0;
+    if (n.kind === "coalition") {
+      const seen = new Set<string>();
+      for (const l of allLinks) {
+        if (l.kind !== "membership") continue;
+        const sid = typeof l.source === "string" ? l.source : l.source.id;
+        const tid = typeof l.target === "string" ? l.target : l.target.id;
+        if (sid !== id || seen.has(tid)) continue;
+        seen.add(tid);
+        const o = nodeById.get(tid);
+        if (o && o.kind === "org") pinnedMembers.push(o);
+      }
+      if (pinnedMembers.length) {
+        memberR = Math.max(
+          (bubbles.length ? ringR + 270 : nodeR + 150),
+          (pinnedMembers.length * 52) / (2 * Math.PI),
+        );
+        pinnedMembers.forEach((o, i) => {
+          const a = (2 * Math.PI * i) / pinnedMembers.length - Math.PI / 2;
+          o.fx = cx + Math.cos(a) * memberR;
+          o.fy = cy + Math.sin(a) * memberR;
+        });
+        clearR = memberR + 70;
+      }
+    }
 
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
@@ -1160,7 +1190,8 @@ export function createGraph(
     nodeSel
       .classed("faded", (d) => d.id !== id && !partners.has(d.id))
       .classed("partner", (d) => partners.has(d.id))
-      .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12);
+      .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12 && !pinnedMembers.includes(d))
+      .classed("member-ring", (d) => pinnedMembers.includes(d));
     linkSel.classed("faded", (l) => {
       const s = typeof l.source === "string" ? l.source : l.source.id;
       const t = typeof l.target === "string" ? l.target : l.target.id;
@@ -1172,7 +1203,7 @@ export function createGraph(
       const f = nodeById.get(id);
       if (!f) return;
       for (const o of allNodes) {
-        if (o === f) continue;
+        if (o === f || pinnedMembers.includes(o)) continue;
         const dx = (o.x ?? 0) - (f.x ?? 0);
         const dy = (o.y ?? 0) - (f.y ?? 0);
         const d = Math.hypot(dx, dy) || 1;
@@ -1221,7 +1252,7 @@ export function createGraph(
     const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
     const scale = Math.max(
       0.35,
-      Math.min(2.2, (w - panel) / (2 * (ringR + 230)), vh / (2 * (ringR + 90))),
+      Math.min(2.2, (w - panel) / (2 * ((memberR || ringR) + 230)), vh / (2 * ((memberR || ringR) + 90))),
     );
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
@@ -1237,7 +1268,9 @@ export function createGraph(
       n.fy = null;
     }
     focusId = null;
-    nodeSel.classed("sats-hidden", false);
+    for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
+    pinnedMembers = [];
+    nodeSel.classed("sats-hidden", false).classed("member-ring", false);
     sim.force("focusPush", null);
     // Bubbles fold back into the group, then disappear.
     if (fit) {

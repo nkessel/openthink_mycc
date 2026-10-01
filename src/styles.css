@@ -2029,3 +2029,5 @@ text.sat-more { fill: var(--text-dim); }
 
 .reset-map-btn { appearance:none; border:1px solid var(--border); border-radius:999px; background:var(--bg-elev); color:var(--text-dim); font:inherit; font-size:12px; padding:6px 12px; cursor:pointer; align-self:flex-start; }
 .reset-map-btn:hover { color:var(--text); }
+.node-org.member-ring, .node-org.member-ring.partner { opacity: 1; }
+.node-org.member-ring .node-name { display: block; }

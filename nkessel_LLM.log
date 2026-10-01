@@ -353,3 +353,8 @@ What / why
 - graph.ts: "⟲ Reset map" button next to the Items on/off switch; ensureInView() refits the network when no nodes are on screen (checked after every pan/zoom, every 3 s, on resize, and when switching to the Map tab). Tested in Playwright: dragged the map far off screen, it returned within ~4 s.
 - index.html: loading splash now also has a sliding progress bar (user said loading bars are helpful).
 - Uncertainty: I could not reproduce the black screen itself; this covers panned-away and hidden-tab cases. If it is a different cause (e.g. a WebGL/GPU issue) it won't help.
+
+## 2026-10-01 — Coalition zoom: member orgs on an outer ring
+- graph.ts enterFocus: for a coalition, member orgs are pinned (fx/fy) on a ring outside the items ring (memberR), shown at full opacity (.member-ring) instead of greyed; released on exit/refocus. Other nodes are pushed out past memberR; zoom fit uses memberR.
+- Tested in Playwright with Mass Power Forward (104 members): ring renders, no page errors, class cleared on exit.
+- Uncertainty: with 100+ members, org names are tiny at the fitted zoom (logos show); zoom in to read.
