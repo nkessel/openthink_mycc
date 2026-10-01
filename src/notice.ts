@@ -6,10 +6,10 @@ import { FORMS } from "./forms.config";
 import { h } from "./dom";
 
 /** Events, projects and actions each have their own form (actions fall back to feedback until it is connected). */
-export function staleNotice(kind: "project" | "event" | "action", owner: GraphNode | null, needsInfo = false, verified = false): HTMLElement {
+export function staleNotice(kind: "project" | "event" | "action", owner: GraphNode | null, needsInfo = false, verified = false, item: { id: string; name: string; date?: string; sheet_date?: string } | null = null): HTMLElement {
   // Until the actions form is connected (forms.config.ts), actions fall back to the feedback form.
   const form: FormKind = kind === "action" && !FORMS.action.url ? "feedback" : kind;
-  const url = formUrl(form, form === "feedback" ? null : owner);
+  const url = formUrl(form, form === "feedback" ? null : owner, form === "feedback" ? null : item);
   if (verified && !needsInfo) {
     // Confirmed on the group's own page: no warning, just a quiet note and the way to update it.
     const ok = h("div", { class: "stale-notice verified" });

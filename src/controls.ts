@@ -2,7 +2,7 @@ import type { GraphNode, OrgNode, CoalitionNode } from "./types";
 import type { GraphSettings, GroupRule } from "./graph";
 import { DEFAULT_GRAPH_SETTINGS } from "./graph";
 import { h, clear } from "./dom";
-import { typeLabel } from "./util";
+import { typeLabel, typeList } from "./util";
 
 export interface ControlsState {
   settings: GraphSettings;
@@ -73,7 +73,7 @@ function specToRule(spec: GroupSpec): GroupRule {
       label: spec.label,
       color: spec.color,
       matches: (n: GraphNode) =>
-        n.kind === "org" && (n as OrgNode).type === spec.matchValue,
+        n.kind === "org" && typeList((n as OrgNode).type).includes(spec.matchValue as string),
     };
   } else {
     return {
@@ -175,6 +175,15 @@ export function createControls(
   }
 
   // ---- Projects, Events, and Actions ----
+  // ---- Show text (top of the bar) ----
+  const textRow = makeToggle("Show text", state.settings.showText, (v) => {
+    state.settings.showText = v;
+    cb.onSettingsChange({ showText: v });
+    saveState(state);
+  });
+  textRow.classList.add("show-text-row");
+  parent.appendChild(textRow);
+
   const { section: sizeSection, body: sizeBody } = makeSection("Projects, Events, and Actions");
   let itemsOn = true;
   try { itemsOn = localStorage.getItem("openthink.bubbles") !== "0"; } catch (_) { /* ignore */ }
@@ -221,6 +230,14 @@ export function createControls(
     );
   }
   dependent.appendChild(sliderBox);
+  sizeBody.appendChild(
+    makeSlider("Group size follows connected orgs", state.settings.weightConnections, (v) => {
+      state.settings.weightConnections = v;
+      cb.onSettingsChange({ weightConnections: v });
+      saveState(state);
+    }),
+  );
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Turn down so big coalitions aren't huge; all the way down makes every group the same size."));
   sizeBody.appendChild(dependent);
 
   function syncItems() {
@@ -330,20 +347,6 @@ export function createControls(
 
   // ---- Display ----
   const { section: displaySection, body: displayBody } = makeSection("Display");
-  displayBody.appendChild(
-    makeToggle("Arrows", state.settings.arrows, (v) => {
-      state.settings.arrows = v;
-      cb.onSettingsChange({ arrows: v });
-      saveState(state);
-    }),
-  );
-  displayBody.appendChild(
-    makeSlider("Text fade threshold", state.settings.textFadeThreshold, (v) => {
-      state.settings.textFadeThreshold = v;
-      cb.onSettingsChange({ textFadeThreshold: v });
-      saveState(state);
-    }),
-  );
   displayBody.appendChild(
     makeSlider("Node size", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;

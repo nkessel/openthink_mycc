@@ -15,10 +15,40 @@ export function setFormLabelData(orgs: Organization[]): void {
   for (const o of orgs) (seen.has(o.name) ? sharedOrgNames : seen).add(o.name);
 }
 export const orgLabel = (o: Organization) => (sharedOrgNames.has(o.name) ? `${o.name} [${o.id}]` : o.name);
+
+// Events, projects and actions are labelled the same way as the form's "Which … is this about?" lists
+// (LABEL_BASE_ in apps-script/Code.gs): events "Name — Mon D, YYYY", others just the name; " [id]" is added
+// only when two items of that kind share a label.
+type Item = { id: string; name: string; date?: string; sheet_date?: string };
+const sharedItemLabels: Record<string, Set<string>> = { event: new Set(), project: new Set(), action: new Set() };
+const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function itemBase(kind: "event" | "project" | "action", it: Item): string {
+  if (kind !== "event") return it.name;
+  const raw = it.sheet_date || it.date || "";
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(raw);
+  return `${it.name} — ${m ? `${SHORT_MONTHS[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}` : raw}`;
+}
+export function setItemLabelData(nodes: { events?: Item[]; projects?: Item[]; actions?: Item[] }[]): void {
+  for (const kind of ["event", "project", "action"] as const) {
+    const seen = new Set<string>();
+    const shared = new Set<string>();
+    for (const n of nodes) {
+      for (const it of (n[`${kind}s` as "events" | "projects" | "actions"] || []) as Item[]) {
+        const b = itemBase(kind, it);
+        (seen.has(b) ? shared : seen).add(b);
+      }
+    }
+    sharedItemLabels[kind] = shared;
+  }
+}
+export function itemLabel(kind: "event" | "project" | "action", it: Item): string {
+  const b = itemBase(kind, it);
+  return sharedItemLabels[kind].has(b) ? `${b} [${it.id}]` : b;
+}
 export const coalitionLabel = (c: Coalition) => (c.abbrev ? `${c.name} (${c.abbrev})` : c.name);
 
 /** Form URL, pre-filled for the given org/coalition when possible. null = forms not set up. */
-export function formUrl(kind: FormKind, context: GraphNode | null = null): string | null {
+export function formUrl(kind: FormKind, context: GraphNode | null = null, item: Item | null = null): string | null {
   const f: FormLink = FORMS[kind];
   if (!f.url) return null;
   const params = new URLSearchParams();
@@ -28,6 +58,7 @@ export function formUrl(kind: FormKind, context: GraphNode | null = null): strin
   } else if (context?.kind === "coalition" && f.coalitionEntry) {
     params.set(f.coalitionEntry, coalitionLabel(context));
   }
+  if (item && f.itemEntry && (kind === "event" || kind === "project" || kind === "action")) params.set(f.itemEntry, itemLabel(kind, item));
   if (![...params.keys()].length) return f.url;
   params.set("usp", "pp_url");
   return `${f.url}${f.url.includes("?") ? "&" : "?"}${params.toString()}`;

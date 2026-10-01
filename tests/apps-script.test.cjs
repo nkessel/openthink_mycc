@@ -319,11 +319,13 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const before = unmatched().length;
   submit("fo", "nathandkessel@gmail.com", {
     [Q.whichOrg]: "boston latin school youth climate action netwrk",
+    [Q.orgType]: ["Nonprofit — 501(c)(3)", "Faith community", "Nonprofit — 501(c)(3)", "Mutual aid"],
     [Q.moreTopics]: "clean energy, Tree planting, quantum basket weaving",
     [Q.worksWithText]: `${other.name} — monthly\nTotally Made Up Collective, yearly`,
   });
   d = data();
   org = d.organizations.find((o) => o.id === bls.id);
+  assert.equal(org.type, "501c3, faith_org, mutual_aid", "several org types are kept, comma-separated, without repeats");
   assert.ok(org.topic_tags.includes("clean_energy") && org.topic_tags.includes("tree_planting"), "typed topics matched");
   assert.ok(!org.topic_tags.includes("quantum_basket_weaving"), "unmatched topic is not added");
   const logged = unmatched().slice(before);

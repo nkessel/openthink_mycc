@@ -1,5 +1,5 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
-import { allEvents, type Owner } from "./owners";
+import { allEvents, ownerBadge, type Owner } from "./owners";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { occursOn, parseRecurrence } from "./recurrence";
@@ -226,7 +226,7 @@ export function createEventsView(
     const card = h("div", { class: "detail-card", role: "dialog", "aria-label": e.name },
       x,
       h("div", { class: "head" },
-        h("div", { class: "coalition-badge", style: `background:${r.owner.color}` }, r.owner.abbrev),
+        ownerBadge(r.owner),
         h("div", { class: "coalition-name" }, r.owner.name)),
       h("h3", {}, e.name),
       h("div", { class: "meta-row" },
@@ -240,7 +240,7 @@ export function createEventsView(
       h("div", { class: "detail-links" },
         safe(e.rsvp_link) ? h("a", { class: "item-link rsvp-link", href: e.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗") : null,
         safe(e.link) ? h("a", { class: "item-link", href: e.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗") : null),
-      staleNotice("event", r.owner.node, e.needs_info, e.verified),
+      staleNotice("event", r.owner.node, e.needs_info, e.verified, e),
       toMap);
     const overlay = h("div", { class: "detail-overlay" }, card);
     overlay.addEventListener("click", (ev) => { if (ev.target === overlay) close(); });
@@ -256,14 +256,7 @@ export function createEventsView(
         h(
           "div",
           { class: "head" },
-          h(
-            "div",
-            {
-              class: "coalition-badge",
-              style: `background:${r.owner.color}`,
-            },
-            r.owner.abbrev,
-          ),
+          ownerBadge(r.owner),
           h("div", { class: "coalition-name" }, r.owner.name),
         ),
         h("div", { class: "name" }, r.event.name),
@@ -280,7 +273,7 @@ export function createEventsView(
         r.event.link && /^https?:\/\//.test(r.event.link)
           ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
           : null,
-        staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified),
+        staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified, r.event),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
       card.addEventListener("click", () => showDetail(r));

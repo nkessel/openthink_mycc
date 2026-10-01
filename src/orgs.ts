@@ -2,7 +2,7 @@
 // mode that lists pairs of similar orgs that aren't connected yet (the "holes").
 import type { DataFile, GraphNode, Organization } from "./types";
 import { h, clear } from "./dom";
-import { initials, typeLabel } from "./util";
+import { initials, typeLabel, typeList } from "./util";
 import { computeSuggestions } from "./suggestions";
 
 export interface OrgsView {
@@ -65,7 +65,7 @@ export function createOrgsView(data: DataFile, cb: OrgsCallbacks): OrgsView {
   coalitionSel.addEventListener("change", () => { coalition = coalitionSel.value; render(); });
   const typeSel = h("select", { class: "select", "aria-label": "Type" }) as HTMLSelectElement;
   typeSel.appendChild(h("option", { value: "" }, "All types"));
-  for (const t of [...new Set(data.organizations.map((o) => o.type))].sort()) {
+  for (const t of [...new Set(data.organizations.flatMap((o) => typeList(o.type)))].sort()) {
     typeSel.appendChild(h("option", { value: t }, typeLabel(t)));
   }
   typeSel.addEventListener("change", () => { type = typeSel.value; render(); });
@@ -82,7 +82,7 @@ export function createOrgsView(data: DataFile, cb: OrgsCallbacks): OrgsView {
   function orgMatches(o: Organization): boolean {
     if (coalition === "__none" && o.coalition_ids.length) return false;
     if (coalition && coalition !== "__none" && !o.coalition_ids.includes(coalition)) return false;
-    if (type && o.type !== type) return false;
+    if (type && !typeList(o.type).includes(type)) return false;
     if (youthOnly && !o.profile?.youth_serving) return false;
     if (!q) return true;
     const hay = `${o.name} ${o.abbrev || ""} ${o.geographic_focus} ${o.description} ${(o.topic_tags || []).join(" ")}`.toLowerCase();

@@ -42,7 +42,10 @@ export interface GraphSettings {
   nodeSize: number; // 0.5..2
   linkThickness: number; // 0.5..4 (px)
   textFadeThreshold: number; // 0..1; below this zoom scale, hide names
-  arrows: boolean;
+  /** Show group / org names on the map (off hides them all). */
+  showText: boolean;
+  /** 0..1: how much a coalition's size follows its number of connected orgs (0 = all the same size). */
+  weightConnections: number;
   /** Bubbles for events / projects / actions appear around a group when it is opened. */
   showBubbles: boolean;
   /** How much each kind of activity adds to a group's size (0 = ignore it). */
@@ -65,7 +68,8 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   nodeSize: 1,
   linkThickness: 1,
   textFadeThreshold: 0.5,
-  arrows: false,
+  showText: true,
+  weightConnections: 0.5,
   showBubbles: true,
   weightEvents: 0,
   weightProjects: 0,
@@ -96,6 +100,8 @@ export interface Graph {
 }
 
 const COALITION_LABEL_FONT_SIZE = 14;
+/** Size every coalition shrinks / grows toward when "size by connected orgs" is turned down. */
+const UNIFORM_COALITION_R = 48;
 const ORG_LABEL_FONT_SIZE = 10;
 /** Logo size as a share of the node radius: fills the circle (no white rim). */
 const LOGO_SCALE = 1;
@@ -253,6 +259,10 @@ export function createGraph(
   function applyTextFade() {
     // The threshold slider value 0..1 maps to a zoom scale 0.2..2.5.
     // Below that scale, node-name labels fade out.
+    if (!settings.showText) {
+      nodeLayer.selectAll<SVGTextElement, GraphNode>("text.node-name").style("opacity", 0);
+      return;
+    }
     const threshold = 0.2 + settings.textFadeThreshold * 2.3;
     const k = currentZoomScale;
     // Smooth fade across a small window for nicer transition.
@@ -330,7 +340,11 @@ export function createGraph(
     return Math.min(2.8, 0.8 + 0.3 * Math.sqrt(v)); // no activity → a bit smaller; the more, the bigger
   }
   function nodeRadiusOf(n: GraphNode): number {
-    const base = n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
+    let base: number;
+    if (n.kind === "coalition") {
+      const w = settings.weightConnections;
+      base = UNIFORM_COALITION_R + (coalitionRadius(n) - UNIFORM_COALITION_R) * w;
+    } else base = orgRadius(n);
     return base * settings.nodeSize * sizeFactor(n);
   }
 
@@ -1272,7 +1286,7 @@ export function createGraph(
         }
         refreshSats();
       }
-      if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined) {
+      if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
         applyVisualSettings();
         sim.alpha(0.4).restart();
@@ -1290,7 +1304,7 @@ export function createGraph(
       if (partial.linkThickness !== undefined) {
         linkSel.attr("stroke-width", linkWidthFor);
       }
-      if (partial.textFadeThreshold !== undefined) {
+      if (partial.textFadeThreshold !== undefined || partial.showText !== undefined) {
         applyTextFade();
       }
       // If any force changed, re-energize the sim

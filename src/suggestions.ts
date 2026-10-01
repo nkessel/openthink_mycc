@@ -7,6 +7,7 @@
 // It gets better as groups fill in descriptions and tags through the forms.
 import type { DataFile, Organization } from "./types";
 import { orgProjects } from "./owners";
+import { typeList } from "./util";
 
 export interface Suggestion {
   a: string;
@@ -84,7 +85,8 @@ export function computeSuggestions(data: DataFile): Suggestion[] {
       const text = cosine(i, j);
       const tagSim = jaccard(tags[i], tags[j]);
       const skillSim = jaccard(skills[i], skills[j]);
-      const sameType = a.type === b.type && a.type !== "unknown" && a.type !== "other";
+      const sharedTypes = typeList(a.type).filter((t) => t !== "unknown" && t !== "other" && typeList(b.type).includes(t));
+      const sameType = sharedTypes.length > 0;
       const youth = !!(a.profile?.youth_serving && b.profile?.youth_serving);
       const bothExact = a.profile?.geo_precision !== "approx" && b.profile?.geo_precision !== "approx" && !a.remote && !b.remote;
       const dist = bothExact ? km(a, b) : Infinity;
@@ -99,7 +101,7 @@ export function computeSuggestions(data: DataFile): Suggestion[] {
         reasons.push(`Shared topics: ${shared.slice(0, 3).join(", ")}`);
       }
       if (skillSim > 0) reasons.push("Need similar skills");
-      if (sameType) reasons.push(`Both ${a.type.replace(/_/g, " ")}s`);
+      if (sameType) reasons.push(`Both ${sharedTypes[0].replace(/_/g, " ")}s`);
       if (youth) reasons.push("Both youth-serving");
       if (near > 0) reasons.push(`About ${Math.max(1, Math.round(dist))} km apart`);
 

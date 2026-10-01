@@ -620,9 +620,10 @@ function buildOrgForm_(form) {
 var WORKS_WITH_PAGE = 'Who you work with';
 var POINT_PERSON_PAGE = 'Point person (private)';
 
-/** Org type as a multiple-choice question so "Other" can be a write-in. */
+/** Org type as checkboxes (an org can be a nonprofit and a faith community) with a write-in "Other". */
 function addOrgType_(form) {
-  return form.addMultipleChoiceItem().setTitle(Q.orgType)
+  return form.addCheckboxItem().setTitle(Q.orgType)
+    .setHelpText('Pick every one that fits.')
     .setChoiceValues(ORG_TYPES.filter(function (t) { return t[1] !== 'other'; }).map(function (t) { return t[0]; }))
     .showOtherOption(true);
 }
@@ -676,7 +677,7 @@ function upgradeOrgForm_(form) {
   placePointPerson_(form);
   items = form.getItems();
   var typeItem = items.filter(function (it) { return it.getTitle() === Q.orgType; })[0];
-  if (typeItem && typeItem.getType() === FormApp.ItemType.LIST) {
+  if (typeItem && typeItem.getType() !== FormApp.ItemType.CHECKBOX) {
     var typeAt = typeItem.getIndex();
     form.deleteItem(typeItem);
     form.moveItem(addOrgType_(form).getIndex(), typeAt);
@@ -1326,7 +1327,9 @@ function saveOrg_(a, t) {
   var patch = {};
   put_(patch, 'name', a[Q.orgName]);
   put_(patch, 'abbrev', a[Q.orgAbbrev]);
-  if (a[Q.orgType]) put_(patch, 'type', lookup_(ORG_TYPES, a[Q.orgType]));
+  // Several types are stored comma-separated, e.g. "501c3, faith_org".
+  var types = asArray_(a[Q.orgType]).map(function (l) { return lookup_(ORG_TYPES, l); }).filter(Boolean);
+  if (types.length) put_(patch, 'type', types.filter(function (t, i) { return types.indexOf(t) === i; }).join(', '));
   put_(patch, 'geographic_focus', a[Q.orgTown]);
   put_(patch, 'description', a[Q.orgDesc]);
   if (asArray_(a[Q.orgCoalitions]).length) {
@@ -1832,9 +1835,9 @@ function siteFormConfig_() {
   };
   return {
     org: one('FORM_ORG', { orgEntry: Q.whichOrg }),
-    event: one('FORM_EVENT', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition }),
-    project: one('FORM_PROJECT', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition }),
-    action: one('FORM_ACTION', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition }),
+    event: one('FORM_EVENT', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition, itemEntry: Q.whichEvent }),
+    project: one('FORM_PROJECT', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition, itemEntry: Q.whichProject }),
+    action: one('FORM_ACTION', { hostOrgEntry: Q.hostOrg, coalitionEntry: Q.coalition, itemEntry: Q.whichAction }),
     feedback: one('FORM_FEEDBACK'),
   };
 }

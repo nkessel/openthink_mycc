@@ -331,3 +331,13 @@ What / why
 - Events tab: clicking an event opens a detail card (description, RSVP, More info, contact, topics) instead of jumping to the map; calendar chips do the same; "See <org> on the map" button inside it.
 - Apps Script: typed answers. Org pickers and the works-with grid become typed questions matched to the org list (typos, short names, filler words); a "More topics" box takes any number of topics matched against a new Topics tab; anything that matches nothing is saved on a new Unmatched Input tab. Unmatched host org = held in Needs Review (admin fixes the name in the payload, then approves). Menu: "Switch forms to typed answers (orgs + topics)" converts the existing forms in place. Tests added (typo match, typed topics, unmatched logging, review hold + approval).
 - Why: Nathan's requests (form with no topic cap and cross-referencing; sidebar/bubble changes; RSVP; event detail card; fewer warnings).
+
+## 2026-10-01 (3) — change-log batch: loading screen, size by connections, toggles, multi-type, action autofill, Actions tab (branch claude/change-log-batch3)
+- Loading screen: index.html shows a bubble-orbit splash ("Please wait, loading the map…") from the first byte; main.ts fades it out once the first frame is drawn (also on a data error). Reduced-motion users get a still version.
+- New setting "Group size follows connected orgs" (0..1, default 0.5): coalition radius blends from one uniform size (0) to the member-count size (1) so big coalitions aren't huge.
+- Arrows toggle removed (arrows were always off). "Text fade threshold" slider replaced by a "Show text" on/off toggle at the top of the settings bar.
+- Org type is now several-choice on the form (checkboxes + write-in Other); stored comma-separated ("501c3, faith_org"). Site: typeList()/typeLabel() split it; Organizations filter, group colouring and suggestions match any of the types. Existing forms are converted by upgradeOrgForm_ (run "Switch forms..." / the upgrade menu item).
+- Action/event/project autofill: the "Which … is this about?" question ids (entry.1447795421 event, entry.378180696 project, entry.1959573726 action, read from the live forms) are in forms.config.ts as itemEntry; "Update this info" links now pass the clicked item, labelled exactly as the dropdown is (events "Name — Mon D, YYYY"; " [id]" only when labels clash). Recurring events keep their sheet date (sheet_date) for this. Code.gs also exports itemEntry in the "For the site" JSON.
+- Events / Projects / (new) Actions pages show the org's logo instead of initials when it has one.
+- New "Actions" tab (actions.ts): search, Take action / Volunteer roles filter, skills filter, same cards.
+- Why: Nathan's change-request list in the Google Doc.

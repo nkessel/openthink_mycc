@@ -27,6 +27,8 @@ export interface CoalitionEvent {
   id: string;
   name: string;
   date: string;
+  /** The date as stored in the sheet, kept when a recurring event's date is rolled forward (form labels use it). */
+  sheet_date?: string;
   location: string;
   // Optional fields filled in through the MA Climate Coalition Map forms
   /** A date with no time part ("2026-10-12") means the source did not post a time. */

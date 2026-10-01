@@ -1,5 +1,5 @@
 import type { DataFile, Project, GraphNode } from "./types";
-import { allProjects, type Owner } from "./owners";
+import { allProjects, ownerBadge, type Owner } from "./owners";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 
@@ -151,14 +151,7 @@ export function createProjectsView(
         h(
           "div",
           { class: "head" },
-          h(
-            "div",
-            {
-              class: "coalition-badge",
-              style: `background:${r.owner.color}`,
-            },
-            r.owner.abbrev,
-          ),
+          ownerBadge(r.owner),
           h("div", { class: "coalition-name" }, r.owner.name),
         ),
         h("div", { class: "name" }, r.project.name),
@@ -167,7 +160,7 @@ export function createProjectsView(
         r.project.link && /^https?:\/\//.test(r.project.link)
           ? h("a", { class: "item-link", href: r.project.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗")
           : null,
-        staleNotice("project", r.owner.node, r.project.needs_info, r.project.verified),
+        staleNotice("project", r.owner.node, r.project.needs_info, r.project.verified, r.project),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
       card.addEventListener("click", () => {
