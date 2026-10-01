@@ -348,3 +348,8 @@ What / why
 - New optional fields, end to end: free_food, affiliated_only (events + projects), help_wanted (projects; blank = yes). Types, Code.gs (columns, export/import, buildDataFile_, save, form questions via addAttendanceQuestions_, upgrade path), tests.
 - Geographic tab: Boundaries (None / Towns / Counties; click one to zoom; MassGIS-derived outlines, simplified, public/geo/), "Show list of events in view", all org dots one size that grows with zoom, coalitions with no member locations are no longer pinned. Voting districts are NOT done (need a boundary source).
 - Why: Nathan's change-request list; answers: add all three fields, towns + counties, bundled zip table with a miles slider.
+
+## 2026-10-01 — Reset map button, empty-view auto reset, loading bar
+- graph.ts: "⟲ Reset map" button next to the Items on/off switch; ensureInView() refits the network when no nodes are on screen (checked after every pan/zoom, every 3 s, on resize, and when switching to the Map tab). Tested in Playwright: dragged the map far off screen, it returned within ~4 s.
+- index.html: loading splash now also has a sliding progress bar (user said loading bars are helpful).
+- Uncertainty: I could not reproduce the black screen itself; this covers panned-away and hidden-tab cases. If it is a different cause (e.g. a WebGL/GPU issue) it won't help.

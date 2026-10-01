@@ -248,6 +248,7 @@ async function main() {
     projectsView.el.style.display = tab === "projects" ? "grid" : "none";
     actionsView.el.style.display = tab === "actions" ? "grid" : "none";
     if (tab === "geo") geoView.invalidate();
+    if (tab === "map") setTimeout(() => graphApi?.ensureInView(), 150);
     if (tab !== "map") {
       tooltip.hide();
       // The org details panel belongs to the map; don't leave it floating over the other tabs.

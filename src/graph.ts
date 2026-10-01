@@ -90,6 +90,8 @@ export interface Graph {
   enterFocus(id: string): void;
   /** Leave the zoomed-in view and return to the whole network. */
   exitFocus(): void;
+  /** Reset the view if nothing is on screen. */
+  ensureInView(): void;
   /** The "org-to-org connections" checkbox, for the host page to place (the sidebar). */
   orgLinkToggle(): HTMLElement;
   updateSettings(partial: Partial<GraphSettings>): void;
@@ -190,6 +192,16 @@ export function createGraph(
     viewSwitch.appendChild(viewBtns[k]);
   }
   overlay.appendChild(viewSwitch);
+  const resetBtn = document.createElement("button");
+  resetBtn.type = "button";
+  resetBtn.className = "reset-map-btn";
+  resetBtn.textContent = "⟲ Reset map";
+  resetBtn.title = "Zoom out to show the whole network again";
+  resetBtn.addEventListener("click", () => {
+    if (focusId) exitFocus();
+    else fitToView(true);
+  });
+  overlay.appendChild(resetBtn);
   function syncViewSwitch() {
     viewBtns.bubbles.classList.toggle("active", settings.showBubbles);
     viewBtns.classic.classList.toggle("active", !settings.showBubbles);
@@ -252,7 +264,7 @@ export function createGraph(
       tooltip.hide();
       if (event.sourceEvent) focusCard.style.display = "none";
     })
-    .on("end", () => queueDetail());
+    .on("end", () => { queueDetail(); ensureInView(); });
 
   let currentZoomScale = 1;
   let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
@@ -793,6 +805,19 @@ export function createGraph(
     fitToView(false);
   }, 2500);
 
+  /** If nothing is on screen (panned away, zoomed past everything, or the pane was hidden), reset the view. */
+  function ensureInView() {
+    if (focusId) return;
+    const wr = wrap.getBoundingClientRect();
+    if (wr.width < 50 || wr.height < 50) return; // hidden tab; check again when shown
+    const nr = nodeLayer.node()!.getBoundingClientRect();
+    const empty = nr.width === 0 && nr.height === 0;
+    const off = nr.right < wr.left + 20 || nr.left > wr.right - 20 || nr.bottom < wr.top + 20 || nr.top > wr.bottom - 20;
+    if (empty || off) fitToView(true);
+  }
+  setInterval(ensureInView, 3000);
+  window.addEventListener("resize", () => setTimeout(ensureInView, 200));
+
   function fitToView(animate = true) {
     let xs: number[] = [];
     let ys: number[] = [];
@@ -1262,6 +1287,9 @@ export function createGraph(
     },
     exitFocus() {
       exitFocus();
+    },
+    ensureInView() {
+      ensureInView();
     },
     updateSettings(partial) {
       const before = { ...settings };
