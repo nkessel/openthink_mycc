@@ -318,3 +318,16 @@ What / why
 - Verified flag: events with confidence >= 0.95 and a specific (non-homepage) link get verified=true and show "Listed on the group's own page" instead of the "may be out of date" warning. Added a verified column to Code.gs and the sheet export, so the sheet needs the updated script + re-run of "Replace projects, events and actions".
 - Removed the old focus-bar legend ring (::before) that showed a stray "0" beside the icons.
 - Why: Nathan's feedback. Checked with Playwright desktop + 390px mobile; no JS errors.
+
+## 2026-10-01 (2) — sidebar rework, universal bubbles, typed form answers, RSVP links, event detail card (branch claude/sidebar-orbits-forms, off development_branch)
+- Recurring events: the bubble border is now ONE circular arrow (arc + arrowhead) instead of a ring of small ↻ symbols. Same arrow on the always-on bubbles.
+- Sidebar section renamed "Projects, Events, and Actions": master toggle "Show events, projects & actions"; one two-sided switch "On click | Always on"; per-kind toggles (events / projects / actions) appear only when Always on; weight sliders grey out when the master is off. Map overlay switch is now "Items on | Items off".
+- Always-on items are one system: dots on a single orbit (even spacing, same distance for every group), which turn into real mini bubbles (icon, date, click for the card) when zoomed in past ~1.9x. Bubbles are built in batches for what is on screen, with a centre loading bar. The clicked group's own dots hide while its full bubbles are out.
+- Removed the dashed orbit circle that appeared when a group is clicked.
+- Org drawer: Connections moved to the end of About (the 5th tab wrapped the tab row once counts were added).
+- RSVP link: new rsvp_link on events (types, sheet column, form question, drawer, Events list, map card), shown before "More info". Auto-set for events linked straight to Eventbrite / Mobilize event pages / Action Network events / Sierra Club events.
+- Verified (no warning): now also events with their own /event/ page at confidence >= 0.9, or an RSVP page at >= 0.8 (83 of 121 events; was 77). Hanscom standout is now verified; its end time (9:00) and recurrence ("Every Wednesday, 8:00-9:00 AM") were already saved.
+- Recurring events are rolled forward to their next occurrence at load (the Hanscom standout showed last Wednesday; now Oct 7).
+- Events tab: clicking an event opens a detail card (description, RSVP, More info, contact, topics) instead of jumping to the map; calendar chips do the same; "See <org> on the map" button inside it.
+- Apps Script: typed answers. Org pickers and the works-with grid become typed questions matched to the org list (typos, short names, filler words); a "More topics" box takes any number of topics matched against a new Topics tab; anything that matches nothing is saved on a new Unmatched Input tab. Unmatched host org = held in Needs Review (admin fixes the name in the payload, then approves). Menu: "Switch forms to typed answers (orgs + topics)" converts the existing forms in place. Tests added (typo match, typed topics, unmatched logging, review hold + approval).
+- Why: Nathan's requests (form with no topic cap and cross-referencing; sidebar/bubble changes; RSVP; event detail card; fewer warnings).

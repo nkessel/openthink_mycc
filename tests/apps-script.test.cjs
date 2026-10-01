@@ -302,3 +302,60 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.ok(res.logos >= 1 && log().length > before);
   console.log("fill logos from GitHub OK");
 }
+
+// 5) typed answers: organizations and topics are matched against the lists; misses are kept for review
+{
+  const unmatched = () => book["Unmatched Input"].slice(1).map((r) => Object.fromEntries(COLS["Unmatched Input"].map((c, i) => [c, r[i]])));
+  const orgs = ctx.readAll_().orgs;
+  const bls = orgs.find((o) => o.id === "boston_latin_school_youthcan");
+  // matching engine: typos, case, filler words, short names
+  const cands = ctx.buildLabelIndex_(ctx.readAll_()).cands.org;
+  assert.equal(ctx.matchTyped_("boston latin school youth climate action netwrk", cands).id, bls.id);
+  assert.equal(ctx.matchTyped_("THE Boston Latin School Youth Climate Action Network", cands).id, bls.id);
+  assert.equal(ctx.matchTyped_("zzzz not a real group", cands).id, "");
+
+  // org form: typed org name (with a typo) + typed topics (some known, some not) + typed works-with lines
+  const other = orgs.find((o) => o.id === "belmont_high_school_climate_club");
+  const before = unmatched().length;
+  submit("fo", "nathandkessel@gmail.com", {
+    [Q.whichOrg]: "boston latin school youth climate action netwrk",
+    [Q.moreTopics]: "clean energy, Tree planting, quantum basket weaving",
+    [Q.worksWithText]: `${other.name} — monthly\nTotally Made Up Collective, yearly`,
+  });
+  d = data();
+  org = d.organizations.find((o) => o.id === bls.id);
+  assert.ok(org.topic_tags.includes("clean_energy") && org.topic_tags.includes("tree_planting"), "typed topics matched");
+  assert.ok(!org.topic_tags.includes("quantum_basket_weaving"), "unmatched topic is not added");
+  const logged = unmatched().slice(before);
+  assert.ok(logged.some((r) => r.what === "topic" && r.typed === "quantum basket weaving"), "unmatched topic logged");
+  assert.ok(logged.some((r) => r.what === "organization" && /Made Up/.test(r.typed)), "unmatched org line logged");
+  const lk = d.org_links.find((l) => [l.source, l.target].includes(other.id) && [l.source, l.target].includes(bls.id));
+  assert.equal(lk.frequency, "monthly");
+
+  // event form: a typed host org that matches nothing waits for review (and is kept on the Unmatched tab)
+  const n = review().length;
+  submit("fe", "nathandkessel@gmail.com", { [Q.whichEvent]: NEW_EVENT, [Q.hostOrg]: "Imaginary Climate Club", [Q.eventName]: "Ghost event" });
+  assert.equal(review().length, n + 1);
+  assert.match(review().at(-1).reason, /^UNMATCHED ORG/);
+  assert.ok(!JSON.stringify(data()).includes("Ghost event"));
+  assert.ok(unmatched().some((r) => r.typed === "Imaginary Climate Club"));
+
+  // a typed host org that does match is applied, and old picked labels still work
+  submit("fe", "point@bls.org", { [Q.whichEvent]: NEW_EVENT, [Q.hostOrg]: "boston latin school youth climate action network", [Q.eventName]: "Typed host event" });
+  assert.ok(data().organizations.find((o) => o.id === bls.id).events.some((e) => e.name === "Typed host event"));
+
+  // an admin can't approve it until the host org is fixed in the payload
+  const idx = book["Needs Review"].findIndex((r, i) => i > 0 && /Ghost event/.test(String(r[COLS["Needs Review"].indexOf("summary")])));
+  book["Needs Review"][idx][approveCol - 1] = true;
+  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(idx + 1, approveCol), user: { getEmail: () => "ab130@wellesley.edu" } });
+  assert.ok(!JSON.stringify(data()).includes("Ghost event"), "not applied while the org still matches nothing");
+  const pc = COLS["Needs Review"].indexOf("payload");
+  const payload = JSON.parse(book["Needs Review"][idx][pc]);
+  payload.answers[Q.hostOrg] = "Boston Latin School YouthCAN";
+  payload.answers[Q.hostOrg] = bls.name;
+  book["Needs Review"][idx][pc] = JSON.stringify(payload);
+  book["Needs Review"][idx][approveCol - 1] = true;
+  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(idx + 1, approveCol), user: { getEmail: () => "ab130@wellesley.edu" } });
+  assert.ok(JSON.stringify(data()).includes("Ghost event"), "approved once the org is fixed");
+  console.log("typed answers (orgs + topics + unmatched log) OK");
+}

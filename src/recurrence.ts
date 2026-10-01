@@ -52,3 +52,29 @@ export function occursOn(rule: Rule, anchor: Date, day: Date): boolean {
   if (rule.nth === -1) return d.getDate() + 7 > new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
   return n === rule.nth;
 }
+
+/**
+ * Recurring events are stored with the date of one occurrence, which goes stale ("Every Wednesday" still
+ * dated last Wednesday). Move each one forward to its next occurrence so the map, lists and calendar all
+ * show an upcoming date. Events whose pattern we can't read are left as they are.
+ */
+export function rollRecurringForward(events: { date: string; end?: string; recurrence?: string }[], now = new Date()): void {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  for (const e of events) {
+    if (!e.recurrence) continue;
+    const rule = parseRecurrence(e.recurrence);
+    if (!rule) continue;
+    const m = /^(\d{4})-(\d{2})-(\d{2})(T.*)?$/.exec(e.date);
+    if (!m) continue;
+    const anchor = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if (anchor >= today) continue;
+    for (let i = 0; i < 400; i++) {
+      const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+      if (!occursOn(rule, anchor, day)) continue;
+      const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      e.date = iso(day) + (m[4] || "");
+      if (e.end && /^\d{4}-\d{2}-\d{2}T/.test(e.end)) e.end = iso(day) + e.end.slice(10);
+      break;
+    }
+  }
+}

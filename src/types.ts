@@ -41,6 +41,8 @@ export interface CoalitionEvent {
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
+  /** Sign-up / RSVP page for this event, shown before the general "More info" link. */
+  rsvp_link?: string;
   public_contact?: string;
   online?: boolean;
   lat?: number;

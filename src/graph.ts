@@ -49,7 +49,9 @@ export interface GraphSettings {
   weightEvents: number;
   weightProjects: number;
   weightActions: number;
-  /** Always show every group's events / projects / actions as small dots around it, even when nothing is open. */
+  /** true = every group's events / projects / actions are always on the map (dots that become bubbles as you zoom); false = only when a group is clicked. */
+  alwaysShow: boolean;
+  /** With alwaysShow on: which kinds to show. */
   showAllEvents: boolean;
   showAllProjects: boolean;
   showAllActions: boolean;
@@ -68,9 +70,10 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   weightEvents: 0,
   weightProjects: 0,
   weightActions: 0,
-  showAllEvents: false,
-  showAllProjects: false,
-  showAllActions: false,
+  alwaysShow: false,
+  showAllEvents: true,
+  showAllProjects: true,
+  showAllActions: true,
 };
 
 export interface Graph {
@@ -171,9 +174,9 @@ export function createGraph(
     bubbles: document.createElement("button"),
     classic: document.createElement("button"),
   };
-  viewBtns.bubbles.textContent = "Show its work";
+  viewBtns.bubbles.textContent = "Items on";
   viewBtns.bubbles.title = "When you click a group: zoom in and show its events, projects and actions as bubbles";
-  viewBtns.classic.textContent = "Details only";
+  viewBtns.classic.textContent = "Items off";
   viewBtns.classic.title = "When you click a group: just open its details panel (no zoom, no bubbles)";
   for (const k of ["bubbles", "classic"] as const) {
     viewBtns[k].type = "button";
@@ -236,13 +239,17 @@ export function createGraph(
     .on("zoom", (event) => {
       root.attr("transform", event.transform.toString());
       currentZoomScale = event.transform.k;
+      currentTransform = event.transform;
       applyTextFade();
+      updateSatLevel();
       // Hide tooltip while zooming; a card anchored to a bubble would drift, so close it on manual pan/zoom
       tooltip.hide();
       if (event.sourceEvent) focusCard.style.display = "none";
-    });
+    })
+    .on("end", () => queueDetail());
 
   let currentZoomScale = 1;
+  let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
   function applyTextFade() {
     // The threshold slider value 0..1 maps to a zoom scale 0.2..2.5.
     // Below that scale, node-name labels fade out.
@@ -269,6 +276,7 @@ export function createGraph(
   // ----- Settings (mutable) -----
   let settings: GraphSettings = { ...DEFAULT_GRAPH_SETTINGS };
   try { if (localStorage.getItem("openthink.bubbles") === "0") settings.showBubbles = false; } catch (_) { /* ignore */ }
+  try { if (localStorage.getItem("openthink.always") === "1") settings.alwaysShow = true; } catch (_) { /* ignore */ }
   let groups: GroupRule[] = [];
 
   // Helpers to compute the actual force strengths from normalized 0..1 sliders.
@@ -494,35 +502,148 @@ export function createGraph(
     }
   });
 
-  // ----- Always-on dots: each group's events / projects / actions as little moons, even when nothing is open -----
-  const SAT_MAX = 14;
-  function renderSatellites() {
-    const kinds: { key: "showAllProjects" | "showAllEvents" | "showAllActions"; kind: "project" | "event" | "action" }[] = [
-      { key: "showAllProjects", kind: "project" },
-      { key: "showAllEvents", kind: "event" },
-      { key: "showAllActions", kind: "action" },
-    ];
-    nodeSel.each(function (this: SVGGElement, d) {
-      const sel = d3.select(this);
-      sel.selectAll("g.sats").remove();
-      const active = kinds.filter((k) => settings[k.key]);
-      if (!active.length) return;
-      const g = sel.append("g").attr("class", "sats").style("pointer-events", "none");
-      const c = countsOf(d);
-      const r0 = nodeRadiusOf(d);
-      active.forEach((k, ring) => {
-        const n = c[k.kind === "project" ? "projects" : k.kind === "event" ? "events" : "actions"];
-        if (!n) return;
-        const shown = Math.min(n, SAT_MAX);
-        const rr = r0 + 7 + ring * 8;
-        for (let i = 0; i < shown; i++) {
-          const a = (2 * Math.PI * i) / shown - Math.PI / 2 + ring * 0.35;
-          g.append("circle").attr("class", `sat sat-${k.kind}`).attr("cx", Math.cos(a) * rr).attr("cy", Math.sin(a) * rr).attr("r", 3.2);
-        }
-        if (n > SAT_MAX) g.append("text").attr("class", `sat-more sat-${k.kind}`).attr("x", 0).attr("y", -rr - 5).text(`+${n - SAT_MAX}`);
+  // ----- Always-on items: every group's events / projects / actions ring it on one orbit -----
+  // Far out they are small dots; zoom in and the same items turn into real bubbles (icon, date, click for the card).
+  // Detail is built in small batches for what is on screen, with a loading bar so a big map never just freezes.
+  const SAT_DOT_R = 3.2;
+  const SAT_BUB_R = 11;
+  const DETAIL_ON_K = 1.9; // zoom at which dots become bubbles
+  const DETAIL_OFF_K = 1.6; // and back (a gap so it doesn't flicker)
+  const DETAIL_CAP = 24;
+  let satsReady = false;
+  let satMode: 0 | 1 = 0;
+  const satLevel = new Map<string, 0 | 1>();
+  let detailToken = 0;
+
+  const loadingEl = h("div", { class: "map-loading" },
+    h("div", { class: "map-loading-label" }, "Loading details…"),
+    h("div", { class: "map-loading-track" }, h("div", { class: "map-loading-fill" })));
+  loadingEl.style.display = "none";
+  wrap.appendChild(loadingEl);
+  const loadingFill = loadingEl.querySelector<HTMLElement>(".map-loading-fill")!;
+  let loadingSince = 0;
+  function showLoading(frac: number) {
+    if (loadingEl.style.display === "none") { loadingEl.style.display = "flex"; loadingSince = performance.now(); }
+    loadingFill.style.width = `${Math.round(frac * 100)}%`;
+  }
+  function hideLoading() {
+    const wait = Math.max(0, 300 - (performance.now() - loadingSince));
+    setTimeout(() => { if (satsBusy === 0) loadingEl.style.display = "none"; }, wait);
+  }
+  let satsBusy = 0;
+
+  /** The items to show around a group: only the kinds that are switched on, one kind after another. */
+  function satItemsOf(n: GraphNode): Bubble[] {
+    const want = new Set<BubbleKind>();
+    if (settings.showAllProjects) want.add("project");
+    if (settings.showAllEvents) want.add("event");
+    if (settings.showAllActions) want.add("action");
+    return bubblesFor(n).filter((b) => want.has(b.kind));
+  }
+  /** Take items round-robin across kinds so a "+n" never hides a whole kind. */
+  function spread(items: Bubble[], cap: number): Bubble[] {
+    if (items.length <= cap) return items;
+    const by = new Map<BubbleKind, Bubble[]>();
+    for (const b of items) (by.get(b.kind) ?? by.set(b.kind, []).get(b.kind)!).push(b);
+    const out: Bubble[] = [];
+    const lists = [...by.values()];
+    for (let i = 0; out.length < cap; i++) {
+      let added = false;
+      for (const l of lists) if (i < l.length && out.length < cap) { out.push(l[i]); added = true; }
+      if (!added) break;
+    }
+    return out.sort((x, y) => items.indexOf(x) - items.indexOf(y));
+  }
+
+  function drawSats(n: GraphNode, level: 0 | 1) {
+    const sel = d3.select<SVGGElement, GraphNode>(nodeSel.filter((d) => d.id === n.id).node() as SVGGElement);
+    sel.selectAll("g.sats").remove();
+    satLevel.set(n.id, level);
+    if (!settings.showBubbles || !settings.alwaysShow) return;
+    const items = satItemsOf(n);
+    if (!items.length) return;
+    const r0 = nodeRadiusOf(n);
+    const g = sel.append("g").attr("class", `sats lv${level}`);
+    if (level === 0) {
+      g.style("pointer-events", "none");
+      const rr = r0 + 10; // everything sits on this one circle
+      const cap = Math.max(6, Math.floor((2 * Math.PI * rr) / 8.5));
+      const shown = spread(items, cap);
+      shown.forEach((b, i) => {
+        const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
+        g.append("circle").attr("class", `sat sat-${b.kind}`).attr("cx", Math.cos(a) * rr).attr("cy", Math.sin(a) * rr).attr("r", SAT_DOT_R);
+      });
+      if (items.length > shown.length) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${items.length - shown.length}`);
+      return;
+    }
+    const shown = spread(items, DETAIL_CAP);
+    const rr = Math.max(r0 + SAT_BUB_R + 10, (shown.length * (2 * SAT_BUB_R + 8)) / (2 * Math.PI));
+    shown.forEach((b, i) => {
+      const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
+      const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}`)
+        .attr("transform", `translate(${Math.cos(a) * rr},${Math.sin(a) * rr})`)
+        .style("cursor", "pointer");
+      bg.append("title").text(b.label);
+      bg.append("circle").attr("r", SAT_BUB_R);
+      const inner = bg.append("g").attr("transform", "scale(0.5)");
+      const isRole = b.kind === "action" && (b.item as Action).kind === "role";
+      drawIcon(inner as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : (b.kind as BubbleKind), b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
+      if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) drawRecurArc(bg as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, SAT_BUB_R - 1.2, 0.9);
+      bg.on("click", (event: Event) => {
+        event.stopPropagation();
+        const cb2 = (bg.select("circle").node() as SVGCircleElement).getBoundingClientRect();
+        const wb = wrap.getBoundingClientRect();
+        showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 }, n);
       });
     });
+    if (items.length > shown.length) g.append("text").attr("class", "sat-more").attr("y", -rr - SAT_BUB_R - 4).text(`+${items.length - shown.length}`);
   }
+
+  /** Dots for everyone (cheap); bubbles for what is on screen when zoomed in, a batch at a time. */
+  function refreshSats() {
+    if (!satsReady) return;
+    detailToken++;
+    satMode = currentZoomScale >= DETAIL_ON_K ? 1 : 0;
+    nodeSel.each((d) => drawSats(d, 0));
+    queueDetail();
+  }
+  function onScreen(n: GraphNode): boolean {
+    const { w, h: vh } = dimensions();
+    const k = currentTransform.k;
+    const m = 140; // a bit of margin so bubbles are ready just before they slide in
+    const sx = (n.x ?? 0) * k + currentTransform.x;
+    const sy = (n.y ?? 0) * k + currentTransform.y;
+    return Math.abs(sx) < w / 2 + m && Math.abs(sy) < vh / 2 + m;
+  }
+  function queueDetail() {
+    if (!satsReady || !settings.showBubbles || !settings.alwaysShow || satMode !== 1) return;
+    const todo = allNodes.filter((n) => satLevel.get(n.id) !== 1 && onScreen(n) && (nodeSel.filter((d) => d.id === n.id).style("display") !== "none") && satItemsOf(n).length);
+    if (!todo.length) return;
+    const token = ++detailToken;
+    const BATCH = 8;
+    let done = 0;
+    satsBusy++;
+    const step = () => {
+      if (token !== detailToken) { satsBusy--; hideLoading(); return; }
+      for (const n of todo.slice(done, done + BATCH)) drawSats(n, 1);
+      done += BATCH;
+      if (todo.length > BATCH) showLoading(Math.min(1, done / todo.length));
+      if (done < todo.length) requestAnimationFrame(step);
+      else { satsBusy--; hideLoading(); }
+    };
+    if (todo.length > BATCH) showLoading(0);
+    requestAnimationFrame(step);
+  }
+  function updateSatLevel() {
+    if (!satsReady || !settings.alwaysShow || !settings.showBubbles) return;
+    const want: 0 | 1 = satMode === 1 ? (currentZoomScale < DETAIL_OFF_K ? 0 : 1) : (currentZoomScale >= DETAIL_ON_K ? 1 : 0);
+    if (want === satMode) return;
+    satMode = want;
+    detailToken++;
+    if (want === 0) nodeSel.each((d) => { if (satLevel.get(d.id) !== 0) drawSats(d, 0); });
+    else queueDetail();
+  }
+  const renderSatellites = refreshSats;
 
   // ----- Apply visual settings (radii, halos, link thickness, fade) -----
   function applyVisualSettings() {
@@ -800,7 +921,7 @@ export function createGraph(
     return ids;
   }
 
-  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }) {
+  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode) {
     while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
     const it = b.item as Thought & Project & CoalitionEvent & Action;
     const kindLabel =
@@ -825,11 +946,15 @@ export function createGraph(
     const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent | Action).description;
     if (desc) focusCard.appendChild(h("p", { class: "focus-card-text" }, desc));
     if (b.kind === "thought") focusCard.appendChild(h("div", { class: "focus-card-source" }, `Source: ${(it as Thought).source}`));
+    const rsvp = (it as { rsvp_link?: string }).rsvp_link;
+    if (b.kind === "event" && rsvp && /^https?:\/\//.test(rsvp)) {
+      focusCard.appendChild(h("a", { class: "focus-card-link rsvp-link", href: rsvp, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗"));
+    }
     const link = (it as { link?: string }).link;
     if (link && /^https?:\/\//.test(link)) {
       focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
     }
-    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, focusId ? nodeById.get(focusId) ?? null : null, (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified));
+    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified));
     focusCard.style.visibility = "hidden";
     focusCard.style.display = "block";
     placeCard(anchor);
@@ -863,6 +988,24 @@ export function createGraph(
   }
 
   const LABEL_PX = 6; // rough width of one label character, for hit areas and spacing
+
+  /** A recurring item's border: one circular arrow running around the bubble (a ring with an arrowhead, not many little symbols). */
+  function drawRecurArc(g: d3.Selection<SVGGElement, unknown, null, undefined>, rr: number, w: number) {
+    const a0 = -Math.PI / 2 + 0.35;
+    const a1 = a0 + 2 * Math.PI - 0.7;
+    const px = (a: number) => Math.cos(a) * rr;
+    const py = (a: number) => Math.sin(a) * rr;
+    g.classed("recurring", true);
+    g.append("path").attr("class", "recur-arc").style("stroke-width", `${1.9 * w}px`)
+      .attr("d", `M ${px(a0)} ${py(a0)} A ${rr} ${rr} 0 1 1 ${px(a1)} ${py(a1)}`);
+    // arrowhead at the end, pointing the way the ring runs (clockwise)
+    const tx = -Math.sin(a1), ty = Math.cos(a1); // direction of travel
+    const nx = Math.cos(a1), ny = Math.sin(a1); // outward
+    const L = 6.5 * w, Wd = 3.6 * w;
+    const bx = px(a1), by = py(a1);
+    g.append("path").attr("class", "recur-head")
+      .attr("d", `M ${bx + tx * L} ${by + ty * L} L ${bx + nx * Wd} ${by + ny * Wd} L ${bx - nx * Wd} ${by - ny * Wd} Z`);
+  }
 
   // Icons drawn inside the bubbles, centred on (0,0): a calendar, a team of people, a checkmark.
   function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind | "volunteer", date?: string) {
@@ -906,6 +1049,7 @@ export function createGraph(
     }
     if (focusId && focusId !== id) exitFocus(false);
     focusId = id;
+    nodeSel.classed("sats-hidden", (d) => d.id === id); // its items are already bubbles around it
     const cx = n.x ?? 0;
     const cy = n.y ?? 0;
     n.fx = cx; // hold the node still while you look around it
@@ -920,7 +1064,6 @@ export function createGraph(
 
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
-    if (bubbles.length) focusGroup.append("circle").attr("class", "focus-ring").attr("r", ringR).attr("opacity", 0).transition().duration(500).attr("opacity", 1);
     bubbles.forEach((b, i) => {
       const a = (2 * Math.PI * i) / bubbles.length - Math.PI / 2;
       const bx = Math.cos(a) * ringR;
@@ -948,16 +1091,7 @@ export function createGraph(
         const word = isRole ? "VOLUNTEER" : b.kind.toUpperCase();
         g.append("text").attr("class", "bubble-type").attr("y", b.r + 10).text(word);
         if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) {
-          // Recurring: the bubble's border is a ring of ↻ symbols instead of a plain line.
-          const n = Math.max(8, Math.round((2 * Math.PI * b.r) / 8.5));
-          const pid = `ring-${b.id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
-          const rr = b.r - 4.5;
-          g.classed("recurring", true);
-          g.append("path").attr("id", pid).attr("fill", "none").attr("stroke", "none")
-            .attr("d", `M ${-rr} 0 a ${rr} ${rr} 0 1 1 ${2 * rr} 0 a ${rr} ${rr} 0 1 1 ${-2 * rr} 0`);
-          g.append("text").attr("class", "recur-ring")
-            .append("textPath").attr("href", `#${pid}`).attr("textLength", 2 * Math.PI * rr - 2).attr("lengthAdjust", "spacing")
-            .text("↻".repeat(n));
+          drawRecurArc(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, b.r - 1.5, 1);
         }
       }
       const label = g.append("text")
@@ -1027,7 +1161,7 @@ export function createGraph(
       stat("action", "Actions"),
     );
     focusBar.appendChild(legend);
-    const classicBtn = h("button", { class: "focus-back", type: "button", title: "Stop showing bubbles when a group is clicked; just open its details panel" }, "Details only (no bubbles)");
+    const classicBtn = h("button", { class: "focus-back", type: "button", title: "Stop showing bubbles when a group is clicked; just open its details panel" }, "Turn items off");
     classicBtn.addEventListener("click", () => setViewMode(false));
     focusBar.appendChild(classicBtn);
     if (!count("thought")) {
@@ -1064,6 +1198,7 @@ export function createGraph(
       n.fy = null;
     }
     focusId = null;
+    nodeSel.classed("sats-hidden", false);
     sim.force("focusPush", null);
     // Bubbles fold back into the group, then disappear.
     if (fit) {
@@ -1071,7 +1206,7 @@ export function createGraph(
       focusGroup.selectAll<SVGGElement, unknown>("g.bubble")
         .transition().duration(350).ease(d3.easeCubicIn)
         .attr("transform", `translate(0,0) scale(0.2)`).attr("opacity", 0);
-      focusGroup.selectAll("line.bubble-link, circle.focus-ring").transition().duration(350).attr("opacity", 0);
+      focusGroup.selectAll("line.bubble-link").transition().duration(350).attr("opacity", 0);
       setTimeout(() => { if (!focusId) focusGroup.selectAll("*").remove(); }, 380);
       void nn;
     } else {
@@ -1131,8 +1266,11 @@ export function createGraph(
         xForce.strength(centerForceStrength());
         yForce.strength(centerForceStrength());
       }
-      if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined) {
-        renderSatellites();
+      if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined || partial.alwaysShow !== undefined) {
+        if (partial.alwaysShow !== undefined) {
+          try { localStorage.setItem("openthink.always", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
+        }
+        refreshSats();
       }
       if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
@@ -1141,6 +1279,7 @@ export function createGraph(
       }
       if (partial.showBubbles !== undefined) {
         if (!settings.showBubbles && focusId) exitFocus(); // Classic: fold everything back to the plain network
+        refreshSats();
         syncViewSwitch();
         window.dispatchEvent(new CustomEvent("openthink:viewmode", { detail: { bubbles: settings.showBubbles } }));
       }
@@ -1177,6 +1316,8 @@ export function createGraph(
   };
 
   syncViewSwitch();
+  satsReady = true;
+  refreshSats();
   return api;
 }
 
