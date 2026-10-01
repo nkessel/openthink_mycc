@@ -371,3 +371,4 @@ What / why
 - Tested in Playwright with data slowed 7 s: bar 15% / 44% / 73% at 1 / 3 / 5 s with 5 / 4 / 2 s left; Mass Power Forward zoom shows 104 members in ~4 rows, no page errors.
 - Uncertainty: the first visit on a device has no history, so the countdown starts from the 6 s guess; the Apps Script feed sends no content-length, so there the bar is time-based.
 - Added playful loading "reasons" under the stage label (23 climate/organizing quips, shuffled, one every 2.2 s with a fade). Tested: rotates, splash still removed, no errors.
+- Per Nathan: replaced the random quips with 11 warm lines about what the map is doing ("Gathering the coalitions…", "Getting the latest events…", …), shown in order instead of shuffled.
