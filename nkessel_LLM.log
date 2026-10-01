@@ -296,3 +296,9 @@ What / why
 - Climate Action Now: their /events calendar had 5 monthly Zoom series we missed; added as recurring events (source was model-summarised WebFetch because the site blocked curl/Playwright, confidence ~0.85). iCal/REST feeds not reachable.
 - Map: hover shows projects/events/actions counts; Display settings got "Make groups bigger by" (none/all/events/projects/actions) and "Show events, projects & actions around a group when you open it"; bubbles use icons (calendar, team of people, checkmark) with date·place subtitles; bubbles grow out of the clicked group, other groups are pushed away, clicking the open group again folds them back; info card appears next to the clicked bubble.
 - Why: requested by Nathan. Checked with Playwright (no JS errors). The preview reads the LIVE sheet, so it still showed pre-dedupe data.
+
+## 2026-09-30 — calendar layout fix, seedling icon + type captions, activity-weight sliders (branch claude/calendar-fix-icons-weights)
+- Calendar was broken because its nav, grid and day cards were direct children of .list-body, which is a multi-column card grid; they landed side by side. Wrapped them in one full-width .cal-wrap, styled the nav buttons, and on narrow screens show coloured dots instead of event names.
+- Project bubbles now use a seedling icon; volunteer roles keep the team-of-people icon, tasks the checkmark. Each bubble has a small type caption (EVENT / PROJECT / ACTION / VOLUNTEER) under its icon.
+- Replaced the "Make groups bigger by" dropdown with a "Size by activity" section near the top of the sidebar: three sliders (events, projects, actions & volunteer roles), 0 = ignore, size grows with the square root of the weighted total.
+- Why: Nathan's feedback. Checked with Playwright (calendar wide + narrow, bubbles, slider changed a node's radius 20 -> 30.7; no JS errors).

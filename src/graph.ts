@@ -42,8 +42,10 @@ export interface GraphSettings {
   arrows: boolean;
   /** Bubbles for events / projects / actions appear around a group when it is opened. */
   showBubbles: boolean;
-  /** Scale group size by how much they're doing. */
-  sizeBy: "none" | "all" | "events" | "projects" | "actions";
+  /** How much each kind of activity adds to a group's size (0 = ignore it). */
+  weightEvents: number;
+  weightProjects: number;
+  weightActions: number;
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
@@ -56,7 +58,9 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   textFadeThreshold: 0.5,
   arrows: false,
   showBubbles: true,
-  sizeBy: "none",
+  weightEvents: 0,
+  weightProjects: 0,
+  weightActions: 0,
 };
 
 export interface Graph {
@@ -268,10 +272,11 @@ export function createGraph(
   }
   tooltip.setCounts(countsOf);
   function sizeFactor(n: GraphNode): number {
-    if (settings.sizeBy === "none") return 1;
+    const { weightEvents: we, weightProjects: wp, weightActions: wa } = settings;
+    if (!we && !wp && !wa) return 1;
     const c = countsOf(n);
-    const v = settings.sizeBy === "all" ? c.projects + c.events + c.actions : c[settings.sizeBy];
-    return Math.min(2.6, 0.75 + 0.3 * Math.sqrt(v)); // 0 → small, ~10 → about 1.7x
+    const v = we * c.events + wp * c.projects + wa * c.actions;
+    return Math.min(2.8, 0.8 + 0.3 * Math.sqrt(v)); // no activity → a bit smaller; the more, the bigger
   }
   function nodeRadiusOf(n: GraphNode): number {
     const base = n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
@@ -786,7 +791,7 @@ export function createGraph(
   const LABEL_PX = 6; // rough width of one label character, for hit areas and spacing
 
   // Icons drawn inside the bubbles, centred on (0,0): a calendar, a team of people, a checkmark.
-  function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind) {
+  function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind | "volunteer") {
     const ic = g.append("g").attr("class", "bubble-icon");
     if (kind === "event") {
       ic.append("rect").attr("x", -8).attr("y", -7).attr("width", 16).attr("height", 15).attr("rx", 2.5);
@@ -797,7 +802,13 @@ export function createGraph(
       ic.append("circle").attr("class", "dot").attr("cx", 1).attr("cy", 3).attr("r", 1);
       ic.append("circle").attr("class", "dot").attr("cx", 5).attr("cy", 3).attr("r", 1);
     } else if (kind === "project") {
-      // three people: one in front, two behind
+      // a seedling: two leaves on a stem, in soil
+      ic.append("path").attr("d", "M-8 9 H8");
+      ic.append("path").attr("d", "M0 9 V-1");
+      ic.append("path").attr("d", "M0 3 C-8 3 -10 -3 -10 -6 C-4 -6 0 -3 0 3");
+      ic.append("path").attr("d", "M0 -1 C0 -7 4 -11 10 -11 C10 -5 6 -1 0 -1");
+    } else if (kind === "volunteer") {
+      // a team of people: one in front, two behind
       ic.append("circle").attr("cx", 0).attr("cy", -4.5).attr("r", 3);
       ic.append("path").attr("d", "M-5.5 8 a5.5 5 0 0 1 11 0");
       ic.append("circle").attr("cx", -8).attr("cy", -2).attr("r", 2.2);
@@ -851,7 +862,10 @@ export function createGraph(
       g.append("circle").attr("r", b.r);
       if (b.kind === "thought") g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
       else {
-        drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, b.kind);
+        const isRole = b.kind === "action" && (b.item as Action).kind === "role";
+        drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : b.kind);
+        const word = isRole ? "VOLUNTEER" : b.kind.toUpperCase();
+        g.append("text").attr("class", "bubble-type").attr("y", b.r + 10).text(word);
         if (b.glyph) g.append("text").attr("class", "bubble-badge").attr("x", b.r - 3).attr("y", -b.r + 7).text(b.glyph);
       }
       const label = g.append("text")
@@ -1016,7 +1030,7 @@ export function createGraph(
         xForce.strength(centerForceStrength());
         yForce.strength(centerForceStrength());
       }
-      if (partial.sizeBy !== undefined) {
+      if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined) {
         collideForce.radius((n) => nodeRadiusOf(n) + 14);
         applyVisualSettings();
         sim.alpha(0.4).restart();
