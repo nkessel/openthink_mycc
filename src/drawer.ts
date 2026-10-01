@@ -118,7 +118,7 @@ export function createDrawer(
           "div",
           { class: "meta" },
           metaCell(o.coalition_ids.length, "Coalitions"),
-          metaCell(relTime(o.last_activity), "Last active"),
+          metaCell(relTime(o.last_activity), "Last updated"),
         ),
       );
     }

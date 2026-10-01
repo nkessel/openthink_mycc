@@ -396,3 +396,13 @@ What / why
 ## 2026-10-01 — Scheduled continuation
 - research/BACKLOG.md: ordered backlog (MA/VT data gaps, next states NH→ME→RI→CT→NY→NJ→PA, site items). A scheduled task works the first unchecked item each run and pushes a branch for review (never merges).
 - topbar: switcher lists every map in MAPS (USA last), so adding a state only touches maps.ts + search.ts.
+
+## 2026-10-01 — Missed change requests (found by re-reading the 2026-10-01 change-log tab)
+- I had deleted these doc lines earlier without building them; now done:
+  - Sidebar header "Map settings" stays at the top while scrolling, with the Hide button beside it.
+  - "Groups" section renamed "Group Types".
+  - "Advanced display settings" section, closed by default, last in the panel: Forces, Display (node size, link thickness, Animate, Reset) and the org-to-org connections toggle.
+  - Legend moved from the sidebar onto the map (bottom-left, click "Legend" to fold); adds the org-to-org line.
+  - "Last active" → "Last updated" in the details panel and tooltips (was ticked in the doc but never changed).
+- Audit of the rest of that tab: everything else is built, except voting-district outlines (no data source yet) and the form item "Organization => project, branching" (unclear what's wanted). The long "Which organization?" dropdown was solved with typed names + fuzzy matching rather than the suggested org numbers.
+- Tested in Playwright: sections order/titles, Advanced closed by default, header visible after scrolling, Hide still works, no page errors.

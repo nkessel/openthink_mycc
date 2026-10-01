@@ -13,7 +13,7 @@ import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
-import { setupSidebarToggle } from "./sidebar";
+import { setupSidebarToggle, createMapLegend } from "./sidebar";
 import { currentMap, MAPS, type MapDef } from "./maps";
 import { rollRecurringForward } from "./recurrence";
 
@@ -154,11 +154,11 @@ async function main() {
   graphApi.setVisibleCoalitions(sidebar.getVisibleCoalitions());
   bootProgress(0.9, "Setting up the tabs\u2026");
 
-  // Filters that aren't coalitions go right under the coalition list.
-  sidebar.filtersContainer().appendChild(graphApi.orgLinkToggle());
+  // The key to the map sits on the map itself.
+  createMapLegend(graphContainer);
 
-  // Controls panel (Forces / Display / Groups) — mounts inside the sidebar
-  createControls(sidebar.controlsContainer(), {
+  // Controls panel — mounts inside the sidebar
+  const controls = createControls(sidebar.controlsContainer(), {
     // The Bubbles/Classic switch lives on the map itself, so saved control state never overrides it.
     onSettingsChange: (partial) => {
       const { showBubbles: _ignored, ...rest } = partial;
@@ -167,6 +167,8 @@ async function main() {
     onGroupsChange: (rules) => graphApi!.setGroups(rules),
     onAnimate: () => graphApi!.kickSimulation(),
   });
+  // The org-to-org connections toggle lives with the other advanced display options.
+  controls.advancedContainer().appendChild(graphApi.orgLinkToggle());
 
   // ----- Geographic view -----
   const geoView = createGeographicView(data, {

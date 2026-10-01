@@ -2039,3 +2039,90 @@ text.sat-more { fill: var(--text-dim); }
 .map-opt:hover, .map-opt:focus-visible { background: rgba(56,189,248,.12); outline: none; }
 .map-opt.active { color: var(--accent); font-weight: 600; }
 .map-opt-check { width: 12px; font-size: 10px; color: var(--accent); }
+
+/* ---------- Sidebar: header that stays put, with the hide button beside it ---------- */
+.sidebar-head {
+  position: sticky;
+  top: -16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: -16px -14px 12px;
+  padding: 12px 14px 10px;
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.sidebar-head .sidebar-hide {
+  margin: 0;
+}
+
+/* ---------- Advanced display settings (closed by default) ---------- */
+.panel-section.advanced .adv-subhead {
+  margin: 14px 4px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.panel-section.advanced .adv-extras .org-link-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  padding: 6px 4px 2px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+/* ---------- Legend on the map ---------- */
+.map-legend {
+  position: absolute;
+  left: 12px;
+  bottom: 48px;
+  z-index: 4;
+  min-width: 170px;
+  background: rgba(15, 15, 22, 0.82);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(8px);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.map-legend-head {
+  display: block;
+  width: 100%;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--text-faint);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+.map-legend-head::after { content: " ▸"; }
+.map-legend.open .map-legend-head::after { content: " ▾"; }
+.map-legend-body { display: none; padding: 0 10px 8px; }
+.map-legend.open .map-legend-body { display: block; }
+.map-legend .row { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+.map-legend .swatch { display: inline-block; border-radius: 999px; background: var(--bg-elev-2); border: 1px solid var(--text-faint); flex: none; }
+.map-legend .line { display: inline-block; width: 20px; height: 0; border-top: 1px solid rgba(255, 255, 255, 0.35); flex: none; }
+.map-legend .line.org { border-top: 2px solid rgba(251, 191, 36, 0.7); }
+@media (max-width: 720px) {
+  .map-legend { bottom: 12px; }
+  .map-legend:not(.open) { min-width: 0; }
+}

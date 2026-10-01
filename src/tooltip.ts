@@ -80,7 +80,7 @@ export function createTooltip(): Tooltip {
         h(
           "div",
           { class: "footer" },
-          `Last activity ${relTime(node.last_activity)}`,
+          `Last updated ${relTime(node.last_activity)}`,
         ),
       ];
     } else {
@@ -113,7 +113,7 @@ export function createTooltip(): Tooltip {
           { class: "stats" },
           stat(node.coalition_ids.length, "Coalitions"),
           ...activityStats(node),
-          stat(relTime(node.last_activity), "Last active"),
+          stat(relTime(node.last_activity), "Last updated"),
         ),
       ];
     }
