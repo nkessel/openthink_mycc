@@ -302,3 +302,4 @@ What / why
 - Project bubbles now use a seedling icon; volunteer roles keep the team-of-people icon, tasks the checkmark. Each bubble has a small type caption (EVENT / PROJECT / ACTION / VOLUNTEER) under its icon.
 - Replaced the "Make groups bigger by" dropdown with a "Size by activity" section near the top of the sidebar: three sliders (events, projects, actions & volunteer roles), 0 = ignore, size grows with the square root of the weighted total.
 - Why: Nathan's feedback. Checked with Playwright (calendar wide + narrow, bubbles, slider changed a node's radius 20 -> 30.7; no JS errors).
+- Also: switching away from the Map tab now closes the org details panel and leaves zoom (it used to float over Events/Orgs/Projects). Clicking an item from those tabs still jumps to the map and opens it. Checked with Playwright.
