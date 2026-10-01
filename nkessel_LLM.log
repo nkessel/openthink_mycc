@@ -364,3 +364,9 @@ What / why
 - Ran "Set up sheet + forms": form upgrades + dropdown refresh ran, then failed at the final writeLinks_ step with a transient FormApp.openById "Unexpected error". Re-ran "Show form + data links" OK, then "Switch forms to typed answers" (8 questions changed), then "Replace projects, events and actions from the repo" (154 projects, 121 events, 68 actions).
 - Bug found: after the typed-answers switch, "Show form + data links" failed ("Invalid conversion for item type: TEXT") because siteFormConfig_ assumed dropdowns. Fixed to handle TEXT/PARAGRAPH/CHECKBOX/MULTIPLE_CHOICE; added openForm_ retry for the transient openById error. New test covers both.
 - Follow-up: the typed-answers swap changed some entry ids, so src/forms.config.ts needs the new ids from Start Here.
+
+## 2026-10-01 — Progressive loading bar + clustered coalition members
+- index.html: splash now has a real progress bar with "About N seconds left". Estimate = how long recent loads took (localStorage openthink.loadMs, default 6 s), moving steadily to 90% by then and creeping after; sharpened by real progress from main.ts (fetch start, streamed download when content-length is known, drawing, tabs). Animation: canvas bubbles that grow and split; how many may exist follows the progress. Reduced-motion: static redraw only.
+- graph.ts coalition zoom: members packed into staggered rows on an oval around the items (wider than tall, since item labels run sideways), bigger orgs on inner rows; zoom fit uses the oval. Replaces the single huge ring.
+- Tested in Playwright with data slowed 7 s: bar 15% / 44% / 73% at 1 / 3 / 5 s with 5 / 4 / 2 s left; Mass Power Forward zoom shows 104 members in ~4 rows, no page errors.
+- Uncertainty: the first visit on a device has no history, so the countdown starts from the 6 s guess; the Apps Script feed sends no content-length, so there the bar is time-based.

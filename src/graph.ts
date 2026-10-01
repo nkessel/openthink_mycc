@@ -1103,9 +1103,12 @@ export function createGraph(
     // Room a bubble's text needs beyond the ring; everything else is moved out past this.
     let clearR = bubbles.length ? ringR + 230 : nodeR + 120;
 
-    // A coalition's member orgs sit, at full strength, on a bigger ring outside the items ring.
+    // A coalition's member orgs sit, at full strength, in a cluster around the items: a few rows on an oval
+    // that hugs the items and their labels (labels run sideways, so the oval is wider than tall).
+    // Bigger orgs take the inner rows.
     pinnedMembers = [];
-    let memberR = 0;
+    let memberRX = 0;
+    let memberRY = 0;
     if (n.kind === "coalition") {
       const seen = new Set<string>();
       for (const l of allLinks) {
@@ -1118,16 +1121,37 @@ export function createGraph(
         if (o && o.kind === "org") pinnedMembers.push(o);
       }
       if (pinnedMembers.length) {
-        memberR = Math.max(
-          (bubbles.length ? ringR + 270 : nodeR + 150),
-          (pinnedMembers.length * 52) / (2 * Math.PI),
-        );
-        pinnedMembers.forEach((o, i) => {
-          const a = (2 * Math.PI * i) / pinnedMembers.length - Math.PI / 2;
-          o.fx = cx + Math.cos(a) * memberR;
-          o.fy = cy + Math.sin(a) * memberR;
-        });
-        clearR = memberR + 70;
+        pinnedMembers.sort((a, b) => nodeRadiusOf(b) - nodeRadiusOf(a));
+        const maxR = Math.max(...pinnedMembers.map((o) => nodeRadiusOf(o)));
+        const spacing = 2 * maxR + 12; // between neighbours along a row
+        const rowGap = 2 * maxR + 20; // between rows (room for a name under each)
+        // inner oval: just past the item labels at the sides, closer above and below
+        let rx = bubbles.length ? ringR + 245 : nodeR + 70;
+        let ry = bubbles.length ? ringR + 70 : nodeR + 70;
+        let placed = 0;
+        let row = 0;
+        while (placed < pinnedMembers.length) {
+          // Ramanujan's approximation of the oval's perimeter
+          const per = Math.PI * (3 * (rx + ry) - Math.sqrt((3 * rx + ry) * (rx + 3 * ry)));
+          const cap = Math.max(6, Math.floor(per / spacing));
+          const left = pinnedMembers.length - placed;
+          // the last row spreads its few members evenly instead of bunching at the top
+          const inRow = Math.min(cap, left);
+          const offset = (row % 2) * 0.5; // stagger rows so members don't line up in spokes
+          for (let i = 0; i < inRow; i++) {
+            const a = (2 * Math.PI * (i + offset)) / inRow - Math.PI / 2;
+            const o = pinnedMembers[placed + i];
+            o.fx = cx + Math.cos(a) * rx;
+            o.fy = cy + Math.sin(a) * ry;
+          }
+          placed += inRow;
+          memberRX = rx;
+          memberRY = ry;
+          rx += rowGap;
+          ry += rowGap;
+          row++;
+        }
+        clearR = Math.max(memberRX, memberRY) + 60;
       }
     }
 
@@ -1252,7 +1276,7 @@ export function createGraph(
     const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
     const scale = Math.max(
       0.35,
-      Math.min(2.2, (w - panel) / (2 * ((memberR || ringR) + 230)), vh / (2 * ((memberR || ringR) + 90))),
+      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + 230, memberRX + 30)), vh / (2 * Math.max(ringR + 90, memberRY + 45))),
     );
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);

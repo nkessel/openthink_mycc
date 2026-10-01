@@ -4,25 +4,123 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MA Climate Coalition Map</title>
-      <style>
-      #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
+    <style>
+      #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
       #boot.done{opacity:0;pointer-events:none}
-      #boot .orbit{position:relative;width:120px;height:120px}
-      #boot .orbit i{position:absolute;left:50%;top:50%;border-radius:50%;opacity:.9;animation:boot-float 2.4s ease-in-out infinite}
-      #boot .orbit i:nth-child(1){width:44px;height:44px;margin:-22px;background:#38bdf8}
-      #boot .orbit i:nth-child(2){width:22px;height:22px;margin:-11px 0 0 -11px;background:#34d399;animation:boot-orbit 2.6s linear infinite}
-      #boot .orbit i:nth-child(3){width:14px;height:14px;margin:-7px 0 0 -7px;background:#fbbf24;animation:boot-orbit 3.8s linear infinite reverse}
-      #boot .orbit i:nth-child(4){width:10px;height:10px;margin:-5px 0 0 -5px;background:#f472b6;animation:boot-orbit 1.9s linear infinite}
-      #boot .bar{width:200px;height:4px;border-radius:2px;background:#1e293b;overflow:hidden}
-      #boot .bar b{display:block;width:40%;height:100%;border-radius:2px;background:#38bdf8;animation:boot-bar 1.3s ease-in-out infinite}
-      @keyframes boot-bar{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
-      @keyframes boot-orbit{from{transform:rotate(0) translateX(50px)}to{transform:rotate(360deg) translateX(50px)}}
-      @keyframes boot-float{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-      @media (prefers-reduced-motion:reduce){#boot .orbit i{animation:none}#boot .orbit i:nth-child(n+2){transform:translateX(50px)}}
+      #boot canvas{width:240px;height:170px}
+      #boot .bar{width:240px;height:6px;border-radius:3px;background:#1e293b;overflow:hidden}
+      #boot .bar b{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width .25s linear}
+      #boot .boot-left{font-size:12px;color:#94a3b8;min-height:1.2em;font-variant-numeric:tabular-nums}
     </style>
   </head>
   <body>
-    <div id="boot" role="status" aria-live="polite"><div class="orbit"><i></i><i></i><i></i><i></i></div><div>Please wait, loading the map&hellip;</div><div class="bar"><b></b></div></div>
+    <div id="boot" role="status" aria-live="polite">
+      <canvas id="boot-bubbles" aria-hidden="true"></canvas>
+      <div class="boot-msg">Loading the map&hellip;</div>
+      <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
+      <div class="boot-left"></div>
+    </div>
+    <script>
+      // Loading splash: a progress bar with an estimate of the time left (from how long the last loads took,
+      // sharpened by real progress reported from main.ts), and bubbles that grow and split as loading goes on.
+      (function () {
+        var KEY = "openthink.loadMs";
+        var expected = 6000;
+        try { var v = +localStorage.getItem(KEY); if (v > 500 && v < 60000) expected = v; } catch (e) {}
+        var t0 = performance.now(), real = 0, finished = false;
+        var boot = document.getElementById("boot");
+        var bar = boot.querySelector(".bar"), fill = bar.querySelector("b");
+        var msg = boot.querySelector(".boot-msg"), left = boot.querySelector(".boot-left");
+        var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        window.bootProgress = function (p, label) {
+          real = Math.max(real, Math.min(1, p));
+          if (label) msg.textContent = label;
+        };
+        window.bootDone = function () {
+          if (finished) return;
+          finished = true;
+          var ms = performance.now() - t0;
+          try { localStorage.setItem(KEY, String(Math.round(expected * 0.4 + ms * 0.6))); } catch (e) {}
+        };
+        function progress() {
+          if (finished) return 1;
+          var el = performance.now() - t0;
+          // steady with time up to 90% at the usual load time, then creeps towards 97%
+          var est = el < expected ? 0.9 * el / expected : 0.9 + 0.07 * (1 - Math.exp(-(el - expected) / expected));
+          return Math.min(0.97, Math.max(real, est));
+        }
+        function secondsLeft(p) {
+          var el = performance.now() - t0;
+          var byTime = expected - el;
+          var byRate = real > 0.15 ? el * (1 - real) / real : byTime;
+          return Math.max(0, Math.min(byTime > 0 ? byTime : byRate, byRate));
+        }
+
+        // ---- bubbles: one grows, splits in two, and so on; how many may exist follows the progress
+        var cv = document.getElementById("boot-bubbles"), ctx = cv.getContext("2d");
+        var W = 240, H = 170, dpr = Math.min(2, window.devicePixelRatio || 1);
+        cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
+        var COLORS = ["#38bdf8", "#34d399", "#fbbf24", "#f472b6", "#a78bfa", "#fb923c"];
+        var MAX_R = 26;
+        var bubbles = [{ x: W / 2, y: H / 2, vx: 0, vy: 0, r: 8, c: 0, grow: 0.11 }];
+        function step() {
+          var p = progress();
+          var allowed = 1 + Math.floor(p * 18);
+          var next = [], count = bubbles.length;
+          bubbles.forEach(function (b) {
+            if (b.r < MAX_R) b.r += b.grow;
+            if (b.r >= MAX_R && count < allowed) {
+              count++;
+              // split: two children, each with half the area, pushed apart
+              var a = Math.random() * Math.PI * 2, r = b.r / Math.SQRT2, k = 0.9;
+              next.push({ x: b.x + Math.cos(a) * r * 0.5, y: b.y + Math.sin(a) * r * 0.5, vx: Math.cos(a) * k, vy: Math.sin(a) * k, r: r, c: b.c, grow: 0.05 + Math.random() * 0.06 });
+              next.push({ x: b.x - Math.cos(a) * r * 0.5, y: b.y - Math.sin(a) * r * 0.5, vx: -Math.cos(a) * k, vy: -Math.sin(a) * k, r: r, c: (b.c + 1) % COLORS.length, grow: 0.05 + Math.random() * 0.06 });
+            } else next.push(b);
+          });
+          bubbles = next;
+          // the more bubbles there are, the smaller each may grow, so the cluster stays inside the canvas
+          MAX_R = Math.max(11, 30 / Math.sqrt(Math.max(1, bubbles.length / 3)));
+          for (var i = 0; i < bubbles.length; i++) {
+            var b = bubbles[i];
+            b.vx += (W / 2 - b.x) * 0.0016; b.vy += (H / 2 - b.y) * 0.0016; // gentle pull to the middle
+            for (var j = i + 1; j < bubbles.length; j++) {
+              var o = bubbles[j], dx = o.x - b.x, dy = o.y - b.y, d = Math.hypot(dx, dy) || 0.01, min = b.r + o.r + 3;
+              if (d < min) { var f = (min - d) / d * 0.25; b.vx -= dx * f; b.vy -= dy * f; o.vx += dx * f; o.vy += dy * f; }
+            }
+          }
+          bubbles.forEach(function (b) {
+            b.vx *= 0.9; b.vy *= 0.9; b.x += b.vx; b.y += b.vy;
+            if (b.r > MAX_R) b.r -= 0.05;
+          });
+        }
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+          bubbles.forEach(function (b) {
+            ctx.beginPath(); ctx.arc(b.x, b.y, Math.max(1, b.r), 0, Math.PI * 2);
+            ctx.fillStyle = COLORS[b.c] + "cc"; ctx.fill();
+            ctx.lineWidth = 1.5; ctx.strokeStyle = COLORS[b.c]; ctx.stroke();
+          });
+        }
+        function ui() {
+          var p = progress();
+          fill.style.width = (p * 100).toFixed(1) + "%";
+          bar.setAttribute("aria-valuenow", String(Math.round(p * 100)));
+          if (finished) { left.textContent = "Ready"; return; }
+          var s = Math.ceil(secondsLeft(p) / 1000);
+          left.textContent = s > 1 ? "About " + s + " seconds left" : "Almost there\u2026";
+        }
+        var last = 0;
+        function frame(t) {
+          if (!document.body.contains(boot)) return;
+          if (!reduce) step();
+          if (!reduce || t - last > 500) { draw(); }
+          if (t - last > 200) { ui(); last = t; }
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      })();
+    </script>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
