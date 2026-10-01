@@ -1,0 +1,630 @@
+{
+ "orgs": {
+  "boston_catholic_climate_movement": {
+   "description": "Boston chapter of the Laudato Si' Movement that works to put Pope Francis's climate teachings (Laudato Si' and Laudate Deum) into practice in the Catholic community through education and events.",
+   "type": "faith_org",
+   "website": "https://bostoncatholicclimate.org/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://bostoncatholicclimate.org/home/"
+   ]
+  },
+  "boston_climate_action_network": {
+   "description": "Resident-led group that organizes Boston neighborhoods and works with social justice allies to push the city and state for climate justice, on issues like green buildings, community choice electricity, gas leaks and school sustainability.",
+   "website": "https://bostonclimateaction.org/",
+   "geographic_focus": "Boston",
+   "sources": [
+    "https://bostonclimateaction.org/about/"
+   ]
+  },
+  "cape_downwinders": {
+   "description": "All-volunteer grassroots group on Cape Cod that works to protect communities from the dangers of nuclear power, decommissioning and nuclear waste, with a focus on the Pilgrim Nuclear Power Station in Plymouth.",
+   "website": "https://www.capedownwinders.net",
+   "geographic_focus": "Cape Cod",
+   "sources": [
+    "https://www.capedownwinders.net"
+   ]
+  },
+  "cero_cooperative": {
+   "description": "Worker-owned commercial composting cooperative in Dorchester that collects food waste from businesses and institutions and sends it to local farms for composting.",
+   "type": "business",
+   "website": "https://www.cero.coop/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://www.cero.coop/"
+   ]
+  },
+  "charles_river_watershed_association": {
+   "description": "Nonprofit founded in 1965 that uses science, advocacy and the law to protect and restore the Charles River, including work on stormwater and climate resilience across the watershed.",
+   "website": "https://www.crwa.org/",
+   "geographic_focus": "Charles River watershed (35 cities and towns)",
+   "sources": [
+    "https://www.crwa.org/education-outreach"
+   ]
+  },
+  "citizens_awareness_network": {
+   "description": "Grassroots group, founded in 1991, that works to end nuclear power in the Northeast and replace it with renewable, affordable energy, through education, community action and legislative advocacy.",
+   "type": "501c3",
+   "website": "https://www.nukebusters.org/",
+   "geographic_focus": "Massachusetts and Vermont",
+   "sources": [
+    "https://www.nukebusters.org/contact.php",
+    "https://www.influencewatch.org/non-profit/citizens-awareness-network/"
+   ]
+  },
+  "the_climate_reality_project_massachusetts_southcoast": {
+   "description": "Southcoast chapter of The Climate Reality Project, founded in late 2019, that does public outreach, education and advocacy on climate and partners with local businesses and nonprofits on renewable energy pledges.",
+   "website": "https://www.climaterealitysouthcoast.com/",
+   "geographic_focus": "Southcoast (New Bedford area)",
+   "sources": [
+    "https://www.communityboating.org/2021/02/11/southcoast-climate-reality-chapter-community-boating-center-of-new-bedford-announce-100-percent-renewable-electricity-pledge/"
+   ]
+  },
+  "the_climate_reality_project_boston_metro_chapter": {
+   "description": "Boston-area chapter of The Climate Reality Project that raises climate awareness and works on electrification, climate curricula for K-12 teachers, a trained speakers bureau, and state legislation with partners like Oxfam America.",
+   "website": "https://www.climaterealityboston.org/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://www.climaterealityboston.org/"
+   ]
+  },
+  "co_op_power_inc": {
+   "description": "Network of community energy cooperatives that offers community and rooftop solar, biodiesel, home energy audits and heating-fuel buying groups, based in Shelburne Falls.",
+   "website": "https://www.cooppower.coop/",
+   "geographic_focus": "Northeast (MA, VT, NY, NH, CT)",
+   "sources": [
+    "https://www.cooppower.coop/home"
+   ]
+  },
+  "community_labor_united": {
+   "description": "Boston coalition-building organization that brings community groups and labor unions together on campaigns for working families, including green energy through the Green Justice Coalition, childcare, transit and construction worker protections.",
+   "type": "501c3",
+   "website": "https://www.massclu.org/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://www.massclu.org/green-justice-coalition-celebrates-a-win-as-boston-city-council-unanimously-approves-community-choice-energy/",
+    "https://www.influencewatch.org/non-profit/community-labor-united/"
+   ]
+  },
+  "concerned_citizens_of_franklin_county": {
+   "description": "Volunteer group in Greenfield, active since 2009, that researches and educates about the impacts of biomass energy on Western Massachusetts forests and organized residents against a proposed 47 MW biomass plant in Greenfield.",
+   "geographic_focus": "Franklin County",
+   "sources": [
+    "https://grassrootsfund.org/groups/concerned-citizens-of-franklin-county"
+   ]
+  },
+  "environmental_league_of_ma": {
+   "description": "Statewide environmental policy nonprofit, about 128 years old, that advocates on clean energy, transportation, building efficiency, environmental justice and land protection, and runs the NetZeroMA accountability hub.",
+   "type": "501c3,501c4",
+   "website": "https://www.environmentalleague.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.environmentalleague.org/"
+   ]
+  },
+  "faith_science_alliance": {
+   "description": "Coalition of faith leaders and scientists that advocates for bold Massachusetts climate policy with attention to justice and equity.",
+   "type": "coalition",
+   "website": "https://faithsciencealliance.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://faithsciencealliance.org/"
+   ]
+  },
+  "fccpr_climate_crisis_task_force": {
+   "description": "Climate working group of Franklin County Continuing the Political Revolution (a Greenfield-based grassroots political group) that pushes for policy changes on energy, consumption and jobs to end fossil fuel dependence.",
+   "website": "https://fccpr.us/task-force/climate-crisis-task-force/",
+   "geographic_focus": "Franklin County",
+   "sources": [
+    "https://grassrootsfund.org/groups/franklin-county-continuing-the-political-revolution",
+    "https://indivisible-ma.org/groups/franklin-county-continuing-the-political-revolution-fccpr/"
+   ]
+  },
+  "first_parish_in_concord_environmental_team": {
+   "description": "Environmental action team of the First Parish in Concord Unitarian Universalist congregation that leads its sustainability, environmental worship and education, and environmental justice efforts under the UUA Green Sanctuary program.",
+   "type": "faith_org",
+   "website": "https://firstparish.org/wp/justice/a-green-sanctuary/",
+   "geographic_focus": "Concord",
+   "sources": [
+    "https://firstparish.org/wp/justice/a-green-sanctuary/"
+   ]
+  },
+  "greater_boston_physicians_for_social_responsibility": {
+   "description": "Physician-led group of health professionals and community members that educates the public and policymakers about the health effects of nuclear weapons and climate change, including fossil fuels, gas stoves and biomass.",
+   "website": "https://gbpsr.org/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://gbpsr.org/"
+   ]
+  },
+  "green_cambridge": {
+   "description": "Cambridge nonprofit that teaches teens and residents to become environmental leaders through nature-based programs, urban forest and waterway protection, and climate advocacy.",
+   "type": "501c3",
+   "website": "https://www.greencambridge.org/",
+   "geographic_focus": "Cambridge",
+   "sources": [
+    "https://www.greencambridge.org/whatwedo"
+   ]
+  },
+  "green_energy_consumers_alliance": {
+   "description": "Cambridge-based consumer nonprofit that educates and organizes households to switch to clean energy through programs for green power, electric vehicles, solar, heat pumps and efficiency, and advocates for climate policy.",
+   "type": "501c3",
+   "website": "https://www.greenenergyconsumers.org/",
+   "geographic_focus": "Massachusetts and Rhode Island",
+   "sources": [
+    "https://www.greenenergyconsumers.org/aboutus"
+   ]
+  },
+  "green_newton": {
+   "description": "Newton community organization, active since 1990, that helps residents, businesses and schools take climate action through clean energy, waste reduction and green living guidance.",
+   "website": "https://greennewton.org/",
+   "geographic_focus": "Newton",
+   "sources": [
+    "https://greennewton.org/"
+   ]
+  },
+  "hands_across_the_river_coalition_inc": {
+   "description": "New Bedford grassroots group that monitors the cleanup of the PCB-contaminated Acushnet River and New Bedford Harbor Superfund site and educates residents about the health effects of the contamination.",
+   "geographic_focus": "New Bedford and Fairhaven (Acushnet River / New Bedford Harbor)",
+   "sources": [
+    "https://www.newbedfordguide.com/hands-across-the-river-coalition/2015/04/07",
+    "https://grassrootsfund.org/groups/hands-across-the-river"
+   ]
+  },
+  "islamic_society_of_boston_cultural_center": {
+   "description": "Roxbury mosque and community center serving over 1,500 congregants with a school, social services and event spaces; its site lists green initiatives.",
+   "type": "faith_org",
+   "website": "https://isbcc.org/",
+   "geographic_focus": "Roxbury / Greater Boston",
+   "sources": [
+    "https://isbcc.org/about-us/"
+   ]
+  },
+  "kearsarge_energy": {
+   "description": "Boston-based company that develops, owns and operates solar and battery storage projects for public entities, with over 70 projects in Massachusetts.",
+   "type": "business",
+   "website": "https://www.kearsargeenergy.com/",
+   "geographic_focus": "Massachusetts",
+   "sources": [
+    "https://www.kearsargeenergy.com/what-we-do-ke",
+    "https://www.mass.gov/doc/2024-climate-act-kearsarge-energy-05-19-2025/download"
+   ]
+  },
+  "longmeadow_pipeline_awareness_group": {
+   "description": "Longmeadow residents' group that opposes Eversource's proposed high-pressure gas pipeline and meter station in Longmeadow and Springfield, working with the Springfield Climate Justice Coalition.",
+   "website": "https://www.facebook.com/LongmeadowPipelineAwarenessGroup/",
+   "geographic_focus": "Longmeadow and Springfield",
+   "sources": [
+    "https://actionnetwork.org/petitions/ban-construction-of-gas-meter-station-and-high-pressure-pipeline-in-longmeadow-and-springfield",
+    "https://www.amherstindy.org/2021/11/05/local-residents-healthcare-workers-and-politicians-take-position-against-eversource-springfield-longmeadow-pipeline/"
+   ]
+  },
+  "mass_audubon": {
+   "description": "Statewide conservation nonprofit that protects habitat, runs wildlife sanctuaries and nature programs, and works on climate action and access to nature in Massachusetts.",
+   "type": "501c3",
+   "website": "https://www.massaudubon.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.massaudubon.org/our-work"
+   ]
+  },
+  "mass_divest_coalition": {
+   "description": "Coalition of unions, environmental, faith and student groups campaigning for the Massachusetts state pension fund to divest from fossil fuel companies and reinvest in renewables.",
+   "type": "coalition",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://massdivest.org/about-massdivest-3/",
+    "https://massdivest.org/legislation/"
+   ]
+  },
+  "massachusetts_peace_action": {
+   "description": "Cambridge-based peace organization working on nuclear disarmament and diplomacy that also runs a Peace and Climate campaign linking militarism and the climate crisis.",
+   "type": "501c3",
+   "website": "https://masspeaceaction.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://masspeaceaction.org/about/history/",
+    "https://www.influencewatch.org/non-profit/massachusetts-peace-action/"
+   ]
+  },
+  "mount_grace_land_conservation_trust": {
+   "description": "Athol-based land trust that protects natural, agricultural and scenic land and encourages land stewardship in North Central and Western Massachusetts.",
+   "website": "https://www.mountgrace.org/",
+   "geographic_focus": "North Central and Western Massachusetts",
+   "sources": [
+    "https://www.americantrails.org/organizations/mount-grace-land-conservation-trust"
+   ]
+  },
+  "no_fracked_gas_in_mass": {
+   "description": "Grassroots campaign, run as a program of the Berkshire Environmental Action Team, that opposes gas pipeline projects, follows federal (FERC) pipeline proceedings and promotes clean energy alternatives.",
+   "website": "https://nofrackedgasinmass.com/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://nofrackedgasinmass.com/about/"
+   ]
+  },
+  "no_sharon_gas_pipeline_clean_energy_now": {
+   "description": "Sharon residents' group, partnered with Mass Power Forward, that opposed a new gas pipeline through Sharon and works to move the town toward local clean energy through green community status, energy assessments, community choice energy and EV incentives.",
+   "geographic_focus": "Sharon",
+   "sources": [
+    "https://nosharongaspipeline.org/clean-energy/",
+    "https://grassrootsfund.org/groups/no-sharon-gas-pipeline"
+   ]
+  },
+  "october_engineering_llc": {
+   "description": "One-person energy engineering firm in Sudbury run by a licensed professional engineer that offers free residential electrification, heat pump and ventilation design consulting.",
+   "type": "business",
+   "website": "https://octoberengineering.com/",
+   "geographic_focus": "Sudbury",
+   "sources": [
+    "https://octoberengineering.com/"
+   ]
+  },
+  "passive_house_massachusetts": {
+   "description": "Member-based nonprofit that promotes the Passive House building standard through education, training, events and advocacy to cut building energy use and carbon emissions.",
+   "website": "https://phmass.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://phmass.org/about/"
+   ]
+  },
+  "pilgrim_coalition": {
+   "description": "Marshfield-based coalition of about 27 member organizations, active since 2011, that educates the public about the Pilgrim Nuclear Power Station in Plymouth and presses regulators, with decommissioning as its long-term goal.",
+   "type": "coalition",
+   "geographic_focus": "Plymouth area (Pilgrim Nuclear Power Station)",
+   "sources": [
+    "https://grassrootsfund.org/groups/pilgrim-coalition"
+   ]
+  },
+  "pilgrim_watch": {
+   "description": "Plymouth-area nonprofit that shares factual information about safety issues at the Pilgrim Nuclear Power Station and keeps the public, officials and press informed about its decommissioning.",
+   "website": "https://www.pilgrimwatch.org/",
+   "geographic_focus": "Plymouth",
+   "sources": [
+    "https://www.pilgrimwatch.org/"
+   ]
+  },
+  "progressive_democrats_of_mass": {
+   "description": "Statewide group of progressive citizens that works on elections, training and coalition work for social justice and reform, and takes part in the Mass Power Forward clean energy coalition.",
+   "website": "https://www.progressivedemsofmass.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.progressivedemsofmass.org/about-us/"
+   ]
+  },
+  "quincy_climate_action_network": {
+   "description": "Group of Quincy residents, founded in 2012, that works on local climate action: municipal and residential solar, home energy assessments, green electricity and composting programs, and environmental justice in Germantown and Quincy Point.",
+   "website": "https://quincycan.org/",
+   "geographic_focus": "Quincy",
+   "sources": [
+    "https://quincycan.org/about-qcan/"
+   ]
+  },
+  "resonant_energy": {
+   "description": "Boston-based B Corp solar developer that builds solar for affordable housing, nonprofits, schools and houses of worship, with most projects in Environmental Justice communities.",
+   "type": "business",
+   "website": "https://www.resonant.energy/",
+   "geographic_focus": "New England",
+   "sources": [
+    "https://www.resonant.energy/"
+   ]
+  },
+  "restore_the_north_woods": {
+   "description": "Forest protection nonprofit that campaigns to permanently protect Massachusetts state forests from logging and to end biomass energy subsidies that encourage forest cutting.",
+   "type": "501c3",
+   "website": "https://www.restore.org/",
+   "geographic_focus": "Massachusetts and the Northeast",
+   "sources": [
+    "https://www.restore.org/savemassforests",
+    "https://www.influencewatch.org/non-profit/restore-the-north-woods/"
+   ]
+  },
+  "solar_design_associates": {
+   "description": "Solar installation, design and engineering firm in Harvard, MA, founded in 1974, serving New England.",
+   "type": "business",
+   "website": "https://solardesign.com/",
+   "geographic_focus": "New England",
+   "sources": [
+    "https://www.energysage.com/supplier/20632/solar-design-associates-llc/"
+   ]
+  },
+  "solstice_initiative": {
+   "description": "Cambridge-based clean energy company that connects households and businesses to community solar and runs a community benefit fund that channels money to solar projects in underserved communities.",
+   "type": "business",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://commonwealthbeacon.org/energy/massachusetts-based-company-launches-program-to-fund-community-solar-projects/"
+   ]
+  },
+  "south_coast_neighbors_united": {
+   "description": "East Freetown group, active since 2015, that formed to oppose expanded LNG storage and gas pipelines on the South Coast and now challenges development projects that threaten local environmental health.",
+   "type": "501c3",
+   "geographic_focus": "South Coast",
+   "sources": [
+    "https://grassrootsfund.org/groups/south-coast-neighbors-united",
+    "https://www.influencewatch.org/non-profit/south-coast-neighbors-united/"
+   ]
+  },
+  "sunwealth": {
+   "description": "Public benefit corporation and B Corp that develops community solar projects offering bill savings to low- and moderate-income customers in Eversource territory.",
+   "type": "business",
+   "geographic_focus": "Massachusetts",
+   "sources": [
+    "https://www.energysage.com/blog/qa-with-sunwealth/"
+   ]
+  },
+  "sustainable_sharon_coalition": {
+   "description": "Sharon community group, active since 2013, that educates and organizes residents on sustainability, including land and water conservation, energy and home energy assessments.",
+   "geographic_focus": "Sharon",
+   "sources": [
+    "https://grassrootsfund.org/groups/sustainable-sharon-coalition",
+    "https://www.homeworksenergy.com/neighbors/sustainablesharon/"
+   ]
+  },
+  "sustainable_sudbury": {
+   "description": "Volunteer-led Sudbury nonprofit that raises environmental awareness and runs events and webinars on clean energy, repair and recycling, and backs local climate policy.",
+   "geographic_focus": "Sudbury",
+   "sources": [
+    "https://www.sustainablesudbury.org/"
+   ]
+  },
+  "take_back_the_grid": {
+   "description": "Campaign launched in 2019 by the Boston chapter of Democratic Socialists of America for a community-controlled, publicly accountable energy grid under the banner of energy democracy.",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://bostonhassle.com/bostons-democratic-socialists-want-to-takebackthegrid/"
+   ]
+  },
+  "upper_cape_women_s_coalition": {
+   "description": "Upper Cape Cod women's civic group that organizes rallies and community events to encourage women's participation and advocacy in public life.",
+   "geographic_focus": "Upper Cape Cod",
+   "sources": [
+    "https://www.capenews.net/falmouth/news/women-s-rally-challenges-women-to-make-their-voices-heard/article_4244c99e-9bc2-521a-b159-c76c9973e448.html"
+   ]
+  },
+  "vineyard_power_cooperative": {
+   "description": "Community-owned renewable energy cooperative on Martha's Vineyard that organized community input on offshore wind and builds local solar canopies, working toward a 100% renewable island.",
+   "geographic_focus": "Martha's Vineyard",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Vineyard_Power_Co-operative"
+   ]
+  },
+  "watertown_citizens_for_peace_justice_and_the_environment": {
+   "description": "Watertown group founded in 1979 that works on local environmental protection (Charles River cleanup, chemical-free garden tours), peace and social justice.",
+   "geographic_focus": "Watertown",
+   "sources": [
+    "https://watertowncitizens.org/history/"
+   ]
+  },
+  "wendell_state_forest_alliance": {
+   "description": "Alliance that works through nonviolent means to protect Massachusetts state forests, treating forest preservation as a climate solution and training activists in nonviolent direct action.",
+   "geographic_focus": "Wendell State Forest and state forests statewide",
+   "sources": [
+    "https://www.wendellforest.org/about-us"
+   ]
+  },
+  "xr_boston": {
+   "description": "Boston chapter of Extinction Rebellion that stages nonviolent direct actions and protests against government inaction on climate change and runs local gatherings and educational talks.",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://xrboston.org/"
+   ]
+  },
+  "league_of_women_voters_of_massachusetts": {
+   "description": "State League of Women Voters that has a steering committee on environmental action and advocates for climate, energy and water legislation and runs a Climate and Energy Solutions series.",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://lwvma.org/the-environment-2/"
+   ]
+  },
+  "neighbor_to_neighbor_massachusetts": {
+   "description": "Statewide organizing group that advocates on economic, racial and environmental justice, with a climate justice field program and environmental justice campaigns.",
+   "type": "501c3,501c4",
+   "geographic_focus": "Massachusetts",
+   "sources": [
+    "https://www.influencewatch.org/non-profit/neighbor-to-neighbor-massachusetts/",
+    "https://www.n2nma.org/en/n2n-is-hiring-climate-justice-field-coordinator/"
+   ]
+  },
+  "community_action_works": {
+   "description": "Environmental justice nonprofit, founded in 1987, that trains and organizes local groups and gives emergency grants to stop and clean up local pollution such as pipelines, landfills, incinerators and PFAS.",
+   "geographic_focus": "New England",
+   "sources": [
+    "https://communityactionworks.org/about-us/"
+   ]
+  },
+  "21st_century_schools_fund": {
+   "description": "Nonprofit, established in 1994, that works to build public will and capacity to modernize public school facilities so they support quality education and community revitalization.",
+   "geographic_focus": "National (based in Washington, DC)",
+   "sources": [
+    "https://www.21csf.org/page-content.php?pid=150",
+    "https://www.charitynavigator.org/ein/522139122?schemaorg="
+   ]
+  },
+  "acadia_center": {
+   "description": "Climate and clean energy advocacy organization that works on building and transportation electrification and clean energy policy across the Northeast, with an office in Boston.",
+   "geographic_focus": "Northeast (MA, CT, ME, NH, NY, RI)",
+   "sources": [
+    "https://acadiacenter.org/work/massachusetts/"
+   ]
+  },
+  "aft_mass": {
+   "description": "State federation of the American Federation of Teachers, representing about 25,000 teachers, public employees, higher-ed faculty and health professionals in Massachusetts.",
+   "type": "union",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://ma.aft.org/about-us",
+    "https://www.influencewatch.org/labor-union/aft-massachusetts/"
+   ]
+  },
+  "alliance_for_business_leadership": {
+   "description": "Boston-based coalition of business leaders, a 501(c)(3) since 2008, with a climate and energy policy council that backs clean energy policy as part of an inclusive economy.",
+   "type": "501c3,business",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://ablimpact.org/"
+   ]
+  },
+  "center_for_green_schools_at_us_gbc": {
+   "description": "Program of the U.S. Green Building Council that supplies training, research, advocacy, peer networks and LEED guidance to make school buildings and campuses sustainable and healthy.",
+   "geographic_focus": "National",
+   "sources": [
+    "https://centerforgreenschools.org/",
+    "https://www.nwf.org/EcoLeaders/About/Our-Partners/US-Green-Building-Councils-Center-for-Green-Schools"
+   ]
+  },
+  "chinese_progressive_association": {
+   "description": "Boston community organizing group, founded in 1977, that organizes Chinese-American residents; its Green Justice program covers weatherization jobs, transit justice, air quality and community microgrids through the Green Justice Coalition.",
+   "type": "501c3",
+   "geographic_focus": "Greater Boston (Chinatown)",
+   "sources": [
+    "https://cpaboston.org/programs/green-justice-environmental-justice",
+    "https://www.influencewatch.org/non-profit/chinese-progressive-association-boston/"
+   ]
+  },
+  "citizens_climate_lobby": {
+   "description": "Volunteer chapters of Citizens' Climate Lobby across Massachusetts that build community support for climate solutions and lobby members of Congress for bipartisan climate legislation.",
+   "website": "https://citizensclimatelobby.org/about-ccl/chapters/",
+   "geographic_focus": "Massachusetts (regional chapters)",
+   "sources": [
+    "https://citizensclimatelobby.org/about-ccl/chapters/"
+   ]
+  },
+  "citizens_climate_lobby_boston": {
+   "description": "Boston-area chapter of Citizens' Climate Lobby whose volunteers start climate conversations, build support among community leaders and meet members of Congress about bipartisan climate policy.",
+   "website": "https://citizensclimatelobby.org/chapters/MA_Boston/",
+   "geographic_focus": "Boston, Brookline, Cambridge, Somerville, Arlington, Medford, Belmont, Watertown, Waltham, Newton",
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/MA_Boston/"
+   ]
+  },
+  "citizens_climate_lobby_south_shore_cape_and_islands": {
+   "description": "South Shore chapter of Citizens' Climate Lobby covering the South Shore, South Coast and Cape Cod, doing community outreach and lobbying members of Congress for bipartisan climate legislation.",
+   "website": "https://citizensclimatelobby.org/chapters/MA_South_Shore/",
+   "geographic_focus": "South Shore, South Coast and Cape Cod",
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/MA_South_Shore/",
+    "https://www.greenenergyconsumers.org/event/southshorecapecitizensclimatelobbychapter"
+   ]
+  },
+  "citizens_climate_lobby_north_shore_chapter": {
+   "description": "North Shore chapter of Citizens' Climate Lobby that builds public support for climate action and lobbies members of Congress for bipartisan climate legislation.",
+   "website": "https://citizensclimatelobby.org/chapters/MA_Northshore/",
+   "geographic_focus": "North Shore / Essex County (Salem, Lynn, Beverly, Gloucester, Newburyport)",
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/MA_Northshore/"
+   ]
+  },
+  "collaborative_for_high_performance_schools": {
+   "description": "Membership organization that runs a green building rating program for K-12 schools (CHPS Designed and CHPS Verified) and publishes best-practice guidance and training.",
+   "geographic_focus": "National (originated in California)",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Collaborative_for_High_Performance_Schools"
+   ]
+  },
+  "cooler_communities": {
+   "description": "Climate education group that gets young people informed and acting on climate change through school programs such as Energy Detectives, Heat Seekers, climate fairs and curriculum.",
+   "geographic_focus": "Massachusetts (Concord, Framingham, Northampton and other communities)",
+   "sources": [
+    "https://coolercommunities.org/about-us/"
+   ]
+  },
+  "green_weymouth": {
+   "description": "Weymouth community coalition that educates and advocates for conservation, sustainable policies, clean energy and green growth in town.",
+   "type": "coalition",
+   "geographic_focus": "Weymouth",
+   "sources": [
+    "https://greenweymouth.com/"
+   ]
+  },
+  "ma_senior_action": {
+   "description": "Statewide, senior-led grassroots group founded in 1981 that organizes older adults on health care, economic security, housing, transportation and racial justice; no climate work found.",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.masssenioraction.org/mission-history"
+   ]
+  },
+  "mass_facilities_administrators_association": {
+   "description": "Professional association founded in 1973 for municipal facilities administrators (about 180 members from 140 municipalities) offering training and information exchange; no sustainability programs found on its site.",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://massfacilities.com/about-mfaa/"
+   ]
+  },
+  "massachusetts_jobs_with_justice": {
+   "description": "Coalition of labor, faith and student organizations that builds solidarity for workers' rights through rallies and picket-line support, with offices in Jamaica Plain and Springfield; no climate work found.",
+   "type": "coalition",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.massjwj.net/about/our-mission"
+   ]
+  },
+  "metropolitan_area_planning_council": {
+   "description": "Public regional planning agency for the 101 cities and towns of Greater Boston, founded in 1963, whose work includes climate resilience and sustainability planning.",
+   "type": "government",
+   "geographic_focus": "Greater Boston (101 cities and towns)",
+   "sources": [
+    "https://www.mapc.org/aboutus/"
+   ]
+  },
+  "mtacan": {
+   "description": "Network of over 160 Massachusetts Teachers Association members that backs student climate strikes, writes green contract language, builds climate curriculum and partners with environmental and labor groups.",
+   "type": "union",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.massteacher.org/MTAtoday/all-news-articles/climate-activism-continues-amid-pandemic"
+   ]
+  },
+  "northeast_climate_justice_research_collaborative": {
+   "description": "Research network, launched in spring 2022 and convened by UMass Boston's Sustainable Solutions Lab, that supports scholars working on climate justice with seed grants, workshops and a shared literature library.",
+   "geographic_focus": "Northeast",
+   "sources": [
+    "https://www.umb.edu/ssl/collaborative"
+   ]
+  },
+  "pioneer_valley_asthma_coalition": {
+   "description": "Springfield-based coalition, convened by the Public Health Institute of Western Massachusetts, that works to improve life for people affected by asthma through education on home hazards, school programs and clean air advocacy.",
+   "type": "coalition",
+   "geographic_focus": "Pioneer Valley",
+   "sources": [
+    "https://www.pvasthmacoalition.org/"
+   ]
+  },
+  "sustainable_business_network_of_massachusetts": {
+   "description": "Cambridge nonprofit business association, founded in 1988, that builds networks of independent, socially and environmentally minded businesses and runs programs such as the Boston Local Food Network.",
+   "geographic_focus": "Massachusetts and New England",
+   "sources": [
+    "https://www.sbnmass.org/about"
+   ]
+  },
+  "undauntedk12": {
+   "description": "National nonprofit, founded in 2020, that pushes for climate action in K-12 schools, including heat pumps and modern HVAC, federal tax credit guidance and climate literacy.",
+   "geographic_focus": "National (includes Massachusetts)",
+   "sources": [
+    "https://www.undauntedk12.org/"
+   ]
+  },
+  "franklin_county_and_north_quabbin_community_health_improveme": {
+   "description": "Regional health improvement network, convened by the Franklin Regional Council of Governments since 2016, that sets community health priorities such as youth substance use, mental wellness and active living; its pages show no climate focus.",
+   "type": "coalition",
+   "geographic_focus": "Franklin County and North Quabbin",
+   "sources": [
+    "https://frcog.org/project/community-health-improvement-plan-network-chip/"
+   ]
+  }
+ },
+ "not_found": [],
+ "coalitions": {
+  "scjc": {
+   "description": "Coalition of roughly 60 community, faith, labor, health and environmental groups in the Springfield area, formed in 2014, that works on climate and environmental health issues; it fought the East Springfield biomass plant, opposes new gas pipeline expansion, and won a city Climate Action and Resiliency Plan.",
+   "website": "https://www.notoxicbiomass.org/",
+   "sources": [
+    "https://www.notoxicbiomass.org/team",
+    "https://grassrootsfund.org/groups/springfield-climate-justice-coalition",
+    "https://www.amherstindy.org/2021/11/05/local-residents-healthcare-workers-and-politicians-take-position-against-eversource-springfield-longmeadow-pipeline/"
+   ]
+  },
+  "cccc": {}
+ },
+ "notes": "Concerned Citizens of Franklin County (MA, Greenfield) is NOT abetterfranklin.com, which is a Florida group of the same name; no website set for the MA group. Hands Across the River Coalition: sources disagree on founding year (1982 vs 1987); latest source I read dates to about 2015-2016; not marked inactive since no explicit sign it stopped. ISBCC: site mentions green initiatives but I could not read details (robots-blocked). Longmeadow Pipeline Awareness Group: Facebook page could not be read; used as website because search result lists it. Mass Divest Coalition: site content I read is from 2017 (bill H.3281); no clear sign it stopped, so not marked inactive. Pilgrim Coalition/Pilgrim Watch: plant closed 2019 but no explicit sign the groups stopped; not marked inactive. No Sharon Gas Pipeline: fetching the homepage returned unrelated content, so used the clean-energy page and Grassroots Fund profile; the 'opposed' phrasing in the description is from the group's name/Grassroots Fund listing. Take Back the Grid: the only source found is a 2019 Boston Hassle article on the Boston DSA campaign; I assumed it is the group the map lists under Energy Democracy, and found no dedicated site (takebackthegrid.org/blog returned 404). Upper Cape Women's Coalition: its listed domain uppercapewomen.org currently redirects to an unrelated site, so no website filled; description is from a 2019 article and does not mention climate; newest page seen is a 2024 endorsements URL. RESTORE sources disagree on HQ town (Concord vs Westford). Solstice website not filled because slice lists solstice.us already. Neighbor to Neighbor geographic focus given as 'Massachusetts' (influencewatch says Boston HQ; I did not confirm which cities its chapters cover). Wendell State Forest Alliance: site copyright 2023 but no sign of stopping; not marked inactive. 21st Century Schools Fund: Charity Navigator lists it in Washington, DC and its site shows school-facility news from many states, so it may not be a Massachusetts-specific group; geographic_focus set to National. Center for Green Schools is a USGBC program (national/DC). The generic 'citizens_climate_lobby' entry (no chapter named) is described as the Massachusetts chapters collectively; it may duplicate the three chapter entries. CCL South Shore chapter page covers South Shore, South Coast and Cape Cod, matching the 'south_shore_cape_and_islands' entry. AFT Mass climate work not found; description covers its identity only. Alliance for Business Leadership: slice lists ablmass.org but the site I read is ablimpact.org; website not changed since one exists. MA Senior Action, Mass JWJ, MFAA, FRCOG CHIP: pages read show no climate/environment programs; descriptions state what the group is. MFAA, CHPS, Cooler Communities, SBN, UndauntedK12, MTACAN: type left out unless clearly stated. MTACAN website massteacher.org (slice) is the parent MTA site; the MTA Climate Action Task Force page I tried returned 404. Coalitions: CCCC (Cross Campus Climate Coalition) NOT FOUND - several searches only surfaced a Colleges of the Fenway 'Cross-Campus Climate Mixer' event (no mention of a coalition) and unrelated groups; Instagram/Timeful pages were robots-blocked; left cccc empty. SCJC: 'fought the Eversource pipeline' is from its involvement in Nov 2021 press conference and petition (organizer role), not a claimed win; the website notoxicbiomass.org is described on that page as the coalition's site but is focused on the biomass campaign."
+}

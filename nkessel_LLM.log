@@ -387,3 +387,8 @@ What / why
 - topbar: title shows the map name; right-click (or long-press on phones) opens "Switch map" (Massachusetts / Vermont / USA).
 - Non-MA maps have no forms yet: "Edit this…" becomes "Suggest a correction" → feedback form; + menu offers feedback only. Zip filter and town/county outlines are MA-only (hidden on VT); MA town names aren't matched for locations in other states; geographic view opens on the map's own groups; place search box follows the map.
 - Tested in Playwright: MA 8 coalitions/150 orgs, VT 6/49, USA 14/199; menu switches and URL updates; no page errors.
+- Gap filling (Sonnet research agents, a source on every field):
+  - Vermont: +1 coalition (Vermont EJ Network, no public member list), 49 → 100 orgs (+23 EAN non-profit members, +17 town energy committees, +9 350Vermont nodes, VT Racial Justice Alliance, REJOICE), +9 events, lat/lng on all 24 physical events, 17 real last_activity dates. Copied to public/maps/vt.json.
+  - Massachusetts: 114 descriptions, 114 geographic focus, 52 types, 57 websites, Springfield Climate Justice Coalition description; merged into public/data.json only where blank. Still missing: 36 descriptions (34 never researched: the session's 200-web-search cap ran out), 87 types, 43 websites; Cross Campus Climate Coalition not found.
+  - Spot-checked against live pages: Green Cambridge, JCAN-MA (founding year + activities) — both matched.
+- Apps Script: "Fill in missing details (logos, websites, descriptions) from GitHub" now also fills blank description / type ("unknown" counts as blank) / geographic_focus for orgs and blank coalition descriptions; never overwrites. Test added.

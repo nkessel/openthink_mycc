@@ -307,6 +307,17 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(after.find((o) => o.id === target.id).logo, "logos/new.png");
   assert.equal(after.find((o) => o.id === withLogo.id).logo, withLogo.logo);
   assert.ok(res.logos >= 1 && log().length > before);
+  // researched descriptions/types/focus fill only empty cells ("unknown" type counts as empty)
+  const blank = orgRows().find((o) => !o.description);
+  const typed = orgRows().find((o) => o.type && o.type !== "unknown");
+  const s2 = J(orig);
+  Object.assign(s2.organizations.find((o) => o.id === blank.id), { description: "Researched description.", geographic_focus: "Newton" });
+  if (typed) s2.organizations.find((o) => o.id === typed.id).type = "should_not_replace";
+  const res2 = ctx.fillLogos_(s2);
+  assert.equal(orgRows().find((o) => o.id === blank.id).description, "Researched description.");
+  assert.equal(orgRows().find((o) => o.id === blank.id).geographic_focus, "Newton");
+  if (typed) assert.equal(orgRows().find((o) => o.id === typed.id).type, typed.type);
+  assert.ok(res2.details >= 2);
   console.log("fill logos from GitHub OK");
 }
 
