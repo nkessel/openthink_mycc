@@ -207,6 +207,10 @@ async function main() {
     if (tab === "geo") geoView.invalidate();
     if (tab !== "map") {
       tooltip.hide();
+      // The org details panel belongs to the map; don't leave it floating over the other tabs.
+      graphApi?.exitFocus();
+      drawerApi?.close();
+      graphApi?.setSelectedNode(null);
     }
   }
 

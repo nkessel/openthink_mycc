@@ -122,6 +122,8 @@ export function createEventsView(
         r.owner.abbrev.toLowerCase().includes(q)
       );
     });
+    const calWrap = h("div", { class: "cal-wrap" });
+    body.appendChild(calWrap);
     // Every day of the 6-week grid, with the events that land on it (recurring ones expanded).
     const gridStart = new Date(monthStart.getFullYear(), monthStart.getMonth(), 1 - monthStart.getDay());
     const byDay = new Map<string, Row[]>();
@@ -147,7 +149,7 @@ export function createEventsView(
     next.addEventListener("click", () => { monthStart = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 1); render(); });
     today.addEventListener("click", () => { const n = new Date(); monthStart = new Date(n.getFullYear(), n.getMonth(), 1); selectedDay = dayKey(n); render(); });
     nav.append(prev, h("span", { class: "cal-title" }, monthStart.toLocaleDateString(undefined, { month: "long", year: "numeric" })), next, today);
-    body.appendChild(nav);
+    calWrap.appendChild(nav);
 
     const grid = h("div", { class: "cal-grid" });
     for (const d of ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) grid.appendChild(h("div", { class: "cal-dow" }, d));
@@ -162,18 +164,25 @@ export function createEventsView(
         cell.appendChild(h("div", { class: "cal-ev", style: `border-left-color:${r.owner.color}`, title: r.event.name }, (r.event.recurrence ? "↻ " : "") + r.event.name));
       }
       if (evs.length > 3) cell.appendChild(h("div", { class: "cal-more" }, `+${evs.length - 3} more`));
+      if (evs.length) {
+        const dots = h("div", { class: "cal-dots" });
+        for (const r of evs.slice(0, 6)) dots.appendChild(h("i", { style: `background:${r.owner.color}` }));
+        cell.appendChild(dots);
+      }
       cell.addEventListener("click", () => { selectedDay = k; render(); });
       grid.appendChild(cell);
     }
-    body.appendChild(grid);
+    calWrap.appendChild(grid);
 
     const dayRows = byDay.get(selectedDay) || [];
     if (selectedDay) {
       const label = parseEventDate(selectedDay).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
-      body.appendChild(h("h3", { class: "cal-day-title" }, dayRows.length ? label : `${label} — no events`));
-      for (const r of dayRows) body.appendChild(eventCard(r));
+      calWrap.appendChild(h("h3", { class: "cal-day-title" }, dayRows.length ? label : `${label} — no events`));
+      const dayList = h("div", { class: "cal-day-list" });
+      for (const r of dayRows) dayList.appendChild(eventCard(r));
+      calWrap.appendChild(dayList);
     } else {
-      body.appendChild(h("div", { class: "list-empty" }, "Pick a day to see its events. Recurring events (↻) repeat on their schedule from their next date on."));
+      calWrap.appendChild(h("div", { class: "list-empty" }, "Pick a day to see its events. Recurring events (↻) repeat on their schedule from their next date on."));
     }
   }
 

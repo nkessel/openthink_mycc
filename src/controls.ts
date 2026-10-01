@@ -174,6 +174,20 @@ export function createControls(
     return { section, body };
   }
 
+  // ---- Size by activity ----
+  const { section: sizeSection, body: sizeBody } = makeSection("Size by activity");
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Make groups with more going on bigger. Raise a slider to count that kind of work; 0 ignores it."));
+  for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
+    sizeBody.appendChild(
+      makeSlider(label, state.settings[key], (v) => {
+        state.settings[key] = v;
+        cb.onSettingsChange({ [key]: v });
+        saveState(state);
+      }, { min: 0, max: 3, step: 0.1 }),
+    );
+  }
+  parent.appendChild(sizeSection);
+
   // ---- Forces ----
   const { section: forcesSection, body: forcesBody } = makeSection("Forces");
   forcesBody.appendChild(
@@ -279,31 +293,6 @@ export function createControls(
       saveState(state);
     }),
   );
-  {
-    const wrapSel = h("div", { class: "control" });
-    wrapSel.appendChild(h("label", { class: "ctrl-label" }, "Make groups bigger by"));
-    const sel = h("select", { class: "size-by" }) as HTMLSelectElement;
-    const opts: [string, string][] = [
-      ["none", "Nothing (all the same)"],
-      ["all", "Everything they're doing"],
-      ["events", "Number of events"],
-      ["projects", "Number of projects"],
-      ["actions", "Number of actions"],
-    ];
-    for (const [v, l] of opts) {
-      const o = h("option", { value: v }, l) as HTMLOptionElement;
-      if (v === state.settings.sizeBy) o.selected = true;
-      sel.appendChild(o);
-    }
-    sel.addEventListener("change", () => {
-      const v = sel.value as GraphSettings["sizeBy"];
-      state.settings.sizeBy = v;
-      cb.onSettingsChange({ sizeBy: v });
-      saveState(state);
-    });
-    wrapSel.appendChild(sel);
-    displayBody.appendChild(wrapSel);
-  }
   displayBody.appendChild(
     makeSlider("Node size", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;
