@@ -1830,15 +1830,6 @@ body {
 .focus-back:hover { border-color: var(--accent); }
 .focus-title { font-size: 15px; }
 .focus-legend { display: flex; gap: 12px; font-size: 12px; }
-.focus-legend .lg::before {
-  content: "";
-  display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  margin-right: 5px;
-  border: 2px solid currentColor;
-}
 .lg.k-thought, .focus-card-kind.k-thought { color: var(--k-thought); }
 .lg.k-project, .focus-card-kind.k-project { color: var(--k-project); }
 .lg.k-event, .focus-card-kind.k-event { color: var(--k-event); }
@@ -1946,3 +1937,35 @@ body {
 .view-switch button.active { background:var(--accent); color:#04121a; font-weight:600; }
 .stale-notice.verified { background: transparent; border-color: transparent; color: var(--text-dim); padding-left: 0; }
 .stale-notice.verified a { color: var(--text-dim); text-decoration: underline; }
+
+.bubble-icon .cal-band { fill: var(--k-event); stroke: none; }
+.bubble-icon .cal-month { font-size: 5.6px; font-weight: 800; letter-spacing: .04em; fill: #1a1206; stroke: none; text-anchor: middle; }
+.bubble-icon .cal-day { font-size: 11px; font-weight: 800; fill: var(--k-event); stroke: none; text-anchor: middle; }
+.bubble.recurring > circle { stroke-opacity: .18; stroke-width: 1.5; }
+.bubble.recurring:hover > circle { stroke-opacity: .4; stroke-width: 1.5; }
+.recur-ring { font-size: 11px; font-weight: 700; fill: var(--k-event); pointer-events: none; }
+.type-icon { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -3px; }
+
+.focus-legend .lg { display:inline-flex; align-items:center; gap:5px; }
+.focus-legend .lg b { font-weight:700; }
+.focus-bar.tappable { cursor: pointer; }
+.focus-more { display:none; margin-left:auto; font-size:12px; color:var(--accent); font-weight:600; }
+@media (max-width: 900px) {
+  .focus-bar { gap: 6px 10px; padding: 8px 10px; }
+  .focus-bar .focus-note { display:none; }
+  .focus-more { display:inline; }
+  .focus-title { flex: 1 1 100%; order: -1; font-size: 15px; }
+  .focus-back, .focus-bar .focus-back { font-size: 12px; padding: 4px 8px; }
+}
+
+.view-switch.wide { display:flex; width:100%; margin:4px 0 12px; }
+.view-switch.wide button { flex:1; }
+.weight-sliders.disabled { opacity:.38; pointer-events:none; filter:grayscale(1); transition: opacity .15s; }
+.weight-sliders { transition: opacity .15s; }
+
+.sat { stroke: var(--bg); stroke-width: 1; }
+.sat-event { fill: var(--k-event); }
+.sat-project { fill: var(--k-project); }
+.sat-action { fill: var(--k-action); }
+text.sat-more { font-size: 8px; font-weight: 700; text-anchor: middle; stroke: none; }
+.node-org.dim .sats, .node-org.faded .sats { opacity: .5; }

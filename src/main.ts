@@ -107,8 +107,17 @@ async function main() {
     },
   });
 
+  // On a phone the details tray would cover the group you just opened, so with bubbles on we show only
+  // the small summary card at the top; tapping it (or switching to Classic) opens the tray.
+  const isMobile = () => window.innerWidth <= 900;
+  const trayWouldBlockMap = () => isMobile() && !!graphApi?.bubblesOn();
   graphApi = createGraph(graphContainer, data, tooltip, {
     onNodeClick: (node) => {
+      if (trayWouldBlockMap()) drawerApi!.close();
+      else drawerApi!.open(node);
+      graphApi!.setSelectedNode(node);
+    },
+    onOpenDetails: (node) => {
       drawerApi!.open(node);
       graphApi!.setSelectedNode(node);
     },
@@ -158,9 +167,9 @@ async function main() {
       setTab("map");
       // Defer drawer open so the map is visible first
       setTimeout(() => {
-        drawerApi!.open(node);
+        if (!trayWouldBlockMap()) drawerApi!.open(node);
         graphApi!.setSelectedNode(node);
-        if (node.kind === "coalition") graphApi!.focusOnCoalition(node.id);
+        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
       }, 60);
     },
   });
@@ -188,9 +197,9 @@ async function main() {
     onCoalitionClick: (node) => {
       setTab("map");
       setTimeout(() => {
-        drawerApi!.open(node);
+        if (!trayWouldBlockMap()) drawerApi!.open(node);
         graphApi!.setSelectedNode(node);
-        if (node.kind === "coalition") graphApi!.focusOnCoalition(node.id);
+        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
       }, 60);
     },
   });

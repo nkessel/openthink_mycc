@@ -310,3 +310,11 @@ What / why
 - Climate Action Now: verified all 5 series against climateactionnowma.org/events/ (dates, times) and added end times/recurrence ranges (confidence 0.95). The site also offers "Subscribe To Calendar" (ICS) which could be used for automatic sync later.
 - Event form checked: it has End time and "Does it repeat?".
 - Why: Nathan asked to do everything + add a clear Bubbles/Classic toggle. Checked with Playwright (toggle, persistence, no JS errors).
+
+## 2026-10-01 — date icons, ↻ ring, always-on dots, mobile top card, tray counts, verified events (branch claude/mobile-icons-verified, stacked on PR #22)
+- Event bubbles show the actual date (e.g. OCT 7) on a mini calendar page; recurring events get a ring of ↻ around the bubble instead of a corner badge.
+- Sidebar "Bubbles & size": "When you click a group: Show its work | Details only"; "Always show on the map" toggles for all events / projects / actions (small dots around each group, max 14 + "+n"); the three weight sliders sit directly below and grey out in Details-only mode.
+- Mobile (<=900px): with bubbles on, clicking a group shows a small top card (type icons + counts) and the bubbles; tapping the card opens the tray. With Details-only the tray opens as before. Tray tabs show counts, e.g. "Events (5)".
+- Verified flag: events with confidence >= 0.95 and a specific (non-homepage) link get verified=true and show "Listed on the group's own page" instead of the "may be out of date" warning. Added a verified column to Code.gs and the sheet export, so the sheet needs the updated script + re-run of "Replace projects, events and actions".
+- Removed the old focus-bar legend ring (::before) that showed a stray "0" beside the icons.
+- Why: Nathan's feedback. Checked with Playwright desktop + 390px mobile; no JS errors.

@@ -140,18 +140,23 @@ export function createDrawer(
 
   function renderTabs(node: GraphNode): HTMLElement {
     const tabs = h("div", { class: "drawer-tabs" });
+    const n = {
+      projects: node.kind === "coalition" ? node.projects.length : orgProjects(data, node).length,
+      events: node.kind === "coalition" ? node.events.length : orgEvents(data, node).length,
+      actions: node.kind === "coalition" ? node.actions.length : orgActions(data, node).length,
+    };
     const tabList: { id: DrawerTab; label: string }[] =
       node.kind === "coalition"
         ? [
-            { id: "projects", label: "Projects" },
-            { id: "events", label: "Events" },
-            { id: "actions", label: "Actions" },
+            { id: "projects", label: `Projects (${n.projects})` },
+            { id: "events", label: `Events (${n.events})` },
+            { id: "actions", label: `Actions (${n.actions})` },
           ]
         : [
             { id: "about", label: "About" },
-            { id: "projects", label: "Projects" },
-            { id: "events", label: "Events" },
-            { id: "actions", label: "Actions" },
+            { id: "projects", label: `Projects (${n.projects})` },
+            { id: "events", label: `Events (${n.events})` },
+            { id: "actions", label: `Actions (${n.actions})` },
             { id: "coalitions", label: "Connections" },
           ];
     // Ensure activeTab is valid for this node kind
