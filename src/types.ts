@@ -11,6 +11,8 @@ export interface Project {
   // Optional fields filled in through the MA Climate Coalition Map forms
   /** We could not confirm this is current; shown with a "needs more information" notice until a point person updates it. */
   needs_info?: boolean;
+  /** The group's own page (or a point person) confirms this; no "may be out of date" warning. */
+  verified?: boolean;
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
@@ -34,6 +36,8 @@ export interface CoalitionEvent {
   end?: string;
   description?: string;
   needs_info?: boolean;
+  /** The group's own page (or a point person) confirms this; no "may be out of date" warning. */
+  verified?: boolean;
   host_org_id?: string;
   topic_tags?: string[];
   link?: string;
@@ -72,6 +76,8 @@ export interface Action {
   description?: string;
   link?: string;
   needs_info?: boolean;
+  /** The group's own page (or a point person) confirms this; no "may be out of date" warning. */
+  verified?: boolean;
   host_org_id?: string;
 }
 
