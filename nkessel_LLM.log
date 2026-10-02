@@ -406,3 +406,9 @@ What / why
   - "Last active" → "Last updated" in the details panel and tooltips (was ticked in the doc but never changed).
 - Audit of the rest of that tab: everything else is built, except voting-district outlines (no data source yet) and the form item "Organization => project, branching" (unclear what's wanted). The long "Which organization?" dropdown was solved with typed names + fuzzy matching rather than the suggested org numbers.
 - Tested in Playwright: sections order/titles, Advanced closed by default, header visible after scrolling, Hide still works, no page errors.
+
+## 2026-10-01 — Item physics + spacing for item rings
+- graph.ts ringPhysics(): events/projects/actions around a group are now a small force simulation (radial pull to their ring, collision, gentle repulsion, a spring to their home spot). They spill out of the group, jostle into place, can be dragged (the others make room) and spring back on release; clicking still opens the card (drag threshold 4px). Used for the zoomed-in group view and the always-on zoomed-in item bubbles.
+- Spacing: each group's collision radius now covers its ring of items when "Always on" is selected (itemExtent + 18px), so neighbouring groups' items don't overlap; recalculated when the item settings change. In the zoomed-in group view, other groups (and their items) are pushed clear of the focus ring.
+- Tested in Playwright: focus bubbles move and settle with 0 overlaps; dragging one 211px moves others and it returns to 0px from home after release; card still opens on click; always-on view spreads groups; no page errors.
+- Uncertainty: with "Always on", the whole network spreads out more (by design); the dot-level view uses the zoomed-in ring size for spacing so the layout doesn't jump when you zoom.
