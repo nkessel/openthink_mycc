@@ -553,7 +553,7 @@
       "id": "vt_vpirg",
       "name": "Vermont Public Interest Research Group",
       "abbrev": "VPIRG",
-      "type": "unknown",
+      "type": "501c4",
       "geographic_focus": "Statewide",
       "description": "Statewide consumer, environmental and democracy advocacy group in Montpelier; leads on clean energy and climate policy, and runs a grassroots canvass.",
       "coalition_ids": [
@@ -596,14 +596,16 @@
       "actions": [],
       "sources": [
         "https://www.vpirg.org/",
-        "https://www.vpirg.org/contact/"
+        "https://www.vpirg.org/contact/",
+        "https://www.vpirg.org/about",
+        "https://projects.propublica.org/nonprofits/organizations/30228267"
       ]
     },
     {
       "id": "vt_vcv",
       "name": "Vermont Conservation Voters",
       "abbrev": "VCV",
-      "type": "unknown",
+      "type": "501c4",
       "geographic_focus": "Statewide",
       "description": "Statewide political voice for the environment in Montpelier that endorses candidates, tracks votes, and convenes the annual Environmental Common Agenda. Founded in 1982.",
       "coalition_ids": [
@@ -823,14 +825,15 @@
         "https://vermontconservationvoters.com/about/",
         "https://vermontconservationvoters.com/",
         "https://vermontconservationvoters.com/vcv-partners-with-vpirg-for-fall-canvass-tour/",
-        "https://vermontconservationvoters.com/calendar/"
+        "https://vermontconservationvoters.com/calendar/",
+        "https://projects.propublica.org/nonprofits/organizations/222543128"
       ]
     },
     {
       "id": "vt_350vermont",
       "name": "350Vermont",
       "abbrev": "350VT",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Statewide grassroots climate group based in Burlington; described as the primary driver of Vermont's Climate Superfund Act. Its own website blocks automated readers, so details come from partner pages and search listings.",
       "coalition_ids": [
@@ -854,7 +857,8 @@
       "sources": [
         "https://vermontdailychronicle.com/meet-the-ngos-that-shape-vermonts-laws-this-saturday/amp/",
         "https://vermontconservationvoters.com/commonagenda26/",
-        "https://anrweb.vt.gov/PubDocs/ANR/ClimateCouncil/21310/350VT%20Climate%20Action%20Plan%20Comment%20Spring%202025%20(1).pdf"
+        "https://anrweb.vt.gov/PubDocs/ANR/ClimateCouncil/21310/350VT%20Climate%20Action%20Plan%20Comment%20Spring%202025%20(1).pdf",
+        "https://www.350vermont.org"
       ]
     },
     {
@@ -1349,7 +1353,7 @@
       "id": "vt_lake_champlain_committee",
       "name": "Lake Champlain Committee",
       "abbrev": "LCC",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Lake Champlain basin",
       "description": "Burlington-based advocacy group working since 1963 for a healthy, accessible Lake Champlain; a partner on the Environmental Common Agenda.",
       "coalition_ids": [
@@ -1373,7 +1377,8 @@
       "sources": [
         "https://www.lakechamplaincommittee.org/",
         "https://vermontconservationvoters.com/commonagenda26/",
-        "https://www.vecan.net/enews-archive/june-9th-2026-vecan-e-news"
+        "https://www.vecan.net/enews-archive/june-9th-2026-vecan-e-news",
+        "https://projects.propublica.org/nonprofits/organizations/222482466"
       ]
     },
     {
@@ -1411,7 +1416,7 @@
       "id": "vt_hunger_free_vermont",
       "name": "Hunger Free Vermont",
       "abbrev": "HFV",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Anti-hunger and food-security advocacy organization in South Burlington; joined the Environmental Common Agenda as a new partner in 2026 and co-sponsored the 2026 Vermont Changemakers Summit.",
       "coalition_ids": [
@@ -1434,14 +1439,15 @@
       "sources": [
         "https://vermontconservationvoters.com/commonagenda26/",
         "https://vermontbiz.com/company/hunger-free-vermont",
-        "https://vermontdailychronicle.com/meet-the-ngos-that-shape-vermonts-laws-this-saturday/amp/"
+        "https://vermontdailychronicle.com/meet-the-ngos-that-shape-vermonts-laws-this-saturday/amp/",
+        "https://projects.propublica.org/nonprofits/organizations/30336357"
       ]
     },
     {
       "id": "vt_local_motion",
       "name": "Local Motion",
       "abbrev": "Local Motion",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Burlington nonprofit advocating for walking and biking; a member of Transportation for Vermonters and Energy Action Network and a 2026 Common Agenda partner.",
       "coalition_ids": [
@@ -1468,14 +1474,15 @@
         "https://www.localmotion.org/contact_us",
         "https://vermontconservationvoters.com/commonagenda26/",
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/030361422"
       ]
     },
     {
       "id": "vt_preservation_trust",
       "name": "Preservation Trust of Vermont",
       "abbrev": "PTV",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Montpelier-based historic preservation nonprofit; a partner on the Environmental Common Agenda and an Energy Action Network member.",
       "coalition_ids": [
@@ -1499,7 +1506,8 @@
       "sources": [
         "https://www.ptvermont.org/",
         "https://vermontconservationvoters.com/commonagenda26/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://www.ptvermont.org/support"
       ]
     },
     {
@@ -1535,7 +1543,7 @@
       "id": "vt_vermont_center_for_ecostudies",
       "name": "Vermont Center for Ecostudies",
       "abbrev": "VCE",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide / Americas",
       "description": "Wildlife research and conservation nonprofit in White River Junction, a 2026 Common Agenda partner.",
       "coalition_ids": [
@@ -1557,7 +1565,8 @@
       "actions": [],
       "sources": [
         "https://vtecostudies.org/",
-        "https://vermontconservationvoters.com/commonagenda26/"
+        "https://vermontconservationvoters.com/commonagenda26/",
+        "https://vtecostudies.org"
       ]
     },
     {
@@ -1604,7 +1613,7 @@
       ],
       "lat": 44.4759,
       "lng": -73.2121,
-      "last_activity": "",
+      "last_activity": "2025-12-12",
       "website": "https://www.carsharevt.org",
       "topic_tags": [
         "car sharing",
@@ -1620,14 +1629,15 @@
         "https://www.carsharevt.org/",
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
         "https://eanvt.org/about/people/network-members/",
-        "https://vtcleancommunities.org/about/current-stakeholders/"
+        "https://vtcleancommunities.org/about/current-stakeholders/",
+        "https://www.carsharevt.org/news/"
       ]
     },
     {
       "id": "vt_capstone_community_action",
       "name": "Capstone Community Action",
       "abbrev": "Capstone",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Central Vermont",
       "description": "Community action agency in Barre providing services to bridge connections and move households toward self-sufficiency; an Energy Action Network member.",
       "coalition_ids": [
@@ -1651,14 +1661,16 @@
       "sources": [
         "https://www.capstonevt.org",
         "https://eanvt.org/about/people/network-members/",
-        "https://www.ourherald.com/articles/capstone-talks-impact-of-housing-heating-cuts/"
+        "https://www.ourherald.com/articles/capstone-talks-impact-of-housing-heating-cuts/",
+        "https://projects.propublica.org/nonprofits/organizations/030216254",
+        "https://www.capstonevt.org/ways-to-give"
       ]
     },
     {
       "id": "vt_cvoeo",
       "name": "Champlain Valley Office of Economic Opportunity",
       "abbrev": "CVOEO",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Chittenden County and beyond",
       "description": "Burlington community action agency that works on economic, social, racial and environmental justice; an Energy Action Network member.",
       "coalition_ids": [
@@ -1682,7 +1694,8 @@
         "https://www.cvoeo.org",
         "https://www.cvoeo.org/contact",
         "https://eanvt.org/about/people/network-members/",
-        "https://www.cvoeo.org/media"
+        "https://www.cvoeo.org/media",
+        "https://www.cvoeo.org/donate"
       ]
     },
     {
@@ -1720,7 +1733,7 @@
       "id": "vt_public_assets_institute",
       "name": "Public Assets Institute",
       "abbrev": "PAI",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Montpelier nonprofit providing tax, budget and economic data and analysis to advance equitable policies; an Energy Action Network member.",
       "coalition_ids": [
@@ -1743,14 +1756,15 @@
       "sources": [
         "https://www.publicassets.org",
         "https://eanvt.org/about/people/network-members/",
-        "https://www.publicassets.org/"
+        "https://www.publicassets.org/",
+        "https://www.publicassets.org/donate"
       ]
     },
     {
       "id": "vt_shelburne_farms",
       "name": "Shelburne Farms",
       "abbrev": "Shelburne Farms",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Shelburne-based nonprofit listed among Energy Action Network's nonprofit members.",
       "coalition_ids": [
@@ -1773,14 +1787,16 @@
       "sources": [
         "https://www.shelburnefarms.org/",
         "https://eanvt.org/about/people/network-members/",
-        "https://www.shelburnefarms.org/rss.xml"
+        "https://www.shelburnefarms.org/rss.xml",
+        "https://projects.propublica.org/nonprofits/organizations/030229347",
+        "https://www.shelburnefarms.org"
       ]
     },
     {
       "id": "vt_sustainable_woodstock",
       "name": "Sustainable Woodstock",
       "abbrev": "Sustainable Woodstock",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Woodstock area",
       "description": "Community group in Woodstock that aims to inspire, educate and empower people to live environmentally, economically and socially responsible lives; an Energy Action Network member.",
       "coalition_ids": [
@@ -1802,14 +1818,15 @@
       "sources": [
         "https://www.sustainablewoodstock.org",
         "https://eanvt.org/about/people/network-members/",
-        "https://www.sustainablewoodstock.org/feed/"
+        "https://www.sustainablewoodstock.org/feed/",
+        "https://www.sustainablewoodstock.org/donate"
       ]
     },
     {
       "id": "vt_vcil",
       "name": "Vermont Center for Independent Living",
       "abbrev": "VCIL",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Montpelier disability-rights organization run by and for people with disabilities; a member of Transportation for Vermonters and Energy Action Network.",
       "coalition_ids": [
@@ -1834,14 +1851,15 @@
         "https://www.vcil.org",
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
         "https://eanvt.org/about/people/network-members/",
-        "https://www.vcil.org/advocacy/"
+        "https://www.vcil.org/advocacy/",
+        "https://projects.propublica.org/nonprofits/organizations/030271000"
       ]
     },
     {
       "id": "vt_vcrd",
       "name": "Vermont Council on Rural Development",
       "abbrev": "VCRD",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Montpelier nonprofit supporting community development; one of the five supporting organizations of VECAN and an Energy Action Network member.",
       "coalition_ids": [
@@ -1867,14 +1885,15 @@
         "https://www.vtrural.org",
         "https://vecan.net/about-us/",
         "https://eanvt.org/about/people/network-members/",
-        "https://www.vtrural.org/feed/"
+        "https://www.vtrural.org/feed/",
+        "https://projects.propublica.org/nonprofits/organizations/30354510"
       ]
     },
     {
       "id": "vt_veic",
       "name": "Vermont Energy Investment Corporation",
       "abbrev": "VEIC",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide / national",
       "description": "Winooski nonprofit that runs Efficiency Vermont and works on energy efficiency, renewables and clean transportation; a member of Transportation for Vermonters, Energy Action Network and Vermont Clean Communities.",
       "coalition_ids": [
@@ -1900,7 +1919,8 @@
         "https://en.wikipedia.org/wiki/Vermont_Energy_Investment_Corporation",
         "https://www.veic.org",
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/030304418"
       ]
     },
     {
@@ -1937,7 +1957,7 @@
       "id": "vt_vital_communities",
       "name": "Vital Communities",
       "abbrev": "Vital Communities",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Upper Valley (VT/NH)",
       "description": "White River Junction regional nonprofit that supports Upper Valley town energy committees and takes part in VECAN, EAN and regional climate workgroups.",
       "coalition_ids": [
@@ -1963,7 +1983,8 @@
         "https://vitalcommunities.org/about/contact/",
         "https://vitalcommunities.org/climate-energy/climate-energy-networks/",
         "https://vecan.net/about-us/",
-        "https://vtdigger.org/2026/08/26/vital-communities-enters-talks-to-save-town-listservs-from-shutdown/"
+        "https://vtdigger.org/2026/08/26/vital-communities-enters-talks-to-save-town-listservs-from-shutdown/",
+        "https://projects.propublica.org/nonprofits/organizations/030355283"
       ]
     },
     {
@@ -2000,7 +2021,7 @@
       "id": "vt_vermont_passive_house",
       "name": "Vermont Passive House",
       "abbrev": "VT Passive House",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Montpelier-based group promoting Passive House building; an Energy Action Network member.",
       "coalition_ids": [
@@ -2008,7 +2029,7 @@
       ],
       "lat": 44.2601,
       "lng": -72.5754,
-      "last_activity": "",
+      "last_activity": "2025-06-26",
       "website": "https://www.vermontpassivehouse.org",
       "topic_tags": [
         "passive house",
@@ -2022,14 +2043,16 @@
       "actions": [],
       "sources": [
         "https://www.vermontpassivehouse.org",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/812562819",
+        "https://www.vermontpassivehouse.org/Events/"
       ]
     },
     {
       "id": "vt_veep",
       "name": "Vermont Energy Education Program",
       "abbrev": "VEEP",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Energy education organization; a member of Transportation for Vermonters and Energy Action Network. No location was found.",
       "coalition_ids": [
@@ -2052,7 +2075,8 @@
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
         "https://eanvt.org/about/people/network-members/",
         "https://veep.org/news",
-        "https://veep.org/"
+        "https://veep.org/",
+        "https://projects.propublica.org/nonprofits/organizations/455591876"
       ],
       "remote": true,
       "website": "https://veep.org/"
@@ -2061,7 +2085,7 @@
       "id": "vt_catma",
       "name": "Chittenden Area Transportation Management Association",
       "abbrev": "CATMA",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Chittenden County",
       "description": "Winooski transportation management association; its site says it grew out of a 1992 agreement among Champlain College, UVM Medical Center and UVM to share transportation programs. A member of Transportation for Vermonters.",
       "coalition_ids": [
@@ -2083,7 +2107,8 @@
       "sources": [
         "https://catmavt.org/about-us/",
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
-        "https://catmavt.org/"
+        "https://catmavt.org/",
+        "https://projects.propublica.org/nonprofits/organizations/030354956"
       ]
     },
     {
@@ -2150,7 +2175,7 @@
       "id": "vt_green_mountain_transit",
       "name": "Green Mountain Transit",
       "abbrev": "GMT",
-      "type": "unknown",
+      "type": "government",
       "geographic_focus": "Northwest and central Vermont",
       "description": "Regional public transit provider; a member of Transportation for Vermonters. No address was checked.",
       "coalition_ids": [
@@ -2158,7 +2183,7 @@
       ],
       "lat": 44.2601,
       "lng": -72.5754,
-      "last_activity": "",
+      "last_activity": "2026-09-23",
       "topic_tags": [
         "public transit"
       ],
@@ -2170,7 +2195,10 @@
       "actions": [],
       "sources": [
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
-        "https://www.ridegmt.com/"
+        "https://www.ridegmt.com/",
+        "https://www.ridegmt.com/CivicAlerts.aspx",
+        "https://www.ridegmt.com/208/About",
+        "https://en.wikipedia.org/wiki/Green_Mountain_Transit"
       ],
       "remote": true,
       "website": "https://www.ridegmt.com/"
@@ -2241,7 +2269,7 @@
       "coalition_ids": [],
       "lat": 44.4759,
       "lng": -73.2121,
-      "last_activity": "",
+      "last_activity": "2025-11-12",
       "website": "https://citizensclimatelobby.org/chapters/VT_University_of_Vermont",
       "topic_tags": [
         "climate lobbying",
@@ -2255,7 +2283,8 @@
       "actions": [],
       "sources": [
         "https://citizensclimatelobby.org/about-ccl/chapters/",
-        "https://community.citizensclimate.org/groups/home/1384"
+        "https://community.citizensclimate.org/groups/home/1384",
+        "https://events.uvm.edu/group/citizens-climate-lobby-ccl"
       ]
     },
     {
@@ -2489,7 +2518,7 @@
       ],
       "lat": 44.2601,
       "lng": -72.5754,
-      "last_activity": "",
+      "last_activity": "2026-09-21",
       "website": "https://www.energycenter.org",
       "topic_tags": [
         "clean transportation",
@@ -2504,7 +2533,8 @@
       "actions": [],
       "sources": [
         "https://www.energycenter.org/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://energycenter.org/thought-leadership/news"
       ],
       "remote": true
     },
@@ -2512,7 +2542,7 @@
       "id": "vt_ceac_addison",
       "name": "Climate Economy Action Center of Addison County",
       "abbrev": "CEAC",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Addison County",
       "description": "Addison County group that works to cut greenhouse-gas emissions equitably and support a just transition to a low-carbon local economy. It runs the Energy Navigator project, which gives renters and homeowners free advice on reducing their home's carbon footprint.",
       "coalition_ids": [
@@ -2537,14 +2567,15 @@
         "https://www.ceacac.org/",
         "https://www.ceacac.org/about-us",
         "https://www.ceacac.org/news",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/833820171"
       ]
     },
     {
       "id": "vt_gopher_community_rides",
       "name": "Community Rides Vermont (Gopher)",
       "abbrev": "Gopher",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Washington County and neighboring Orange County towns",
       "description": "Nonprofit that runs Gopher, a door-to-door ride service for rural central Vermonters using zero-emissions electric vehicles, with discounted, market-rate and contracted rides.",
       "coalition_ids": [
@@ -2569,14 +2600,15 @@
         "https://gophervt.org/",
         "https://gophervt.org/contact-us/",
         "https://gophervt.org/news/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://gophervt.org"
       ]
     },
     {
       "id": "vt_cornerstone_housing_partners",
       "name": "Cornerstone Housing Partners",
       "abbrev": "Cornerstone",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Rutland area",
       "description": "Rutland-based housing nonprofit that offers homebuyer assistance, home repair grants and loans, and the Heat Squad energy audits and energy loans for efficient home upgrades.",
       "coalition_ids": [
@@ -2584,7 +2616,7 @@
       ],
       "lat": 43.6106,
       "lng": -72.9726,
-      "last_activity": "",
+      "last_activity": "2026-09-08",
       "website": "https://www.cornerstonehousingpartners.org",
       "topic_tags": [
         "housing",
@@ -2599,7 +2631,9 @@
       "actions": [],
       "sources": [
         "https://www.cornerstonehousingpartners.org/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://www.cornerstonehousingpartners.org",
+        "https://cornerstonehousingpartners.org/news/what-really-happens-at-a-homebuyer-workshop-and-why-it-pays-off/"
       ]
     },
     {
@@ -2707,7 +2741,7 @@
       ],
       "lat": 44.2601,
       "lng": -72.5754,
-      "last_activity": "",
+      "last_activity": "2026-09-09",
       "website": "https://www.northernforest.org",
       "topic_tags": [
         "wood heat",
@@ -2722,7 +2756,8 @@
       "actions": [],
       "sources": [
         "https://www.northernforest.org/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://northernforest.org/news/"
       ],
       "remote": true
     },
@@ -2769,7 +2804,7 @@
       ],
       "lat": 44.4759,
       "lng": -73.2121,
-      "last_activity": "",
+      "last_activity": "2026-10-26",
       "website": "https://www.resourcevt.org",
       "topic_tags": [
         "reuse",
@@ -2808,7 +2843,7 @@
       "id": "vt_sheo",
       "name": "Sustainable Heating Outreach & Education",
       "abbrev": "SHOE",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Vermont",
       "description": "Small Vermont nonprofit, based in East Calais, that provides education and outreach on sustainable home heating.",
       "coalition_ids": [
@@ -2831,7 +2866,8 @@
       "sources": [
         "https://www.sustainableheating.org/",
         "https://www.idealist.org/en/nonprofit/70a19ab90a214776bb2ebf9354b39d81-sustainable-heating-outreach-education-inc-shoe-east-calais",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://www.sustainableheating.org"
       ]
     },
     {
@@ -2846,7 +2882,7 @@
       ],
       "lat": 44.2601,
       "lng": -72.5754,
-      "last_activity": "",
+      "last_activity": "2026-09-24",
       "website": "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/",
       "topic_tags": [
         "land conservation",
@@ -2862,14 +2898,15 @@
       "sources": [
         "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/",
         "https://local.aarp.org/place/the-nature-conservancy-montpelier-office-montpelier-vt.html",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/stories-in-vermont/"
       ]
     },
     {
       "id": "vt_vermont_adult_learning",
       "name": "Vermont Adult Learning",
       "abbrev": "VAL",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Adult-education nonprofit offering basic skills, GED and English-language classes and workforce programs, including an Energy Works program.",
       "coalition_ids": [
@@ -2892,7 +2929,8 @@
       "actions": [],
       "sources": [
         "https://vtadultlearning.org/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/30276755"
       ]
     },
     {
@@ -2930,7 +2968,7 @@
       "id": "vt_green_building_network",
       "name": "Vermont Green Building Network",
       "abbrev": "VGBN",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Nonprofit founded in 2002 that promotes green design, construction and building operation through tours, networking and educational events; it sponsors the Burlington 2030 District.",
       "coalition_ids": [
@@ -2973,7 +3011,8 @@
         "https://www.vtgreenbuildingnetwork.org/",
         "https://www.vtgreenbuildingnetwork.org/events",
         "https://www.vtgreenbuildingnetwork.org/contact",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://www.vtgreenbuildingnetwork.org/about"
       ]
     },
     {
@@ -2982,7 +3021,7 @@
       "abbrev": "VIPPA",
       "type": "unknown",
       "geographic_focus": "Vermont",
-      "description": "Trade association of independent power producers in Vermont.",
+      "description": "Trade association of independent power producers in Vermont. Its website has lapsed.",
       "coalition_ids": [
         "vt_energy_action_network"
       ],
@@ -2995,7 +3034,8 @@
         "trade association"
       ],
       "profile": {
-        "geo_precision": "approx"
+        "geo_precision": "approx",
+        "inactive": true
       },
       "projects": [],
       "events": [],
@@ -3003,14 +3043,15 @@
       "sources": [
         "https://www.vippahydro.org/contact",
         "https://local.yahoo.com/info-10482933-vermont-independent-power-producers-association-montpelier/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://www.vippahydro.org"
       ]
     },
     {
       "id": "vt_vlt",
       "name": "Vermont Land Trust",
       "abbrev": "VLT",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Statewide land conservation nonprofit that works with farmers, woodland owners and communities to protect land, and hosts public events and workshops.",
       "coalition_ids": [
@@ -3018,7 +3059,7 @@
       ],
       "lat": 44.2601,
       "lng": -72.5754,
-      "last_activity": "",
+      "last_activity": "2026-09-23",
       "website": "https://www.vlt.org",
       "topic_tags": [
         "land conservation",
@@ -3050,7 +3091,9 @@
         "https://www.vlt.org/",
         "https://www.vlt.org/events",
         "https://www.vlt.org/about/contact",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/30264836",
+        "https://www.vlt.org/wp-json/wp/v2/posts"
       ]
     },
     {
@@ -3088,7 +3131,7 @@
       "id": "vt_voba",
       "name": "Vermont Outdoor Business Alliance",
       "abbrev": "VOBA",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Statewide nonprofit of outdoor-recreation businesses, active in networking, workforce development and advocacy, including a Climate Outdoors Workforce Initiative.",
       "coalition_ids": [
@@ -3129,14 +3172,15 @@
       "sources": [
         "https://www.vermontoutdoorbusinessalliance.org/",
         "https://www.vermontoutdoorbusinessalliance.org/news",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/832714496"
       ]
     },
     {
       "id": "vt_vsjf",
       "name": "Vermont Sustainable Jobs Fund",
       "abbrev": "VSJF",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Montpelier nonprofit that supports Vermont's sustainable economy through business accelerators in clean energy and forestry, business coaching for energy contractors and the Farm to Plate network.",
       "coalition_ids": [
@@ -3177,14 +3221,15 @@
       "sources": [
         "https://www.vsjf.org/",
         "https://www.vsjf.org/about/contact",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://projects.propublica.org/nonprofits/organizations/030349736"
       ]
     },
     {
       "id": "vt_vww",
       "name": "Vermont Works for Women",
       "abbrev": "VWW",
-      "type": "unknown",
+      "type": "501c3",
       "geographic_focus": "Statewide",
       "description": "Winooski-based nonprofit that trains women and gender-expansive people for careers in construction and the trades and helps employers hire inclusively.",
       "coalition_ids": [
@@ -3239,7 +3284,8 @@
       "actions": [],
       "sources": [
         "https://www.vtworksforwomen.org/",
-        "https://eanvt.org/about/people/network-members/"
+        "https://eanvt.org/about/people/network-members/",
+        "https://www.vtworksforwomen.org/donate"
       ]
     },
     {
@@ -3573,7 +3619,7 @@
       "coalition_ids": [],
       "lat": 44.317,
       "lng": -72.999,
-      "last_activity": "",
+      "last_activity": "2026-10-06",
       "website": "https://www.huntingtonvt.org/energy-committee/",
       "topic_tags": [
         "town energy",
@@ -3802,7 +3848,7 @@
       "coalition_ids": [],
       "lat": 43.1634,
       "lng": -73.072,
-      "last_activity": "",
+      "last_activity": "2026-05-15",
       "website": "https://www.350vermont.org/nodes",
       "topic_tags": [
         "350Vermont node",
@@ -3815,7 +3861,8 @@
       "events": [],
       "actions": [],
       "sources": [
-        "https://www.350vermont.org/nodes"
+        "https://www.350vermont.org/nodes",
+        "https://www.manchesterjournal.com/opinion/letters/letter-to-the-editor-anderson-earth-matters-says-thank-you/article_13e2d773-a0ec-4d8f-86c5-7ac92eb7919b.html"
       ]
     },
     {

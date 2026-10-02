@@ -1,0 +1,304 @@
+{
+ "orgs": {
+  "vt_vpirg": {
+   "type": "501c4",
+   "sources": [
+    "https://www.vpirg.org/about",
+    "https://projects.propublica.org/nonprofits/organizations/30228267"
+   ]
+  },
+  "vt_350vermont": {
+   "type": "501c3",
+   "sources": [
+    "https://www.350vermont.org"
+   ]
+  },
+  "vt_hunger_free_vermont": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/30336357"
+   ]
+  },
+  "vt_preservation_trust": {
+   "type": "501c3",
+   "sources": [
+    "https://www.ptvermont.org/support"
+   ]
+  },
+  "vt_vermont_center_for_ecostudies": {
+   "type": "501c3",
+   "sources": [
+    "https://vtecostudies.org"
+   ]
+  },
+  "vt_carshare_vermont": {
+   "last_activity": "2025-12-12",
+   "sources": [
+    "https://www.carsharevt.org/news/"
+   ]
+  },
+  "vt_cvoeo": {
+   "type": "501c3",
+   "sources": [
+    "https://www.cvoeo.org/donate"
+   ]
+  },
+  "vt_public_assets_institute": {
+   "type": "501c3",
+   "sources": [
+    "https://www.publicassets.org/donate"
+   ]
+  },
+  "vt_sustainable_woodstock": {
+   "type": "501c3",
+   "sources": [
+    "https://www.sustainablewoodstock.org/donate"
+   ]
+  },
+  "vt_vcrd": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/30354510"
+   ]
+  },
+  "vt_veep": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/455591876"
+   ]
+  },
+  "vt_green_mountain_transit": {
+   "type": "government",
+   "last_activity": "2026-09-23",
+   "sources": [
+    "https://www.ridegmt.com/CivicAlerts.aspx",
+    "https://www.ridegmt.com/208/About",
+    "https://en.wikipedia.org/wiki/Green_Mountain_Transit"
+   ]
+  },
+  "vt_ccl_university_of_vermont": {
+   "last_activity": "2025-11-12",
+   "sources": [
+    "https://events.uvm.edu/group/citizens-climate-lobby-ccl"
+   ]
+  },
+  "vt_center_for_sustainable_energy": {
+   "last_activity": "2026-09-21",
+   "sources": [
+    "https://energycenter.org/thought-leadership/news"
+   ]
+  },
+  "vt_gopher_community_rides": {
+   "type": "501c3",
+   "sources": [
+    "https://gophervt.org"
+   ]
+  },
+  "vt_sheo": {
+   "type": "501c3",
+   "sources": [
+    "https://www.sustainableheating.org"
+   ]
+  },
+  "vt_vermont_adult_learning": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/30276755"
+   ]
+  },
+  "vt_green_building_network": {
+   "type": "501c3",
+   "sources": [
+    "https://www.vtgreenbuildingnetwork.org/about"
+   ]
+  },
+  "vt_vlt": {
+   "type": "501c3",
+   "last_activity": "2026-09-23",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/30264836",
+    "https://www.vlt.org/wp-json/wp/v2/posts"
+   ]
+  },
+  "vt_voba": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/832714496"
+   ]
+  },
+  "vt_vww": {
+   "type": "501c3",
+   "sources": [
+    "https://www.vtworksforwomen.org/donate"
+   ]
+  },
+  "vt_earth_matters_manchester": {
+   "last_activity": "2026-05-15",
+   "sources": [
+    "https://www.manchesterjournal.com/opinion/letters/letter-to-the-editor-anderson-earth-matters-says-thank-you/article_13e2d773-a0ec-4d8f-86c5-7ac92eb7919b.html"
+   ]
+  },
+  "vt_rejoice": {
+   "sources": [
+    "https://environmentaljusticevt.wordpress.com/ej-summit-2026/"
+   ]
+  },
+  "vt_vcv": {
+   "type": "501c4",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/222543128"
+   ]
+  },
+  "vt_lake_champlain_committee": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/222482466"
+   ]
+  },
+  "vt_local_motion": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030361422"
+   ]
+  },
+  "vt_capstone_community_action": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030216254",
+    "https://www.capstonevt.org/ways-to-give"
+   ]
+  },
+  "vt_shelburne_farms": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030229347",
+    "https://www.shelburnefarms.org"
+   ]
+  },
+  "vt_vcil": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030271000"
+   ]
+  },
+  "vt_veic": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030304418"
+   ]
+  },
+  "vt_vital_communities": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030355283"
+   ]
+  },
+  "vt_vermont_passive_house": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/812562819",
+    "https://www.vermontpassivehouse.org/Events/"
+   ],
+   "last_activity": "2025-06-26"
+  },
+  "vt_catma": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030354956"
+   ]
+  },
+  "vt_ceac_addison": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/833820171"
+   ]
+  },
+  "vt_vsjf": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/030349736"
+   ]
+  },
+  "vt_cornerstone_housing_partners": {
+   "type": "501c3",
+   "sources": [
+    "https://www.cornerstonehousingpartners.org",
+    "https://cornerstonehousingpartners.org/news/what-really-happens-at-a-homebuyer-workshop-and-why-it-pays-off/"
+   ],
+   "last_activity": "2026-09-08"
+  },
+  "vt_northern_forest_center": {
+   "last_activity": "2026-09-09",
+   "sources": [
+    "https://northernforest.org/news/"
+   ]
+  },
+  "vt_resource_vt": {
+   "last_activity": "2026-10-26",
+   "sources": [
+    "https://www.resourcevt.org/"
+   ]
+  },
+  "vt_nature_conservancy_vt": {
+   "last_activity": "2026-09-24",
+   "sources": [
+    "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/stories-in-vermont/"
+   ]
+  },
+  "vt_huntington_energy_committee": {
+   "last_activity": "2026-10-06",
+   "sources": [
+    "https://www.huntingtonvt.org/energy-committee/"
+   ]
+  },
+  "vt_vippa": {
+   "inactive": true,
+   "sources": [
+    "https://www.vippahydro.org"
+   ]
+  }
+ },
+ "not_found": [
+  "vt_rev(type: ProPublica shows 501(c)(6) trade association, not an allowed type)",
+  "vt_vtcha",
+  "vt_clf",
+  "vt_efficiency_vermont(program of VEIC; not matched)",
+  "vt_vhcb(site calls itself legislature-created agency, no explicit govt/tax status)",
+  "vt_aarp_vermont",
+  "vt_aia_vermont(ProPublica 501c6)",
+  "vt_evernorth(ProPublica entity is Portland ME)",
+  "vt_regulatory_assistance_project(DC)",
+  "vt_grassroots_fund(NH)",
+  "vt_carshare_vermont type",
+  "vt_sheo last_activity(site captcha-blocked)",
+  "vt_grassroots_fund last_activity",
+  "vt_climate_advocates_bennington",
+  "vt_350_addison_county",
+  "vt_350_white_river",
+  "vt_climate_action_collective",
+  "vt_sierra_club:type",
+  "vt_youth_lobby:type",
+  "vt_vctn:type",
+  "vt_trust_for_public_land:type",
+  "vt_vermont_trout_unlimited:type",
+  "vt_drive_electric_vermont:type",
+  "vt_vlct:type",
+  "vt_futures_project:type",
+  "vt_vrja:type",
+  "vt_american_lung_association_vt:type",
+  "vt_veic:last_activity",
+  "vt_releaf_collective:type,last_activity",
+  "vt_bppa_vt:type,last_activity",
+  "vt_lake_champlain_chamber:type,last_activity",
+  "vt_nature_conservancy_vt:type",
+  "vt_resource_vt:type",
+  "vt_northern_forest_center:type",
+  "vt_vippa:type,last_activity",
+  "vt_sunrise_vermont:last_activity",
+  "vt_350_chittenden_county:last_activity",
+  "vt_350_rutland_county:last_activity",
+  "vt_families_rise_up:last_activity",
+  "vt_350_montpelier:last_activity"
+ ],
+ "notes": "Lead review: dropped REJOICE date (taken from VT-EJ Network page, not REJOICE's own); VPIRG 501c4 confirmed on ProPublica (subsection 4). 501(c)(6) trade groups (REV, AIA VT, BPPA, VIPPA, Lake Champlain Chamber) left untyped: no matching type. Agent notes: GMT type=government is inferred from agency/member-communities pages; doubtful. CarShare date is page dateModified of News page (2025 Annual Update). CCL UVM newest 2025-11-12 (Climate Club Mixer, UVM events). Earth Matters date is a May 2026 letter to editor by a member. REJOICE date is VT-EJ Network summit 2026-06-13 (site hosting REJOICE). CSE date from news listing. Grassroots Fund: only third-party posts (NH Food Alliance 2026-08-13). 350 nodes: nothing dated found. 7 WebSearch-class calls used ~20. | Types from ProPublica Nonprofit Explorer pages matched by exact name and VT city (URLs in sources). VCV = Federation Of State Conservation Voter Leagues Inc sub-name 'Vermont Conservation Voters Inc', Montpelier, subsection 4. Not set: BPPA-VT (ProPublica 45-5088842 Hinesburg subsection 6), VIPPA (22-2512451 Montpelier, 6), Lake Champlain Regional Chamber of Commerce (subsection 6, name differs) - 501(c)(6) is not in allowed type list; I chose not to guess. Cornerstone type from own site text '501(c)(3) non profit'. TNC Vermont and Sierra Club VT: parent-org status not transferred to chapter. ReSOURCE: site says only 'nonprofit community enterprise'. VIPPA: site returns 'Squarespace - Website Expired' so inactive=true (moderate evidence). Releaf: site says it is becoming Liberation Ecosystem (liberationecosystem.org, 301 Pearl St St Johnsbury), no dated items found. ReSOURCE last_activity = upcoming training event Oct 26, 2026 on homepage. TNC date = Sep 24, 2026 publish_date_label in Vermont stories feed. Huntington = posted upcoming Energy Committee meeting Tue 10/06 (year inferred 2026 from weekday/site). NFC = news digest issue Aug 27-Sep 9, 2026. VT Passive House newest event listed is June 26, 2025 (nothing 2026). 350 nodes: node pages undated, 350vt nationbuilder blocked by Cloudflare; org-level 350VT posts dated up to June 2026 but not node-specific. Several domains (veic.org Blocked by WAF, tpl.org Cloudflare, bppa-vt.org, lakechamplainchamber.com, vttucouncil.org empty) were unreachable. not_found entries are 'id:fields'. Only 5 WebSearch calls used, mostly unproductive (links only)."
+}

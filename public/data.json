@@ -1211,7 +1211,8 @@
           "id": "tree_boston_a1",
           "host_org_id": "tree_boston"
         }
-      ]
+      ],
+      "website": "https://treeboston.org/"
     },
     {
       "id": "clean_water_action",
@@ -1393,7 +1394,8 @@
       },
       "geographic_focus": "",
       "description": "",
-      "logo": "logos/ma_youth_for_climate_justice.png"
+      "logo": "logos/ma_youth_for_climate_justice.png",
+      "website": "https://www.instagram.com/mayouth4climatejustice/"
     },
     {
       "id": "masspirg",
@@ -1418,7 +1420,8 @@
         "mpf": 3
       },
       "geographic_focus": "Statewide",
-      "description": "State advocacy group of the PIRG network that lobbies on consumer protection, waste reduction, transportation and clean energy, and runs campus chapters."
+      "description": "State advocacy group of the PIRG network that lobbies on consumer protection, waste reduction, transportation and clean energy, and runs campus chapters.",
+      "website": "https://pirg.org/massachusetts/"
     },
     {
       "id": "masspirg_amherst",
@@ -1862,7 +1865,7 @@
     {
       "id": "xr_western_mass",
       "name": "Extinction Rebellion Western Mass",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -1882,8 +1885,8 @@
         "mpf": 3,
         "mycc": 4
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Western Massachusetts",
+      "description": "Western Massachusetts chapter of Extinction Rebellion, a do-it-together climate movement, operating under the XR Boston network and running climate actions and vigils in the region.",
       "website": "https://xrboston.org/west/",
       "logo": "logos/xr_western_mass.png"
     },
@@ -1971,7 +1974,7 @@
     {
       "id": "climate_xchange",
       "name": "Climate XChange",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -1993,8 +1996,8 @@
         "mpf": 1.5,
         "mycc": 4
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "National, based in Boston",
+      "description": "Boston-based nonprofit that provides research, education and advocacy tools on state climate policy and carbon pricing, and runs the State Climate Policy Network and Dashboard.",
       "projects": [
         {
           "name": "State Climate Policy Network (SCPN)",
@@ -2052,7 +2055,8 @@
           "verified": true,
           "host_org_id": "climate_xchange"
         }
-      ]
+      ],
+      "website": "https://climate-xchange.org/"
     },
     {
       "id": "climate_action_now_western_ma",
@@ -2233,7 +2237,7 @@
     {
       "id": "sustainable_milton",
       "name": "Sustainable Milton",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -2367,7 +2371,7 @@
     {
       "id": "elders_climate_action_mass",
       "name": "Elders Climate Action Massachusetts",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -2387,8 +2391,8 @@
         "mpf": 4,
         "mycc": 1.5
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Statewide",
+      "description": "Massachusetts chapter of Elders Climate Action, a volunteer group of older adults who organize, educate and lobby for state climate legislation.",
       "projects": [
         {
           "name": "ECA Mass legislative advocacy and monthly chapter meetings",
@@ -2400,12 +2404,13 @@
           "host_org_id": "elders_climate_action_mass",
           "skills_needed": []
         }
-      ]
+      ],
+      "website": "https://ecamass.org/"
     },
     {
       "id": "mass_audubon_wma",
       "name": "Mass Audubon - WMa",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mycc"
       ],
@@ -2424,8 +2429,8 @@
       "coalition_weights": {
         "mycc": 1.5
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Western Massachusetts",
+      "description": "Western Massachusetts arm of Mass Audubon, the statewide conservation nonprofit, which runs wildlife sanctuaries such as Pleasant Valley in Lenox, Canoe Meadows in Pittsfield and Lime Kiln Farm in Sheffield.",
       "events": [
         {
           "name": "Golden Hour by Canoe",
@@ -2547,12 +2552,13 @@
           "id": "mass_audubon_wma_e12",
           "host_org_id": "mass_audubon_wma"
         }
-      ]
+      ],
+      "website": "https://www.massaudubon.org/places-to-explore/explore-by-region/west"
     },
     {
       "id": "mass_audubon_wellfleet_bay_wildlife_sanctuary",
       "name": "Mass Audubon Wellfleet Bay Wildlife Sanctuary",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mycc"
       ],
@@ -2570,8 +2576,8 @@
       "coalition_weights": {
         "mycc": 1.5
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Wellfleet / Outer Cape Cod",
+      "description": "Mass Audubon's 1,183-acre sanctuary in South Wellfleet on Cape Cod, protecting salt marsh, barrier beach and pine woodland habitat. It runs sea turtle rescue, diamondback terrapin and horseshoe crab protection, plus nature education, camps and trails.",
       "projects": [
         {
           "name": "Community Science at Wellfleet Bay",
@@ -2639,12 +2645,13 @@
           "id": "mass_audubon_wellfleet_bay_w_a1",
           "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         }
-      ]
+      ],
+      "website": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay"
     },
     {
       "id": "sunrise_boston",
       "name": "Sunrise Boston",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -2663,8 +2670,8 @@
         "mpf": 3,
         "mycc": 3
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Boston",
+      "description": "Boston hub of the Sunrise Movement, a youth-led group pushing for climate action and a just economy, including lobbying at the State House.",
       "website": "https://www.sunrisemovement.org/",
       "logo": "logos/sunrise_boston.png",
       "projects": [
@@ -2757,7 +2764,7 @@
     {
       "id": "sunrise_amherst",
       "name": "Sunrise Amherst",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mycc"
       ],
@@ -2774,15 +2781,15 @@
       "coalition_weights": {
         "mycc": 1.5
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Amherst",
+      "description": "Sunrise Movement hub in Amherst, started in 2019 by high school and college students, that runs climate strikes and outreach and backs a Green New Deal.",
       "website": "https://hubs.sunrisemovement.org/amherst/",
       "logo": "logos/sunrise_amherst.png"
     },
     {
       "id": "sunrise_lexington",
       "name": "Sunrise Lexington",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -2799,8 +2806,8 @@
       "coalition_weights": {
         "mpf": 3
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Lexington",
+      "description": "Local hub of the Sunrise Movement in Lexington that pushes the town to declare a climate emergency, reach net-zero emissions and back a Green New Deal, with attention to impacts on communities of color.",
       "website": "https://www.sunrisemovement.org/",
       "logo": "logos/sunrise_lexington.png"
     },
@@ -2852,8 +2859,8 @@
         "ejlt": 1,
         "scjc": 1
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Statewide",
+      "description": "Statewide organizing and advocacy network of Massachusetts Unitarian Universalist congregations, with a climate and environmental justice campaign among its priorities.",
       "projects": [
         {
           "name": "Climate & Environmental Justice Campaign",
@@ -2922,12 +2929,13 @@
           "id": "unitarian_universalist_mass__a2",
           "host_org_id": "unitarian_universalist_mass_action"
         }
-      ]
+      ],
+      "website": "https://www.uumassaction.org/"
     },
     {
       "id": "environment_massachusetts",
       "name": "Environment Massachusetts",
-      "type": "unknown",
+      "type": "501c4",
       "coalition_ids": [
         "mpf"
       ],
@@ -2945,8 +2953,8 @@
       "coalition_weights": {
         "mpf": 1
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Statewide",
+      "description": "State advocacy group, part of the Environment America network, that uses research, public education, lobbying and litigation on global warming, clean energy, clean water and air, toxics, waste and conservation.",
       "projects": [
         {
           "name": "100% Renewable Campaign",
@@ -2968,7 +2976,8 @@
           "host_org_id": "environment_massachusetts",
           "skills_needed": []
         }
-      ]
+      ],
+      "website": "https://environmentamerica.org/massachusetts/"
     },
     {
       "id": "massachusetts_climate_action_network",
@@ -3076,7 +3085,7 @@
     {
       "id": "pipeline_awareness_network_ne",
       "name": "Pipeline Awareness Network Northeast",
-      "type": "unknown",
+      "type": "coalition",
       "coalition_ids": [
         "mpf"
       ],
@@ -3095,8 +3104,9 @@
       "coalition_weights": {
         "mpf": 1
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Northeast (Massachusetts, Connecticut, New Hampshire)",
+      "description": "Coalition working to prevent overbuilding of natural gas infrastructure; it hires attorneys and experts to intervene in FERC and state utility proceedings against pipeline expansions.",
+      "website": "https://plan4ne.wordpress.com/"
     },
     {
       "id": "sierra_club",
@@ -3215,8 +3225,8 @@
         "mpf": 1.5,
         "gjc": 2
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Southeastern Massachusetts (Brockton, Fall River, New Bedford)",
+      "description": "Grassroots organizing group founded in 1994 that does economic justice and anti-poverty advocacy through canvassing in low-income neighborhoods and legislative campaigns.",
       "actions": [
         {
           "name": "Volunteer with Coalition for Social Justice",
@@ -3228,12 +3238,13 @@
           "id": "coalition_for_social_justice_a1",
           "host_org_id": "coalition_for_social_justice"
         }
-      ]
+      ],
+      "website": "https://coalitionforsocialjustice.org/"
     },
     {
       "id": "fore_river_residents_against_the_compressor_station",
       "name": "Fore River Residents Against the Compressor Station",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -3251,8 +3262,8 @@
       "coalition_weights": {
         "mpf": 1.5
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Weymouth and the South Shore",
+      "description": "Grassroots group of South Shore residents opposing the Enbridge natural gas compressor station beside the Fore River Bridge in North Weymouth, through public comment, legal appeals, demonstrations and resident education.",
       "projects": [
         {
           "name": "Stop the Weymouth Compressor Station",
@@ -3304,7 +3315,8 @@
           "id": "fore_river_residents_against_a2",
           "host_org_id": "fore_river_residents_against_the_compressor_station"
         }
-      ]
+      ],
+      "website": "https://www.nocompressor.com/"
     },
     {
       "id": "greenroots",
@@ -3337,7 +3349,7 @@
     {
       "id": "north_american_indian_center_of_boston",
       "name": "North American Indian Center of Boston",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -3356,8 +3368,8 @@
       "coalition_weights": {
         "mpf": 1.5
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Greater Boston",
+      "description": "Nonprofit in Jamaica Plain serving Boston-area Native American communities with employment and training, family services, education and social services.",
       "projects": [
         {
           "name": "NAICOB community programming",
@@ -3380,12 +3392,13 @@
           "id": "north_american_indian_center_a1",
           "host_org_id": "north_american_indian_center_of_boston"
         }
-      ]
+      ],
+      "website": "http://www.naicob.org/"
     },
     {
       "id": "slingshot",
       "name": "Slingshot",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -3402,8 +3415,8 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "New England, based in Boston",
+      "description": "Environmental health and justice nonprofit that helps communities fight polluters, such as peaker plants, landfills, pipelines and PFAS contamination, across New England.",
       "projects": [
         {
           "name": "Alliance for Health and Environment (Saugus)",
@@ -3424,12 +3437,13 @@
           "host_org_id": "slingshot",
           "skills_needed": []
         }
-      ]
+      ],
+      "website": "https://www.slingshot.org/"
     },
     {
       "id": "350ma",
       "name": "350 Massachusetts",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -3449,8 +3463,8 @@
       "coalition_weights": {
         "mpf": 1
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Statewide",
+      "description": "Statewide grassroots climate organization, a 501(c)(3) under Better Future Project, that works to end fossil fuel dependence through policy advocacy, direct action and organizing, via local chapters called nodes from the Berkshires to Cape Cod.",
       "projects": [
         {
           "name": "Make Polluters Pay - Massachusetts Climate Superfund",
@@ -3485,12 +3499,13 @@
           "id": "350ma_a2",
           "host_org_id": "350ma"
         }
-      ]
+      ],
+      "website": "https://350mass.betterfutureproject.org/"
     },
     {
       "id": "350ma_cape_cod",
       "name": "350 Massachusetts Cape Cod",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -3509,13 +3524,14 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Cape Cod",
+      "description": "Cape Cod chapter (node) of 350 Mass, founded in 2017, a member-led local climate action group that meets in Hyannis.",
+      "website": "https://www.350capecod.org/"
     },
     {
       "id": "350ma_central_mass",
       "name": "350 Massachusetts Central Massachusetts",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -3534,8 +3550,8 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Central Massachusetts",
+      "description": "All-volunteer Central Massachusetts affiliate of 350 Mass that opposes fossil fuel infrastructure, promotes electrification and works on environmental justice.",
       "projects": [
         {
           "name": "350 Central Mass priorities",
@@ -3558,12 +3574,13 @@
           "id": "350ma_central_mass_a1",
           "host_org_id": "350ma_central_mass"
         }
-      ]
+      ],
+      "website": "https://www.350centralmass.org/"
     },
     {
       "id": "350ma_berkshires",
       "name": "350 Massachusetts Berkshires",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -3582,13 +3599,14 @@
       "coalition_weights": {
         "mpf": 3
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Berkshire County",
+      "description": "Berkshire County node of 350 Mass, formed in 2014 to fight gas pipelines, now working to close fossil peaker plants, help towns with clean energy and Green Communities grants, and support legislative and environmental justice work.",
+      "website": "https://350mass.betterfutureproject.org/350mass_berkshires"
     },
     {
       "id": "berkshire_environmental_action_team",
       "name": "Berkshire Environmental Action Team",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -3607,13 +3625,14 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Berkshire County",
+      "description": "Pittsfield-based nonprofit protecting Berkshire County's environment through watchdogging of development and PCB contamination, river and habitat stewardship, and public education.",
+      "website": "https://www.thebeatnews.org/"
     },
     {
       "id": "canton_residents_for_a_sustainable_equitable_future",
       "name": "Canton Residents for a Sustainable Equitable Future",
-      "type": "unknown",
+      "type": "501c4",
       "coalition_ids": [
         "mpf"
       ],
@@ -3632,13 +3651,14 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Canton",
+      "description": "Volunteer group in Canton that promotes climate education and action, clean energy and environmental justice with regional partners.",
+      "website": "https://www.sustainablecanton.com/"
     },
     {
       "id": "climate_action_brookline",
       "name": "Climate Action Brookline",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -3657,8 +3677,8 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Brookline",
+      "description": "All-volunteer Brookline group that educates residents and property owners and advocates on buildings, transportation and electricity emissions to help the town reach its net zero goal.",
       "projects": [
         {
           "name": "Micromobility Advocacy",
@@ -3690,7 +3710,8 @@
           "id": "climate_action_brookline_e1",
           "host_org_id": "climate_action_brookline"
         }
-      ]
+      ],
+      "website": "https://climateactionbrookline.org/"
     },
     {
       "id": "climate_code_blue",
@@ -3712,13 +3733,14 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Statewide",
+      "description": "Massachusetts public-health and climate advocacy group that writes to officials and agencies opposing new fossil fuel plants, especially in environmental justice communities, and pushing emissions cuts.",
+      "website": "https://www.climatecodeblue.org/"
     },
     {
       "id": "conservation_law_foundation",
       "name": "Conservation Law Foundation",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf",
         "ejlt",
@@ -3814,12 +3836,13 @@
           "id": "conservation_law_foundation_a6",
           "host_org_id": "conservation_law_foundation"
         }
-      ]
+      ],
+      "website": "https://www.clf.org/"
     },
     {
       "id": "food_and_water_watch",
       "name": "Food & Water Watch",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -3838,8 +3861,8 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "National, active in Massachusetts",
+      "description": "National advocacy group that campaigns against fossil fuel expansion; in Massachusetts it has pressed the governor to deny permits for the Enbridge pipeline expansion (Project Maple).",
       "projects": [
         {
           "name": "Stop AI Data Centers",
@@ -3872,7 +3895,8 @@
           "verified": true,
           "host_org_id": "food_and_water_watch"
         }
-      ]
+      ],
+      "website": "https://www.foodandwaterwatch.org/"
     },
     {
       "id": "jewish_alliance_for_law_and_social_action",
@@ -3896,8 +3920,8 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Statewide",
+      "description": "Membership-based Jewish social justice organization founded in 2001 that uses organizing, legislative advocacy, legal briefs and workshops; on climate it backs state legislation and belongs to the Mass Power Forward coalition.",
       "projects": [
         {
           "name": "Climate Change Action Team",
@@ -3920,12 +3944,13 @@
           "id": "jewish_alliance_for_law_and__a1",
           "host_org_id": "jewish_alliance_for_law_and_social_action"
         }
-      ]
+      ],
+      "website": "https://www.jalsa.org/"
     },
     {
       "id": "partnership_for_policy_integrity",
       "name": "Partnership for Policy Integrity",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -3944,8 +3969,8 @@
       "coalition_weights": {
         "mpf": 2
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "National, based in Pelham MA",
+      "description": "Pelham-based nonprofit that researches and advocates on energy policy, including opposing biomass and fossil gas and promoting renewables.",
       "projects": [
         {
           "name": "Massachusetts Biomass Policy Work",
@@ -3956,12 +3981,13 @@
           "host_org_id": "partnership_for_policy_integrity",
           "skills_needed": []
         }
-      ]
+      ],
+      "website": "https://www.pfpi.net/"
     },
     {
       "id": "salem_alliance_for_the_environment",
       "name": "Salem Alliance for the Environment",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -4036,7 +4062,7 @@
     {
       "id": "american_friends_service_committee_northeast_region",
       "name": "American Friends Service Committee-Northeast Region",
-      "type": "unknown",
+      "type": "faith_org",
       "coalition_ids": [
         "mpf"
       ],
@@ -4055,8 +4081,9 @@
       "coalition_weights": {
         "mpf": 3
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Northeast region, office in Cambridge",
+      "description": "Northeast regional office of the Quaker peace and social justice organization AFSC, based in Cambridge.",
+      "website": "https://afsc.org/"
     },
     {
       "id": "arise_for_social_justice",
@@ -4081,13 +4108,14 @@
         "mpf": 3,
         "scjc": 1
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Springfield",
+      "description": "Springfield group founded in 1985 by women on welfare that advocates for low-income people on housing, criminal justice and voting, and whose environmental justice committee fought the Palmer biomass incinerator and works on air pollution in the city.",
+      "website": "https://www.arisespringfield.org"
     },
     {
       "id": "balanced_rock_investment_advisors",
       "name": "Balanced Rock Investment Advisors",
-      "type": "unknown",
+      "type": "business",
       "coalition_ids": [
         "mpf"
       ],
@@ -4104,13 +4132,14 @@
       "coalition_weights": {
         "mpf": 3
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Greater Boston",
+      "description": "Roslindale financial advisory firm offering socially responsible investing, including fossil-fuel exclusions and local and impact investments in climate solutions, affordable housing and cooperatives.",
+      "website": "https://balancedrockinvestmentadvisors.com/"
     },
     {
       "id": "ben_hillman_and_company",
       "name": "Ben Hillman & Company",
-      "type": "unknown",
+      "type": "business",
       "coalition_ids": [
         "mpf"
       ],
@@ -4127,13 +4156,14 @@
       "coalition_weights": {
         "mpf": 3
       },
-      "geographic_focus": "",
-      "description": ""
+      "geographic_focus": "Berkshires",
+      "description": "Creative studio in the Berkshires offering filmmaking, design, writing and illustration, including work for nonprofits.",
+      "website": "https://benhillman.com/"
     },
     {
       "id": "bodhisara_dharma_community",
       "name": "Bodhisara Dharma Community",
-      "type": "unknown",
+      "type": "faith_org",
       "coalition_ids": [
         "mpf"
       ],
@@ -4150,8 +4180,8 @@
       "coalition_weights": {
         "mpf": 3
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Amherst and Northampton",
+      "description": "Theravada Buddhist meditation community founded in 1996 in the Amherst and Northampton area, offering weekly classes, sitting groups and retreats.",
       "website": "https://www.bodhisara.org/"
     },
     {
@@ -4284,7 +4314,7 @@
     {
       "id": "cape_downwinders",
       "name": "Cape Downwinders",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -4583,7 +4613,7 @@
     {
       "id": "the_climate_reality_project_boston_metro_chapter",
       "name": "The Climate Reality Project Boston Metro Chapter",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -4938,7 +4968,7 @@
     {
       "id": "fccpr_climate_crisis_task_force",
       "name": "Franklin County Continuing the Political Revolution Climate Crisis Task Force",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -5343,7 +5373,7 @@
     {
       "id": "green_newton",
       "name": "Green Newton",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -5765,7 +5795,7 @@
     {
       "id": "mount_grace_land_conservation_trust",
       "name": "Mount Grace Land Conservation Trust",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -6134,7 +6164,7 @@
     {
       "id": "quincy_climate_action_network",
       "name": "Quincy Climate Action Network",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [
         "mpf"
       ],
@@ -6420,7 +6450,7 @@
     {
       "id": "sustainable_sharon_coalition",
       "name": "Sustainable Sharon Coalition",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -6575,7 +6605,8 @@
         "mpf": 3
       },
       "geographic_focus": "Greater Boston",
-      "description": "Campaign launched in 2019 by the Boston chapter of Democratic Socialists of America for a community-controlled, publicly accountable energy grid under the banner of energy democracy."
+      "description": "Campaign launched in 2019 by the Boston chapter of Democratic Socialists of America for a community-controlled, publicly accountable energy grid under the banner of energy democracy.",
+      "website": "https://www.takebackthegrid.org/"
     },
     {
       "id": "upper_cape_women_s_coalition",
@@ -6660,7 +6691,7 @@
     {
       "id": "watertown_citizens_for_peace_justice_and_the_environment",
       "name": "Watertown Citizens for Peace, Justice, and the Environment",
-      "type": "unknown",
+      "type": "501c4",
       "coalition_ids": [
         "mpf"
       ],
@@ -7085,7 +7116,7 @@
     {
       "id": "21st_century_schools_fund",
       "name": "21st Century Schools Fund",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -7100,7 +7131,7 @@
     {
       "id": "acadia_center",
       "name": "Acadia Center",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [],
       "lat": 42.3582189,
       "lng": -71.0586446,
@@ -7351,7 +7382,7 @@
     {
       "id": "citizens_climate_lobby_boston",
       "name": "Citizens Climate Lobby",
-      "type": "unknown",
+      "type": "informal_group",
       "coalition_ids": [],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -7422,7 +7453,7 @@
     {
       "id": "collaborative_for_high_performance_schools",
       "name": "Collaborative for High Performance Schools",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -7518,7 +7549,7 @@
     {
       "id": "ma_senior_action",
       "name": "Massachusetts Senior Action Council",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "gjc"
       ],
@@ -7788,7 +7819,7 @@
     {
       "id": "sustainable_business_network_of_massachusetts",
       "name": "Sustainable Business Network of Massachusetts",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [],
       "lat": 42.3660021,
       "lng": -71.1031663,
@@ -7820,7 +7851,7 @@
     {
       "id": "undauntedk12",
       "name": "UndauntedK12",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [],
       "lat": 42.3601,
       "lng": -71.0589,

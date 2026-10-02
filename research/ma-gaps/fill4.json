@@ -1,0 +1,282 @@
+{
+ "orgs": {
+  "xr_western_mass": {
+   "description": "Western Massachusetts chapter of Extinction Rebellion, a do-it-together climate movement, operating under the XR Boston network and running climate actions and vigils in the region.",
+   "type": "informal_group",
+   "geographic_focus": "Western Massachusetts",
+   "sources": [
+    "https://xrboston.org/west/",
+    "https://www.wwlp.com/news/massachusetts/the-extinction-rebellion-of-boston-holds-vigil-for-wynn-bruce/"
+   ]
+  },
+  "mass_audubon_wma": {
+   "description": "Western Massachusetts arm of Mass Audubon, the statewide conservation nonprofit, which runs wildlife sanctuaries such as Pleasant Valley in Lenox, Canoe Meadows in Pittsfield and Lime Kiln Farm in Sheffield.",
+   "type": "501c3",
+   "website": "https://www.massaudubon.org/places-to-explore/explore-by-region/west",
+   "geographic_focus": "Western Massachusetts",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Massachusetts_Audubon_Society",
+    "https://www.massaudubon.org/places-to-explore/explore-by-region/west"
+   ]
+  },
+  "sunrise_lexington": {
+   "description": "Local hub of the Sunrise Movement in Lexington that pushes the town to declare a climate emergency, reach net-zero emissions and back a Green New Deal, with attention to impacts on communities of color.",
+   "type": "informal_group",
+   "geographic_focus": "Lexington",
+   "sources": [
+    "https://www.sunriselexington.org/about"
+   ]
+  },
+  "environment_massachusetts": {
+   "description": "State advocacy group, part of the Environment America network, that uses research, public education, lobbying and litigation on global warming, clean energy, clean water and air, toxics, waste and conservation.",
+   "type": "501c4",
+   "website": "https://environmentamerica.org/massachusetts/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://environmentamerica.org/massachusetts/about/"
+   ]
+  },
+  "fore_river_residents_against_the_compressor_station": {
+   "description": "Grassroots group of South Shore residents opposing the Enbridge natural gas compressor station beside the Fore River Bridge in North Weymouth, through public comment, legal appeals, demonstrations and resident education.",
+   "type": "informal_group",
+   "website": "https://www.nocompressor.com/",
+   "geographic_focus": "Weymouth and the South Shore",
+   "sources": [
+    "https://www.nocompressor.com/"
+   ]
+  },
+  "350ma": {
+   "description": "Statewide grassroots climate organization, a 501(c)(3) under Better Future Project, that works to end fossil fuel dependence through policy advocacy, direct action and organizing, via local chapters called nodes from the Berkshires to Cape Cod.",
+   "type": "501c3",
+   "website": "https://350mass.betterfutureproject.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://350mass.betterfutureproject.org/about_us"
+   ]
+  },
+  "350ma_berkshires": {
+   "description": "Berkshire County node of 350 Mass, formed in 2014 to fight gas pipelines, now working to close fossil peaker plants, help towns with clean energy and Green Communities grants, and support legislative and environmental justice work.",
+   "type": "informal_group",
+   "website": "https://350mass.betterfutureproject.org/350mass_berkshires",
+   "geographic_focus": "Berkshire County",
+   "sources": [
+    "https://350mass.betterfutureproject.org/350mass_berkshires",
+    "https://grassrootsfund.org/groups/350ma-berkshire-node"
+   ]
+  },
+  "climate_action_brookline": {
+   "description": "All-volunteer Brookline group that educates residents and property owners and advocates on buildings, transportation and electricity emissions to help the town reach its net zero goal.",
+   "type": "501c3",
+   "website": "https://climateactionbrookline.org/",
+   "geographic_focus": "Brookline",
+   "sources": [
+    "https://climateactionbrookline.org/",
+    "https://grassrootsfund.org/groups/climate-action-brookline"
+   ]
+  },
+  "jewish_alliance_for_law_and_social_action": {
+   "description": "Membership-based Jewish social justice organization founded in 2001 that uses organizing, legislative advocacy, legal briefs and workshops; on climate it backs state legislation and belongs to the Mass Power Forward coalition.",
+   "website": "https://www.jalsa.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.jalsa.org/about"
+   ]
+  },
+  "arise_for_social_justice": {
+   "description": "Springfield group founded in 1985 by women on welfare that advocates for low-income people on housing, criminal justice and voting, and whose environmental justice committee fought the Palmer biomass incinerator and works on air pollution in the city.",
+   "website": "https://www.arisespringfield.org",
+   "geographic_focus": "Springfield",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Arise_for_Social_Justice"
+   ]
+  },
+  "bodhisara_dharma_community": {
+   "description": "Theravada Buddhist meditation community founded in 1996 in the Amherst and Northampton area, offering weekly classes, sitting groups and retreats.",
+   "type": "faith_org",
+   "geographic_focus": "Amherst and Northampton",
+   "sources": [
+    "https://www.bodhisara.org/about"
+   ]
+  },
+  "climate_xchange": {
+   "description": "Boston-based nonprofit that provides research, education and advocacy tools on state climate policy and carbon pricing, and runs the State Climate Policy Network and Dashboard.",
+   "type": "501c3",
+   "website": "https://climate-xchange.org/",
+   "geographic_focus": "National, based in Boston",
+   "sources": [
+    "https://climate-xchange.org/"
+   ]
+  },
+  "mass_audubon_wellfleet_bay_wildlife_sanctuary": {
+   "description": "Mass Audubon's 1,183-acre sanctuary in South Wellfleet on Cape Cod, protecting salt marsh, barrier beach and pine woodland habitat. It runs sea turtle rescue, diamondback terrapin and horseshoe crab protection, plus nature education, camps and trails.",
+   "website": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay",
+   "geographic_focus": "Wellfleet / Outer Cape Cod",
+   "sources": [
+    "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay",
+    "https://en.wikipedia.org/wiki/Wellfleet_Bay_Wildlife_Sanctuary"
+   ]
+  },
+  "pipeline_awareness_network_ne": {
+   "description": "Coalition working to prevent overbuilding of natural gas infrastructure; it hires attorneys and experts to intervene in FERC and state utility proceedings against pipeline expansions.",
+   "type": "coalition",
+   "website": "https://plan4ne.wordpress.com/",
+   "geographic_focus": "Northeast (Massachusetts, Connecticut, New Hampshire)",
+   "sources": [
+    "https://plan4ne.wordpress.com/about/"
+   ]
+  },
+  "north_american_indian_center_of_boston": {
+   "description": "Nonprofit in Jamaica Plain serving Boston-area Native American communities with employment and training, family services, education and social services.",
+   "website": "http://www.naicob.org/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://en.wikipedia.org/wiki/North_American_Indian_Center_of_Boston"
+   ]
+  },
+  "350ma_cape_cod": {
+   "description": "Cape Cod chapter (node) of 350 Mass, founded in 2017, a member-led local climate action group that meets in Hyannis.",
+   "geographic_focus": "Cape Cod",
+   "sources": [
+    "https://350massachusetts-betterfutureproject.nationbuilder.com/our_nodes",
+    "https://uuffm.org/wp-content/uploads/SocialAction/Environment/Cape-Cod-Climate-Organizations-for-merge.html"
+   ]
+  },
+  "berkshire_environmental_action_team": {
+   "description": "Pittsfield-based nonprofit protecting Berkshire County's environment through watchdogging of development and PCB contamination, river and habitat stewardship, and public education.",
+   "type": "501c3",
+   "website": "https://www.thebeatnews.org/",
+   "geographic_focus": "Berkshire County",
+   "sources": [
+    "https://www.thebeatnews.org/BeatTeam/about-the-berkshire-environmental-action-team-beat/"
+   ]
+  },
+  "climate_code_blue": {
+   "description": "Massachusetts public-health and climate advocacy group that writes to officials and agencies opposing new fossil fuel plants, especially in environmental justice communities, and pushing emissions cuts.",
+   "website": "https://www.climatecodeblue.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.climatecodeblue.org/initiatives-wespeakout",
+    "https://www.mapowerforward.com/ourcoalition"
+   ]
+  },
+  "partnership_for_policy_integrity": {
+   "description": "Pelham-based nonprofit that researches and advocates on energy policy, including opposing biomass and fossil gas and promoting renewables.",
+   "type": "501c3",
+   "website": "https://www.pfpi.net/",
+   "geographic_focus": "National, based in Pelham MA",
+   "sources": [
+    "https://www.influencewatch.org/non-profit/partnership-for-policy-integrity/"
+   ]
+  },
+  "balanced_rock_investment_advisors": {
+   "description": "Roslindale financial advisory firm offering socially responsible investing, including fossil-fuel exclusions and local and impact investments in climate solutions, affordable housing and cooperatives.",
+   "type": "business",
+   "website": "https://balancedrockinvestmentadvisors.com/",
+   "geographic_focus": "Greater Boston",
+   "sources": [
+    "https://balancedrockinvestmentadvisors.com/esg-impact-investing"
+   ]
+  },
+  "elders_climate_action_mass": {
+   "description": "Massachusetts chapter of Elders Climate Action, a volunteer group of older adults who organize, educate and lobby for state climate legislation.",
+   "type": "informal_group",
+   "website": "https://ecamass.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://ecamass.org/about-us/"
+   ]
+  },
+  "sunrise_boston": {
+   "description": "Boston hub of the Sunrise Movement, a youth-led group pushing for climate action and a just economy, including lobbying at the State House.",
+   "type": "informal_group",
+   "geographic_focus": "Boston",
+   "sources": [
+    "https://sunriseboston.medium.com/"
+   ]
+  },
+  "sunrise_amherst": {
+   "description": "Sunrise Movement hub in Amherst, started in 2019 by high school and college students, that runs climate strikes and outreach and backs a Green New Deal.",
+   "type": "informal_group",
+   "geographic_focus": "Amherst",
+   "sources": [
+    "https://hubs.sunrisemovement.org/amherst/"
+   ]
+  },
+  "unitarian_universalist_mass_action": {
+   "description": "Statewide organizing and advocacy network of Massachusetts Unitarian Universalist congregations, with a climate and environmental justice campaign among its priorities.",
+   "type": "faith_org",
+   "website": "https://www.uumassaction.org/",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.uumassaction.org/about-us"
+   ]
+  },
+  "coalition_for_social_justice": {
+   "description": "Grassroots organizing group founded in 1994 that does economic justice and anti-poverty advocacy through canvassing in low-income neighborhoods and legislative campaigns.",
+   "website": "https://coalitionforsocialjustice.org/",
+   "geographic_focus": "Southeastern Massachusetts (Brockton, Fall River, New Bedford)",
+   "sources": [
+    "https://coalitionforsocialjustice.org/who-we-are/"
+   ]
+  },
+  "slingshot": {
+   "description": "Environmental health and justice nonprofit that helps communities fight polluters, such as peaker plants, landfills, pipelines and PFAS contamination, across New England.",
+   "type": "501c3",
+   "website": "https://www.slingshot.org/",
+   "geographic_focus": "New England, based in Boston",
+   "sources": [
+    "https://www.slingshot.org/ourteam",
+    "https://www.wwlp.com/news/massachusetts/slingshot-aims-to-help-organize-local-environmental-activists/"
+   ]
+  },
+  "350ma_central_mass": {
+   "description": "All-volunteer Central Massachusetts affiliate of 350 Mass that opposes fossil fuel infrastructure, promotes electrification and works on environmental justice.",
+   "type": "informal_group",
+   "website": "https://www.350centralmass.org/",
+   "geographic_focus": "Central Massachusetts",
+   "sources": [
+    "https://www.350centralmass.org/"
+   ]
+  },
+  "canton_residents_for_a_sustainable_equitable_future": {
+   "description": "Volunteer group in Canton that promotes climate education and action, clean energy and environmental justice with regional partners.",
+   "type": "501c4",
+   "website": "https://www.sustainablecanton.com/",
+   "geographic_focus": "Canton",
+   "sources": [
+    "https://www.sustainablecanton.com/about"
+   ]
+  },
+  "food_and_water_watch": {
+   "description": "National advocacy group that campaigns against fossil fuel expansion; in Massachusetts it has pressed the governor to deny permits for the Enbridge pipeline expansion (Project Maple).",
+   "website": "https://www.foodandwaterwatch.org/",
+   "geographic_focus": "National, active in Massachusetts",
+   "sources": [
+    "https://www.foodandwaterwatch.org/2024/09/19/over-40-state-and-local-electeds-call-on-gov-healey-to-stop-algonquin-pipeline-expansion/"
+   ]
+  },
+  "american_friends_service_committee_northeast_region": {
+   "description": "Northeast regional office of the Quaker peace and social justice organization AFSC, based in Cambridge.",
+   "type": "faith_org",
+   "geographic_focus": "Northeast region, office in Cambridge",
+   "sources": [
+    "https://www.idealist.org/en/nonprofit/0af55b70989a406fa1a1901d72e363f5-american-friends-service-committeenortheast-regional-office-cambridge"
+   ]
+  },
+  "ben_hillman_and_company": {
+   "description": "Creative studio in the Berkshires offering filmmaking, design, writing and illustration, including work for nonprofits.",
+   "type": "business",
+   "website": "https://benhillman.com/",
+   "geographic_focus": "Berkshires",
+   "sources": [
+    "https://benhillman.com/about-us/"
+   ]
+  }
+ },
+ "not_found": [
+  "sunrise_ipswich",
+  "sunrise_western_mass",
+  "mit_sea"
+ ],
+ "notes": "Merged from fill4a/b/c (Sonnet agents, 2026-10-02). Lead review removed unverified 501c3 types (Arise, JALSA, Coalition for Social Justice), a directory-site website for 350ma_cape_cod, and a research note from NAICOB's description. informal_group types for Sunrise hubs / 350 Mass nodes / XR / ECA / FRRACS are judged from self-descriptions. Spot-checked live: Environment MA 501c4, Climate Action Brookline 501c3 + all-volunteer + net zero, CR4SEF 501c4 in Canton, JALSA founded 2001 + Mass Power Forward. mit_sea: only MIT 'SEA' found is the Sustainable Energy Alliance (mitsea.org), name differs, not matched. Agent notes: sunrise_ipswich: searches found no Sunrise Movement hub in Ipswich MA (only an unrelated 'Ipswich Umbrella Climate Hub'). Facebook page for Sunrise Lexington was blocked by robots.txt; sunriselexington.org footer shows 2020, not clearly inactive so inactive not set. Arise site could not be fetched, website taken from Wikipedia and type 501c3 is inferred from GuideStar listing only in search results (not read) so treat as lower confidence; JALSA type 501c3 is not stated on its page (not verified); Environment Massachusetts 501c4 per page metadata, not explicit; Bodhisara type faith_org and Mass Audubon 501c3 from Wikipedia. Mass Audubon WMa website is the parent site's western region page. FRRACS description is from nocompressor.com; the grassrootsfund page was a login page. 350ma_berkshires website is its page on 350mass site (search also showed 350maberkshires.org, not read). | sunrise_western_mass: no page found for a hub by this name (not on Mass Power Forward's member list either); only Sunrise Amherst (hubs.sunrisemovement.org/amherst) and Sunrise Northampton exist as local hubs, which are different units, so nothing filled. mit_sea: MIT pages do not list 'Students for Environmental Action'; the only MIT 'SEA' found is the Sustainable Energy Alliance (mitsea.org, undergrad energy club), which may be the intended group but the name differs, so not filled. Mass Audubon fetch of massaudubon.org worked on second URL form; Wellfleet type left out (parent is nonprofit but not read). NAICOB type left out (nonprofit stated but 501c3 not stated); NAICOB website naicob.org is referenced by Wikipedia and a search result, direct fetch was blocked. Climate Code Blue site root fetch was blocked; website URL taken from search results; type/inactive not determined. 350MA Cape Cod website is a local-directory page (lovelivelocal.com), its Facebook page is the main social page but robots blocked reading. PLAN-NE site last modified Apr 2025; plan4ne.wordpress.com is the site; it also lists info@plan-ne.org. Climate XChange scope is national, so focus may be recast as Statewide/National. 15 searches used. | Fetch of foodandwaterwatch.org MA state page 404'd; FWW website is the main domain, MA role from the Project Maple page only. AFSC website not verified so left blank; AFSC type/focus from an Idealist listing (climate work not stated). Sunrise Boston: Medium blog last post 2021 but other channels unchecked, so not marked inactive; 350 Central Mass site only showed 2021 activity, also not marked inactive. Ben Hillman & Co has no evident climate work. Coalition for Social Justice 501c3 type taken from charity-navigator listing in search only (EIN 043541048); its site mentions no climate work. Sunrise/350/ECA types are inferred from descriptions (informal_group), moderate confidence."
+}

@@ -10,15 +10,26 @@ before pushing; log in `nkessel_LLM.log`; never push to `main` or `development_b
 
 ## Data gaps
 
-- [ ] **Massachusetts: 34 unresearched orgs.** The `not_found` ids in `research/ma-gaps/fill3.json` were never
+- [x] **Massachusetts: 34 unresearched orgs.** The `not_found` ids in `research/ma-gaps/fill3.json` were never
       researched (search cap ran out). Use `research/ma-gaps/INSTRUCTIONS.md`; write `research/ma-gaps/fill4.json`;
       merge into `public/data.json` blank fields only (same as the merge in the 2026-10-01 log entry).
+      _2026-10-02: 31/34 filled (`fill4.json`). Not found: `sunrise_ipswich`, `sunrise_western_mass` (no such hub
+      found), `mit_sea` (only the MIT Sustainable Energy Alliance, mitsea.org, turned up; a human should decide)._
 - [ ] **Massachusetts: types + websites.** 87 orgs still have `type` "unknown" and 43 no website. Same method.
+      _2026-10-02 (partial, `fill5.json`): now 43 unknown types, 12 without website. The rest mostly have no stated
+      tax status on readable pages (chapters of national orgs, 501(c)(6) groups). Pre-existing odd types worth a
+      human look: `university` on two high-school groups, `school_club` on UU Mass Action, `youth_org` (not in the
+      type list)._
 - [ ] **Massachusetts: Cross Campus Climate Coalition (`cccc`)** has no description or members; find its own pages
       or MYCC's mentions of it.
+      _2026-10-02: still not found on the public web (searches surface only a Colleges of the Fenway "Cross-Campus
+      Climate Mixer" event). The only source is MYCC's own check-in email; needs input from MYCC._
 - [ ] **Vermont: activity dates + types.** 29 orgs in `public/maps/vt.json` have blank `last_activity`; 23 Energy
       Action Network members have type "unknown". Edit `research/state-pilot/vt.json`, then copy it (compact) to
       `public/maps/vt.json`.
+      _2026-10-02 (partial, `vtfill_2026-10-02.json`): +31 types, +12 dates, VIPPA marked inactive (site expired).
+      Left: 17 blank dates (mostly 350Vermont nodes, whose pages carry no dates) and 29 unknown types (chapters of
+      national orgs, 501(c)(6) trade groups, sites behind Cloudflare)._
 
 ## New states (one per run; New England first)
 
