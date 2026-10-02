@@ -438,3 +438,4 @@ What / why
 - Built on claude/item-cards (PR #32, not yet merged) to avoid conflicts.
 - Tested: switch hides/shows the dots (93 groups ↔ 0), survives reload, no map button, no page errors.
 - Moved Bubble sizes above Events, projects & actions.
+- Tighter first load: zoomed out, neighbouring groups' dot rings may nearly touch (collide = dot ring + 1px, min circle + 14 as before previews), and defaults Push apart 0.65 → 0.30, Distance from their coalition 0.50 → 0.25. Measured: org nearest-neighbour median 82 → 68, map spread 1096×1052 → 926×811, 0 overlapping orgs. Saved sidebar settings reset once (controls.v5).

@@ -62,9 +62,9 @@ export interface GraphSettings {
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   centerForce: 0.5,
-  repelForce: 0.65, // a bit more spread by default
+  repelForce: 0.3, // how hard bubbles push apart (lower = orgs closer)
   linkForce: 0.5,
-  linkDistance: 0.5,
+  linkDistance: 0.25,
   nodeSize: 1,
   linkThickness: 1,
   textFadeThreshold: 0.5,
@@ -658,10 +658,14 @@ export function createGraph(
     let c = satCountCache.get(n.id);
     if (c === undefined) satCountCache.set(n.id, (c = satItemsOf(n).length));
     if (!c) return r0;
-    return detail ? satRingR(n, c) + SAT_BUB_R + 6 : r0 + 10 + SAT_DOT_R + 1;
+    return detail ? satRingR(n, c) + SAT_BUB_R + 6 : r0 + 10 + SAT_DOT_R;
   }
-  /** Space each group keeps around itself (the same gap as before previews existed, plus their ring). */
+  /**
+   * Space each group keeps around itself. Zoomed out, neighbouring groups' dot rings may nearly touch, so
+   * organizations sit as close as they did before previews existed; zoomed in, full icons get a real gap.
+   */
   function collideRadius(n: GraphNode): number {
+    if (!settings.alwaysShow || satMode !== 1) return Math.max(itemExtent(n) + 1, nodeRadiusOf(n) + 14);
     return itemExtent(n) + 14;
   }
   function refreshSpacing(alpha = 0.5) {
