@@ -24,8 +24,8 @@ export interface ControlsCallbacks {
   onAnimate(): void;
 }
 
-// v4: closer default spacing + group types on — bumping the key lets everyone get the new defaults once.
-const STORAGE_KEY = "openthink.controls.v4";
+// v5: tighter default spacing — bumping the key lets everyone get the new defaults once.
+const STORAGE_KEY = "openthink.controls.v5";
 
 // Built-in group types (org types / coalition tags). All on by default.
 // Hidden for now: few orgs have a type yet. Set SHOW_GROUP_TYPES = true to bring the section back.

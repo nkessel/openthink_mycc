@@ -5226,7 +5226,8 @@
           "end": "2026-10-02T13:00:00",
           "id": "green_energy_consumers_allia_e2",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_WkagQhN9RcmCgQZhNdc1fw"
         },
         {
           "name": "Everything You Need to Know About Charging Adaptors",
@@ -5237,7 +5238,8 @@
           "description": "Webinar on EV charging adaptors.",
           "id": "green_energy_consumers_allia_e3",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_fq7m_wHXTtiQvE8_8Y2inw"
         },
         {
           "name": "Harvest Your Energy Festival (Medford)",
@@ -5259,7 +5261,8 @@
           "description": "Overview of heat pump rates in MA with DOER.",
           "id": "green_energy_consumers_allia_e6",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_nNcxKAsERNyNLzbJlqHwSA"
         },
         {
           "name": "Emerging Clean Energy Technologies",
@@ -5270,18 +5273,20 @@
           "description": "Webinar on clean energy technologies for households.",
           "id": "green_energy_consumers_allia_e7",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_g39im1dzSQyV1KQRFd_GrA"
         },
         {
           "name": "How to Use Online Tools to Plan an Electric Road Trip",
           "date": "2026-11-04T12:00:00",
           "location": "Online",
-          "link": "https://www.greenenergyconsumers.org/events",
+          "link": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
           "online": true,
           "description": "Webinar on EV road trip planning tools.",
           "id": "green_energy_consumers_allia_e8",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_F0cBDW9IQDWqBr-ZEpxVZw"
         },
         {
           "name": "Annual Fall Meeting",
@@ -5291,29 +5296,32 @@
           "description": "Evening of networking and clean energy conversations.",
           "id": "green_energy_consumers_allia_e9",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://www.eventbrite.com/e/green-energy-consumers-annual-fall-meeting-tickets-2001889844414"
         },
         {
           "name": "Winter Driving in an Electric Car",
           "date": "2026-12-03T12:00:00",
           "location": "Online",
-          "link": "https://www.greenenergyconsumers.org/events",
+          "link": "https://www.greenenergyconsumers.org/event/winterdrivingelectriccar",
           "online": true,
           "description": "Webinar on EVs in cold weather (online per series; location not verified on page).",
           "id": "green_energy_consumers_allia_e10",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_-i5Utq1BQaedL7kwKraILw"
         },
         {
           "name": "Electric Vehicle Battery Health",
           "date": "2026-12-16T12:00:00",
           "location": "Online",
-          "link": "https://www.greenenergyconsumers.org/events",
+          "link": "https://www.greenenergyconsumers.org/event/electricvehiclebatteryhealth",
           "online": true,
           "description": "Webinar on long-term EV battery health (online per series; location not verified on page).",
           "id": "green_energy_consumers_allia_e11",
           "verified": true,
-          "host_org_id": "green_energy_consumers_alliance"
+          "host_org_id": "green_energy_consumers_alliance",
+          "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_bzvXot2bST68BWwiX_I-rQ"
         }
       ],
       "actions": [

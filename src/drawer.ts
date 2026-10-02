@@ -8,6 +8,7 @@ import type {
   DataFile,
 } from "./types";
 import { initials, relTime, fmtEventTime, typeLabel } from "./util";
+import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
@@ -214,17 +215,6 @@ export function createDrawer(
     return body;
   }
 
-  /** "More info" link, shown on every item that has a source link. */
-  function linkEl(link?: string): HTMLElement | null {
-    if (!link || !/^https?:\/\//.test(link)) return null;
-    return h("a", { class: "item-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗");
-  }
-
-  /** "RSVP" link for events that have a sign-up page; shown before the general "More info" link. */
-  function rsvpEl(link?: string): HTMLElement | null {
-    if (!link || !/^https?:\/\//.test(link)) return null;
-    return h("a", { class: "item-link rsvp-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗");
-  }
 
   function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
     if (!items.length) {
@@ -243,7 +233,7 @@ export function createDrawer(
             { class: "row" },
             h("span", { class: "pill kind" }, p.status),
           ),
-          linkEl(p.link),
+          itemButtons("project", p),
           staleNotice("project", owner, p.needs_info, p.verified, p),
         ),
       );
@@ -267,8 +257,7 @@ export function createDrawer(
             h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
             e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
-          rsvpEl(e.rsvp_link),
-          linkEl(e.link),
+          itemButtons("event", e),
           staleNotice("event", owner, e.needs_info, e.verified, e),
         ),
       );
@@ -302,7 +291,7 @@ export function createDrawer(
           h("div", { class: "name" }, a.name),
           a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
-          linkEl(a.link),
+          itemButtons("action", a),
           staleNotice("action", owner, a.needs_info, a.verified, a),
         ),
       );

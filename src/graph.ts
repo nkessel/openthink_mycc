@@ -10,6 +10,7 @@ import type {
   CoalitionEvent,
   Action,
 } from "./types";
+import { itemButtons } from "./links";
 import { h } from "./dom";
 import { typeIcon } from "./icons";
 import { staleNotice } from "./notice";
@@ -62,9 +63,9 @@ export interface GraphSettings {
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   centerForce: 0.5,
-  repelForce: 0.65, // a bit more spread by default
+  repelForce: 0.3, // how hard bubbles push apart (lower = orgs closer)
   linkForce: 0.5,
-  linkDistance: 0.5,
+  linkDistance: 0.25,
   nodeSize: 1,
   linkThickness: 1,
   textFadeThreshold: 0.5,
@@ -523,6 +524,10 @@ export function createGraph(
   const DETAIL_ON_K = 1.9; // zoom at which dots become bubbles
   const DETAIL_OFF_K = 1.6; // and back (a gap so it doesn't flicker)
   const DETAIL_CAP = 24;
+  // Zoomed in (bubbles + names): organization planets show twice as big, and each item gets its name under it.
+  const PLANET_ZOOM = 2;
+  const SAT_LABEL_W = 70; // width of an item's name under its icon (world units)
+  const SAT_LABEL_H = 26; // room for up to 3 short lines
   let satsReady = false;
   let satMode: 0 | 1 = 0;
   const satLevel = new Map<string, 0 | 1>();
@@ -643,9 +648,14 @@ export function createGraph(
   }
 
   /** How far a group's items reach when they are always shown (so groups keep their items clear of each other). */
+  /** How much bigger a node is drawn right now (organization planets double when zoomed in). */
+  function planetScale(n: GraphNode): number {
+    return satMode === 1 && n.kind === "org" ? PLANET_ZOOM : 1;
+  }
   function satRingR(n: GraphNode, count: number): number {
     const shown = Math.min(count, DETAIL_CAP);
-    return Math.max(nodeRadiusOf(n) + SAT_BUB_R + 10, (shown * (2 * SAT_BUB_R + 8)) / (2 * Math.PI));
+    // around the (bigger) planet, with room between items for their names
+    return Math.max(nodeRadiusOf(n) * PLANET_ZOOM ** (n.kind === "org" ? 1 : 0) + SAT_BUB_R + 12, (shown * (SAT_LABEL_W + 6)) / (2 * Math.PI));
   }
   const satCountCache = new Map<string, number>();
   /**
@@ -653,16 +663,20 @@ export function createGraph(
    * close together; zoomed in they become full icons on a wider ring, so groups spread out to make room.
    */
   function itemExtent(n: GraphNode, detail: boolean = satMode === 1): number {
-    const r0 = nodeRadiusOf(n);
+    const r0 = nodeRadiusOf(n) * (detail && n.kind === "org" ? PLANET_ZOOM : 1);
     if (!settings.alwaysShow) return r0;
     let c = satCountCache.get(n.id);
     if (c === undefined) satCountCache.set(n.id, (c = satItemsOf(n).length));
     if (!c) return r0;
-    return detail ? satRingR(n, c) + SAT_BUB_R + 6 : r0 + 10 + SAT_DOT_R + 1;
+    return detail ? satRingR(n, c) + SAT_BUB_R + 4 + SAT_LABEL_H : r0 + 10 + SAT_DOT_R;
   }
-  /** Space each group keeps around itself (the same gap as before previews existed, plus their ring). */
+  /**
+   * Space each group keeps around itself. Zoomed out, neighbouring groups' dot rings may nearly touch, so
+   * organizations sit as close as they did before previews existed; zoomed in, full icons get a real gap.
+   */
   function collideRadius(n: GraphNode): number {
-    return itemExtent(n) + 14;
+    if (satMode !== 1) return settings.alwaysShow ? Math.max(itemExtent(n) + 1, nodeRadiusOf(n) + 14) : nodeRadiusOf(n) + 14;
+    return itemExtent(n) + 22; // zoomed in: plenty of room for bigger planets, icons and names
   }
   function refreshSpacing(alpha = 0.5) {
     satCountCache.clear();
@@ -683,7 +697,7 @@ export function createGraph(
     const g = sel.append("g").attr("class", `sats lv${level}`);
     if (level === 0) {
       g.style("pointer-events", "none");
-      const rr = r0 + 10; // everything sits on this one circle
+      const rr = r0 * planetScale(n) + 10; // everything sits on this one circle, just outside the planet
       const cap = Math.max(6, Math.floor((2 * Math.PI * rr) / 8.5));
       const shown = spread(items, cap);
       shown.forEach((b, i) => {
@@ -703,8 +717,12 @@ export function createGraph(
         .style("cursor", "pointer");
       els.push(bg.node()!);
       angles.push(a);
-      bg.append("title").text(b.label);
+      bg.append("title").text(fullName(b));
       bg.append("circle").attr("r", SAT_BUB_R);
+      // the item's name under its icon
+      const fo = bg.append("foreignObject").attr("class", "sat-name-fo")
+        .attr("x", -SAT_LABEL_W / 2).attr("y", SAT_BUB_R + 2).attr("width", SAT_LABEL_W).attr("height", SAT_LABEL_H + 4);
+      fo.node()!.appendChild(h("div", { class: `sat-name k-${b.kind}`, xmlns: "http://www.w3.org/1999/xhtml" }, fullName(b)));
       const inner = bg.append("g").attr("transform", "scale(0.5)");
       const isRole = b.kind === "action" && (b.item as Action).kind === "role";
       drawIcon(inner as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : (b.kind as BubbleKind), b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
@@ -718,7 +736,7 @@ export function createGraph(
     });
     if (items.length > shown.length) g.append("text").attr("class", "sat-more").attr("y", -rr - SAT_BUB_R - 4).text(`+${items.length - shown.length}`);
     // They spill out of the group and jostle into place; drag one and the others make room.
-    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_BUB_R), rr, r0 * 0.6, 3));
+    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_LABEL_W / 2), rr, r0 * planetScale(n) * 0.6, 2));
   }
 
   /** Dots for everyone (cheap); bubbles for what is on screen when zoomed in, a batch at a time. */
@@ -726,6 +744,7 @@ export function createGraph(
     if (!satsReady) return;
     detailToken++;
     satMode = currentZoomScale >= DETAIL_ON_K ? 1 : 0;
+    nodeLayer.classed("detail", satMode === 1);
     nodeSel.each((d) => drawSats(d, 0));
     queueDetail();
   }
@@ -757,17 +776,22 @@ export function createGraph(
     requestAnimationFrame(step);
   }
   function updateSatLevel() {
-    if (!satsReady || !settings.alwaysShow) return;
+    if (!satsReady) return;
     const want: 0 | 1 = satMode === 1 ? (currentZoomScale < DETAIL_OFF_K ? 0 : 1) : (currentZoomScale >= DETAIL_ON_K ? 1 : 0);
     if (want === satMode) return;
     satMode = want;
     detailToken++;
-    // Zoomed in: groups drift apart a little so the full icons don't overlap; zoomed out: back together.
+    // Zoomed in: planets double in size and groups spread out so icons and names fit; zoomed out: back together.
+    nodeLayer.classed("detail", want === 1);
     collideForce.radius(collideRadius);
-    sim.alpha(Math.max(sim.alpha(), 0.25)).restart();
-    if (want === 0) nodeSel.each((d) => { if (satLevel.get(d.id) !== 0) drawSats(d, 0); });
-    else queueDetail();
+    sim.alpha(Math.max(sim.alpha(), 0.35)).restart();
+    if (!settings.alwaysShow) return;
+    // redraw the dots outside the (bigger or normal) planet, then upgrade what's on screen to icons + names
+    nodeSel.each((d) => drawSats(d, 0));
+    if (want === 1) queueDetail();
   }
+  // Groups keep moving after a zoom (they spread out or gather); upgrade any that slide into view.
+  setInterval(() => { if (satsReady && satMode === 1 && settings.alwaysShow && satsBusy === 0) queueDetail(); }, 1200);
   const renderSatellites = refreshSats;
 
   // ----- Apply visual settings (radii, halos, link thickness, fade) -----
@@ -804,6 +828,8 @@ export function createGraph(
       sel
         .select<SVGTextElement>("text.node-name")
         .attr("y", r + (d.kind === "coalition" ? 14 : 12));
+      // CSS uses this to keep an org's name just under its planet when the planet doubles (zoomed in)
+      sel.style("--nr", String(r));
     });
     // Link thickness (org-to-org links scale with how often they work together)
     linkSel.attr("stroke-width", linkWidthFor);
@@ -1093,13 +1119,9 @@ export function createGraph(
     const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent | Action).description;
     if (desc) focusCard.appendChild(h("p", { class: "focus-card-text" }, desc));
     if (b.kind === "thought") focusCard.appendChild(h("div", { class: "focus-card-source" }, `Source: ${(it as Thought).source}`));
-    const rsvp = (it as { rsvp_link?: string }).rsvp_link;
-    if (b.kind === "event" && rsvp && /^https?:\/\//.test(rsvp)) {
-      focusCard.appendChild(h("a", { class: "focus-card-link rsvp-link", href: rsvp, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗"));
-    }
-    const link = (it as { link?: string }).link;
-    if (link && /^https?:\/\//.test(link)) {
-      focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
+    if (b.kind !== "thought") {
+      const btns = itemButtons(b.kind, it as { rsvp_link?: string; link?: string });
+      if (btns) focusCard.appendChild(btns);
     }
     if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified));
     focusCard.style.visibility = "hidden";
@@ -1181,6 +1203,10 @@ export function createGraph(
     } else if (kind === "action") {
       ic.append("path").attr("class", "check").attr("d", "M-7 0.5 L-2.2 5.5 L7.5 -5");
     }
+  }
+
+  function fullName(b: Bubble): string {
+    return b.kind === "thought" ? (b.item as Thought).text : (b.item as Project | CoalitionEvent | Action).name;
   }
 
   // ----- Item cards (zoomed-in group view) -----
