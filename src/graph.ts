@@ -172,12 +172,7 @@ export function createGraph(
       api.setSelectedNode(n);
     }),
   );
-  // One plain button on the map: hide or show the previews of every group's events, projects and actions.
-  const previewBtn = document.createElement("button");
-  previewBtn.type = "button";
-  previewBtn.className = "preview-toggle";
-  previewBtn.addEventListener("click", () => setPreviews(!settings.alwaysShow));
-  overlay.appendChild(previewBtn);
+  // (Hiding the events / actions / projects around each group is a switch at the top of the settings panel.)
   const resetBtn = document.createElement("button");
   resetBtn.type = "button";
   resetBtn.className = "reset-map-btn";
@@ -189,13 +184,7 @@ export function createGraph(
   });
   overlay.appendChild(resetBtn);
   function syncViewSwitch() {
-    const on = settings.alwaysShow;
-    previewBtn.classList.toggle("on", on);
-    previewBtn.setAttribute("aria-pressed", String(on));
-    previewBtn.textContent = on ? "◉ Hide event & project previews" : "○ Show event & project previews";
-    previewBtn.title = on
-      ? "Hide the small events, projects and actions shown around every group"
-      : "Show each group's events, projects and actions around it on the map";
+    /* the switches live in the settings panel and listen for openthink:previewsmode / openthink:viewmode */
   }
   // The sidebar has the same switches; they talk to us through window events.
   window.addEventListener("openthink:setview", (e) => setViewMode(!!(e as CustomEvent).detail?.bubbles));

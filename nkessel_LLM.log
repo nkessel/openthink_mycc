@@ -432,3 +432,8 @@ What / why
 - Layout: ring sized for a card's width per item and room for the top cards above the group; item physics uses a card-sized collision circle; members' orbit and the zoom fit allow for the cards. Members' keep-out edge is now hard (crowded rings like Mass Power Forward's 104 members could push inner ones over a card).
 - Legend: "Dots around each group" with the event / project / action colours.
 - Tested in Playwright: MYCC 5 cards, MPF 2, GJC 0 — 0 card overlaps, 0 members on cards; card click opens details; no page errors.
+
+## 2026-10-02 — "Hide events, actions, and projects" switch
+- Removed the big "Hide event & project previews" button from the map. In its place: a switch right under "Show organization names" (renamed from "Show text") at the top of Map settings: "Hide events, actions, and projects" (off by default). Removed the duplicate previews switch from the "Events, projects & actions" section; its kind toggles now read "Which to show around each group".
+- Built on claude/item-cards (PR #32, not yet merged) to avoid conflicts.
+- Tested: switch hides/shows the dots (93 groups ↔ 0), survives reload, no map button, no page errors.

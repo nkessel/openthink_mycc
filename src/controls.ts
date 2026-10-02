@@ -180,9 +180,8 @@ export function createControls(
     return { section, body };
   }
 
-  // ---- Projects, Events, and Actions ----
-  // ---- Show text (top of the bar) ----
-  const textRow = makeToggle("Show text", state.settings.showText, (v) => {
+  // ---- Top of the bar: names, and hiding the events / actions / projects around each group ----
+  const textRow = makeToggle("Show organization names", state.settings.showText, (v) => {
     state.settings.showText = v;
     cb.onSettingsChange({ showText: v });
     saveState(state);
@@ -190,23 +189,23 @@ export function createControls(
   textRow.classList.add("show-text-row");
   parent.appendChild(textRow);
 
-  const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
   let itemsOn = true; // zoom in on a group when it's clicked
   try { itemsOn = localStorage.getItem("openthink.bubbles") !== "0"; } catch (_) { /* ignore */ }
-  let previewsOn = true; // previews around every group (on by default)
+  let previewsOn = true; // the dots around every group (shown by default)
   try { previewsOn = localStorage.getItem("openthink.previews") !== "0"; } catch (_) { /* ignore */ }
 
-  // 1. Previews around every group (the same switch as the button on the map).
-  const previewRow = makeToggle("Show previews of each group's events, projects & actions", previewsOn, (v) => {
-    window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: v } }));
+  const hideRow = makeToggle("Hide events, actions, and projects", !previewsOn, (v) => {
+    window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: !v } }));
   });
-  const previewSwitch = previewRow.querySelector<HTMLElement>(".switch")!;
-  sizeBody.appendChild(previewRow);
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Small dots around every group on the map; zoom in and they become bubbles you can click."));
+  hideRow.classList.add("show-text-row");
+  const hideSwitch = hideRow.querySelector<HTMLElement>(".switch")!;
+  parent.appendChild(hideRow);
+
+  const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
 
   // 2. Which kinds to preview (only while previews are on).
   const kindBox = h("div", { class: "kind-toggles" });
-  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which to preview:"));
+  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which to show around each group:"));
   for (const [label, key] of [["Events", "showAllEvents"], ["Projects", "showAllProjects"], ["Actions & volunteer roles", "showAllActions"]] as const) {
     kindBox.appendChild(
       makeToggle(label, state.settings[key], (v) => {
@@ -228,7 +227,7 @@ export function createControls(
 
   function syncItems() {
     masterSwitch.classList.toggle("on", itemsOn);
-    previewSwitch.classList.toggle("on", previewsOn);
+    hideSwitch.classList.toggle("on", !previewsOn);
     kindBox.classList.toggle("disabled", !previewsOn);
     kindBox.querySelectorAll("button").forEach((i) => ((i as HTMLButtonElement).disabled = !previewsOn));
   }
