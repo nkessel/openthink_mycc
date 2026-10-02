@@ -16,6 +16,12 @@ before pushing; log in `nkessel_LLM.log`; never push to `main` or `development_b
       with the event's own page. Only from the host's pages; never guess. Green Energy Consumers Alliance is done
       (2026-10-02). The sheet picks these up via "Fill in missing details … from GitHub" (blank cells only).
 
+- [ ] **Remove research notes from public text.** About 30 descriptions in `public/data.json` and `public/maps/vt.json`
+      contain notes meant for us, not the public ("no climate work found", "its own website blocks automated readers",
+      "could not be confirmed as current", "location not verified on page", scraper errors such as "Campaign page could
+      not be loaded"). The `notes` fields in `research/topics/extracted.json` list them. Rewrite each as a plain public
+      description (from the group's own pages), or blank it; put the research note in a research file instead.
+
 - [ ] **Massachusetts: 34 unresearched orgs.** The `not_found` ids in `research/ma-gaps/fill3.json` were never
       researched (search cap ran out). Use `research/ma-gaps/INSTRUCTIONS.md`; write `research/ma-gaps/fill4.json`;
       merge into `public/data.json` blank fields only (same as the merge in the 2026-10-01 log entry).

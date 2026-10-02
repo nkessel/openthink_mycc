@@ -445,3 +445,16 @@ What / why
 - Green Energy Consumers Alliance: read its event pages (robots.txt allows) and added 8 RSVP links (7 Zoom webinar registrations + the Annual Fall Meeting on Eventbrite; the Harvest Festival has no registration) and the specific event page for 3 that pointed at the general events page; marked verified. Skipped "Electric Trunk-or-Treat" (Providence, RI).
 - Apps Script "Fill in missing details" also fills blank event rsvp_link and swaps a general events-page link for the event's own page (test added).
 - BACKLOG: "RSVP links for every upcoming event" added at the top (13 of ~110 upcoming events have one now).
+
+## 2026-10-02 — Go-live steps (not logged earlier)
+- With Nathan's OK: pasted Code.gs from commit 6522571 into the Apps Script project (doGet unchanged, so no redeploy) and ran "Fill in missing details … from GitHub": 8 Green Energy Consumers Alliance RSVP links reached the sheet; the live feed shows 12 events with RSVP links. Still open: fillEventLinks_ misses 3 GECA events whose general link is …/events and specific page is …/event/<slug> (not a prefix match).
+
+## 2026-10-02 — Topic map, step 1–2: topic extraction + draft topic list
+- Why: Nathan wants a topical "topic galaxy" view of where groups' energy goes (items as the main weight, mission statements as a second layer; every weight a "not important → important" slider). Plan agreed: extract topics bottom-up, cluster into a two-level list for team review, then re-tag against the final list.
+- scripts/topic-records.mjs flattens public/data.json + public/maps/vt.json into research/topics/records.json: 618 records (390 events/projects/actions, 228 org/coalition mission statements).
+- research/topics/INSTRUCTIONS.md: extraction rules (only the record's own words, an evidence quote per topic, fixed strategy list, named bills, recurring flag, climate relevance). Four parallel sub-agents did 155 records each → research/topics/extracted.json (every evidence string checked as a substring of its record). 772 distinct phrases; 68 records with no topic (general meetings/socials).
+- research/topics/cluster.mjs: rule-based first draft grouping the phrases into 18 parents / 75 children + a bill list (21 bills/laws/ballot questions) → draft-taxonomy.json + hierarchy.md. Rules + explicit overrides were checked by reading every child's phrase list.
+- Review copy for the team: Claude Docs "Topic map: draft topic list for review" (findings, the list as an editable table, bills, strategies, open questions, planned sliders).
+- Findings: justice (45 missions / 16 activities) and local action (42 / 16) are stated far more than listed; a few groups dominate some topics (Mass Audubon WMa + Tree Boston = 19 of 68 nature activities; Vermont Conservation Voters = 10 of 23 democracy activities) → proposed a per-group cap slider.
+- Side finding: ~30 public descriptions contain internal research notes ("no climate work found", "website blocks automated readers", "could not be confirmed as current") → added to BACKLOG.
+- Mistake: an `rm extract*.json` glob also deleted the merged extracted.json; rebuilt it from the sub-agents' chunk files in the scratchpad (same 772 phrases, same per-slice counts).
