@@ -426,3 +426,15 @@ What / why
 - Forces renamed with a one-line description under each: Pull to the middle, Push apart (lower = orgs closer), Pull to their coalition, Distance from their coalition (lower = members closer); "Line thickness"; "Re-settle the map" (was Animate).
 - Spacing follows zoom: zoomed out, previews are dots and groups keep the old gap (circle + dots + 14px); zoomed in past the bubble threshold they drift apart so full icons don't overlap, and come back together when you zoom out. Measured org nearest-neighbour median: live 114 → 82 zoomed out, 106 zoomed in; 0 overlapping icons between groups when zoomed in.
 - Saved sidebar settings reset once (controls.v4).
+
+## 2026-10-02 — Item cards in the zoomed-in group view; legend dots
+- Each event/project/action/thinking item in the zoomed-in view now has a translucent card under its icon (HTML in an SVG foreignObject): kind line (e.g. "Event · repeats", "Project · active", "Volunteer role"), the full name (wraps, never cut off), then date/time and place (or deadline). Clicking the card opens the detail card as before. Replaces the one-line labels that were cut at 34/42 characters.
+- Layout: ring sized for a card's width per item and room for the top cards above the group; item physics uses a card-sized collision circle; members' orbit and the zoom fit allow for the cards. Members' keep-out edge is now hard (crowded rings like Mass Power Forward's 104 members could push inner ones over a card).
+- Legend: "Dots around each group" with the event / project / action colours.
+- Tested in Playwright: MYCC 5 cards, MPF 2, GJC 0 — 0 card overlaps, 0 members on cards; card click opens details; no page errors.
+
+## 2026-10-02 — "Hide events, actions, and projects" switch
+- Removed the big "Hide event & project previews" button from the map. In its place: a switch right under "Show organization names" (renamed from "Show text") at the top of Map settings: "Hide events, actions, and projects" (off by default). Removed the duplicate previews switch from the "Events, projects & actions" section; its kind toggles now read "Which to show around each group".
+- Built on claude/item-cards (PR #32, not yet merged) to avoid conflicts.
+- Tested: switch hides/shows the dots (93 groups ↔ 0), survives reload, no map button, no page errors.
+- Moved Bubble sizes above Events, projects & actions.
