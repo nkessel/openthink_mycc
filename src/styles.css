@@ -2198,3 +2198,30 @@ text.sat-more { fill: var(--text-dim); }
 .map-legend .kdot.k-event { background: var(--k-event); }
 .map-legend .kdot.k-project { background: var(--k-project); }
 .map-legend .kdot.k-action { background: var(--k-action); }
+
+/* Zoomed in: organization planets show twice as big (graph.ts PLANET_ZOOM), items keep their size. */
+.nodes.detail .node-org:not(.focused) > :not(.sats) {
+  transform: scale(2);
+}
+/* Item names under their icons when zoomed in */
+.sat-name-fo { overflow: visible; pointer-events: none; }
+.sat-name {
+  font: 600 6px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #e2e8f0;
+  text-align: center;
+  padding: 1px 3px;
+  border-radius: 3px;
+  background: rgba(15, 18, 28, 0.6);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+/* ...but its name stays normal size, just under the bigger planet */
+.nodes.detail .node-org:not(.focused) > text.node-name {
+  transform: translateY(calc(var(--nr, 0) * 1px));
+}

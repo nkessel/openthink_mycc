@@ -439,3 +439,5 @@ What / why
 - Tested: switch hides/shows the dots (93 groups ↔ 0), survives reload, no map button, no page errors.
 - Moved Bubble sizes above Events, projects & actions.
 - Tighter first load: zoomed out, neighbouring groups' dot rings may nearly touch (collide = dot ring + 1px, min circle + 14 as before previews), and defaults Push apart 0.65 → 0.30, Distance from their coalition 0.50 → 0.25. Measured: org nearest-neighbour median 82 → 68, map spread 1096×1052 → 926×811, 0 overlapping orgs. Saved sidebar settings reset once (controls.v5).
+- Zoomed-in tier (k ≥ 1.9, previews on or off): organization planets draw 2× (CSS scale on the node, name kept normal size just under it), each item shows its full name under its icon (up to 3 lines), item rings sized for names, and groups spread out much more (collide = item extent incl. names + 22). Zoomed out they gather back (median 68). Dots are redrawn outside the planet on every tier change, and groups that slide into view after spreading are upgraded within ~1s.
+- Tested: zoomed in 16 item names visible, 0 overlapping names, 0 groups left with dots; zoom out restores spacing; no page errors.
