@@ -270,7 +270,8 @@ export function createControls(
     );
   }
   bubbleBody.appendChild(sliderBox);
-  parent.appendChild(bubbleSection);
+  // Bubble sizes sits above "Events, projects & actions".
+  parent.insertBefore(bubbleSection, sizeSection);
 
   // ---- Advanced display settings (closed by default; added to the panel last) ----
   const { section: advSection, body: advBody } = makeSection("Advanced display settings", false);

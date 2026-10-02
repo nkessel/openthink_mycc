@@ -437,3 +437,4 @@ What / why
 - Removed the big "Hide event & project previews" button from the map. In its place: a switch right under "Show organization names" (renamed from "Show text") at the top of Map settings: "Hide events, actions, and projects" (off by default). Removed the duplicate previews switch from the "Events, projects & actions" section; its kind toggles now read "Which to show around each group".
 - Built on claude/item-cards (PR #32, not yet merged) to avoid conflicts.
 - Tested: switch hides/shows the dots (93 groups ↔ 0), survives reload, no map button, no page errors.
+- Moved Bubble sizes above Events, projects & actions.
