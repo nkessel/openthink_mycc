@@ -2156,3 +2156,4 @@ text.sat-more { fill: var(--text-dim); }
 .preview-toggle:not(.on) { border-color: var(--border); background: var(--bg-elev); color: var(--text-dim); }
 .preview-toggle:not(.on):hover { color: var(--text); }
 .kind-toggles.disabled { opacity: 0.45; }
+.slider-hint { margin: 2px 4px 8px; }
