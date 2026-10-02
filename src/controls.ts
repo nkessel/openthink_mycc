@@ -24,19 +24,21 @@ export interface ControlsCallbacks {
   onAnimate(): void;
 }
 
-// v3: previews on by default — bumping the key lets everyone get the new defaults once.
-const STORAGE_KEY = "openthink.controls.v3";
+// v4: closer default spacing + group types on — bumping the key lets everyone get the new defaults once.
+const STORAGE_KEY = "openthink.controls.v4";
 
-// Built-in groups — based on real values present in the dummy data.
+// Built-in group types (org types / coalition tags). All on by default.
+// Hidden for now: few orgs have a type yet. Set SHOW_GROUP_TYPES = true to bring the section back.
+const SHOW_GROUP_TYPES = false;
 const DEFAULT_GROUPS: GroupSpec[] = [
-  { id: "g_school_club", label: "School clubs", color: "#34d399", active: false, kind: "org_type", matchValue: "school_club" },
-  { id: "g_youth_org", label: "Youth orgs", color: "#a3e635", active: false, kind: "org_type", matchValue: "youth_org" },
-  { id: "g_faith_org", label: "Faith orgs", color: "#fb923c", active: false, kind: "org_type", matchValue: "faith_org" },
-  { id: "g_501c3", label: "501(c)(3)s", color: "#60a5fa", active: false, kind: "org_type", matchValue: "501c3" },
-  { id: "g_501c4", label: "501(c)(4)s", color: "#a78bfa", active: false, kind: "org_type", matchValue: "501c4" },
-  { id: "g_union", label: "Unions", color: "#ef4444", active: false, kind: "org_type", matchValue: "union" },
-  { id: "g_ej", label: "EJ-focused coalitions", color: "#f472b6", active: false, kind: "coalition_tag", matchValue: "environmental_justice" },
-  { id: "g_youth_serving", label: "Youth-serving coalitions", color: "#22d3ee", active: false, kind: "coalition_tag", matchValue: "youth_serving" },
+  { id: "g_school_club", label: "School clubs", color: "#34d399", active: true, kind: "org_type", matchValue: "school_club" },
+  { id: "g_youth_org", label: "Youth orgs", color: "#a3e635", active: true, kind: "org_type", matchValue: "youth_org" },
+  { id: "g_faith_org", label: "Faith orgs", color: "#fb923c", active: true, kind: "org_type", matchValue: "faith_org" },
+  { id: "g_501c3", label: "501(c)(3)s", color: "#60a5fa", active: true, kind: "org_type", matchValue: "501c3" },
+  { id: "g_501c4", label: "501(c)(4)s", color: "#a78bfa", active: true, kind: "org_type", matchValue: "501c4" },
+  { id: "g_union", label: "Unions", color: "#ef4444", active: true, kind: "org_type", matchValue: "union" },
+  { id: "g_ej", label: "EJ-focused coalitions", color: "#f472b6", active: true, kind: "coalition_tag", matchValue: "environmental_justice" },
+  { id: "g_youth_serving", label: "Youth-serving coalitions", color: "#22d3ee", active: true, kind: "coalition_tag", matchValue: "youth_serving" },
 ];
 
 function loadState(): ControlsState {
@@ -106,6 +108,7 @@ export function createControls(
   cb.onGroupsChange(activeRulesFromSpecs(state.groups));
 
   function activeRulesFromSpecs(specs: GroupSpec[]): GroupRule[] {
+    if (!SHOW_GROUP_TYPES) return []; // hidden section: don't colour the map by group type
     return specs.filter((g) => g.active).map(specToRule);
   }
 
@@ -118,7 +121,7 @@ export function createControls(
     label: string,
     initial: number,
     onChange: (v: number) => void,
-    opts: { min?: number; max?: number; step?: number } = {},
+    opts: { min?: number; max?: number; step?: number; hint?: string } = {},
   ): HTMLElement {
     const min = opts.min ?? 0;
     const max = opts.max ?? 1;
@@ -137,6 +140,7 @@ export function createControls(
       onChange(parseFloat(input.value));
     });
     wrap.appendChild(input);
+    if (opts.hint) wrap.appendChild(h("div", { class: "ctrl-hint slider-hint" }, opts.hint));
     return wrap;
   }
 
@@ -222,29 +226,6 @@ export function createControls(
   sizeBody.appendChild(masterRow);
   sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Off: clicking a group only opens its details panel."));
 
-  // 4. Group size.
-  sizeBody.appendChild(h("div", { class: "ctrl-hint sub" }, "Group size"));
-  sizeBody.appendChild(
-    makeSlider("Bigger for groups with more member orgs", state.settings.weightConnections, (v) => {
-      state.settings.weightConnections = v;
-      cb.onSettingsChange({ weightConnections: v });
-      saveState(state);
-    }),
-  );
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "All the way down makes every group the same size."));
-  const sliderBox = h("div", { class: "weight-sliders" });
-  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Bigger for groups with more going on (0 = don't count it):"));
-  for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
-    sliderBox.appendChild(
-      makeSlider(label, state.settings[key], (v) => {
-        state.settings[key] = v;
-        cb.onSettingsChange({ [key]: v });
-        saveState(state);
-      }, { min: 0, max: 3, step: 0.1 }),
-    );
-  }
-  sizeBody.appendChild(sliderBox);
-
   function syncItems() {
     masterSwitch.classList.toggle("on", itemsOn);
     previewSwitch.classList.toggle("on", previewsOn);
@@ -262,6 +243,36 @@ export function createControls(
   });
   parent.appendChild(sizeSection);
 
+  // ---- Bubble sizes: everything that changes how big the circles are, in one place ----
+  const { section: bubbleSection, body: bubbleBody } = makeSection("Bubble sizes");
+  bubbleBody.appendChild(
+    makeSlider("Overall size", state.settings.nodeSize, (v) => {
+      state.settings.nodeSize = v;
+      cb.onSettingsChange({ nodeSize: v });
+      saveState(state);
+    }, { min: 0.4, max: 2.5, step: 0.05, hint: "Every group and organization bubble at once." }),
+  );
+  bubbleBody.appendChild(
+    makeSlider("Coalitions: bigger with more member orgs", state.settings.weightConnections, (v) => {
+      state.settings.weightConnections = v;
+      cb.onSettingsChange({ weightConnections: v });
+      saveState(state);
+    }, { hint: "All the way down makes every coalition the same size." }),
+  );
+  const sliderBox = h("div", { class: "weight-sliders" });
+  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Bigger for groups with more going on (0 = don't count it):"));
+  for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
+    sliderBox.appendChild(
+      makeSlider(label, state.settings[key], (v) => {
+        state.settings[key] = v;
+        cb.onSettingsChange({ [key]: v });
+        saveState(state);
+      }, { min: 0, max: 3, step: 0.1 }),
+    );
+  }
+  bubbleBody.appendChild(sliderBox);
+  parent.appendChild(bubbleSection);
+
   // ---- Advanced display settings (closed by default; added to the panel last) ----
   const { section: advSection, body: advBody } = makeSection("Advanced display settings", false);
   advSection.classList.add("advanced");
@@ -274,32 +285,32 @@ export function createControls(
   advBody.appendChild(subHead("Forces"));
   advBody.appendChild(forcesBody);
   forcesBody.appendChild(
-    makeSlider("Centre force", state.settings.centerForce, (v) => {
+    makeSlider("Pull to the middle", state.settings.centerForce, (v) => {
       state.settings.centerForce = v;
       cb.onSettingsChange({ centerForce: v });
       saveState(state);
-    }),
+    }, { hint: "Draws everything toward the centre. Higher = a tighter, rounder map." }),
   );
   forcesBody.appendChild(
-    makeSlider("Repel force", state.settings.repelForce, (v) => {
+    makeSlider("Push apart", state.settings.repelForce, (v) => {
       state.settings.repelForce = v;
       cb.onSettingsChange({ repelForce: v });
       saveState(state);
-    }),
+    }, { hint: "How hard bubbles push each other away. Lower = organizations sit closer together." }),
   );
   forcesBody.appendChild(
-    makeSlider("Link force", state.settings.linkForce, (v) => {
+    makeSlider("Pull to their coalition", state.settings.linkForce, (v) => {
       state.settings.linkForce = v;
       cb.onSettingsChange({ linkForce: v });
       saveState(state);
-    }),
+    }, { hint: "How strongly each organization is pulled toward the coalitions it belongs to. Higher = tighter clusters." }),
   );
   forcesBody.appendChild(
-    makeSlider("Link distance", state.settings.linkDistance, (v) => {
+    makeSlider("Distance from their coalition", state.settings.linkDistance, (v) => {
       state.settings.linkDistance = v;
       cb.onSettingsChange({ linkDistance: v });
       saveState(state);
-    }),
+    }, { hint: "How far members like to sit from their coalition. Lower = members gather closer around it." }),
   );
 
   // ---- Group types ----
@@ -350,31 +361,23 @@ export function createControls(
     }
   }
   renderGroups();
-  parent.appendChild(groupsSection);
 
   // ---- Display (inside Advanced) ----
   const displayBody = h("div", { class: "adv-group" });
   advBody.appendChild(subHead("Display"));
   advBody.appendChild(displayBody);
   displayBody.appendChild(
-    makeSlider("Node size", state.settings.nodeSize, (v) => {
-      state.settings.nodeSize = v;
-      cb.onSettingsChange({ nodeSize: v });
-      saveState(state);
-    }, { min: 0.4, max: 2.5, step: 0.05 }),
-  );
-  displayBody.appendChild(
-    makeSlider("Link thickness", state.settings.linkThickness, (v) => {
+    makeSlider("Line thickness", state.settings.linkThickness, (v) => {
       state.settings.linkThickness = v;
       cb.onSettingsChange({ linkThickness: v });
       saveState(state);
-    }, { min: 0.5, max: 5, step: 0.1 }),
+    }, { min: 0.5, max: 5, step: 0.1, hint: "The lines between coalitions and their members." }),
   );
 
   const animateBtn = h(
     "button",
-    { class: "animate-btn", type: "button" },
-    "Animate",
+    { class: "animate-btn", type: "button", title: "Shake the map so everything settles again" },
+    "Re-settle the map",
   );
   animateBtn.addEventListener("click", () => cb.onAnimate());
   displayBody.appendChild(animateBtn);
@@ -386,7 +389,7 @@ export function createControls(
   );
   resetBtn.addEventListener("click", () => {
     state.settings = { ...DEFAULT_GRAPH_SETTINGS };
-    for (const g of state.groups) g.active = false;
+    for (const g of state.groups) g.active = true;
     cb.onSettingsChange(state.settings);
     notifyGroupsChanged();
     saveState(state);

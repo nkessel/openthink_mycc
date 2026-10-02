@@ -659,20 +659,26 @@ export function createGraph(
     return Math.max(nodeRadiusOf(n) + SAT_BUB_R + 10, (shown * (2 * SAT_BUB_R + 8)) / (2 * Math.PI));
   }
   const satCountCache = new Map<string, number>();
-  function itemExtent(n: GraphNode): number {
-    if (!settings.alwaysShow) return nodeRadiusOf(n);
+  /**
+   * How far a group's previews reach. Zoomed out they are small dots hugging the circle, so groups can sit
+   * close together; zoomed in they become full icons on a wider ring, so groups spread out to make room.
+   */
+  function itemExtent(n: GraphNode, detail: boolean = satMode === 1): number {
+    const r0 = nodeRadiusOf(n);
+    if (!settings.alwaysShow) return r0;
     let c = satCountCache.get(n.id);
     if (c === undefined) satCountCache.set(n.id, (c = satItemsOf(n).length));
-    return c ? satRingR(n, c) + SAT_BUB_R + 6 : nodeRadiusOf(n);
+    if (!c) return r0;
+    return detail ? satRingR(n, c) + SAT_BUB_R + 6 : r0 + 10 + SAT_DOT_R + 1;
   }
-  /** Space each group keeps around itself: its circle, or its ring of items when they are always on. */
+  /** Space each group keeps around itself (the same gap as before previews existed, plus their ring). */
   function collideRadius(n: GraphNode): number {
-    return itemExtent(n) + 18;
+    return itemExtent(n) + 14;
   }
-  function refreshSpacing() {
+  function refreshSpacing(alpha = 0.5) {
     satCountCache.clear();
     collideForce.radius(collideRadius);
-    sim.alpha(0.5).restart();
+    sim.alpha(Math.max(sim.alpha(), alpha)).restart();
   }
 
   function drawSats(n: GraphNode, level: 0 | 1) {
@@ -767,6 +773,9 @@ export function createGraph(
     if (want === satMode) return;
     satMode = want;
     detailToken++;
+    // Zoomed in: groups drift apart a little so the full icons don't overlap; zoomed out: back together.
+    collideForce.radius(collideRadius);
+    sim.alpha(Math.max(sim.alpha(), 0.25)).restart();
     if (want === 0) nodeSel.each((d) => { if (satLevel.get(d.id) !== 0) drawSats(d, 0); });
     else queueDetail();
   }
