@@ -374,7 +374,7 @@ export function createGraph(
 
   const collideForce = d3
     .forceCollide<GraphNode>()
-    .radius((n) => nodeRadiusOf(n) + 14)
+    .radius((n) => nodeRadiusOf(n) + 18) // replaced by collideRadius() once the item helpers exist
     .iterations(2);
 
   const xForce = d3.forceX<GraphNode>(0).strength(centerForceStrength());
@@ -581,8 +581,81 @@ export function createGraph(
     return out.sort((x, y) => items.indexOf(x) - items.indexOf(y));
   }
 
+  // ----- Item physics: items on a ring push each other apart like the group bubbles do, can be dragged,
+  // and spring back to their place on the ring. One small simulation per ring (a few dozen items at most).
+  interface RingNode extends d3.SimulationNodeDatum { tx: number; ty: number; r: number; }
+  function ringPhysics(
+    els: SVGGElement[],
+    angles: number[],
+    radii: number[],
+    ringR: number,
+    startR: number,
+    pad: number,
+    onTick?: (nodes: RingNode[]) => void,
+  ): d3.Simulation<RingNode, undefined> {
+    const nodes: RingNode[] = els.map((_, i) => ({
+      x: Math.cos(angles[i]) * startR, y: Math.sin(angles[i]) * startR,
+      tx: Math.cos(angles[i]) * ringR, ty: Math.sin(angles[i]) * ringR, r: radii[i],
+    }));
+    const place = () => {
+      els.forEach((el, i) => el.setAttribute("transform", `translate(${nodes[i].x},${nodes[i].y})`));
+      onTick?.(nodes);
+    };
+    const home = (alpha: number) => {
+      for (const d of nodes) {
+        d.vx = (d.vx ?? 0) + (d.tx - (d.x ?? 0)) * 0.12 * alpha;
+        d.vy = (d.vy ?? 0) + (d.ty - (d.y ?? 0)) * 0.12 * alpha;
+      }
+    };
+    const s = d3.forceSimulation<RingNode>(nodes)
+      .force("ring", d3.forceRadial<RingNode>(ringR, 0, 0).strength(0.25))
+      .force("home", home)
+      .force("collide", d3.forceCollide<RingNode>((d) => d.r + pad).strength(0.9).iterations(2))
+      .force("charge", d3.forceManyBody<RingNode>().strength(-30).distanceMax(Math.max(120, ringR)))
+      .alphaDecay(0.03)
+      .velocityDecay(0.32)
+      .on("tick", place);
+    place();
+    els.forEach((el, i) => {
+      d3.select<SVGGElement, RingNode>(el).datum(nodes[i]).call(
+        d3.drag<SVGGElement, RingNode>()
+          .clickDistance(4)
+          .on("start", (ev, d) => { if (!ev.active) s.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+          .on("drag", (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
+          // Let go and it springs back to its place on the ring (the others settle around it).
+          .on("end", (ev, d) => { if (!ev.active) s.alphaTarget(0).alpha(0.8).restart(); d.fx = null; d.fy = null; }),
+      );
+    });
+    return s;
+  }
+  const satSims = new Map<string, d3.Simulation<RingNode, undefined>>();
+
+  /** How far a group's items reach when they are always shown (so groups keep their items clear of each other). */
+  function satRingR(n: GraphNode, count: number): number {
+    const shown = Math.min(count, DETAIL_CAP);
+    return Math.max(nodeRadiusOf(n) + SAT_BUB_R + 10, (shown * (2 * SAT_BUB_R + 8)) / (2 * Math.PI));
+  }
+  const satCountCache = new Map<string, number>();
+  function itemExtent(n: GraphNode): number {
+    if (!settings.showBubbles || !settings.alwaysShow) return nodeRadiusOf(n);
+    let c = satCountCache.get(n.id);
+    if (c === undefined) satCountCache.set(n.id, (c = satItemsOf(n).length));
+    return c ? satRingR(n, c) + SAT_BUB_R + 6 : nodeRadiusOf(n);
+  }
+  /** Space each group keeps around itself: its circle, or its ring of items when they are always on. */
+  function collideRadius(n: GraphNode): number {
+    return itemExtent(n) + 18;
+  }
+  function refreshSpacing() {
+    satCountCache.clear();
+    collideForce.radius(collideRadius);
+    sim.alpha(0.5).restart();
+  }
+
   function drawSats(n: GraphNode, level: 0 | 1) {
     const sel = d3.select<SVGGElement, GraphNode>(nodeSel.filter((d) => d.id === n.id).node() as SVGGElement);
+    satSims.get(n.id)?.stop();
+    satSims.delete(n.id);
     sel.selectAll("g.sats").remove();
     satLevel.set(n.id, level);
     if (!settings.showBubbles || !settings.alwaysShow) return;
@@ -603,12 +676,15 @@ export function createGraph(
       return;
     }
     const shown = spread(items, DETAIL_CAP);
-    const rr = Math.max(r0 + SAT_BUB_R + 10, (shown.length * (2 * SAT_BUB_R + 8)) / (2 * Math.PI));
+    const rr = satRingR(n, items.length);
+    const els: SVGGElement[] = [];
+    const angles: number[] = [];
     shown.forEach((b, i) => {
       const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
       const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}`)
-        .attr("transform", `translate(${Math.cos(a) * rr},${Math.sin(a) * rr})`)
         .style("cursor", "pointer");
+      els.push(bg.node()!);
+      angles.push(a);
       bg.append("title").text(b.label);
       bg.append("circle").attr("r", SAT_BUB_R);
       const inner = bg.append("g").attr("transform", "scale(0.5)");
@@ -623,6 +699,8 @@ export function createGraph(
       });
     });
     if (items.length > shown.length) g.append("text").attr("class", "sat-more").attr("y", -rr - SAT_BUB_R - 4).text(`+${items.length - shown.length}`);
+    // They spill out of the group and jostle into place; drag one and the others make room.
+    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_BUB_R), rr, r0 * 0.6, 3));
   }
 
   /** Dots for everyone (cheap); bubbles for what is on screen when zoomed in, a batch at a time. */
@@ -907,6 +985,7 @@ export function createGraph(
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   let focusId: string | null = null;
+  let focusSim: { stop(): unknown } | null = null;
   let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, held on an outer ring while it is in focus
   const focusBar = h("div", { class: "focus-bar" });
   const focusCard = h("div", { class: "focus-card" });
@@ -1155,20 +1234,24 @@ export function createGraph(
       }
     }
 
+    focusSim?.stop();
+    focusSim = null;
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
+    const bubbleEls: SVGGElement[] = [];
+    const bubbleAngles: number[] = [];
+    const bubbleLines: SVGLineElement[] = [];
     bubbles.forEach((b, i) => {
       const a = (2 * Math.PI * i) / bubbles.length - Math.PI / 2;
-      const bx = Math.cos(a) * ringR;
-      const by = Math.sin(a) * ringR;
-      // Bubbles grow out of the group and settle into the ring.
+      // Bubbles spill out of the group, push each other into a ring, and can be dragged around.
       const line = focusGroup.insert("line", ".bubble").attr("class", "bubble-link")
         .attr("x1", Math.cos(a) * nodeR).attr("y1", Math.sin(a) * nodeR).attr("x2", Math.cos(a) * nodeR).attr("y2", Math.sin(a) * nodeR);
-      line.transition().duration(500).ease(d3.easeCubicOut).attr("x2", bx).attr("y2", by);
-      const g = focusGroup.append("g").attr("class", `bubble b-${b.kind}`)
-        .attr("transform", `translate(${Math.cos(a) * nodeR},${Math.sin(a) * nodeR}) scale(0.2)`)
-        .attr("opacity", 0);
-      g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", `translate(${bx},${by}) scale(1)`).attr("opacity", 1);
+      bubbleLines.push(line.node()!);
+      const outer = focusGroup.append("g").attr("class", `bubble b-${b.kind}`);
+      bubbleEls.push(outer.node()!);
+      bubbleAngles.push(a);
+      const g = outer.append("g").attr("class", "bubble-body").attr("transform", "scale(0.2)").attr("opacity", 0);
+      g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", "scale(1)").attr("opacity", 1);
       const right = Math.cos(a) >= 0;
       const side = right ? 1 : -1;
       // A transparent hit area under the text, so clicking the title clicks the bubble, not whatever is behind it.
@@ -1200,13 +1283,26 @@ export function createGraph(
           .attr("text-anchor", right ? "start" : "end")
           .text(b.subtitle);
       }
-      g.on("click", (event: Event) => {
+      outer.on("click", (event: Event) => {
         event.stopPropagation();
         const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
         const wb = wrap.getBoundingClientRect();
         showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 });
       });
     });
+    if (bubbleEls.length) {
+      // Keep each bubble's link line attached as it moves.
+      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map((b) => b.r), ringR, nodeR, 18, (nodes) => {
+        nodes.forEach((d, i) => {
+          const ang = Math.atan2(d.y ?? 0, d.x ?? 0);
+          const l = bubbleLines[i];
+          l.setAttribute("x1", String(Math.cos(ang) * nodeR));
+          l.setAttribute("y1", String(Math.sin(ang) * nodeR));
+          l.setAttribute("x2", String(d.x ?? 0));
+          l.setAttribute("y2", String(d.y ?? 0));
+        });
+      });
+    }
 
     // Partners stay visible but recede; everything else nearly disappears.
     const partners = partnersOf(n);
@@ -1231,7 +1327,7 @@ export function createGraph(
         const dx = (o.x ?? 0) - (f.x ?? 0);
         const dy = (o.y ?? 0) - (f.y ?? 0);
         const d = Math.hypot(dx, dy) || 1;
-        const min = clearR + nodeRadiusOf(o);
+        const min = clearR + itemExtent(o);
         if (d < min) {
           o.vx = (o.vx ?? 0) + (dx / d) * (min - d) * 0.25;
           o.vy = (o.vy ?? 0) + (dy / d) * (min - d) * 0.25;
@@ -1292,6 +1388,8 @@ export function createGraph(
       n.fy = null;
     }
     focusId = null;
+    focusSim?.stop();
+    focusSim = null;
     for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     pinnedMembers = [];
     nodeSel.classed("sats-hidden", false).classed("member-ring", false);
@@ -1370,20 +1468,22 @@ export function createGraph(
           try { localStorage.setItem("openthink.always", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
         }
         refreshSats();
+        refreshSpacing();
       }
       if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
-        collideForce.radius((n) => nodeRadiusOf(n) + 14);
+        collideForce.radius(collideRadius);
         applyVisualSettings();
         sim.alpha(0.4).restart();
       }
       if (partial.showBubbles !== undefined) {
         if (!settings.showBubbles && focusId) exitFocus(); // Classic: fold everything back to the plain network
         refreshSats();
+        refreshSpacing();
         syncViewSwitch();
         window.dispatchEvent(new CustomEvent("openthink:viewmode", { detail: { bubbles: settings.showBubbles } }));
       }
       if (partial.nodeSize !== undefined) {
-        collideForce.radius((n) => nodeRadiusOf(n) + 14);
+        collideForce.radius(collideRadius);
         applyVisualSettings();
       }
       if (partial.linkThickness !== undefined) {
@@ -1417,6 +1517,7 @@ export function createGraph(
   syncViewSwitch();
   satsReady = true;
   refreshSats();
+  collideForce.radius(collideRadius);
   return api;
 }
 
