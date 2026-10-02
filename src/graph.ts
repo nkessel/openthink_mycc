@@ -1194,6 +1194,36 @@ export function createGraph(
     }
   }
 
+  // ----- Item cards (zoomed-in group view) -----
+  const CARD_W = 200;
+  const CARD_MAX_H = 150; // room for the card; the card itself is only as tall as its text
+  function itemCard(b: Bubble): HTMLElement {
+    const it = b.item as Thought & Project & CoalitionEvent & Action;
+    let kind = "";
+    const lines: string[] = [];
+    if (b.kind === "event") {
+      kind = (it as CoalitionEvent).recurrence ? "Event · repeats" : "Event";
+      lines.push(fmtEventTime((it as CoalitionEvent).date, (it as CoalitionEvent).end, (it as CoalitionEvent).recurrence));
+      if ((it as CoalitionEvent).location) lines.push((it as CoalitionEvent).location);
+      else if ((it as CoalitionEvent).online) lines.push("Online");
+    } else if (b.kind === "project") {
+      kind = `Project · ${(it as Project).status}`;
+      if ((it as Project).location) lines.push((it as Project).location!);
+    } else if (b.kind === "action") {
+      kind = (it as Action).kind === "role" ? "Volunteer role" : "Action";
+      if ((it as Action).deadline) lines.push(`By ${(it as Action).deadline}`);
+    } else {
+      kind = "Thinking";
+      if ((it as Thought).date) lines.push(fmtDate(`${(it as Thought).date}T12:00:00`));
+    }
+    const title = b.kind === "thought" ? (it as Thought).text : (it as Project | CoalitionEvent | Action).name;
+    return h("div", { class: `item-card k-${b.kind}`, xmlns: "http://www.w3.org/1999/xhtml" },
+      h("div", { class: "item-card-kind" }, kind),
+      h("div", { class: "item-card-title" }, title),
+      ...lines.map((l) => h("div", { class: "item-card-meta" }, l)),
+    );
+  }
+
   function enterFocus(id: string) {
     const n = nodeById.get(id);
     if (!n) return;
@@ -1219,9 +1249,11 @@ export function createGraph(
     // The opened group shows a little larger (CSS scales it; the ring makes room for it).
     nodeSel.classed("focused", (d) => d.id === id);
     const nodeR = nodeRadiusOf(n) * FOCUS_SCALE;
-    const ringR = bubbles.length ? Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI)) : nodeR + 40;
+    // Each item is an icon with a card under it, so items need about a card's width of room around the ring,
+    // and the top ones need room for their card above the group.
+    const ringR = bubbles.length ? Math.max(nodeR + 150, (bubbles.length * (CARD_W + 16)) / (2 * Math.PI)) : nodeR + 40;
     // Room a bubble's text needs beyond the ring; everything else is moved out past this.
-    let clearR = bubbles.length ? ringR + 230 : nodeR + 120;
+    let clearR = bubbles.length ? ringR + CARD_W / 2 + 120 : nodeR + 120;
 
     // A coalition's member orgs sit, at full strength, in a cluster around the items: a few rows on an oval
     // that hugs the items and their labels (labels run sideways, so the oval is wider than tall).
@@ -1247,7 +1279,7 @@ export function createGraph(
         const spacing = 2 * maxR + 12; // between neighbours along a row
         const rowGap = 2 * maxR + 20; // between rows (room for a name under each)
         // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
-        let rx = bubbles.length ? ringR + 250 : nodeR + 90;
+        let rx = bubbles.length ? ringR + CARD_MAX_H + 60 : nodeR + 90;
         let ry = rx;
         // Members may jostle, but never into the items and their labels.
         memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
@@ -1295,37 +1327,19 @@ export function createGraph(
       bubbleAngles.push(a);
       const g = outer.append("g").attr("class", "bubble-body").attr("transform", "scale(0.2)").attr("opacity", 0);
       g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", "scale(1)").attr("opacity", 1);
-      const right = Math.cos(a) >= 0;
-      const side = right ? 1 : -1;
-      // A transparent hit area under the text, so clicking the title clicks the bubble, not whatever is behind it.
-      const textW = Math.max(b.label.length, (b.subtitle || "").length) * LABEL_PX;
-      g.append("rect").attr("class", "bubble-hit")
-        .attr("x", right ? 0 : -(b.r + 8 + textW)).attr("y", -b.r - 2)
-        .attr("width", b.r + 8 + textW).attr("height", 2 * b.r + 4);
       g.append("circle").attr("r", b.r);
       if (b.kind === "thought") g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
       else {
         const isRole = b.kind === "action" && (b.item as Action).kind === "role";
         drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : b.kind, b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
-        const word = isRole ? "VOLUNTEER" : b.kind.toUpperCase();
-        g.append("text").attr("class", "bubble-type").attr("y", b.r + 10).text(word);
         if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) {
           drawRecurArc(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, b.r - 1.5, 1);
         }
       }
-      const label = g.append("text")
-        .attr("class", "bubble-label")
-        .attr("x", side * (b.r + 6))
-        .attr("dy", b.subtitle ? "-0.2em" : "0.35em")
-        .attr("text-anchor", right ? "start" : "end")
-        .text(b.label);
-      void label;
-      if (b.subtitle) {
-        g.append("text").attr("class", "bubble-sub")
-          .attr("x", side * (b.r + 6)).attr("dy", "1.15em")
-          .attr("text-anchor", right ? "start" : "end")
-          .text(b.subtitle);
-      }
+      // Under the icon: a translucent card with the full name, what it is, when and where (nothing cut off).
+      const fo = g.append("foreignObject").attr("class", "item-card-fo")
+        .attr("x", -CARD_W / 2).attr("y", b.r + 5).attr("width", CARD_W).attr("height", CARD_MAX_H);
+      fo.node()!.appendChild(itemCard(b));
       outer.on("click", (event: Event) => {
         event.stopPropagation();
         const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
@@ -1335,7 +1349,7 @@ export function createGraph(
     });
     if (bubbleEls.length) {
       // Keep each bubble's link line attached as it moves.
-      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map((b) => b.r), ringR, nodeR, 18, (nodes) => {
+      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map(() => CARD_W / 2), ringR, nodeR, 6, (nodes) => {
         nodes.forEach((d, i) => {
           const ang = Math.atan2(d.y ?? 0, d.x ?? 0);
           const l = bubbleLines[i];
@@ -1375,9 +1389,13 @@ export function createGraph(
         const { rx, ry } = memberKeepOut;
         const e = rx && ry ? Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2) : 2;
         if (e < 1) {
-          const push = (1 / Math.max(e, 0.05) - 1) * 0.5;
-          o.vx = (o.vx ?? 0) + dx * push;
-          o.vy = (o.vy ?? 0) + dy * push;
+          // a hard edge: put it back on the boundary and drop any inward speed
+          const k2 = 1 / Math.max(e, 0.05);
+          o.x = (f.x ?? 0) + dx * k2;
+          o.y = (f.y ?? 0) + dy * k2;
+          const len = Math.hypot(dx, dy) || 1;
+          const inward = ((o.vx ?? 0) * dx + (o.vy ?? 0) * dy) / len;
+          if (inward < 0) { o.vx = (o.vx ?? 0) - (inward * dx) / len; o.vy = (o.vy ?? 0) - (inward * dy) / len; }
         }
       }
     } : null);
@@ -1436,7 +1454,7 @@ export function createGraph(
     const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
     const scale = Math.max(
       0.35,
-      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + 230, memberRX + 40)), vh / (2 * Math.max(ringR + 90, memberRY + 110))),
+      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + CARD_W / 2 + 30, memberRX + 40)), vh / (2 * Math.max(ringR + CARD_MAX_H + 40, memberRY + 110))),
     );
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
