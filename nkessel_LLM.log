@@ -445,3 +445,7 @@ What / why
 - Green Energy Consumers Alliance: read its event pages (robots.txt allows) and added 8 RSVP links (7 Zoom webinar registrations + the Annual Fall Meeting on Eventbrite; the Harvest Festival has no registration) and the specific event page for 3 that pointed at the general events page; marked verified. Skipped "Electric Trunk-or-Treat" (Providence, RI).
 - Apps Script "Fill in missing details" also fills blank event rsvp_link and swaps a general events-page link for the event's own page (test added).
 - BACKLOG: "RSVP links for every upcoming event" added at the top (13 of ~110 upcoming events have one now).
+
+## 2026-10-02 — Palestinian rights sector: source material + scheduled build
+- Nathan forwarded the JVP Western Mass newsletter (2026-10-02) as the first "Social justice" sector for a future topic expansion. research/sectors/palestinian-rights/SOURCE.md keeps only its public parts (groups, events, recurring standouts, actions, public links). Personal emails and phone numbers were left out on purpose, and so were items not about Palestine (kept for later sectors).
+- A one-time scheduled task ("Climate map: Palestinian rights layer + Topics view prototype", 2026-10-02 7:52 PM ET) builds (A) the sector layer with a closed-by-default "Social justice" settings section and toggles that are off by default, and (B) the Topics view prototype on the draft topic list with the cheap re-tag. Two PRs; it never merges.
