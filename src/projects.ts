@@ -1,5 +1,6 @@
 import type { DataFile, Project, GraphNode } from "./types";
 import { allProjects, ownerBadge, type Owner } from "./owners";
+import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { createItemFilters, placeFor, termsMatch } from "./itemfilters";
@@ -158,9 +159,7 @@ export function createProjectsView(
         h("div", { class: "name" }, r.project.name),
         h("div", { class: "desc" }, r.project.description),
         meta,
-        r.project.link && /^https?:\/\//.test(r.project.link)
-          ? h("a", { class: "item-link", href: r.project.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗")
-          : null,
+        itemButtons("project", r.project),
         staleNotice("project", r.owner.node, r.project.needs_info, r.project.verified, r.project),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));

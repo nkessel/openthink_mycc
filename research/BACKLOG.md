@@ -10,6 +10,12 @@ before pushing; log in `nkessel_LLM.log`; never push to `main` or `development_b
 
 ## Data gaps
 
+- [ ] **RSVP links for every upcoming event.** Most events in `public/data.json` (and `public/maps/vt.json`) only
+      link to a group's events page. For each upcoming event, open its own page and record the sign-up link in
+      `rsvp_link` (Zoom/Eventbrite/Mobilize/Action Network/Google Form…), and replace a general events-page `link`
+      with the event's own page. Only from the host's pages; never guess. Green Energy Consumers Alliance is done
+      (2026-10-02). The sheet picks these up via "Fill in missing details … from GitHub" (blank cells only).
+
 - [ ] **Massachusetts: 34 unresearched orgs.** The `not_found` ids in `research/ma-gaps/fill3.json` were never
       researched (search cap ran out). Use `research/ma-gaps/INSTRUCTIONS.md`; write `research/ma-gaps/fill4.json`;
       merge into `public/data.json` blank fields only (same as the merge in the 2026-10-01 log entry).

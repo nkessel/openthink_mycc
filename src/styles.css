@@ -2225,3 +2225,22 @@ text.sat-more { fill: var(--text-dim); }
 .nodes.detail .node-org:not(.focused) > text.node-name {
   transform: translateY(calc(var(--nr, 0) * 1px));
 }
+
+/* ---------- RSVP + Link to website (prominent); Edit (subtle) ---------- */
+.item-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+.btn-rsvp, .btn-site {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 700;
+  line-height: 1.2; text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.btn-rsvp { color: #0b1220; background: #fbbf24; border: 1px solid #fbbf24; }
+.btn-rsvp:hover { background: #fcd34d; border-color: #fcd34d; }
+.btn-site { color: var(--text); background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; }
+.btn-site:hover { background: rgba(56, 189, 248, 0.24); }
+.focus-card .item-buttons { margin-top: 8px; }
+/* the edit link is still there, but quiet */
+.stale-notice .edit-btn, .stale-notice.verified .edit-btn {
+  display: inline; margin: 0 0 0 4px; padding: 0; border: 0; border-radius: 0; background: none;
+  font-size: 11px; font-weight: 500; color: var(--text-dim); text-decoration: underline; text-underline-offset: 2px;
+}
+.stale-notice .edit-btn:hover { color: var(--text); background: none; }

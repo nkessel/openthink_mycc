@@ -10,6 +10,7 @@ import type {
   CoalitionEvent,
   Action,
 } from "./types";
+import { itemButtons } from "./links";
 import { h } from "./dom";
 import { typeIcon } from "./icons";
 import { staleNotice } from "./notice";
@@ -1118,13 +1119,9 @@ export function createGraph(
     const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent | Action).description;
     if (desc) focusCard.appendChild(h("p", { class: "focus-card-text" }, desc));
     if (b.kind === "thought") focusCard.appendChild(h("div", { class: "focus-card-source" }, `Source: ${(it as Thought).source}`));
-    const rsvp = (it as { rsvp_link?: string }).rsvp_link;
-    if (b.kind === "event" && rsvp && /^https?:\/\//.test(rsvp)) {
-      focusCard.appendChild(h("a", { class: "focus-card-link rsvp-link", href: rsvp, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗"));
-    }
-    const link = (it as { link?: string }).link;
-    if (link && /^https?:\/\//.test(link)) {
-      focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
+    if (b.kind !== "thought") {
+      const btns = itemButtons(b.kind, it as { rsvp_link?: string; link?: string });
+      if (btns) focusCard.appendChild(btns);
     }
     if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified));
     focusCard.style.visibility = "hidden";

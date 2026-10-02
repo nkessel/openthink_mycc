@@ -1,5 +1,6 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, ownerBadge, type Owner } from "./owners";
+import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { occursOn, parseRecurrence } from "./recurrence";
@@ -252,7 +253,6 @@ export function createEventsView(
     x.addEventListener("click", close);
     const toMap = h("button", { class: "detail-map-btn", type: "button" }, `See ${r.owner.name} on the map`);
     toMap.addEventListener("click", () => { close(); cb.onCoalitionClick(r.owner.node); });
-    const safe = (u?: string) => !!u && /^https?:\/\//.test(u);
     const card = h("div", { class: "detail-card", role: "dialog", "aria-label": e.name },
       x,
       h("div", { class: "head" },
@@ -267,9 +267,7 @@ export function createEventsView(
       e.description ? h("p", { class: "detail-desc" }, e.description) : null,
       e.topic_tags && e.topic_tags.length ? h("div", { class: "detail-tags" }, e.topic_tags.map((t) => t.replace(/_/g, " ")).join(" · ")) : null,
       e.public_contact ? h("div", { class: "detail-contact" }, `Contact: ${e.public_contact}`) : null,
-      h("div", { class: "detail-links" },
-        safe(e.rsvp_link) ? h("a", { class: "item-link rsvp-link", href: e.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗") : null,
-        safe(e.link) ? h("a", { class: "item-link", href: e.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗") : null),
+      itemButtons("event", e),
       staleNotice("event", r.owner.node, e.needs_info, e.verified, e),
       toMap);
     const overlay = h("div", { class: "detail-overlay" }, card);
@@ -297,12 +295,7 @@ export function createEventsView(
           h("span", { class: "pill kind" }, r.event.location),
           !r.isUpcoming && h("span", { class: "pill" }, "past"),
         ),
-        r.event.rsvp_link && /^https?:\/\//.test(r.event.rsvp_link)
-          ? h("a", { class: "item-link rsvp-link", href: r.event.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗")
-          : null,
-        r.event.link && /^https?:\/\//.test(r.event.link)
-          ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
-          : null,
+        itemButtons("event", r.event),
         staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified, r.event),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
