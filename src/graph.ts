@@ -74,7 +74,7 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   weightEvents: 0,
   weightProjects: 0,
   weightActions: 0,
-  alwaysShow: false,
+  alwaysShow: true,
   showAllEvents: true,
   showAllProjects: true,
   showAllActions: true,
@@ -172,26 +172,12 @@ export function createGraph(
       api.setSelectedNode(n);
     }),
   );
-  // View switch: "Bubbles" zooms into a group and shows its events/projects/actions around it;
-  // "Classic" is the plain network (clicking a group just opens its details panel).
-  const viewSwitch = document.createElement("div");
-  viewSwitch.className = "view-switch";
-  viewSwitch.setAttribute("role", "group");
-  viewSwitch.setAttribute("aria-label", "Map view");
-  const viewBtns: Record<"bubbles" | "classic", HTMLButtonElement> = {
-    bubbles: document.createElement("button"),
-    classic: document.createElement("button"),
-  };
-  viewBtns.bubbles.textContent = "Items on";
-  viewBtns.bubbles.title = "When you click a group: zoom in and show its events, projects and actions as bubbles";
-  viewBtns.classic.textContent = "Items off";
-  viewBtns.classic.title = "When you click a group: just open its details panel (no zoom, no bubbles)";
-  for (const k of ["bubbles", "classic"] as const) {
-    viewBtns[k].type = "button";
-    viewBtns[k].addEventListener("click", () => setViewMode(k === "bubbles"));
-    viewSwitch.appendChild(viewBtns[k]);
-  }
-  overlay.appendChild(viewSwitch);
+  // One plain button on the map: hide or show the previews of every group's events, projects and actions.
+  const previewBtn = document.createElement("button");
+  previewBtn.type = "button";
+  previewBtn.className = "preview-toggle";
+  previewBtn.addEventListener("click", () => setPreviews(!settings.alwaysShow));
+  overlay.appendChild(previewBtn);
   const resetBtn = document.createElement("button");
   resetBtn.type = "button";
   resetBtn.className = "reset-map-btn";
@@ -203,14 +189,26 @@ export function createGraph(
   });
   overlay.appendChild(resetBtn);
   function syncViewSwitch() {
-    viewBtns.bubbles.classList.toggle("active", settings.showBubbles);
-    viewBtns.classic.classList.toggle("active", !settings.showBubbles);
+    const on = settings.alwaysShow;
+    previewBtn.classList.toggle("on", on);
+    previewBtn.setAttribute("aria-pressed", String(on));
+    previewBtn.textContent = on ? "◉ Hide event & project previews" : "○ Show event & project previews";
+    previewBtn.title = on
+      ? "Hide the small events, projects and actions shown around every group"
+      : "Show each group's events, projects and actions around it on the map";
   }
-  // The sidebar has its own copy of this switch (above the size sliders); it talks to us through window events.
+  // The sidebar has the same switches; they talk to us through window events.
   window.addEventListener("openthink:setview", (e) => setViewMode(!!(e as CustomEvent).detail?.bubbles));
+  window.addEventListener("openthink:setpreviews", (e) => setPreviews(!!(e as CustomEvent).detail?.on));
+  /** "Zoom in on a group when you click it" (and show its items around it). */
   function setViewMode(bubbles: boolean) {
     api.updateSettings({ showBubbles: bubbles });
     try { localStorage.setItem("openthink.bubbles", bubbles ? "1" : "0"); } catch (_) { /* private mode */ }
+  }
+  /** Previews of every group's events, projects and actions around it. */
+  function setPreviews(on: boolean) {
+    api.updateSettings({ alwaysShow: on });
+    window.dispatchEvent(new CustomEvent("openthink:previewsmode", { detail: { on } }));
   }
   // Org-to-org toggle: built here (it drives the graph), shown in the sidebar with the other filters.
   const toggle = document.createElement("label");
@@ -298,7 +296,7 @@ export function createGraph(
   // ----- Settings (mutable) -----
   let settings: GraphSettings = { ...DEFAULT_GRAPH_SETTINGS };
   try { if (localStorage.getItem("openthink.bubbles") === "0") settings.showBubbles = false; } catch (_) { /* ignore */ }
-  try { if (localStorage.getItem("openthink.always") === "1") settings.alwaysShow = true; } catch (_) { /* ignore */ }
+  try { if (localStorage.getItem("openthink.previews") === "0") settings.alwaysShow = false; } catch (_) { /* ignore */ }
   let groups: GroupRule[] = [];
 
   // Helpers to compute the actual force strengths from normalized 0..1 sliders.
@@ -629,6 +627,31 @@ export function createGraph(
     return s;
   }
   const satSims = new Map<string, d3.Simulation<RingNode, undefined>>();
+  /** The parent moved by (dx, dy): leave its items behind for a moment so they trail it and jostle back into place. */
+  function nudgeRing(rs: d3.Simulation<RingNode, undefined>, dx: number, dy: number) {
+    for (const d of rs.nodes()) {
+      if (d.fx != null) continue;
+      d.x = (d.x ?? 0) - dx * 0.85;
+      d.y = (d.y ?? 0) - dy * 0.85;
+    }
+    if (rs.alpha() < 0.35) rs.alpha(0.35).restart();
+  }
+  const lastPos = new Map<string, { x: number; y: number }>();
+  function trailItems() {
+    const follow = (id: string, rs: d3.Simulation<RingNode, undefined> | null | undefined) => {
+      const n = nodeById.get(id);
+      if (!n || !rs) return;
+      const x = n.x ?? 0, y = n.y ?? 0;
+      const last = lastPos.get(id);
+      lastPos.set(id, { x, y });
+      if (!last) return;
+      const dx = x - last.x, dy = y - last.y;
+      if (Math.abs(dx) + Math.abs(dy) < 0.4 || Math.abs(dx) + Math.abs(dy) > 300) return;
+      nudgeRing(rs, dx, dy);
+    };
+    if (focusId) follow(focusId, focusSim);
+    for (const [id, rs] of satSims) follow(id, rs);
+  }
 
   /** How far a group's items reach when they are always shown (so groups keep their items clear of each other). */
   function satRingR(n: GraphNode, count: number): number {
@@ -637,7 +660,7 @@ export function createGraph(
   }
   const satCountCache = new Map<string, number>();
   function itemExtent(n: GraphNode): number {
-    if (!settings.showBubbles || !settings.alwaysShow) return nodeRadiusOf(n);
+    if (!settings.alwaysShow) return nodeRadiusOf(n);
     let c = satCountCache.get(n.id);
     if (c === undefined) satCountCache.set(n.id, (c = satItemsOf(n).length));
     return c ? satRingR(n, c) + SAT_BUB_R + 6 : nodeRadiusOf(n);
@@ -658,7 +681,7 @@ export function createGraph(
     satSims.delete(n.id);
     sel.selectAll("g.sats").remove();
     satLevel.set(n.id, level);
-    if (!settings.showBubbles || !settings.alwaysShow) return;
+    if (!settings.alwaysShow) return;
     const items = satItemsOf(n);
     if (!items.length) return;
     const r0 = nodeRadiusOf(n);
@@ -720,7 +743,7 @@ export function createGraph(
     return Math.abs(sx) < w / 2 + m && Math.abs(sy) < vh / 2 + m;
   }
   function queueDetail() {
-    if (!satsReady || !settings.showBubbles || !settings.alwaysShow || satMode !== 1) return;
+    if (!satsReady || !settings.alwaysShow || satMode !== 1) return;
     const todo = allNodes.filter((n) => satLevel.get(n.id) !== 1 && onScreen(n) && (nodeSel.filter((d) => d.id === n.id).style("display") !== "none") && satItemsOf(n).length);
     if (!todo.length) return;
     const token = ++detailToken;
@@ -739,7 +762,7 @@ export function createGraph(
     requestAnimationFrame(step);
   }
   function updateSatLevel() {
-    if (!satsReady || !settings.alwaysShow || !settings.showBubbles) return;
+    if (!satsReady || !settings.alwaysShow) return;
     const want: 0 | 1 = satMode === 1 ? (currentZoomScale < DETAIL_OFF_K ? 0 : 1) : (currentZoomScale >= DETAIL_ON_K ? 1 : 0);
     if (want === satMode) return;
     satMode = want;
@@ -867,6 +890,7 @@ export function createGraph(
       const f = nodeById.get(focusId);
       if (f) focusGroup.attr("transform", `translate(${f.x ?? 0},${f.y ?? 0})`);
     }
+    trailItems();
   });
 
   // Auto-fit once the simulation has settled enough
@@ -985,8 +1009,14 @@ export function createGraph(
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   let focusId: string | null = null;
-  let focusSim: { stop(): unknown } | null = null;
-  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, held on an outer ring while it is in focus
+  const FOCUS_SCALE = 1.35; // keep in step with .node-*.focused in styles.css
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let focusSim: d3.Simulation<any, undefined> | null = null;
+  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, gathered on an outer ring while it is in focus
+  // Where each member belongs, relative to the coalition: a spring pulls it there (it isn't pinned), so members
+  // jostle, make room for each other and follow the coalition when you drag it.
+  const memberHome = new Map<GraphNode, { ox: number; oy: number }>();
+  let memberKeepOut = { rx: 0, ry: 0 };
   const focusBar = h("div", { class: "focus-bar" });
   const focusCard = h("div", { class: "focus-card" });
   focusBar.style.display = "none";
@@ -1177,7 +1207,9 @@ export function createGraph(
 
     const allBubbles = bubblesFor(n);
     const bubbles = settings.showBubbles ? allBubbles : [];
-    const nodeR = nodeRadiusOf(n);
+    // The opened group shows a little larger (CSS scales it; the ring makes room for it).
+    nodeSel.classed("focused", (d) => d.id === id);
+    const nodeR = nodeRadiusOf(n) * FOCUS_SCALE;
     const ringR = bubbles.length ? Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI)) : nodeR + 40;
     // Room a bubble's text needs beyond the ring; everything else is moved out past this.
     let clearR = bubbles.length ? ringR + 230 : nodeR + 120;
@@ -1186,6 +1218,7 @@ export function createGraph(
     // that hugs the items and their labels (labels run sideways, so the oval is wider than tall).
     // Bigger orgs take the inner rows.
     pinnedMembers = [];
+    memberHome.clear();
     let memberRX = 0;
     let memberRY = 0;
     if (n.kind === "coalition") {
@@ -1204,14 +1237,15 @@ export function createGraph(
         const maxR = Math.max(...pinnedMembers.map((o) => nodeRadiusOf(o)));
         const spacing = 2 * maxR + 12; // between neighbours along a row
         const rowGap = 2 * maxR + 20; // between rows (room for a name under each)
-        // inner oval: just past the item labels at the sides, closer above and below
-        let rx = bubbles.length ? ringR + 245 : nodeR + 70;
-        let ry = bubbles.length ? ringR + 70 : nodeR + 70;
+        // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
+        let rx = bubbles.length ? ringR + 250 : nodeR + 90;
+        let ry = rx;
+        // Members may jostle, but never into the items and their labels.
+        memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
         let placed = 0;
         let row = 0;
         while (placed < pinnedMembers.length) {
-          // Ramanujan's approximation of the oval's perimeter
-          const per = Math.PI * (3 * (rx + ry) - Math.sqrt((3 * rx + ry) * (rx + 3 * ry)));
+          const per = 2 * Math.PI * rx; // circumference of this orbit
           const cap = Math.max(6, Math.floor(per / spacing));
           const left = pinnedMembers.length - placed;
           // the last row spreads its few members evenly instead of bunching at the top
@@ -1220,8 +1254,7 @@ export function createGraph(
           for (let i = 0; i < inRow; i++) {
             const a = (2 * Math.PI * (i + offset)) / inRow - Math.PI / 2;
             const o = pinnedMembers[placed + i];
-            o.fx = cx + Math.cos(a) * rx;
-            o.fy = cy + Math.sin(a) * ry;
+            memberHome.set(o, { ox: Math.cos(a) * rx, oy: Math.sin(a) * ry });
           }
           placed += inRow;
           memberRX = rx;
@@ -1236,6 +1269,7 @@ export function createGraph(
 
     focusSim?.stop();
     focusSim = null;
+    lastPos.delete(id);
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
     const bubbleEls: SVGGElement[] = [];
@@ -1318,6 +1352,27 @@ export function createGraph(
       return s !== id && t !== id;
     });
 
+    // Members spring toward their place around the coalition (wherever the coalition is now).
+    sim.force("memberPull", memberHome.size ? (alpha: number) => {
+      const f = nodeById.get(id);
+      if (!f) return;
+      const k = Math.max(0.06, alpha * 0.5);
+      for (const [o, h] of memberHome) {
+        if (o.fx != null) continue; // being dragged
+        o.vx = (o.vx ?? 0) + ((f.x ?? 0) + h.ox - (o.x ?? 0)) * k;
+        o.vy = (o.vy ?? 0) + ((f.y ?? 0) + h.oy - (o.y ?? 0)) * k;
+        // Keep-out oval around the items: anything inside is pushed back out along its own direction.
+        const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
+        const { rx, ry } = memberKeepOut;
+        const e = rx && ry ? Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2) : 2;
+        if (e < 1) {
+          const push = (1 / Math.max(e, 0.05) - 1) * 0.5;
+          o.vx = (o.vx ?? 0) + dx * push;
+          o.vy = (o.vy ?? 0) + dy * push;
+        }
+      }
+    } : null);
+
     // Push every other group well away so the bubbles have clear space (and nothing sits behind them).
     sim.force("focusPush", () => {
       const f = nodeById.get(id);
@@ -1351,7 +1406,7 @@ export function createGraph(
       stat("action", "Actions"),
     );
     focusBar.appendChild(legend);
-    const classicBtn = h("button", { class: "focus-back", type: "button", title: "Stop showing bubbles when a group is clicked; just open its details panel" }, "Turn items off");
+    const classicBtn = h("button", { class: "focus-back", type: "button", title: "From now on, clicking a group only opens its details panel (turn back on in Map settings)" }, "Don't zoom in on click");
     classicBtn.addEventListener("click", () => setViewMode(false));
     focusBar.appendChild(classicBtn);
     if (!count("thought")) {
@@ -1372,7 +1427,7 @@ export function createGraph(
     const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
     const scale = Math.max(
       0.35,
-      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + 230, memberRX + 30)), vh / (2 * Math.max(ringR + 90, memberRY + 45))),
+      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + 230, memberRX + 40)), vh / (2 * Math.max(ringR + 90, memberRY + 110))),
     );
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
@@ -1392,8 +1447,10 @@ export function createGraph(
     focusSim = null;
     for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     pinnedMembers = [];
-    nodeSel.classed("sats-hidden", false).classed("member-ring", false);
+    nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("focused", false);
     sim.force("focusPush", null);
+    sim.force("memberPull", null);
+    memberHome.clear();
     // Bubbles fold back into the group, then disappear.
     if (fit) {
       const nn = n;
@@ -1465,7 +1522,8 @@ export function createGraph(
       }
       if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined || partial.alwaysShow !== undefined) {
         if (partial.alwaysShow !== undefined) {
-          try { localStorage.setItem("openthink.always", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
+          try { localStorage.setItem("openthink.previews", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
+          syncViewSwitch();
         }
         refreshSats();
         refreshSpacing();

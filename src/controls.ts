@@ -24,8 +24,8 @@ export interface ControlsCallbacks {
   onAnimate(): void;
 }
 
-// v2: new defaults (stronger repel) — bumping the key lets everyone get them once.
-const STORAGE_KEY = "openthink.controls.v2";
+// v3: previews on by default — bumping the key lets everyone get the new defaults once.
+const STORAGE_KEY = "openthink.controls.v3";
 
 // Built-in groups — based on real values present in the dummy data.
 const DEFAULT_GROUPS: GroupSpec[] = [
@@ -186,29 +186,23 @@ export function createControls(
   textRow.classList.add("show-text-row");
   parent.appendChild(textRow);
 
-  const { section: sizeSection, body: sizeBody } = makeSection("Projects, Events, and Actions");
-  let itemsOn = true;
+  const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
+  let itemsOn = true; // zoom in on a group when it's clicked
   try { itemsOn = localStorage.getItem("openthink.bubbles") !== "0"; } catch (_) { /* ignore */ }
+  let previewsOn = true; // previews around every group (on by default)
+  try { previewsOn = localStorage.getItem("openthink.previews") !== "0"; } catch (_) { /* ignore */ }
 
-  // 1. Master switch: show events, projects & actions at all.
-  const masterRow = makeToggle("Show events, projects & actions", itemsOn, (v) => {
-    window.dispatchEvent(new CustomEvent("openthink:setview", { detail: { bubbles: v } }));
+  // 1. Previews around every group (the same switch as the button on the map).
+  const previewRow = makeToggle("Show previews of each group's events, projects & actions", previewsOn, (v) => {
+    window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: v } }));
   });
-  const masterSwitch = masterRow.querySelector<HTMLElement>(".switch")!;
-  sizeBody.appendChild(masterRow);
+  const previewSwitch = previewRow.querySelector<HTMLElement>(".switch")!;
+  sizeBody.appendChild(previewRow);
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Small dots around every group on the map; zoom in and they become bubbles you can click."));
 
-  // 2. One two-sided switch: items appear when you click a group, or are always on the map.
-  const dependent = h("div", { class: "items-dependent" });
-  dependent.appendChild(h("div", { class: "ctrl-hint sub" }, "Show them:"));
-  const seg = h("div", { class: "view-switch wide", role: "group", "aria-label": "When to show items" });
-  const segClick = h("button", { type: "button", title: "Items appear around a group only when you click it" }, "On click");
-  const segAlways = h("button", { type: "button", title: "Items stay on the map around every group; zoom in and they become full bubbles" }, "Always on");
-  seg.append(segClick, segAlways);
-  dependent.appendChild(seg);
-
-  // 3. Which kinds to show (only when "Always on").
+  // 2. Which kinds to preview (only while previews are on).
   const kindBox = h("div", { class: "kind-toggles" });
-  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Show on the map:"));
+  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which to preview:"));
   for (const [label, key] of [["Events", "showAllEvents"], ["Projects", "showAllProjects"], ["Actions & volunteer roles", "showAllActions"]] as const) {
     kindBox.appendChild(
       makeToggle(label, state.settings[key], (v) => {
@@ -218,10 +212,28 @@ export function createControls(
       }),
     );
   }
-  dependent.appendChild(kindBox);
+  sizeBody.appendChild(kindBox);
 
+  // 3. Clicking a group: zoom in and spread its events, projects & actions around it, or just open its details.
+  const masterRow = makeToggle("Zoom in on a group when you click it", itemsOn, (v) => {
+    window.dispatchEvent(new CustomEvent("openthink:setview", { detail: { bubbles: v } }));
+  });
+  const masterSwitch = masterRow.querySelector<HTMLElement>(".switch")!;
+  sizeBody.appendChild(masterRow);
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Off: clicking a group only opens its details panel."));
+
+  // 4. Group size.
+  sizeBody.appendChild(h("div", { class: "ctrl-hint sub" }, "Group size"));
+  sizeBody.appendChild(
+    makeSlider("Bigger for groups with more member orgs", state.settings.weightConnections, (v) => {
+      state.settings.weightConnections = v;
+      cb.onSettingsChange({ weightConnections: v });
+      saveState(state);
+    }),
+  );
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "All the way down makes every group the same size."));
   const sliderBox = h("div", { class: "weight-sliders" });
-  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Make groups with more going on bigger. Raise a slider to count that kind of work; 0 ignores it."));
+  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Bigger for groups with more going on (0 = don't count it):"));
   for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
     sliderBox.appendChild(
       makeSlider(label, state.settings[key], (v) => {
@@ -231,36 +243,21 @@ export function createControls(
       }, { min: 0, max: 3, step: 0.1 }),
     );
   }
-  dependent.appendChild(sliderBox);
-  sizeBody.appendChild(
-    makeSlider("Group size follows connected orgs", state.settings.weightConnections, (v) => {
-      state.settings.weightConnections = v;
-      cb.onSettingsChange({ weightConnections: v });
-      saveState(state);
-    }),
-  );
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Turn down so big coalitions aren't huge; all the way down makes every group the same size."));
-  sizeBody.appendChild(dependent);
+  sizeBody.appendChild(sliderBox);
 
   function syncItems() {
     masterSwitch.classList.toggle("on", itemsOn);
-    dependent.classList.toggle("disabled", !itemsOn);
-    segClick.classList.toggle("active", !state.settings.alwaysShow);
-    segAlways.classList.toggle("active", state.settings.alwaysShow);
-    kindBox.style.display = state.settings.alwaysShow ? "" : "none";
-    dependent.querySelectorAll("input,button").forEach((i) => ((i as HTMLInputElement).disabled = !itemsOn));
+    previewSwitch.classList.toggle("on", previewsOn);
+    kindBox.classList.toggle("disabled", !previewsOn);
+    kindBox.querySelectorAll("button").forEach((i) => ((i as HTMLButtonElement).disabled = !previewsOn));
   }
-  function setAlways(v: boolean) {
-    state.settings.alwaysShow = v;
-    cb.onSettingsChange({ alwaysShow: v });
-    saveState(state);
-    syncItems();
-  }
-  segClick.addEventListener("click", () => setAlways(false));
-  segAlways.addEventListener("click", () => setAlways(true));
   syncItems();
   window.addEventListener("openthink:viewmode", (e) => {
     itemsOn = !!(e as CustomEvent).detail?.bubbles;
+    syncItems();
+  });
+  window.addEventListener("openthink:previewsmode", (e) => {
+    previewsOn = !!(e as CustomEvent).detail?.on;
     syncItems();
   });
   parent.appendChild(sizeSection);
