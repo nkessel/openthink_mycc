@@ -161,7 +161,8 @@ async function main() {
   const controls = createControls(sidebar.controlsContainer(), {
     // The Bubbles/Classic switch lives on the map itself, so saved control state never overrides it.
     onSettingsChange: (partial) => {
-      const { showBubbles: _ignored, ...rest } = partial;
+      // These two belong to the switches on the map (and their copies in the sidebar), not to saved settings.
+      const { showBubbles: _ignored, alwaysShow: _ignored2, ...rest } = partial;
       graphApi!.updateSettings(rest);
     },
     onGroupsChange: (rules) => graphApi!.setGroups(rules),

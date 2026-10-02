@@ -2126,3 +2126,33 @@ text.sat-more { fill: var(--text-dim); }
   .map-legend { bottom: 12px; }
   .map-legend:not(.open) { min-width: 0; }
 }
+
+/* The group you've opened shows a little larger (graph.ts FOCUS_SCALE). Its items ring stays full size. */
+.node-coalition > :not(.sats),
+.node-org > :not(.sats) {
+  transition: transform 0.4s ease;
+}
+.node-coalition.focused > :not(.sats),
+.node-org.focused > :not(.sats) {
+  transform: scale(1.35);
+}
+
+/* "Hide / Show event & project previews": one clear button on the map */
+.preview-toggle {
+  appearance: none;
+  align-self: flex-start;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.14);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.preview-toggle:hover { background: rgba(56, 189, 248, 0.24); }
+.preview-toggle:not(.on) { border-color: var(--border); background: var(--bg-elev); color: var(--text-dim); }
+.preview-toggle:not(.on):hover { color: var(--text); }
+.kind-toggles.disabled { opacity: 0.45; }
