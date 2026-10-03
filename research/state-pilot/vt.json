@@ -304,7 +304,7 @@
       "id": "vt_actonclimatevt",
       "name": "#ActOnClimateVT",
       "abbrev": "ActOnClimateVT",
-      "description": "Coalition of 30+ Vermont organizations that says it builds support for equitable, just climate solutions and credits itself with helping pass the 2020 Global Warming Solutions Act. The site names no members, and the latest dated activity found is the Jan 2020 platform launch.",
+      "description": "Coalition of 30+ Vermont organizations that builds support for equitable, just climate solutions; it says it helped pass the 2020 Global Warming Solutions Act.",
       "focus_tags": [
         "climate policy",
         "equity",
@@ -832,7 +832,7 @@
       "abbrev": "350VT",
       "type": "unknown",
       "geographic_focus": "Statewide",
-      "description": "Statewide grassroots climate group based in Burlington; described as the primary driver of Vermont's Climate Superfund Act. Its own website blocks automated readers, so details come from partner pages and search listings.",
+      "description": "Statewide grassroots climate group based in Burlington, described by partners as the primary driver of Vermont's Climate Superfund Act.",
       "coalition_ids": [
         "vt_environmental_common_agenda"
       ],
@@ -1191,7 +1191,7 @@
       "abbrev": "Youth Lobby",
       "type": "unknown",
       "geographic_focus": "Statewide",
-      "description": "Vermont youth advocacy group focused on climate action and justice; runs the annual Rally for the Planet and trainings such as how to write your legislator. Its page lists no fall 2026 events.",
+      "description": "Vermont youth advocacy group focused on climate action and justice; runs the annual Rally for the Planet and trainings such as how to write your legislator.",
       "coalition_ids": [
         "vt_environmental_common_agenda"
       ],
@@ -1382,7 +1382,7 @@
       "abbrev": "CRC",
       "type": "501c3",
       "geographic_focus": "Connecticut River watershed (NH, VT, MA, CT)",
-      "description": "Nonprofit that restores and advocates for clean water, healthy habitat and resilient communities across the Connecticut River watershed; a partner on the Vermont Environmental Common Agenda. No Vermont office address was found.",
+      "description": "Nonprofit that restores and advocates for clean water, healthy habitat and resilient communities across the Connecticut River watershed; a partner on the Vermont Environmental Common Agenda.",
       "coalition_ids": [
         "vt_environmental_common_agenda"
       ],
@@ -1566,7 +1566,7 @@
       "abbrev": "VT TU",
       "type": "unknown",
       "geographic_focus": "Statewide",
-      "description": "Statewide council of Trout Unlimited chapters; a partner on the Environmental Common Agenda. No headquarters address was found.",
+      "description": "Statewide council of Trout Unlimited chapters; a partner on the Environmental Common Agenda.",
       "coalition_ids": [
         "vt_environmental_common_agenda"
       ],
@@ -2031,7 +2031,7 @@
       "abbrev": "VEEP",
       "type": "unknown",
       "geographic_focus": "Statewide",
-      "description": "Energy education organization; a member of Transportation for Vermonters and Energy Action Network. No location was found.",
+      "description": "Energy education organization; a member of Transportation for Vermonters and Energy Action Network.",
       "coalition_ids": [
         "vt_energy_action_network",
         "vt_t4vt"
@@ -2092,7 +2092,7 @@
       "abbrev": "AARP VT",
       "type": "unknown",
       "geographic_focus": "Statewide",
-      "description": "Vermont state office of AARP; a member of Transportation for Vermonters. No address was checked.",
+      "description": "Vermont state office of AARP; a member of Transportation for Vermonters.",
       "coalition_ids": [
         "vt_t4vt"
       ],
@@ -2123,7 +2123,7 @@
       "abbrev": "ALA VT",
       "type": "unknown",
       "geographic_focus": "Statewide",
-      "description": "Vermont office of the American Lung Association; a member of Transportation for Vermonters. No address was checked.",
+      "description": "Vermont office of the American Lung Association; a member of Transportation for Vermonters.",
       "coalition_ids": [
         "vt_t4vt"
       ],
@@ -2152,7 +2152,7 @@
       "abbrev": "GMT",
       "type": "unknown",
       "geographic_focus": "Northwest and central Vermont",
-      "description": "Regional public transit provider; a member of Transportation for Vermonters. No address was checked.",
+      "description": "Regional public transit provider; a member of Transportation for Vermonters.",
       "coalition_ids": [
         "vt_t4vt"
       ],
@@ -2325,7 +2325,7 @@
       "abbrev": "Charlotte ECAC",
       "type": "government",
       "geographic_focus": "Town of Charlotte",
-      "description": "Town committee working on energy since 2010; championed the 2025-26 Town Energy Modernization Project (rooftop solar and heat pumps for town buildings). Not confirmed as a VECAN listing.",
+      "description": "Town committee working on energy since 2010; championed the 2025-26 Town Energy Modernization Project (rooftop solar and heat pumps for town buildings).",
       "coalition_ids": [],
       "lat": 44.31,
       "lng": -73.261,
@@ -2367,7 +2367,7 @@
       "abbrev": "Middlebury EC",
       "type": "government",
       "geographic_focus": "Town of Middlebury",
-      "description": "Selectboard-appointed committee that promotes energy savings and lower emissions in Middlebury through efficiency, renewables and transportation planning; a 2026 news report says it was regrouping. Not confirmed as a VECAN listing.",
+      "description": "Selectboard-appointed committee that promotes energy savings and lower emissions in Middlebury through efficiency, renewables and transportation planning; a 2026 news report says it was regrouping.",
       "coalition_ids": [],
       "lat": 44.0153,
       "lng": -73.1673,
@@ -2395,7 +2395,7 @@
       "abbrev": "Marshfield EC",
       "type": "government",
       "geographic_focus": "Town of Marshfield",
-      "description": "Marshfield's town energy committee, which posts regular minutes on the town site (seen from 2023 through Sept 2025, with a 2026 minutes page). Details come from search listings only because the town site blocks automated readers.",
+      "description": "Marshfield's town energy committee, which posts regular meeting minutes on the town website.",
       "coalition_ids": [],
       "lat": 44.335,
       "lng": -72.359,
@@ -4012,7 +4012,7 @@
       "abbrev": "REJOICE",
       "type": "coalition",
       "geographic_focus": "Statewide",
-      "description": "Coalition project that held 19 community conversations across Vermont from 2017 to 2021 and whose findings informed the state's 2022 environmental justice law. No activity after 2023 was found.",
+      "description": "Coalition project that held 19 community conversations across Vermont from 2017 to 2021 and whose findings informed the state's 2022 environmental justice law.",
       "coalition_ids": [],
       "lat": 44.2601,
       "lng": -72.5754,
