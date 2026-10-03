@@ -22,7 +22,11 @@ import { rollRecurringForward } from "./recurrence";
 import { attachSectors, createSectorSection } from "./sectors";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
-type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void };
+type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDetail?: (text: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void };
+/** The loading screen's second line: exactly what is being loaded right now. */
+function bootDetail(text: string) {
+  bootWin.bootDetail?.(text);
+}
 const bootWin = window as BootWindow;
 function bootProgress(p: number, label?: string) {
   bootWin.bootProgress?.(p, label);
@@ -38,6 +42,8 @@ function hideBoot() {
     setTimeout(() => el.remove(), 600);
   };
   // Someone chose "Keep this open to read": wait for their "Enter the map".
+  bootWin.bootProgress?.(1, "The map is ready");
+  bootDetail("Everything is loaded. Enter whenever you like.");
   if (bootWin.bootHeld) { bootWin.bootRelease = go; return; }
   setTimeout(go, 250);
 }
@@ -69,12 +75,17 @@ async function main() {
     return;
   }
 
+  const nItems = [...data.coalitions, ...data.organizations].reduce((n, g) => n + (g.events?.length || 0) + (g.projects?.length || 0) + (g.actions?.length || 0), 0);
   bootProgress(0.8, "Drawing the map\u2026");
+  bootDetail(`${data.coalitions.length} coalitions, ${data.organizations.length} organizations, ${nItems} events, projects and actions loaded`);
   await attachThoughts(data);
+  bootDetail("Adding the layers switched on in Map settings\u2026");
   // Sector layers (Map settings → Social justice) that this browser has switched on.
   const sectorsOn = await attachSectors(data, currentMap.id);
   // Recurring events carry one stored date; show their next occurrence.
+  bootDetail("Moving repeating events to their next date\u2026");
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
+  bootDetail(`Placing ${data.coalitions.length + data.organizations.length} groups and their links on the map\u2026`);
 
   let activeTab: TopTab = "map";
 
@@ -165,6 +176,7 @@ async function main() {
   });
   graphApi.setVisibleCoalitions(sidebar.getVisibleCoalitions());
   bootProgress(0.9, "Setting up the tabs\u2026");
+  bootDetail("Building the Events, Projects, Actions and Topics pages\u2026");
 
   // The key to the map sits on the map itself.
   createMapLegend(graphContainer, sectorsOn);
@@ -367,6 +379,10 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
   let lastErr: unknown = null;
   for (let i = 0; i < map.sources.length; i++) {
     const last = i === map.sources.length - 1;
+    const live = /script\.google/.test(map.sources[i]);
+    bootDetail(i === 0
+      ? (live ? "Requesting the latest data from the coalition spreadsheet\u2026" : `Loading the ${map.fullTitle} data\u2026`)
+      : "The spreadsheet didn't answer in time, so loading the saved copy\u2026");
     try {
       return await get(map.sources[i], last ? 15000 : 8000);
     } catch (err) {
@@ -391,6 +407,7 @@ async function readWithProgress(res: Response): Promise<string> {
     got += value.length;
     // content-length can be the compressed size, so cap the share this step may claim
     bootProgress(0.05 + Math.min(1, got / total) * 0.7);
+    bootDetail(`Downloading map data: ${Math.round(got / 1024)} KB`);
   }
   const all = new Uint8Array(got);
   let at = 0;

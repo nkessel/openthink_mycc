@@ -12,7 +12,7 @@ import type {
 } from "./types";
 import { itemButtons } from "./links";
 import { h } from "./dom";
-import { typeIcon } from "./icons";
+import { typeIcon, VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS } from "./icons";
 import { staleNotice } from "./notice";
 import { sectorById } from "./sectors";
 import { orgProjects, orgEvents, orgActions } from "./owners";
@@ -721,7 +721,7 @@ export function createGraph(
       g.style("pointer-events", "none");
       shown.forEach((b, i) => {
         const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
-        g.append("circle").attr("class", `sat sat-${b.kind}`).attr("cx", Math.cos(a) * rr).attr("cy", Math.sin(a) * rr).attr("r", SAT_DOT_R);
+        g.append("circle").attr("class", `sat sat-${b.kind}${isRoleB(b) ? " sat-role" : ""}`).attr("cx", Math.cos(a) * rr).attr("cy", Math.sin(a) * rr).attr("r", SAT_DOT_R);
       });
       if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
       return;
@@ -731,7 +731,7 @@ export function createGraph(
     const angles: number[] = [];
     shown.forEach((b, i) => {
       const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
-      const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}`).style("cursor", "pointer");
+      const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}${isRoleB(b) ? " b-role" : ""}`).style("cursor", "pointer");
       els.push(bg.node()!);
       angles.push(a);
       bg.append("title").text(fullName(b));
@@ -1196,7 +1196,11 @@ export function createGraph(
       .attr("d", `M ${bx + tx * L} ${by + ty * L} L ${bx + nx * Wd} ${by + ny * Wd} L ${bx - nx * Wd} ${by - ny * Wd} Z`);
   }
 
-  // Icons drawn inside the bubbles, centred on (0,0): a calendar, a team of people, a checkmark.
+  /** Volunteer roles are actions with kind "role"; they get their own colour and icon. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function isRoleB(b: any): boolean { return b.kind === "action" && (b.item as Action).kind === "role"; }
+
+  // Icons drawn inside the bubbles, centred on (0,0): a calendar, a seedling, a person with a raised hand, a checkmark.
   function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind | "volunteer", date?: string) {
     const ic = g.append("g").attr("class", "bubble-icon");
     if (kind === "event") {
@@ -1213,13 +1217,8 @@ export function createGraph(
       ic.append("path").attr("d", "M0 3 C-8 3 -10 -3 -10 -6 C-4 -6 0 -3 0 3");
       ic.append("path").attr("d", "M0 -1 C0 -7 4 -11 10 -11 C10 -5 6 -1 0 -1");
     } else if (kind === "volunteer") {
-      // a team of people: one in front, two behind
-      ic.append("circle").attr("cx", 0).attr("cy", -4.5).attr("r", 3);
-      ic.append("path").attr("d", "M-5.5 8 a5.5 5 0 0 1 11 0");
-      ic.append("circle").attr("cx", -8).attr("cy", -2).attr("r", 2.2);
-      ic.append("path").attr("d", "M-12 7 a3.6 3.6 0 0 1 4.2 -3.4");
-      ic.append("circle").attr("cx", 8).attr("cy", -2).attr("r", 2.2);
-      ic.append("path").attr("d", "M12 7 a3.6 3.6 0 0 0 -4.2 -3.4");
+      // a person (head and shoulders) with one hand raised: "I'll help"
+      for (const d of [VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS]) ic.append("path").attr("d", d);
     } else if (kind === "action") {
       ic.append("path").attr("class", "check").attr("d", "M-7 0.5 L-2.2 5.5 L7.5 -5");
     }
@@ -1377,7 +1376,7 @@ export function createGraph(
       const line = focusGroup.insert("line", ".bubble").attr("class", "bubble-link")
         .attr("x1", Math.cos(a) * nodeR).attr("y1", Math.sin(a) * nodeR).attr("x2", Math.cos(a) * nodeR).attr("y2", Math.sin(a) * nodeR);
       bubbleLines.push(line.node()!);
-      const outer = focusGroup.append("g").attr("class", `bubble b-${b.kind}`);
+      const outer = focusGroup.append("g").attr("class", `bubble b-${b.kind}${isRoleB(b) ? " b-role" : ""}`);
       bubbleEls.push(outer.node()!);
       bubbleAngles.push(a);
       const g = outer.append("g").attr("class", "bubble-body").attr("transform", "scale(0.2)").attr("opacity", 0);
@@ -1475,18 +1474,20 @@ export function createGraph(
 
     // Header: who, what's here, how to leave.
     while (focusBar.firstChild) focusBar.removeChild(focusBar.firstChild);
-    const count = (k: BubbleKind) => allBubbles.filter((b) => b.kind === k).length;
+    const count = (k: BubbleKind | "volunteer") => k === "volunteer" ? allBubbles.filter(isRoleB).length
+      : allBubbles.filter((b) => b.kind === k && !isRoleB(b)).length;
     const back = h("button", { class: "focus-back", type: "button" }, "← Back to network");
     back.addEventListener("click", () => exitFocus());
     focusBar.appendChild(back);
     focusBar.appendChild(h("strong", { class: "focus-title" }, n.name));
-    const stat = (k: "project" | "event" | "action", label: string) =>
+    const stat = (k: "project" | "event" | "action" | "volunteer", label: string) => count(k) === 0 && k === "volunteer" ? null :
       h("span", { class: `lg k-${k}`, title: label, "aria-label": `${label} ${count(k)}` }, typeIcon(k, 16), h("b", {}, String(count(k))));
     const legend = h("div", { class: "focus-legend" },
       count("thought") ? h("span", { class: "lg k-thought" }, `Thinking ${count("thought")}`) : null,
       stat("project", "Projects"),
       stat("event", "Events"),
       stat("action", "Actions"),
+      stat("volunteer", "Volunteer roles"),
     );
     focusBar.appendChild(legend);
     const classicBtn = h("button", { class: "focus-back", type: "button", title: "From now on, clicking a group only opens its details panel (turn back on in Map settings)" }, "Don't zoom in on click");

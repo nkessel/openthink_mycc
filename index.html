@@ -21,6 +21,8 @@
       #boot .land-text{margin-top:22px}
       #boot .boot-hold{appearance:none;border:1px solid #334155;background:transparent;color:#94a3b8;font:inherit;font-size:12px;padding:6px 14px;border-radius:999px;cursor:pointer}
       #boot .boot-hold:hover{color:#e2e8f0;border-color:#64748b}
+      #boot .boot-auto{display:flex;align-items:center;gap:7px;font-size:12px;color:#94a3b8;cursor:pointer;user-select:none}
+      #boot .boot-auto input{accent-color:#34d399;width:15px;height:15px;margin:0}
       #boot .boot-hold.enter{color:#0f172a;background:#34d399;border-color:#34d399;font-weight:600}
       @media (max-width:600px){
         #boot{gap:9px;padding:14px 0}
@@ -49,6 +51,7 @@
         </p>
       </div>
       <button type="button" id="boot-hold" class="boot-hold">Keep this open to read</button>
+      <label class="boot-auto"><input type="checkbox" id="boot-auto" checked> Open the map automatically when it's ready</label>
     </div>
     <script>
       // Loading splash: a progress bar with an estimate of the time left (from how long the last loads took,
@@ -69,11 +72,24 @@
         };
         // "Keep this open to read": the map loads behind, and the splash stays until "Enter the map" (main.ts hideBoot).
         var hold = document.getElementById("boot-hold");
+        var auto = document.getElementById("boot-auto");
+        var AUTO_KEY = "openthink.autoEnter";
+        function holdOpen() {
+          window.bootHeld = true;
+          hold.textContent = "Enter the map \u2192";
+          hold.classList.add("enter");
+        }
+        // Remembered choice: some people like to read this every time.
+        try { if (localStorage.getItem(AUTO_KEY) === "0") { auto.checked = false; holdOpen(); } } catch (e) {}
+        auto.addEventListener("change", function () {
+          try { localStorage.setItem(AUTO_KEY, auto.checked ? "1" : "0"); } catch (e) {}
+          if (!auto.checked) holdOpen();
+          else if (window.bootRelease) window.bootRelease(); // already loaded: go in now
+          else { window.bootHeld = false; hold.textContent = "Keep this open to read"; hold.classList.remove("enter"); }
+        });
         hold.addEventListener("click", function () {
           if (!window.bootHeld) {
-            window.bootHeld = true;
-            hold.textContent = "Enter the map \u2192";
-            hold.classList.add("enter");
+            holdOpen();
           } else if (window.bootRelease) {
             window.bootRelease();
           } else {
@@ -181,31 +197,10 @@
           var s = Math.ceil(secondsLeft(p) / 1000);
           left.textContent = s > 1 ? "About " + s + " seconds left" : "Almost there\u2026";
         }
-        // What the map is doing, told warmly, in order (it loops if loading runs long).
-        var QUIPS = [
-          "Gathering the coalitions\u2026",
-          "Inviting every organization to the table\u2026",
-          "Getting the latest events\u2026",
-          "Checking in on projects\u2026",
-          "Finding where volunteers are needed\u2026",
-          "Placing neighbors next to neighbors\u2026",
-          "Locating the towns across Massachusetts\u2026",
-          "Counting the hands doing the work\u2026",
-          "Making room for one more good idea\u2026",
-          "Gathering the ways you can help\u2026",
-          "Connecting organizations that work together\u2026",
-          "Finding the next meetings near you\u2026",
-          "Adding the newest member groups\u2026",
-          "Lining up this week\u2019s events\u2026",
-          "Bringing the movement into view\u2026"
-        ];
-        var quip = boot.querySelector(".boot-quip"), qn = 0;
-        quip.textContent = QUIPS[0];
-        var quipTimer = setInterval(function () {
-          if (!document.body.contains(boot) || finished) { clearInterval(quipTimer); return; }
-          quip.classList.add("fade");
-          setTimeout(function () { qn = (qn + 1) % QUIPS.length; quip.textContent = QUIPS[qn]; quip.classList.remove("fade"); }, 350);
-        }, 2200);
+        // The line under the main message says, literally, what is being loaded right now (main.ts bootDetail).
+        var quip = boot.querySelector(".boot-quip");
+        quip.textContent = "Starting up\u2026";
+        window.bootDetail = function (text) { if (text) quip.textContent = text; };
 
         var last = 0;
         function frame(t) {
