@@ -1065,7 +1065,7 @@
           "location": "MassCOSH Office, 42 Charles St Suite D, Dorchester, MA",
           "link": "https://masscosh.org/events/event-listings/osha-10-training-october-8th-and-9th",
           "end": "2026-10-09T16:00",
-          "description": "10-hour OSHA construction safety course (page text in Spanish).",
+          "description": "10-hour OSHA construction safety course.",
           "id": "masscosh_tlaw_climate_change_e1",
           "verified": true,
           "host_org_id": "masscosh_tlaw_climate_change_and_environmental_justice_team"
@@ -2139,7 +2139,7 @@
           "name": "A Climate Justice Plan for Springfield",
           "link": "https://climateactionnowma.org/our-campaigns/a-climate-justice-plan-for-springfield/",
           "needs_info": true,
-          "description": "Campaign page could not be loaded.",
+          "description": "",
           "status": "active",
           "id": "climate_action_now_western_m_p1",
           "host_org_id": "climate_action_now_western_ma",
@@ -2149,7 +2149,7 @@
           "name": "Mutual Aid",
           "link": "https://climateactionnowma.org/mutual-aid/",
           "needs_info": true,
-          "description": "Program page could not be loaded.",
+          "description": "",
           "status": "active",
           "id": "climate_action_now_western_m_p2",
           "host_org_id": "climate_action_now_western_ma",
@@ -5305,7 +5305,7 @@
           "location": "Online",
           "link": "https://www.greenenergyconsumers.org/event/winterdrivingelectriccar",
           "online": true,
-          "description": "Webinar on EVs in cold weather (online per series; location not verified on page).",
+          "description": "Webinar on driving electric vehicles in cold weather.",
           "id": "green_energy_consumers_allia_e10",
           "verified": true,
           "host_org_id": "green_energy_consumers_alliance",
@@ -5317,7 +5317,7 @@
           "location": "Online",
           "link": "https://www.greenenergyconsumers.org/event/electricvehiclebatteryhealth",
           "online": true,
-          "description": "Webinar on long-term EV battery health (online per series; location not verified on page).",
+          "description": "Webinar on long-term electric vehicle battery health.",
           "id": "green_energy_consumers_allia_e11",
           "verified": true,
           "host_org_id": "green_energy_consumers_alliance",
@@ -5666,7 +5666,7 @@
         {
           "name": "Fossil fuel divestment of MA public pension funds",
           "link": "https://massdivest.org/",
-          "description": "Campaign for Massachusetts public pension funds to divest from fossil fuels. Could not be confirmed as current.",
+          "description": "Campaign for Massachusetts public pension funds to divest from fossil fuels.",
           "status": "active",
           "needs_info": true,
           "id": "mass_divest_coalition_p1",
@@ -7183,7 +7183,7 @@
           "location": "Hilton Park Plaza",
           "link": "https://ma.aft.org/events/2027-aft-massachusetts-awards-dinner",
           "end": "2027-04-09T22:00",
-          "description": "Union event, not climate-specific.",
+          "description": "Union event.",
           "id": "aft_mass_e1",
           "verified": true,
           "host_org_id": "aft_mass"
@@ -7335,7 +7335,7 @@
           "date": "2026-10-18T10:30:00",
           "location": "Roslindale, Boston",
           "link": "https://community.citizensclimate.org/groups/events/1153",
-          "description": "Tabling; chapter's application for a spot still pending per page; listed 7:30am PDT (=10:30am ET).",
+          "description": "Tabling event.",
           "id": "citizens_climate_lobby_e2",
           "verified": true,
           "host_org_id": "citizens_climate_lobby"
@@ -7487,14 +7487,14 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "Franklin County and North Quabbin",
-      "description": "Regional health improvement network, convened by the Franklin Regional Council of Governments since 2016, that sets community health priorities such as youth substance use, mental wellness and active living; its pages show no climate focus.",
+      "description": "Regional health improvement network, convened by the Franklin Regional Council of Governments since 2016, that sets community health priorities such as youth substance use, mental wellness and active living.",
       "website": "https://frcog.org/",
       "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png",
       "projects": [
         {
           "name": "Community Health Improvement Plan (CHIP) Network",
           "link": "https://frcog.org/",
-          "description": "Franklin County and North Quabbin community health improvement network. Could not be confirmed as current.",
+          "description": "Franklin County and North Quabbin community health improvement network.",
           "status": "active",
           "needs_info": true,
           "id": "franklin_county_and_north_qu_p1",
@@ -7544,7 +7544,7 @@
         "gjc": 3
       },
       "geographic_focus": "Statewide",
-      "description": "Statewide, senior-led grassroots group founded in 1981 that organizes older adults on health care, economic security, housing, transportation and racial justice; no climate work found.",
+      "description": "Statewide, senior-led grassroots group founded in 1981 that organizes older adults on health care, economic security, housing, transportation and racial justice.",
       "website": "https://www.masssenioraction.org/",
       "logo": "logos/ma_senior_action.png",
       "events": [
@@ -7617,7 +7617,7 @@
         "geo_precision": "approx"
       },
       "geographic_focus": "Statewide",
-      "description": "Professional association founded in 1973 for municipal facilities administrators (about 180 members from 140 municipalities) offering training and information exchange; no sustainability programs found on its site.",
+      "description": "Professional association founded in 1973 for municipal facilities administrators (about 180 members from 140 municipalities) offering training and information exchange.",
       "website": "https://massfacilities.com/",
       "logo": "logos/mass_facilities_administrators_association.png"
     },
@@ -7643,7 +7643,7 @@
         "scjc": 1
       },
       "geographic_focus": "Statewide",
-      "description": "Coalition of labor, faith and student organizations that builds solidarity for workers' rights through rallies and picket-line support, with offices in Jamaica Plain and Springfield; no climate work found.",
+      "description": "Coalition of labor, faith and student organizations that builds solidarity for workers' rights through rallies and picket-line support, with offices in Jamaica Plain and Springfield.",
       "website": "https://www.massjwj.net/",
       "logo": "logos/massachusetts_jobs_with_justice.png",
       "projects": [

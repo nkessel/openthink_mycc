@@ -445,3 +445,8 @@ What / why
 - Green Energy Consumers Alliance: read its event pages (robots.txt allows) and added 8 RSVP links (7 Zoom webinar registrations + the Annual Fall Meeting on Eventbrite; the Harvest Festival has no registration) and the specific event page for 3 that pointed at the general events page; marked verified. Skipped "Electric Trunk-or-Treat" (Providence, RI).
 - Apps Script "Fill in missing details" also fills blank event rsvp_link and swaps a general events-page link for the event's own page (test added).
 - BACKLOG: "RSVP links for every upcoming event" added at the top (13 of ~110 upcoming events have one now).
+
+## 2026-10-02 — Research notes out of public text; event-link fill fix
+- Rewrote 26 public descriptions (13 MA in data.json, 13 VT in maps/vt.json + research/state-pilot/vt.json) that still carried notes for the research team ("no climate work found", "could not be confirmed as current", "website blocks automated readers", scraper errors…). The map is in scripts/clean-notes.mjs.
+- Apps Script fillEventLinks_: also swaps a site's events listing (…/events, /calendar, /upcoming-events…) for the event's own page on the same site (e.g. greenenergyconsumers.org/events → /event/<slug>). Test added.
+- Sheet (Nathan: "do as much for me as you can"): temporary OneOffClean.gs in the built-in browser updated the 13 MA descriptions and the 3 GECA event links (16 cells), then the file was deleted. Code.gs in Apps Script still needs this branch's version after merge (Fill in missing details).
