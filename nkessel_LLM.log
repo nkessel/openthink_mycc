@@ -525,3 +525,10 @@ What / why
   - Zoom in and out, the record list, crumbs and the group → map link all work. Mobile is usable.
   - 0 page errors.
 - Pre-existing, not from this PR: leaving the Map tab before the map settles and coming back logs "translate(NaN,NaN) scale(NaN)" console errors from graph.ts's zoom (reproduced on development_branch via the Projects tab).
+
+## 2026-10-02 — Logos for Vermont, About tab first, full item view, livelier moons, deeper zoom, linked groups in org view
+- scripts/fetch-logos.py: for groups with a website and no logo, reads the group's own homepage and takes the image marked as its logo (else its large site icon, else og:image), normalised to PNG ≤400px. research/logos/report.json records the source URL and whether each was accepted. I reviewed every candidate on a contact sheet and accepted 74 of 97 (rejected: photos, sponsor logos, generic icons, blank images, other groups' logos). Added for 74 Vermont groups (orgs + 4 VT coalitions). No usable logo on their own sites for MA's EJLT, HERO, SCJC or CCCC (they keep their abbreviations).
+- Details tray opens on About for coalitions too.
+- Full view of an event / project / action in the details tray: kind, when (with recurrence), where (+ Open in maps), full description, RSVP / website, + Google Calendar and an .ics file, host (back to the group), topics from the topic map, last-checked notice, and "More from <group>". Clicking an item's icon or its name on the map opens it, as do item names in the tray's lists.
+- Moons now trail their planet when it is dragged and spring back (they were frozen: the still ring sims never restarted because their alpha stayed at 1). No push between moons, so their orbit and spacing are unchanged. Max zoom 4× → 12×.
+- Opening an organization now also shows its coalitions and partner groups on the outskirts, smaller (60%) and quieter (75%), instead of greyed out.

@@ -27,6 +27,8 @@ export interface GraphCallbacks {
   onNodeDeselect?(node: GraphNode): void;
   /** The summary card at the top was tapped: show the full details panel. */
   onOpenDetails?(node: GraphNode): void;
+  /** An event / project / action bubble was clicked: show it in full (the details tray). */
+  onItemClick?(kind: "event" | "project" | "action", item: Project | CoalitionEvent | Action, owner: GraphNode): void;
 }
 
 export interface GroupRule {
@@ -237,7 +239,7 @@ export function createGraph(
   // Zoom behavior
   const zoom = d3
     .zoom<SVGSVGElement, unknown>()
-    .scaleExtent([0.2, 4])
+    .scaleExtent([0.2, 12]) // items and names keep their on-screen size, so deep zoom stays tidy
     .filter((event) => {
       // Allow wheel + drag on background, but not on nodes (so node drag works)
       if (event.type === "mousedown" || event.type === "touchstart") {
@@ -590,6 +592,7 @@ export function createGraph(
     pad: number,
     onTick?: (nodes: RingNode[]) => void,
     still = false,
+    charge = -30,
   ): d3.Simulation<RingNode, undefined> {
     const nodes: RingNode[] = els.map((_, i) => ({
       x: Math.cos(angles[i]) * startR, y: Math.sin(angles[i]) * startR,
@@ -601,20 +604,20 @@ export function createGraph(
     };
     const home = (alpha: number) => {
       for (const d of nodes) {
-        d.vx = (d.vx ?? 0) + (d.tx - (d.x ?? 0)) * 0.12 * alpha;
-        d.vy = (d.vy ?? 0) + (d.ty - (d.y ?? 0)) * 0.12 * alpha;
+        d.vx = (d.vx ?? 0) + (d.tx - (d.x ?? 0)) * 0.07 * alpha;
+        d.vy = (d.vy ?? 0) + (d.ty - (d.y ?? 0)) * 0.07 * alpha;
       }
     };
     const s = d3.forceSimulation<RingNode>(nodes)
-      .force("ring", d3.forceRadial<RingNode>(ringR, 0, 0).strength(0.25))
+      .force("ring", d3.forceRadial<RingNode>(ringR, 0, 0).strength(0.16))
       .force("home", home)
       .force("collide", d3.forceCollide<RingNode>((d) => d.r + pad).strength(0.9).iterations(2))
-      .force("charge", d3.forceManyBody<RingNode>().strength(-30).distanceMax(Math.max(120, ringR)))
-      .alphaDecay(0.03)
-      .velocityDecay(0.32)
+      .force("charge", charge ? d3.forceManyBody<RingNode>().strength(charge).distanceMax(Math.max(120, ringR)) : null)
+      .alphaDecay(0.025)
+      .velocityDecay(0.24)
       .on("tick", place);
     place();
-    if (still) s.stop(); // already in place: only wakes up when an item is dragged
+    if (still) s.stop().alpha(0); // already in place: wakes up when an item or its group is dragged
     els.forEach((el, i) => {
       d3.select<SVGGElement, RingNode>(el).datum(nodes[i]).call(
         d3.drag<SVGGElement, RingNode>()
@@ -632,10 +635,15 @@ export function createGraph(
   function nudgeRing(rs: d3.Simulation<RingNode, undefined>, dx: number, dy: number) {
     for (const d of rs.nodes()) {
       if (d.fx != null) continue;
-      d.x = (d.x ?? 0) - dx * 0.85;
-      d.y = (d.y ?? 0) - dy * 0.85;
+      // left behind for a moment, like a moon tugged by its planet, but never flung far from its orbit
+      const ox = (d.x ?? 0) - dx, oy = (d.y ?? 0) - dy;
+      const reach = Math.hypot(d.tx, d.ty) * 1.6 + 6;
+      const off = Math.hypot(ox - d.tx, oy - d.ty);
+      const k = off > reach ? reach / off : 1;
+      d.x = d.tx + (ox - d.tx) * k;
+      d.y = d.ty + (oy - d.ty) * k;
     }
-    if (rs.alpha() < 0.35) rs.alpha(0.35).restart();
+    rs.alpha(Math.max(rs.alpha(), 0.45)).restart();
   }
   const lastPos = new Map<string, { x: number; y: number }>();
   function trailItems() {
@@ -647,7 +655,7 @@ export function createGraph(
       lastPos.set(id, { x, y });
       if (!last) return;
       const dx = x - last.x, dy = y - last.y;
-      if (Math.abs(dx) + Math.abs(dy) < 0.4 || Math.abs(dx) + Math.abs(dy) > 300) return;
+      if (Math.abs(dx) + Math.abs(dy) < 0.05 || Math.abs(dx) + Math.abs(dy) > 300) return;
       nudgeRing(rs, dx, dy);
     };
     if (focusId) follow(focusId, focusSim);
@@ -740,7 +748,7 @@ export function createGraph(
     });
     if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
     // Drag one and the others make room; until then nothing moves.
-    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_MAX_WORLD_R), rr, rr, 0.6, undefined, true));
+    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_MAX_WORLD_R), rr, rr, 0.6, undefined, true, 0)); // no push between moons: they keep their orbit and spacing
   }
 
   /** Dots for everyone (cheap); bubbles for what is on screen when zoomed in, a batch at a time. */
@@ -1097,6 +1105,12 @@ export function createGraph(
   }
 
   function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode) {
+    const owner = ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null);
+    if (b.kind !== "thought" && owner && cb.onItemClick) {
+      focusCard.style.display = "none";
+      cb.onItemClick(b.kind, b.item as Project | CoalitionEvent | Action, owner);
+      return;
+    }
     while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
     const it = b.item as Thought & Project & CoalitionEvent & Action;
     const kindLabel =
@@ -1295,16 +1309,20 @@ export function createGraph(
     memberHome.clear();
     let memberRX = 0;
     let memberRY = 0;
-    if (n.kind === "coalition") {
+    {
+      // A coalition gathers its member orgs; an org gathers its coalitions and the orgs it works with.
       const seen = new Set<string>();
       for (const l of allLinks) {
-        if (l.kind !== "membership") continue;
         const sid = typeof l.source === "string" ? l.source : l.source.id;
         const tid = typeof l.target === "string" ? l.target : l.target.id;
-        if (sid !== id || seen.has(tid)) continue;
-        seen.add(tid);
-        const o = nodeById.get(tid);
-        if (o && o.kind === "org") pinnedMembers.push(o);
+        let other: string | null = null;
+        if (n.kind === "coalition") { if (l.kind === "membership" && sid === id) other = tid; }
+        else if (sid === id) other = tid;
+        else if (tid === id) other = sid;
+        if (!other || seen.has(other)) continue;
+        seen.add(other);
+        const o = nodeById.get(other);
+        if (o && (n.kind === "org" || o.kind === "org")) pinnedMembers.push(o);
       }
       if (pinnedMembers.length) {
         pinnedMembers.sort((a, b) => nodeRadiusOf(b) - nodeRadiusOf(a));
@@ -1312,7 +1330,7 @@ export function createGraph(
         const spacing = 2 * maxR + 12; // between neighbours along a row
         const rowGap = 2 * maxR + 20; // between rows (room for a name under each)
         // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
-        let rx = bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120;
+        let rx = (bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR * 0.6 : 0);
         let ry = rx;
         // Members may jostle, but never into the items and their labels.
         memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
@@ -1400,7 +1418,9 @@ export function createGraph(
       .classed("faded", (d) => d.id !== id && !partners.has(d.id))
       .classed("partner", (d) => partners.has(d.id))
       .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12 && !pinnedMembers.includes(d))
-      .classed("member-ring", (d) => pinnedMembers.includes(d));
+      .classed("member-ring", (d) => pinnedMembers.includes(d))
+      // an org's coalitions and partners: drawn smaller and quieter on the outskirts
+      .classed("linked", (d) => n.kind === "org" && pinnedMembers.includes(d));
     linkSel.classed("faded", (l) => {
       const s = typeof l.source === "string" ? l.source : l.source.id;
       const t = typeof l.target === "string" ? l.target : l.target.id;
@@ -1506,7 +1526,7 @@ export function createGraph(
     focusSim = null;
     for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     pinnedMembers = [];
-    nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("focused", false);
+    nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("linked", false).classed("focused", false);
     sim.force("focusPush", null);
     sim.force("memberPull", null);
     memberHome.clear();

@@ -67,7 +67,8 @@
       ],
       "profile": {
         "geo_precision": "approx"
-      }
+      },
+      "logo": "logos/vt_environmental_common_agenda.png"
     },
     {
       "id": "vt_energy_action_network",
@@ -255,7 +256,8 @@
       ],
       "profile": {
         "geo_precision": "approx"
-      }
+      },
+      "logo": "logos/vt_energy_action_network.png"
     },
     {
       "id": "vt_vecan",
@@ -372,7 +374,8 @@
       ],
       "profile": {
         "geo_precision": "approx"
-      }
+      },
+      "logo": "logos/vt_t4vt.png"
     },
     {
       "id": "vt_clean_communities_coalition",
@@ -457,7 +460,8 @@
       ],
       "profile": {
         "geo_precision": "approx"
-      }
+      },
+      "logo": "logos/vt_ej_network.png"
     }
   ],
   "organizations": [
@@ -547,7 +551,8 @@
         "https://vnrc.org/2026-annual-celebration",
         "https://vnrc.org/join-our-team/",
         "https://vecan.net/about-us/"
-      ]
+      ],
+      "logo": "logos/vt_vnrc.png"
     },
     {
       "id": "vt_vpirg",
@@ -597,7 +602,8 @@
       "sources": [
         "https://www.vpirg.org/",
         "https://www.vpirg.org/contact/"
-      ]
+      ],
+      "logo": "logos/vt_vpirg.png"
     },
     {
       "id": "vt_vcv",
@@ -824,7 +830,8 @@
         "https://vermontconservationvoters.com/",
         "https://vermontconservationvoters.com/vcv-partners-with-vpirg-for-fall-canvass-tour/",
         "https://vermontconservationvoters.com/calendar/"
-      ]
+      ],
+      "logo": "logos/vt_vcv.png"
     },
     {
       "id": "vt_350vermont",
@@ -855,7 +862,8 @@
         "https://vermontdailychronicle.com/meet-the-ngos-that-shape-vermonts-laws-this-saturday/amp/",
         "https://vermontconservationvoters.com/commonagenda26/",
         "https://anrweb.vt.gov/PubDocs/ANR/ClimateCouncil/21310/350VT%20Climate%20Action%20Plan%20Comment%20Spring%202025%20(1).pdf"
-      ]
+      ],
+      "logo": "logos/vt_350vermont.png"
     },
     {
       "id": "vt_sierra_club",
@@ -974,7 +982,8 @@
         "https://www.revermont.org/",
         "https://www.revermont.org/our-work/annual-conference/",
         "https://www.eventbrite.com/e/rev2026-conference-tickets-1994711475720"
-      ]
+      ],
+      "logo": "logos/vt_rev.png"
     },
     {
       "id": "vt_vtipl",
@@ -1066,7 +1075,8 @@
         "https://radmovement.org/",
         "https://radmovement.org/vt/events/",
         "https://radmovement.org/rad-and-coalition-partners-launch-vermont-renews/"
-      ]
+      ],
+      "logo": "logos/vt_rad.png"
     },
     {
       "id": "vt_third_act",
@@ -1215,7 +1225,8 @@
         "https://youthlobby.org/tag/climate/",
         "https://www.orcamedia.net/show/vermont-youth-climate-lobby-rally-planet-3122026"
       ],
-      "remote": true
+      "remote": true,
+      "logo": "logos/vt_youth_lobby.png"
     },
     {
       "id": "vt_vtcha",
@@ -1281,7 +1292,8 @@
         "https://eanvt.org/network-action-teams/thermal-networks/",
         "https://vermontconservationvoters.com/commonagenda26/"
       ],
-      "remote": true
+      "remote": true,
+      "logo": "logos/vt_vctn.png"
     },
     {
       "id": "vt_vbsr",
@@ -1343,7 +1355,8 @@
       "sources": [
         "https://www.clf.org/vermont/",
         "https://vermontconservationvoters.com/commonagenda26/"
-      ]
+      ],
+      "logo": "logos/vt_clf.png"
     },
     {
       "id": "vt_lake_champlain_committee",
@@ -1374,7 +1387,8 @@
         "https://www.lakechamplaincommittee.org/",
         "https://vermontconservationvoters.com/commonagenda26/",
         "https://www.vecan.net/enews-archive/june-9th-2026-vecan-e-news"
-      ]
+      ],
+      "logo": "logos/vt_lake_champlain_committee.png"
     },
     {
       "id": "vt_connecticut_river_conservancy",
@@ -1405,7 +1419,8 @@
         "https://www.ctriver.org/",
         "https://vermontconservationvoters.com/commonagenda26/"
       ],
-      "remote": true
+      "remote": true,
+      "logo": "logos/vt_connecticut_river_conservancy.png"
     },
     {
       "id": "vt_hunger_free_vermont",
@@ -1435,7 +1450,8 @@
         "https://vermontconservationvoters.com/commonagenda26/",
         "https://vermontbiz.com/company/hunger-free-vermont",
         "https://vermontdailychronicle.com/meet-the-ngos-that-shape-vermonts-laws-this-saturday/amp/"
-      ]
+      ],
+      "logo": "logos/vt_hunger_free_vermont.png"
     },
     {
       "id": "vt_local_motion",
@@ -1500,7 +1516,8 @@
         "https://www.ptvermont.org/",
         "https://vermontconservationvoters.com/commonagenda26/",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_preservation_trust.png"
     },
     {
       "id": "vt_trust_for_public_land",
@@ -1529,7 +1546,8 @@
       "sources": [
         "https://www.tpl.org/state/vermont",
         "https://vermontconservationvoters.com/commonagenda26/"
-      ]
+      ],
+      "logo": "logos/vt_trust_for_public_land.png"
     },
     {
       "id": "vt_vermont_center_for_ecostudies",
@@ -1558,7 +1576,8 @@
       "sources": [
         "https://vtecostudies.org/",
         "https://vermontconservationvoters.com/commonagenda26/"
-      ]
+      ],
+      "logo": "logos/vt_vermont_center_for_ecostudies.png"
     },
     {
       "id": "vt_vermont_trout_unlimited",
@@ -1621,7 +1640,8 @@
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
         "https://eanvt.org/about/people/network-members/",
         "https://vtcleancommunities.org/about/current-stakeholders/"
-      ]
+      ],
+      "logo": "logos/vt_carshare_vermont.png"
     },
     {
       "id": "vt_capstone_community_action",
@@ -1652,7 +1672,8 @@
         "https://www.capstonevt.org",
         "https://eanvt.org/about/people/network-members/",
         "https://www.ourherald.com/articles/capstone-talks-impact-of-housing-heating-cuts/"
-      ]
+      ],
+      "logo": "logos/vt_capstone_community_action.png"
     },
     {
       "id": "vt_cvoeo",
@@ -1683,7 +1704,8 @@
         "https://www.cvoeo.org/contact",
         "https://eanvt.org/about/people/network-members/",
         "https://www.cvoeo.org/media"
-      ]
+      ],
+      "logo": "logos/vt_cvoeo.png"
     },
     {
       "id": "vt_drive_electric_vermont",
@@ -1714,7 +1736,8 @@
         "https://eanvt.org/about/people/network-members/",
         "https://eanvt.org/events/replace-your-ride/",
         "https://vermontbiz.com/news/2026/june/04/vermont-races-past-20000-evs-road-driving-electric-costs-around-175g"
-      ]
+      ],
+      "logo": "logos/vt_drive_electric_vermont.png"
     },
     {
       "id": "vt_public_assets_institute",
@@ -1774,7 +1797,8 @@
         "https://www.shelburnefarms.org/",
         "https://eanvt.org/about/people/network-members/",
         "https://www.shelburnefarms.org/rss.xml"
-      ]
+      ],
+      "logo": "logos/vt_shelburne_farms.png"
     },
     {
       "id": "vt_sustainable_woodstock",
@@ -1803,7 +1827,8 @@
         "https://www.sustainablewoodstock.org",
         "https://eanvt.org/about/people/network-members/",
         "https://www.sustainablewoodstock.org/feed/"
-      ]
+      ],
+      "logo": "logos/vt_sustainable_woodstock.png"
     },
     {
       "id": "vt_vcil",
@@ -1835,7 +1860,8 @@
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
         "https://eanvt.org/about/people/network-members/",
         "https://www.vcil.org/advocacy/"
-      ]
+      ],
+      "logo": "logos/vt_vcil.png"
     },
     {
       "id": "vt_vcrd",
@@ -1931,7 +1957,8 @@
         "https://vecan.net/about-us/",
         "https://en.wikipedia.org/wiki/Vermont_Energy_Investment_Corporation",
         "https://www.vecan.net/enews-archive/september-1-2026-vecan-e-news"
-      ]
+      ],
+      "logo": "logos/vt_efficiency_vermont.png"
     },
     {
       "id": "vt_vital_communities",
@@ -1994,7 +2021,8 @@
         "https://www.vhcb.org",
         "https://eanvt.org/about/people/network-members/",
         "https://www.vhcb.org/feed/"
-      ]
+      ],
+      "logo": "logos/vt_vhcb.png"
     },
     {
       "id": "vt_vermont_passive_house",
@@ -2023,7 +2051,8 @@
       "sources": [
         "https://www.vermontpassivehouse.org",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_vermont_passive_house.png"
     },
     {
       "id": "vt_veep",
@@ -2084,7 +2113,8 @@
         "https://catmavt.org/about-us/",
         "https://vnrc.org/sustainable-communities/transportation-for-vermonters/",
         "https://catmavt.org/"
-      ]
+      ],
+      "logo": "logos/vt_catma.png"
     },
     {
       "id": "vt_aarp_vermont",
@@ -2115,7 +2145,8 @@
         "https://states.aarp.org/vermont"
       ],
       "remote": true,
-      "website": "https://states.aarp.org/vermont"
+      "website": "https://states.aarp.org/vermont",
+      "logo": "logos/vt_aarp_vermont.png"
     },
     {
       "id": "vt_american_lung_association_vt",
@@ -2173,7 +2204,8 @@
         "https://www.ridegmt.com/"
       ],
       "remote": true,
-      "website": "https://www.ridegmt.com/"
+      "website": "https://www.ridegmt.com/",
+      "logo": "logos/vt_green_mountain_transit.png"
     },
     {
       "id": "vt_sunrise_vermont",
@@ -2229,7 +2261,8 @@
         "https://citizensclimatelobby.org/about-ccl/chapters/",
         "https://community.citizensclimate.org/bulletin/2101/560"
       ],
-      "remote": true
+      "remote": true,
+      "logo": "logos/vt_ccl_vermont_at_large.png"
     },
     {
       "id": "vt_ccl_university_of_vermont",
@@ -2256,7 +2289,8 @@
       "sources": [
         "https://citizensclimatelobby.org/about-ccl/chapters/",
         "https://community.citizensclimate.org/groups/home/1384"
-      ]
+      ],
+      "logo": "logos/vt_ccl_university_of_vermont.png"
     },
     {
       "id": "vt_releaf_collective",
@@ -2317,7 +2351,8 @@
       "sources": [
         "https://www.benningtonvt.org/government/boards___commissions/energy_committee.php",
         "https://vecan.net/energy-committee-location/bennington-energy-committee/"
-      ]
+      ],
+      "logo": "logos/vt_bennington_energy_committee.png"
     },
     {
       "id": "vt_charlotte_energy_committee",
@@ -2387,7 +2422,8 @@
       "sources": [
         "https://www.townofmiddlebury.org/government/boards_and_commissions/energy_committee/index.php",
         "https://www.addisonindependent.com/2026/08/06/middlebury-energy-panel-regroups/"
-      ]
+      ],
+      "logo": "logos/vt_middlebury_energy_committee.png"
     },
     {
       "id": "vt_marshfield_energy_committee",
@@ -2413,7 +2449,8 @@
       "sources": [
         "https://marshfieldvt.gov/?SEC=CC701CB5-CF6F-43C9-B1AE-462D78C0CA5A",
         "https://marshfieldvt.gov/vertical/sites/%7BDE838A07-5D57-4E6F-95DF-7C05B7FB1126%7D/uploads/20250901_ECCCC_Notes.pdf"
-      ]
+      ],
+      "logo": "logos/vt_marshfield_energy_committee.png"
     },
     {
       "id": "vt_aia_vermont",
@@ -2506,7 +2543,8 @@
         "https://www.energycenter.org/",
         "https://eanvt.org/about/people/network-members/"
       ],
-      "remote": true
+      "remote": true,
+      "logo": "logos/vt_center_for_sustainable_energy.png"
     },
     {
       "id": "vt_ceac_addison",
@@ -2538,7 +2576,8 @@
         "https://www.ceacac.org/about-us",
         "https://www.ceacac.org/news",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_ceac_addison.png"
     },
     {
       "id": "vt_gopher_community_rides",
@@ -2570,7 +2609,8 @@
         "https://gophervt.org/contact-us/",
         "https://gophervt.org/news/",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_gopher_community_rides.png"
     },
     {
       "id": "vt_cornerstone_housing_partners",
@@ -2600,7 +2640,8 @@
       "sources": [
         "https://www.cornerstonehousingpartners.org/",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_cornerstone_housing_partners.png"
     },
     {
       "id": "vt_evernorth",
@@ -2630,7 +2671,8 @@
       "sources": [
         "https://evernorthus.org/",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_evernorth.png"
     },
     {
       "id": "vt_lake_champlain_chamber",
@@ -2693,7 +2735,8 @@
         "https://grassrootsfund.org/states/vermont",
         "https://eanvt.org/about/people/network-members/"
       ],
-      "remote": true
+      "remote": true,
+      "logo": "logos/vt_grassroots_fund.png"
     },
     {
       "id": "vt_northern_forest_center",
@@ -2724,7 +2767,8 @@
         "https://www.northernforest.org/",
         "https://eanvt.org/about/people/network-members/"
       ],
-      "remote": true
+      "remote": true,
+      "logo": "logos/vt_northern_forest_center.png"
     },
     {
       "id": "vt_regulatory_assistance_project",
@@ -2802,7 +2846,8 @@
         "https://www.resourcevt.org/",
         "https://www.resourcevt.org/store-location-hours/",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_resource_vt.png"
     },
     {
       "id": "vt_sheo",
@@ -2863,7 +2908,8 @@
         "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/",
         "https://local.aarp.org/place/the-nature-conservancy-montpelier-office-montpelier-vt.html",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_nature_conservancy_vt.png"
     },
     {
       "id": "vt_vermont_adult_learning",
@@ -2893,7 +2939,8 @@
       "sources": [
         "https://vtadultlearning.org/",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_vermont_adult_learning.png"
     },
     {
       "id": "vt_futures_project",
@@ -2924,7 +2971,8 @@
         "https://www.vtfuturesproject.org/",
         "https://www.vtfuturesproject.org/news",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_futures_project.png"
     },
     {
       "id": "vt_green_building_network",
@@ -3051,7 +3099,8 @@
         "https://www.vlt.org/events",
         "https://www.vlt.org/about/contact",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_vlt.png"
     },
     {
       "id": "vt_vlct",
@@ -3082,7 +3131,8 @@
         "https://www.vlct.org/",
         "https://www.vlct.org/contact-us",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_vlct.png"
     },
     {
       "id": "vt_voba",
@@ -3130,7 +3180,8 @@
         "https://www.vermontoutdoorbusinessalliance.org/",
         "https://www.vermontoutdoorbusinessalliance.org/news",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_voba.png"
     },
     {
       "id": "vt_vsjf",
@@ -3240,7 +3291,8 @@
       "sources": [
         "https://www.vtworksforwomen.org/",
         "https://eanvt.org/about/people/network-members/"
-      ]
+      ],
+      "logo": "logos/vt_vww.png"
     },
     {
       "id": "vt_craftsbury_energy_committee",
@@ -3270,7 +3322,8 @@
         "https://craftsbury.gov/committees/energy-committee/",
         "https://craftsbury.gov/meetings/2026-8-20-energy-committee/",
         "https://vecan.net/energy-committee-location/craftsbury-energy-committee/"
-      ]
+      ],
+      "logo": "logos/vt_craftsbury_energy_committee.png"
     },
     {
       "id": "vt_northfield_energy_committee",
@@ -3298,7 +3351,8 @@
       "sources": [
         "https://www.northfield-vt.gov/energy-committee-minutes",
         "https://vecan.net/energy-committee-location/northfield-energy-committee/"
-      ]
+      ],
+      "logo": "logos/vt_northfield_energy_committee.png"
     },
     {
       "id": "vt_williston_energy_committee",
@@ -3388,7 +3442,8 @@
         "https://hartfordvt.gov/2509/Energy-Commission",
         "https://hartfordvt.gov/AgendaCenter",
         "https://vecan.net/energy-committee-location/hartford-energy-commission/"
-      ]
+      ],
+      "logo": "logos/vt_hartford_energy_committee.png"
     },
     {
       "id": "vt_south_burlington_energy_committee",
@@ -3413,7 +3468,8 @@
       "actions": [],
       "sources": [
         "https://www.southburlingtonvt.gov/AgendaCenter/Energy-Committee-14"
-      ]
+      ],
+      "logo": "logos/vt_south_burlington_energy_committee.png"
     },
     {
       "id": "vt_greensboro_energy_committee",
@@ -3469,7 +3525,8 @@
       "sources": [
         "https://norwich.vt.us/energy-committee/",
         "https://norwich.vt.us/wp-content/uploads/2026/01/Agenda-for-Norwich-Energy-Committee-1-27-2026-Meeting.pdf"
-      ]
+      ],
+      "logo": "logos/vt_norwich_energy_committee.png"
     },
     {
       "id": "vt_jericho_energy_committee",
@@ -3519,7 +3576,8 @@
       "actions": [],
       "sources": [
         "https://docs.stjvt.com/index.php/town-government/public-meetings/energy-committee/2026-agenda-15"
-      ]
+      ],
+      "logo": "logos/vt_st_johnsbury_energy_committee.png"
     },
     {
       "id": "vt_starksboro_energy_committee",
@@ -3561,7 +3619,8 @@
       "actions": [],
       "sources": [
         "https://www.starksborovt.org/energy-committee"
-      ]
+      ],
+      "logo": "logos/vt_starksboro_energy_committee.png"
     },
     {
       "id": "vt_huntington_energy_committee",
@@ -3604,7 +3663,8 @@
       "actions": [],
       "sources": [
         "https://www.huntingtonvt.org/energy-committee/"
-      ]
+      ],
+      "logo": "logos/vt_huntington_energy_committee.png"
     },
     {
       "id": "vt_stowe_energy_committee",
@@ -3630,7 +3690,8 @@
       "sources": [
         "https://www.stowevt.gov/Meetings-Events/Board-and-Commissions/Energy-Committee",
         "https://www.stowevt.gov/files/assets/town/v/3/boards-amp-commissions/energy/minutes/stowe-energy-committee-minutes-03.27.25-draft.pdf"
-      ]
+      ],
+      "logo": "logos/vt_stowe_energy_committee.png"
     },
     {
       "id": "vt_hinesburg_energy_committee",
@@ -3656,7 +3717,8 @@
       "actions": [],
       "sources": [
         "https://www.hinesburg.org/AgendaCenter"
-      ]
+      ],
+      "logo": "logos/vt_hinesburg_energy_committee.png"
     },
     {
       "id": "vt_shelburne_energy_committee",
@@ -3711,7 +3773,8 @@
       "sources": [
         "https://arlingtonvermont.org/energy/",
         "https://arlingtonvermont.org/minutes-from-arlington-energy-committee-meeting-4-1-2026/"
-      ]
+      ],
+      "logo": "logos/vt_arlington_energy_committee.png"
     },
     {
       "id": "vt_brandon_energy_committee",
@@ -3738,7 +3801,8 @@
       "sources": [
         "https://www.brandonvermont.gov/1214/Energy-Committee",
         "https://www.townofbrandon.com/meetings/136706/"
-      ]
+      ],
+      "logo": "logos/vt_brandon_energy_committee.png"
     },
     {
       "id": "vt_climate_advocates_bennington",
@@ -3764,7 +3828,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_climate_advocates_bennington.png"
     },
     {
       "id": "vt_350_chittenden_county",
@@ -3790,7 +3855,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_350_chittenden_county.png"
     },
     {
       "id": "vt_earth_matters_manchester",
@@ -3816,7 +3882,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_earth_matters_manchester.png"
     },
     {
       "id": "vt_350_rutland_county",
@@ -3842,7 +3909,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_350_rutland_county.png"
     },
     {
       "id": "vt_350_addison_county",
@@ -3868,7 +3936,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_350_addison_county.png"
     },
     {
       "id": "vt_families_rise_up",
@@ -3894,7 +3963,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_families_rise_up.png"
     },
     {
       "id": "vt_350_white_river",
@@ -3920,7 +3990,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_350_white_river.png"
     },
     {
       "id": "vt_350_montpelier",
@@ -3946,7 +4017,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_350_montpelier.png"
     },
     {
       "id": "vt_climate_action_collective",
@@ -3972,7 +4044,8 @@
       "actions": [],
       "sources": [
         "https://www.350vermont.org/nodes"
-      ]
+      ],
+      "logo": "logos/vt_climate_action_collective.png"
     },
     {
       "id": "vt_vrja",
@@ -4004,7 +4077,8 @@
         "https://vtracialjusticealliance.org/2025/02/justice-agenda-and-climate-action/",
         "https://legislature.vermont.gov/Documents/2022/WorkGroups/House%20Natural/Bills/S.148/Witness%20Documents/S.148~Elena%20Mihaly~Vermont%20Organization%20Sign-On%20Letter~3-16-2022.pdf",
         "https://vtracialjusticealliance.org/2020/07/press-release-mayor-miro-weinberger-vermont-racial-justice-alliance-and-30-plus-chittenden-county-organizations-together-declare-racism-a-public-health-emergency-and-announce-new-actions/"
-      ]
+      ],
+      "logo": "logos/vt_vrja.png"
     },
     {
       "id": "vt_rejoice",

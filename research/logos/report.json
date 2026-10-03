@@ -1,0 +1,1147 @@
+{
+ "vt_environmental_common_agenda": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vermontconservationvoters.com/wp-content/uploads/2023/12/VCV_24_logo.png",
+  "size": [
+   478,
+   252
+  ],
+  "source_site": "https://vermontconservationvoters.com/commonagenda26/",
+  "accepted": true
+ },
+ "vt_energy_action_network": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://eanvt.org/wp-content/uploads/2019/01/favicon-300x300.jpg",
+  "size": [
+   300,
+   300
+  ],
+  "source_site": "https://eanvt.org",
+  "accepted": true
+ },
+ "vt_vecan": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/689e06b1dd5afd413946257c/881fc268-0d09-4027-aa7c-730e3a14996d/Vecan+homepage+logos+%283%29.png",
+  "size": [
+   1280,
+   720
+  ],
+  "source_site": "https://www.vecan.net",
+  "accepted": false
+ },
+ "vt_actonclimatevt": {
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://images.squarespace-cdn.com/content/v1/5e14a75cf5f48043d12c8908/1578500047329-62E6E0JBB11JASPMGM1F/favicon.ico?format=100w",
+  "size": [
+   100,
+   100
+  ],
+  "source_site": "https://www.actonclimatevt.org",
+  "accepted": false
+ },
+ "vt_t4vt": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/636af424650803706f90a60f/76a114a9-6a21-4f71-9319-5c66aa398242/T4VT+Logo.png?format=1500w",
+  "size": [
+   500,
+   500
+  ],
+  "source_site": "https://www.t4vt.org",
+  "accepted": true
+ },
+ "vt_clean_communities_coalition": {
+  "status": "site error: ConnectionError"
+ },
+ "vt_ej_network": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://environmentaljusticevt.org/wp-content/uploads/2024/08/cropped-ejn-logo.-graphic-and-name.-white-bckgrnd.png",
+  "size": [
+   512,
+   512
+  ],
+  "source_site": "https://environmentaljusticevt.org",
+  "accepted": true
+ },
+ "vt_vnrc": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vnrc.org/wp-content/themes/vnrc/assets/images/logo-green.png",
+  "size": [
+   1748,
+   846
+  ],
+  "source_site": "https://vnrc.org",
+  "accepted": true
+ },
+ "vt_vpirg": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.vpirg.org/wp-content/uploads/2022/01/VPIRG_Green_Tag-180x137.png",
+  "size": [
+   180,
+   137
+  ],
+  "source_site": "https://www.vpirg.org",
+  "accepted": true
+ },
+ "vt_vcv": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vermontconservationvoters.com/wp-content/uploads/2023/12/VCV_24_logo.png",
+  "size": [
+   478,
+   252
+  ],
+  "source_site": "https://vermontconservationvoters.com",
+  "accepted": true
+ },
+ "vt_350vermont": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org",
+  "accepted": true
+ },
+ "vt_sierra_club": {
+  "status": "no usable image",
+  "tried": 1
+ },
+ "vt_rev": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.revermont.org/wp-content/uploads/REV_Logo_New_Draft-22.png",
+  "size": [
+   345,
+   146
+  ],
+  "source_site": "https://www.revermont.org",
+  "accepted": true
+ },
+ "vt_vtipl": {
+  "status": "no usable image",
+  "tried": 1
+ },
+ "vt_rad": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://radmovement.org/wp-content/uploads/2022/06/RADLogo.svg",
+  "size": [
+   400,
+   371
+  ],
+  "source_site": "https://radmovement.org/vt/",
+  "accepted": true
+ },
+ "vt_third_act": {
+  "status": "no usable image",
+  "tried": 2
+ },
+ "vt_youth_lobby": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://i0.wp.com/youthlobby.org/wp-content/uploads/2014/11/cropped-YouthLobbySquare.png?fit=192%2C192&ssl=1",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://youthlobby.org",
+  "accepted": true
+ },
+ "vt_vtcha": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://static.wixstatic.com/media/a52874_eac51c62201d430a969d52c772b3424f%7Emv2_d_9601_10515_s_4_2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/a52874_eac51c62201d430a969d52c772b3424f%7Emv2_d_9601_10515_s_4_2.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://www.vtcha.org",
+  "accepted": false
+ },
+ "vt_vctn": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/6329d214da4067742d066f7b/78f2fd46-c824-485f-bce7-02d2158b7770/VCTN+Small+Logo.png?format=1500w",
+  "size": [
+   1500,
+   791
+  ],
+  "source_site": "https://www.vctn.org",
+  "accepted": true
+ },
+ "vt_vbsr": {
+  "status": "no usable image",
+  "tried": 1
+ },
+ "vt_clf": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://i0.wp.com/www.clf.org/wp-content/uploads/2022/11/CLF_logolockup_horizontal_fullcolor.png?fit=6001%2C1968&ssl=1",
+  "size": [
+   6001,
+   1968
+  ],
+  "source_site": "https://www.clf.org/vermont/",
+  "accepted": true
+ },
+ "vt_lake_champlain_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.lakechamplaincommittee.org/fileadmin/files/Publications/LCC_Logo_COLOR_no_background.png",
+  "size": [
+   313,
+   338
+  ],
+  "source_site": "https://www.lakechamplaincommittee.org",
+  "accepted": true
+ },
+ "vt_connecticut_river_conservancy": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://static.wixstatic.com/media/dee7f4_fd7e26a051954ce3b35738ad79dbb003%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/dee7f4_fd7e26a051954ce3b35738ad79dbb003%7Emv2.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://www.ctriver.org",
+  "accepted": true
+ },
+ "vt_hunger_free_vermont": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5f83855960657429dda4af3c/31ce4a4a-0b16-486e-a21c-b982a1c8e6dc/4141VCH10_Logo_PMS195+-+transparent.png?format=1500w",
+  "size": [
+   896,
+   422
+  ],
+  "source_site": "https://www.hungerfreevt.org",
+  "accepted": true
+ },
+ "vt_local_motion": {
+  "status": "no usable image",
+  "tried": 1
+ },
+ "vt_preservation_trust": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://ptvermont.org/wp-content/uploads/2023/09/PTV-Logo-1line-BK-WEB-1.png",
+  "size": [
+   490,
+   175
+  ],
+  "source_site": "https://www.ptvermont.org",
+  "accepted": true
+ },
+ "vt_trust_for_public_land": {
+  "status": "ok",
+  "kind": "favicon",
+  "url": "https://www.tpl.org/favicon.ico",
+  "size": [
+   48,
+   48
+  ],
+  "source_site": "https://www.tpl.org/state/vermont",
+  "accepted": true
+ },
+ "vt_vermont_center_for_ecostudies": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vtecostudies.nyc3.digitaloceanspaces.com/wp-content/uploads/2025/10/11193942/logo.png",
+  "size": [
+   440,
+   82
+  ],
+  "source_site": "https://vtecostudies.org",
+  "accepted": true
+ },
+ "vt_vermont_trout_unlimited": {
+  "status": "ok",
+  "kind": "favicon",
+  "url": "https://www.vttucouncil.org/favicon.ico",
+  "size": [
+   16,
+   16
+  ],
+  "source_site": "https://www.vttucouncil.org",
+  "accepted": false
+ },
+ "vt_carshare_vermont": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://www.carsharevt.org/wp-content/uploads/2023/01/cropped-favicon-192x192.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://www.carsharevt.org",
+  "accepted": true
+ },
+ "vt_capstone_community_action": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://capstonevt.org/images/CapstoneLogo.svg",
+  "size": [
+   400,
+   96
+  ],
+  "source_site": "https://www.capstonevt.org",
+  "accepted": true
+ },
+ "vt_cvoeo": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.cvoeo.org/images/cvoeo-logo-2022.svg",
+  "size": [
+   400,
+   148
+  ],
+  "source_site": "https://www.cvoeo.org",
+  "accepted": true
+ },
+ "vt_drive_electric_vermont": {
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://www.driveelectricvt.com/dist/favicon.png",
+  "size": [
+   64,
+   64
+  ],
+  "source_site": "https://www.driveelectricvt.com",
+  "accepted": true
+ },
+ "vt_public_assets_institute": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://publicassets.org/wp-content/uploads/2023/05/logo-white-transparent.png",
+  "size": [
+   552,
+   82
+  ],
+  "source_site": "https://www.publicassets.org",
+  "accepted": false
+ },
+ "vt_shelburne_farms": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://shelburnefarms.org/themes/custom/sf/logo.svg",
+  "size": [
+   400,
+   153
+  ],
+  "source_site": "https://www.shelburnefarms.org",
+  "accepted": true
+ },
+ "vt_sustainable_woodstock": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.sustainablewoodstock.org/wp-content/uploads/2022/01/SW-LOGO-HORIZONTAL.svg",
+  "size": [
+   400,
+   125
+  ],
+  "source_site": "https://www.sustainablewoodstock.org",
+  "accepted": true
+ },
+ "vt_vcil": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.vcil.org/wp-content/uploads/2021/03/VCIL-Logo-Header.jpg",
+  "size": [
+   300,
+   305
+  ],
+  "source_site": "https://www.vcil.org",
+  "accepted": true
+ },
+ "vt_vcrd": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.vtrural.org/wp-content/uploads/2022/07/VCRD-Logo-Top.png",
+  "size": [
+   550,
+   96
+  ],
+  "source_site": "https://www.vtrural.org",
+  "accepted": false
+ },
+ "vt_veic": {
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://www.veic.org/dist/images/favicon.png",
+  "size": [
+   64,
+   64
+  ],
+  "source_site": "https://www.veic.org",
+  "accepted": false
+ },
+ "vt_efficiency_vermont": {
+  "status": "ok",
+  "kind": "icon-180",
+  "url": "https://www.efficiencyvermont.com/themes/evt/content/apple-touch-icon.png",
+  "size": [
+   180,
+   180
+  ],
+  "source_site": "https://www.efficiencyvermont.com",
+  "accepted": true
+ },
+ "vt_vital_communities": {
+  "status": "no usable image",
+  "tried": 2
+ },
+ "vt_vhcb": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vhcb.org/wp-content/uploads/2025/05/VHCB-Logo.svg",
+  "size": [
+   400,
+   213
+  ],
+  "source_site": "https://www.vhcb.org",
+  "accepted": true
+ },
+ "vt_vermont_passive_house": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.vermontpassivehouse.org/gallery/PHIUS%20logo-ts1650500648.png?ts=1750342936",
+  "size": [
+   154,
+   60
+  ],
+  "source_site": "https://www.vermontpassivehouse.org",
+  "accepted": true
+ },
+ "vt_veep": {
+  "status": "site error: ReadTimeout"
+ },
+ "vt_catma": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://catmavt.org/wp-content/uploads/2023/06/logo-catma-blue.png",
+  "size": [
+   179,
+   60
+  ],
+  "source_site": "https://catmavt.org",
+  "accepted": true
+ },
+ "vt_aarp_vermont": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://aarp.widen.net/content/uynupfdswl/svg/aarp-red-header.svg?u=jlepbs",
+  "size": [
+   400,
+   100
+  ],
+  "source_site": "https://states.aarp.org/vermont",
+  "accepted": true
+ },
+ "vt_american_lung_association_vt": {
+  "status": "no website"
+ },
+ "vt_green_mountain_transit": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.ridegmt.com/ImageRepository/Document?documentID=104",
+  "size": [
+   420,
+   180
+  ],
+  "source_site": "https://www.ridegmt.com/",
+  "accepted": true
+ },
+ "vt_sunrise_vermont": {
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://actionnetwork.org/images/favicon.png",
+  "size": [
+   1200,
+   1200
+  ],
+  "source_site": "https://actionnetwork.org/groups/sunrise-vermont",
+  "accepted": false
+ },
+ "vt_ccl_vermont_at_large": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCL-Logo-H2.png",
+  "size": [
+   401,
+   59
+  ],
+  "source_site": "https://citizensclimatelobby.org/chapters/Vermont_-_At_Large/",
+  "accepted": true
+ },
+ "vt_ccl_university_of_vermont": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCL-Logo-H2.png",
+  "size": [
+   401,
+   59
+  ],
+  "source_site": "https://citizensclimatelobby.org/chapters/VT_University_of_Vermont",
+  "accepted": true
+ },
+ "vt_releaf_collective": {
+  "status": "no usable image",
+  "tried": 1
+ },
+ "vt_bennington_energy_committee": {
+  "status": "ok",
+  "kind": "og-image",
+  "url": "https://cms5.revize.com/revize/bennington/_assets_/images/townlogo.png",
+  "size": [
+   600,
+   619
+  ],
+  "source_site": "https://www.benningtonvt.org/government/boards___commissions/energy_committee.php",
+  "accepted": true
+ },
+ "vt_charlotte_energy_committee": {
+  "status": "ok",
+  "kind": "favicon",
+  "url": "https://www.charlotteenergy.org/favicon.ico",
+  "size": [
+   16,
+   16
+  ],
+  "source_site": "https://www.charlotteenergy.org",
+  "accepted": false
+ },
+ "vt_middlebury_energy_committee": {
+  "status": "ok",
+  "kind": "og-image",
+  "url": "https://cms5.revize.com/revize//townofmiddlebury/_assets_/images/logo.png",
+  "size": [
+   134,
+   134
+  ],
+  "source_site": "https://www.townofmiddlebury.org/government/boards_and_commissions/energy_committee/index.php",
+  "accepted": true
+ },
+ "vt_marshfield_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://marshfieldvt.gov/repository/designs/templates/GO_marshfield-vt/images/logo.png",
+  "size": [
+   606,
+   63
+  ],
+  "source_site": "https://marshfieldvt.gov/?SEC=CC701CB5-CF6F-43C9-B1AE-462D78C0CA5A",
+  "accepted": true
+ },
+ "vt_aia_vermont": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.aiavt.org/fileadmin/_processed_/c/1/csm_s_p_logo__half_size__2a328660e5.png",
+  "size": [
+   320,
+   149
+  ],
+  "source_site": "https://www.aiavt.org",
+  "accepted": false
+ },
+ "vt_bppa_vt": {
+  "status": "site error: ProxyError"
+ },
+ "vt_center_for_sustainable_energy": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://energycenter.org/sites/default/files/logo_cse_rgb.png",
+  "size": [
+   854,
+   410
+  ],
+  "source_site": "https://www.energycenter.org",
+  "accepted": true
+ },
+ "vt_ceac_addison": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/669ab22caf715c2262e54d84/3572351c-6617-493f-b839-c7686a9f9d44/circle+ceac+logo.png?format=1500w",
+  "size": [
+   1500,
+   1500
+  ],
+  "source_site": "https://www.ceacac.org",
+  "accepted": true
+ },
+ "vt_gopher_community_rides": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://gophervt.org/wp-content/uploads/2025/02/gopher-logo-new.png",
+  "size": [
+   200,
+   63
+  ],
+  "source_site": "https://gophervt.org",
+  "accepted": true
+ },
+ "vt_cornerstone_housing_partners": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://cornerstonehousingpartners.org/wp-content/uploads/2025/02/cornerstone_stackedlogo_fullcolor-web.png",
+  "size": [
+   106,
+   102
+  ],
+  "source_site": "https://www.cornerstonehousingpartners.org",
+  "accepted": true
+ },
+ "vt_evernorth": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://evernorthus.org/wp-content/themes/housing/dist/images/logo.png",
+  "size": [
+   2294,
+   576
+  ],
+  "source_site": "https://evernorthus.org",
+  "accepted": true
+ },
+ "vt_lake_champlain_chamber": {
+  "status": "site error: ProxyError"
+ },
+ "vt_grassroots_fund": {
+  "status": "ok",
+  "kind": "icon-180",
+  "url": "https://grassrootsfund.org/apple-touch-icon.png",
+  "size": [
+   180,
+   180
+  ],
+  "source_site": "https://grassrootsfund.org",
+  "accepted": true
+ },
+ "vt_northern_forest_center": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://northernforest.org/wp-content/uploads/2020/09/logo-color.svg",
+  "size": [
+   400,
+   169
+  ],
+  "source_site": "https://www.northernforest.org",
+  "accepted": true
+ },
+ "vt_regulatory_assistance_project": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.raponline.org/wp-content/uploads/2023/06/full-color-logo.svg",
+  "size": [
+   400,
+   168
+  ],
+  "source_site": "https://raponline.org",
+  "accepted": false
+ },
+ "vt_resource_vt": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://resourcevt.org/wp-content/uploads/2023/09/Mainlogo.svg",
+  "size": [
+   400,
+   480
+  ],
+  "source_site": "https://www.resourcevt.org",
+  "accepted": true
+ },
+ "vt_sheo": {
+  "status": "no usable image",
+  "tried": 2
+ },
+ "vt_nature_conservancy_vt": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.nature.org/content/dam/tnc/nature/en/logos/75-TNC-Lockup-RGB.svg",
+  "size": [
+   400,
+   185
+  ],
+  "source_site": "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/",
+  "accepted": true
+ },
+ "vt_vermont_adult_learning": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vtadultlearning.org/wp-content/uploads/VAL-logo-Banner-with-tag-color-scaled.png",
+  "size": [
+   2560,
+   562
+  ],
+  "source_site": "https://vtadultlearning.org",
+  "accepted": true
+ },
+ "vt_futures_project": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://vtfuturesproject.org/wp-content/uploads/cropped-favicon-192x192.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://www.vtfuturesproject.org",
+  "accepted": true
+ },
+ "vt_green_building_network": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5dcb557bbce3d618517c22ee/1575569547388-ZVJOKGKY3DY93Y97DVD5/VGBN_Logos-06.png?format=1500w",
+  "size": [
+   1500,
+   985
+  ],
+  "source_site": "https://www.vtgreenbuildingnetwork.org",
+  "accepted": false
+ },
+ "vt_vippa": {
+  "status": "ok",
+  "kind": "favicon",
+  "url": "https://www.vippahydro.org/favicon.ico",
+  "size": [
+   16,
+   16
+  ],
+  "source_site": "https://www.vippahydro.org",
+  "accepted": false
+ },
+ "vt_vlt": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vlt.org/wp-content/themes/vlt/images/vlt-logo.png",
+  "size": [
+   600,
+   161
+  ],
+  "source_site": "https://www.vlt.org",
+  "accepted": true
+ },
+ "vt_vlct": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.vlct.org/sites/default/files/vlct-logo.svg",
+  "size": [
+   400,
+   135
+  ],
+  "source_site": "https://www.vlct.org",
+  "accepted": true
+ },
+ "vt_voba": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://static.wixstatic.com/media/8cd732_fb15853e0ae849bd87411ac44fef721b~mv2.png/v1/crop/x_112,y_37,w_4296,h_933/fill/w_384,h_72,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/voba-logo.png",
+  "size": [
+   384,
+   72
+  ],
+  "source_site": "https://www.vermontoutdoorbusinessalliance.org",
+  "accepted": true
+ },
+ "vt_vsjf": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.vsjf.org/wp-content/uploads/2025/12/vsjf-logo-white-2.svg",
+  "size": [
+   400,
+   51
+  ],
+  "source_site": "https://www.vsjf.org",
+  "accepted": false
+ },
+ "vt_vww": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vtworksforwomen.org/wp-content/uploads/2022/10/logo-01.svg",
+  "size": [
+   400,
+   161
+  ],
+  "source_site": "https://www.vtworksforwomen.org",
+  "accepted": true
+ },
+ "vt_craftsbury_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://craftsbury.gov/wp-content/uploads/sites/39/yootheme/cache/98/Generic-Town-Logo-CRAFTSBURY-VT_Logo-Black-982fa7d2.jpg",
+  "size": [
+   180,
+   72
+  ],
+  "source_site": "https://craftsbury.gov/committees/energy-committee/",
+  "accepted": true
+ },
+ "vt_northfield_energy_committee": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://static.wixstatic.com/media/13fb68_81a5dc37bcf64a61b91c5f5c84157f94%7Emv2.jpg/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/13fb68_81a5dc37bcf64a61b91c5f5c84157f94%7Emv2.jpg",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://www.northfield-vt.gov/energy-committee-minutes",
+  "accepted": true
+ },
+ "vt_williston_energy_committee": {
+  "status": "no usable image",
+  "tried": 3
+ },
+ "vt_bristol_energy_committee": {
+  "status": "ok",
+  "kind": "favicon",
+  "url": "http://bristolvt.org/favicon.ico",
+  "size": [
+   80,
+   80
+  ],
+  "source_site": "http://bristolvt.org/boards-commissions-committees/energy/",
+  "accepted": false
+ },
+ "vt_hartford_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://hartfordvt.gov/ImageRepository/Document?documentID=5958",
+  "size": [
+   314,
+   137
+  ],
+  "source_site": "https://hartfordvt.gov/2509/Energy-Commission",
+  "accepted": true
+ },
+ "vt_south_burlington_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.southburlingtonvt.gov/ImageRepository/Document?documentID=73",
+  "size": [
+   415,
+   305
+  ],
+  "source_site": "https://www.southburlingtonvt.gov/AgendaCenter/Energy-Committee-14",
+  "accepted": true
+ },
+ "vt_greensboro_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://greensborovt.gov/wp-content/uploads/2022/09/greensboro-logo-01.png",
+  "size": [
+   936,
+   246
+  ],
+  "source_site": "https://greensborovt.gov/energy-committee/",
+  "accepted": false
+ },
+ "vt_norwich_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://norwich.vt.us/wp-content/uploads/2023/08/cropped-Town-of-Norwich-BW-1.png",
+  "size": [
+   495,
+   247
+  ],
+  "source_site": "https://norwich.vt.us/energy-committee/",
+  "accepted": true
+ },
+ "vt_jericho_energy_committee": {
+  "status": "ok",
+  "kind": "favicon",
+  "url": "https://www.jerichovt.gov/favicon.ico",
+  "size": [
+   48,
+   48
+  ],
+  "source_site": "https://www.jerichovt.org/agendacenter",
+  "accepted": false
+ },
+ "vt_st_johnsbury_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://docs.stjvt.com/images/walkingtour_st-johnsbury-signbig.png",
+  "size": [
+   250,
+   403
+  ],
+  "source_site": "https://docs.stjvt.com/index.php/town-government/public-meetings/energy-committee/2026-agenda-15",
+  "accepted": true
+ },
+ "vt_starksboro_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.starksborovt.org/sites/default/files/uploads/logo.svg",
+  "size": [
+   400,
+   133
+  ],
+  "source_site": "https://www.starksborovt.org/energy-committee",
+  "accepted": true
+ },
+ "vt_huntington_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.huntingtonvt.org/wp-content/uploads/2018/01/huntington-logo-wp-dark.png",
+  "size": [
+   400,
+   79
+  ],
+  "source_site": "https://www.huntingtonvt.org/energy-committee/",
+  "accepted": true
+ },
+ "vt_stowe_energy_committee": {
+  "status": "ok",
+  "kind": "icon-180",
+  "url": "https://www.stowevt.gov/files/ocfavicon/Town/apple-touch-icon.png?V=638538617658923431",
+  "size": [
+   180,
+   180
+  ],
+  "source_site": "https://www.stowevt.gov/Meetings-Events/Board-and-Commissions/Energy-Committee",
+  "accepted": true
+ },
+ "vt_hinesburg_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.hinesburg.org/ImageRepository/Document?documentID=116",
+  "size": [
+   700,
+   144
+  ],
+  "source_site": "https://www.hinesburg.org/AgendaCenter",
+  "accepted": true
+ },
+ "vt_shelburne_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.shelburnevt.org/ImageRepository/Document?documentID=6896",
+  "size": [
+   628,
+   248
+  ],
+  "source_site": "https://www.shelburnevt.org/470/Climate-Energy-Committee",
+  "accepted": false
+ },
+ "vt_arlington_energy_committee": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://arlingtonvermont.org/wp-content/uploads/2021/05/cropped-Picture1-192x192.jpg",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://arlingtonvermont.org/energy/",
+  "accepted": true
+ },
+ "vt_brandon_energy_committee": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.brandonvermont.gov/ImageRepository/Document?documentID=116",
+  "size": [
+   812,
+   144
+  ],
+  "source_site": "https://www.brandonvermont.gov/1214/Energy-Committee",
+  "accepted": true
+ },
+ "vt_climate_advocates_bennington": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_350_chittenden_county": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_earth_matters_manchester": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_350_rutland_county": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/rutland-county-node",
+  "accepted": true
+ },
+ "vt_350_addison_county": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_families_rise_up": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_350_white_river": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_350_montpelier": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_climate_action_collective": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "size": [
+   1500,
+   1297
+  ],
+  "source_site": "https://www.350vermont.org/nodes",
+  "accepted": true
+ },
+ "vt_vrja": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://vtracialjusticealliance.org/wp-content/uploads/2021/03/VTRJA-Site-Logo.png",
+  "size": [
+   341,
+   87
+  ],
+  "source_site": "https://vtracialjusticealliance.org",
+  "accepted": true
+ },
+ "vt_rejoice": {
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://environmentaljusticevt.org/wp-content/uploads/2024/08/cropped-ejn-logo.-graphic-and-name.-white-bckgrnd.png",
+  "size": [
+   512,
+   512
+  ],
+  "source_site": "https://environmentaljusticevt.wordpress.com/ej-legislation/",
+  "accepted": false
+ },
+ "ejlt": {
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://actionnetwork.org/images/favicon.png",
+  "size": [
+   1200,
+   1200
+  ],
+  "source_site": "https://actionnetwork.org/groups/massachusetts-environmental-justice-table",
+  "accepted": false
+ },
+ "cccc": {
+  "status": "no website"
+ },
+ "scjc": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://static.wixstatic.com/media/f79d29_42029a43e4cc4cf4973e508f075a1af6%7Emv2.jpg/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/f79d29_42029a43e4cc4cf4973e508f075a1af6%7Emv2.jpg",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://www.notoxicbiomass.org/",
+  "accepted": false
+ },
+ "hero": {
+  "status": "ok",
+  "kind": "favicon",
+  "url": "https://www.mahousingclimate.org/favicon.ico",
+  "size": [
+   32,
+   32
+  ],
+  "source_site": "https://www.mahousingclimate.org/",
+  "accepted": false
+ },
+ "healthlink": {
+  "status": "no usable image",
+  "tried": 1
+ },
+ "bodhisara_dharma_community": {
+  "status": "no usable image",
+  "tried": 2
+ },
+ "hands_across_the_river_coalition_inc": {
+  "status": "no website"
+ },
+ "mass_divest_coalition": {
+  "status": "site error: ProxyError"
+ },
+ "no_sharon_gas_pipeline_clean_energy_now": {
+  "status": "site error: ProxyError"
+ },
+ "take_back_the_grid": {
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://bostondsa.org/wp-content/uploads/2023/02/cropped-Logo-favicon-192x192.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://bostondsa.org/our-work/ecosocialism/",
+  "accepted": false
+ },
+ "upper_cape_women_s_coalition": {
+  "status": "no website"
+ },
+ "21st_century_schools_fund": {
+  "status": "no usable image",
+  "tried": 1
+ }
+}
