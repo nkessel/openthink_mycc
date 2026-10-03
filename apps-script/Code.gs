@@ -273,6 +273,15 @@ function fillCoalitionLogos_(data, counts) {
  * Events: fill a blank RSVP link from the repo, and swap a link that only points to a general events page
  * (the repo's link starts with it and goes further) for the event's own page. Never overwrites anything else.
  */
+/** True when `general` is a site's events listing (…/events, /calendar, /upcoming-events…) on the same site as `specific`. */
+function isListingFor_(general, specific) {
+  var host = function (u) { var m = /^https?:\/\/(?:www\.)?([^\/?#]+)/i.exec(u || ''); return m ? m[1].toLowerCase() : ''; };
+  if (!host(general) || host(general) !== host(specific) || general === specific) return false;
+  var path = String(general).replace(/^https?:\/\/[^\/]+/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  var last = path.split('/').pop();
+  return path === '' || /^(events?|calendar|upcoming(-events)?|event-listings|whats-on|get-involved)$/i.test(last);
+}
+
 function fillEventLinks_(data, counts) {
   var sheet = ss_().getSheetByName(TAB.events);
   if (!sheet) return;
@@ -288,7 +297,7 @@ function fillEventLinks_(data, counts) {
     var updates = {};
     if (!str_(r.rsvp_link) && src.rsvp_link) { updates.rsvp_link = src.rsvp_link; counts.rsvp++; }
     var cur = str_(r.link);
-    if (src.link && (!cur || (src.link.length > cur.length && src.link.indexOf(cur.replace(/\/+$/, '')) === 0))) {
+    if (src.link && (!cur || (src.link.length > cur.length && src.link.indexOf(cur.replace(/\/+$/, '')) === 0) || isListingFor_(cur, src.link))) {
       if (src.link !== cur) { updates.link = src.link; counts.details++; }
     }
     if (!Object.keys(updates).length) return;

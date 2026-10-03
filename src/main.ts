@@ -13,9 +13,12 @@ import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
-import { setupSidebarToggle, createMapLegend } from "./sidebar";
+import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
+
+captureLandText(); // before the loading screen goes away
 import { currentMap, MAPS, type MapDef } from "./maps";
 import { rollRecurringForward } from "./recurrence";
+import { attachSectors, createSectorSection } from "./sectors";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
 type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDone?: () => void };
@@ -64,6 +67,8 @@ async function main() {
 
   bootProgress(0.8, "Drawing the map\u2026");
   await attachThoughts(data);
+  // Sector layers (Map settings → Social justice) that this browser has switched on.
+  const sectorsOn = await attachSectors(data, currentMap.id);
   // Recurring events carry one stored date; show their next occurrence.
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
 
@@ -155,7 +160,7 @@ async function main() {
   bootProgress(0.9, "Setting up the tabs\u2026");
 
   // The key to the map sits on the map itself.
-  createMapLegend(graphContainer);
+  createMapLegend(graphContainer, sectorsOn);
 
   // Controls panel — mounts inside the sidebar
   const controls = createControls(sidebar.controlsContainer(), {
@@ -170,6 +175,8 @@ async function main() {
   });
   // The org-to-org connections toggle lives with the other advanced display options.
   controls.advancedContainer().appendChild(graphApi.orgLinkToggle());
+  // "Social justice": one switch per sector layer, closed by default, just above Advanced display settings.
+  createSectorSection(sidebar.controlsContainer(), currentMap.id);
 
   // ----- Geographic view -----
   const geoView = createGeographicView(data, {
@@ -278,7 +285,11 @@ async function main() {
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
   setFormLabelData(data.organizations);
   setItemLabelData([...data.coalitions, ...data.organizations]);
-  createFab(content, () => drawerApi?.current() ?? null);
+  // Sector groups aren't in the Google Sheet yet, so the forms aren't pre-filled with them.
+  createFab(content, () => {
+    const cur = drawerApi?.current() ?? null;
+    return cur && (cur as { sector?: string }).sector ? null : cur;
+  });
 
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {

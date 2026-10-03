@@ -12,6 +12,7 @@ import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
+import { sectorById } from "./sectors";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { suggestionsFor } from "./suggestions";
 
@@ -105,6 +106,8 @@ export function createDrawer(
       if (o.profile?.youth_serving) tags.appendChild(h("span", { class: "tag" }, "Youth-serving"));
       if (o.profile?.school_club) tags.appendChild(h("span", { class: "tag" }, "School club"));
       if (o.profile?.hub) tags.appendChild(h("span", { class: "tag" }, "Hub org"));
+      const sec = sectorById(o.sector);
+      if (sec) tags.appendChild(h("span", { class: "tag sector-pill", style: `--sector:${sec.color}` }, sec.label));
       if (o.profile?.geo_precision === "approx") tags.appendChild(h("span", { class: "tag" }, "Approximate location"));
       for (const t of o.topic_tags || []) tags.appendChild(h("span", { class: "tag" }, prettifyTag(t)));
       if (tags.childNodes.length) head.appendChild(tags);
@@ -149,6 +152,7 @@ export function createDrawer(
     const tabList: { id: DrawerTab; label: string }[] =
       node.kind === "coalition"
         ? [
+            { id: "about", label: "About" },
             { id: "projects", label: `Projects (${n.projects})` },
             { id: "events", label: `Events (${n.events})` },
             { id: "actions", label: `Actions (${n.actions})` },
@@ -181,7 +185,9 @@ export function createDrawer(
     const body = h("div", { class: "body" });
     if (node.kind === "coalition") {
       const c = node as Coalition;
-      if (activeTab === "projects") {
+      if (activeTab === "about") {
+        renderCoalitionAbout(body, c);
+      } else if (activeTab === "projects") {
         renderProjects(body, c.projects, node);
       } else if (activeTab === "events") {
         renderEvents(body, c.events, node);
@@ -380,6 +386,27 @@ export function createDrawer(
       body.appendChild(row);
     }
     renderOrgLinks(body, org);
+  }
+
+  function renderCoalitionAbout(body: HTMLElement, c: Coalition): void {
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    row("Type", "Coalition");
+    row("Geographic scope", c.geographic_scope ? c.geographic_scope[0].toUpperCase() + c.geographic_scope.slice(1) : "");
+    row("Description", c.description);
+    row("Website", c.website ? h("a", { class: "org-website", href: c.website, target: "_blank", rel: "noopener noreferrer" }, c.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
+    row("Focus", c.focus_tags.length ? c.focus_tags.map(prettifyTag).join(", ") : "");
+    const members = c.member_ids.map((id) => data.organizations.find((o) => o.id === id)).filter((o): o is Organization => !!o)
+      .sort((a, b) => a.name.localeCompare(b.name));
+    body.appendChild(h("div", { class: "section-label" }, `Member groups (${members.length})`));
+    if (!members.length) body.appendChild(h("div", { class: "empty" }, "No member groups listed yet."));
+    for (const o of members) {
+      const r = h("div", { class: "item clickable" }, h("div", { class: "name" }, o.name), o.geographic_focus ? h("div", { class: "sub" }, o.geographic_focus) : null);
+      r.addEventListener("click", () => cb.onOrgClick?.(o.id));
+      body.appendChild(r);
+    }
   }
 
   function renderOrgAbout(body: HTMLElement, org: Organization): void {

@@ -292,11 +292,18 @@ export function createControls(
     }, { hint: "Draws everything toward the centre. Higher = a tighter, rounder map." }),
   );
   forcesBody.appendChild(
-    makeSlider("Push apart", state.settings.repelForce, (v) => {
+    makeSlider("Push organizations apart", state.settings.repelForce, (v) => {
       state.settings.repelForce = v;
       cb.onSettingsChange({ repelForce: v });
       saveState(state);
-    }, { hint: "How hard bubbles push each other away. Lower = organizations sit closer together." }),
+    }, { hint: "How hard organizations push each other away. Lower = organizations sit closer together." }),
+  );
+  forcesBody.appendChild(
+    makeSlider("Push coalitions apart", state.settings.coalitionRepel, (v) => {
+      state.settings.coalitionRepel = v;
+      cb.onSettingsChange({ coalitionRepel: v });
+      saveState(state);
+    }, { hint: "How hard coalitions push away from each other and everything else. Higher = coalitions spread further apart." }),
   );
   forcesBody.appendChild(
     makeSlider("Pull to their coalition", state.settings.linkForce, (v) => {
