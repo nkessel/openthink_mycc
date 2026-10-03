@@ -1,0 +1,107 @@
+{
+ "generated_at": "2026-10-02T12:00:00.000Z",
+ "sector": "jewish-spiritual-life",
+ "source": "JVP Western Mass newsletter, 2026-10-02 (public parts; see research/sectors/palestinian-rights/SOURCE.md)",
+ "coalitions": [
+  {
+   "id": "sector_jewish_spiritual_life",
+   "name": "Jewish spiritual life",
+   "abbrev": "Jewish life",
+   "description": "Jewish spiritual, ritual and creative community gatherings shared by Jewish justice groups in Western Massachusetts. This is a sector on the map, not a coalition.",
+   "focus_tags": [
+    "jewish_spiritual_life"
+   ],
+   "geographic_scope": "Western Massachusetts",
+   "color": "#6d28d9",
+   "lat": 42.3634,
+   "lng": -72.6987,
+   "member_ids": [
+    "beloved_center"
+   ],
+   "member_count": 1,
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "last_activity": "2026-10-02T12:00:00.000Z"
+  }
+ ],
+ "organizations": [
+  {
+   "type": "unknown",
+   "coalition_ids": [
+    "sector_jewish_spiritual_life"
+   ],
+   "last_activity": "2026-10-02T12:00:00.000Z",
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "sector": "jewish-spiritual-life",
+   "events": [
+    {
+     "id": "jsl_e1",
+     "name": "Making Art with Torah",
+     "date": "2026-10-04T13:00:00",
+     "end": "2026-10-04T15:00:00",
+     "location": "Beloved Center, Florence, MA",
+     "description": "On Simchat Torah, creatively engage with the new cycle of Torah through the Jewish Studio Process.",
+     "rsvp_link": "https://beloved-143.circle.so/c/center-events/making-art-w-torah",
+     "lat": 42.3334,
+     "lng": -72.6687,
+     "host_org_id": "beloved_center"
+    },
+    {
+     "id": "jsl_e2",
+     "name": "Grief Studio: Yizkor",
+     "date": "2026-10-06T18:00:00",
+     "end": "2026-10-06T20:00:00",
+     "location": "Beloved Center, Florence, MA",
+     "description": "Marking the ritual of Yizkor this High Holiday season by making art with mourning.",
+     "rsvp_link": "https://beloved-143.circle.so/c/center-events/grief-studio-yizkor",
+     "lat": 42.3334,
+     "lng": -72.6687,
+     "host_org_id": "beloved_center"
+    },
+    {
+     "id": "jsl_e3",
+     "name": "Creative Commentary: Breishit, a weekly Torah study studio",
+     "date": "2026-10-07T08:00:00",
+     "end": "2026-10-07T09:00:00",
+     "location": "Beloved Center, Florence, MA",
+     "description": "Weekly Torah portion study through art; this fall exploring the themes, characters and teachings of Breishit (Genesis).",
+     "rsvp_link": "https://beloved-143.circle.so/c/center-events/creative-commentary-breishit",
+     "lat": 42.3334,
+     "lng": -72.6687,
+     "host_org_id": "beloved_center",
+     "recurrence": "Wednesdays, 8:00-9:00 AM"
+    },
+    {
+     "id": "jsl_e4",
+     "name": "Cheshvan Rosh Chodesh Circle",
+     "date": "2026-10-13T18:00:00",
+     "end": "2026-10-13T20:00:00",
+     "location": "Beloved Center, Florence, MA",
+     "description": "Begin the month of Cheshvan with facilitated learning, art practice and a sharing circle.",
+     "rsvp_link": "https://beloved-143.circle.so/c/center-events/cheshvan-rosh-chodesh-circle",
+     "lat": 42.3334,
+     "lng": -72.6687,
+     "host_org_id": "beloved_center"
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "id": "beloved_center",
+   "name": "Beloved Center",
+   "geographic_focus": "Florence, MA",
+   "description": "Jewish creative and spiritual community center in Florence that holds art-making, Torah study, ritual and grief circles.",
+   "lat": 42.3334,
+   "lng": -72.6687
+  }
+ ],
+ "edges": [
+  {
+   "source": "sector_jewish_spiritual_life",
+   "target": "beloved_center"
+  }
+ ],
+ "org_links": []
+}

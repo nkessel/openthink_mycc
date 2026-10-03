@@ -1,5 +1,5 @@
 import type { DataFile, Project, GraphNode } from "./types";
-import { allProjects, ownerBadge, type Owner } from "./owners";
+import { allProjects, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
@@ -149,12 +149,12 @@ export function createProjectsView(
       }
       const card = h(
         "div",
-        { class: "list-card" },
+        { class: `list-card${sectorAttrs(r.owner).cls}`, style: sectorAttrs(r.owner).style },
         h(
           "div",
           { class: "head" },
           ownerBadge(r.owner),
-          h("div", { class: "coalition-name" }, r.owner.name),
+          h("div", { class: "coalition-name" }, r.owner.name), sectorPill(r.owner),
         ),
         h("div", { class: "name" }, r.project.name),
         h("div", { class: "desc" }, r.project.description),

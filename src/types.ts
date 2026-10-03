@@ -14,6 +14,8 @@ export interface Project {
   /** The group's own page (or a point person) confirms this; no "may be out of date" warning. */
   verified?: boolean;
   host_org_id?: string;
+  /** Sector layer id (src/sectors.ts) when this came from a sector file rather than the climate map. */
+  sector?: string;
   topic_tags?: string[];
   link?: string;
   public_contact?: string;
@@ -47,6 +49,8 @@ export interface CoalitionEvent {
   /** The group's own page (or a point person) confirms this; no "may be out of date" warning. */
   verified?: boolean;
   host_org_id?: string;
+  /** Sector layer id (src/sectors.ts) when this came from a sector file rather than the climate map. */
+  sector?: string;
   topic_tags?: string[];
   link?: string;
   /** Sign-up / RSVP page for this event, shown before the general "More info" link. */
@@ -93,6 +97,8 @@ export interface Action {
   /** The group's own page (or a point person) confirms this; no "may be out of date" warning. */
   verified?: boolean;
   host_org_id?: string;
+  /** Sector layer id (src/sectors.ts) when this came from a sector file rather than the climate map. */
+  sector?: string;
 }
 
 export interface Coalition {
@@ -116,6 +122,8 @@ export interface Coalition {
   website?: string;
   /** Public thinking (merged in from public/thoughts.json). */
   thoughts?: Thought[];
+  /** Sector layer id (src/sectors.ts) when this came from a sector file rather than the climate map. */
+  sector?: string;
 }
 
 export interface Organization {
@@ -146,6 +154,8 @@ export interface Organization {
   actions?: Action[];
   /** Public thinking (merged in from public/thoughts.json). */
   thoughts?: Thought[];
+  /** Sector layer id (src/sectors.ts) when this came from a sector file rather than the climate map. */
+  sector?: string;
 }
 
 /** Org attributes from the MA Climate Coalition Map. Scores are 1–4. */

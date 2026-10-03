@@ -2127,14 +2127,14 @@ text.sat-more { fill: var(--text-dim); }
   .map-legend:not(.open) { min-width: 0; }
 }
 
-/* The group you've opened shows a little larger (graph.ts FOCUS_SCALE). Its items ring stays full size. */
+/* The group you've opened is drawn as a big planet (graph.ts sets --fs); its moons stay full size. */
 .node-coalition > :not(.sats),
 .node-org > :not(.sats) {
   transition: transform 0.4s ease;
 }
 .node-coalition.focused > :not(.sats),
 .node-org.focused > :not(.sats) {
-  transform: scale(1.35);
+  transform: scale(var(--fs, 1.35));
 }
 
 /* "Hide / Show event & project previews": one clear button on the map */
@@ -2199,32 +2199,29 @@ text.sat-more { fill: var(--text-dim); }
 .map-legend .kdot.k-project { background: var(--k-project); }
 .map-legend .kdot.k-action { background: var(--k-action); }
 
-/* Zoomed in: organization planets show twice as big (graph.ts PLANET_ZOOM), items keep their size. */
-.nodes.detail .node-org:not(.focused) > :not(.sats) {
-  transform: scale(2);
+/* Items keep a steady size on screen as you zoom (graph.ts sets --is on the node layer); they never move. */
+.sat-in { transform: scale(var(--is, 0.327)); }
+/* Zoomed in past 100%: group names and lines keep their on-screen size while planets grow (graph.ts sets --ns) */
+.node-org > text.node-name { font-size: calc(11px * var(--ns, 1)); }
+.node-coalition > text.node-name { font-size: calc(14px * var(--ns, 1)); }
+svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
+.sats.lv1 { animation: sat-fade 0.25s ease-out; }
+@keyframes sat-fade { from { opacity: 0; } to { opacity: 1; } }
+/* Item names beside their icons: only once zoomed in far enough, light and unboxed */
+.sat-label { display: none; }
+.nodes.item-names .sat-label { display: inline; }
+.sat-label, .moon-label {
+  fill: #e2e8f0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 600;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+  pointer-events: none;
 }
-/* Item names under their icons when zoomed in */
-.sat-name-fo { overflow: visible; pointer-events: none; }
-.sat-name {
-  font: 600 6px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
-  color: #e2e8f0;
-  text-align: center;
-  padding: 1px 3px;
-  border-radius: 3px;
-  background: rgba(15, 18, 28, 0.6);
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  overflow-wrap: anywhere;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto;
-}
-/* ...but its name stays normal size, just under the bigger planet */
-.nodes.detail .node-org:not(.focused) > text.node-name {
-  transform: translateY(calc(var(--nr, 0) * 1px));
-}
+.sat-label .lbl-meta, .moon-label .lbl-meta { fill: var(--text-dim); font-weight: 400; font-size: 0.88em; }
+.node-org.faded .sat-label { opacity: 0.4; }
 
 /* ---------- RSVP + Link to website (prominent); Edit (subtle) ---------- */
 .item-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
@@ -2384,3 +2381,43 @@ text.sat-more { fill: var(--text-dim); }
   .topics-detail { width: auto; border-left: none; border-top: 1px solid var(--border); }
 }
 .topics-svg .tnode.selected > circle { fill-opacity: 0.7; stroke: #fff; stroke-width: 2px; stroke-opacity: 1; }
+/* ---- Sector layers (Map settings → Social justice; src/sectors.ts) ---- */
+/* A muted ring in the sector's colour, so these groups read as a separate layer on top of the climate map. */
+.node-org.sector .ring,
+.node-coalition.sector .ring {
+  stroke: var(--sector, #a16207) !important;
+  stroke-width: 2.5px !important;
+  stroke-dasharray: 4 2.5;
+  stroke-opacity: 0.9 !important;
+}
+.node-org.sector .ring { fill: color-mix(in srgb, var(--sector, #a16207) 35%, #9ca3af); }
+.list-card.sector-item,
+.detail-card.sector-item { border-left: 3px solid var(--sector, #a16207); }
+.cal-ev.sector-item { background: color-mix(in srgb, var(--sector, #a16207) 12%, transparent); }
+.pill.sector-pill,
+.tag.sector-pill {
+  background: color-mix(in srgb, var(--sector, #a16207) 14%, transparent);
+  color: var(--sector, #a16207);
+  border: 1px solid color-mix(in srgb, var(--sector, #a16207) 45%, transparent);
+  font-size: 11px;
+  margin-left: auto;
+}
+.tag.sector-pill { margin-left: 0; }
+.map-legend .swatch.sector-swatch {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border: 2px dashed var(--sector, #a16207);
+}
+.stale-notice.sector { border-color: color-mix(in srgb, #a16207 40%, transparent); }
+.sector-section .switch.on { background: var(--sector, #a16207); }
+/* The sector hub is a grouping, not a coalition: keep it quiet. */
+.node-coalition.sector .ring { fill-opacity: 0.35; }
+/* Land acknowledgement & dedication: a quiet link at the bottom of Map settings, opening the loading screen's text */
+.land-link { display: block; margin: 18px 14px 22px; padding: 0; appearance: none; border: none; background: none; color: var(--text-dim); font: inherit; font-size: 12px; text-align: left; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.land-link:hover { color: var(--text); }
+.land-overlay { position: fixed; z-index: 1000; }
+.land-card .land-text { width: auto; text-align: left; font-size: 13.5px; color: var(--text); }
+.land-card .land-text p { margin: 0 0 12px; }
+.land-card .land-text strong, .land-card .land-text .ded-head { color: var(--text); }
+.land-card .land-text a { color: #7dd3fc; }

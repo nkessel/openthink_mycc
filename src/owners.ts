@@ -4,6 +4,7 @@
 import type { Action, CoalitionEvent, DataFile, GraphNode, Organization, Project } from "./types";
 import { initials } from "./util";
 import { h } from "./dom";
+import { sectorById } from "./sectors";
 
 export interface Owner {
   node: GraphNode;
@@ -19,7 +20,19 @@ export function ownerOfCoalition(c: DataFile["coalitions"][number]): Owner {
 }
 
 export function ownerOfOrg(o: Organization): Owner {
-  return { node: { ...o, kind: "org" }, name: o.name, abbrev: o.abbrev || initials(o.name), color: ORG_COLOR };
+  return { node: { ...o, kind: "org" }, name: o.name, abbrev: o.abbrev || initials(o.name), color: sectorById(o.sector)?.color ?? ORG_COLOR };
+}
+
+/** Extra class + accent colour for cards of a sector layer's groups and items ("" for the climate map). */
+export function sectorAttrs(owner: Owner): { cls: string; style: string } {
+  const s = sectorById((owner.node as { sector?: string }).sector);
+  return s ? { cls: " sector-item", style: `--sector:${s.color}` } : { cls: "", style: "" };
+}
+
+/** A small label naming the sector, for cards and detail views (null for the climate map). */
+export function sectorPill(owner: Owner): HTMLElement | null {
+  const s = sectorById((owner.node as { sector?: string }).sector);
+  return s ? h("span", { class: "pill sector-pill", style: `--sector:${s.color}` }, s.label) : null;
 }
 
 export function allProjects(data: DataFile): { project: Project; owner: Owner }[] {
