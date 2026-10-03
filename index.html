@@ -7,6 +7,7 @@
     <style>
       #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:14px;overflow:auto;padding:24px 0;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
       #boot.done{opacity:0;pointer-events:none}
+      #boot > *{flex-shrink:0} /* when the text runs long on a phone, scroll instead of squashing the bar and button */
       #boot canvas{width:280px;height:190px}
       #boot .bar{width:240px;height:6px;border-radius:3px;background:#1e293b;overflow:hidden}
       #boot .bar b{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width .25s linear}
@@ -19,14 +20,22 @@
       .land-text a{color:#7dd3fc;text-decoration:underline;text-underline-offset:2px}
       .land-text .ded-head{margin-top:16px;color:#cbd5e1}
       #boot .land-text{margin-top:22px}
-      #boot .boot-hold{appearance:none;border:1px solid #334155;background:transparent;color:#94a3b8;font:inherit;font-size:12px;padding:6px 14px;border-radius:999px;cursor:pointer}
-      #boot .boot-hold:hover{color:#e2e8f0;border-color:#64748b}
-      #boot .boot-auto{display:flex;align-items:center;gap:7px;font-size:12px;color:#94a3b8;cursor:pointer;user-select:none}
-      #boot .boot-auto input{accent-color:#34d399;width:15px;height:15px;margin:0}
-      #boot .boot-hold.enter{color:#0f172a;background:#34d399;border-color:#34d399;font-weight:600}
+      /* "Read more" / "Open the map": a glossy blue-green pill with a slow light sweep */
+      #boot .boot-hold{position:relative;overflow:hidden;appearance:none;border:1px solid rgba(125,211,252,.55);cursor:pointer;
+        font:inherit;font-size:13px;font-weight:600;letter-spacing:.01em;color:#04202a;padding:8px 22px;border-radius:999px;
+        background:linear-gradient(135deg,#5eead4 0%,#22d3ee 48%,#38bdf8 100%);
+        box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 -2px 6px rgba(8,47,73,.25) inset,0 4px 16px rgba(34,211,238,.28);
+        transition:transform .15s ease,box-shadow .2s ease,filter .2s ease}
+      #boot .boot-hold::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;
+        background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:bootSheen 3.6s ease-in-out 1s infinite}
+      #boot .boot-hold:hover{filter:brightness(1.07);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 -2px 6px rgba(8,47,73,.25) inset,0 6px 22px rgba(34,211,238,.4);transform:translateY(-1px)}
+      #boot .boot-hold:focus-visible{outline:2px solid #e0f2fe;outline-offset:3px}
+      @keyframes bootSheen{0%{left:-60%}55%,100%{left:130%}}
+      @media (prefers-reduced-motion: reduce){#boot .boot-hold::after{animation:none;display:none}}
       @media (max-width:600px){
         #boot{gap:9px;padding:14px 0}
         #boot canvas{width:200px;height:136px}
+        #boot .boot-quip{min-height:2.6em;line-height:1.3;display:flex;align-items:center;justify-content:center}
         #boot .land-text{font-size:10.5px;line-height:1.5;margin-top:10px}
         #boot .land-text p{margin-bottom:6px}
       }
@@ -39,6 +48,7 @@
       <div class="boot-quip" aria-hidden="true"></div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
       <div class="boot-left"></div>
+      <button type="button" id="boot-hold" class="boot-hold">Read more</button>
       <div class="land-text" id="land-dedication">
         <p>This site was made with the help of Claude Code (AI).</p>
         <p>It was made on the homelands of the Massachusett, Nipmuc and Wampanoag peoples (Natick, Wellesley and Boston). Claude was designed on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know. We honor these peoples, who have cared for these lands and waters for thousands of years, and who live and lead here today.</p>
@@ -50,8 +60,6 @@
           <strong>Learn more:</strong> <a href="https://www.pokagonband-nsn.gov" target="_blank" rel="noopener noreferrer">Pokagon Band of Potawatomi</a>
         </p>
       </div>
-      <button type="button" id="boot-hold" class="boot-hold">Keep this open to read</button>
-      <label class="boot-auto"><input type="checkbox" id="boot-auto" checked> Open the map automatically when it's ready</label>
     </div>
     <script>
       // Loading splash: a progress bar with an estimate of the time left (from how long the last loads took,
@@ -70,26 +78,13 @@
           real = Math.max(real, Math.min(1, p));
           if (label) msg.textContent = label;
         };
-        // "Keep this open to read": the map loads behind, and the splash stays until "Enter the map" (main.ts hideBoot).
+        // The map opens by itself once it's loaded. "Read more" keeps this screen up (the map keeps loading behind it)
+        // until "Open the map" (main.ts hideBoot calls bootRelease).
         var hold = document.getElementById("boot-hold");
-        var auto = document.getElementById("boot-auto");
-        var AUTO_KEY = "openthink.autoEnter";
-        function holdOpen() {
-          window.bootHeld = true;
-          hold.textContent = "Enter the map \u2192";
-          hold.classList.add("enter");
-        }
-        // Remembered choice: some people like to read this every time.
-        try { if (localStorage.getItem(AUTO_KEY) === "0") { auto.checked = false; holdOpen(); } } catch (e) {}
-        auto.addEventListener("change", function () {
-          try { localStorage.setItem(AUTO_KEY, auto.checked ? "1" : "0"); } catch (e) {}
-          if (!auto.checked) holdOpen();
-          else if (window.bootRelease) window.bootRelease(); // already loaded: go in now
-          else { window.bootHeld = false; hold.textContent = "Keep this open to read"; hold.classList.remove("enter"); }
-        });
         hold.addEventListener("click", function () {
           if (!window.bootHeld) {
-            holdOpen();
+            window.bootHeld = true;
+            hold.textContent = "Open the map \u2192";
           } else if (window.bootRelease) {
             window.bootRelease();
           } else {
@@ -200,7 +195,31 @@
         // The line under the main message says, literally, what is being loaded right now (main.ts bootDetail).
         var quip = boot.querySelector(".boot-quip");
         quip.textContent = "Starting up\u2026";
-        window.bootDetail = function (text) { if (text) quip.textContent = text; };
+        // Each line stays up long enough to read (lines arrive faster than that once the data is in).
+        // Repeats of the same step (e.g. "Downloading map data: N KB") update in place instead of queueing.
+        var queue = [], timer = null, shownAt = 0, DWELL = 600;
+        function same(a, b) { return a.slice(0, 18) === b.slice(0, 18); }
+        function pump() {
+          timer = null;
+          if (!queue.length) return;
+          var wait = DWELL - (performance.now() - shownAt);
+          if (wait > 0) { timer = setTimeout(pump, wait); return; }
+          quip.textContent = queue.shift();
+          shownAt = performance.now();
+          if (queue.length) timer = setTimeout(pump, DWELL);
+        }
+        window.bootDetail = function (text) {
+          if (!text) return;
+          if (!queue.length && same(quip.textContent, text)) { quip.textContent = text; return; }
+          if (queue.length && same(queue[queue.length - 1], text)) queue[queue.length - 1] = text;
+          else queue.push(text);
+          if (queue.length > 8) queue.splice(0, queue.length - 8); // never fall far behind
+          if (!timer) pump();
+        };
+        // How long until the lines already queued have all been shown (main.ts waits a little for them).
+        window.bootDetailPendingMs = function () {
+          return queue.length ? queue.length * DWELL - Math.min(DWELL, performance.now() - shownAt) : 0;
+        };
 
         var last = 0;
         function frame(t) {

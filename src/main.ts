@@ -19,10 +19,11 @@ import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar"
 captureLandText(); // before the loading screen goes away
 import { currentMap, MAPS, type MapDef } from "./maps";
 import { rollRecurringForward } from "./recurrence";
+import { parseEventDate } from "./util";
 import { attachSectors, createSectorSection } from "./sectors";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
-type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDetail?: (text: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void };
+type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDetail?: (text: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void; bootDetailPendingMs?: () => number };
 /** The loading screen's second line: exactly what is being loaded right now. */
 function bootDetail(text: string) {
   bootWin.bootDetail?.(text);
@@ -41,11 +42,16 @@ function hideBoot() {
     el.classList.add("done");
     setTimeout(() => el.remove(), 600);
   };
-  // Someone chose "Keep this open to read": wait for their "Enter the map".
   bootWin.bootProgress?.(1, "The map is ready");
-  bootDetail("Everything is loaded. Enter whenever you like.");
-  if (bootWin.bootHeld) { bootWin.bootRelease = go; return; }
-  setTimeout(go, 250);
+  // Someone pressed "Read more": wait for their "Open the map".
+  if (bootWin.bootHeld) {
+    bootDetail("Everything is loaded. Open the map whenever you like.");
+    bootWin.bootRelease = go;
+    return;
+  }
+  // Otherwise let the last few loading lines finish showing (briefly), then open.
+  const pending = Math.min(1600, bootWin.bootDetailPendingMs?.() ?? 0);
+  setTimeout(() => (bootWin.bootHeld ? (bootWin.bootRelease = go) : go()), 250 + pending);
 }
 
 async function main() {
@@ -79,13 +85,30 @@ async function main() {
   bootProgress(0.8, "Drawing the map\u2026");
   bootDetail(`${data.coalitions.length} coalitions, ${data.organizations.length} organizations, ${nItems} events, projects and actions loaded`);
   await attachThoughts(data);
-  bootDetail("Adding the layers switched on in Map settings\u2026");
   // Sector layers (Map settings → Social justice) that this browser has switched on.
   const sectorsOn = await attachSectors(data, currentMap.id);
   // Recurring events carry one stored date; show their next occurrence.
-  bootDetail("Moving repeating events to their next date\u2026");
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
-  bootDetail(`Placing ${data.coalitions.length + data.organizations.length} groups and their links on the map\u2026`);
+  // A few true things about what just loaded, while the map is put together.
+  const groups = [...data.coalitions, ...data.organizations];
+  const bridges = data.organizations.filter((o) => (o.coalition_ids?.length || 0) > 1).length;
+  bootDetail(`Linking ${data.edges.length} coalition memberships. ${bridges} organizations work across two or more coalitions`);
+  const now = Date.now();
+  const upcoming = groups.flatMap((g) => g.events || []).filter((e) => {
+    const t = e.date ? parseEventDate(e.date).getTime() : NaN;
+    return t >= now - 12 * 3600e3 && t <= now + 30 * 864e5;
+  }).length;
+  if (upcoming) bootDetail(`Finding what's coming up: ${upcoming} events in the next 30 days`);
+  const acts = groups.flatMap((g) => g.actions || []);
+  const roles = acts.filter((a) => a.kind === "role").length;
+  if (acts.length) bootDetail(`Gathering ${acts.length - roles} actions you can take${roles ? ` and ${roles} ways to volunteer` : ""}`);
+  const newest = groups.map((g) => g.last_activity || "").sort().pop();
+  if (newest) {
+    const days = Math.floor((now - new Date(newest).getTime()) / 864e5);
+    if (days >= 0 && days < 60) bootDetail(`Checking for news: the latest update from a group was ${days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`}`);
+  }
+  const logosReady = preloadLogos(groups.map((g) => g.logo));
+  bootDetail(`Placing ${groups.length} groups and their links on the map\u2026`);
 
   let activeTab: TopTab = "map";
 
@@ -336,6 +359,9 @@ async function main() {
     return cur && (cur as { sector?: string }).sector ? null : cur;
   });
 
+  // Give the logos a moment so the map doesn't open on empty circles (they keep loading after that anyway).
+  await Promise.race([logosReady, new Promise((r) => setTimeout(r, 1500))]);
+
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
@@ -423,6 +449,25 @@ async function readWithProgress(res: Response): Promise<string> {
  * separate from the sheet so each item can be reviewed and approved before it is published.
  * Missing or malformed file = no thinking bubbles, never an error.
  */
+/** Warm the browser cache with the groups' logos, counting them off on the loading screen. */
+function preloadLogos(logos: (string | undefined)[]): Promise<void> {
+  const urls = [...new Set(logos.filter((u): u is string => !!u))];
+  if (!urls.length) return Promise.resolve();
+  let done = 0;
+  return new Promise((resolve) => {
+    const tick = () => {
+      done++;
+      bootDetail(`Loading the groups' logos: ${done} of ${urls.length}`);
+      if (done === urls.length) resolve();
+    };
+    for (const u of urls) {
+      const im = new Image();
+      im.onload = im.onerror = tick;
+      im.src = u;
+    }
+  });
+}
+
 async function attachThoughts(data: DataFile): Promise<void> {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}thoughts.json`);

@@ -395,6 +395,9 @@ export function createGraph(
   });
 
   // ----- Drag behavior on nodes -----
+  // While someone drags a group (and briefly after), the dots of the groups that move get their trailing physics.
+  // Not during the map's own settling, when every group drifts at once.
+  let dotsLiveUntil = 0;
   const drag = d3
     .drag<SVGGElement, GraphNode>()
     .on("start", (event, d) => {
@@ -405,9 +408,11 @@ export function createGraph(
     .on("drag", (event, d) => {
       d.fx = event.x;
       d.fy = event.y;
+      dotsLiveUntil = performance.now() + 1500;
     })
     .on("end", (event, d) => {
       if (!event.active) sim.alphaTarget(0);
+      dotsLiveUntil = performance.now() + 1500;
       // A zoomed-in node stays where you put it until you leave the zoomed-in view.
       if (d.id === focusId) return;
       d.fx = null;
@@ -660,7 +665,41 @@ export function createGraph(
     };
     if (focusId) follow(focusId, focusSim);
     for (const [id, rs] of satSims) follow(id, rs);
+    // The coloured dots trail their group too. Their little simulation is made only for the groups that move
+    // most while someone drags (at most MAX_DOT_SIMS at once, on screen), and thrown away once they settle,
+    // so a still map, or the map settling by itself, costs nothing extra.
+    const fresh: { id: string; moved: number; dx: number; dy: number }[] = [];
+    let active = 0;
+    for (const [id, dots] of satDots) {
+      const n = nodeById.get(id);
+      if (!n) continue;
+      const x = n.x ?? 0, y = n.y ?? 0;
+      const last = lastPos.get(id);
+      lastPos.set(id, { x, y });
+      if (!last) continue;
+      const dx = x - last.x, dy = y - last.y;
+      const moved = Math.abs(dx) + Math.abs(dy);
+      if (moved > 300) continue;
+      if (dots.sim) { active++; if (moved > 0.05) nudgeRing(dots.sim, dx, dy); }
+      else if (moved >= 1 && performance.now() < dotsLiveUntil && onScreen(n)) fresh.push({ id, moved, dx, dy });
+    }
+    fresh.sort((p, q) => q.moved - p.moved);
+    for (const f of fresh.slice(0, Math.max(0, MAX_DOT_SIMS - active))) {
+      const dots = satDots.get(f.id)!;
+      const sim = ringPhysics(dots.els, dots.angles, dots.els.map(() => SAT_DOT_R), dots.rr, dots.rr, 0.8, undefined, true, 0);
+      sim.on("end.dispose", () => {
+        sim.stop();
+        dots.sim = null;
+        // back exactly on the orbit
+        dots.els.forEach((el, i) => el.setAttribute("transform", `translate(${Math.cos(dots.angles[i]) * dots.rr},${Math.sin(dots.angles[i]) * dots.rr})`));
+      });
+      dots.sim = sim;
+      nudgeRing(sim, f.dx, f.dy);
+    }
   }
+  const MAX_DOT_SIMS = 16;
+  /** Each group's dots (when its items show as dots), with the physics that is running for them, if any. */
+  const satDots = new Map<string, { els: SVGCircleElement[]; angles: number[]; rr: number; sim: d3.Simulation<RingNode, undefined> | null }>();
 
   /** The orbit a group's items sit on, just outside it (the same at every zoom). */
   function satOrbitR(n: GraphNode): number {
@@ -708,6 +747,8 @@ export function createGraph(
     const sel = d3.select<SVGGElement, GraphNode>(nodeSel.filter((d) => d.id === n.id).node() as SVGGElement);
     satSims.get(n.id)?.stop();
     satSims.delete(n.id);
+    satDots.get(n.id)?.sim?.stop();
+    satDots.delete(n.id);
     sel.selectAll("g.sats").remove();
     satLevel.set(n.id, level);
     if (!settings.alwaysShow) return;
@@ -719,10 +760,15 @@ export function createGraph(
     const more = items.length - shown.length;
     if (level === 0) {
       g.style("pointer-events", "none");
+      const dots = { els: [] as SVGCircleElement[], angles: [] as number[], rr, sim: null };
       shown.forEach((b, i) => {
         const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
-        g.append("circle").attr("class", `sat sat-${b.kind}${isRoleB(b) ? " sat-role" : ""}`).attr("cx", Math.cos(a) * rr).attr("cy", Math.sin(a) * rr).attr("r", SAT_DOT_R);
+        const c = g.append("circle").attr("class", `sat sat-${b.kind}${isRoleB(b) ? " sat-role" : ""}`)
+          .attr("transform", `translate(${Math.cos(a) * rr},${Math.sin(a) * rr})`).attr("r", SAT_DOT_R);
+        dots.els.push(c.node()!);
+        dots.angles.push(a);
       });
+      satDots.set(n.id, dots);
       if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
       return;
     }
@@ -1270,6 +1316,38 @@ export function createGraph(
     return t;
   }
 
+  /** Push moon names apart: each name that overlaps another name or another moon moves outward, away from
+   *  the planet, a few pixels at a time. Works in screen space, so it is right at any zoom. */
+  function declutterLabels(moons: SVGGElement[], labels: SVGTextElement[]) {
+    const pad = 2;
+    const hit = (r: DOMRect, o: DOMRect) =>
+      r.left < o.right + pad && r.right + pad > o.left && r.top < o.bottom + pad && r.bottom + pad > o.top;
+    labels.forEach((t) => t.removeAttribute("transform"));
+    const circles = moons.map((m) => (m.querySelector("circle") as SVGCircleElement).getBoundingClientRect());
+    const placed: DOMRect[] = [];
+    // Names straight above or below the planet run sideways into their neighbours; place the others first.
+    const order = labels.map((_, i) => i).sort((i, j) => verticality(moons[i]) - verticality(moons[j]));
+    for (const i of order) {
+      const t = labels[i];
+      const m = /translate\(([-\d.e]+)[ ,]+([-\d.e]+)\)/.exec(moons[i].getAttribute("transform") || "");
+      const a = m ? Math.atan2(+m[2], +m[1]) : 0;
+      const bb = t.getBBox();
+      const scale = bb.width ? t.getBoundingClientRect().width / bb.width : 1;
+      if (!scale) continue; // hidden
+      let r = t.getBoundingClientRect();
+      for (let step = 1; step <= 16 && (placed.some((o) => hit(r, o)) || circles.some((o, j) => j !== i && hit(r, o))); step++) {
+        const d = (step * 6) / scale;
+        t.setAttribute("transform", `translate(${Math.cos(a) * d},${Math.sin(a) * d})`);
+        r = t.getBoundingClientRect();
+      }
+      placed.push(r);
+    }
+  }
+  function verticality(el: SVGGElement): number {
+    const m = /translate\(([-\d.e]+)[ ,]+([-\d.e]+)\)/.exec(el.getAttribute("transform") || "");
+    return m ? Math.abs(Math.sin(Math.atan2(+m[2], +m[1]))) : 0;
+  }
+
   function fullName(b: Bubble): string {
     return b.kind === "thought" ? (b.item as Thought).text : (b.item as Project | CoalitionEvent | Action).name;
   }
@@ -1370,6 +1448,7 @@ export function createGraph(
     const bubbleEls: SVGGElement[] = [];
     const bubbleAngles: number[] = [];
     const bubbleLines: SVGLineElement[] = [];
+    const bubbleLabels: SVGTextElement[] = [];
     bubbles.forEach((b, i) => {
       const a = (2 * Math.PI * i) / bubbles.length - Math.PI / 2;
       // Bubbles spill out of the group, push each other into a ring, and can be dragged around.
@@ -1391,8 +1470,8 @@ export function createGraph(
         }
       }
       // Beside the moon: its full name and one line of when / what, reading away from the planet.
-      radialLabel(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, a, b.r + 6, fullName(b), itemMeta(b), 11, 24)
-        .attr("class", `moon-label k-${b.kind}`);
+      bubbleLabels.push(radialLabel(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, a, b.r + 6, fullName(b), itemMeta(b), 11, 24)
+        .attr("class", `moon-label k-${b.kind}`).node()!);
       outer.on("click", (event: Event) => {
         event.stopPropagation();
         const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
@@ -1412,6 +1491,15 @@ export function createGraph(
           l.setAttribute("y2", String(d.y ?? 0));
         });
       });
+      // Once the moons settle (and again after each drag), nudge any names that overlap outward.
+      // (first as soon as they are nearly in place, so names never sit on top of each other for long)
+      let tidy = false;
+      const fs = focusSim;
+      fs.on("tick.labels", () => {
+        if (fs.alpha() > 0.3) tidy = false;
+        else if (!tidy && fs.alpha() < 0.2) { tidy = true; declutterLabels(bubbleEls, bubbleLabels); }
+      });
+      fs.on("end.labels", () => declutterLabels(bubbleEls, bubbleLabels));
     }
 
     // Partners stay visible but recede; everything else nearly disappears.
