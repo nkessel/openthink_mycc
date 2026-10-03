@@ -9,6 +9,7 @@ import { createGeographicView } from "./geographic";
 import { createEventsView } from "./events";
 import { createProjectsView } from "./projects";
 import { createActionsView } from "./actions";
+import { createTopicsView } from "./topics";
 import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
@@ -262,6 +263,30 @@ async function main() {
   actionsView.el.style.inset = "0";
   content.appendChild(actionsView.el);
 
+  // ----- Topics view (topic galaxy; loads public/topics.json the first time it opens) -----
+  const topicsView = createTopicsView({
+    hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
+    onGroupClick: (id) => {
+      const c = data.coalitions.find((x) => x.id === id);
+      const o = data.organizations.find((x) => x.id === id);
+      const node: GraphNode | null = c ? { ...c, kind: "coalition" } : o ? { ...o, kind: "org" } : null;
+      if (!node) return false;
+      setTab("map");
+      setTimeout(() => {
+        if (!trayWouldBlockMap()) drawerApi!.open(node);
+        graphApi!.setSelectedNode(node);
+        // Same as the Events/Projects/Actions pages: zoom to coalitions (or on a phone), otherwise just open details.
+        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
+      }, 60);
+      return true;
+    },
+  });
+  topicsView.el.style.display = "none";
+  topicsView.el.style.height = "100%";
+  topicsView.el.style.position = "absolute";
+  topicsView.el.style.inset = "0";
+  content.appendChild(topicsView.el);
+
   function setTab(tab: TopTab) {
     activeTab = tab;
     topbar.setActive(tab);
@@ -271,6 +296,8 @@ async function main() {
     orgsView.el.style.display = tab === "orgs" ? "grid" : "none";
     projectsView.el.style.display = tab === "projects" ? "grid" : "none";
     actionsView.el.style.display = tab === "actions" ? "grid" : "none";
+    topicsView.el.style.display = tab === "topics" ? "grid" : "none";
+    if (tab === "topics") topicsView.show();
     if (tab === "geo") geoView.invalidate();
     if (tab === "map") setTimeout(() => graphApi?.ensureInView(), 150);
     if (tab !== "map") {
