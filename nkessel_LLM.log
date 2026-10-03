@@ -458,3 +458,26 @@ What / why
 - Findings: justice (45 missions / 16 activities) and local action (42 / 16) are stated far more than listed; a few groups dominate some topics (Mass Audubon WMa + Tree Boston = 19 of 68 nature activities; Vermont Conservation Voters = 10 of 23 democracy activities) → proposed a per-group cap slider.
 - Side finding: ~30 public descriptions contain internal research notes ("no climate work found", "website blocks automated readers", "could not be confirmed as current") → added to BACKLOG.
 - Mistake: an `rm extract*.json` glob also deleted the merged extracted.json; rebuilt it from the sub-agents' chunk files in the scratchpad (same 772 phrases, same per-slice counts).
+
+## 2026-10-03 — Topics page prototype ("topic galaxy") (scheduled run)
+- Based on claude/topic-extraction (PR #35, not merged yet), so this PR includes #35's commits until that one is merged.
+- scripts/topic-tags.mjs: tags every record without AI. Each extracted phrase is looked up in draft-taxonomy.json (exactly the phrase → child mapping cluster.mjs produced); bills use cluster.mjs's BILLS patterns (copied, with a "keep in step" note, so cluster.mjs's side effects don't run). Writes public/topics.json (237 KB): per record child topics, bills, strategies, kind, host, map, date, status, recurring, climate_relevance and the item link, plus the parent → child list and bill names. 618 records, 551 tagged, 67 left untagged (no topic phrase).
+- New "Topics" tab (src/topics.ts) next to Actions. It loads topics.json the first time it opens and shows the current map's records (MA; VT; USA = both).
+- The page is zoomable d3.pack circle packing: parents → children, with bills as children of "Climate policy & legislation" (they replace "Named bills"; records naming no known bill stay in "Other named bills").
+  - Click a parent to zoom in. Click a topic to open its records beside the bubbles (kind, date, "repeats", "related issue", item link ↗, and the group, which opens it on the map). The view stays on the parent so the neighbouring topics stay visible.
+  - Breadcrumbs and "− Zoom out" go back up; clicking the background goes to the top.
+- Sliders, each "Not important → Important" and saved in localStorage:
+  - Projects / Events / Actions: per-kind weight (0.6 / 0.5 / 0.5).
+  - Recurring events: × 2v (middle = same as one-off).
+  - Recency: exp(−3·v·age/365). Events are dated; active projects count as 0 days old, completed ones 730, actions 90, missions 0.
+  - Mission statements: default 0.15.
+  - Cap per group: each group adds at most 1 + 9(1−v) to a topic; lowest = no cap.
+  - Related issues: × v for adjacent/none records.
+  - A "Reset sliders" button.
+- The draft note sits in the header. "Broad climate" is grey, dashed and dimmed.
+- Tested in Playwright:
+  - The page loads with 18 parents, 93 topic bubbles and 18 bill bubbles.
+  - Sliders change radii (energy 105→97 with projects at 0; nature 118→138), and Reset restores them.
+  - Zoom in and out, the record list, crumbs and the group → map link all work. Mobile is usable.
+  - 0 page errors.
+- Pre-existing, not from this PR: leaving the Map tab before the map settles and coming back logs "translate(NaN,NaN) scale(NaN)" console errors from graph.ts's zoom (reproduced on development_branch via the Projects tab).
