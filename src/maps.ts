@@ -3,7 +3,7 @@
 // Picked with ?map=<id> in the URL (so a link opens the right map); the plain link is always Massachusetts.
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
 
-export type MapId = "ma" | "vt" | "us";
+export type MapId = "ma" | "vt" | "nh" | "us";
 
 export interface MapDef {
   id: MapId;
@@ -44,13 +44,22 @@ export const MAPS: Record<MapId, MapDef> = {
     editable: false,
     maGeo: false,
   },
+  nh: {
+    id: "nh",
+    name: "New Hampshire",
+    title: "NH Climate Map",
+    fullTitle: "New Hampshire Climate Coalition Map",
+    sources: [`${base}maps/nh.json`],
+    editable: false,
+    maGeo: false,
+  },
   us: {
     id: "us",
     name: "USA",
     title: "US Climate Map",
     fullTitle: "US Climate Coalition Map (states mapped so far)",
     sources: [],
-    combine: ["ma", "vt"],
+    combine: ["ma", "vt", "nh"],
     editable: false,
     maGeo: true,
   },

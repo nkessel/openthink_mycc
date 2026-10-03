@@ -3204,7 +3204,7 @@
     {
       "id": "coalition_for_social_justice",
       "name": "Coalition for Social Justice",
-      "type": "unknown",
+      "type": "501c4",
       "coalition_ids": [
         "mpf",
         "gjc"
@@ -3321,7 +3321,7 @@
     {
       "id": "greenroots",
       "name": "Greenroots",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf",
         "gjc"
@@ -3901,7 +3901,7 @@
     {
       "id": "jewish_alliance_for_law_and_social_action",
       "name": "Jewish Alliance for Law and Social Action",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -4088,7 +4088,7 @@
     {
       "id": "arise_for_social_justice",
       "name": "Arise for Social Justice",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf",
         "scjc"
@@ -4385,7 +4385,7 @@
     {
       "id": "charles_river_watershed_association",
       "name": "Charles River Watershed Association",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -5042,7 +5042,7 @@
     {
       "id": "greater_boston_physicians_for_social_responsibility",
       "name": "Greater Boston Physicians for Social Responsibility",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf"
       ],
@@ -7055,7 +7055,7 @@
     {
       "id": "community_action_works",
       "name": "Community Action Works",
-      "type": "unknown",
+      "type": "501c3",
       "coalition_ids": [
         "mpf",
         "ejlt",

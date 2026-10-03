@@ -20,6 +20,10 @@ before pushing; log in `nkessel_LLM.log`; never push to `main` or `development_b
       tax status on readable pages (chapters of national orgs, 501(c)(6) groups). Pre-existing odd types worth a
       human look: `university` on two high-school groups, `school_club` on UU Mass Action, `youth_org` (not in the
       type list)._
+      _2026-10-03 (`fill6.json`): +7 types (CRWA, GreenRoots, GB PSR, JALSA, Arise, Community Action Works 501c3;
+      Coalition for Social Justice 501c4) → 36 unknown, 12 without website. The rest state no tax status, are
+      programs/committees/fiscally sponsored, or have no own page (school clubs, Hands Across the River, Upper Cape
+      Women's Coalition, Concerned Citizens of Franklin County). Further gains need MYCC/org input; suggest closing._
 - [ ] **Massachusetts: Cross Campus Climate Coalition (`cccc`)** has no description or members; find its own pages
       or MYCC's mentions of it.
       _2026-10-02: still not found on the public web (searches surface only a Colleges of the Fenway "Cross-Campus
@@ -39,7 +43,10 @@ pages, copy to `public/maps/<st>.json`, then register it in `src/maps.ts` (MapId
 `editable: false`, `maGeo: false`; add to the `us` map's `combine`; add a place-search box in `src/search.ts`
 PLACE_BOX) and add it to the switcher list in `src/topbar.ts`. Check it loads with Playwright (`?map=<st>`).
 
-- [ ] New Hampshire (NH)
+- [x] New Hampshire (NH)
+      _2026-10-03: 7 coalitions, 123 orgs, 108 edges, 25 upcoming events (`research/state-pilot/nh.json`, `?map=nh`).
+      Gaps: CPCNH capped at 40 of ~51 listed members; NHACC + Local Energy Solutions have no public member list;
+      no Sunrise hub list; Conservation NH / Mothers Out Front NH not found; many orgs' types unknown._
 - [ ] Maine (ME)
 - [ ] Rhode Island (RI)
 - [ ] Connecticut (CT)
