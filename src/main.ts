@@ -13,7 +13,9 @@ import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
-import { setupSidebarToggle, createMapLegend } from "./sidebar";
+import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
+
+captureLandText(); // before the loading screen goes away
 import { currentMap, MAPS, type MapDef } from "./maps";
 import { rollRecurringForward } from "./recurrence";
 
