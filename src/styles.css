@@ -2224,6 +2224,7 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
   cursor: pointer;
 }
 .sat-label:hover, .moon-label:hover { fill: #fff; text-decoration: underline; }
+.sat-label { font-size: calc(10px * var(--lf, 1)); }
 .sat-label .lbl-meta, .moon-label .lbl-meta { fill: var(--text-dim); font-weight: 400; font-size: 0.88em; }
 .node-org.faded .sat-label { opacity: 0.4; }
 

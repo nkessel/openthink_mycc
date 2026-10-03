@@ -688,10 +688,14 @@ export function createGraph(
   /** Items keep a steady size on screen as you zoom in (never bigger than SAT_MAX_WORLD_R in the map). */
   function applyItemScale() {
     const k = currentZoomScale;
-    nodeLayer.style("--is", String(Math.min(SAT_MAX_WORLD_R / SAT_BUB_R, 1 / k)));
+    // Items grow gently on screen as you zoom in (square root of the extra zoom past 3x), but never take more room in
+    // the map than SAT_MAX_WORLD_R, so the spacing between neighbours holds at every zoom.
+    const grow = k > 3 ? Math.sqrt(k / 3) : 1;
+    nodeLayer.style("--is", String(Math.min(SAT_MAX_WORLD_R / SAT_BUB_R, grow / k)));
+    nodeLayer.style("--lf", String(grow ** -0.4)); // their names grow a little less than the icons
     nodeLayer.classed("item-names", k >= LABEL_ON_K);
-    // Past 100% zoom, names and lines keep their on-screen size instead of growing with the planets.
-    nodeLayer.style("--ns", String(Math.min(1, 1 / k)));
+    // Past 100% zoom, group names grow only gently (k^0.35) while planets grow with the zoom.
+    nodeLayer.style("--ns", String(k > 1 ? k ** 0.35 / k : 1));
     svg.classed("zoomed-in", k > 1);
   }
   function refreshSpacing(alpha = 0.5) {

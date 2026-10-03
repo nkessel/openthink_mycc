@@ -532,3 +532,10 @@ What / why
 - Full view of an event / project / action in the details tray: kind, when (with recurrence), where (+ Open in maps), full description, RSVP / website, + Google Calendar and an .ics file, host (back to the group), topics from the topic map, last-checked notice, and "More from <group>". Clicking an item's icon or its name on the map opens it, as do item names in the tray's lists.
 - Moons now trail their planet when it is dragged and spring back (they were frozen: the still ring sims never restarted because their alpha stayed at 1). No push between moons, so their orbit and spacing are unchanged. Max zoom 4× → 12×.
 - Opening an organization now also shows its coalitions and partner groups on the outskirts, smaller (60%) and quieter (75%), instead of greyed out.
+
+## 2026-10-03 — Items grow with zoom, sharper logos, shorter land acknowledgement & dedication
+- Items now grow gently on screen as you zoom past 3× (√(k/3): ~1.4× at 6×, 2× at 12×), still capped at SAT_MAX_WORLD_R in map space so the spacing holds. Their names grow a little less (font × grow^-0.4). Group names grow gently too (k^0.35 instead of fixed).
+- Sharper logos: scripts/upgrade-logos.py re-read each group's own homepage for a bigger version of its current logo (≥1.8× the size). I reviewed 88 candidates side by side and accepted 39 that were the same logo, just sharper (list and sources in research/logos/up/report.json). The rest were different images (photos, partner logos, Instagram icons) and were rejected.
+- XR Boston and XR Western Mass: their own site only offers a 192px icon. Rebuilt it at 640px from Extinction Rebellion's published vector symbol (rebellion.global/assets/img/logos/xr.svg), in the chapters' own black-on-green.
+- About 110 logos are still under 256px (mostly the 160px images from the original MA import). They look soft past about 4× zoom. A deeper search (press kits, social profiles) could fix more; added to BACKLOG.
+- Loading screen text: same content, 221 → 126 words (43% shorter). Every people, place, link, the gratitude, the harm and the dedication are kept.
