@@ -5,6 +5,7 @@
 import * as d3 from "d3";
 import { h, clear } from "./dom";
 import { currentMap, MAPS, type MapId } from "./maps";
+import { createCommandRoom } from "./commandroom";
 
 export interface TopicRecord {
   id: string;
@@ -23,7 +24,7 @@ export interface TopicRecord {
   link?: string;
 }
 
-interface TopicsFile {
+export interface TopicsFile {
   generated_at: string;
   status: string;
   parents: { id: string; label: string; children: { id: string; label: string }[] }[];
@@ -60,6 +61,10 @@ const SLIDERS: { key: keyof Weights; label: string; hint: string }[] = [
   { key: "related", label: "Related issues", hint: "Records about related issues (peace, housing, health…) or with no climate link." },
 ];
 const STORE = "openthink.topics.v1";
+const IMP_STORE = "openthink.topics.importance.v1";
+const VIEW_STORE = "openthink.topics.view.v1";
+/** Default importance of each parent topic for the command room (0..1). "Broad climate" is a catch-all. */
+const IMP_DEFAULT = (pid: string) => (pid === "broad" ? 0.2 : 0.5);
 const BROAD = "broad";
 const POLICY = "policy";
 
@@ -105,6 +110,16 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   toolbar.appendChild(
     h("span", { class: "topics-draft" }, "Draft: this topic list is still under team review, so names and groupings will change."),
   );
+  // view switch: bubbles (topic galaxy) or the command room (streams of energy)
+  const viewSwitch = h("div", { class: "cr-seg topics-viewswitch", role: "group", "aria-label": "View" });
+  const viewBtns: HTMLButtonElement[] = [];
+  for (const [v, label] of [["bubbles", "Bubbles"], ["room", "Command room"]] as const) {
+    const b = h("button", { type: "button", "data-v": v }, label) as HTMLButtonElement;
+    b.addEventListener("click", () => setView(v));
+    viewBtns.push(b);
+    viewSwitch.appendChild(b);
+  }
+  toolbar.insertBefore(viewSwitch, count);
   wrap.appendChild(toolbar);
 
   const body = h("div", { class: "topics-body" });
@@ -117,6 +132,20 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   body.append(panel, stage, detail);
 
   const weights = loadWeights();
+  let view: "bubbles" | "room" = "bubbles";
+  try {
+    if (localStorage.getItem(VIEW_STORE) === "room") view = "room";
+  } catch {
+    /* ignore */
+  }
+  const importance: Record<string, number> = {};
+  try {
+    Object.assign(importance, JSON.parse(localStorage.getItem(IMP_STORE) || "{}"));
+  } catch {
+    /* ignore */
+  }
+  const impOf = (pid: string) => importance[pid] ?? IMP_DEFAULT(pid);
+  let room: ReturnType<typeof createCommandRoom> | null = null;
   let file: TopicsFile | null = null;
   let loading: Promise<void> | null = null;
   let render: (() => void) | null = null;
@@ -137,6 +166,7 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
         /* ignore */
       }
       render?.();
+      room?.update();
     });
     inputs.set(s.key, input);
     box.appendChild(input);
@@ -144,16 +174,47 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     box.appendChild(h("div", { class: "ctrl-hint" }, s.hint));
     panel.appendChild(box);
   }
+  // importance of each problem (parent topic): only the command room uses it
+  const impBox = h("details", { class: "topics-importance" });
+  impBox.appendChild(h("summary", {}, "Problem importance"));
+  impBox.appendChild(h("div", { class: "ctrl-hint" }, "Command room only: how important each problem is. A problem glows (or greens) when the energy it gets matches its importance; important problems with little energy stay dim."));
+  impBox.appendChild(h("div", { class: "topics-scale" }, h("span", {}, "Not important"), h("span", {}, "Important")));
+  const impInputs = new Map<string, HTMLInputElement>();
+  const impList = h("div", { class: "topics-imp-list" });
+  impBox.appendChild(impList);
+  function fillImportance(f: TopicsFile) {
+    clear(impList);
+    for (const p of f.parents) {
+      const id = `ti-${p.id}`;
+      const input = h("input", { id, type: "range", min: "0", max: "1", step: "0.05", value: String(impOf(p.id)), class: "slider", "data-imp": p.id }) as HTMLInputElement;
+      input.addEventListener("input", () => {
+        importance[p.id] = parseFloat(input.value);
+        try {
+          localStorage.setItem(IMP_STORE, JSON.stringify(importance));
+        } catch {
+          /* ignore */
+        }
+        room?.update();
+      });
+      impInputs.set(p.id, input);
+      impList.appendChild(h("div", { class: `topics-imp${p.id === BROAD ? " broad" : ""}` }, h("label", { for: id }, p.label), input));
+    }
+  }
+  panel.appendChild(impBox);
   const reset = h("button", { class: "reset-btn", type: "button" }, "Reset sliders");
   reset.addEventListener("click", () => {
     Object.assign(weights, DEFAULTS);
     for (const [k, el] of inputs) el.value = String(weights[k]);
+    for (const k of Object.keys(importance)) delete importance[k];
+    for (const [pid, el] of impInputs) el.value = String(impOf(pid));
     try {
       localStorage.removeItem(STORE);
+      localStorage.removeItem(IMP_STORE);
     } catch {
       /* ignore */
     }
     render?.();
+    room?.update();
   });
   panel.appendChild(reset);
 
@@ -443,6 +504,20 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     draw(false);
     g.selectAll<SVGGElement, PNode>("g.tnode").classed("focus", (x) => x === focus);
     render = () => draw(true);
+    fillImportance(f);
+    room = createCommandRoom({
+      file: f,
+      mapIds,
+      weight,
+      cap: () => (weights.cap <= 0 ? Infinity : 1 + (1 - weights.cap) * 9),
+      importance: impOf,
+      colorOf: (pid) => hue(`p:${pid}`),
+      detail,
+      cb,
+    });
+    stage.appendChild(room.el);
+    bubbleHide = () => hideRecords();
+    applyView();
     new ResizeObserver(() => {
       if (!stage.offsetParent) return;
       measure();
@@ -451,7 +526,31 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     }).observe(stage);
   }
 
+  let bubbleHide: (() => void) | null = null;
+  function applyView() {
+    for (const b of viewBtns) b.classList.toggle("on", b.dataset.v === view);
+    wrap.classList.toggle("room-on", view === "room");
+    impBox.toggleAttribute("open", view === "room");
+    if (!room) return;
+    if (view === "room") {
+      bubbleHide?.();
+      room.show();
+    } else room.hide();
+  }
+  function setView(v: "bubbles" | "room") {
+    if (v === view) return;
+    view = v;
+    try {
+      localStorage.setItem(VIEW_STORE, v);
+    } catch {
+      /* ignore */
+    }
+    applyView();
+  }
+  applyView();
+
   function show() {
+    if (file && room && view === "room") room.show();
     if (file || loading) return;
     loading = fetch(`${import.meta.env.BASE_URL}topics.json`)
       .then((r) => {
