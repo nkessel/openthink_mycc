@@ -2491,38 +2491,6 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
 .cr-info { background: none; border: none; color: var(--text-faint); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline dotted; }
 .cr-info:hover, .cr-info[aria-expanded="true"] { color: var(--text); }
 .cr-legend-hint { margin-top: 3px; color: var(--text-faint); }
-.cr-play {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 14px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(10, 10, 15, 0.6);
-  font-size: 12px;
-}
-.cr-playbtn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  background: rgba(56, 189, 248, 0.1);
-  color: var(--accent);
-  cursor: pointer;
-  font-size: 11px;
-}
-.cr-range { flex: 1; min-width: 80px; }
-.cr-date { min-width: 140px; color: var(--text); font-variant-numeric: tabular-nums; }
-.cr-all {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  border-radius: 999px;
-  padding: 4px 10px;
-  font: inherit;
-  font-size: 12px;
-  cursor: pointer;
-}
-.cr-all.on { color: var(--text); border-color: rgba(56, 189, 248, 0.5); }
 .cr-sub { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); margin: 14px 0 6px; }
 .cr-feeders { display: grid; gap: 3px; }
 .cr-feeder { display: flex; align-items: center; gap: 8px; font-size: 12px; }

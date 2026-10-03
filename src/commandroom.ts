@@ -84,7 +84,6 @@ interface Ripple {
   big: boolean;
 }
 
-const DAY = 86400000;
 const BROAD = "broad";
 const BILLS = "bills";
 const STORE = "openthink.topics.commandroom.v1";
@@ -106,7 +105,6 @@ function hash(s: string): number {
 }
 const isMission = (r: TopicRecord) => r.kind === "org_mission" || r.kind === "coalition_mission";
 const kindKey = (r: TopicRecord) => (isMission(r) ? "mission" : r.kind);
-const fmtDay = d3.timeFormat("%b %-d, %Y");
 /** Is p the same as, or inside, q? */
 function within(p: Problem, q: Problem): boolean {
   for (let x: Problem | null = p; x; x = x.up) if (x === q) return true;
@@ -199,25 +197,10 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   const allStreams = [...streams.values()];
   const orgList = [...orgs.values()];
 
-  // time range for playback
-  const dated = recs.filter((r) => r.date && Number.isFinite(Date.parse(r.date))).map((r) => Date.parse(r.date!));
-  const hasTime = dated.length > 0;
-  const T0 = hasTime ? +d3.timeMonth.floor(new Date(Math.min(...dated))) : 0;
-  const T1 = hasTime ? Math.max(...dated) + 10 * DAY : 0;
-  let tNow: number | null = null; // null = the whole year at once
   const recWeight = new Map<string, number>();
 
-  function timeFactor(r: TopicRecord, t: number | null): number {
-    if (t === null || !r.date) return 1; // undated projects, actions and missions are always on
-    const d = Date.parse(r.date);
-    if (!Number.isFinite(d)) return 1;
-    if (t < d) return 0;
-    if (r.recurring) return 1; // a repeating event keeps going
-    return Math.exp(-(t - d) / (18 * DAY)); // a one-off event's energy fades over a few weeks
-  }
-
   const levelMax = [1, 1, 1];
-  function compute(t: number | null, intoBase: boolean) {
+  function compute(intoBase: boolean) {
     const cap = ctx.cap();
     for (const s of allStreams) s.raw = 0;
     for (const p of probs.values()) {
@@ -226,7 +209,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     }
     for (const o of orgList) o.energy = 0;
     for (const r of recs) {
-      const w = ctx.weight(r) * timeFactor(r, t);
+      const w = ctx.weight(r);
       if (!intoBase) recWeight.set(r.id, w);
       if (w <= 0) continue;
       for (const s of recStreams.get(r.id) ?? []) {
@@ -312,14 +295,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   el.appendChild(viewport);
   el.dataset.style = style;
 
-  // playback
-  const play = h("div", { class: "cr-play" });
-  const playBtn = h("button", { type: "button", class: "cr-playbtn", "aria-label": "Play the year" }, "▶") as HTMLButtonElement;
-  const range = h("input", { type: "range", min: "0", max: String(Math.max(1, Math.round((T1 - T0) / DAY))), step: "1", value: "0", class: "slider cr-range", "aria-label": "Date" }) as HTMLInputElement;
-  const dateLbl = h("span", { class: "cr-date" }, "");
-  const allBtn = h("button", { type: "button", class: "cr-all on" }, "Whole year") as HTMLButtonElement;
-  play.append(playBtn, range, dateLbl, allBtn);
-  if (hasTime) el.insertBefore(play, viewport);
   const infoBtn = h("button", { type: "button", class: "cr-info", "aria-expanded": "false" }, "How to read") as HTMLButtonElement;
   infoBtn.addEventListener("click", () => {
     const on = !legend.classList.contains("on");
@@ -360,15 +335,12 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   let visStreams: Stream[] = [];
   let items: Item[] = [];
   let baseDirty = true;
-  let baseStale = false;
-  let lastBase = 0;
   let ripples: Ripple[] = [];
-  let playing = false;
   let shown = false;
   let anim: { t0: number; from: Map<string, [number, number]>; dur: number } | null = null;
   const target = new Map<string, [number, number]>();
   let R = 200, cx = 400, cy = 300, xo = 150, xp = 600;
-  const stats = { frames: 0, workMs: 0, avgMs: 0, maxMs: 0, intervalMs: 0, particles: 0, dayMs: 0, paintMs: 0, baseMs: 0, drawMs: 0, onDayMs: 0 };
+  const stats = { frames: 0, workMs: 0, avgMs: 0, maxMs: 0, intervalMs: 0, particles: 0, drawMs: 0 };
   (window as unknown as { __commandRoom: typeof stats }).__commandRoom = stats;
 
   /** Does this topic show its finer topics instead of itself? */
@@ -1109,7 +1081,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   };
 
   function drawBase() {
-    const tb = performance.now();
     const g = base.getContext("2d")!;
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, base.width, base.height);
@@ -1174,9 +1145,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     }
     g.globalCompositeOperation = "source-over";
     baseDirty = false;
-    baseStale = false;
-    lastBase = performance.now();
-    stats.baseMs = performance.now() - tb;
   }
 
   const P: [number, number] = [0, 0];
@@ -1257,19 +1225,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         paintSvg();
       }
     }
-    if (playing && tNow !== null) {
-      const before = Math.floor((tNow - T0) / DAY);
-      tNow = Math.min(T1, tNow + dt * 9 * DAY); // about 9 days a second
-      const after = Math.floor((tNow - T0) / DAY);
-      if (after !== before) {
-        const td = performance.now();
-        onDay(before, after);
-        stats.onDayMs = performance.now() - td;
-      }
-      if (tNow >= T1) setPlaying(false);
-    }
-    // whole-year view: topics with recurring events pulse gently
-    if (tNow === null) {
+    // topics with repeating events pulse gently
+    {
       for (const p of visProbs) {
         if (!p.recurring) continue;
         const period = 7 + hash(p.id) * 4;
@@ -1280,7 +1237,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         }
       }
     }
-    if (baseStale && now - lastBase > 400) baseDirty = true;
     const tdraw = performance.now();
     drawFrame(clock);
     stats.drawMs = stats.drawMs * 0.9 + (performance.now() - tdraw) * 0.1;
@@ -1307,86 +1263,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       raf = requestAnimationFrame(frame);
     }
   }
-
-  // ---------- Time playback ----------
-  function onDay(before: number, after: number) {
-    const t0 = performance.now();
-    compute(tNow, false);
-    allocate();
-    const t1 = performance.now();
-    paintSvg(false);
-    stats.paintMs = performance.now() - t1;
-    stats.dayMs = t1 - t0;
-    // stream widths change slowly while playing: redraw the stream layer a few times a second, not every day
-    if (reduced || !playing) baseDirty = true;
-    else baseStale = true;
-    syncTimeUi();
-    // ripples for items that start today, and weekly pulses for repeating events
-    const hit = new Set<Problem>();
-    const small = new Set<Problem>();
-    for (const r of recs) {
-      if (!r.date) continue;
-      const day = Math.floor((Date.parse(r.date) - T0) / DAY);
-      const fresh = day > before && day <= after;
-      const pulse = r.recurring && day <= after && (after - day) % 7 === 0 && !fresh;
-      if (!fresh && !pulse) continue;
-      for (const s of recStreams.get(r.id) ?? []) if (s.prob.visible) (fresh ? hit : small).add(s.prob);
-    }
-    const now = performance.now();
-    for (const p of hit) ripples.push({ prob: p, t0: now, big: true });
-    for (const p of small) if (!hit.has(p)) ripples.push({ prob: p, t0: now, big: false });
-    if (reduced) drawFrame(0);
-  }
-  let stepTimer = 0;
-  function setPlaying(v: boolean) {
-    playing = v;
-    playBtn.textContent = v ? "❚❚" : "▶";
-    playBtn.setAttribute("aria-label", v ? "Pause" : "Play the year");
-    if (v) {
-      if (tNow === null || tNow >= T1) {
-        tNow = T0;
-        onDay(-1, 0);
-      }
-      if (reduced) {
-        stepTimer = window.setInterval(() => {
-          if (tNow === null) return;
-          const before = Math.floor((tNow - T0) / DAY);
-          tNow = Math.min(T1, tNow + 4 * DAY);
-          onDay(before, Math.floor((tNow - T0) / DAY));
-          if (tNow >= T1) setPlaying(false);
-        }, 400);
-      } else kick();
-    } else {
-      if (stepTimer) clearInterval(stepTimer);
-      stepTimer = 0;
-      baseDirty = true;
-      kick();
-    }
-    syncTimeUi();
-  }
-  function syncTimeUi() {
-    allBtn.classList.toggle("on", tNow === null);
-    if (tNow === null) {
-      range.value = range.max;
-      dateLbl.textContent = `${d3.timeFormat("%b %Y")(new Date(T0))} – ${d3.timeFormat("%b %Y")(new Date(T1))}`;
-    } else {
-      range.value = String(Math.round((tNow - T0) / DAY));
-      dateLbl.textContent = fmtDay(new Date(tNow));
-    }
-  }
-  playBtn.addEventListener("click", () => setPlaying(!playing));
-  range.addEventListener("input", () => {
-    setPlaying(false);
-    const before = tNow === null ? -1 : Math.floor((tNow - T0) / DAY);
-    tNow = T0 + parseInt(range.value, 10) * DAY;
-    onDay(before, Math.floor((tNow - T0) / DAY));
-  });
-  allBtn.addEventListener("click", () => {
-    setPlaying(false);
-    tNow = null;
-    refresh();
-    syncTimeUi();
-  });
 
   // ---------- Zoom: main topics → sub-topics → bills and items ----------
   const DEPTH = ["Main topics", "Sub-topics", "Bills and items"];
@@ -1442,7 +1318,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   // ---------- Updates ----------
   /** Selection or time changed: repaint without moving anything. */
   function refresh() {
-    compute(tNow, false);
+    compute(false);
     allocate();
     paintSvg();
     baseDirty = true;
@@ -1466,7 +1342,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     };
     for (const p of parents) spread(p);
     computeTargets();
-    compute(tNow, false);
+    compute(false);
     visStreams = allStreams.filter((s) => s.prob.visible && s.base > 0);
     if (animate && !reduced && from.size) {
       anim = { t0: performance.now(), from, dur: 750 };
@@ -1491,14 +1367,14 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       h("div", {}, style === "comets" ? "Each comet stream: one group → one topic, sized by its weighted activity (the sliders on the left)." : "Rivulets from each group join into one river per topic, sized by weighted activity (the sliders on the left)."),
       h("div", {}, style === "comets" ? "A topic's shield glows brighter the more energy reaches it." : "A topic's delta turns greener and wetter the more energy reaches it; quiet ones stay dry."),
       h("div", {}, "Zoom in (scroll, or the + button) to split main topics into sub-topics, then into individual bills, with each project, event, action and mission statement as a dot on its stream: pink events, green projects, yellow actions, hollow missions."),
-      h("div", {}, "Undated projects, actions and mission statements are always on; events appear at their dates when you play the year, and repeating events pulse."),
+      h("div", {}, "Uses everything we have: all projects, events, actions and mission statements at once. Topics with repeating events pulse gently."),
       h("div", { class: "cr-legend-hint" }, "Hover a stream or dot · click a group, topic or dot · drag to pan · double-click the background to reset the zoom"),
     );
   }
 
   function full() {
     measure();
-    compute(null, true);
+    compute(true);
     for (const o of orgList) {
       o.x = NaN;
       o.y = NaN;
@@ -1506,7 +1382,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     depthLbl.textContent = DEPTH[0];
     relayout(false);
     legendText();
-    syncTimeUi();
   }
   let first = true;
   new ResizeObserver(() => {
@@ -1523,7 +1398,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     /** Slider weights changed. */
     update() {
       if (first) return;
-      compute(null, true);
+      compute(true);
       target.clear();
       relayout(true);
       if (selOrg || selProb || selItem) renderDetail();
@@ -1541,7 +1416,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     },
     hide() {
       shown = false;
-      setPlaying(false);
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
       tip.classList.remove("on");
