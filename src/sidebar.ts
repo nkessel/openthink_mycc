@@ -70,6 +70,11 @@ export function createSidebar(
   aside.appendChild(filtersBlock);
   aside.appendChild(controlsBlock);
 
+  // The land acknowledgement and dedication from the loading screen, kept reachable once the map is up.
+  const landLink = h("button", { class: "land-link", type: "button" }, "Land acknowledgement & dedication");
+  landLink.addEventListener("click", openLandDialog);
+  aside.appendChild(landLink);
+
   function renderCoalitions() {
     clear(coalitionsBlock);
     coalitionsBlock.appendChild(h("h3", {}, "Coalitions"));
@@ -138,8 +143,10 @@ export function createSidebar(
 
 /** The key to the network map, shown on the map itself (bottom-left); click its title to fold it. */
 export function createMapLegend(parent: HTMLElement): HTMLElement {
-  const legend = h("div", { class: "map-legend open" });
-  const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": "true" }, "Legend");
+  // Open on wide screens; folded on phones, where it would cover a third of the map.
+  const startOpen = !window.matchMedia("(max-width: 720px)").matches;
+  const legend = h("div", { class: startOpen ? "map-legend open" : "map-legend" });
+  const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": String(startOpen) }, "Legend");
   head.addEventListener("click", () => {
     const open = !legend.classList.contains("open");
     legend.classList.toggle("open", open);
@@ -161,4 +168,22 @@ export function createMapLegend(parent: HTMLElement): HTMLElement {
   );
   parent.appendChild(legend);
   return legend;
+}
+
+/** A dialog with the same text as the loading screen's land acknowledgement and dedication (copied from index.html once at startup). */
+let landHtml: string | null = null;
+export function captureLandText(): void {
+  landHtml = document.getElementById("land-dedication")?.innerHTML ?? null;
+}
+function openLandDialog(): void {
+  if (!landHtml) return;
+  const body = h("div", { class: "land-text" });
+  body.innerHTML = landHtml; // our own markup from index.html
+  const close = h("button", { class: "detail-close", type: "button", "aria-label": "Close" }, "×");
+  const card = h("div", { class: "detail-card land-card", role: "dialog", "aria-label": "Land acknowledgement and dedication" }, close, body);
+  const overlay = h("div", { class: "detail-overlay land-overlay" }, card);
+  const done = () => overlay.remove();
+  close.addEventListener("click", done);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) done(); });
+  document.body.appendChild(overlay);
 }

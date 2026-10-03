@@ -446,6 +446,23 @@ What / why
 - Apps Script "Fill in missing details" also fills blank event rsvp_link and swaps a general events-page link for the event's own page (test added).
 - BACKLOG: "RSVP links for every upcoming event" added at the top (13 of ~110 upcoming events have one now).
 
+## 2026-10-02 — Seamless zoom, planets with moons, full names, coalition About + details, new loading screen
+- Zoom no longer reshuffles the map. Item orbits and group spacing are now the same at every zoom: no more planet doubling or collide change at the detail threshold. Dots turn into icons in the same places at the same size, and icons keep a steady on-screen size (CSS --is), so planets grow around them as you zoom. Item names appear beside the icons from 2.8× zoom, as light unboxed text reading away from the planet: full name plus one meta line. Measured: 0.0 px node movement while zooming from 1× to 4×.
+- Past 100% zoom, group names and lines keep their on-screen size (CSS --ns, non-scaling strokes), so they no longer balloon over neighbours.
+- Group names are never cut off: wrapped onto lines of about 24 characters.
+- Click-to-zoom view: no more cards. The group is drawn as a big planet (radius about 64, CSS --fs) with its items as moons close around it, each with its full name and a meta line beside it. Coalition members orbit outside the names.
+- New slider "Push coalitions apart" (Advanced → Forces). "Push apart" is renamed "Push organizations apart". The coalition default matches the old strength.
+- Coalitions get an About tab: type, scope, description, website, focus and a clickable member list.
+- Data (research/ma-gaps/fill5.json, a Sonnet research agent with a source per field; merged by scripts/merge-fill5.mjs):
+  - Websites and fuller descriptions for GJC, EJLT, HERO and MYCC; scope for GJC and SCJC.
+  - Logos for GJC and South Coast Neighbors United.
+  - 17 memberships named on the coalitions' own pages (EJLT +3, HERO +14). SCJC's list is campaign supporters, so it was skipped.
+  - Blank org fields for Bodhisara, HealthLink (own site) and Take Back the Grid.
+  - CCCC: nothing sourceable.
+- Loading screen: the network assembles itself from nothing. Coalitions appear, organizations bud off them and link up, and org-to-org links come later, all paced by the progress bar. Also added a land acknowledgement (Massachusett, Nipmuc and Wampanoag; Natick, Wellesley, Boston), based on the MassBay CC, Wellesley College Davis Museum and Bunker Hill CC acknowledgements.
+- Loading screen: added Nathan's dedication ("This site was made with the help of Claude Code (AI)…", with his links) under the land acknowledgement. The same text stays reachable after load via a quiet "Land acknowledgement & dedication" link at the bottom of Map settings, which opens a dialog.
+- Sheet (with Nathan's OK): put a temporary OneOffFill5.gs (generated from the fill5 changes) in the Apps Script project via the built-in browser, ran applyFill5 (36 cells: 5 coalitions' descriptions, websites, scope, tags and the GJC logo; 4 orgs' blank fields; 16 orgs' coalition_ids for the 17 new memberships), then deleted the file. The live feed now shows them. The GJC/SCNU logo images go live when this PR deploys.
+- Phones: the map legend starts folded (it covered about a third of the map); still one tap to open.
 ## 2026-10-02 — Research notes out of public text; event-link fill fix
 - Rewrote 26 public descriptions (13 MA in data.json, 13 VT in maps/vt.json + research/state-pilot/vt.json) that still carried notes for the research team ("no climate work found", "could not be confirmed as current", "website blocks automated readers", scraper errors…). The map is in scripts/clean-notes.mjs.
 - Apps Script fillEventLinks_: also swaps a site's events listing (…/events, /calendar, /upcoming-events…) for the event's own page on the same site (e.g. greenenergyconsumers.org/events → /event/<slug>). Test added.

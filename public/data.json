@@ -168,7 +168,7 @@
       "id": "mycc",
       "name": "Massachusetts Youth Climate Coalition",
       "abbrev": "MYCC",
-      "description": "Youth-led statewide coalition of school clubs and youth groups organizing for climate justice in Massachusetts.",
+      "description": "Youth-led, adult-supported network of climate organizations, founded in 2020, that connects and mobilizes youth leaders and their groups through rallies, lobbying events and summits.",
       "focus_tags": [
         "youth_serving",
         "school_clubs",
@@ -302,13 +302,14 @@
       ],
       "actions": [],
       "last_activity": "2026-05-14T19:42:02.320Z",
-      "logo": "logos/coalition_mycc.png"
+      "logo": "logos/coalition_mycc.png",
+      "website": "https://ourclimate.us/state-campaigns/"
     },
     {
       "id": "ejlt",
       "name": "Environmental Justice Legislative Table",
       "abbrev": "EJLT",
-      "description": "Coordinated table of orgs advancing EJ legislation at the State House.",
+      "description": "Statewide coalition of community-based, environmental, Indigenous and civil rights organizations, led by grassroots and community-of-color-led groups, formed in 2019 to support and influence environmental justice legislation and policy in Massachusetts.",
       "focus_tags": [
         "environmental_justice",
         "climate_policy"
@@ -324,13 +325,17 @@
         "conservation_law_foundation",
         "environmental_league_of_ma",
         "green_energy_consumers_alliance",
-        "community_action_works"
+        "community_action_works",
+        "alternatives_for_community_and_environment",
+        "greenroots",
+        "neighbor_to_neighbor_massachusetts"
       ],
-      "member_count": 7,
+      "member_count": 10,
       "projects": [],
       "events": [],
       "actions": [],
-      "last_activity": "2026-05-24T19:42:02.323Z"
+      "last_activity": "2026-05-24T19:42:02.323Z",
+      "website": "https://actionnetwork.org/groups/massachusetts-environmental-justice-table"
     },
     {
       "id": "cccc",
@@ -354,8 +359,11 @@
       "name": "Springfield Climate Justice Coalition",
       "abbrev": "SCJC",
       "description": "Coalition of roughly 60 community, faith, labor, health and environmental groups in the Springfield area, formed in 2014, that works on climate and environmental health issues; it fought the East Springfield biomass plant, opposes new gas pipeline expansion, and won a city Climate Action and Resiliency Plan.",
-      "focus_tags": [],
-      "geographic_scope": "statewide",
+      "focus_tags": [
+        "environmental_justice",
+        "health"
+      ],
+      "geographic_scope": "Greater Springfield",
       "color": "#C97BC4",
       "lat": 42.3110206125,
       "lng": -71.812827425,
@@ -380,13 +388,14 @@
       "id": "gjc",
       "name": "Green Justice Coalition",
       "abbrev": "GJC",
-      "description": "EJ-led coalition centering frontline communities in climate, energy, and environmental decision-making.",
+      "description": "Partnership of community-based building nonprofits and labor organizations that grows the power of working-class people and people of color in the Greater Boston area and beyond. Its work includes energy democracy and grid modernization, project labor agreements for public infrastructure, and public transit equity.",
       "focus_tags": [
         "environmental_justice",
         "grassroots",
-        "health"
+        "health",
+        "clean_energy"
       ],
-      "geographic_scope": "statewide",
+      "geographic_scope": "Greater Boston",
       "color": "#f472b6",
       "lat": 42.26180421818182,
       "lng": -71.1880687,
@@ -407,7 +416,9 @@
       "projects": [],
       "events": [],
       "actions": [],
-      "last_activity": "2026-05-16T19:42:02.323Z"
+      "last_activity": "2026-05-16T19:42:02.323Z",
+      "website": "https://greenjusticecoalition.org/",
+      "logo": "logos/coalition_gjc.png"
     },
     {
       "id": "crs",
@@ -436,22 +447,39 @@
       "id": "hero",
       "name": "HERO Coalition",
       "abbrev": "HERO",
-      "description": "Coalition pushing efficient, electrified, equitable homes and buildings policy.",
+      "description": "Coalition of housing advocacy and environmental organizations working for statewide solutions to the climate and affordable housing crises. It backs legislation to raise the Massachusetts deeds excise fee and split the revenue between affordable housing and climate investments.",
       "focus_tags": [
         "green_buildings",
         "clean_energy",
-        "housing"
+        "housing",
+        "climate_policy"
       ],
       "geographic_scope": "statewide",
       "color": "#f87171",
       "lat": 42.3601,
       "lng": -71.0589,
-      "member_ids": [],
-      "member_count": 0,
+      "member_ids": [
+        "350ma",
+        "boston_climate_action_network",
+        "charles_river_watershed_association",
+        "chinese_progressive_association",
+        "clean_water_action",
+        "community_labor_united",
+        "conservation_law_foundation",
+        "green_energy_consumers_alliance",
+        "greenroots",
+        "jewish_alliance_for_law_and_social_action",
+        "massachusetts_climate_action_network",
+        "metropolitan_area_planning_council",
+        "sierra_club",
+        "unitarian_universalist_mass_action"
+      ],
+      "member_count": 14,
       "projects": [],
       "events": [],
       "actions": [],
-      "last_activity": "2026-05-24T19:42:02.323Z"
+      "last_activity": "2026-05-24T19:42:02.323Z",
+      "website": "https://www.mahousingclimate.org/"
     }
   ],
   "organizations": [
@@ -902,7 +930,8 @@
       "type": "501c3",
       "coalition_ids": [
         "mpf",
-        "gjc"
+        "gjc",
+        "ejlt"
       ],
       "lat": 42.3309675,
       "lng": -71.0834362,
@@ -1221,7 +1250,8 @@
         "mpf",
         "mycc",
         "ejlt",
-        "gjc"
+        "gjc",
+        "hero"
       ],
       "lat": 42.3588496,
       "lng": -71.0592945,
@@ -1538,7 +1568,7 @@
       "lat": 42.3601,
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
-      "website": "https://citizensinaction.org/press-about-the-billboard-103.html",
+      "website": "http://www.citizensinaction.org/",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -2834,7 +2864,8 @@
       "type": "school_club",
       "coalition_ids": [
         "ejlt",
-        "scjc"
+        "scjc",
+        "hero"
       ],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -2976,7 +3007,8 @@
       "type": "501c3",
       "coalition_ids": [
         "mpf",
-        "ejlt"
+        "ejlt",
+        "hero"
       ],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -3103,7 +3135,8 @@
       "name": "Sierra Club",
       "type": "unknown",
       "coalition_ids": [
-        "mpf"
+        "mpf",
+        "hero"
       ],
       "lat": 42.3558798,
       "lng": -71.0564015,
@@ -3312,7 +3345,9 @@
       "type": "unknown",
       "coalition_ids": [
         "mpf",
-        "gjc"
+        "gjc",
+        "ejlt",
+        "hero"
       ],
       "lat": 42.3936888,
       "lng": -71.0412802,
@@ -3431,7 +3466,8 @@
       "name": "350 Massachusetts",
       "type": "unknown",
       "coalition_ids": [
-        "mpf"
+        "mpf",
+        "hero"
       ],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -3722,7 +3758,8 @@
       "coalition_ids": [
         "mpf",
         "ejlt",
-        "scjc"
+        "scjc",
+        "hero"
       ],
       "lat": 42.3543253,
       "lng": -71.0585955,
@@ -3879,7 +3916,8 @@
       "name": "Jewish Alliance for Law and Social Action",
       "type": "unknown",
       "coalition_ids": [
-        "mpf"
+        "mpf",
+        "hero"
       ],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -4133,7 +4171,7 @@
     {
       "id": "bodhisara_dharma_community",
       "name": "Bodhisara Dharma Community",
-      "type": "unknown",
+      "type": "faith_org",
       "coalition_ids": [
         "mpf"
       ],
@@ -4150,8 +4188,8 @@
       "coalition_weights": {
         "mpf": 3
       },
-      "geographic_focus": "",
-      "description": "",
+      "geographic_focus": "Western Massachusetts",
+      "description": "Non-profit Buddhist community in western Massachusetts that offers the Buddha's teaching to all ages through classes, meditation and retreats. It aims to build a community of friends who support each other in living with awareness, kindness and compassion.",
       "website": "https://www.bodhisara.org/"
     },
     {
@@ -4197,7 +4235,8 @@
       "type": "unknown",
       "coalition_ids": [
         "mpf",
-        "gjc"
+        "gjc",
+        "hero"
       ],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -4357,7 +4396,8 @@
       "name": "Charles River Watershed Association",
       "type": "unknown",
       "coalition_ids": [
-        "mpf"
+        "mpf",
+        "hero"
       ],
       "lat": 42.3550183,
       "lng": -71.0626141,
@@ -4769,7 +4809,8 @@
       "type": "501c3",
       "coalition_ids": [
         "mpf",
-        "gjc"
+        "gjc",
+        "hero"
       ],
       "lat": 42.3580902,
       "lng": -71.0618016,
@@ -5167,7 +5208,8 @@
       "type": "501c3",
       "coalition_ids": [
         "mpf",
-        "ejlt"
+        "ejlt",
+        "hero"
       ],
       "lat": 42.3601,
       "lng": -71.0589,
@@ -6388,7 +6430,8 @@
           "host_org_id": "south_coast_neighbors_united",
           "skills_needed": []
         }
-      ]
+      ],
+      "logo": "logos/south_coast_neighbors_united.jpg"
     },
     {
       "id": "sunwealth",
@@ -6583,7 +6626,8 @@
         "mpf": 3
       },
       "geographic_focus": "Greater Boston",
-      "description": "Campaign launched in 2019 by the Boston chapter of Democratic Socialists of America for a community-controlled, publicly accountable energy grid under the banner of energy democracy."
+      "description": "Campaign launched in 2019 by the Boston chapter of Democratic Socialists of America for a community-controlled, publicly accountable energy grid under the banner of energy democracy.",
+      "website": "https://bostondsa.org/our-work/ecosocialism/"
     },
     {
       "id": "upper_cape_women_s_coalition",
@@ -6954,7 +6998,8 @@
       "coalition_ids": [
         "mpf",
         "scjc",
-        "gjc"
+        "gjc",
+        "ejlt"
       ],
       "lat": 42.1018203,
       "lng": -72.5894286,
@@ -7245,7 +7290,8 @@
       "name": "Chinese Progressive Association",
       "type": "501c3",
       "coalition_ids": [
-        "gjc"
+        "gjc",
+        "hero"
       ],
       "lat": 42.3486271,
       "lng": -71.0633947,
@@ -7662,7 +7708,9 @@
       "id": "metropolitan_area_planning_council",
       "name": "Metropolitan Area Planning Council",
       "type": "government",
-      "coalition_ids": [],
+      "coalition_ids": [
+        "hero"
+      ],
       "lat": 42.3550479,
       "lng": -71.0614837,
       "last_activity": "2026-09-25T13:38:29.000Z",
@@ -8571,6 +8619,74 @@
     {
       "source": "gjc",
       "target": "ma_senior_action"
+    },
+    {
+      "source": "ejlt",
+      "target": "alternatives_for_community_and_environment"
+    },
+    {
+      "source": "ejlt",
+      "target": "greenroots"
+    },
+    {
+      "source": "ejlt",
+      "target": "neighbor_to_neighbor_massachusetts"
+    },
+    {
+      "source": "hero",
+      "target": "350ma"
+    },
+    {
+      "source": "hero",
+      "target": "boston_climate_action_network"
+    },
+    {
+      "source": "hero",
+      "target": "charles_river_watershed_association"
+    },
+    {
+      "source": "hero",
+      "target": "chinese_progressive_association"
+    },
+    {
+      "source": "hero",
+      "target": "clean_water_action"
+    },
+    {
+      "source": "hero",
+      "target": "community_labor_united"
+    },
+    {
+      "source": "hero",
+      "target": "conservation_law_foundation"
+    },
+    {
+      "source": "hero",
+      "target": "green_energy_consumers_alliance"
+    },
+    {
+      "source": "hero",
+      "target": "greenroots"
+    },
+    {
+      "source": "hero",
+      "target": "jewish_alliance_for_law_and_social_action"
+    },
+    {
+      "source": "hero",
+      "target": "massachusetts_climate_action_network"
+    },
+    {
+      "source": "hero",
+      "target": "metropolitan_area_planning_council"
+    },
+    {
+      "source": "hero",
+      "target": "sierra_club"
+    },
+    {
+      "source": "hero",
+      "target": "unitarian_universalist_mass_action"
     }
   ],
   "org_links": []
