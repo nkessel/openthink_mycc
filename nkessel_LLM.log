@@ -489,3 +489,4 @@ What / why
   - Movement skills & culture: Songleading for Protests (Truth School, online).
 - Same source and rules as Palestinian rights: newsletter only, linked pages not yet checked, no personal contacts. SOURCE.md now lists where each item went.
 - Playwright: all four on adds 13 nodes; switches present; sector cards show on the Events page; no page errors.
+- 2026-10-02: after #38 and #39 were merged, put development_branch's Code.gs (with the isListingFor_ link rule) into the Apps Script project via the built-in browser, saved and reloaded to confirm. doGet is unchanged, so no redeploy. Merged development_branch into #36 (legend: kept the folded-on-phones start and the sector rows; styles: kept both blocks); Playwright sector, zoom and land checks pass.
