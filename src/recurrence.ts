@@ -9,7 +9,7 @@ const MONTHS = ["january", "february", "march", "april", "may", "june", "july", 
 export interface Rule {
   weekday: number;
   /** "weekly", "biweekly", or the nth weekday of the month (-1 = last). */
-  kind: "weekly" | "biweekly" | "nth";
+  kind: "weekly" | "biweekly" | "nth" | "daily";
   nth?: number;
   skipMonths: number[];
   /** Only this month (annual events). */
@@ -18,6 +18,7 @@ export interface Rule {
 
 export function parseRecurrence(text: string): Rule | null {
   const t = text.toLowerCase();
+  if (/^(every day|daily)\b/.test(t)) return { weekday: -1, kind: "daily", skipMonths: [] };
   if (/\bnext\b.*\b(mon|tue|wed|thu|fri|sat|sun)/.test(t) && !/\b(first|second|third|fourth|last|1st|2nd|3rd|4th)\b/.test(t)) return null;
   const wd = DAYS.findIndex((d) => t.includes(d));
   if (wd < 0) return null;
@@ -42,6 +43,7 @@ export function parseRecurrence(text: string): Rule | null {
 export function occursOn(rule: Rule, anchor: Date, day: Date): boolean {
   const a = new Date(anchor.getFullYear(), anchor.getMonth(), anchor.getDate());
   const d = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+  if (rule.kind === "daily") return d >= a;
   if (d < a || d.getDay() !== rule.weekday) return false;
   if (rule.skipMonths.includes(d.getMonth())) return false;
   if (rule.onlyMonth !== undefined && d.getMonth() !== rule.onlyMonth) return false;

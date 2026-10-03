@@ -14,6 +14,7 @@ import { itemButtons } from "./links";
 import { h } from "./dom";
 import { typeIcon } from "./icons";
 import { staleNotice } from "./notice";
+import { sectorById } from "./sectors";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
@@ -428,8 +429,10 @@ export function createGraph(
     .enter()
     .append("g")
     .attr("class", (d) =>
-      d.kind === "coalition" ? "node-coalition" : "node-org",
+      (d.kind === "coalition" ? "node-coalition" : "node-org") + (d.sector ? " sector" : ""),
     ) as NodeSel;
+  // Sector layers get their own ring colour (see .sector in styles.css).
+  nodeSel.filter((d) => !!d.sector).style("--sector", (d) => sectorById(d.sector)?.color ?? "#a16207");
 
   // Append shapes + labels per node.
   // Structure per node: <circle.halo> (groups), <circle.ring> (main), <text.node-label>, <text.node-name>.

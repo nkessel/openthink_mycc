@@ -1,6 +1,6 @@
 // Actions & volunteer opportunities: things a person can do (sign, call, show up) or roles groups need filled.
 import type { Action, DataFile, GraphNode } from "./types";
-import { allActions, ownerBadge, type Owner } from "./owners";
+import { allActions, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
@@ -123,8 +123,8 @@ export function createActionsView(data: DataFile, cb: ActionsCallbacks): Actions
       for (const s of a.skills_needed || []) meta.appendChild(h("span", { class: "pill skill" }, s));
       const card = h(
         "div",
-        { class: "list-card" },
-        h("div", { class: "head" }, ownerBadge(r.owner), h("div", { class: "coalition-name" }, r.owner.name)),
+        { class: `list-card${sectorAttrs(r.owner).cls}`, style: sectorAttrs(r.owner).style },
+        h("div", { class: "head" }, ownerBadge(r.owner), h("div", { class: "coalition-name" }, r.owner.name), sectorPill(r.owner)),
         h("div", { class: "name" }, a.name),
         a.description ? h("div", { class: "desc" }, a.description) : null,
         meta,

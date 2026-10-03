@@ -12,6 +12,7 @@ import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
+import { sectorById } from "./sectors";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { suggestionsFor } from "./suggestions";
 
@@ -105,6 +106,8 @@ export function createDrawer(
       if (o.profile?.youth_serving) tags.appendChild(h("span", { class: "tag" }, "Youth-serving"));
       if (o.profile?.school_club) tags.appendChild(h("span", { class: "tag" }, "School club"));
       if (o.profile?.hub) tags.appendChild(h("span", { class: "tag" }, "Hub org"));
+      const sec = sectorById(o.sector);
+      if (sec) tags.appendChild(h("span", { class: "tag sector-pill", style: `--sector:${sec.color}` }, sec.label));
       if (o.profile?.geo_precision === "approx") tags.appendChild(h("span", { class: "tag" }, "Approximate location"));
       for (const t of o.topic_tags || []) tags.appendChild(h("span", { class: "tag" }, prettifyTag(t)));
       if (tags.childNodes.length) head.appendChild(tags);
