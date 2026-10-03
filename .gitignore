@@ -9,3 +9,6 @@ dist
 context/
 .screenshots/
 .apps-script-check/
+
+# logo candidates downloaded by scripts/fetch-logos.py (accepted ones are copied to public/logos/)
+research/logos/*.png
