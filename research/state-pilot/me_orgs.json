@@ -1,0 +1,1181 @@
+{
+ "generated_at": "2026-10-03T00:00:00Z",
+ "state": "ME",
+ "coalitions": [],
+ "organizations": [
+  {
+   "id": "me_maine_conservation_voters",
+   "name": "Maine Conservation Voters",
+   "abbrev": "MCV",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Statewide environmental political organization that scores legislators, works on climate and conservation priorities and runs election canvassing through its action fund.",
+   "coalition_ids": [],
+   "lat": 44.3106,
+   "lng": -69.7795,
+   "last_activity": "",
+   "website": "https://www.maineconservation.org/",
+   "topic_tags": [
+    "climate",
+    "elections",
+    "advocacy",
+    "conservation"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [
+    {
+     "id": "me_maine_conservation_voters_p_2026_canvass",
+     "title": "2026 election canvassing",
+     "description": "Volunteer canvassing in several Maine towns this fall through the MCV Action Fund.",
+     "status": "active",
+     "sources": [
+      "https://www.maineconservation.org/events/"
+     ],
+     "skills_needed": []
+    }
+   ],
+   "events": [
+    {
+     "id": "me_maine_conservation_voters_e_canvass_durham_oct3",
+     "title": "Canvass with Maine Conservation Voters Action Fund in Durham",
+     "date": "2026-10-03",
+     "location": "Durham Town Office, 630 Hallowell Rd, Durham, ME",
+     "online": false,
+     "description": "Door-to-door canvass with the MCV Action Fund.",
+     "verified": true,
+     "sources": [
+      "https://www.maineconservation.org/events/"
+     ]
+    },
+    {
+     "id": "me_maine_conservation_voters_e_canvass_fryeburg_oct3",
+     "title": "Canvass with Maine Conservation Voters Action Fund in Fryeburg",
+     "date": "2026-10-03",
+     "location": "Fryeburg Shopping Plaza, 119 Bridgton Rd, Fryeburg, ME",
+     "online": false,
+     "description": "Door-to-door canvass with the MCV Action Fund.",
+     "verified": true,
+     "sources": [
+      "https://www.maineconservation.org/events/"
+     ]
+    },
+    {
+     "id": "me_maine_conservation_voters_e_canvass_norway_oct3",
+     "title": "Canvass with Maine Conservation Voters Action Fund in Norway",
+     "date": "2026-10-03",
+     "location": "Deering St. Lot, 16 Deering St, Norway, ME",
+     "online": false,
+     "description": "Door-to-door canvass with the MCV Action Fund.",
+     "verified": true,
+     "sources": [
+      "https://www.maineconservation.org/events/"
+     ]
+    },
+    {
+     "id": "me_maine_conservation_voters_e_canvass_fryeburg_oct4",
+     "title": "Canvass with Maine Conservation Voters Action Fund in Fryeburg",
+     "date": "2026-10-04",
+     "location": "Fryeburg Shopping Plaza, 119 Bridgton Rd, Fryeburg, ME",
+     "online": false,
+     "description": "Door-to-door canvass with the MCV Action Fund.",
+     "verified": true,
+     "sources": [
+      "https://www.maineconservation.org/events/"
+     ]
+    },
+    {
+     "id": "me_maine_conservation_voters_e_canvass_durham_oct8",
+     "title": "Canvass with Maine Conservation Voters Action Fund in Durham",
+     "date": "2026-10-08",
+     "location": "Durham Town Office, 630 Hallowell Rd, Durham, ME",
+     "online": false,
+     "description": "Door-to-door canvass with the MCV Action Fund.",
+     "verified": true,
+     "sources": [
+      "https://www.maineconservation.org/events/"
+     ]
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.maineconservation.org/events/",
+    "https://www.maineconservation.org/priorities/climate-change/"
+   ]
+  },
+  {
+   "id": "me_third_act_maine",
+   "name": "Third Act Maine",
+   "abbrev": "Third Act ME",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Maine group of the national Third Act network, organizing people over 60 on climate and democracy.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "2026-09-09",
+   "website": "https://thirdact.org/maine/",
+   "topic_tags": [
+    "climate",
+    "democracy",
+    "elders"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "me_third_act_maine_e_welcome_oct5",
+     "title": "Welcome to Third Act: Let's Get Started",
+     "date": "2026-10-05T16:00:00",
+     "location": "Zoom",
+     "online": true,
+     "description": "Introductory online session for people new to Third Act.",
+     "verified": true,
+     "sources": [
+      "https://thirdact.org/maine/events/"
+     ]
+    },
+    {
+     "id": "me_third_act_maine_e_film_oct6",
+     "title": "Virtual Film Screening: VS. GOLIATH: Port Arthur",
+     "date": "2026-10-06T20:00:00",
+     "location": "Zoom",
+     "online": true,
+     "description": "Online film screening.",
+     "verified": true,
+     "sources": [
+      "https://thirdact.org/maine/events/"
+     ]
+    },
+    {
+     "id": "me_third_act_maine_e_election_workshop_oct14",
+     "title": "Voters Choose Leaders: A Third Act Workshop on Election Threat Preparedness",
+     "date": "2026-10-14T18:00:00",
+     "location": "Zoom",
+     "online": true,
+     "description": "Workshop on preparing for election threats.",
+     "verified": true,
+     "sources": [
+      "https://thirdact.org/maine/events/"
+     ]
+    },
+    {
+     "id": "me_third_act_maine_e_maine_stories_oct19",
+     "title": "Maine Stories in Challenging Times",
+     "date": "2026-10-19T18:30:00",
+     "location": "Portland, ME",
+     "online": false,
+     "description": "Evening of storytelling about how Mainers are navigating current challenges.",
+     "verified": true,
+     "sources": [
+      "https://thirdact.org/maine/events/"
+     ]
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://thirdact.org/maine/events/",
+    "https://thirdact.org/maine/news/"
+   ]
+  },
+  {
+   "id": "me_climatework_maine",
+   "name": "ClimateWork Maine",
+   "abbrev": "CWM",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Portland-based group that convenes webinars and an annual summit on Maine's economy, energy and climate change.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "2026-09-25",
+   "website": "https://www.climateworkmaine.org/",
+   "topic_tags": [
+    "climate",
+    "economy",
+    "clean energy",
+    "education"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "me_climatework_maine_e_transmission_webinar_oct30",
+     "title": "Climate Connection Webinar: Northern Maine Transmission Project",
+     "date": "2026-10-30T11:00:00",
+     "location": "Online (Zoom)",
+     "online": true,
+     "description": "Free webinar on Maine's transmission infrastructure; registration required.",
+     "verified": true,
+     "sources": [
+      "https://www.climateworkmaine.org/events"
+     ]
+    },
+    {
+     "id": "me_climatework_maine_e_ai_data_centers_nov20",
+     "title": "Climate Connection Webinar: AI & Data Centers",
+     "date": "2026-11-20T11:00:00",
+     "location": "Online (Zoom)",
+     "online": true,
+     "description": "Free webinar on AI and data centers in the Powering Maine's Future series.",
+     "verified": true,
+     "sources": [
+      "https://www.climateworkmaine.org/events"
+     ]
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.climateworkmaine.org/events"
+   ]
+  },
+  {
+   "id": "me_maine_climate_council",
+   "name": "Maine Climate Council",
+   "abbrev": "MCC",
+   "type": "government",
+   "geographic_focus": "Statewide",
+   "description": "State body that develops and oversees Maine's climate action plan through quarterly meetings and working groups.",
+   "coalition_ids": [],
+   "lat": 44.3106,
+   "lng": -69.7795,
+   "last_activity": "",
+   "website": "https://www.maine.gov/future/initiatives/climate/climate-council",
+   "topic_tags": [
+    "climate",
+    "policy",
+    "resilience"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "remote": true
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "me_maine_climate_council_e_resilience_wg_oct8",
+     "title": "Community Resilience Working Group meeting",
+     "date": "2026-10-08T09:00:00",
+     "location": "See Maine Climate Council meeting calendar",
+     "online": false,
+     "description": "Public meeting of the Community Resilience Working Group.",
+     "verified": true,
+     "sources": [
+      "https://www.maine.gov/future/meeting-calendar"
+     ]
+    },
+    {
+     "id": "me_maine_climate_council_e_council_dec1",
+     "title": "Maine Climate Council meeting",
+     "date": "2026-12-01T13:00:00",
+     "location": "See Maine Climate Council meeting calendar",
+     "online": false,
+     "description": "Full Maine Climate Council meeting.",
+     "verified": true,
+     "sources": [
+      "https://www.maine.gov/future/meeting-calendar"
+     ]
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.maine.gov/future/meeting-calendar",
+    "https://www.maine.gov/future/initiatives/climate/climate-council/mcc-meetings"
+   ],
+   "remote": true
+  },
+  {
+   "id": "me_maine_climate_action_now",
+   "name": "Maine Climate Action NOW",
+   "abbrev": "MCAN",
+   "type": "coalition",
+   "geographic_focus": "Statewide",
+   "description": "Statewide grassroots climate coalition centering youth, frontline communities and Wabanaki sovereignty, working for rapid emissions cuts and affordable clean energy.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://www.maineclimateaction.org/",
+   "topic_tags": [
+    "climate justice",
+    "clean energy",
+    "youth",
+    "ratepayers"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "remote": true
+   },
+   "projects": [
+    {
+     "id": "me_maine_climate_action_now_p_cmp_rates",
+     "title": "Opposing Central Maine Power rate increases",
+     "description": "Mobilizing ratepayers against proposed CMP rate hikes and storm-cost pass-throughs.",
+     "status": "active",
+     "sources": [
+      "https://www.maineclimateaction.org/news"
+     ],
+     "skills_needed": []
+    }
+   ],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.maineclimateaction.org/",
+    "https://www.maineclimateaction.org/news"
+   ],
+   "remote": true
+  },
+  {
+   "id": "me_350_maine",
+   "name": "350 Maine",
+   "abbrev": "350ME",
+   "type": "informal_group",
+   "geographic_focus": "Statewide",
+   "description": "All-volunteer climate justice group in the 350.org network that co-founded Maine Youth for Climate Justice and Maine Climate Action NOW.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://350maine.org/",
+   "topic_tags": [
+    "climate justice",
+    "fossil fuels",
+    "youth"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [
+    {
+     "id": "me_350_maine_a_get_involved",
+     "title": "Get involved with 350 Maine",
+     "description": "Email the group or join its affiliated youth and coalition newsletters to receive calls to action.",
+     "kind": "role",
+     "deadline": null,
+     "sources": [
+      "https://350maine.org/"
+     ],
+     "skills_needed": []
+    }
+   ],
+   "sources": [
+    "https://350maine.org/"
+   ]
+  },
+  {
+   "id": "me_maine_youth_for_climate_justice",
+   "name": "Maine Youth for Climate Justice",
+   "abbrev": "MYCJ",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Youth-led group for people under 30 doing legislative advocacy, organizing and education on climate justice, a climate superfund and Wabanaki sovereignty.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://www.mycj.org/",
+   "topic_tags": [
+    "youth",
+    "climate justice",
+    "legislation",
+    "Wabanaki sovereignty"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "remote": true
+   },
+   "projects": [
+    {
+     "id": "me_maine_youth_for_climate_justice_p_climate_superfund",
+     "title": "Climate Superfund advocacy",
+     "description": "Policy campaign to hold major polluters accountable for climate costs.",
+     "status": "active",
+     "sources": [
+      "https://www.mycj.org/"
+     ],
+     "skills_needed": []
+    }
+   ],
+   "events": [],
+   "actions": [
+    {
+     "id": "me_maine_youth_for_climate_justice_a_legislative_team",
+     "title": "Join the Legislative Team",
+     "description": "Youth volunteers can join MYCJ's legislative team, high school or college cohorts or the Radical Book Club via the Get Involved page.",
+     "kind": "role",
+     "deadline": null,
+     "sources": [
+      "https://www.mycj.org/"
+     ],
+     "skills_needed": []
+    }
+   ],
+   "sources": [
+    "https://www.mycj.org/",
+    "https://www.mycj.org/events"
+   ],
+   "remote": true
+  },
+  {
+   "id": "me_wabanaki_alliance",
+   "name": "Wabanaki Alliance",
+   "abbrev": "WA",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Advocacy group working on legislation and policy that improve the lives of Wabanaki citizens and protect tribal sovereignty in Maine.",
+   "coalition_ids": [],
+   "lat": 44.3106,
+   "lng": -69.7795,
+   "last_activity": "2026-09-16",
+   "website": "https://wabanakialliance.com/",
+   "topic_tags": [
+    "tribal sovereignty",
+    "environmental justice",
+    "legislation"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "remote": true
+   },
+   "projects": [],
+   "events": [],
+   "actions": [
+    {
+     "id": "me_wabanaki_alliance_a_join_coalition",
+     "title": "Join the coalition and take action",
+     "description": "Supporters can sign up for updates, write letters to the editor and share campaign content.",
+     "kind": "task",
+     "deadline": null,
+     "sources": [
+      "https://wabanakialliance.com/stand-with-wabanaki/"
+     ],
+     "skills_needed": []
+    }
+   ],
+   "sources": [
+    "https://wabanakialliance.com/stand-with-wabanaki/"
+   ],
+   "remote": true
+  },
+  {
+   "id": "me_maine_labor_climate_council",
+   "name": "Maine Labor Climate Council",
+   "abbrev": "MLCC",
+   "type": "coalition",
+   "geographic_focus": "Statewide",
+   "description": "Coalition of public and private sector unions pushing for union jobs, clean energy and climate action in Maine.",
+   "coalition_ids": [],
+   "lat": 44.3106,
+   "lng": -69.7795,
+   "last_activity": "",
+   "website": "https://www.mainelaborclimate.org/",
+   "topic_tags": [
+    "labor",
+    "clean energy",
+    "jobs",
+    "offshore wind",
+    "efficiency"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [
+    {
+     "id": "me_maine_labor_climate_council_p_healthy_schools",
+     "title": "Carbon Free and Healthy Schools",
+     "description": "Campaign to improve school building efficiency and health.",
+     "status": "active",
+     "sources": [
+      "https://www.mainelaborclimate.org/"
+     ],
+     "skills_needed": []
+    },
+    {
+     "id": "me_maine_labor_climate_council_p_efficiency_training",
+     "title": "Energy efficiency workforce training",
+     "description": "Training for HVAC and heat pump installation jobs, supported by state grants.",
+     "status": "active",
+     "sources": [
+      "https://www.mainelaborclimate.org/"
+     ],
+     "skills_needed": []
+    },
+    {
+     "id": "me_maine_labor_climate_council_p_offshore_wind",
+     "title": "Offshore wind jobs campaign",
+     "description": "Advocacy for offshore wind and the clean energy jobs it would create.",
+     "status": "active",
+     "sources": [
+      "https://www.mainelaborclimate.org/"
+     ],
+     "skills_needed": []
+    }
+   ],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.mainelaborclimate.org/",
+    "https://www.idealist.org/en/nonprofit/5bacd521e8da42c9b6a98d507c570cf6-maine-labor-climate-council-augusta"
+   ]
+  },
+  {
+   "id": "me_nrcm",
+   "name": "Natural Resources Council of Maine",
+   "abbrev": "NRCM",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Statewide environmental advocacy group working on climate, clean energy, forests and waters.",
+   "coalition_ids": [],
+   "lat": 44.3106,
+   "lng": -69.7795,
+   "last_activity": "",
+   "website": "https://www.nrcm.org/",
+   "topic_tags": [
+    "climate",
+    "conservation",
+    "advocacy"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.nrcm.org/",
+    "https://www.nrcm.org/about-nrcm/"
+   ]
+  },
+  {
+   "id": "me_sierra_club_maine",
+   "name": "Sierra Club Maine",
+   "abbrev": "SCME",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Volunteer-run chapter of the Sierra Club working on renewable energy, forests, coastal protection and environmental justice.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://www.sierraclub.org/maine",
+   "topic_tags": [
+    "climate",
+    "energy",
+    "conservation"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://mainecan.network/network/sierra-club-maine/"
+   ]
+  },
+  {
+   "id": "me_clf_maine",
+   "name": "Conservation Law Foundation Maine",
+   "abbrev": "CLF Maine",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Maine office of a New England environmental advocacy and legal organization.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://www.clf.org/serving-new-england/maine/",
+   "topic_tags": [
+    "climate",
+    "law",
+    "advocacy"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.clf.org/serving-new-england/maine/",
+    "https://www.yelp.com/biz/conservation-law-foundation-portland"
+   ]
+  },
+  {
+   "id": "me_tnc_maine",
+   "name": "The Nature Conservancy in Maine",
+   "abbrev": "TNC Maine",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Maine chapter of The Nature Conservancy, working on land and river conservation including Kennebec dam restoration.",
+   "coalition_ids": [],
+   "lat": 43.9148,
+   "lng": -69.9653,
+   "last_activity": "",
+   "website": "https://www.nature.org/en-us/about-us/where-we-work/united-states/maine/",
+   "topic_tags": [
+    "conservation",
+    "rivers",
+    "climate"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.nature.org/en-us/about-us/where-we-work/united-states/maine/contact-us/",
+    "https://www.nature.org/en-us/newsroom/kennebec-river-restoration/"
+   ]
+  },
+  {
+   "id": "me_maine_audubon",
+   "name": "Maine Audubon",
+   "abbrev": "Maine Audubon",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Wildlife and habitat conservation organization based at Gilsland Farm that also addresses climate impacts on Maine's birds.",
+   "coalition_ids": [],
+   "lat": 43.7287,
+   "lng": -70.242,
+   "last_activity": "",
+   "website": "https://maineaudubon.org/",
+   "topic_tags": [
+    "wildlife",
+    "conservation",
+    "climate"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://maineaudubon.org/visit/",
+    "https://www.mainepublic.org/climate/2025-03-19/maines-shifting-songbirds-reflect-a-warming-climate"
+   ]
+  },
+  {
+   "id": "me_maine_peoples_alliance",
+   "name": "Maine People's Alliance",
+   "abbrev": "MPA",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Statewide grassroots membership organization with a climate action team alongside other issue work.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://mainepeoplesalliance.org/",
+   "topic_tags": [
+    "climate",
+    "community organizing",
+    "energy"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.mainepeoplesalliance.org/climate",
+    "https://mainecan.network/network/maine-peoples-alliance/"
+   ]
+  },
+  {
+   "id": "me_gulf_of_maine_research_institute",
+   "name": "Gulf of Maine Research Institute",
+   "abbrev": "GMRI",
+   "type": "unknown",
+   "geographic_focus": "Gulf of Maine / Portland",
+   "description": "Portland research and education institute working on ocean and coastal climate resilience, including a partnership with the City of Portland.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://www.gmri.org/",
+   "topic_tags": [
+    "ocean",
+    "climate resilience",
+    "research"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.gmri.org/about/press-room/press-releases/city-of-portland-and-gulf-of-maine-research-institute-launch-major-climate-partnership-to-build-coastal-resilience/",
+    "https://www.greenhealthymaine.com/events"
+   ]
+  },
+  {
+   "id": "me_island_institute",
+   "name": "Island Institute",
+   "abbrev": "Island Institute",
+   "type": "unknown",
+   "geographic_focus": "Coastal and island Maine",
+   "description": "Rockland-based group supporting Maine island and coastal communities, with a climate solutions priority.",
+   "coalition_ids": [],
+   "lat": 44.1037,
+   "lng": -69.1089,
+   "last_activity": "",
+   "website": "https://www.islandinstitute.org/",
+   "topic_tags": [
+    "coastal communities",
+    "climate solutions"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.islandinstitute.org/priorities/climate-solutions/"
+   ]
+  },
+  {
+   "id": "me_a_climate_to_thrive",
+   "name": "A Climate to Thrive",
+   "abbrev": "ACTT",
+   "type": "unknown",
+   "geographic_focus": "Greater Portland",
+   "description": "Portland-area nonprofit focused on climate resilience and community-based climate action.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://www.aclimatetothrive.org/",
+   "topic_tags": [
+    "climate",
+    "resilience"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.aclimatetothrive.org/",
+    "https://mainecan.network/network/a-climate-to-thrive/"
+   ]
+  },
+  {
+   "id": "me_friends_of_casco_bay",
+   "name": "Friends of Casco Bay",
+   "abbrev": "FOCB",
+   "type": "unknown",
+   "geographic_focus": "Casco Bay",
+   "description": "Casco Bay watchdog group with a Baykeeper program that tracks climate change impacts on the bay.",
+   "coalition_ids": [],
+   "lat": 43.6415,
+   "lng": -70.2409,
+   "last_activity": "",
+   "website": "https://www.cascobay.org/",
+   "topic_tags": [
+    "water",
+    "coastal",
+    "climate"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.cascobay.org/casco-bay/how-is-climate-change-impacting-casco-bay/",
+    "https://www.cascobay.org/our-work/"
+   ]
+  },
+  {
+   "id": "me_cultivating_community",
+   "name": "Cultivating Community",
+   "abbrev": "CC",
+   "type": "unknown",
+   "geographic_focus": "Greater Portland",
+   "description": "Portland urban farming and food organization working with low-income and immigrant communities.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://cultivatingcommunity.org/",
+   "topic_tags": [
+    "food",
+    "community",
+    "urban agriculture"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://cultivatingcommunity.org/our-story/"
+   ]
+  },
+  {
+   "id": "me_mofga",
+   "name": "Maine Organic Farmers and Gardeners Association",
+   "abbrev": "MOFGA",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Unity-based organic farming group that works with farmers on climate adaptation.",
+   "coalition_ids": [],
+   "lat": 44.5942,
+   "lng": -69.3303,
+   "last_activity": "",
+   "website": "https://www.mofga.org/",
+   "topic_tags": [
+    "agriculture",
+    "climate adaptation"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.mofga.org/news/connecting-farmers-about-climate-change/"
+   ]
+  },
+  {
+   "id": "me_maine_environmental_education_association",
+   "name": "Maine Environmental Education Association",
+   "abbrev": "MEEA",
+   "type": "unknown",
+   "geographic_focus": "Statewide",
+   "description": "Statewide network supporting environmental and climate education.",
+   "coalition_ids": [],
+   "lat": 44.3106,
+   "lng": -69.7795,
+   "last_activity": "",
+   "website": "https://www.meeassociation.org/",
+   "topic_tags": [
+    "education",
+    "environment"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "remote": true
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.nonprofitmaine.org/nonprofit-member-directory/maine-environmental-education-association"
+   ],
+   "remote": true
+  },
+  {
+   "id": "me_mipl",
+   "name": "Maine Interfaith Power & Light",
+   "abbrev": "MeIPL",
+   "type": "faith_org",
+   "geographic_focus": "Statewide",
+   "description": "Maine affiliate of the Interfaith Power & Light network, engaging faith communities on climate and energy.",
+   "coalition_ids": [],
+   "lat": 44.3106,
+   "lng": -69.7795,
+   "last_activity": "",
+   "website": "https://interfaithpowerandlight.org/affiliates/",
+   "topic_tags": [
+    "faith",
+    "climate",
+    "energy"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "remote": true
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://interfaithpowerandlight.org/affiliates/",
+    "https://grassrootsfund.org/groups/maine-interfaith-power-light-0"
+   ],
+   "remote": true
+  },
+  {
+   "id": "me_xr_midcoast",
+   "name": "Extinction Rebellion Midcoast Maine",
+   "abbrev": "XR Midcoast",
+   "type": "unknown",
+   "geographic_focus": "Midcoast Maine",
+   "description": "Midcoast chapter of Extinction Rebellion, based in the Belfast area.",
+   "coalition_ids": [],
+   "lat": 44.4259,
+   "lng": -69.0064,
+   "last_activity": "",
+   "website": "https://midcoastmainexr.org/",
+   "topic_tags": [
+    "direct action",
+    "climate"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://rebellion.global/groups/us-belfast-me/",
+    "https://midcoastmainexr.org/"
+   ]
+  },
+  {
+   "id": "me_ccl_bangor",
+   "name": "Citizens' Climate Lobby Bangor chapter",
+   "abbrev": "CCL Bangor",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the Bangor area.",
+   "coalition_ids": [],
+   "lat": 44.8016,
+   "lng": -68.7712,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_ccl_belfast",
+   "name": "Citizens' Climate Lobby Belfast chapter",
+   "abbrev": "CCL Belfast",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the Belfast area.",
+   "coalition_ids": [],
+   "lat": 44.4259,
+   "lng": -69.0064,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_ccl_blue_hill_hancock_county",
+   "name": "Citizens' Climate Lobby Blue Hill-Hancock County chapter",
+   "abbrev": "CCL Blue",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the Blue Hill-Hancock County area.",
+   "coalition_ids": [],
+   "lat": 44.4117,
+   "lng": -68.5878,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_ccl_bowdoin_college",
+   "name": "Citizens' Climate Lobby Bowdoin College chapter",
+   "abbrev": "CCL Bowdoin",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the Bowdoin College area.",
+   "coalition_ids": [],
+   "lat": 43.907,
+   "lng": -69.9615,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_ccl_dover_foxcroft",
+   "name": "Citizens' Climate Lobby Dover-Foxcroft chapter",
+   "abbrev": "CCL Dover-Foxcroft",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the Dover-Foxcroft area.",
+   "coalition_ids": [],
+   "lat": 45.1861,
+   "lng": -69.229,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_ccl_midcoast_south",
+   "name": "Citizens' Climate Lobby MidCoast South chapter",
+   "abbrev": "CCL MidCoast",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the MidCoast South area.",
+   "coalition_ids": [],
+   "lat": 43.91,
+   "lng": -69.82,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_ccl_portland",
+   "name": "Citizens' Climate Lobby Portland chapter",
+   "abbrev": "CCL Portland",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the Portland area.",
+   "coalition_ids": [],
+   "lat": 43.6591,
+   "lng": -70.2568,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_ccl_waterville",
+   "name": "Citizens' Climate Lobby Waterville chapter",
+   "abbrev": "CCL Waterville",
+   "type": "unknown",
+   "geographic_focus": "Local",
+   "description": "Local chapter of Citizens' Climate Lobby lobbying Congress for climate solutions in the Waterville area.",
+   "coalition_ids": [],
+   "lat": 44.552,
+   "lng": -69.6317,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/",
+   "topic_tags": [
+    "climate",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/Maine_-_At_Large/"
+   ]
+  },
+  {
+   "id": "me_sunrise_franklin_county",
+   "name": "Sunrise Movement Franklin County",
+   "abbrev": "Sunrise Franklin",
+   "type": "unknown",
+   "geographic_focus": "Franklin County",
+   "description": "Youth-led Sunrise Movement hub in Franklin County that has held sustainability events such as a mending day.",
+   "coalition_ids": [],
+   "lat": 44.67,
+   "lng": -70.15,
+   "last_activity": "2025-02-06",
+   "website": "https://www.sunjournal.com/2025/02/06/sunrise-movement-franklin-county-hub-discusses-future-initiatives/",
+   "topic_tags": [
+    "youth",
+    "climate"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://www.sunjournal.com/2025/02/06/sunrise-movement-franklin-county-hub-discusses-future-initiatives/",
+    "https://www.sunjournal.com/2025/01/16/sunrise-movement-of-franklin-county-hosts-mending-day-to-promote-sustainability/"
+   ]
+  }
+ ],
+ "edges": [],
+ "notes": "WebFetch was permission-blocked for many sites (nrcm.org, sierraclub.org, gmri.org, maineaudubon.org, mofga.org, islandinstitute.org, clf.org, efficiencymaine.com, mothersoutfront.org, cascobay.org, meeassociation.org), so orgs marked with only search-result sources (NRCM, Sierra Club ME, CLF, TNC, Audubon, MPA, GMRI, Island Institute, ACTT, FOCB, Cultivating Community, MOFGA, MEEA, MeIPL, XR Midcoast, CCL chapters, Sunrise Franklin County) have short generic descriptions, no events and approximate locations; type 'unknown'. HQ towns for MPA, CLF, ACTT, Cultivating Community, MCAN, MYCJ, 350 Maine, Sierra Club ME approximate (Portland). Not included: Mothers Out Front Maine (search found no Maine team), Maine Rivers, Maine Climate Hub, Efficiency Maine, Portland Climate Action, 350 local teams, Sunrise hubs other than Franklin County, Maine Clean Energy (nothing confirmed). Maine Climate Council event locations not given on calendar summary; online status unconfirmed. MCV canvass times not posted. last_activity left blank where only undated pages seen."
+}

@@ -47,7 +47,11 @@ PLACE_BOX) and add it to the switcher list in `src/topbar.ts`. Check it loads wi
       _2026-10-03: 7 coalitions, 123 orgs, 108 edges, 25 upcoming events (`research/state-pilot/nh.json`, `?map=nh`).
       Gaps: CPCNH capped at 40 of ~51 listed members; NHACC + Local Energy Solutions have no public member list;
       no Sunrise hub list; Conservation NH / Mothers Out Front NH not found; many orgs' types unknown._
-- [ ] Maine (ME)
+- [x] Maine (ME)
+      _2026-10-03: 11 coalitions, 117 orgs, 135 edges, 14 upcoming events (`research/state-pilot/me.json`, `?map=me`).
+      Gaps: EPC lists 35 of ~42 members, MAINECAN 28 of 100+, Wabanaki Alliance 17 climate-relevant of 23 shown;
+      no public member list for Maine Climate & Health Alliance, ClimateWork Maine, Maine Clean Communities, Divest
+      Maine; many big orgs' sites blocked automated reading, so 71 orgs have type unknown and few have dates._
 - [ ] Rhode Island (RI)
 - [ ] Connecticut (CT)
 - [ ] New York (NY) — large: statewide + biggest regional coalitions first; may take two runs

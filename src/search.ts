@@ -165,7 +165,7 @@ export function createNodeSearch(
 }
 
 /** Place-search box for each map: west,north,east,south (null = anywhere in the US). */
-const PLACE_BOX: Record<string, string | null> = { ma: "-73.6,43.0,-69.8,41.2", vt: "-73.5,45.1,-71.4,42.7", nh: "-72.6,45.4,-70.6,42.6", us: null };
+const PLACE_BOX: Record<string, string | null> = { ma: "-73.6,43.0,-69.8,41.2", vt: "-73.5,45.1,-71.4,42.7", nh: "-72.6,45.4,-70.6,42.6", me: "-71.1,47.5,-66.9,42.9", us: null };
 
 /** Look up a place on the current map (OpenStreetMap Nominatim; no key needed, light use only). */
 export async function findPlaces(q: string): Promise<SearchItem[]> {

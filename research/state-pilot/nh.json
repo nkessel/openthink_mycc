@@ -490,40 +490,42 @@
       "projects": [
         {
           "id": "nh_350nh_p_no_ai_data_center_bow",
-          "title": "No AI Data Center in Bow",
           "description": "Campaign against a proposed AI data center in Bow, including public-comment workshops, sign-making and a rally before a Select Board meeting.",
           "status": "active",
           "sources": [
             "https://www.350nh.org/events",
             "https://actionnetwork.org/petitions/no-ai-data-center-in-bow-nh"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "No AI Data Center in Bow",
+          "link": "https://www.350nh.org/events"
         },
         {
           "id": "nh_350nh_p_utility_justice",
-          "title": "Utility Justice & Community Power",
           "description": "Organizing to protect ratepayers from utility rate hikes and to advance community power.",
           "status": "active",
           "sources": [
             "https://www.350nh.org/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Utility Justice & Community Power",
+          "link": "https://www.350nh.org/"
         },
         {
           "id": "nh_350nh_p_no_coal_no_gas",
-          "title": "No Coal No Gas",
           "description": "Campaign opposing fossil fuel expansion in New Hampshire.",
           "status": "active",
           "sources": [
             "https://www.350nh.org/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "No Coal No Gas",
+          "link": "https://www.350nh.org/"
         }
       ],
       "events": [
         {
           "id": "nh_350nh_e_electric_bill_town_hall",
-          "title": "Electric Bill Town Hall",
           "date": "2026-10-14T17:30:00",
           "location": "Manchester City Library Auditorium, 405 Pine Street, Manchester, NH",
           "online": false,
@@ -531,31 +533,35 @@
           "verified": true,
           "sources": [
             "https://www.350nh.org/events"
-          ]
+          ],
+          "name": "Electric Bill Town Hall",
+          "link": "https://www.350nh.org/events"
         }
       ],
       "actions": [
         {
           "id": "nh_350nh_a_media_team",
-          "title": "Join the Media Team",
           "description": "Volunteer with the 350NH Media Team, which meets monthly online.",
           "kind": "role",
           "deadline": null,
           "sources": [
             "https://www.350nh.org/events"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Join the Media Team",
+          "link": "https://www.350nh.org/events"
         },
         {
           "id": "nh_350nh_a_youth_organizing",
-          "title": "Youth organizing and internships",
           "description": "High school students can join the youth climate organizing program.",
           "kind": "role",
           "deadline": null,
           "sources": [
             "https://www.350nhaction.org/volunteer"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Youth organizing and internships",
+          "link": "https://www.350nhaction.org/volunteer"
         }
       ],
       "sources": [
@@ -783,8 +789,8 @@
       "coalition_ids": [
         "nh_nh_network"
       ],
-      "lat": 42.4576,
-      "lng": -72.0059,
+      "lat": 42.7509,
+      "lng": -72.009,
       "last_activity": "",
       "website": "https://www.franklinpierce.edu",
       "topic_tags": [
@@ -977,13 +983,14 @@
       "projects": [
         {
           "id": "nh_monadnock_sustainability_hub_p_electrify_monadnock",
-          "title": "Electrify Monadnock",
           "description": "Initiative with energy coaching and a fund to electrify homes and vehicles.",
           "status": "active",
           "sources": [
             "https://monadnocksustainabilityhub.org/networking-collaboration/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Electrify Monadnock",
+          "link": "https://monadnocksustainabilityhub.org/networking-collaboration/"
         }
       ],
       "events": [],
@@ -1084,27 +1091,29 @@
       "projects": [
         {
           "id": "nh_sierra_club_nh_p_endorsements_2026",
-          "title": "2026 state candidate endorsements",
           "description": "Candidate questionnaires and endorsements for Governor, Council, House and Senate races.",
           "status": "active",
           "sources": [
             "https://www.sierraclub.org/new-hampshire/2026-nh-political-team-activities-endorsements-information"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "2026 state candidate endorsements",
+          "link": "https://www.sierraclub.org/new-hampshire/2026-nh-political-team-activities-endorsements-information"
         }
       ],
       "events": [],
       "actions": [
         {
           "id": "nh_sierra_club_nh_a_outings_leader",
-          "title": "Become an outings leader",
           "description": "Lead guided outdoor outings for the chapter.",
           "kind": "role",
           "deadline": null,
           "sources": [
             "https://www.sierraclub.org/new-hampshire/about-us"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Become an outings leader",
+          "link": "https://www.sierraclub.org/new-hampshire/about-us"
         }
       ],
       "sources": [
@@ -1289,7 +1298,6 @@
       "events": [
         {
           "id": "nh_third_act_e_warming_nashua",
-          "title": "It's Warming Action in Nashua",
           "date": "2026-10-03T13:00:00",
           "location": "Nashua, NH",
           "online": false,
@@ -1297,11 +1305,12 @@
           "verified": false,
           "sources": [
             "https://thirdact.org/new-hampshire/events/"
-          ]
+          ],
+          "name": "It's Warming Action in Nashua",
+          "link": "https://thirdact.org/new-hampshire/events/"
         },
         {
           "id": "nh_third_act_e_connects_concord",
-          "title": "Connects Meeting: postcards to voters",
           "date": "2026-10-06T13:30:00",
           "location": "Gibson's Cafe, Concord, NH",
           "online": false,
@@ -1309,11 +1318,12 @@
           "verified": false,
           "sources": [
             "https://thirdact.org/new-hampshire/events/"
-          ]
+          ],
+          "name": "Connects Meeting: postcards to voters",
+          "link": "https://thirdact.org/new-hampshire/events/"
         },
         {
           "id": "nh_third_act_e_monadnock_postcarding",
-          "title": "Monadnock Regional Postcarding",
           "date": "2026-10-09T09:30:00",
           "location": "Jaffrey, NH",
           "online": false,
@@ -1321,11 +1331,12 @@
           "verified": false,
           "sources": [
             "https://thirdact.org/new-hampshire/events/"
-          ]
+          ],
+          "name": "Monadnock Regional Postcarding",
+          "link": "https://thirdact.org/new-hampshire/events/"
         },
         {
           "id": "nh_third_act_e_fridays_for_future_jaffrey",
-          "title": "Fridays for Future Climate Strike",
           "date": "2026-10-09T08:00:00",
           "location": "Jaffrey, NH",
           "online": false,
@@ -1333,7 +1344,9 @@
           "verified": false,
           "sources": [
             "https://thirdact.org/new-hampshire/events/"
-          ]
+          ],
+          "name": "Fridays for Future Climate Strike",
+          "link": "https://thirdact.org/new-hampshire/events/"
         }
       ],
       "actions": [],
@@ -2921,8 +2934,8 @@
       "coalition_ids": [
         "nh_caw"
       ],
-      "lat": 42.3601,
-      "lng": -71.0589,
+      "lat": 43.2063,
+      "lng": -71.5372,
       "last_activity": "2026-10-02",
       "website": "https://www.clf.org",
       "topic_tags": [
@@ -2933,28 +2946,30 @@
         "offshore wind"
       ],
       "profile": {
-        "geo_precision": "approx"
+        "geo_precision": "exact"
       },
       "projects": [
         {
           "id": "nh_clf_p_manchester_nashua_ej",
-          "title": "Manchester-Nashua environmental justice work",
           "description": "Community-level environmental justice work in Manchester and Nashua.",
           "status": "active",
           "sources": [
             "https://www.clf.org/serving-new-england/new-hampshire/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Manchester-Nashua environmental justice work",
+          "link": "https://www.clf.org/serving-new-england/new-hampshire/"
         },
         {
           "id": "nh_clf_p_great_bay",
-          "title": "Great Bay estuary restoration",
           "description": "Work to protect New Hampshire waters with a focus on restoring the Great Bay estuary.",
           "status": "active",
           "sources": [
             "https://www.clf.org/serving-new-england/new-hampshire/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Great Bay estuary restoration",
+          "link": "https://www.clf.org/serving-new-england/new-hampshire/"
         }
       ],
       "events": [],
@@ -3217,8 +3232,8 @@
       "coalition_ids": [
         "nh_gsccc"
       ],
-      "lat": 42.4576,
-      "lng": -72.0059,
+      "lat": 42.7509,
+      "lng": -72.009,
       "last_activity": "",
       "website": "https://www.franklinpierce.edu",
       "topic_tags": [
@@ -3460,14 +3475,15 @@
       "actions": [
         {
           "id": "nh_350nh_action_a_election_volunteer",
-          "title": "Election volunteering",
           "description": "Canvassing, phone banking and letters to the editor to elect climate champions.",
           "kind": "task",
           "deadline": null,
           "sources": [
             "https://www.350nhaction.org/volunteer"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Election volunteering",
+          "link": "https://www.350nhaction.org/volunteer"
         }
       ],
       "sources": [
@@ -3551,7 +3567,6 @@
       "events": [
         {
           "id": "nh_audubon_e_mine_falls",
-          "title": "Birding Outing at Mine Falls Park",
           "date": "2026-10-03T08:00:00",
           "location": "Mine Falls Park, Nashua, NH",
           "online": false,
@@ -3559,11 +3574,12 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "Birding Outing at Mine Falls Park",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         },
         {
           "id": "nh_audubon_e_coastal_migration",
-          "title": "Coastal Migration with the Seacoast Chapter",
           "date": "2026-10-03T08:00:00",
           "location": "Odiorne Point State Park, Rye, NH",
           "online": false,
@@ -3571,11 +3587,12 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "Coastal Migration with the Seacoast Chapter",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         },
         {
           "id": "nh_audubon_e_birch_st_gardens",
-          "title": "Birch St Community Gardens with the Seacoast Chapter",
           "date": "2026-10-04T07:30:00",
           "location": "Birch Street, Concord, NH",
           "online": false,
@@ -3583,11 +3600,12 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "Birch St Community Gardens with the Seacoast Chapter",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         },
         {
           "id": "nh_audubon_e_october_pelagic",
-          "title": "October Pelagic with the Seacoast Chapter",
           "date": "2026-10-12T07:30:00",
           "location": "Seacoast, NH",
           "online": false,
@@ -3595,11 +3613,12 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "October Pelagic with the Seacoast Chapter",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         },
         {
           "id": "nh_audubon_e_seed_saving",
-          "title": "Seed Saving of Native Plants",
           "date": "2026-10-17T10:00:00",
           "location": "Massabesic Center, Auburn, NH",
           "online": false,
@@ -3607,11 +3626,12 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "Seed Saving of Native Plants",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         },
         {
           "id": "nh_audubon_e_birdability_wheelchair",
-          "title": "Birdability Week Birding Outing (wheelchair accessible)",
           "date": "2026-10-20T13:30:00",
           "location": "McLane Center, Concord, NH",
           "online": false,
@@ -3619,11 +3639,12 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "Birdability Week Birding Outing (wheelchair accessible)",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         },
         {
           "id": "nh_audubon_e_birdability_vision",
-          "title": "Birdability Week Birding Outing (vision accessibility)",
           "date": "2026-10-22T10:30:00",
           "location": "McLane Center, Concord, NH",
           "online": false,
@@ -3631,11 +3652,12 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "Birdability Week Birding Outing (vision accessibility)",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         },
         {
           "id": "nh_audubon_e_massabesic_outing",
-          "title": "Birding Outing at the Massabesic Center",
           "date": "2026-10-24T08:00:00",
           "location": "Massabesic Center, Auburn, NH",
           "online": false,
@@ -3643,7 +3665,9 @@
           "verified": true,
           "sources": [
             "https://nhaudubon.org/pop-up-programming-2026/"
-          ]
+          ],
+          "name": "Birding Outing at the Massabesic Center",
+          "link": "https://nhaudubon.org/pop-up-programming-2026/"
         }
       ],
       "actions": [],
@@ -3676,7 +3700,6 @@
       "events": [
         {
           "id": "nh_rivers_council_e_bugs_eye_view",
-          "title": "A Bug's Eye View of the River",
           "date": "2026-10-24T09:00:00",
           "location": "Belmont, NH",
           "online": false,
@@ -3684,11 +3707,12 @@
           "verified": true,
           "sources": [
             "https://nhrivers.org/"
-          ]
+          ],
+          "name": "A Bug's Eye View of the River",
+          "link": "https://nhrivers.org/"
         },
         {
           "id": "nh_rivers_council_e_wild_scenic_2027",
-          "title": "Eighteenth Annual Wild & Scenic Film Festival",
           "date": "2027-03-26",
           "location": "BNH Stage, Concord, NH",
           "online": false,
@@ -3696,7 +3720,9 @@
           "verified": true,
           "sources": [
             "https://nhrivers.org/"
-          ]
+          ],
+          "name": "Eighteenth Annual Wild & Scenic Film Festival",
+          "link": "https://nhrivers.org/"
         }
       ],
       "actions": [],
@@ -3728,23 +3754,25 @@
       "projects": [
         {
           "id": "nh_spnhf_p_nelson_highlands",
-          "title": "Protect 650 acres in the Nelson Highlands",
           "description": "Land-protection campaign for 650 acres in the Nelson Highlands.",
           "status": "active",
           "sources": [
             "https://www.forestsociety.org/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Protect 650 acres in the Nelson Highlands",
+          "link": "https://www.forestsociety.org/"
         },
         {
           "id": "nh_spnhf_p_five_hikes",
-          "title": "Five Hikes Challenge",
           "description": "Public hiking challenge running through Halloween 2026.",
           "status": "active",
           "sources": [
             "https://www.forestsociety.org/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Five Hikes Challenge",
+          "link": "https://www.forestsociety.org/"
         }
       ],
       "events": [],
@@ -4101,37 +4129,40 @@
       "projects": [
         {
           "id": "nh_seacoast_climate_action_now_p_reusable_seacoast",
-          "title": "Reusable Seacoast",
           "description": "Reusable takeout-container pilot program.",
           "status": "active",
           "sources": [
             "https://www.seacoastnhcan.org/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Reusable Seacoast",
+          "link": "https://www.seacoastnhcan.org/"
         },
         {
           "id": "nh_seacoast_climate_action_now_p_portsmouth_climate_action",
-          "title": "Portsmouth Climate Action",
           "description": "Community conversations about reducing greenhouse gas emissions.",
           "status": "active",
           "sources": [
             "https://www.seacoastnhcan.org/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Portsmouth Climate Action",
+          "link": "https://www.seacoastnhcan.org/"
         }
       ],
       "events": [],
       "actions": [
         {
           "id": "nh_seacoast_climate_action_now_a_portsmouth_community_power",
-          "title": "Sign up for Portsmouth Community Power",
           "description": "Choose renewable energy options through Portsmouth Community Power.",
           "kind": "task",
           "deadline": null,
           "sources": [
             "https://www.seacoastnhcan.org/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "Sign up for Portsmouth Community Power",
+          "link": "https://www.seacoastnhcan.org/"
         }
       ],
       "sources": [
@@ -4241,13 +4272,14 @@
       "projects": [
         {
           "id": "nh_amc_nh_p_net_zero_2050",
-          "title": "AMC net zero plan",
           "description": "Commitment to net zero emissions by 2050 with a 45 percent cut by 2030.",
           "status": "active",
           "sources": [
             "https://www.outdoors.org/conservation/priorities/net-zero-emissions/"
           ],
-          "skills_needed": []
+          "skills_needed": [],
+          "name": "AMC net zero plan",
+          "link": "https://www.outdoors.org/conservation/priorities/net-zero-emissions/"
         }
       ],
       "events": [],
@@ -4770,5 +4802,5 @@
       "target": "nh_save_forest_lake"
     }
   ],
-  "notes": "MERGED 2026-10-03 from nh_coalitions.json + nh_orgs.json. Coalition agent: WebFetch worked for most sites; cleanenergynh.org/members, nhcaw.org home, nhacc and some others were fetched only via specific pages; a few fetches failed (permission/robots: Climate Action NH Facebook, newhampshirenetwork.org home, nhsea.org, nhcoastaladaptation.org). No work-around used. Candidates not found as real coalitions: 'Climate Action NH' (only a Facebook page seen, robots-blocked), NH Healthy Homes/Healthy Kids, NH Rivers Council (not checked as coalition), a NH Environmental Common Agenda equivalent or Environmental Lobby Day (none found), NH Youth Climate coalition (only a 2020 one-off town hall), Seacoast area climate partner coalition (Seacoast Climate Action NOW is a single volunteer nonprofit, not in this file). NHSEA is the former name of Clean Energy NH (same org), so it is one org, not a coalition. Clean Energy NH publishes ~100 mostly business members (all-members page) but is a trade association, so it is an org here with no member edges. Monadnock Sustainability Hub is treated as an org, not a coalition (lists 5 partners: Clean Energy NH, Sierra Club, Monadnock Food Co-op, Cheshire County Conservation District, Hannah Grimes Center; not added as members). Coalitions without member lists: NHACC (200+ town conservation commissions unlisted), LES work group (no roster). CPCNH: capped at 40 of ~51 listed member programs (3 counties + first 37 towns on the members page); omitted: Charlestown, Durham, Franconia, Hanover, Kensington, Lyme, New London, Peterborough, Rye, Sugar Hill, Walpole (the site also says 64 municipalities and 4 counties as of May 2025, so the list is not complete). CAW: omitted ~14 design/engineering firms and BeachGoods.com, plus unclear 'UNH Climate & Interior Climate Adaptation Center' and 'Seacoast Watershed Commission'. GSCCC: 150+ stakeholders, only transit, universities, state agencies and Eversource listed. NH Network: the About page lists 29 organizations (it says about 30); 'League of Conservation Voters' assumed to be NH LCV; WindowDressers is Maine-based; Carbon Cash-Back Coalition is itself a coalition (linked as nh_carbon_cash_back_coalition_c). The NH Network 5th summit was Sept 26 per its events page (a news story says Sept 28) and is past. Locations for most volunteer groups are state-capital placeholders (remote true or approx) since no address was published; websites left empty where not verified. Coalition last_activity for CAW left blank (2026 summit recap exists but date not read). CPCNH last_activity 2026-05-08 is the NH Energy Week 2026 end date. NH Healthy Climate Nov 18 event year assumed 2026 from the host's chronological list. | Org agent: Coalitions/edges left empty by design. WebFetch worked only for URLs that had surfaced in search results; sierraclub.org root, nhsea.org, nhlcv.org etc. were blocked, so Conservation NH (only a Facebook listing seen), NHSEA (location from directory listings only) and Mothers Out Front NH (national local-teams page lists no NH team, so omitted) are thin or absent. Kearsarge Climate Action Facebook page blocked by robots.txt, so omitted. Not researched: Plan NH, Granite Bridge opponents beyond 350NH pages, local energy committees, Dartmouth/UNH Sunrise hubs (no hub list found; one statewide Sunrise NH entry from Monadnock directory). Vital Communities is based in White River Junction VT, omitted. last_activity empty where no dated item seen; inactive flag only set where newest dated item was before 2025 (NH IPL events page newest 2023; SAPL page updated Jan 2024). Many empty-last_activity orgs (CCL chapters, Rights & Democracy, TNC, etc.) are likely active but undated in what I read. Third Act NH event years inferred (weekday matches 2026). 350NH events page lists many past 2026 events, omitted. GSOP Oct 2026 chapter meetings and non-climate events omitted. Sierra Club NH, CLF, Audubon HQ coordinates are town centre or street. Clean Energy NH, LCV NH, R&D NH, NH Youth Movement, Sunrise NH, Peace Action have no stated address so placed at Concord with remote true. CCL chapter ids use region names; CCL Seacoast national page says status 'In Progress'. NH IPL location Canterbury from Gudsy listing. | Lead: NH Healthcare Workers for Climate Action merged into nh_nh_healthy_climate (same website). Carbon Cash-Back Coalition listed as a NH Network member is a coalition, so it is mentioned in the NH Network description instead of an edge. Lead: Third Act NH event years were inferred from weekdays, so those events are verified:false; the LES conference is kept once, on the LES coalition, hosted by Clean Energy NH. Lead spot-check (2026-10-03): the NH Network About page now lists 32 names; added the 3 missing (Tea & Talks, NH Citizens for Progress, Save Forest Lake) with no details researched."
+  "notes": "MERGED 2026-10-03 from nh_coalitions.json + nh_orgs.json. Coalition agent: WebFetch worked for most sites; cleanenergynh.org/members, nhcaw.org home, nhacc and some others were fetched only via specific pages; a few fetches failed (permission/robots: Climate Action NH Facebook, newhampshirenetwork.org home, nhsea.org, nhcoastaladaptation.org). No work-around used. Candidates not found as real coalitions: 'Climate Action NH' (only a Facebook page seen, robots-blocked), NH Healthy Homes/Healthy Kids, NH Rivers Council (not checked as coalition), a NH Environmental Common Agenda equivalent or Environmental Lobby Day (none found), NH Youth Climate coalition (only a 2020 one-off town hall), Seacoast area climate partner coalition (Seacoast Climate Action NOW is a single volunteer nonprofit, not in this file). NHSEA is the former name of Clean Energy NH (same org), so it is one org, not a coalition. Clean Energy NH publishes ~100 mostly business members (all-members page) but is a trade association, so it is an org here with no member edges. Monadnock Sustainability Hub is treated as an org, not a coalition (lists 5 partners: Clean Energy NH, Sierra Club, Monadnock Food Co-op, Cheshire County Conservation District, Hannah Grimes Center; not added as members). Coalitions without member lists: NHACC (200+ town conservation commissions unlisted), LES work group (no roster). CPCNH: capped at 40 of ~51 listed member programs (3 counties + first 37 towns on the members page); omitted: Charlestown, Durham, Franconia, Hanover, Kensington, Lyme, New London, Peterborough, Rye, Sugar Hill, Walpole (the site also says 64 municipalities and 4 counties as of May 2025, so the list is not complete). CAW: omitted ~14 design/engineering firms and BeachGoods.com, plus unclear 'UNH Climate & Interior Climate Adaptation Center' and 'Seacoast Watershed Commission'. GSCCC: 150+ stakeholders, only transit, universities, state agencies and Eversource listed. NH Network: the About page lists 29 organizations (it says about 30); 'League of Conservation Voters' assumed to be NH LCV; WindowDressers is Maine-based; Carbon Cash-Back Coalition is itself a coalition (linked as nh_carbon_cash_back_coalition_c). The NH Network 5th summit was Sept 26 per its events page (a news story says Sept 28) and is past. Locations for most volunteer groups are state-capital placeholders (remote true or approx) since no address was published; websites left empty where not verified. Coalition last_activity for CAW left blank (2026 summit recap exists but date not read). CPCNH last_activity 2026-05-08 is the NH Energy Week 2026 end date. NH Healthy Climate Nov 18 event year assumed 2026 from the host's chronological list. | Org agent: Coalitions/edges left empty by design. WebFetch worked only for URLs that had surfaced in search results; sierraclub.org root, nhsea.org, nhlcv.org etc. were blocked, so Conservation NH (only a Facebook listing seen), NHSEA (location from directory listings only) and Mothers Out Front NH (national local-teams page lists no NH team, so omitted) are thin or absent. Kearsarge Climate Action Facebook page blocked by robots.txt, so omitted. Not researched: Plan NH, Granite Bridge opponents beyond 350NH pages, local energy committees, Dartmouth/UNH Sunrise hubs (no hub list found; one statewide Sunrise NH entry from Monadnock directory). Vital Communities is based in White River Junction VT, omitted. last_activity empty where no dated item seen; inactive flag only set where newest dated item was before 2025 (NH IPL events page newest 2023; SAPL page updated Jan 2024). Many empty-last_activity orgs (CCL chapters, Rights & Democracy, TNC, etc.) are likely active but undated in what I read. Third Act NH event years inferred (weekday matches 2026). 350NH events page lists many past 2026 events, omitted. GSOP Oct 2026 chapter meetings and non-climate events omitted. Sierra Club NH, CLF, Audubon HQ coordinates are town centre or street. Clean Energy NH, LCV NH, R&D NH, NH Youth Movement, Sunrise NH, Peace Action have no stated address so placed at Concord with remote true. CCL chapter ids use region names; CCL Seacoast national page says status 'In Progress'. NH IPL location Canterbury from Gudsy listing. | Lead: NH Healthcare Workers for Climate Action merged into nh_nh_healthy_climate (same website). Carbon Cash-Back Coalition listed as a NH Network member is a coalition, so it is mentioned in the NH Network description instead of an edge. Lead: Third Act NH event years were inferred from weekdays, so those events are verified:false; the LES conference is kept once, on the LES coalition, hosted by Clean Energy NH. Lead spot-check (2026-10-03): the NH Network About page now lists 32 names; added the 3 missing (Tea & Talks, NH Citizens for Progress, Save Forest Lake) with no details researched. Lead: CLF NH moved to its Concord office (27 N Main St, per clf.org NH page); Franklin Pierce entries moved to Rindge town centre (coords had pointed into MA)."
 }
