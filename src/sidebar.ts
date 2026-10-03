@@ -137,7 +137,7 @@ export function createSidebar(
 }
 
 /** The key to the network map, shown on the map itself (bottom-left); click its title to fold it. */
-export function createMapLegend(parent: HTMLElement): HTMLElement {
+export function createMapLegend(parent: HTMLElement, sectors: { label: string; color: string }[] = []): HTMLElement {
   const legend = h("div", { class: "map-legend open" });
   const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": "true" }, "Legend");
   head.addEventListener("click", () => {
@@ -157,6 +157,8 @@ export function createMapLegend(parent: HTMLElement): HTMLElement {
       row(h("span", { class: "kdot k-event" }), "Event"),
       row(h("span", { class: "kdot k-project" }), "Project"),
       row(h("span", { class: "kdot k-action" }), "Action or volunteer role"),
+      ...(sectors.length ? [h("div", { class: "map-legend-sub" }, "Social justice (switched on in Map settings)")] : []),
+      ...sectors.map((s) => row(h("span", { class: "swatch sector-swatch", style: `--sector:${s.color}` }), s.label)),
     ),
   );
   parent.appendChild(legend);

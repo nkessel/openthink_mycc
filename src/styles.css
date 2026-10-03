@@ -2244,3 +2244,36 @@ text.sat-more { fill: var(--text-dim); }
   font-size: 11px; font-weight: 500; color: var(--text-dim); text-decoration: underline; text-underline-offset: 2px;
 }
 .stale-notice .edit-btn:hover { color: var(--text); background: none; }
+
+/* ---- Sector layers (Map settings → Social justice; src/sectors.ts) ---- */
+/* A muted ring in the sector's colour, so these groups read as a separate layer on top of the climate map. */
+.node-org.sector .ring,
+.node-coalition.sector .ring {
+  stroke: var(--sector, #a16207) !important;
+  stroke-width: 2.5px !important;
+  stroke-dasharray: 4 2.5;
+  stroke-opacity: 0.9 !important;
+}
+.node-org.sector .ring { fill: color-mix(in srgb, var(--sector, #a16207) 35%, #9ca3af); }
+.list-card.sector-item,
+.detail-card.sector-item { border-left: 3px solid var(--sector, #a16207); }
+.cal-ev.sector-item { background: color-mix(in srgb, var(--sector, #a16207) 12%, transparent); }
+.pill.sector-pill,
+.tag.sector-pill {
+  background: color-mix(in srgb, var(--sector, #a16207) 14%, transparent);
+  color: var(--sector, #a16207);
+  border: 1px solid color-mix(in srgb, var(--sector, #a16207) 45%, transparent);
+  font-size: 11px;
+  margin-left: auto;
+}
+.tag.sector-pill { margin-left: 0; }
+.map-legend .swatch.sector-swatch {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border: 2px dashed var(--sector, #a16207);
+}
+.stale-notice.sector { border-color: color-mix(in srgb, #a16207 40%, transparent); }
+.sector-section .switch.on { background: var(--sector, #a16207); }
+/* The sector hub is a grouping, not a coalition: keep it quiet. */
+.node-coalition.sector .ring { fill-opacity: 0.35; }

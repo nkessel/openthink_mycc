@@ -52,6 +52,8 @@ export const coalitionLabel = (c: Coalition) => (c.abbrev ? `${c.name} (${c.abbr
 export function formUrl(kind: FormKind, context: GraphNode | null = null, item: Item | null = null): string | null {
   // Only Massachusetts has its own forms + sheet; elsewhere every suggestion goes to the feedback form.
   if (!currentMap.editable) return FORMS.feedback.url || null;
+  // Sector layers (src/sectors.ts) aren't in the sheet yet, so there's nothing to edit through a form.
+  if (kind !== "feedback" && (context as { sector?: string } | null)?.sector) return null;
   const f: FormLink = FORMS[kind];
   if (!f.url) return null;
   const params = new URLSearchParams();
