@@ -1,9 +1,10 @@
-// Topics page, "Command room" view: where the groups' problem-solving energy flows.
-// Organizations send streams of energy to the problems (topics) their projects, events and actions work on.
+// Topics page: where the groups' energy flows.
+// Organizations send streams of energy to the topics their projects, events and actions work on.
 // Two layouts (organizations in the middle / on the left) and two styles ("Comets + shields" / "Watershed").
-// Stream size uses the same slider weights as the bubbles; each problem's glow (or wetness) is the energy it
-// receives compared with its importance slider, so neglected problems stay dim (or dry).
-// Calm by design: one stream per organization → parent topic until you zoom or click, a fixed particle budget
+// Stream size uses the Topics page's slider weights; each topic glows (or greens) with how much energy reaches it.
+// Zooming goes deeper: main topics → sub-topics → individual bills, and the items (projects, events, actions,
+// mission statements) that make up each stream appear as dots along it.
+// Calm by design: one stream per organization → main topic until you zoom or click, a fixed particle budget
 // drawn on canvas, slow speeds, low opacity, additive glow, and static flows for prefers-reduced-motion.
 import * as d3 from "d3";
 import { h, clear } from "./dom";
@@ -12,12 +13,10 @@ import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 export interface CommandRoomCtx {
   file: TopicsFile;
   mapIds: string[];
-  /** The slider weight of one record (same as the bubbles). */
+  /** The slider weight of one record. */
   weight(r: TopicRecord): number;
-  /** Most one group can add to one problem ("Cap per group" slider). */
+  /** Most one group can add to one topic ("Cap per group" slider). */
   cap(): number;
-  /** Importance slider of a parent topic, 0..1. */
-  importance(parentId: string): number;
   colorOf(parentId: string): string;
   detail: HTMLElement;
   cb: TopicsCallbacks;
@@ -30,6 +29,7 @@ interface Org {
   key: string;
   host: string;
   name: string;
+  logo?: string;
   base: number;
   energy: number;
   x: number;
@@ -40,12 +40,12 @@ interface Org {
 interface Problem {
   id: string;
   label: string;
-  parent: string; // parent topic id (itself for parents)
-  isParent: boolean;
+  parent: string; // main topic id (for colour)
+  level: 0 | 1 | 2; // main topic, sub-topic, bill
+  up: Problem | null;
   kids: Problem[];
   base: number;
   energy: number;
-  coverage: number;
   glow: number;
   recurring: number;
   x: number;
@@ -65,12 +65,18 @@ interface Stream {
   base: number;
   pts: Float32Array; // polyline x,y
   cum: Float32Array; // cumulative length
-  uni: Float32Array; // the same path resampled at equal steps of length (fast lookups for particles)
+  uni: Float32Array; // the same path resampled at equal steps of length (fast lookups)
   len: number;
   riverAt: number; // index where the river part starts (watershed)
   n: number; // particles
   speed: number; // phase per second
   seed: number;
+}
+interface Item {
+  key: string;
+  s: Stream;
+  r: TopicRecord;
+  f: number; // where along the stream
 }
 interface Ripple {
   prob: Problem;
@@ -80,7 +86,10 @@ interface Ripple {
 
 const DAY = 86400000;
 const BROAD = "broad";
+const BILLS = "bills";
 const STORE = "openthink.topics.commandroom.v1";
+const SPLIT_K = 1.7; // zoom where main topics split into sub-topics
+const DEEP_K = 2.8; // zoom where bills split and items appear
 const KIND_LABEL: Record<TopicRecord["kind"], string> = {
   event: "Event",
   project: "Project",
@@ -88,6 +97,7 @@ const KIND_LABEL: Record<TopicRecord["kind"], string> = {
   org_mission: "Mission statement",
   coalition_mission: "Mission statement",
 };
+const KIND_COLOR: Record<string, string> = { event: "#f472b6", project: "#34d399", action: "#fbbf24", mission: "#cbd5e1" };
 
 function hash(s: string): number {
   let x = 2166136261;
@@ -95,7 +105,13 @@ function hash(s: string): number {
   return ((x >>> 0) % 10000) / 10000;
 }
 const isMission = (r: TopicRecord) => r.kind === "org_mission" || r.kind === "coalition_mission";
+const kindKey = (r: TopicRecord) => (isMission(r) ? "mission" : r.kind);
 const fmtDay = d3.timeFormat("%b %-d, %Y");
+/** Is p the same as, or inside, q? */
+function within(p: Problem, q: Problem): boolean {
+  for (let x: Problem | null = p; x; x = x.up) if (x === q) return true;
+  return false;
+}
 
 export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; update(): void; show(): void; hide(): void } {
   const saved = (() => {
@@ -116,17 +132,22 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   };
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
-  // ---------- Data ----------
-  const recs = ctx.file.records.filter((r) => ctx.mapIds.includes(r.map) && r.topics.length);
+  // ---------- Data: main topics → sub-topics → bills ----------
+  const recs = ctx.file.records.filter((r) => ctx.mapIds.includes(r.map) && (r.topics.length || r.bills.length));
   const c2p = new Map<string, string>();
   for (const p of ctx.file.parents) for (const c of p.children) c2p.set(c.id, p.id);
   const childLabel = new Map<string, string>();
-  for (const p of ctx.file.parents) for (const c of p.children) childLabel.set(`${p.id}/${c.id}`, c.id === "bills" ? "Named bills" : c.label);
+  for (const p of ctx.file.parents) for (const c of p.children) childLabel.set(`${p.id}/${c.id}`, c.id === BILLS ? "Named bills" : c.label);
+  const billName = new Map(ctx.file.bills.map((b) => [b.id, b.name]));
 
   const probs = new Map<string, Problem>();
-  const mkProb = (id: string, label: string, parent: string, isParent: boolean): Problem => {
-    const p: Problem = { id, label, parent, isParent, kids: [], base: 0, energy: 0, coverage: 0, glow: 0, recurring: 0, x: 0, y: 0, r: 4, angle: 0, qx: 0, qy: 0, visible: false };
-    probs.set(id, p);
+  const getProb = (id: string, label: string, parent: string, level: 0 | 1 | 2, up: Problem | null): Problem => {
+    let p = probs.get(id);
+    if (!p) {
+      p = { id, label, parent, level, up, kids: [], base: 0, energy: 0, glow: 0, recurring: 0, x: 0, y: 0, r: 4, angle: 0, qx: 0, qy: 0, visible: false };
+      probs.set(id, p);
+      up?.kids.push(p);
+    }
     return p;
   };
   const orgs = new Map<string, Org>();
@@ -136,40 +157,44 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     const okey = `${r.map}:${r.host}`;
     let org = orgs.get(okey);
     if (!org) {
-      org = { key: okey, host: r.host, name: r.host_name, base: 0, energy: 0, x: NaN, y: NaN, r: 3, order: 0 };
+      org = { key: okey, host: r.host, name: r.host_name, logo: ctx.cb.logoOf?.(r.host), base: 0, energy: 0, x: NaN, y: NaN, r: 3, order: 0 };
       orgs.set(okey, org);
     }
-    const list: Stream[] = [];
-    for (const t of new Set(r.topics)) {
+    const topics = new Set(r.topics);
+    if (r.bills.length && c2p.has(BILLS)) topics.add(BILLS); // a record naming a bill belongs under "Named bills"
+    const fed = new Set<Problem>();
+    for (const t of topics) {
       const pid = c2p.get(t);
       if (!pid) continue;
-      const pp = probs.get(`p:${pid}`) ?? mkProb(`p:${pid}`, ctx.file.parents.find((x) => x.id === pid)!.label, pid, true);
-      const cid = `c:${pid}/${t}`;
-      let cp = probs.get(cid);
-      if (!cp) {
-        cp = mkProb(cid, childLabel.get(`${pid}/${t}`) ?? t, pid, false);
-        pp.kids.push(cp);
+      const pp = getProb(`p:${pid}`, ctx.file.parents.find((x) => x.id === pid)!.label, pid, 0, null);
+      const cp = getProb(`c:${pid}/${t}`, childLabel.get(`${pid}/${t}`) ?? t, pid, 1, pp);
+      fed.add(pp);
+      fed.add(cp);
+      if (t === BILLS) {
+        if (r.bills.length) for (const b of r.bills) fed.add(getProb(`b:${b}`, billName.get(b) ?? b, pid, 2, cp));
+        else fed.add(getProb("b:other", "Other named bills", pid, 2, cp));
       }
-      for (const prob of [pp, cp]) {
-        const k = `${okey}|${prob.id}`;
-        let s = streams.get(k);
-        if (!s) {
-          s = { org, prob, recs: [], raw: 0, value: 0, base: 0, pts: new Float32Array(0), cum: new Float32Array(0), uni: new Float32Array(0), len: 1, riverAt: 0, n: 0, speed: 0, seed: hash(k) };
-          streams.set(k, s);
-        }
-        if (!s.recs.includes(r)) {
-          s.recs.push(r);
-          if (!list.includes(s)) list.push(s);
-        }
+    }
+    const list: Stream[] = [];
+    for (const prob of fed) {
+      const k = `${okey}|${prob.id}`;
+      let s = streams.get(k);
+      if (!s) {
+        s = { org, prob, recs: [], raw: 0, value: 0, base: 0, pts: new Float32Array(0), cum: new Float32Array(0), uni: new Float32Array(0), len: 1, riverAt: 0, n: 0, speed: 0, seed: hash(k) };
+        streams.set(k, s);
       }
+      s.recs.push(r);
+      list.push(s);
     }
     recStreams.set(r.id, list);
   }
-  // parents in the file's order, children in the file's order
+  // main topics and sub-topics in the file's order; bills in the file's order with "Other" last
   const parents: Problem[] = ctx.file.parents.map((p) => probs.get(`p:${p.id}`)).filter((p): p is Problem => !!p);
+  const billOrder = ctx.file.bills.map((b) => `b:${b.id}`).concat("b:other");
   for (const p of parents) {
     const order = ctx.file.parents.find((x) => x.id === p.parent)!.children.map((c) => `c:${p.parent}/${c.id}`);
     p.kids.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    for (const k of p.kids) k.kids.sort((a, b) => billOrder.indexOf(a.id) - billOrder.indexOf(b.id));
   }
   const allStreams = [...streams.values()];
   const orgList = [...orgs.values()];
@@ -191,6 +216,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     return Math.exp(-(t - d) / (18 * DAY)); // a one-off event's energy fades over a few weeks
   }
 
+  const levelMax = [1, 1, 1];
   function compute(t: number | null, intoBase: boolean) {
     const cap = ctx.cap();
     for (const s of allStreams) s.raw = 0;
@@ -211,27 +237,16 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     for (const s of allStreams) {
       s.value = Math.min(cap, s.raw);
       s.prob.energy += s.value;
-      if (s.prob.isParent) s.org.energy += s.value;
+      if (s.prob.level === 0) s.org.energy += s.value;
     }
-    // coverage = share of energy ÷ share of importance ("Broad climate" is left out of both)
-    const counted = parents.filter((p) => p.parent !== BROAD);
-    const totE = d3.sum(counted, (p) => p.energy);
-    const totI = d3.sum(counted, (p) => ctx.importance(p.parent));
-    for (const p of parents) {
-      const imp = ctx.importance(p.parent);
-      if (p.parent === BROAD) p.coverage = 0.5;
-      else if (totE <= 0) p.coverage = 0;
-      else if (imp <= 0) p.coverage = p.energy > 0 ? 2 : 1;
-      else p.coverage = p.energy / totE / (imp / totI);
-      const mean = d3.mean(p.kids, (k) => k.energy) || 1;
-      for (const k of p.kids) k.coverage = p.coverage * (k.energy / mean);
-    }
-    for (const p of probs.values()) p.glow = Math.pow(Math.min(1, p.coverage / 1.25), 0.75);
     if (intoBase) {
       for (const s of allStreams) s.base = s.value;
       for (const p of probs.values()) p.base = p.energy;
       for (const o of orgList) o.base = o.energy;
+      for (const lv of [0, 1, 2]) levelMax[lv] = d3.max([...probs.values()].filter((p) => p.level === lv && p.parent !== BROAD), (p) => p.base) || 1;
     }
+    // glow: how much energy reaches a topic, compared with the busiest topic at the same depth
+    for (const p of probs.values()) p.glow = Math.min(1, Math.sqrt(p.energy / levelMax[p.level]));
   }
 
   // ---------- DOM ----------
@@ -245,40 +260,38 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       const b = h("button", { type: "button", "data-v": v }, label) as HTMLButtonElement;
       b.addEventListener("click", () => {
         set(v);
-        for (const x of btns) x.classList.toggle("on", x.dataset.v === cur());
+        sync();
       });
       btns.push(b);
       g.appendChild(b);
     }
-    for (const x of btns) x.classList.toggle("on", x.dataset.v === cur());
-    return g;
+    const sync = () => {
+      for (const x of btns) x.classList.toggle("on", x.dataset.v === cur());
+    };
+    sync();
+    return { g, sync };
   };
-  bar.appendChild(seg("Layout", [["center", "Groups in the middle"], ["sides", "Groups ← → problems"]], () => layout, (v) => {
+  const layoutSeg = seg("Layout", [["center", "Groups in the middle"], ["sides", "Groups ← → topics"]], () => layout, (v) => {
     layout = v as Layout;
     save();
     resetZoom();
     relayout(true);
-  }));
-  bar.appendChild(seg("Style", [["comets", "Comets + shields"], ["watershed", "Watershed"]], () => style, (v) => {
+  });
+  const styleSeg = seg("Style", [["comets", "Comets + shields"], ["watershed", "Watershed"]], () => style, (v) => {
     style = v as Style;
     save();
     el.dataset.style = style;
+    legendText();
     relayout(false);
-  }));
-  let splitAll = false;
-  bar.appendChild(seg("Topics", [["parents", "Main topics"], ["split", "Split all"]], () => (splitAll ? "split" : "parents"), (v) => {
-    splitAll = v === "split";
-    relayout(true);
-  }));
-  const helpBtn = h("button", { type: "button", class: "cr-help", "aria-pressed": "false", title: "Dim everything except important problems that get little energy" }, "Where is help needed?") as HTMLButtonElement;
-  let help = false;
-  helpBtn.addEventListener("click", () => {
-    help = !help;
-    helpBtn.setAttribute("aria-pressed", String(help));
-    helpBtn.classList.toggle("on", help);
-    refresh();
   });
-  bar.appendChild(helpBtn);
+  let splitAll = false;
+  let zoomLevel = 0; // 0: main topics, 1: sub-topics, 2: bills + items
+  const splitSeg = seg("Topics", [["parents", "Main topics"], ["split", "Split all"]], () => (splitAll || zoomLevel >= 1 ? "split" : "parents"), (v) => {
+    splitAll = v === "split";
+    if (!splitAll && zoomLevel > 0) resetZoom();
+    relayout(true);
+  });
+  bar.append(layoutSeg.g, styleSeg.g, splitSeg.g);
   el.appendChild(bar);
 
   const viewport = h("div", { class: "cr-viewport" });
@@ -288,9 +301,14 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   viewport.appendChild(canvas);
   const svg = d3.select(viewport).append("svg").attr("class", "cr-svg");
   const tip = h("div", { class: "cr-tip" });
-  const helpList = h("div", { class: "cr-helplist" });
   const legend = h("div", { class: "cr-legend" });
-  viewport.append(tip, helpList, legend);
+  const zoomBox = h("div", { class: "cr-zoom" });
+  const zIn = h("button", { type: "button", "aria-label": "Zoom in", title: "Zoom in" }, "+") as HTMLButtonElement;
+  const zOut = h("button", { type: "button", "aria-label": "Zoom out", title: "Zoom out" }, "−") as HTMLButtonElement;
+  const zReset = h("button", { type: "button", "aria-label": "Reset view", title: "Reset view" }, "⟲") as HTMLButtonElement;
+  const depthLbl = h("div", { class: "cr-depth" }, "");
+  zoomBox.append(zIn, zOut, zReset, depthLbl);
+  viewport.append(tip, legend, zoomBox);
   el.appendChild(viewport);
   el.dataset.style = style;
 
@@ -319,36 +337,43 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   wet.append("stop").attr("offset", "100%").attr("stop-color", "#4ade80").attr("stop-opacity", 0.55);
   const crack = defs.append("pattern").attr("id", "cr-cracks").attr("width", 14).attr("height", 14).attr("patternUnits", "userSpaceOnUse");
   crack.append("path").attr("d", "M0 7 L5 5 L7 0 M5 5 L9 9 L14 8 M9 9 L8 14").attr("stroke", "#7c6a50").attr("stroke-width", 0.7).attr("fill", "none");
+  defs.append("clipPath").attr("id", "cr-logo-clip").attr("clipPathUnits", "objectBoundingBox")
+    .append("circle").attr("cx", 0.5).attr("cy", 0.5).attr("r", 0.5);
   const bg = svg.append("rect").attr("class", "cr-bg");
   const zg = svg.append("g");
   const gHits = zg.append("g").attr("class", "cr-hits");
   const gGroups = zg.append("g").attr("class", "cr-groups");
   // nodes are not scaled by the zoom, only moved: zooming spreads things out instead of blowing them up
+  const gItems = svg.append("g").attr("class", "cr-items");
   const gProbs = svg.append("g").attr("class", "cr-probs");
   const gOrgs = svg.append("g").attr("class", "cr-orgs");
 
   // ---------- State ----------
   let W = 800, H = 600, dpr = 1;
   let tr = d3.zoomIdentity;
-  let zoomSplit = false;
   const expanded = new Set<string>();
   let selOrg: Org | null = null;
   let selProb: Problem | null = null;
+  let selItem: TopicRecord | null = null;
   let hover: Stream | null = null;
   let visProbs: Problem[] = [];
   let visStreams: Stream[] = [];
-  let helpSet = new Set<string>();
+  let items: Item[] = [];
   let baseDirty = true;
+  let baseStale = false;
+  let lastBase = 0;
   let ripples: Ripple[] = [];
   let playing = false;
   let shown = false;
   let anim: { t0: number; from: Map<string, [number, number]>; dur: number } | null = null;
   const target = new Map<string, [number, number]>();
   let R = 200, cx = 400, cy = 300, xo = 150, xp = 600;
-  const stats = { frames: 0, workMs: 0, avgMs: 0, maxMs: 0, intervalMs: 0, particles: 0 };
+  const stats = { frames: 0, workMs: 0, avgMs: 0, maxMs: 0, intervalMs: 0, particles: 0, dayMs: 0, paintMs: 0, baseMs: 0, drawMs: 0, onDayMs: 0 };
   (window as unknown as { __commandRoom: typeof stats }).__commandRoom = stats;
 
-  const isExpanded = (p: Problem) => (splitAll || zoomSplit || expanded.has(p.id)) && p.kids.length > 1;
+  /** Does this topic show its finer topics instead of itself? */
+  const isOpen = (p: Problem) =>
+    p.kids.filter((k) => k.base > 0).length > 1 && (expanded.has(p.id) || zoomLevel > p.level || (splitAll && p.level === 0));
 
   // ---------- Layout ----------
   function measure() {
@@ -369,30 +394,45 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function computeTargets() {
     visProbs = [];
     const groups: Problem[][] = [];
+    const emit = (p: Problem, out: Problem[]) => {
+      if (!isOpen(p)) {
+        out.push(p);
+        return;
+      }
+      for (const k of p.kids) if (k.base > 0) emit(k, out);
+    };
     for (const p of parents) {
       if (p.base <= 0) continue;
-      const g = isExpanded(p) ? p.kids.filter((k) => k.base > 0) : [p];
+      const g: Problem[] = [];
+      emit(p, g);
       groups.push(g);
       visProbs.push(...g);
     }
     for (const p of probs.values()) p.visible = false;
     for (const p of visProbs) p.visible = true;
-    const maxP = d3.max(parents, (p) => p.base) || 1;
-    const maxC = d3.max([...probs.values()].filter((p) => !p.isParent), (p) => p.base) || 1;
     const small = Math.min(W, H) < 520;
-    for (const p of visProbs) p.r = p.isParent ? (small ? 4 : 5) + (small ? 10 : 15) * Math.sqrt(p.base / maxP) : 3 + (small ? 6 : 9) * Math.sqrt(p.base / maxC);
+    const sizeBy = [small ? [4, 10] : [5, 15], small ? [3, 6] : [3, 9], small ? [2.5, 4] : [3, 6]];
+    for (const p of visProbs) {
+      const [a, b] = sizeBy[p.level];
+      p.r = a + b * Math.sqrt(Math.min(1, p.base / levelMax[p.level]));
+    }
     if (layout === "sides") {
       const room = (H - 48) / Math.max(1, visProbs.length + 2);
       for (const p of visProbs) p.r = Math.min(p.r, Math.max(3, room * 0.36));
     }
-    // slots: one per visible problem, with a gap between parent groups (wider around split groups)
+    // slots: one per visible topic, with a gap between main topics (wider around split ones)
     const units: number[] = [];
     let u = 0;
     for (const g of groups) {
-      const gap = g.length > 1 || g[0].isParent === false ? 1.1 : 0.35;
+      const gap = g.length > 1 || g[0].level > 0 ? 1.1 : 0.35;
       u += gap / 2;
-      for (let i = 0; i < g.length; i++) units.push(u + i + 0.5);
-      u += g.length + gap / 2;
+      for (let i = 0; i < g.length; i++) {
+        // a small extra gap where a sub-topic's bills start and end
+        if (i > 0 && g[i].up !== g[i - 1].up) u += 0.4;
+        units.push(u + 0.5);
+        u += 1;
+      }
+      u += gap / 2;
     }
     const total = u || 1;
     if (layout === "center") {
@@ -422,9 +462,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     const maxO = d3.max(orgList, (o) => o.base) || 1;
     const live = orgList.filter((o) => o.base > 0);
     const visIndex = new Map(visProbs.map((p, i) => [p.id, i]));
-    const toVisible = (s: Stream) => s.prob.visible;
-    const byOrg = d3.group(allStreams.filter((s) => s.base > 0 && toVisible(s)), (s) => s.org.key);
-    for (const o of orgList) o.r = o.base > 0 ? (small ? 1.6 : 2) + (small ? 4 : 6) * Math.sqrt(o.base / maxO) : 0;
+    const byOrg = d3.group(allStreams.filter((s) => s.base > 0 && s.prob.visible), (s) => s.org.key);
+    for (const o of orgList) o.r = o.base > 0 ? (small ? 2 : 3) + (small ? 4 : 7) * Math.sqrt(o.base / maxO) : 0;
     if (layout === "center") {
       const Rin = R * 0.6;
       const nodes = live.map((o) => {
@@ -481,10 +520,13 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     for (const p of visProbs) lerp(p.id, p);
     for (const o of orgList) if (o.base > 0) lerp(o.key, o, [layout === "center" ? cx : xo, layout === "center" ? cy : H / 2]);
     for (const s of visStreams) buildGeom(s);
+    geomVer++;
   }
+  let geomVer = 0;
+  let paintedGeom = -1;
 
-  function bez(out: number[], x0: number, y0: number, x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, n: number, skipFirst: boolean) {
-    for (let i = skipFirst ? 1 : 0; i <= n; i++) {
+  function bez(out: number[], x0: number, y0: number, x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, n: number) {
+    for (let i = 0; i <= n; i++) {
       const t = i / n, a = 1 - t;
       out.push(a * a * a * x0 + 3 * a * a * t * x1 + 3 * a * t * t * x2 + t * t * t * x3, a * a * a * y0 + 3 * a * a * t * y1 + 3 * a * t * t * y2 + t * t * t * y3);
     }
@@ -494,17 +536,15 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     const o = s.org, p = s.prob;
     const pts: number[] = [];
     const px = p.x, py = p.y;
-    // stop at the problem's edge
     if (style === "comets") {
       if (layout === "center") {
         const dx = px - o.x, dy = py - o.y, L = Math.hypot(dx, dy) || 1;
         const bend = 0.22 * L * (s.seed > 0.5 ? 1 : 0.8);
         const mx = (o.x + px) / 2 - (dy / L) * bend, my = (o.y + py) / 2 + (dx / L) * bend;
-        // quadratic as cubic
-        bez(pts, o.x, o.y, o.x + (2 / 3) * (mx - o.x), o.y + (2 / 3) * (my - o.y), px + (2 / 3) * (mx - px), py + (2 / 3) * (my - py), px, py, 36, false);
+        bez(pts, o.x, o.y, o.x + (2 / 3) * (mx - o.x), o.y + (2 / 3) * (my - o.y), px + (2 / 3) * (mx - px), py + (2 / 3) * (my - py), px, py, 36);
       } else {
         const dx = px - o.x;
-        bez(pts, o.x, o.y, o.x + dx * 0.45, o.y, px - dx * 0.45, py, px, py, 36, false);
+        bez(pts, o.x, o.y, o.x + dx * 0.45, o.y, px - dx * 0.45, py, px, py, 36);
       }
       s.riverAt = pts.length / 2;
     } else {
@@ -513,7 +553,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       const d = Math.hypot(qx - o.x, qy - o.y);
       const c1x = layout === "sides" ? o.x + (qx - o.x) * 0.5 : o.x + (qx - o.x) * 0.3;
       const c1y = layout === "sides" ? o.y : o.y + (qy - o.y) * 0.3;
-      bez(pts, o.x, o.y, c1x, c1y, qx - (ux / ul) * d * 0.45, qy - (uy / ul) * d * 0.45, qx, qy, 30, false);
+      bez(pts, o.x, o.y, c1x, c1y, qx - (ux / ul) * d * 0.45, qy - (uy / ul) * d * 0.45, qx, qy, 30);
       s.riverAt = pts.length / 2 - 1;
       for (let i = 1; i <= 8; i++) pts.push(qx + (ux * i) / 8, qy + (uy * i) / 8);
     }
@@ -537,7 +577,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
 
   /** Position at arc length fraction f (0..1) of a stream. */
   function at(s: Stream, f: number, out: [number, number]) {
-    const u = s.uni, x = f * 64, i = Math.min(63, x | 0), t = x - i;
+    const u = s.uni, x = Math.max(0, Math.min(1, f)) * 64, i = Math.min(63, x | 0), t = x - i;
     out[0] = u[2 * i] + (u[2 * i + 2] - u[2 * i]) * t;
     out[1] = u[2 * i + 1] + (u[2 * i + 3] - u[2 * i + 1]) * t;
   }
@@ -545,16 +585,24 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   // ---------- Visibility, dimming, particle budget ----------
   function streamAlpha(s: Stream): number {
     if (selOrg && s.org !== selOrg) return 0;
-    if (selProb && s.prob !== selProb && !(selProb.isParent && s.prob.parent === selProb.parent)) return 0;
+    if (selProb && !within(s.prob, selProb)) return 0;
     let a = 1;
-    if (help && !helpSet.has(s.prob.id)) a *= 0.1;
+    if (selItem && !s.recs.includes(selItem)) a *= 0.12;
     if (s.prob.parent === BROAD) a *= 0.4;
     if (hover && hover !== s) a *= 0.45;
     return a;
   }
+  /** Like streamAlpha, but ignoring the hover (for deciding what is part of the current selection). */
+  function shownAlpha(s: Stream): number {
+    const h0 = hover;
+    hover = null;
+    const a = streamAlpha(s);
+    hover = h0;
+    return a;
+  }
   function probAlpha(p: Problem): number {
-    if (help && !helpSet.has(p.id)) return 0.18;
-    if (selProb && p !== selProb && !(selProb.isParent && p.parent === selProb.parent)) return selOrg ? 1 : 0.45;
+    if (selItem) return visStreams.some((s) => s.prob === p && s.recs.includes(selItem!)) ? 1 : 0.3;
+    if (selProb && !within(p, selProb)) return selOrg ? 1 : 0.45;
     if (selOrg && !visStreams.some((s) => s.org === selOrg && s.prob === p && s.value > 0)) return 0.3;
     return 1;
   }
@@ -577,17 +625,26 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     stats.particles = used;
   }
 
-  function computeHelp() {
-    helpSet = new Set(visProbs.filter((p) => p.parent !== BROAD && ctx.importance(p.parent) >= 0.5 && p.coverage < 0.7).map((p) => p.id));
+  /** The items that make up the streams: shown when zoomed in deep, or for the selected group, topic or item. */
+  function computeItems() {
+    const show = zoomLevel >= 2 || !!selOrg || !!selProb || !!selItem;
+    items = [];
+    if (!show) return;
+    for (const s of visStreams) {
+      if (s.value <= 0 || shownAlpha(s) < 0.2) continue;
+      const list = s.recs.filter((r) => (recWeight.get(r.id) ?? 0) > 0).sort((a, b) => (recWeight.get(b.id) ?? 0) - (recWeight.get(a.id) ?? 0));
+      list.forEach((r, i) => items.push({ key: `${s.org.key}|${s.prob.id}|${r.id}`, s, r, f: 0.3 + (0.45 * (i + 0.5)) / list.length }));
+    }
   }
 
   // ---------- SVG nodes ----------
-  function paintSvg() {
-    const color = (p: Problem) => (p.parent === BROAD ? "#6b7280" : ctx.colorOf(p.parent));
+  const color = (p: Problem) => (p.parent === BROAD ? "#6b7280" : ctx.colorOf(p.parent));
+  function paintSvg(labels = true) {
+    computeItems();
     // hit paths for hovering streams
     const hits = gHits.selectAll<SVGPathElement, Stream>("path").data(visStreams.filter((s) => s.value > 0 && streamAlpha(s) > 0), (s) => `${s.org.key}|${s.prob.id}`);
     hits.exit().remove();
-    hits.enter().append("path")
+    const hitsIn = hits.enter().append("path")
       .on("mouseenter", (ev: MouseEvent, s) => {
         hover = s;
         baseDirty = true;
@@ -604,51 +661,75 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       .on("click", (ev: MouseEvent, s) => {
         ev.stopPropagation();
         selectProb(s.prob);
-      })
-      .merge(hits)
+      });
+    // stream paths only change when things move; playback ticks skip rebuilding them
+    const moved = paintedGeom !== geomVer;
+    paintedGeom = geomVer;
+    (moved ? hitsIn.merge(hits) : hitsIn)
       .attr("d", (s) => {
         let d = "";
         for (let i = 0; i < s.pts.length; i += 2) d += `${i ? "L" : "M"}${s.pts[i].toFixed(1)},${s.pts[i + 1].toFixed(1)}`;
         return d;
       });
 
-    // group arcs / brackets for split parents
-    const split = parents.filter((p) => p.base > 0 && isExpanded(p));
+    // arcs / brackets around split topics (click to fold back)
+    const split = [...probs.values()].filter((p) => p.base > 0 && !p.visible && visProbs.some((q) => q.up && within(q, p)));
     const gs = gGroups.selectAll<SVGGElement, Problem>("g.cr-grp").data(split, (p) => p.id);
     gs.exit().remove();
-    const ge = gs.enter().append("g").attr("class", "cr-grp").on("click", (ev: MouseEvent, p) => {
+    const ge = gs.enter().append("g").attr("class", (p) => `cr-grp lv${p.level}`).on("click", (ev: MouseEvent, p) => {
       ev.stopPropagation();
       expanded.delete(p.id);
-      if (selProb && selProb.parent === p.parent) selProb = null;
+      for (const k of p.kids) expanded.delete(k.id);
+      if (selProb && within(selProb, p)) selProb = null;
       relayout(true);
       renderDetail();
     });
     ge.append("path");
-    ge.append("text").attr("class", "cr-grp-label");
+    ge.append("text");
     ge.append("title").text("Click to fold back into one topic");
     ge.merge(gs).each(function (p) {
-      const kids = p.kids.filter((k) => k.visible);
+      const kids = visProbs.filter((q) => q !== p && within(q, p));
       if (!kids.length) return;
       const g = d3.select(this);
       g.select("path").attr("stroke", color(p));
+      const inset = 16 + p.level * 14;
       if (layout === "center") {
-        const a0 = kids[0].angle - 0.04, a1 = kids[kids.length - 1].angle + 0.04, rr = R - 16;
+        const a0 = kids[0].angle - 0.04, a1 = kids[kids.length - 1].angle + 0.04, rr = R - inset;
         g.select("path").attr("d", `M${cx + rr * Math.cos(a0)},${cy + rr * Math.sin(a0)} A${rr},${rr} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${cx + rr * Math.cos(a1)},${cy + rr * Math.sin(a1)}`);
         const am = (a0 + a1) / 2;
         g.select("text").attr("x", cx + (rr - 12) * Math.cos(am)).attr("y", cy + (rr - 12) * Math.sin(am)).attr("text-anchor", "middle").attr("dy", "0.35em").text(`${p.label} ⌃`);
       } else {
         const y0 = (target.get(kids[0].id)?.[1] ?? 0) - 8, y1 = (target.get(kids[kids.length - 1].id)?.[1] ?? 0) + 8;
-        g.select("path").attr("d", `M${xp - 22},${y0} L${xp - 26},${y0} L${xp - 26},${y1} L${xp - 22},${y1}`);
+        const x = xp - 22 - p.level * 8;
+        g.select("path").attr("d", `M${x},${y0} L${x - 4},${y0} L${x - 4},${y1} L${x},${y1}`);
         // watershed: put the name where the rivulets gather, not on top of the rivers
-        const lx = style === "watershed" ? xp - (xp - xo) * 0.28 - 10 : xp - 32;
+        const lx = style === "watershed" ? xp - (xp - xo) * 0.28 - 10 - p.level * 8 : x - 10;
         g.select("text").attr("x", lx).attr("y", (y0 + y1) / 2).attr("text-anchor", "end").attr("dy", "0.35em").text(p.label);
       }
     });
 
-    // problems
+    // items along the streams
+    const is = gItems.selectAll<SVGCircleElement, Item>("circle").data(items, (d) => d.key);
+    is.exit().remove();
+    is.enter().append("circle")
+      .on("mouseenter", (ev: MouseEvent, d) => showItemTip(ev, d))
+      .on("mousemove", (ev: MouseEvent, d) => showItemTip(ev, d))
+      .on("mouseleave", () => tip.classList.remove("on"))
+      .on("click", (ev: MouseEvent, d) => {
+        ev.stopPropagation();
+        selectItem(d.r);
+      })
+      .merge(is)
+      .attr("class", (d) => `cr-item k-${kindKey(d.r)}${d.r === selItem ? " sel" : ""}`)
+      .attr("r", (d) => (d.r === selItem ? 4.5 : isMission(d.r) ? 2.4 : 3))
+      .attr("fill", (d) => (isMission(d.r) ? "none" : KIND_COLOR[kindKey(d.r)]))
+      .attr("stroke", (d) => (isMission(d.r) ? KIND_COLOR.mission : "rgba(10,10,15,0.85)"))
+      .attr("opacity", (d) => (selItem && d.r !== selItem ? 0.35 : 0.9));
+
+    // topics
     const ps = gProbs.selectAll<SVGGElement, Problem>("g.cr-prob").data(visProbs, (p) => p.id);
     ps.exit().remove();
-    const pe = ps.enter().append("g").attr("class", (p) => `cr-prob${p.isParent ? " parent" : " child"}${p.parent === BROAD ? " broad" : ""}`).attr("data-id", (p) => p.id);
+    const pe = ps.enter().append("g").attr("class", (p) => `cr-prob lv${p.level}${p.level === 0 ? " parent" : " child"}${p.parent === BROAD ? " broad" : ""}`).attr("data-id", (p) => p.id);
     pe.append("circle").attr("class", "glow").attr("filter", "url(#cr-blur)");
     pe.append("circle").attr("class", "shield");
     pe.append("path").attr("class", "cover");
@@ -661,37 +742,38 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     pe.append("text").attr("class", "lbl");
     pe.on("click", (ev: MouseEvent, p) => {
       ev.stopPropagation();
-      if (p.isParent && p.kids.length > 1) expanded.add(p.id);
-      selectProb(p);
+      openProb(p);
     })
       .on("mouseenter", (ev: MouseEvent, p) => showProbTip(ev, p))
       .on("mousemove", (ev: MouseEvent, p) => showProbTip(ev, p))
       .on("mouseleave", () => tip.classList.remove("on"));
     const all = pe.merge(ps);
-    all.attr("opacity", (p) => probAlpha(p)).classed("help", (p) => help && helpSet.has(p.id)).classed("sel", (p) => p === selProb);
+    all.attr("opacity", (p) => probAlpha(p)).classed("sel", (p) => p === selProb).classed("has-kids", (p) => p.kids.filter((k) => k.base > 0).length > 1);
     all.each(function (p) {
       const g = d3.select(this);
-      const c = color(p), r = p.r, cov = Math.min(1, p.coverage);
-      const wetness = Math.min(1, p.coverage / 1.6); // fair share = about two-thirds full; dry when neglected
-      g.select(".glow").attr("r", layout === "sides" ? Math.min(r * 1.9, r + 14) : r * 2.2).attr("fill", c).attr("opacity", p.parent === BROAD ? 0 : 0.04 + 0.5 * p.glow);
-      g.select(".shield").attr("r", r + 4).attr("stroke", c).attr("stroke-opacity", 0.12 + 0.75 * p.glow);
-      const arc = d3.arc()({ innerRadius: r + 6, outerRadius: r + 7.5, startAngle: 0, endAngle: 2 * Math.PI * cov }) ?? "";
-      g.select(".cover").attr("d", arc).attr("fill", c).attr("opacity", 0.35 + 0.5 * p.glow);
-      g.select(".core").attr("r", r).attr("fill", c).attr("fill-opacity", 0.1 + 0.65 * p.glow).attr("stroke", c);
+      const c = color(p), r = p.r, glow = p.glow;
+      g.select(".glow").attr("r", layout === "sides" ? Math.min(r * 1.9, r + 14) : r * 2.2).attr("fill", c).attr("opacity", p.parent === BROAD ? 0 : 0.04 + 0.5 * glow);
+      g.select(".shield").attr("r", r + 4).attr("stroke", c).attr("stroke-opacity", 0.12 + 0.75 * glow);
+      const arc = d3.arc()({ innerRadius: r + 6, outerRadius: r + 7.5, startAngle: 0, endAngle: 2 * Math.PI * glow }) ?? "";
+      g.select(".cover").attr("d", arc).attr("fill", c).attr("opacity", 0.35 + 0.5 * glow);
+      g.select(".core").attr("r", r).attr("fill", c).attr("fill-opacity", 0.1 + 0.65 * glow).attr("stroke", c);
       g.select(".dry").attr("r", r + 5);
-      g.select(".cracks").attr("r", r + 5).attr("opacity", 0.95 * (1 - wetness));
-      g.select(".wet").attr("r", (r + 5) * Math.sqrt(wetness)).attr("opacity", 0.2 + 0.75 * wetness);
-      const reeds = g.select(".reeds").selectAll<SVGCircleElement, number>("circle").data(d3.range(Math.floor(p.coverage * 4)).slice(0, 9));
+      g.select(".cracks").attr("r", r + 5).attr("opacity", 0.95 * (1 - glow));
+      g.select(".wet").attr("r", (r + 5) * Math.sqrt(glow)).attr("opacity", 0.2 + 0.75 * glow);
+      const reeds = g.select(".reeds").selectAll<SVGCircleElement, number>("circle").data(d3.range(Math.floor(glow * 7)).slice(0, 9));
       reeds.exit().remove();
       reeds.enter().append("circle").attr("r", 1.4).merge(reeds)
         .attr("cx", (i) => (r + 6) * Math.cos(i * 2.4 + hash(p.id) * 6))
         .attr("cy", (i) => (r + 6) * Math.sin(i * 2.4 + hash(p.id) * 6));
       g.select(".hit").attr("r", r + 8);
+      // fit the label in the space left on screen on its side
       let room = 34;
+      const cw = p.level === 0 ? 6.4 : 5.6;
+      const sx = tr.applyX(target.get(p.id)?.[0] ?? p.x);
       if (layout === "center") {
         const ca0 = Math.cos(p.angle);
-        room = Math.abs(ca0) < 0.1 ? 40 : Math.floor((W / 2 - Math.abs(ca0) * R - r - 16) / (p.isParent ? 6.4 : 5.6));
-      } else room = Math.floor((W - xp - r - 16) / (p.isParent ? 6.4 : 5.6));
+        room = Math.abs(ca0) < 0.1 ? 40 : Math.floor((ca0 > 0 ? W - sx - r - 16 : sx - r - 16) / cw);
+      } else room = Math.floor((W - sx - r - 16) / cw);
       room = Math.max(10, Math.min(40, room));
       const lbl = g.select<SVGTextElement>(".lbl").text(p.label.length > room ? `${p.label.slice(0, room - 1)}…` : p.label);
       if (layout === "center") {
@@ -700,23 +782,19 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         lbl.attr("x", vert ? 0 : ca * d).attr("y", vert ? (sa > 0 ? d + 4 : -d - 4) : sa * d).attr("dy", "0.35em")
           .attr("text-anchor", vert ? "middle" : ca > 0 ? "start" : "end");
       } else lbl.attr("x", r + 11).attr("y", 0).attr("dy", "0.35em").attr("text-anchor", "start");
-      // crowded column: smaller labels so neighbours don't overlap
-      const spacing = layout === "sides" ? (H - 48) / Math.max(1, visProbs.length) : 99;
-      if (spacing < 16) lbl.style("font-size", `${Math.max(7.5, Math.min(p.isParent ? 12 : 10.5, spacing * 0.92))}px`);
+      // crowded: smaller labels so neighbours don't overlap
+      const spacing = layout === "sides" ? ((H - 48) * tr.k) / Math.max(1, visProbs.length) : (2 * Math.PI * R * tr.k) / Math.max(1, visProbs.length);
+      if (spacing < 16) lbl.style("font-size", `${Math.max(7.5, Math.min(p.level === 0 ? 12 : 10.5, spacing * 0.92))}px`);
       else lbl.style("font-size", null);
     });
 
-    // organizations
+    // organizations, with their logos
     const live = orgList.filter((o) => o.base > 0);
-    const labelled = new Set(
-      [...live].sort((a, b) => b.base - a.base).slice(0, layout === "center" ? 8 : 14).map((o) => o.key),
-    );
-    if (selOrg) labelled.add(selOrg.key);
-    if (selProb) for (const s of visStreams.filter((x) => streamAlpha(x) > 0 && x.value > 0).sort((a, b) => b.value - a.value).slice(0, 12)) labelled.add(s.org.key);
     const os = gOrgs.selectAll<SVGGElement, Org>("g.cr-org").data(live, (o) => o.key);
     os.exit().remove();
-    const oe = os.enter().append("g").attr("class", "cr-org").attr("data-key", (o) => o.key);
+    const oe = os.enter().append("g").attr("class", (o) => `cr-org${o.logo ? " has-logo" : ""}`).attr("data-key", (o) => o.key);
     oe.append("circle").attr("class", "dot");
+    oe.filter((o) => !!o.logo).append("image").attr("class", "logo").attr("href", (o) => o.logo!).attr("clip-path", "url(#cr-logo-clip)").attr("preserveAspectRatio", "xMidYMid meet");
     oe.append("circle").attr("class", "hit");
     oe.append("text").attr("class", "lbl");
     oe.on("click", (ev: MouseEvent, o) => {
@@ -727,50 +805,69 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       .on("mousemove", (ev: MouseEvent, o) => showOrgTip(ev, o))
       .on("mouseleave", () => tip.classList.remove("on"));
     const oall = oe.merge(os);
-    const feeding = selProb ? new Set(visStreams.filter((s) => streamAlpha(s) > 0 && s.value > 0).map((s) => s.org.key)) : null;
-    oall.classed("sel", (o) => o === selOrg)
-      .attr("opacity", (o) => (selOrg ? (o === selOrg ? 1 : 0.25) : feeding ? (feeding.has(o.key) ? 1 : 0.2) : help ? 0.5 : o.energy > 0 ? 1 : 0.35));
-    oall.select(".dot").attr("r", (o) => o.r);
-    oall.select(".hit").attr("r", (o) => Math.max(6, o.r + 3));
-    // labels: skip ones that would overlap a label already placed
-    const placed: [number, number][] = [];
-    const order = [...live].sort((a, b) => (a === selOrg ? -1 : b === selOrg ? 1 : b.base - a.base));
-    const showLbl = new Set<string>();
-    for (const o of order) {
-      if (!labelled.has(o.key)) continue;
-      const [x, y] = target.get(o.key) ?? [o.x, o.y];
-      if (placed.some(([px, py]) => Math.abs(px - x) < (layout === "center" ? 120 : 400) && Math.abs(py - y) < 12)) continue;
-      placed.push([x, y]);
-      showLbl.add(o.key);
-    }
-    oall.select<SVGTextElement>(".lbl")
-      .text((o) => (o.name.length > 30 ? `${o.name.slice(0, 28)}…` : o.name))
-      .style("display", (o) => (showLbl.has(o.key) ? null : "none"))
-      .attr("text-anchor", layout === "center" ? "middle" : "end")
-      .attr("x", (o) => (layout === "center" ? 0 : Math.min(-o.r - 6, xo - 26 - 8 - (target.get(o.key)?.[0] ?? o.x))))
-      .attr("y", (o) => (layout === "center" ? -o.r - 5 : 0))
-      .attr("dy", layout === "center" ? "0" : "0.35em");
+    feeding = selProb || selItem ? new Set(visStreams.filter((s) => shownAlpha(s) > 0.2 && s.value > 0).map((s) => s.org.key)) : null;
+    oall.classed("sel", (o) => o === selOrg).attr("opacity", orgOpacity);
+    const osz = moved ? oall : oe;
+    osz.select(".dot").attr("r", (o) => o.r);
+    osz.select(".logo").attr("x", (o) => -o.r * 0.86).attr("y", (o) => -o.r * 0.86).attr("width", (o) => o.r * 1.72).attr("height", (o) => o.r * 1.72);
+    osz.select(".hit").attr("r", (o) => Math.max(6, o.r + 3));
     placeSvg();
-    renderHelpList();
+    if (labels) placeOrgLabels();
   }
+  let feeding: Set<string> | null = null;
+  const orgOpacity = (o: Org) => (selOrg ? (o === selOrg ? 1 : 0.25) : feeding ? (feeding.has(o.key) ? 1 : 0.2) : o.energy > 0 ? 1 : 0.35);
 
-  function placeSvg() {
-    gProbs.selectAll<SVGGElement, Problem>("g.cr-prob").attr("transform", (p) => `translate(${tr.applyX(p.x)},${tr.applyY(p.y)})`);
-    gOrgs.selectAll<SVGGElement, Org>("g.cr-org").attr("transform", (o) => `translate(${tr.applyX(o.x)},${tr.applyY(o.y)})`);
-    gGroups.selectAll<SVGTextElement, unknown>("text").style("font-size", `${10 / tr.k}px`).style("stroke-width", `${3 / tr.k}px`);
-  }
+  /** How much group nodes grow as you zoom in, so logos become readable. */
+  const orgScale = () => Math.max(1, Math.min(2.6, Math.pow(tr.k, 0.75)));
 
-  function renderHelpList() {
-    clear(helpList);
-    helpList.classList.toggle("on", help);
-    if (!help) return;
-    const list = visProbs.filter((p) => helpSet.has(p.id)).sort((a, b) => a.coverage - b.coverage);
-    helpList.appendChild(h("div", { class: "cr-helplist-head" }, list.length ? "Important problems getting little energy" : "No important problem is under-served with these sliders."));
-    for (const p of list.slice(0, 8)) {
-      const b = h("button", { type: "button" }, `${p.label} · ${p.coverage.toFixed(1)}× fair share`);
-      b.addEventListener("click", () => selectProb(p));
-      helpList.appendChild(b);
+  /** Group names, in screen space: more fit as you zoom in. */
+  function placeOrgLabels() {
+    const live = orgList.filter((o) => o.base > 0);
+    const s = orgScale();
+    const cand = new Set<string>();
+    if (tr.k >= 1.5) for (const o of live) cand.add(o.key);
+    else for (const o of [...live].sort((a, b) => b.base - a.base).slice(0, layout === "center" ? 8 : 14)) cand.add(o.key);
+    if (selOrg) cand.add(selOrg.key);
+    if (selProb || selItem) for (const st of visStreams.filter((x) => shownAlpha(x) > 0.2 && x.value > 0).sort((a, b) => b.value - a.value).slice(0, 14)) cand.add(st.org.key);
+    for (const o of live) if (orgOpacity(o) < 0.3) cand.delete(o.key);
+    const boxes: [number, number, number, number][] = [];
+    const show = new Set<string>();
+    const order = [...live].sort((a, b) => (a === selOrg ? -1 : b === selOrg ? 1 : b.base - a.base));
+    for (const o of order) {
+      if (!cand.has(o.key)) continue;
+      const [lx, ly] = target.get(o.key) ?? [o.x, o.y];
+      const x = tr.applyX(lx), y = tr.applyY(ly);
+      if (x < -50 || x > W + 50 || y < -20 || y > H + 20) continue;
+      const w = Math.min(30, o.name.length) * 5.6;
+      const box: [number, number, number, number] = layout === "center"
+        ? [x - w / 2, y - o.r * s - 16, x + w / 2, y - o.r * s - 3]
+        : [x - o.r * s - 8 - w, y - 7, x - o.r * s - 6, y + 7];
+      if (boxes.some((b) => b[0] < box[2] && box[0] < b[2] && b[1] < box[3] && box[1] < b[3])) continue;
+      boxes.push(box);
+      show.add(o.key);
     }
+    gOrgs.selectAll<SVGGElement, Org>("g.cr-org").select<SVGTextElement>(".lbl")
+      .text((o) => (o.name.length > 30 ? `${o.name.slice(0, 28)}…` : o.name))
+      .style("display", (o) => (show.has(o.key) ? null : "none"))
+      .attr("text-anchor", layout === "center" ? "middle" : "end")
+      .attr("x", (o) => (layout === "center" ? 0 : Math.min(-o.r - 6, (xo - 26 - 8 - (target.get(o.key)?.[0] ?? o.x)) * tr.k / s)))
+      .attr("y", (o) => (layout === "center" ? -o.r - 5 : 0))
+      .attr("dy", layout === "center" ? "0" : "0.35em")
+      .style("font-size", `${10 / s}px`)
+      .style("stroke-width", `${3 / s}px`);
+  }
+
+  const IP: [number, number] = [0, 0];
+  function placeSvg() {
+    const s = orgScale();
+    gProbs.selectAll<SVGGElement, Problem>("g.cr-prob").attr("transform", (p) => `translate(${tr.applyX(p.x)},${tr.applyY(p.y)})`);
+    gOrgs.selectAll<SVGGElement, Org>("g.cr-org").attr("transform", (o) => `translate(${tr.applyX(o.x)},${tr.applyY(o.y)}) scale(${s})`);
+    gGroups.selectAll<SVGTextElement, unknown>("text").style("font-size", `${10 / tr.k}px`).style("stroke-width", `${3 / tr.k}px`);
+    gItems.selectAll<SVGCircleElement, Item>("circle").each(function (d) {
+      at(d.s, d.f, IP);
+      this.setAttribute("cx", String(tr.applyX(IP[0])));
+      this.setAttribute("cy", String(tr.applyY(IP[1])));
+    });
   }
 
   // ---------- Tooltips ----------
@@ -785,6 +882,11 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function topItems(list: TopicRecord[], n: number): TopicRecord[] {
     return [...list].filter((r) => (recWeight.get(r.id) ?? 0) > 0).sort((a, b) => (recWeight.get(b.id) ?? 0) - (recWeight.get(a.id) ?? 0)).slice(0, n);
   }
+  const path = (p: Problem) => {
+    const out: string[] = [];
+    for (let x: Problem | null = p.up; x; x = x.up) out.unshift(x.label);
+    return out.join(" › ");
+  };
   function showTip(ev: MouseEvent, s: Stream) {
     clear(tip);
     tip.append(h("div", { class: "cr-tip-title" }, `${s.org.name} → ${s.prob.label}`), h("div", { class: "cr-tip-meta" }, `energy ${s.value.toFixed(2)} · ${s.recs.length} item${s.recs.length === 1 ? "" : "s"}`));
@@ -793,36 +895,89 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   }
   function showProbTip(ev: MouseEvent, p: Problem) {
     clear(tip);
-    const n = visStreams.filter((s) => s.prob === p && s.value > 0).length;
-    tip.append(h("div", { class: "cr-tip-title" }, p.label),
+    const n = new Set(allStreams.filter((s) => s.prob === p && s.value > 0).map((s) => s.org)).size;
+    const finer = p.kids.filter((k) => k.base > 0).length;
+    tip.append(
+      h("div", { class: "cr-tip-meta" }, path(p) || "Main topic"),
+      h("div", { class: "cr-tip-title" }, p.label),
       h("div", { class: "cr-tip-meta" }, `energy ${p.energy.toFixed(1)} from ${n} group${n === 1 ? "" : "s"}`),
-      h("div", { class: "cr-tip-meta" }, p.parent === BROAD ? "Catch-all: not compared with importance" : `${p.coverage.toFixed(2)}× its fair share for its importance`),
-      h("div", { class: "cr-tip-item" }, p.isParent && p.kids.length > 1 ? "Click to split into topics and see who feeds it" : "Click to see who feeds it"));
+      h("div", { class: "cr-tip-item" }, finer > 1 ? `Click to zoom into its ${finer} ${p.level === 1 ? "bills" : "topics"} and see who feeds it` : "Click to see who feeds it"),
+    );
     placeTip(ev);
   }
   function showOrgTip(ev: MouseEvent, o: Org) {
     clear(tip);
-    const n = visStreams.filter((s) => s.org === o && s.value > 0).length;
-    tip.append(h("div", { class: "cr-tip-title" }, o.name), h("div", { class: "cr-tip-meta" }, `energy ${o.energy.toFixed(1)} into ${n} problem${n === 1 ? "" : "s"}`), h("div", { class: "cr-tip-item" }, "Click to show only its streams"));
+    const n = allStreams.filter((s) => s.org === o && s.prob.level === 0 && s.value > 0).length;
+    tip.append(h("div", { class: "cr-tip-title" }, o.name), h("div", { class: "cr-tip-meta" }, `energy ${o.energy.toFixed(1)} into ${n} main topic${n === 1 ? "" : "s"}`), h("div", { class: "cr-tip-item" }, "Click to show only its streams and items"));
+    placeTip(ev);
+  }
+  function showItemTip(ev: MouseEvent, d: Item) {
+    clear(tip);
+    const r = d.r;
+    tip.append(
+      h("div", { class: "cr-tip-meta" }, `${KIND_LABEL[r.kind]}${r.date ? ` · ${r.date}` : ""}${r.recurring ? " · repeats" : ""}`),
+      h("div", { class: "cr-tip-title" }, isMission(r) ? `Mission of ${r.host_name}` : r.name),
+      h("div", { class: "cr-tip-meta" }, isMission(r) ? "" : r.host_name),
+      h("div", { class: "cr-tip-item" }, `→ ${d.s.prob.label}`),
+    );
     placeTip(ev);
   }
 
   // ---------- Selection + detail panel ----------
+  /** Click a topic: select it, and if it holds finer topics, split it and zoom in on it. */
+  function openProb(p: Problem) {
+    const finer = p.kids.filter((k) => k.base > 0).length > 1;
+    if (finer) expanded.add(p.id);
+    selOrg = null;
+    selItem = null;
+    selProb = selProb === p && !finer ? null : p;
+    relayout(true);
+    renderDetail();
+    if (finer) focusOn(p);
+  }
+  function focusOn(p: Problem) {
+    const kids = visProbs.filter((q) => within(q, p));
+    if (!kids.length) return;
+    const mx = d3.mean(kids, (q) => target.get(q.id)![0])!, my = d3.mean(kids, (q) => target.get(q.id)![1])!;
+    let fx: number, fy: number;
+    if (layout === "center") {
+      fx = cx + (mx - cx) * 0.62;
+      fy = cy + (my - cy) * 0.62;
+    } else {
+      fx = xp - (xp - xo) * 0.3;
+      fy = my;
+    }
+    // stay below the zoom that splits everything, so only this topic opens
+    const k = tr.k >= 1.5 ? tr.k : 1.55;
+    const t = d3.zoomIdentity.translate(W / 2 - k * fx, H / 2 - k * fy).scale(k);
+    if (reduced) svg.call(zoom.transform, t);
+    else svg.transition().duration(800).ease(d3.easeCubicInOut).call(zoom.transform, t);
+  }
   function selectProb(p: Problem) {
     selOrg = null;
+    selItem = null;
     selProb = selProb === p ? null : p;
-    relayout(true);
+    refresh();
     renderDetail();
   }
   function selectOrg(o: Org) {
     selProb = null;
+    selItem = null;
     selOrg = selOrg === o ? null : o;
+    refresh();
+    renderDetail();
+  }
+  function selectItem(r: TopicRecord) {
+    selProb = null;
+    selOrg = null;
+    selItem = selItem === r ? null : r;
     refresh();
     renderDetail();
   }
   function clearSel() {
     selOrg = null;
     selProb = null;
+    selItem = null;
     refresh();
     renderDetail();
   }
@@ -842,11 +997,20 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       m ? null : h("div", { class: "name" }, r.link ? h("a", { href: r.link, target: "_blank", rel: "noopener noreferrer" }, `${r.name} ↗`) : r.name),
       showHost || m ? h("div", { class: "topics-host" }, m ? "Mission of " : "", groupBtn) : null);
   }
+  function mapButton(host: string, label: string, cls: string): HTMLElement {
+    const b = h("button", { type: "button", class: cls, title: "See this group on the map" }, label);
+    if (ctx.cb.hasGroup(host)) b.addEventListener("click", () => ctx.cb.onGroupClick(host));
+    else b.setAttribute("disabled", "true");
+    return b;
+  }
+  function logoImg(o: Org): HTMLElement | null {
+    return o.logo ? h("img", { class: "cr-detail-logo", src: o.logo, alt: "" }) : null;
+  }
 
   function renderDetail() {
     const d = ctx.detail;
     clear(d);
-    if (!selOrg && !selProb) {
+    if (!selOrg && !selProb && !selItem) {
       d.classList.remove("open");
       return;
     }
@@ -856,63 +1020,85 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     d.appendChild(close);
     if (selProb) {
       const p = selProb;
-      const inP = (s: Stream) => s.prob === p;
-      const feeders = allStreams.filter((s) => inP(s) && s.value > 0).sort((a, b) => b.value - a.value);
-      const parentLabel = p.isParent ? "Problem" : probs.get(`p:${p.parent}`)!.label;
-      d.append(h("div", { class: "topics-detail-parent" }, parentLabel), h("h3", {}, p.label),
-        h("div", { class: "topics-detail-meta" }, `energy ${p.energy.toFixed(1)} from ${feeders.length} group${feeders.length === 1 ? "" : "s"}${p.parent === BROAD ? "" : ` · ${p.coverage.toFixed(2)}× its fair share for its importance`}`));
+      const feeders = allStreams.filter((s) => s.prob === p && s.value > 0).sort((a, b) => b.value - a.value);
+      d.append(h("div", { class: "topics-detail-parent" }, path(p) || "Topic"), h("h3", {}, p.label),
+        h("div", { class: "topics-detail-meta" }, `energy ${p.energy.toFixed(1)} from ${feeders.length} group${feeders.length === 1 ? "" : "s"}`));
+      const finer = p.kids.filter((k) => k.base > 0).sort((a, b) => b.energy - a.energy);
+      if (finer.length > 1) {
+        d.appendChild(h("div", { class: "cr-sub" }, p.level === 1 ? "Bills inside it" : "Topics inside it"));
+        const box = h("div", { class: "cr-chips" });
+        for (const k of finer) {
+          const b = h("button", { type: "button" }, `${k.label} · ${k.energy.toFixed(1)}`);
+          b.addEventListener("click", () => openProb(k));
+          box.appendChild(b);
+        }
+        d.appendChild(box);
+      }
       d.appendChild(h("div", { class: "cr-sub" }, "Who feeds it"));
       const max = feeders[0]?.value || 1;
       const fl = h("div", { class: "cr-feeders" });
       for (const s of feeders) {
         const name = h("button", { type: "button", class: "cr-feeder-name", title: "Show only this group's streams" }, s.org.name);
         name.addEventListener("click", () => selectOrg(s.org));
-        const map = h("button", { type: "button", class: "cr-feeder-map", title: "See this group on the map" }, "map ↗");
-        if (ctx.cb.hasGroup(s.org.host)) map.addEventListener("click", () => ctx.cb.onGroupClick(s.org.host));
-        else map.setAttribute("disabled", "true");
-        fl.appendChild(h("div", { class: "cr-feeder" }, name, h("span", { class: "cr-feeder-bar", style: `width:${Math.max(3, (60 * s.value) / max)}px` }), map));
+        fl.appendChild(h("div", { class: "cr-feeder" }, logoImg(s.org) ?? h("span", { class: "cr-feeder-dot" }), name,
+          h("span", { class: "cr-feeder-bar", style: `width:${Math.max(3, (60 * s.value) / max)}px` }), mapButton(s.org.host, "map ↗", "cr-feeder-map")));
       }
       d.appendChild(fl);
-      const items = [...new Set(feeders.flatMap((s) => s.recs))].sort((a, b) => (recWeight.get(b.id) ?? 0) - (recWeight.get(a.id) ?? 0) || a.name.localeCompare(b.name));
-      d.appendChild(h("div", { class: "cr-sub" }, `Items (${items.length})`));
+      const its = [...new Set(feeders.flatMap((s) => s.recs))].sort((a, b) => (recWeight.get(b.id) ?? 0) - (recWeight.get(a.id) ?? 0) || a.name.localeCompare(b.name));
+      d.appendChild(h("div", { class: "cr-sub" }, `Items (${its.length})`));
       const list = h("div", { class: "topics-records" });
-      for (const r of items) list.appendChild(recordRow(r, true));
+      for (const r of its) list.appendChild(recordRow(r, true));
       d.appendChild(list);
     } else if (selOrg) {
       const o = selOrg;
       const mine = visStreams.filter((s) => s.org === o && s.value > 0).sort((a, b) => b.value - a.value);
-      d.append(h("div", { class: "topics-detail-parent" }, "Group"), h("h3", {}, o.name),
-        h("div", { class: "topics-detail-meta" }, `energy ${o.energy.toFixed(1)} into ${mine.length} problem${mine.length === 1 ? "" : "s"}`));
-      const map = h("button", { type: "button", class: "cr-mapbtn" }, "See this group on the map ↗");
-      if (ctx.cb.hasGroup(o.host)) map.addEventListener("click", () => ctx.cb.onGroupClick(o.host));
-      else map.setAttribute("disabled", "true");
-      d.appendChild(map);
+      d.append(h("div", { class: "cr-detail-head" }, logoImg(o), h("div", {}, h("div", { class: "topics-detail-parent" }, "Group"), h("h3", {}, o.name))),
+        h("div", { class: "topics-detail-meta" }, `energy ${o.energy.toFixed(1)} into ${mine.length} topic${mine.length === 1 ? "" : "s"}`),
+        mapButton(o.host, "See this group on the map ↗", "cr-mapbtn"));
       for (const s of mine) {
         d.appendChild(h("div", { class: "cr-sub" }, `→ ${s.prob.label} · ${s.value.toFixed(2)}`));
         const list = h("div", { class: "topics-records" });
         for (const r of [...s.recs].sort((a, b) => (recWeight.get(b.id) ?? 0) - (recWeight.get(a.id) ?? 0))) list.appendChild(recordRow(r, false));
         d.appendChild(list);
       }
+    } else if (selItem) {
+      const r = selItem;
+      const org = orgs.get(`${r.map}:${r.host}`);
+      d.append(h("div", { class: "topics-detail-parent" }, KIND_LABEL[r.kind]), h("h3", {}, isMission(r) ? `Mission of ${r.host_name}` : r.name));
+      d.appendChild(recordRow(r, true));
+      if (org) {
+        const b = h("button", { type: "button", class: "cr-mapbtn" }, `Show all of ${org.name}'s streams`);
+        b.addEventListener("click", () => selectOrg(org));
+        d.appendChild(b);
+      }
+      d.appendChild(h("div", { class: "cr-sub" }, "Feeds these topics"));
+      const box = h("div", { class: "cr-chips" });
+      for (const s of (recStreams.get(r.id) ?? []).slice().sort((a, b) => a.prob.level - b.prob.level)) {
+        const b = h("button", { type: "button" }, `${"· ".repeat(s.prob.level)}${s.prob.label}`);
+        b.addEventListener("click", () => openProb(s.prob));
+        box.appendChild(b);
+      }
+      d.appendChild(box);
     }
   }
 
   // ---------- Canvas ----------
   const sprites = new Map<string, HTMLCanvasElement>();
-  function sprite(color: string): HTMLCanvasElement {
-    let c = sprites.get(color);
+  function sprite(col0: string): HTMLCanvasElement {
+    let c = sprites.get(col0);
     if (c) return c;
     c = document.createElement("canvas");
     c.width = c.height = 32;
     const g = c.getContext("2d")!;
     const rg = g.createRadialGradient(16, 16, 0, 16, 16, 16);
-    const col = d3.color(color)!;
+    const col = d3.color(col0)!;
     rg.addColorStop(0, "rgba(255,255,255,0.95)");
     rg.addColorStop(0.18, col.copy({ opacity: 0.9 }).formatRgb());
     rg.addColorStop(0.5, col.copy({ opacity: 0.25 }).formatRgb());
     rg.addColorStop(1, col.copy({ opacity: 0 }).formatRgb());
     g.fillStyle = rg;
     g.fillRect(0, 0, 32, 32);
-    sprites.set(color, c);
+    sprites.set(col0, c);
     return c;
   }
   const colorCache = new Map<string, string>();
@@ -923,6 +1109,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   };
 
   function drawBase() {
+    const tb = performance.now();
     const g = base.getContext("2d")!;
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, base.width, base.height);
@@ -936,9 +1123,9 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       for (let i = from + 1; i <= to; i++) g.lineTo(s.pts[2 * i], s.pts[2 * i + 1]);
       g.stroke();
     };
-    // a faint ring/rails so the field has structure
+    // faint rings so the field has structure
     g.strokeStyle = "rgba(148,163,184,0.07)";
-    g.lineWidth = 1;
+    g.lineWidth = 1 / tr.k;
     if (layout === "center") {
       for (const rr of [R, R * 0.66]) {
         g.beginPath();
@@ -969,14 +1156,13 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         g.lineWidth = (s === hover ? 2.6 : 0.5 + 2.4 * k) / tr.k;
         line(s, 0, s.riverAt);
       }
-      // rivers: one per problem, as wide as the water reaching it
+      // rivers: one per topic, as wide as the water reaching it
       const flow = new Map<Problem, number>();
       for (const s of list) if (streamAlpha(s) > 0) flow.set(s.prob, (flow.get(s.prob) ?? 0) + s.value * Math.min(1, streamAlpha(s) * 2.5));
       const fmax = d3.max([...flow.values()]) || 1;
       for (const [p, f] of flow) {
         const k = Math.sqrt(f / fmax);
-        const fade = help && !helpSet.has(p.id) ? 0.25 : 1;
-        for (const [wd, col] of [[2 + 9 * k, `rgba(37,99,235,${0.35 * fade})`], [1 + 4 * k, `rgba(56,189,248,${0.45 * fade})`], [0.6 + 1.2 * k, `rgba(186,230,253,${0.35 * fade})`]] as [number, string][]) {
+        for (const [wd, col] of [[2 + 9 * k, "rgba(37,99,235,0.35)"], [1 + 4 * k, "rgba(56,189,248,0.45)"], [0.6 + 1.2 * k, "rgba(186,230,253,0.35)"]] as [number, string][]) {
           g.strokeStyle = col;
           g.lineWidth = wd / tr.k;
           g.beginPath();
@@ -988,6 +1174,9 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     }
     g.globalCompositeOperation = "source-over";
     baseDirty = false;
+    baseStale = false;
+    lastBase = performance.now();
+    stats.baseMs = performance.now() - tb;
   }
 
   const P: [number, number] = [0, 0];
@@ -1053,9 +1242,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     raf = 0;
     if (!shown || !el.isConnected || el.offsetParent === null) return;
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
-    if (last) {
-      stats.intervalMs = stats.intervalMs ? stats.intervalMs * 0.95 + (now - last) * 0.05 : now - last;
-    }
+    if (last) stats.intervalMs = stats.intervalMs ? stats.intervalMs * 0.95 + (now - last) * 0.05 : now - last;
     last = now;
     const t0 = performance.now();
     clock += dt;
@@ -1074,10 +1261,14 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       const before = Math.floor((tNow - T0) / DAY);
       tNow = Math.min(T1, tNow + dt * 9 * DAY); // about 9 days a second
       const after = Math.floor((tNow - T0) / DAY);
-      if (after !== before) onDay(before, after);
+      if (after !== before) {
+        const td = performance.now();
+        onDay(before, after);
+        stats.onDayMs = performance.now() - td;
+      }
       if (tNow >= T1) setPlaying(false);
     }
-    // whole-year view: problems with recurring events pulse gently
+    // whole-year view: topics with recurring events pulse gently
     if (tNow === null) {
       for (const p of visProbs) {
         if (!p.recurring) continue;
@@ -1089,7 +1280,10 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         }
       }
     }
+    if (baseStale && now - lastBase > 400) baseDirty = true;
+    const tdraw = performance.now();
     drawFrame(clock);
+    stats.drawMs = stats.drawMs * 0.9 + (performance.now() - tdraw) * 0.1;
     const work = performance.now() - t0;
     stats.frames++;
     stats.workMs += work;
@@ -1116,11 +1310,16 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
 
   // ---------- Time playback ----------
   function onDay(before: number, after: number) {
+    const t0 = performance.now();
     compute(tNow, false);
-    computeHelp();
     allocate();
-    paintSvg();
-    baseDirty = true;
+    const t1 = performance.now();
+    paintSvg(false);
+    stats.paintMs = performance.now() - t1;
+    stats.dayMs = t1 - t0;
+    // stream widths change slowly while playing: redraw the stream layer a few times a second, not every day
+    if (reduced || !playing) baseDirty = true;
+    else baseStale = true;
     syncTimeUi();
     // ripples for items that start today, and weekly pulses for repeating events
     const hit = new Set<Problem>();
@@ -1157,9 +1356,11 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
           if (tNow >= T1) setPlaying(false);
         }, 400);
       } else kick();
-    } else if (stepTimer) {
-      clearInterval(stepTimer);
+    } else {
+      if (stepTimer) clearInterval(stepTimer);
       stepTimer = 0;
+      baseDirty = true;
+      kick();
     }
     syncTimeUi();
   }
@@ -1187,18 +1388,31 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     syncTimeUi();
   });
 
-  // ---------- Zoom ----------
-  const zoom = d3.zoom<SVGSVGElement, unknown>().scaleExtent([0.7, 3]).on("zoom", (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+  // ---------- Zoom: main topics → sub-topics → bills and items ----------
+  const DEPTH = ["Main topics", "Sub-topics", "Bills and items"];
+  const zoom = d3.zoom<SVGSVGElement, unknown>().scaleExtent([0.7, 6]).on("zoom", (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
     tr = ev.transform;
     zg.attr("transform", tr.toString());
     placeSvg();
     tip.classList.remove("on");
     baseDirty = true;
-    const want = tr.k >= 1.7 ? true : tr.k < 1.45 ? false : zoomSplit;
-    if (want !== zoomSplit) {
-      zoomSplit = want;
+    // hysteresis so the view doesn't flicker at the thresholds
+    const k = tr.k;
+    let want = zoomLevel;
+    if (k >= DEEP_K) want = 2;
+    else if (k >= SPLIT_K) want = zoomLevel === 2 && k > DEEP_K - 0.25 ? 2 : 1;
+    else if (k < SPLIT_K - 0.25) want = 0;
+    else if (zoomLevel === 2) want = 1;
+    if (want !== zoomLevel) {
+      zoomLevel = want;
+      depthLbl.textContent = DEPTH[zoomLevel];
+      splitSeg.sync();
       relayout(true);
     }
+    kick();
+  }).on("end", () => {
+    paintSvg();
+    baseDirty = true;
     kick();
   });
   svg.call(zoom).on("dblclick.zoom", null);
@@ -1206,9 +1420,19 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     if (tr.k === 1 && tr.x === 0 && tr.y === 0) return;
     svg.call(zoom.transform, d3.zoomIdentity);
   }
+  const zoomBy = (f: number) => (reduced ? svg : svg.transition().duration(450)).call(zoom.scaleBy as never, f);
+  zIn.addEventListener("click", () => zoomBy(1.6));
+  zOut.addEventListener("click", () => zoomBy(1 / 1.6));
+  zReset.addEventListener("click", () => {
+    expanded.clear();
+    splitAll = false;
+    splitSeg.sync();
+    if (tr.k === 1 && tr.x === 0 && tr.y === 0) relayout(true);
+    else (reduced ? svg : svg.transition().duration(600)).call(zoom.transform as never, d3.zoomIdentity);
+  });
   bg.on("dblclick", resetZoom);
   bg.on("click", () => {
-    if (selOrg || selProb) clearSel();
+    if (selOrg || selProb || selItem) clearSel();
     else if (expanded.size) {
       expanded.clear();
       relayout(true);
@@ -1216,31 +1440,33 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   });
 
   // ---------- Updates ----------
-  /** Selection, help or time changed: repaint without moving anything. */
+  /** Selection or time changed: repaint without moving anything. */
   function refresh() {
     compute(tNow, false);
-    computeHelp();
     allocate();
     paintSvg();
     baseDirty = true;
     kick();
   }
-  /** Layout, style or the set of shown problems changed: move things to their new places. */
+  /** Layout, style or the set of shown topics changed: move things to their new places. */
   function relayout(animate: boolean) {
     const from = new Map<string, [number, number]>();
     for (const p of probs.values()) if (p.visible && Number.isFinite(p.x)) from.set(p.id, [p.x, p.y]);
     for (const o of orgList) if (Number.isFinite(o.x)) from.set(o.key, [o.x, o.y]);
-    // a split parent's children start from where the parent was; a folded parent from its first child
-    for (const p of parents) {
-      if (from.has(p.id)) for (const k of p.kids) if (!from.has(k.id)) from.set(k.id, from.get(p.id)!);
+    // a split topic's finer topics start from where it was; a folded topic from its first finer topic
+    const spread = (p: Problem) => {
+      for (const k of p.kids) {
+        if (!from.has(k.id) && from.has(p.id)) from.set(k.id, from.get(p.id)!);
+        spread(k);
+      }
       if (!from.has(p.id)) {
         const k = p.kids.find((x) => from.has(x.id));
         if (k) from.set(p.id, from.get(k.id)!);
       }
-    }
+    };
+    for (const p of parents) spread(p);
     computeTargets();
     compute(tNow, false);
-    computeHelp();
     visStreams = allStreams.filter((s) => s.prob.visible && s.base > 0);
     if (animate && !reduced && from.size) {
       anim = { t0: performance.now(), from, dur: 750 };
@@ -1249,23 +1475,24 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       anim = null;
       applyPositions(1);
     }
+    if (selProb && !selProb.visible && !visProbs.some((q) => within(q, selProb!))) {
+      selProb = null;
+      renderDetail();
+    }
     allocate();
     paintSvg();
     baseDirty = true;
     kick();
-    if (selProb && !selProb.visible && !(selProb.isParent && isExpanded(selProb))) {
-      selProb = null;
-      renderDetail();
-    }
   }
 
   function legendText() {
     clear(legend);
     legend.append(
-      h("div", {}, style === "comets" ? "Each comet stream: one group → one problem, sized by its weighted activity." : "Rivulets from each group join into one river per problem."),
-      h("div", {}, style === "comets" ? "A problem's shield glows with the energy it gets compared with its importance; dim = neglected." : "A problem's delta turns green and wet with the energy it gets compared with its importance; dry = neglected."),
+      h("div", {}, style === "comets" ? "Each comet stream: one group → one topic, sized by its weighted activity (the sliders on the left)." : "Rivulets from each group join into one river per topic, sized by weighted activity (the sliders on the left)."),
+      h("div", {}, style === "comets" ? "A topic's shield glows brighter the more energy reaches it." : "A topic's delta turns greener and wetter the more energy reaches it; quiet ones stay dry."),
+      h("div", {}, "Zoom in (scroll, or the + button) to split main topics into sub-topics, then into individual bills, with each project, event, action and mission statement as a dot on its stream: pink events, green projects, yellow actions, hollow missions."),
       h("div", {}, "Undated projects, actions and mission statements are always on; events appear at their dates when you play the year, and repeating events pulse."),
-      h("div", { class: "cr-legend-hint" }, "Hover a stream · click a group or problem · scroll to zoom and split topics · drag to pan · double-click the background to reset"),
+      h("div", { class: "cr-legend-hint" }, "Hover a stream or dot · click a group, topic or dot · drag to pan · double-click the background to reset the zoom"),
     );
   }
 
@@ -1276,6 +1503,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       o.x = NaN;
       o.y = NaN;
     }
+    depthLbl.textContent = DEPTH[0];
     relayout(false);
     legendText();
     syncTimeUi();
@@ -1290,18 +1518,15 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     relayout(false);
   }).observe(viewport);
 
-  const origStyleSet = () => legendText();
-  bar.addEventListener("click", origStyleSet);
-
   return {
     el,
-    /** Slider weights or importance changed. */
+    /** Slider weights changed. */
     update() {
       if (first) return;
       compute(null, true);
       target.clear();
       relayout(true);
-      if (selOrg || selProb) renderDetail();
+      if (selOrg || selProb || selItem) renderDetail();
     },
     show() {
       shown = true;
@@ -1320,9 +1545,6 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
       tip.classList.remove("on");
-      selOrg = null;
-      selProb = null;
-      renderDetail();
     },
   };
 }

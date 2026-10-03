@@ -263,9 +263,10 @@ async function main() {
   actionsView.el.style.inset = "0";
   content.appendChild(actionsView.el);
 
-  // ----- Topics view (topic galaxy; loads public/topics.json the first time it opens) -----
+  // ----- Topics view (streams of energy into topics; loads public/topics.json the first time it opens) -----
   const topicsView = createTopicsView({
     hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
+    logoOf: (id) => (data.coalitions.find((c) => c.id === id) ?? data.organizations.find((o) => o.id === id))?.logo || undefined,
     onGroupClick: (id) => {
       const c = data.coalitions.find((x) => x.id === id);
       const o = data.organizations.find((x) => x.id === id);
