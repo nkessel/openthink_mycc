@@ -22,7 +22,7 @@ import { rollRecurringForward } from "./recurrence";
 import { attachSectors, createSectorSection } from "./sectors";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
-type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDone?: () => void };
+type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void };
 const bootWin = window as BootWindow;
 function bootProgress(p: number, label?: string) {
   bootWin.bootProgress?.(p, label);
@@ -33,10 +33,13 @@ function hideBoot() {
   const el = document.getElementById("boot");
   if (!el) return;
   bootWin.bootDone?.();
-  setTimeout(() => {
+  const go = () => {
     el.classList.add("done");
     setTimeout(() => el.remove(), 600);
-  }, 250);
+  };
+  // Someone chose "Keep this open to read": wait for their "Enter the map".
+  if (bootWin.bootHeld) { bootWin.bootRelease = go; return; }
+  setTimeout(go, 250);
 }
 
 async function main() {
