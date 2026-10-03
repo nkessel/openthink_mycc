@@ -5,9 +5,15 @@ Group and forwarded to the project by Nathan. The newsletter is not public, so i
 only the public parts: event names, times, public places and public links. Personal email addresses and phone
 numbers in the newsletter were left out on purpose. Never add them to the map.
 
-Items in the newsletter that are not about Palestine were also left out, for a later sector. They were: immigration
-(Jewish Activists for Immigration Justice, LUCE, Operation Milkweed, the asylum and immigrant funds), the Beloved
-Center's Jewish ritual and arts classes, and a songleading workshop.
+Items in the newsletter that are not about Palestine went into their own sector files (Nathan, 2026-10-02: include
+everything, classified for the coming expansion):
+- `public/sectors/immigrant-rights.json`: Jewish Activists for Immigration Justice ("Casting Away Fear, Building
+  Shelter for All", Oct 4, Groff Park, Amherst); the Franklin County LUCE hub (Stone Soup Solidarity Workshop, Oct 6,
+  Stone Soup Cafe, Greenfield; the LUCE ICE hotline); and donations to Operation Milkweed, the Immigrant Solidarity
+  Collective and the Western Mass Asylum Support Network.
+- `public/sectors/jewish-spiritual-life.json`: the Beloved Center in Florence (Making Art with Torah, Oct 4; Grief
+  Studio: Yizkor, Oct 6; Creative Commentary weekly Torah study, Wednesdays; Cheshvan Rosh Chodesh Circle, Oct 13).
+- `public/sectors/movement-skills.json`: Songleading for Protests (Truth School, online, Oct 6).
 
 Where an item has a link, check the linked page before using it, and use that page as its source. Otherwise the source
 is "JVP Western Mass newsletter, 2026-10-02".

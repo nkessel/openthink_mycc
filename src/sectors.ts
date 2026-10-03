@@ -28,6 +28,30 @@ export const SECTORS: SectorDef[] = [
     color: "#a16207",
     maps: ["ma", "us"],
   },
+  {
+    id: "immigrant-rights",
+    label: "Immigrant rights",
+    toggleLabel: "Show immigrant rights groups and events",
+    path: "sectors/immigrant-rights.json",
+    color: "#0e7490",
+    maps: ["ma", "us"],
+  },
+  {
+    id: "jewish-spiritual-life",
+    label: "Jewish spiritual life",
+    toggleLabel: "Show Jewish spiritual and ritual gatherings",
+    path: "sectors/jewish-spiritual-life.json",
+    color: "#6d28d9",
+    maps: ["ma", "us"],
+  },
+  {
+    id: "movement-skills",
+    label: "Movement skills & culture",
+    toggleLabel: "Show organizer trainings and movement culture",
+    path: "sectors/movement-skills.json",
+    color: "#be185d",
+    maps: ["ma", "us"],
+  },
 ];
 
 const STORAGE_KEY = "openthink.sectors.v1";

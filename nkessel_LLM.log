@@ -460,3 +460,11 @@ What / why
 - recurrence.ts: "Every day …"/"Daily …" is now understood (rolls forward like weekly events).
 - Tagging: research/topics/sectors/palestinian-rights.records.json + .extracted.json (39 records, Sonnet sub-agent, INSTRUCTIONS.md rules). I removed 7 topics whose evidence was only a title or group name. Kept apart from the climate topics.
 - Tested in Playwright (preview, live sheet blocked → snapshot): off by default with 0 sector nodes/cards/calendar chips/search hits/legend rows; on → 7 nodes, sector cards in Events/Actions + calendar, 7 search hits, legend row; survives reload; drawer has no edit link; USA map shows it, VT switch disabled; off again → 0 everywhere; 0 page errors.
+
+## 2026-10-02 — Sector layer: every item from the newsletter (Nathan: "include all the items… classification that makes sense")
+- Three more sectors next to Palestinian rights, each with its own switch under Map settings → Social justice (off by default):
+  - Immigrant rights: Jewish Activists for Immigration Justice, the Franklin County LUCE hub, and donations to Operation Milkweed, the Immigrant Solidarity Collective and the Western Mass Asylum Support Network.
+  - Jewish spiritual life: four Beloved Center gatherings in Florence.
+  - Movement skills & culture: Songleading for Protests (Truth School, online).
+- Same source and rules as Palestinian rights: newsletter only, linked pages not yet checked, no personal contacts. SOURCE.md now lists where each item went.
+- Playwright: all four on adds 13 nodes; switches present; sector cards show on the Events page; no page errors.
