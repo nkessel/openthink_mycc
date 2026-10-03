@@ -152,6 +152,9 @@ async function main() {
       drawerApi!.open(node);
       graphApi!.setSelectedNode(node);
     },
+    onItemClick: (kind, item, owner) => {
+      drawerApi!.openItem(kind, item, owner);
+    },
     onNodeDeselect: () => {
       drawerApi!.close();
       graphApi!.setSelectedNode(null);

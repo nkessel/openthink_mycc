@@ -2030,6 +2030,8 @@ text.sat-more { fill: var(--text-dim); }
 .reset-map-btn { appearance:none; border:1px solid var(--border); border-radius:999px; background:var(--bg-elev); color:var(--text-dim); font:inherit; font-size:12px; padding:6px 12px; cursor:pointer; align-self:flex-start; }
 .reset-map-btn:hover { color:var(--text); }
 .node-org.member-ring, .node-org.member-ring.partner { opacity: 1; }
+/* An organization's coalitions and partner groups, gathered on the outer orbit when it is opened: present but quiet */
+.node-coalition.member-ring, .node-coalition.member-ring.partner { opacity: 0.8; }
 .node-org.member-ring .node-name { display: block; }
 
 /* Map switcher (right-click the title) */
@@ -2218,8 +2220,10 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
   stroke-width: 3px;
   stroke-linejoin: round;
   paint-order: stroke;
-  pointer-events: none;
+  pointer-events: auto; /* clicking an item's name opens it, like clicking its icon */
+  cursor: pointer;
 }
+.sat-label:hover, .moon-label:hover { fill: #fff; text-decoration: underline; }
 .sat-label .lbl-meta, .moon-label .lbl-meta { fill: var(--text-dim); font-weight: 400; font-size: 0.88em; }
 .node-org.faded .sat-label { opacity: 0.4; }
 
@@ -2554,3 +2558,29 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
 .cr-detail-logo { width: 22px; height: 22px; border-radius: 50%; background: #f8fafc; object-fit: contain; flex: none; }
 .cr-detail-head .cr-detail-logo { width: 40px; height: 40px; }
 .cr-feeder-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-elev-2); flex: none; }
+/* ---------- Full view of one event / project / action in the details tray (drawer.ts renderItem) ---------- */
+.drawer .item-head { position: sticky; top: 0; z-index: 2; background: var(--bg-elev); }
+.drawer .item-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.drawer .item-top .close { position: static; }
+.item-back { appearance: none; border: none; background: none; color: var(--accent); font: inherit; font-size: 13px; padding: 0; cursor: pointer; text-align: left; }
+.item-back:hover { text-decoration: underline; }
+.item-kind { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
+.item-kind.k-event { color: var(--k-event); }
+.item-kind.k-project { color: var(--k-project); }
+.item-kind.k-action { color: var(--k-action); }
+.drawer .item-head h2 { margin: 0; font-size: 20px; line-height: 1.3; }
+.item-detail .desc { white-space: pre-wrap; }
+.item-cal { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 10px; }
+.btn-cal { font-size: 12.5px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); color: var(--text); text-decoration: none; background: var(--bg-elev-2); }
+.btn-cal:hover { border-color: var(--accent); }
+.drawer .item.clickable { cursor: pointer; }
+.drawer .item.clickable:hover { border-color: var(--accent); }
+.item-open { appearance: none; border: none; background: none; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.item-open:hover { color: var(--accent); }
+.item-open-more { color: var(--accent); }
+.item-topics .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+
+/* An opened organization's coalitions and partner groups, on the outskirts: smaller and quieter */
+.node-coalition.linked > :not(.sats), .node-org.linked > :not(.sats) { transform: scale(0.6); }
+.node-coalition.linked, .node-org.linked { opacity: 0.75; }
+.node-coalition.linked:hover, .node-org.linked:hover { opacity: 1; }
