@@ -48,6 +48,11 @@ PLACE_BOX) and add it to the switcher list in `src/topbar.ts`. Check it loads wi
 - [ ] New Jersey (NJ)
 - [ ] Pennsylvania (PA)
 
+- [ ] **Sharper logos.** About 110 logos are under 256px (most are the 160px images from the original MA import), so
+      they look soft when zoomed in past ~4×. For each, look for a larger version of the same logo on the group's own
+      pages (about/press/brand pages, PDFs, social profile images), check it's identical, and replace it at 512–640px.
+      `scripts/upgrade-logos.py` already tried each homepage (see `research/logos/up/report.json`).
+
 ## Site development
 
 - [ ] Switcher: once there are 5+ states, turn the switcher list into a searchable list grouped by region.
