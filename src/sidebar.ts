@@ -143,8 +143,10 @@ export function createSidebar(
 
 /** The key to the network map, shown on the map itself (bottom-left); click its title to fold it. */
 export function createMapLegend(parent: HTMLElement): HTMLElement {
-  const legend = h("div", { class: "map-legend open" });
-  const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": "true" }, "Legend");
+  // Open on wide screens; folded on phones, where it would cover a third of the map.
+  const startOpen = !window.matchMedia("(max-width: 720px)").matches;
+  const legend = h("div", { class: startOpen ? "map-legend open" : "map-legend" });
+  const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": String(startOpen) }, "Legend");
   head.addEventListener("click", () => {
     const open = !legend.classList.contains("open");
     legend.classList.toggle("open", open);
