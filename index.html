@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MA Climate Coalition Map</title>
     <style>
-      #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
+      #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:14px;overflow:auto;padding:24px 0;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
       #boot.done{opacity:0;pointer-events:none}
       #boot canvas{width:280px;height:190px}
       #boot .bar{width:240px;height:6px;border-radius:3px;background:#1e293b;overflow:hidden}
@@ -13,7 +13,12 @@
       #boot .boot-quip{font-size:13px;color:#7dd3fc;font-style:italic;min-height:1.3em;transition:opacity .35s ease;text-align:center;padding:0 16px}
       #boot .boot-quip.fade{opacity:0}
       #boot .boot-left{font-size:12px;color:#94a3b8;min-height:1.2em;font-variant-numeric:tabular-nums}
-      #boot .boot-land{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:min(560px,calc(100% - 32px));font-size:12px;line-height:1.55;color:#94a3b8;text-align:center}
+      .land-text{width:min(600px,calc(100% - 32px));font-size:12px;line-height:1.6;color:#94a3b8;text-align:center}
+      .land-text p{margin:0 0 9px}
+      .land-text strong{color:#cbd5e1;font-weight:600}
+      .land-text a{color:#7dd3fc;text-decoration:underline;text-underline-offset:2px}
+      .land-text .ded-head{margin-top:16px;color:#cbd5e1}
+      #boot .land-text{margin-top:22px}
     </style>
   </head>
   <body>
@@ -23,7 +28,24 @@
       <div class="boot-quip" aria-hidden="true"></div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
       <div class="boot-left"></div>
-      <p class="boot-land">This map was made on the homelands of the Massachusett, Nipmuc and Wampanoag peoples, in the places now called Natick, Wellesley and Boston. We honor the Indigenous people who have cared for these lands and waters for thousands of years, and who live, work and lead here today.</p>
+      <div class="land-text" id="land-dedication">
+        <p>This map was made on the homelands of the Massachusett, Nipmuc and Wampanoag peoples, in the places now called Natick, Wellesley and Boston. We honor the Indigenous people who have cared for these lands and waters for thousands of years, and who live, work and lead here today.</p>
+        <p class="ded-head">This site was made with the help of Claude Code (AI).</p>
+        <p>Claude was designed in offices on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know.</p>
+        <p>We receive the gifts of the Earth with gratitude: the water that cools these data centers, and the electricity drawn from coal, gas, wind, and sunlight. We strive to use these gifts in service of all living beings.</p>
+        <p>We acknowledge the resources AI systems require to run, and the harm woven into how they operate and came into being. May none of it be in vain. May we dedicate our lives to the welfare and benefit of all life on Earth.</p>
+        <p><strong>Learn whose land you're on</strong> &rarr;
+          <a href="https://native-land.ca" target="_blank" rel="noopener noreferrer">native-land.ca</a>
+        </p>
+        <p><strong>Give back</strong> &rarr;
+          <a href="https://www.realrentduwamish.org" target="_blank" rel="noopener noreferrer">Real Rent Duwamish</a> &middot;
+          <a href="https://www.ramaytush.org/donate.html" target="_blank" rel="noopener noreferrer">Association of Ramaytush Ohlone</a> &middot;
+          <a href="https://thelenapecenter.com" target="_blank" rel="noopener noreferrer">Lenape Center</a>
+        </p>
+        <p><strong>Learn more</strong> &rarr;
+          <a href="https://www.pokagonband-nsn.gov" target="_blank" rel="noopener noreferrer">Pokagon Band of Potawatomi</a>
+        </p>
+      </div>
     </div>
     <script>
       // Loading splash: a progress bar with an estimate of the time left (from how long the last loads took,
