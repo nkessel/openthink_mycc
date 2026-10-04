@@ -14,6 +14,7 @@ import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
 import { sectorById } from "./sectors";
 import { orgProjects, orgEvents, orgActions } from "./owners";
+import { typeIcon } from "./icons";
 import { suggestionsFor } from "./suggestions";
 
 type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
@@ -178,6 +179,7 @@ export function createDrawer(
         {
           class: `drawer-tab ${t.id === activeTab ? "active" : ""}`,
         },
+        t.id === "projects" ? typeIcon("project", 14) : t.id === "events" ? typeIcon("event", 14) : t.id === "actions" ? typeIcon("action", 14) : null,
         t.label,
       );
       btn.addEventListener("click", () => api.setActiveTab(t.id));
@@ -509,7 +511,8 @@ export function createDrawer(
       : a.kind === "role" ? "Volunteer role" : "Action";
     const head = h("div", { class: "head item-head" },
       h("div", { class: "item-top" }, back, closeBtn),
-      h("div", { class: `item-kind k-${kind}` }, kindLabel),
+      h("div", { class: `item-kind k-${a.kind === "role" && kind === "action" ? "volunteer" : kind}` },
+        typeIcon(kind === "action" && a.kind === "role" ? "volunteer" : kind, 15), " ", kindLabel),
       h("h2", {}, item.name));
     el.appendChild(head);
 
