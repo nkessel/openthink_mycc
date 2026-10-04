@@ -562,3 +562,25 @@ What / why
 - Full view of an event / project / action in the details tray: kind, when (with recurrence), where (+ Open in maps), full description, RSVP / website, + Google Calendar and an .ics file, host (back to the group), topics from the topic map, last-checked notice, and "More from <group>". Clicking an item's icon or its name on the map opens it, as do item names in the tray's lists.
 - Moons now trail their planet when it is dragged and spring back (they were frozen: the still ring sims never restarted because their alpha stayed at 1). No push between moons, so their orbit and spacing are unchanged. Max zoom 4× → 12×.
 - Opening an organization now also shows its coalitions and partner groups on the outskirts, smaller (60%) and quieter (75%), instead of greyed out.
+
+## 2026-10-03 — Items grow with zoom, sharper logos, shorter land acknowledgement & dedication
+- Items now grow gently on screen as you zoom past 3× (√(k/3): ~1.4× at 6×, 2× at 12×), still capped at SAT_MAX_WORLD_R in map space so the spacing holds. Their names grow a little less (font × grow^-0.4). Group names grow gently too (k^0.35 instead of fixed).
+- Sharper logos: scripts/upgrade-logos.py re-read each group's own homepage for a bigger version of its current logo (≥1.8× the size). I reviewed 88 candidates side by side and accepted 39 that were the same logo, just sharper (list and sources in research/logos/up/report.json). The rest were different images (photos, partner logos, Instagram icons) and were rejected.
+- XR Boston and XR Western Mass: their own site only offers a 192px icon. Rebuilt it at 640px from Extinction Rebellion's published vector symbol (rebellion.global/assets/img/logos/xr.svg), in the chapters' own black-on-green.
+- About 110 logos are still under 256px (mostly the 160px images from the original MA import). They look soft past about 4× zoom. A deeper search (press kits, social profiles) could fix more; added to BACKLOG.
+- Loading screen text, workshopped with Nathan: "made with Claude Code" first (plain, not bold), then all the peoples in one paragraph, then gratitude, harm and dedication in one paragraph, in the original wording as far as possible (221 → 186 words, links included).
+- Loading screen: links on their own lines ("Whose land are you on?", then "Give back", then "Learn more"). Smaller animation and text on phones, so it all fits on one screen. New "Keep this open to read" button: the map keeps loading behind it, and the splash stays until "Enter the map →".
+
+2026-10-03 09:55 ET (Claude, PR #42 follow-up)
+- Loading screen: "Open the map automatically when it's ready" checkbox (on by default; saved in localStorage openthink.autoEnter). Off = screen stays until "Enter the map". Why: Nathan asked for a toggle next to the Enter button.
+- Loading screen: replaced the joke lines with what is actually loading (spreadsheet request, KB downloaded, counts, layers, repeating events, layout, pages) and a "map is ready" line when held.
+- Item colours: Watershed palette tuned for colour blindness (event #2dd4bf, project #bef264, action #ea580c, volunteer #8b5cf6; min ΔE 29 under protan/deutan/tritan simulation). Volunteer roles get their own colour (--k-volunteer) and legend row.
+- Volunteer icon: one person (head and shoulders) with a hand raised, shared by map bubbles and the drawer (src/icons.ts). Actions keep the checkmark. Drawer tabs and the item header now show the type icon next to the name; the focus header counts volunteer roles separately.
+
+2026-10-03 11:50 ET (Claude, PR #42 follow-up 2)
+- Loading screen: no toggle. The map opens by itself when ready; a glossy blue-green "Read more" button keeps the screen up and becomes "Open the map →" (Nathan's call: default auto, no toggle).
+- Loading lines now include real facts from the data (memberships and organizations in 2+ coalitions, events in the next 30 days, actions and volunteer roles, days since the latest group update) and a logo preload counter (the map waits up to 1.5 s for logos so it doesn't open on blank circles). Each line stays up 0.6 s; the map waits at most 1.6 s extra for queued lines.
+- "Whose land are you on?" is now a white label like "Give back:", linking to Native Land Digital.
+- Phone loading screen: items no longer shrink when the text runs long (the progress bar had collapsed and the button was clipped).
+- Close-up view: overlapping moon names are pushed outward once the moons settle (and again after a drag), measured in screen space.
+- Item dots now trail their group like the icons do. The physics is created only while a group is dragged, for at most 16 on-screen groups that move most, and disposed when settled. Measured headless: ~10% more main-thread time during a drag, none at rest.
