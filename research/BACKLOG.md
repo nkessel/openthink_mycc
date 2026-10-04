@@ -15,6 +15,11 @@ before pushing; log in `nkessel_LLM.log`; never push to `main` or `development_b
       `rsvp_link` (Zoom/Eventbrite/Mobilize/Action Network/Google Form…), and replace a general events-page `link`
       with the event's own page. Only from the host's pages; never guess. Green Energy Consumers Alliance is done
       (2026-10-02). The sheet picks these up via "Fill in missing details … from GitHub" (blank cells only).
+      _2026-10-04: blocked in scheduled runs. Reading the event pages needs WebFetch, and its per-URL approval
+      can't be given while nobody is watching (every fetch failed "PROVENANCE_REQUIRED"); search results alone
+      don't show sign-up links. Ready to run when someone is present: `research/rsvp/INSTRUCTIONS.md` +
+      `input_1..3.json` (107 upcoming events without an RSVP link: 82 MA, 25 VT). The same block hits every
+      research item below this run (MA types, VT dates/types, new states)._
 
 - [x] **Remove research notes from public text.** Done 2026-10-02 (PR #39). About 30 descriptions in `public/data.json` and `public/maps/vt.json`
       contain notes meant for us, not the public ("no climate work found", "its own website blocks automated readers",
@@ -75,4 +80,9 @@ PLACE_BOX) and add it to the switcher list in `src/topbar.ts`. Check it loads wi
 - [ ] Switcher: once there are 5+ states, turn the switcher list into a searchable list grouped by region.
 - [ ] USA map: a national-coalitions-only view (coalitions with members in 2+ states) as the default USA layout,
       so it stays readable as states are added.
+      _2026-10-04: not done. No coalition has members in 2+ states yet: every coalition is state-level and state
+      ids don't overlap, so this view would be empty. What does cross states is national networks' chapters
+      (Sierra Club, 350, Sunrise, Citizens' Climate Lobby, CLF and Interfaith Power & Light in all 4 states;
+      Third Act, XR, Audubon in 3). Needs a decision: add a `network` field (with a source) linking chapters,
+      then show networks as the USA view's top level._
 - [ ] Voting-district outlines (state house / senate) for Massachusetts, from an official open-data source.
