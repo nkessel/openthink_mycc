@@ -242,7 +242,7 @@ function onOpen() {
 function fillLogosFromGitHub() {
   var data = JSON.parse(UrlFetchApp.fetch(SEED_URL).getContentText());
   var result = fillLogos_(data);
-  var msg = 'Filled ' + result.logos + ' logo(s), ' + result.websites + ' website(s) and ' + (result.details || 0) + ' other detail(s) (descriptions, types, focus) from GitHub. Only empty cells were filled.';
+  var msg = 'Filled ' + result.logos + ' logo(s), ' + result.websites + ' website(s), ' + (result.rsvp || 0) + ' RSVP link(s) and ' + (result.details || 0) + ' other detail(s) (descriptions, types, focus, event pages) from GitHub. Only empty cells (and general events-page links) were filled.';
   try { SpreadsheetApp.getUi().alert(msg); } catch (e) { /* run from the editor */ }
   return msg;
 }
@@ -269,13 +269,52 @@ function fillCoalitionLogos_(data, counts) {
   });
 }
 
+/**
+ * Events: fill a blank RSVP link from the repo, and swap a link that only points to a general events page
+ * (the repo's link starts with it and goes further) for the event's own page. Never overwrites anything else.
+ */
+/** True when `general` is a site's events listing (…/events, /calendar, /upcoming-events…) on the same site as `specific`. */
+function isListingFor_(general, specific) {
+  var host = function (u) { var m = /^https?:\/\/(?:www\.)?([^\/?#]+)/i.exec(u || ''); return m ? m[1].toLowerCase() : ''; };
+  if (!host(general) || host(general) !== host(specific) || general === specific) return false;
+  var path = String(general).replace(/^https?:\/\/[^\/]+/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  var last = path.split('/').pop();
+  return path === '' || /^(events?|calendar|upcoming(-events)?|event-listings|whats-on|get-involved)$/i.test(last);
+}
+
+function fillEventLinks_(data, counts) {
+  var sheet = ss_().getSheetByName(TAB.events);
+  if (!sheet) return;
+  addMissingColumns_(sheet, COLS[TAB.events]);
+  var table = readTable_(sheet);
+  var byId = {};
+  (data.coalitions || []).concat(data.organizations || []).forEach(function (n) {
+    (n.events || []).forEach(function (e) { byId[e.id] = e; });
+  });
+  table.rows.forEach(function (r) {
+    var src = byId[str_(r.id)];
+    if (!src) return;
+    var updates = {};
+    if (!str_(r.rsvp_link) && src.rsvp_link) { updates.rsvp_link = src.rsvp_link; counts.rsvp++; }
+    var cur = str_(r.link);
+    if (src.link && (!cur || (src.link.length > cur.length && src.link.indexOf(cur.replace(/\/+$/, '')) === 0) || isListingFor_(cur, src.link))) {
+      if (src.link !== cur) { updates.link = src.link; counts.details++; }
+    }
+    if (!Object.keys(updates).length) return;
+    writeFields_(sheet, table.headers, r._row, updates);
+    logChange_('', 'Fill from GitHub', 'updated', '', 'event', str_(r.id), str_(r.name),
+      Object.keys(updates).map(function (k) { return k + ': ' + (str_(r[k]) || '∅') + ' → ' + updates[k]; }).join('\n'));
+  });
+}
+
 function fillLogos_(data) {
   var sheet = ss_().getSheetByName(TAB.orgs);
   var table = readTable_(sheet);
   var byId = {};
   data.organizations.forEach(function (o) { byId[o.id] = o; });
-  var counts = { logos: 0, websites: 0, details: 0 };
+  var counts = { logos: 0, websites: 0, details: 0, rsvp: 0 };
   fillCoalitionLogos_(data, counts);
+  fillEventLinks_(data, counts);
   table.rows.forEach(function (r) {
     var src = byId[str_(r.id)];
     if (!src) return;

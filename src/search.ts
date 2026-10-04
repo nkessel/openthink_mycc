@@ -3,6 +3,10 @@
 import { currentMap } from "./maps";
 import type { DataFile } from "./types";
 import { allEvents, allProjects } from "./owners";
+import { sectorById } from "./sectors";
+
+/** "Palestinian rights · " in front of a sector layer's results, so they read as part of that layer. */
+const sec = (x: { sector?: string }) => { const s = sectorById(x.sector); return s ? `${s.label} · ` : ""; };
 
 export type SearchKind = "coalition" | "org" | "event" | "project" | "place";
 
@@ -28,11 +32,11 @@ const KIND_LABEL: Record<SearchKind, string> = {
 export function allNodesForSearch(data: DataFile): SearchItem[] {
   return [
     ...data.coalitions.map((c) => ({
-      id: c.id, kind: "coalition" as const, label: c.name, sub: `${c.abbrev} · ${c.member_count} member ${c.member_count === 1 ? "group" : "groups"}`,
+      id: c.id, kind: "coalition" as const, label: c.name, sub: c.sector ? `${sec(c)}${c.member_count} groups` : `${c.abbrev} · ${c.member_count} member ${c.member_count === 1 ? "group" : "groups"}`,
       keywords: `${c.abbrev} ${c.focus_tags.join(" ")}`,
     })),
     ...data.organizations.map((o) => ({
-      id: o.id, kind: "org" as const, label: o.name, sub: [o.abbrev, o.geographic_focus].filter(Boolean).join(" · "),
+      id: o.id, kind: "org" as const, label: o.name, sub: sec(o) + [o.abbrev, o.geographic_focus].filter(Boolean).join(" · "),
       keywords: `${o.abbrev || ""} ${(o.topic_tags || []).join(" ")} ${o.geographic_focus}`,
       lat: o.remote ? undefined : o.lat, lng: o.remote ? undefined : o.lng,
     })),
@@ -43,11 +47,11 @@ export function everythingForSearch(data: DataFile): SearchItem[] {
   return [
     ...allNodesForSearch(data),
     ...allEvents(data).map(({ event: e, owner }) => ({
-      id: e.id, kind: "event" as const, label: e.name, sub: `${owner.abbrev} · ${e.date.slice(0, 10)} · ${e.location || ""}`,
+      id: e.id, kind: "event" as const, label: e.name, sub: `${sec(e)}${owner.abbrev} · ${e.date.slice(0, 10)} · ${e.location || ""}`,
       keywords: `${e.location || ""} ${owner.name}`, lat: e.online ? undefined : e.lat, lng: e.online ? undefined : e.lng,
     })),
     ...allProjects(data).map(({ project: p, owner }) => ({
-      id: p.id, kind: "project" as const, label: p.name, sub: `${owner.abbrev} · ${p.status}`,
+      id: p.id, kind: "project" as const, label: p.name, sub: `${sec(p)}${owner.abbrev} · ${p.status}`,
       keywords: `${p.location || ""} ${owner.name} ${p.skills_needed.join(" ")}`,
       lat: p.online ? undefined : p.lat, lng: p.online ? undefined : p.lng,
     })),

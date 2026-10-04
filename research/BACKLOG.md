@@ -10,13 +10,25 @@ before pushing; log in `nkessel_LLM.log`; never push to `main` or `development_b
 
 ## Data gaps
 
+- [ ] **RSVP links for every upcoming event.** Most events in `public/data.json` (and `public/maps/vt.json`) only
+      link to a group's events page. For each upcoming event, open its own page and record the sign-up link in
+      `rsvp_link` (Zoom/Eventbrite/Mobilize/Action Network/Google Form…), and replace a general events-page `link`
+      with the event's own page. Only from the host's pages; never guess. Green Energy Consumers Alliance is done
+      (2026-10-02). The sheet picks these up via "Fill in missing details … from GitHub" (blank cells only).
+
+- [x] **Remove research notes from public text.** Done 2026-10-02 (PR #39). About 30 descriptions in `public/data.json` and `public/maps/vt.json`
+      contain notes meant for us, not the public ("no climate work found", "its own website blocks automated readers",
+      "could not be confirmed as current", "location not verified on page", scraper errors such as "Campaign page could
+      not be loaded"). The `notes` fields in `research/topics/extracted.json` list them. Rewrite each as a plain public
+      description (from the group's own pages), or blank it; put the research note in a research file instead.
+
 - [x] **Massachusetts: 34 unresearched orgs.** The `not_found` ids in `research/ma-gaps/fill3.json` were never
       researched (search cap ran out). Use `research/ma-gaps/INSTRUCTIONS.md`; write `research/ma-gaps/fill4.json`;
       merge into `public/data.json` blank fields only (same as the merge in the 2026-10-01 log entry).
       _2026-10-02: 31/34 filled (`fill4.json`). Not found: `sunrise_ipswich`, `sunrise_western_mass` (no such hub
       found), `mit_sea` (only the MIT Sustainable Energy Alliance, mitsea.org, turned up; a human should decide)._
 - [ ] **Massachusetts: types + websites.** 87 orgs still have `type` "unknown" and 43 no website. Same method.
-      _2026-10-02 (partial, `fill5.json`): now 43 unknown types, 12 without website. The rest mostly have no stated
+      _2026-10-02 (partial, `fill5_types.json`): now 43 unknown types, 12 without website. The rest mostly have no stated
       tax status on readable pages (chapters of national orgs, 501(c)(6) groups). Pre-existing odd types worth a
       human look: `university` on two high-school groups, `school_club` on UU Mass Action, `youth_org` (not in the
       type list)._

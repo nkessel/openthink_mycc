@@ -1,7 +1,7 @@
 import { h } from "./dom";
 import { currentMap, MAPS, switchMap, type MapId } from "./maps";
 
-export type TopTab = "map" | "geo" | "orgs" | "events" | "projects" | "actions";
+export type TopTab = "map" | "geo" | "orgs" | "events" | "projects" | "actions" | "topics";
 
 export interface TopbarCallbacks {
   onTabChange(tab: TopTab): void;
@@ -76,6 +76,7 @@ export function createTopbar(
     { id: "events", label: "Events" },
     { id: "projects", label: "Projects" },
     { id: "actions", label: "Actions" },
+    { id: "topics", label: "Topics" },
   ];
   const buttons = new Map<TopTab, HTMLElement>();
 

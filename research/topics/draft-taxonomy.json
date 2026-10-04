@@ -1,0 +1,1470 @@
+{
+ "generated_at": "2026-10-02",
+ "status": "draft for team review",
+ "parents": [
+  {
+   "id": "energy",
+   "label": "Clean energy & the grid",
+   "children": [
+    {
+     "id": "solar",
+     "label": "Solar",
+     "phrases": [
+      "balcony solar",
+      "community and rooftop solar",
+      "community solar",
+      "going solar",
+      "large-scale solar",
+      "low-income solar bill savings",
+      "municipal and residential solar",
+      "municipal solar",
+      "public-sector solar",
+      "residential solar",
+      "rooftop solar",
+      "solar",
+      "solar access",
+      "solar and evs",
+      "solar canopies",
+      "solar for affordable housing",
+      "solar for nonprofits",
+      "solar for nonprofits and schools",
+      "solar in underserved communities",
+      "solar installation",
+      "solar power"
+     ]
+    },
+    {
+     "id": "wind",
+     "label": "Offshore & onshore wind",
+     "phrases": [
+      "offshore wind",
+      "offshore wind port",
+      "offshore wind procurement",
+      "solar and wind",
+      "wind power",
+      "wind turbines"
+     ]
+    },
+    {
+     "id": "community_power",
+     "label": "Community & public power (aggregation, co-ops, green electricity)",
+     "phrases": [
+      "100% green electricity",
+      "clean energy switching",
+      "community choice electricity",
+      "community choice energy",
+      "community electricity aggregation",
+      "community energy cooperatives",
+      "community-owned energy",
+      "community-owned renewable energy",
+      "energy democracy",
+      "green electricity",
+      "green electricity enrollment",
+      "green energy",
+      "green municipal aggregation",
+      "green power",
+      "public power",
+      "renewable energy pledges"
+     ]
+    },
+    {
+     "id": "grid",
+     "label": "Grid, storage & energy demand (incl. data centers)",
+     "phrases": [
+      "ai data centers",
+      "battery storage",
+      "cleaner grid",
+      "community microgrids",
+      "community solar and storage",
+      "data center moratorium",
+      "data centers",
+      "electric grid",
+      "electric grid modernization",
+      "energy storage",
+      "grid electrification",
+      "grid modernization",
+      "independent power production",
+      "peak electricity demand",
+      "public energy grid"
+     ]
+    },
+    {
+     "id": "utilities",
+     "label": "Utilities, rates & consumer protection",
+     "phrases": [
+      "consumer protection",
+      "electricity supplier scams",
+      "energy affordability",
+      "energy consumer protections",
+      "energy use and costs",
+      "group purchasing",
+      "heat pump electricity rates",
+      "heat pump rates",
+      "heating fuel costs",
+      "heating-fuel buying groups",
+      "time-varying rates",
+      "utility oversight"
+     ]
+    },
+    {
+     "id": "clean_energy",
+     "label": "Clean / renewable energy in general",
+     "phrases": [
+      "100% renewable energy",
+      "100% renewable energy by 2040",
+      "100% renewable island",
+      "affordable clean energy",
+      "biodiesel",
+      "clean electricity",
+      "clean energy",
+      "clean energy alternatives",
+      "clean energy incentives",
+      "clean energy infrastructure",
+      "clean energy technologies",
+      "clean energy technology",
+      "energy independence",
+      "hydropower",
+      "renewable affordable energy",
+      "renewable electricity",
+      "renewable energy"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "buildings",
+   "label": "Buildings & home energy",
+   "children": [
+    {
+     "id": "heat_pumps",
+     "label": "Heat pumps, geothermal & electrification",
+     "phrases": [
+      "building decarbonization",
+      "building electrification",
+      "clean heat",
+      "cold-climate heat pumps",
+      "electrification",
+      "electrification incentives",
+      "gas stoves",
+      "ground-source heat loops",
+      "ground-source heat pumps",
+      "heat pump and geothermal",
+      "heat pump design",
+      "heat pump rebates",
+      "heat pumps",
+      "heat pumps and modern hvac",
+      "home electrification",
+      "home weatherization and electrification",
+      "residential electrification",
+      "sustainable home heating",
+      "thermal energy networks",
+      "window heat pumps"
+     ]
+    },
+    {
+     "id": "efficiency",
+     "label": "Efficiency, weatherization & energy assessments",
+     "phrases": [
+      "building efficiency",
+      "building energy efficiency",
+      "building energy upgrades",
+      "efficiency rebates",
+      "efficient home upgrades",
+      "efficient technologies",
+      "energy coaching",
+      "energy conservation",
+      "energy efficiency",
+      "energy retrofits",
+      "energy saving",
+      "energy savings",
+      "energy-savings kits",
+      "heating upgrades",
+      "home energy assessments",
+      "home energy audits",
+      "home energy efficiency",
+      "home energy savings",
+      "home repair",
+      "home retrofits",
+      "home weatherization",
+      "low-income weatherization",
+      "mass save three-year plan",
+      "weatherization",
+      "window inserts"
+     ]
+    },
+    {
+     "id": "green_building",
+     "label": "Green building standards (passive house, embodied carbon, BERDO)",
+     "phrases": [
+      "architecture and design",
+      "berdo",
+      "building carbon emissions",
+      "building carbon footprint",
+      "building emissions",
+      "building energy use",
+      "building performance",
+      "building science",
+      "built environment",
+      "deep energy retrofits",
+      "embodied carbon",
+      "green building",
+      "green buildings",
+      "leed guidance",
+      "municipal energy codes",
+      "passive house building",
+      "passive house jobs",
+      "passive house market",
+      "passive house multifamily certification",
+      "passive house standard",
+      "passive house training",
+      "ventilation design",
+      "zero carbon renovation fund",
+      "zero-carbon building renovations"
+     ]
+    },
+    {
+     "id": "public_buildings",
+     "label": "School, town & worship buildings",
+     "phrases": [
+      "aging school buildings",
+      "climate-resilient school infrastructure",
+      "green school buildings",
+      "healthy school environments",
+      "house of worship emissions",
+      "house of worship energy audits",
+      "municipal building energy",
+      "public school facilities",
+      "school building decarbonization",
+      "school building heat pumps",
+      "school energy programs",
+      "school energy use",
+      "school heating and cooling",
+      "school ventilation and filtration",
+      "sustainable school buildings",
+      "synagogue energy use",
+      "town building benchmarking",
+      "town building energy upgrades"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "fossil",
+   "label": "Fossil fuels, biomass & nuclear",
+   "children": [
+    {
+     "id": "gas_infra",
+     "label": "Gas pipelines, compressors & gas expansion",
+     "phrases": [
+      "access northeast gas infrastructure",
+      "ferc pipeline proceedings",
+      "fossil gas",
+      "fracked gas infrastructure",
+      "fracked gas pipeline expansion",
+      "gas and energy",
+      "gas expansion",
+      "gas industry conference",
+      "gas meter station",
+      "gas pipeline",
+      "gas pipeline expansion",
+      "gas pipeline projects",
+      "gas pipeline tracking",
+      "gas pipelines",
+      "gas system expansion",
+      "lng storage expansion",
+      "new fossil fuel infrastructure",
+      "new gas pipelines",
+      "pipeline opposition",
+      "pipeline proposals",
+      "sharon gas pipeline",
+      "springfield-longmeadow gas pipeline",
+      "weymouth compressor station"
+     ]
+    },
+    {
+     "id": "gas_leaks",
+     "label": "Gas leaks & methane",
+     "phrases": [
+      "gas leak mapping",
+      "gas leaks",
+      "methane reduction",
+      "natural gas leaks"
+     ]
+    },
+    {
+     "id": "power_plants",
+     "label": "Fossil power plants & peakers",
+     "phrases": [
+      "power plant pollution",
+      "salem peaker plant"
+     ]
+    },
+    {
+     "id": "biomass",
+     "label": "Biomass energy",
+     "phrases": [
+      "biomass",
+      "biomass energy",
+      "biomass energy subsidies",
+      "biomass policy",
+      "biomass subsidies",
+      "east springfield biomass plant",
+      "greenfield biomass plant",
+      "wood-based energy"
+     ]
+    },
+    {
+     "id": "nuclear",
+     "label": "Nuclear power (Pilgrim, decommissioning, new nuclear)",
+     "phrases": [
+      "chapter 503 nuclear guardrails",
+      "new nuclear power",
+      "nuclear decommissioning",
+      "nuclear plant decommissioning",
+      "nuclear plant safety",
+      "nuclear power",
+      "nuclear power dangers",
+      "nuclear power phaseout",
+      "nuclear safety and public health",
+      "nuclear waste",
+      "pilgrim decommissioning",
+      "pilgrim nuclear power station",
+      "pilgrim wastewater release",
+      "radioactive wastewater",
+      "regional nuclear policy"
+     ]
+    },
+    {
+     "id": "fossil_general",
+     "label": "Fossil fuel phaseout & polluter accountability",
+     "phrases": [
+      "fossil fuel dependence",
+      "fossil fuel phaseout",
+      "fossil fuels",
+      "local pollution",
+      "oil company profits",
+      "polluter accountability",
+      "polluter litigation",
+      "pollution"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "transport",
+   "label": "Transportation",
+   "children": [
+    {
+     "id": "transit",
+     "label": "Public transit & fares",
+     "phrases": [
+      "public transit",
+      "rural ride service",
+      "transit",
+      "transit fare justice",
+      "transit fares",
+      "transit justice",
+      "transit policy"
+     ]
+    },
+    {
+     "id": "evs",
+     "label": "Electric vehicles",
+     "phrases": [
+      "clean affordable vehicles",
+      "electric transportation",
+      "electric vehicle adoption",
+      "electric vehicles",
+      "ev battery health",
+      "ev charging adaptors",
+      "ev incentives",
+      "ev road trip planning",
+      "evs in cold weather",
+      "transportation electrification",
+      "vehicle electrification"
+     ]
+    },
+    {
+     "id": "active",
+     "label": "Walking, biking & shared mobility",
+     "phrases": [
+      "bicycle exchange",
+      "car sharing",
+      "e-bikes and e-scooters",
+      "micromobility",
+      "shared transportation programs",
+      "walking and biking"
+     ]
+    },
+    {
+     "id": "aviation",
+     "label": "Private jets & airport expansion",
+     "phrases": [
+      "hanscom field jet expansion",
+      "private jet expansion"
+     ]
+    },
+    {
+     "id": "transport_general",
+     "label": "Transportation planning & policy",
+     "phrases": [
+      "clean transportation",
+      "community transportation plans",
+      "rural transportation",
+      "sustainable transportation",
+      "transportation",
+      "transportation management",
+      "transportation planning",
+      "transportation-climate alignment"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "waste",
+   "label": "Waste, plastics & reuse",
+   "children": [
+    {
+     "id": "compost",
+     "label": "Composting & food scraps",
+     "phrases": [
+      "commercial composting",
+      "communal compost bins",
+      "composting",
+      "composting programs",
+      "curbside composting",
+      "food scrap collection",
+      "food waste collection",
+      "recycling and composting",
+      "school composting",
+      "school kitchen composting"
+     ]
+    },
+    {
+     "id": "reuse",
+     "label": "Recycling, reuse & repair",
+     "phrases": [
+      "e-waste",
+      "recycling",
+      "recycling contamination",
+      "repair and recycling",
+      "reuse of donated goods",
+      "upcycling"
+     ]
+    },
+    {
+     "id": "plastics",
+     "label": "Plastics",
+     "phrases": [
+      "plastic pollution",
+      "plastic turf",
+      "plastics as fossil-fuel product",
+      "plastics reduction bylaws",
+      "single-use plastic ban",
+      "styrofoam recycling"
+     ]
+    },
+    {
+     "id": "zero_waste",
+     "label": "Zero waste, trash & litter cleanups",
+     "phrases": [
+      "consumption",
+      "litter cleanup",
+      "school waste reduction",
+      "single town trash hauler",
+      "trash cleanup",
+      "trash reduction",
+      "waste reduction",
+      "zero waste"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "health",
+   "label": "Pollution & environmental health",
+   "children": [
+    {
+     "id": "air",
+     "label": "Air quality & monitoring",
+     "phrases": [
+      "air pollution",
+      "air quality",
+      "air quality monitoring",
+      "asthma",
+      "clean air",
+      "community air sensors",
+      "diesel emissions",
+      "neighborhood air quality"
+     ]
+    },
+    {
+     "id": "toxics",
+     "label": "Toxic chemicals, lead, PFAS & contaminated sites",
+     "phrases": [
+      "cambria hotel asbestos",
+      "chemicals in consumer products",
+      "contamination health effects",
+      "lead",
+      "lead in drinking water",
+      "lead in water",
+      "lead paint",
+      "lead service lines",
+      "new bedford harbor superfund",
+      "pcb contamination",
+      "pesticides",
+      "pfas",
+      "toxic chemicals",
+      "toxic-free communities",
+      "toxins",
+      "worker asbestos exposure"
+     ]
+    },
+    {
+     "id": "incinerators",
+     "label": "Incinerators, landfills & waste facilities",
+     "phrases": [
+      "ash landfill",
+      "landfill and incinerator pollution",
+      "landfills and incinerators",
+      "parallel products waste facility",
+      "saugus trash incinerator"
+     ]
+    },
+    {
+     "id": "climate_health",
+     "label": "Climate, health & healthy homes",
+     "phrases": [
+      "climate change and health",
+      "environmental health",
+      "health and environment",
+      "health effects of climate change",
+      "health threats of climate change",
+      "healthy homes",
+      "home hazards",
+      "local environmental health",
+      "public health"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "water",
+   "label": "Water, rivers & coasts",
+   "children": [
+    {
+     "id": "rivers",
+     "label": "Rivers, lakes & watersheds",
+     "phrases": [
+      "alewife brook reservation",
+      "aquatic life",
+      "charles river cleanup",
+      "charles river restoration",
+      "charles river watershed",
+      "chelsea creek water quality",
+      "clean air and water",
+      "clean charles",
+      "clean water",
+      "clean water act protections",
+      "connecticut river watershed",
+      "cyanobacteria blooms",
+      "lake champlain health",
+      "river water quality monitoring",
+      "stream health monitoring",
+      "streams and wetlands",
+      "swimmable charles river",
+      "toxic blue-green algae",
+      "water",
+      "water and lake health",
+      "water quality",
+      "waterway protection"
+     ]
+    },
+    {
+     "id": "sewage",
+     "label": "Sewage overflows & stormwater",
+     "phrases": [
+      "combined sewer overflows",
+      "sewage discharges",
+      "sewage-free charles",
+      "sewage-free charles river",
+      "stormwater"
+     ]
+    },
+    {
+     "id": "drinking_water",
+     "label": "Drinking water & water affordability",
+     "phrases": [
+      "drinking water supply",
+      "water affordability"
+     ]
+    },
+    {
+     "id": "coasts",
+     "label": "Coasts, harbors, oceans & waterfront access",
+     "phrases": [
+      "boston harbor protection",
+      "north atlantic right whales",
+      "oceans",
+      "parks and waterfront access",
+      "public waterfront access",
+      "salt marsh restoration",
+      "salt marshes",
+      "waterfront park access",
+      "west waterfront trail"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "nature",
+   "label": "Forests, land & nature",
+   "children": [
+    {
+     "id": "forests",
+     "label": "Forest protection",
+     "phrases": [
+      "community forests",
+      "dcr forest reserves",
+      "forest impacts",
+      "forest preservation as climate solution",
+      "forest protection",
+      "forest protection legislation",
+      "forest resilience",
+      "forest restoration",
+      "forestry",
+      "forests",
+      "forests and wildlife",
+      "logging",
+      "october mountain state forest",
+      "old growth forests",
+      "permanent forest reserves",
+      "quabbin watershed forests",
+      "state forest protection",
+      "wildfire",
+      "wildfire myths",
+      "wildlands"
+     ]
+    },
+    {
+     "id": "urban_trees",
+     "label": "Urban trees & tree equity",
+     "phrases": [
+      "eversource tree clearing",
+      "miyawaki mini-forests",
+      "shade tree planting",
+      "street tree care",
+      "tree care",
+      "tree data",
+      "tree equity",
+      "tree giveaway",
+      "tree identification",
+      "tree planting",
+      "trees",
+      "urban forest protection",
+      "urban forestry",
+      "urban tree canopy",
+      "urban tree care",
+      "urban tree planting",
+      "utility clearcutting"
+     ]
+    },
+    {
+     "id": "land",
+     "label": "Land conservation & public lands",
+     "phrases": [
+      "conservation",
+      "conservation restriction monitoring",
+      "farm and woodland protection",
+      "four corners conservation area",
+      "land",
+      "land and water conservation",
+      "land conservation",
+      "land protection",
+      "land stewardship",
+      "lands conservation",
+      "nature for all fund",
+      "protected land",
+      "public lands protection",
+      "recreation on conserved land"
+     ]
+    },
+    {
+     "id": "wildlife",
+     "label": "Wildlife, birds & biodiversity",
+     "phrases": [
+      "backyard birds",
+      "bats",
+      "beavers",
+      "biodiversity",
+      "bird banding",
+      "bird migration",
+      "bird research",
+      "birding",
+      "ecology",
+      "endangered species protection",
+      "habitat protection",
+      "hawk migration",
+      "healthy habitat",
+      "local biodiversity",
+      "local ecology",
+      "natural history",
+      "nature and wildlife photography",
+      "pollinators",
+      "waterfowl and wetlands",
+      "wildlife conservation",
+      "wildlife habitat",
+      "wildlife monitoring",
+      "wildlife sanctuaries"
+     ]
+    },
+    {
+     "id": "restoration",
+     "label": "Habitat restoration, native plants & invasives",
+     "phrases": [
+      "ecological management",
+      "ecological restoration",
+      "habitat restoration",
+      "invasive plant removal",
+      "invasive species removal",
+      "native planting",
+      "native plants",
+      "natural areas stewardship",
+      "sustainable landscaping"
+     ]
+    },
+    {
+     "id": "outdoors",
+     "label": "Access to nature & outdoor recreation",
+     "phrases": [
+      "access to nature",
+      "children in nature",
+      "nature",
+      "nature walks",
+      "outdoor economy",
+      "outdoor recreation",
+      "outdoor recreation economy",
+      "trail maintenance"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "food",
+   "label": "Food & farming",
+   "children": [
+    {
+     "id": "gardens",
+     "label": "Gardens & urban agriculture",
+     "phrases": [
+      "chemical-free gardening",
+      "community garden",
+      "gardens",
+      "hydroponic farming",
+      "school farm",
+      "school garden",
+      "school greenhouse growing",
+      "school orchard and pollinator garden",
+      "urban agriculture",
+      "vacant lot reuse"
+     ]
+    },
+    {
+     "id": "food_systems",
+     "label": "Local farms, food systems & food security",
+     "phrases": [
+      "agriculture and foodways",
+      "farmer mutual aid",
+      "farmland protection",
+      "food justice",
+      "food security",
+      "food system",
+      "hunger",
+      "local farming",
+      "local food",
+      "local food production",
+      "local food system"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "resilience",
+   "label": "Climate resilience & adaptation",
+   "children": [
+    {
+     "id": "heat",
+     "label": "Extreme heat",
+     "phrases": [
+      "extreme heat",
+      "heat mapping",
+      "heat resilience",
+      "urban heat resiliency"
+     ]
+    },
+    {
+     "id": "flood",
+     "label": "Floods, storms & resilient infrastructure",
+     "phrases": [
+      "climate-ready infrastructure",
+      "climate-resilient development",
+      "resilient communities",
+      "storm and flood resilience"
+     ]
+    },
+    {
+     "id": "resilience_general",
+     "label": "Resilience planning",
+     "phrases": [
+      "city climate resiliency plan",
+      "climate adaptation",
+      "climate adaptation costs",
+      "climate resilience",
+      "climate resilience planning",
+      "climate resiliency"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "local",
+   "label": "Local & community climate action",
+   "children": [
+    {
+     "id": "town_energy",
+     "label": "Town energy committees, plans & municipal action",
+     "phrases": [
+      "climate action plan",
+      "green community status",
+      "local clean energy",
+      "local climate action",
+      "local decarbonization",
+      "local government support",
+      "municipal climate action plan",
+      "net-zero planning",
+      "regional climate action",
+      "regional planning",
+      "sustainability planning",
+      "town energy",
+      "town energy committees",
+      "town energy plan",
+      "town energy reduction",
+      "town plan energy section"
+     ]
+    },
+    {
+     "id": "schools_campus",
+     "label": "Schools & campus sustainability",
+     "phrases": [
+      "campus renewable energy",
+      "campus sustainability",
+      "campus sustainability practices",
+      "climate action in schools",
+      "green contract language",
+      "school sustainability",
+      "student climate strikes",
+      "student issues",
+      "textbook costs"
+     ]
+    },
+    {
+     "id": "faith",
+     "label": "Faith communities & creation care",
+     "phrases": [
+      "congregational sustainability",
+      "creation care",
+      "creation care projects",
+      "environmental worship",
+      "faith-based climate action",
+      "green sanctuary program",
+      "laudato si'"
+     ]
+    },
+    {
+     "id": "household",
+     "label": "Household action & sustainable living",
+     "phrases": [
+      "carbon footprint",
+      "green living",
+      "home carbon footprint",
+      "household climate actions",
+      "household self-sufficiency",
+      "sustainable living"
+     ]
+    },
+    {
+     "id": "youth",
+     "label": "Youth climate action",
+     "phrases": [
+      "youth climate action",
+      "youth climate solutions",
+      "youth voice in climate action"
+     ]
+    },
+    {
+     "id": "business",
+     "label": "Sustainable & clean energy business",
+     "phrases": [
+      "business social and environmental impact",
+      "clean energy businesses",
+      "clean energy projects",
+      "energy contractors",
+      "green growth",
+      "small business support",
+      "sustainable business",
+      "sustainable economy",
+      "worker-owned cooperative"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "education",
+   "label": "Climate education, culture & research",
+   "children": [
+    {
+     "id": "k12",
+     "label": "K-12 climate curriculum",
+     "phrases": [
+      "climate change curriculum",
+      "climate curriculum",
+      "climate education",
+      "climate literacy",
+      "k-12 climate curricula",
+      "k-12 climate education",
+      "school climate curriculum",
+      "sustainability education"
+     ]
+    },
+    {
+     "id": "awareness",
+     "label": "Public awareness, talks & climate conversations",
+     "phrases": [
+      "clean energy outreach",
+      "climate awareness",
+      "climate change awareness",
+      "climate conversations",
+      "climate presentations",
+      "climate voters",
+      "energy transition outreach"
+     ]
+    },
+    {
+     "id": "arts",
+     "label": "Arts, film & culture",
+     "phrases": [
+      "eco-poetry",
+      "historic preservation"
+     ]
+    },
+    {
+     "id": "research",
+     "label": "Climate research & mapping",
+     "phrases": [
+      "climate justice research",
+      "climate organization mapping",
+      "sustainability audits"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "policy",
+   "label": "Climate policy & legislation",
+   "children": [
+    {
+     "id": "state_policy",
+     "label": "State climate & energy policy (general)",
+     "phrases": [
+      "all-of-the-above energy policy",
+      "clean electricity policy",
+      "clean energy and climate policy",
+      "clean energy equity",
+      "clean energy policy",
+      "climate advocacy",
+      "climate and clean energy bills",
+      "climate and economic policy",
+      "climate laws",
+      "climate legislation",
+      "climate policy",
+      "climate progress tracking",
+      "climate, energy and water legislation",
+      "energy policy",
+      "energy priorities",
+      "environmental common agenda",
+      "environmental justice legislation",
+      "environmental law",
+      "environmental legislation",
+      "environmental politics",
+      "government climate inaction",
+      "net zero accountability",
+      "net-zero economy",
+      "net-zero implementation",
+      "renewable energy requirements",
+      "state carbon goals",
+      "state climate and energy goals",
+      "state climate bills",
+      "state climate goals",
+      "state climate legislation",
+      "state climate policy",
+      "state energy and climate policy",
+      "state energy legislation"
+     ]
+    },
+    {
+     "id": "federal_policy",
+     "label": "Federal & international climate policy",
+     "phrases": [
+      "bipartisan climate legislation",
+      "bipartisan climate policy",
+      "federal climate policy",
+      "federal energy tax credits",
+      "green new deal"
+     ]
+    },
+    {
+     "id": "local_policy",
+     "label": "Local ordinances & bylaws",
+     "phrases": [
+      "local climate policy"
+     ]
+    },
+    {
+     "id": "ballot",
+     "label": "Ballot questions",
+     "phrases": [
+      "2026 ballot questions",
+      "massachusetts ballot questions",
+      "question 6 ballot measure",
+      "top two primary"
+     ]
+    },
+    {
+     "id": "budget",
+     "label": "Environmental budgets & agency funding",
+     "phrases": [
+      "environmental agency funding",
+      "state environmental budget"
+     ]
+    },
+    {
+     "id": "bills",
+     "label": "Named bills (see the bill list)",
+     "phrases": [
+      "climate change superfund",
+      "climate superfund",
+      "environmental justice law",
+      "fair share amendment",
+      "global warming solutions act",
+      "least developed countries fund",
+      "polluter pays",
+      "trees as a public good"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "justice",
+   "label": "Climate & environmental justice",
+   "children": [
+    {
+     "id": "ej",
+     "label": "Climate & environmental justice",
+     "phrases": [
+      "climate and environmental justice policy",
+      "climate justice",
+      "climate justice and equity",
+      "environmental and climate justice",
+      "environmental justice",
+      "environmental justice communities",
+      "rural environmental justice",
+      "springfield climate justice plan"
+     ]
+    },
+    {
+     "id": "just_transition",
+     "label": "Just transition & energy democracy",
+     "phrases": [
+      "equitable energy transition",
+      "frontline community decision-making",
+      "just transition"
+     ]
+    },
+    {
+     "id": "racial_justice",
+     "label": "Racial justice",
+     "phrases": [
+      "racial justice",
+      "racism and white supremacy",
+      "systemic racism"
+     ]
+    },
+    {
+     "id": "housing",
+     "label": "Housing & displacement",
+     "phrases": [
+      "affordable homeownership",
+      "affordable housing",
+      "anti-displacement",
+      "housing",
+      "housing justice",
+      "rent regulation"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "economy",
+   "label": "Jobs, workers & the economy",
+   "children": [
+    {
+     "id": "green_jobs",
+     "label": "Green jobs & clean energy workforce",
+     "phrases": [
+      "clean energy workforce",
+      "climate outdoors workforce",
+      "climate workforce",
+      "energy workforce",
+      "green careers",
+      "green jobs",
+      "inclusive hiring",
+      "weatherization jobs",
+      "weatherization workforce",
+      "women in the trades",
+      "youth green careers"
+     ]
+    },
+    {
+     "id": "labor",
+     "label": "Worker safety & labor rights",
+     "phrases": [
+      "construction safety",
+      "construction worker protections",
+      "educator pay",
+      "immigrant worker power",
+      "labor health and safety",
+      "project labor agreements",
+      "safe working conditions",
+      "salary minimums",
+      "worker protections",
+      "workers' rights",
+      "working families",
+      "workplace rights",
+      "workplace rights and safety"
+     ]
+    },
+    {
+     "id": "economic_justice",
+     "label": "Economic justice, taxes & the care economy",
+     "phrases": [
+      "child care",
+      "childcare",
+      "community care",
+      "community economic development",
+      "economic development",
+      "economic justice",
+      "economic security",
+      "economy",
+      "equitable economic policy",
+      "inclusive economy",
+      "mutual aid",
+      "social justice",
+      "social justice and reform",
+      "state school funding",
+      "tax and budget policy"
+     ]
+    },
+    {
+     "id": "finance",
+     "label": "Divestment, investment & climate finance",
+     "phrases": [
+      "climate finance",
+      "fossil fuel divestment",
+      "international climate finance",
+      "public pension funds",
+      "renewable energy investment",
+      "state pension fund"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "democracy",
+   "label": "Democracy & civic power",
+   "children": [
+    {
+     "id": "democracy",
+     "label": "Democracy, transparency & elections",
+     "phrases": [
+      "civic engagement",
+      "democracy",
+      "democracy defense",
+      "election readiness",
+      "good government",
+      "legislative accountability",
+      "legislative transparency",
+      "women's civic participation"
+     ]
+    },
+    {
+     "id": "money_politics",
+     "label": "Money in politics & utility influence",
+     "phrases": [
+      "campaign finance",
+      "corporate cash in elections",
+      "corporate money in politics",
+      "utility campaign donations",
+      "utility influence on climate policy",
+      "utility lobbying",
+      "utility political influence",
+      "utility ratepayer-funded advertising"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "movements",
+   "label": "Other movements & community needs",
+   "children": [
+    {
+     "id": "peace",
+     "label": "Peace, anti-war & nuclear weapons",
+     "phrases": [
+      "diplomacy",
+      "global health and peace",
+      "human cost of war",
+      "militarism and climate crisis",
+      "nuclear abolition",
+      "nuclear disarmament",
+      "nuclear war",
+      "nuclear weapons",
+      "palestine",
+      "palestine-gaza",
+      "peace",
+      "peace and climate",
+      "war profiteering",
+      "wars"
+     ]
+    },
+    {
+     "id": "immigration",
+     "label": "Immigrant rights",
+     "phrases": [
+      "immigration enforcement",
+      "immigration enforcement rapid response"
+     ]
+    },
+    {
+     "id": "indigenous",
+     "label": "Indigenous peoples",
+     "phrases": [
+      "indigenous cultural programming",
+      "indigenous history",
+      "indigenous peoples day"
+     ]
+    },
+    {
+     "id": "wellbeing",
+     "label": "Health care, wellbeing & social services",
+     "phrases": [
+      "active living",
+      "adult basic education",
+      "community development",
+      "community health improvement",
+      "community revitalization",
+      "community wellness",
+      "criminal record sealing",
+      "disability rights",
+      "health care",
+      "mental wellness",
+      "rural community development",
+      "social services",
+      "youth substance use"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "broad",
+   "label": "Broad climate (no specific topic)",
+   "children": [
+    {
+     "id": "broad",
+     "label": "Climate / sustainability in general",
+     "phrases": [
+      "climate",
+      "climate action",
+      "climate and clean energy",
+      "climate and energy solutions",
+      "climate challenges",
+      "climate change",
+      "climate change and boston",
+      "climate crisis solutions",
+      "climate emergency",
+      "climate futures",
+      "climate solutions",
+      "community environmental groups",
+      "current climate issues",
+      "decarbonization",
+      "ecological crisis",
+      "emissions reduction",
+      "energy",
+      "energy and climate action",
+      "energy production impacts",
+      "environment",
+      "environmental action",
+      "environmental issues",
+      "environmental leadership",
+      "environmental leadership awards",
+      "environmental sustainability",
+      "equitable climate solutions",
+      "green initiatives",
+      "greenhouse gas reduction",
+      "livable planet",
+      "local environmental protection",
+      "long-term energy future",
+      "sustainability",
+      "sustainable communities",
+      "sustainable energy future",
+      "sustainable future",
+      "sustainable policies"
+     ]
+    }
+   ]
+  }
+ ],
+ "bills": [
+  {
+   "id": "ma_superfund",
+   "name": "MA Climate Change Superfund (Make Polluters Pay)",
+   "map": "ma",
+   "mentions": 5
+  },
+  {
+   "id": "vt_superfund",
+   "name": "VT Climate Superfund Act (law)",
+   "map": "vt",
+   "mentions": 1
+  },
+  {
+   "id": "ma_senate_energy",
+   "name": "MA Senate energy bill (2026)",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "clean_energy_equity",
+   "name": "Clean Energy Equity bill",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "embodied_carbon",
+   "name": "Embodied Carbon Act",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "h3501",
+   "name": "H.3501 (offshore wind)",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "h3726",
+   "name": "H.3726 (transportation-climate alignment)",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "s2294",
+   "name": "S.2294 (building decarbonization)",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "forest_bills",
+   "name": "Forest protection bills incl. H.953 (Trees as a Public Good)",
+   "map": "ma",
+   "mentions": 2
+  },
+  {
+   "id": "chapter503",
+   "name": "Chapter 503 nuclear guardrails",
+   "map": "ma",
+   "mentions": 2
+  },
+  {
+   "id": "ldc_fund",
+   "name": "Least Developed Countries Fund state legislation",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "fair_share",
+   "name": "Fair Share Amendment (2022)",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "q6",
+   "name": "Question 6 (Nature for All Fund)",
+   "map": "ma",
+   "mentions": 8
+  },
+  {
+   "id": "q3",
+   "name": "Question 3 (Top Two Primary)",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "clean_slate",
+   "name": "Clean Slate Act",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "educator_pay",
+   "name": "Educator pay bill",
+   "map": "ma",
+   "mentions": 2
+  },
+  {
+   "id": "gwsa",
+   "name": "MA Global Warming Solutions Act (law)",
+   "map": "ma",
+   "mentions": 0
+  },
+  {
+   "id": "vt_gwsa",
+   "name": "VT Global Warming Solutions Act (law)",
+   "map": "vt",
+   "mentions": 1
+  },
+  {
+   "id": "clean_water_act",
+   "name": "Clean Water Act (federal)",
+   "map": "us",
+   "mentions": 1
+  },
+  {
+   "id": "boston_diesel",
+   "name": "Boston diesel emissions ordinance",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "berdo",
+   "name": "BERDO (Boston building emissions ordinance)",
+   "map": "ma",
+   "mentions": 1
+  },
+  {
+   "id": "vt_ej_law",
+   "name": "Vermont environmental justice law (2022)",
+   "map": "vt",
+   "mentions": 2
+  }
+ ]
+}

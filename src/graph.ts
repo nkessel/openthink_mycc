@@ -10,9 +10,11 @@ import type {
   CoalitionEvent,
   Action,
 } from "./types";
+import { itemButtons } from "./links";
 import { h } from "./dom";
 import { typeIcon } from "./icons";
 import { staleNotice } from "./notice";
+import { sectorById } from "./sectors";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
@@ -25,6 +27,8 @@ export interface GraphCallbacks {
   onNodeDeselect?(node: GraphNode): void;
   /** The summary card at the top was tapped: show the full details panel. */
   onOpenDetails?(node: GraphNode): void;
+  /** An event / project / action bubble was clicked: show it in full (the details tray). */
+  onItemClick?(kind: "event" | "project" | "action", item: Project | CoalitionEvent | Action, owner: GraphNode): void;
 }
 
 export interface GroupRule {
@@ -36,7 +40,9 @@ export interface GroupRule {
 
 export interface GraphSettings {
   centerForce: number; // 0..1
-  repelForce: number; // 0..1, scales charge strength
+  repelForce: number; // 0..1, scales charge strength (organizations)
+  /** 0..1: how hard coalitions push each other (and everything else) away. */
+  coalitionRepel: number;
   linkForce: number; // 0..1
   linkDistance: number; // 0..1
   nodeSize: number; // 0.5..2
@@ -62,9 +68,10 @@ export interface GraphSettings {
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   centerForce: 0.5,
-  repelForce: 0.65, // a bit more spread by default
+  repelForce: 0.3, // how hard bubbles push apart (lower = orgs closer)
+  coalitionRepel: 0.3, // how hard coalitions push apart
   linkForce: 0.5,
-  linkDistance: 0.5,
+  linkDistance: 0.25,
   nodeSize: 1,
   linkThickness: 1,
   textFadeThreshold: 0.5,
@@ -74,7 +81,7 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   weightEvents: 0,
   weightProjects: 0,
   weightActions: 0,
-  alwaysShow: false,
+  alwaysShow: true,
   showAllEvents: true,
   showAllProjects: true,
   showAllActions: true,
@@ -172,26 +179,7 @@ export function createGraph(
       api.setSelectedNode(n);
     }),
   );
-  // View switch: "Bubbles" zooms into a group and shows its events/projects/actions around it;
-  // "Classic" is the plain network (clicking a group just opens its details panel).
-  const viewSwitch = document.createElement("div");
-  viewSwitch.className = "view-switch";
-  viewSwitch.setAttribute("role", "group");
-  viewSwitch.setAttribute("aria-label", "Map view");
-  const viewBtns: Record<"bubbles" | "classic", HTMLButtonElement> = {
-    bubbles: document.createElement("button"),
-    classic: document.createElement("button"),
-  };
-  viewBtns.bubbles.textContent = "Items on";
-  viewBtns.bubbles.title = "When you click a group: zoom in and show its events, projects and actions as bubbles";
-  viewBtns.classic.textContent = "Items off";
-  viewBtns.classic.title = "When you click a group: just open its details panel (no zoom, no bubbles)";
-  for (const k of ["bubbles", "classic"] as const) {
-    viewBtns[k].type = "button";
-    viewBtns[k].addEventListener("click", () => setViewMode(k === "bubbles"));
-    viewSwitch.appendChild(viewBtns[k]);
-  }
-  overlay.appendChild(viewSwitch);
+  // (Hiding the events / actions / projects around each group is a switch at the top of the settings panel.)
   const resetBtn = document.createElement("button");
   resetBtn.type = "button";
   resetBtn.className = "reset-map-btn";
@@ -203,14 +191,20 @@ export function createGraph(
   });
   overlay.appendChild(resetBtn);
   function syncViewSwitch() {
-    viewBtns.bubbles.classList.toggle("active", settings.showBubbles);
-    viewBtns.classic.classList.toggle("active", !settings.showBubbles);
+    /* the switches live in the settings panel and listen for openthink:previewsmode / openthink:viewmode */
   }
-  // The sidebar has its own copy of this switch (above the size sliders); it talks to us through window events.
+  // The sidebar has the same switches; they talk to us through window events.
   window.addEventListener("openthink:setview", (e) => setViewMode(!!(e as CustomEvent).detail?.bubbles));
+  window.addEventListener("openthink:setpreviews", (e) => setPreviews(!!(e as CustomEvent).detail?.on));
+  /** "Zoom in on a group when you click it" (and show its items around it). */
   function setViewMode(bubbles: boolean) {
     api.updateSettings({ showBubbles: bubbles });
     try { localStorage.setItem("openthink.bubbles", bubbles ? "1" : "0"); } catch (_) { /* private mode */ }
+  }
+  /** Previews of every group's events, projects and actions around it. */
+  function setPreviews(on: boolean) {
+    api.updateSettings({ alwaysShow: on });
+    window.dispatchEvent(new CustomEvent("openthink:previewsmode", { detail: { on } }));
   }
   // Org-to-org toggle: built here (it drives the graph), shown in the sidebar with the other filters.
   const toggle = document.createElement("label");
@@ -245,7 +239,7 @@ export function createGraph(
   // Zoom behavior
   const zoom = d3
     .zoom<SVGSVGElement, unknown>()
-    .scaleExtent([0.2, 4])
+    .scaleExtent([0.2, 12]) // items and names keep their on-screen size, so deep zoom stays tidy
     .filter((event) => {
       // Allow wheel + drag on background, but not on nodes (so node drag works)
       if (event.type === "mousedown" || event.type === "touchstart") {
@@ -259,6 +253,7 @@ export function createGraph(
       currentZoomScale = event.transform.k;
       currentTransform = event.transform;
       applyTextFade();
+      applyItemScale();
       updateSatLevel();
       // Hide tooltip while zooming; a card anchored to a bubble would drift, so close it on manual pan/zoom
       tooltip.hide();
@@ -298,16 +293,15 @@ export function createGraph(
   // ----- Settings (mutable) -----
   let settings: GraphSettings = { ...DEFAULT_GRAPH_SETTINGS };
   try { if (localStorage.getItem("openthink.bubbles") === "0") settings.showBubbles = false; } catch (_) { /* ignore */ }
-  try { if (localStorage.getItem("openthink.always") === "1") settings.alwaysShow = true; } catch (_) { /* ignore */ }
+  try { if (localStorage.getItem("openthink.previews") === "0") settings.alwaysShow = false; } catch (_) { /* ignore */ }
   let groups: GroupRule[] = [];
 
   // Helpers to compute the actual force strengths from normalized 0..1 sliders.
   function chargeStrengthFor(n: GraphNode): number {
     // Repel force 0..1 → coalition: -800..-6000, org: -100..-800
-    const t = settings.repelForce;
     return n.kind === "coalition"
-      ? -(800 + t * 5200)
-      : -(100 + t * 700);
+      ? -(200 + settings.coalitionRepel * 7200) // 0.3 = the old default (-2360)
+      : -(100 + settings.repelForce * 700);
   }
   function linkDistanceFor(l: GraphLink): number {
     const src =
@@ -437,8 +431,10 @@ export function createGraph(
     .enter()
     .append("g")
     .attr("class", (d) =>
-      d.kind === "coalition" ? "node-coalition" : "node-org",
+      (d.kind === "coalition" ? "node-coalition" : "node-org") + (d.sector ? " sector" : ""),
     ) as NodeSel;
+  // Sector layers get their own ring colour (see .sector in styles.css).
+  nodeSel.filter((d) => !!d.sector).style("--sector", (d) => sectorById(d.sector)?.color ?? "#a16207");
 
   // Append shapes + labels per node.
   // Structure per node: <circle.halo> (groups), <circle.ring> (main), <text.node-label>, <text.node-name>.
@@ -486,8 +482,8 @@ export function createGraph(
         .append("text")
         .attr("class", "node-name")
         .attr("font-size", COALITION_LABEL_FONT_SIZE)
-        .attr("y", r + 14)
-        .text(d.name);
+        .attr("y", r + 20)
+        .call((t) => nameLines(t, d.name));
     } else {
       const r = orgRadius(d);
       sel
@@ -523,19 +519,22 @@ export function createGraph(
         .append("text")
         .attr("class", "node-name")
         .attr("font-size", ORG_NAME_FONT_SIZE)
-        .attr("y", r + 12)
-        .text(shorten(d.name, 28));
+        .attr("y", r + 18)
+        .call((t) => nameLines(t, d.name));
     }
   });
 
   // ----- Always-on items: every group's events / projects / actions ring it on one orbit -----
-  // Far out they are small dots; zoom in and the same items turn into real bubbles (icon, date, click for the card).
-  // Detail is built in small batches for what is on screen, with a loading bar so a big map never just freezes.
+  // The orbit never changes with zoom, so zooming never reshuffles the map. Far out the items are small dots; zoom
+  // in and the same items, in the same places, turn into icons, and further in their names appear beside them.
+  // Items keep a steady size on screen (up to a cap) while planets grow with the zoom: a planet with its moons.
   const SAT_DOT_R = 3.2;
-  const SAT_BUB_R = 11;
-  const DETAIL_ON_K = 1.9; // zoom at which dots become bubbles
+  const SAT_BUB_R = 11; // an icon's radius on screen (px) at full size
+  const SAT_SPACING = 8.5; // world units between neighbouring items on the orbit
+  const SAT_MAX_WORLD_R = 3.6; // an icon never takes more room than this (world units), so neighbours never overlap
+  const DETAIL_ON_K = 1.9; // zoom at which dots become icons
   const DETAIL_OFF_K = 1.6; // and back (a gap so it doesn't flicker)
-  const DETAIL_CAP = 24;
+  const LABEL_ON_K = 2.8; // zoom at which item names appear
   let satsReady = false;
   let satMode: 0 | 1 = 0;
   const satLevel = new Map<string, 0 | 1>();
@@ -592,6 +591,8 @@ export function createGraph(
     startR: number,
     pad: number,
     onTick?: (nodes: RingNode[]) => void,
+    still = false,
+    charge = -30,
   ): d3.Simulation<RingNode, undefined> {
     const nodes: RingNode[] = els.map((_, i) => ({
       x: Math.cos(angles[i]) * startR, y: Math.sin(angles[i]) * startR,
@@ -603,19 +604,20 @@ export function createGraph(
     };
     const home = (alpha: number) => {
       for (const d of nodes) {
-        d.vx = (d.vx ?? 0) + (d.tx - (d.x ?? 0)) * 0.12 * alpha;
-        d.vy = (d.vy ?? 0) + (d.ty - (d.y ?? 0)) * 0.12 * alpha;
+        d.vx = (d.vx ?? 0) + (d.tx - (d.x ?? 0)) * 0.07 * alpha;
+        d.vy = (d.vy ?? 0) + (d.ty - (d.y ?? 0)) * 0.07 * alpha;
       }
     };
     const s = d3.forceSimulation<RingNode>(nodes)
-      .force("ring", d3.forceRadial<RingNode>(ringR, 0, 0).strength(0.25))
+      .force("ring", d3.forceRadial<RingNode>(ringR, 0, 0).strength(0.16))
       .force("home", home)
       .force("collide", d3.forceCollide<RingNode>((d) => d.r + pad).strength(0.9).iterations(2))
-      .force("charge", d3.forceManyBody<RingNode>().strength(-30).distanceMax(Math.max(120, ringR)))
-      .alphaDecay(0.03)
-      .velocityDecay(0.32)
+      .force("charge", charge ? d3.forceManyBody<RingNode>().strength(charge).distanceMax(Math.max(120, ringR)) : null)
+      .alphaDecay(0.025)
+      .velocityDecay(0.24)
       .on("tick", place);
     place();
+    if (still) s.stop().alpha(0); // already in place: wakes up when an item or its group is dragged
     els.forEach((el, i) => {
       d3.select<SVGGElement, RingNode>(el).datum(nodes[i]).call(
         d3.drag<SVGGElement, RingNode>()
@@ -629,27 +631,73 @@ export function createGraph(
     return s;
   }
   const satSims = new Map<string, d3.Simulation<RingNode, undefined>>();
+  /** The parent moved by (dx, dy): leave its items behind for a moment so they trail it and jostle back into place. */
+  function nudgeRing(rs: d3.Simulation<RingNode, undefined>, dx: number, dy: number) {
+    for (const d of rs.nodes()) {
+      if (d.fx != null) continue;
+      // left behind for a moment, like a moon tugged by its planet, but never flung far from its orbit
+      const ox = (d.x ?? 0) - dx, oy = (d.y ?? 0) - dy;
+      const reach = Math.hypot(d.tx, d.ty) * 1.6 + 6;
+      const off = Math.hypot(ox - d.tx, oy - d.ty);
+      const k = off > reach ? reach / off : 1;
+      d.x = d.tx + (ox - d.tx) * k;
+      d.y = d.ty + (oy - d.ty) * k;
+    }
+    rs.alpha(Math.max(rs.alpha(), 0.45)).restart();
+  }
+  const lastPos = new Map<string, { x: number; y: number }>();
+  function trailItems() {
+    const follow = (id: string, rs: d3.Simulation<RingNode, undefined> | null | undefined) => {
+      const n = nodeById.get(id);
+      if (!n || !rs) return;
+      const x = n.x ?? 0, y = n.y ?? 0;
+      const last = lastPos.get(id);
+      lastPos.set(id, { x, y });
+      if (!last) return;
+      const dx = x - last.x, dy = y - last.y;
+      if (Math.abs(dx) + Math.abs(dy) < 0.05 || Math.abs(dx) + Math.abs(dy) > 300) return;
+      nudgeRing(rs, dx, dy);
+    };
+    if (focusId) follow(focusId, focusSim);
+    for (const [id, rs] of satSims) follow(id, rs);
+  }
 
-  /** How far a group's items reach when they are always shown (so groups keep their items clear of each other). */
-  function satRingR(n: GraphNode, count: number): number {
-    const shown = Math.min(count, DETAIL_CAP);
-    return Math.max(nodeRadiusOf(n) + SAT_BUB_R + 10, (shown * (2 * SAT_BUB_R + 8)) / (2 * Math.PI));
+  /** The orbit a group's items sit on, just outside it (the same at every zoom). */
+  function satOrbitR(n: GraphNode): number {
+    return nodeRadiusOf(n) + 10;
+  }
+  /** The items that fit on the orbit, taken round-robin across kinds. */
+  function satShown(n: GraphNode, items: Bubble[]): Bubble[] {
+    const cap = Math.max(6, Math.floor((2 * Math.PI * satOrbitR(n)) / SAT_SPACING));
+    return spread(items, cap);
   }
   const satCountCache = new Map<string, number>();
+  /** How far a group's items reach (the same at every zoom, so the layout never changes when you zoom). */
   function itemExtent(n: GraphNode): number {
-    if (!settings.showBubbles || !settings.alwaysShow) return nodeRadiusOf(n);
+    const r0 = nodeRadiusOf(n);
+    if (!settings.alwaysShow) return r0;
     let c = satCountCache.get(n.id);
     if (c === undefined) satCountCache.set(n.id, (c = satItemsOf(n).length));
-    return c ? satRingR(n, c) + SAT_BUB_R + 6 : nodeRadiusOf(n);
+    if (!c) return r0;
+    return satOrbitR(n) + SAT_MAX_WORLD_R;
   }
-  /** Space each group keeps around itself: its circle, or its ring of items when they are always on. */
+  /** Space each group keeps around itself: neighbouring groups' item rings may nearly touch. */
   function collideRadius(n: GraphNode): number {
-    return itemExtent(n) + 18;
+    return settings.alwaysShow ? Math.max(itemExtent(n) + 1, nodeRadiusOf(n) + 14) : nodeRadiusOf(n) + 14;
   }
-  function refreshSpacing() {
+  /** Items keep a steady size on screen as you zoom in (never bigger than SAT_MAX_WORLD_R in the map). */
+  function applyItemScale() {
+    const k = currentZoomScale;
+    nodeLayer.style("--is", String(Math.min(SAT_MAX_WORLD_R / SAT_BUB_R, 1 / k)));
+    nodeLayer.classed("item-names", k >= LABEL_ON_K);
+    // Past 100% zoom, names and lines keep their on-screen size instead of growing with the planets.
+    nodeLayer.style("--ns", String(Math.min(1, 1 / k)));
+    svg.classed("zoomed-in", k > 1);
+  }
+  function refreshSpacing(alpha = 0.5) {
     satCountCache.clear();
     collideForce.radius(collideRadius);
-    sim.alpha(0.5).restart();
+    sim.alpha(Math.max(sim.alpha(), alpha)).restart();
   }
 
   function drawSats(n: GraphNode, level: 0 | 1) {
@@ -658,49 +706,49 @@ export function createGraph(
     satSims.delete(n.id);
     sel.selectAll("g.sats").remove();
     satLevel.set(n.id, level);
-    if (!settings.showBubbles || !settings.alwaysShow) return;
+    if (!settings.alwaysShow) return;
     const items = satItemsOf(n);
     if (!items.length) return;
-    const r0 = nodeRadiusOf(n);
     const g = sel.append("g").attr("class", `sats lv${level}`);
+    const rr = satOrbitR(n); // everything sits on this one circle, just outside the planet
+    const shown = satShown(n, items);
+    const more = items.length - shown.length;
     if (level === 0) {
       g.style("pointer-events", "none");
-      const rr = r0 + 10; // everything sits on this one circle
-      const cap = Math.max(6, Math.floor((2 * Math.PI * rr) / 8.5));
-      const shown = spread(items, cap);
       shown.forEach((b, i) => {
         const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
         g.append("circle").attr("class", `sat sat-${b.kind}`).attr("cx", Math.cos(a) * rr).attr("cy", Math.sin(a) * rr).attr("r", SAT_DOT_R);
       });
-      if (items.length > shown.length) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${items.length - shown.length}`);
+      if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
       return;
     }
-    const shown = spread(items, DETAIL_CAP);
-    const rr = satRingR(n, items.length);
+    // Icons in exactly the dots' places; the inner group is scaled by CSS (--is) so they keep a steady size on screen.
     const els: SVGGElement[] = [];
     const angles: number[] = [];
     shown.forEach((b, i) => {
       const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
-      const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}`)
-        .style("cursor", "pointer");
+      const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}`).style("cursor", "pointer");
       els.push(bg.node()!);
       angles.push(a);
-      bg.append("title").text(b.label);
-      bg.append("circle").attr("r", SAT_BUB_R);
-      const inner = bg.append("g").attr("transform", "scale(0.5)");
+      bg.append("title").text(fullName(b));
+      const inner = bg.append("g").attr("class", "sat-in");
+      inner.append("circle").attr("r", SAT_BUB_R);
+      const icon = inner.append("g").attr("transform", "scale(0.5)");
       const isRole = b.kind === "action" && (b.item as Action).kind === "role";
-      drawIcon(inner as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : (b.kind as BubbleKind), b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
-      if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) drawRecurArc(bg as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, SAT_BUB_R - 1.2, 0.9);
+      drawIcon(icon as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : (b.kind as BubbleKind), b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
+      if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) drawRecurArc(inner as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, SAT_BUB_R - 1.2, 0.9);
+      // its full name beside it, pointing away from the planet (shown once you are zoomed in far enough)
+      radialLabel(inner, a, SAT_BUB_R + 4, fullName(b), itemMeta(b), 10, 22).attr("class", `sat-label k-${b.kind}`);
       bg.on("click", (event: Event) => {
         event.stopPropagation();
-        const cb2 = (bg.select("circle").node() as SVGCircleElement).getBoundingClientRect();
+        const cb2 = (inner.select("circle").node() as SVGCircleElement).getBoundingClientRect();
         const wb = wrap.getBoundingClientRect();
         showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 }, n);
       });
     });
-    if (items.length > shown.length) g.append("text").attr("class", "sat-more").attr("y", -rr - SAT_BUB_R - 4).text(`+${items.length - shown.length}`);
-    // They spill out of the group and jostle into place; drag one and the others make room.
-    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_BUB_R), rr, r0 * 0.6, 3));
+    if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
+    // Drag one and the others make room; until then nothing moves.
+    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_MAX_WORLD_R), rr, rr, 0.6, undefined, true, 0)); // no push between moons: they keep their orbit and spacing
   }
 
   /** Dots for everyone (cheap); bubbles for what is on screen when zoomed in, a batch at a time. */
@@ -708,6 +756,8 @@ export function createGraph(
     if (!satsReady) return;
     detailToken++;
     satMode = currentZoomScale >= DETAIL_ON_K ? 1 : 0;
+    nodeLayer.classed("detail", satMode === 1);
+    applyItemScale();
     nodeSel.each((d) => drawSats(d, 0));
     queueDetail();
   }
@@ -720,7 +770,7 @@ export function createGraph(
     return Math.abs(sx) < w / 2 + m && Math.abs(sy) < vh / 2 + m;
   }
   function queueDetail() {
-    if (!satsReady || !settings.showBubbles || !settings.alwaysShow || satMode !== 1) return;
+    if (!satsReady || !settings.alwaysShow || satMode !== 1) return;
     const todo = allNodes.filter((n) => satLevel.get(n.id) !== 1 && onScreen(n) && (nodeSel.filter((d) => d.id === n.id).style("display") !== "none") && satItemsOf(n).length);
     if (!todo.length) return;
     const token = ++detailToken;
@@ -739,14 +789,19 @@ export function createGraph(
     requestAnimationFrame(step);
   }
   function updateSatLevel() {
-    if (!satsReady || !settings.alwaysShow || !settings.showBubbles) return;
+    if (!satsReady) return;
     const want: 0 | 1 = satMode === 1 ? (currentZoomScale < DETAIL_OFF_K ? 0 : 1) : (currentZoomScale >= DETAIL_ON_K ? 1 : 0);
     if (want === satMode) return;
     satMode = want;
     detailToken++;
-    if (want === 0) nodeSel.each((d) => { if (satLevel.get(d.id) !== 0) drawSats(d, 0); });
+    nodeLayer.classed("detail", want === 1);
+    if (!settings.alwaysShow) return;
+    // Nothing moves: dots and icons sit in the same places at the same size. Zoomed out, icons go back to dots.
+    if (want === 0) nodeSel.each((d) => { if (satLevel.get(d.id) === 1) drawSats(d, 0); });
     else queueDetail();
   }
+  // Groups keep moving after a zoom (they spread out or gather); upgrade any that slide into view.
+  setInterval(() => { if (satsReady && satMode === 1 && settings.alwaysShow && satsBusy === 0) queueDetail(); }, 1200);
   const renderSatellites = refreshSats;
 
   // ----- Apply visual settings (radii, halos, link thickness, fade) -----
@@ -782,7 +837,7 @@ export function createGraph(
       // Label below the node
       sel
         .select<SVGTextElement>("text.node-name")
-        .attr("y", r + (d.kind === "coalition" ? 14 : 12));
+        .attr("y", r + (d.kind === "coalition" ? 20 : 18));
     });
     // Link thickness (org-to-org links scale with how often they work together)
     linkSel.attr("stroke-width", linkWidthFor);
@@ -867,6 +922,7 @@ export function createGraph(
       const f = nodeById.get(focusId);
       if (f) focusGroup.attr("transform", `translate(${f.x ?? 0},${f.y ?? 0})`);
     }
+    trailItems();
   });
 
   // Auto-fit once the simulation has settled enough
@@ -985,8 +1041,16 @@ export function createGraph(
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   let focusId: string | null = null;
-  let focusSim: { stop(): unknown } | null = null;
-  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, held on an outer ring while it is in focus
+  // The opened group is drawn as a big planet (CSS scale(var(--fs)) on .focused) with its items as moons around it.
+  const FOCUS_PLANET_R = 64; // the opened group's radius on the map
+  const LABEL_REACH = 150; // how far a moon's name reaches beyond it
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let focusSim: d3.Simulation<any, undefined> | null = null;
+  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, gathered on an outer ring while it is in focus
+  // Where each member belongs, relative to the coalition: a spring pulls it there (it isn't pinned), so members
+  // jostle, make room for each other and follow the coalition when you drag it.
+  const memberHome = new Map<GraphNode, { ox: number; oy: number }>();
+  let memberKeepOut = { rx: 0, ry: 0 };
   const focusBar = h("div", { class: "focus-bar" });
   const focusCard = h("div", { class: "focus-card" });
   focusBar.style.display = "none";
@@ -1041,6 +1105,12 @@ export function createGraph(
   }
 
   function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode) {
+    const owner = ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null);
+    if (b.kind !== "thought" && owner && cb.onItemClick) {
+      focusCard.style.display = "none";
+      cb.onItemClick(b.kind, b.item as Project | CoalitionEvent | Action, owner);
+      return;
+    }
     while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
     const it = b.item as Thought & Project & CoalitionEvent & Action;
     const kindLabel =
@@ -1065,13 +1135,9 @@ export function createGraph(
     const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent | Action).description;
     if (desc) focusCard.appendChild(h("p", { class: "focus-card-text" }, desc));
     if (b.kind === "thought") focusCard.appendChild(h("div", { class: "focus-card-source" }, `Source: ${(it as Thought).source}`));
-    const rsvp = (it as { rsvp_link?: string }).rsvp_link;
-    if (b.kind === "event" && rsvp && /^https?:\/\//.test(rsvp)) {
-      focusCard.appendChild(h("a", { class: "focus-card-link rsvp-link", href: rsvp, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗"));
-    }
-    const link = (it as { link?: string }).link;
-    if (link && /^https?:\/\//.test(link)) {
-      focusCard.appendChild(h("a", { class: "focus-card-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗"));
+    if (b.kind !== "thought") {
+      const btns = itemButtons(b.kind, it as { rsvp_link?: string; link?: string });
+      if (btns) focusCard.appendChild(btns);
     }
     if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified));
     focusCard.style.visibility = "hidden";
@@ -1155,6 +1221,56 @@ export function createGraph(
     }
   }
 
+  /** A group's full name under it, wrapped onto a few short lines (never cut off). */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function nameLines(t: d3.Selection<SVGTextElement, any, any, any>, name: string) {
+    wrapLines(name, 24).forEach((l, i) => t.append("tspan").attr("x", 0).attr("dy", i ? "1.15em" : 0).text(l));
+  }
+  /** Split text into lines of about `max` characters at word breaks; nothing is cut off. */
+  function wrapLines(text: string, max: number): string[] {
+    const out: string[] = [];
+    let cur = "";
+    for (const w of text.split(/\s+/).filter(Boolean)) {
+      if (cur && (cur + " " + w).length > max) { out.push(cur); cur = w; } else cur = cur ? `${cur} ${w}` : w;
+    }
+    if (cur) out.push(cur);
+    return out;
+  }
+  /** One short line under an item's name: when, by when, or what state it's in. */
+  function itemMeta(b: Bubble): string {
+    if (b.kind === "event") {
+      const e = b.item as CoalitionEvent;
+      return e.recurrence ? `${fmtShortDate(e.date)} · repeats` : fmtShortDate(e.date);
+    }
+    if (b.kind === "action") {
+      const a = b.item as Action;
+      return a.kind === "role" ? "Volunteer role" : a.deadline ? `By ${a.deadline}` : "Action";
+    }
+    if (b.kind === "project") return `Project · ${(b.item as Project).status}`;
+    return "";
+  }
+  /** Text beside a point (angle a, distance d from the centre), reading away from the centre: the full name, then a meta line. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function radialLabel(parent: d3.Selection<SVGGElement, any, any, any>, a: number, d: number, title: string, meta: string, size: number, max: number) {
+    const c = Math.cos(a), sn = Math.sin(a);
+    const anchor = c > 0.35 ? "start" : c < -0.35 ? "end" : "middle";
+    const lines = wrapLines(title, max);
+    const lh = size * 1.2;
+    const count = lines.length + (meta ? 1 : 0);
+    const x = c * d, y = sn * d;
+    const y0 = anchor === "middle"
+      ? (sn < 0 ? y - (count - 1) * lh - 2 : y + size)
+      : y - ((count - 1) * lh) / 2 + size * 0.35;
+    const t = parent.append("text").attr("text-anchor", anchor).attr("font-size", size);
+    lines.forEach((l, i) => t.append("tspan").attr("x", x).attr("y", y0 + i * lh).text(l));
+    if (meta) t.append("tspan").attr("class", "lbl-meta").attr("x", x).attr("y", y0 + lines.length * lh).text(meta);
+    return t;
+  }
+
+  function fullName(b: Bubble): string {
+    return b.kind === "thought" ? (b.item as Thought).text : (b.item as Project | CoalitionEvent | Action).name;
+  }
+
   function enterFocus(id: string) {
     const n = nodeById.get(id);
     if (!n) return;
@@ -1177,41 +1293,51 @@ export function createGraph(
 
     const allBubbles = bubblesFor(n);
     const bubbles = settings.showBubbles ? allBubbles : [];
-    const nodeR = nodeRadiusOf(n);
-    const ringR = bubbles.length ? Math.max(nodeR + 62, (bubbles.length * (BUBBLE_R * 2 + 44)) / (2 * Math.PI)) : nodeR + 40;
-    // Room a bubble's text needs beyond the ring; everything else is moved out past this.
-    let clearR = bubbles.length ? ringR + 230 : nodeR + 120;
+    // The opened group shows a little larger (CSS scales it; the ring makes room for it).
+    const fs = Math.max(1.35, Math.min(4, FOCUS_PLANET_R / nodeRadiusOf(n)));
+    nodeSel.classed("focused", (d) => d.id === id).filter((d) => d.id === id).style("--fs", String(fs));
+    const nodeR = nodeRadiusOf(n) * fs;
+    // Moons close around the planet: just enough room on the orbit for each moon, its name reads outward.
+    const ringR = bubbles.length ? Math.max(nodeR + 48, (bubbles.length * (2 * BUBBLE_R + 26)) / (2 * Math.PI)) : nodeR + 40;
+    // Room the moons' names need beyond the orbit; everything else is moved out past this.
+    let clearR = bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 40 : nodeR + 120;
 
     // A coalition's member orgs sit, at full strength, in a cluster around the items: a few rows on an oval
     // that hugs the items and their labels (labels run sideways, so the oval is wider than tall).
     // Bigger orgs take the inner rows.
     pinnedMembers = [];
+    memberHome.clear();
     let memberRX = 0;
     let memberRY = 0;
-    if (n.kind === "coalition") {
+    {
+      // A coalition gathers its member orgs; an org gathers its coalitions and the orgs it works with.
       const seen = new Set<string>();
       for (const l of allLinks) {
-        if (l.kind !== "membership") continue;
         const sid = typeof l.source === "string" ? l.source : l.source.id;
         const tid = typeof l.target === "string" ? l.target : l.target.id;
-        if (sid !== id || seen.has(tid)) continue;
-        seen.add(tid);
-        const o = nodeById.get(tid);
-        if (o && o.kind === "org") pinnedMembers.push(o);
+        let other: string | null = null;
+        if (n.kind === "coalition") { if (l.kind === "membership" && sid === id) other = tid; }
+        else if (sid === id) other = tid;
+        else if (tid === id) other = sid;
+        if (!other || seen.has(other)) continue;
+        seen.add(other);
+        const o = nodeById.get(other);
+        if (o && (n.kind === "org" || o.kind === "org")) pinnedMembers.push(o);
       }
       if (pinnedMembers.length) {
         pinnedMembers.sort((a, b) => nodeRadiusOf(b) - nodeRadiusOf(a));
         const maxR = Math.max(...pinnedMembers.map((o) => nodeRadiusOf(o)));
         const spacing = 2 * maxR + 12; // between neighbours along a row
         const rowGap = 2 * maxR + 20; // between rows (room for a name under each)
-        // inner oval: just past the item labels at the sides, closer above and below
-        let rx = bubbles.length ? ringR + 245 : nodeR + 70;
-        let ry = bubbles.length ? ringR + 70 : nodeR + 70;
+        // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
+        let rx = (bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR * 0.6 : 0);
+        let ry = rx;
+        // Members may jostle, but never into the items and their labels.
+        memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
         let placed = 0;
         let row = 0;
         while (placed < pinnedMembers.length) {
-          // Ramanujan's approximation of the oval's perimeter
-          const per = Math.PI * (3 * (rx + ry) - Math.sqrt((3 * rx + ry) * (rx + 3 * ry)));
+          const per = 2 * Math.PI * rx; // circumference of this orbit
           const cap = Math.max(6, Math.floor(per / spacing));
           const left = pinnedMembers.length - placed;
           // the last row spreads its few members evenly instead of bunching at the top
@@ -1220,8 +1346,7 @@ export function createGraph(
           for (let i = 0; i < inRow; i++) {
             const a = (2 * Math.PI * (i + offset)) / inRow - Math.PI / 2;
             const o = pinnedMembers[placed + i];
-            o.fx = cx + Math.cos(a) * rx;
-            o.fy = cy + Math.sin(a) * ry;
+            memberHome.set(o, { ox: Math.cos(a) * rx, oy: Math.sin(a) * ry });
           }
           placed += inRow;
           memberRX = rx;
@@ -1236,6 +1361,7 @@ export function createGraph(
 
     focusSim?.stop();
     focusSim = null;
+    lastPos.delete(id);
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
     const bubbleEls: SVGGElement[] = [];
@@ -1252,37 +1378,18 @@ export function createGraph(
       bubbleAngles.push(a);
       const g = outer.append("g").attr("class", "bubble-body").attr("transform", "scale(0.2)").attr("opacity", 0);
       g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", "scale(1)").attr("opacity", 1);
-      const right = Math.cos(a) >= 0;
-      const side = right ? 1 : -1;
-      // A transparent hit area under the text, so clicking the title clicks the bubble, not whatever is behind it.
-      const textW = Math.max(b.label.length, (b.subtitle || "").length) * LABEL_PX;
-      g.append("rect").attr("class", "bubble-hit")
-        .attr("x", right ? 0 : -(b.r + 8 + textW)).attr("y", -b.r - 2)
-        .attr("width", b.r + 8 + textW).attr("height", 2 * b.r + 4);
       g.append("circle").attr("r", b.r);
       if (b.kind === "thought") g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
       else {
         const isRole = b.kind === "action" && (b.item as Action).kind === "role";
         drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : b.kind, b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
-        const word = isRole ? "VOLUNTEER" : b.kind.toUpperCase();
-        g.append("text").attr("class", "bubble-type").attr("y", b.r + 10).text(word);
         if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) {
           drawRecurArc(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, b.r - 1.5, 1);
         }
       }
-      const label = g.append("text")
-        .attr("class", "bubble-label")
-        .attr("x", side * (b.r + 6))
-        .attr("dy", b.subtitle ? "-0.2em" : "0.35em")
-        .attr("text-anchor", right ? "start" : "end")
-        .text(b.label);
-      void label;
-      if (b.subtitle) {
-        g.append("text").attr("class", "bubble-sub")
-          .attr("x", side * (b.r + 6)).attr("dy", "1.15em")
-          .attr("text-anchor", right ? "start" : "end")
-          .text(b.subtitle);
-      }
+      // Beside the moon: its full name and one line of when / what, reading away from the planet.
+      radialLabel(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, a, b.r + 6, fullName(b), itemMeta(b), 11, 24)
+        .attr("class", `moon-label k-${b.kind}`);
       outer.on("click", (event: Event) => {
         event.stopPropagation();
         const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
@@ -1292,7 +1399,7 @@ export function createGraph(
     });
     if (bubbleEls.length) {
       // Keep each bubble's link line attached as it moves.
-      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map((b) => b.r), ringR, nodeR, 18, (nodes) => {
+      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map((b) => b.r + 2), ringR, nodeR, 6, (nodes) => {
         nodes.forEach((d, i) => {
           const ang = Math.atan2(d.y ?? 0, d.x ?? 0);
           const l = bubbleLines[i];
@@ -1311,12 +1418,39 @@ export function createGraph(
       .classed("faded", (d) => d.id !== id && !partners.has(d.id))
       .classed("partner", (d) => partners.has(d.id))
       .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12 && !pinnedMembers.includes(d))
-      .classed("member-ring", (d) => pinnedMembers.includes(d));
+      .classed("member-ring", (d) => pinnedMembers.includes(d))
+      // an org's coalitions and partners: drawn smaller and quieter on the outskirts
+      .classed("linked", (d) => n.kind === "org" && pinnedMembers.includes(d));
     linkSel.classed("faded", (l) => {
       const s = typeof l.source === "string" ? l.source : l.source.id;
       const t = typeof l.target === "string" ? l.target : l.target.id;
       return s !== id && t !== id;
     });
+
+    // Members spring toward their place around the coalition (wherever the coalition is now).
+    sim.force("memberPull", memberHome.size ? (alpha: number) => {
+      const f = nodeById.get(id);
+      if (!f) return;
+      const k = Math.max(0.06, alpha * 0.5);
+      for (const [o, h] of memberHome) {
+        if (o.fx != null) continue; // being dragged
+        o.vx = (o.vx ?? 0) + ((f.x ?? 0) + h.ox - (o.x ?? 0)) * k;
+        o.vy = (o.vy ?? 0) + ((f.y ?? 0) + h.oy - (o.y ?? 0)) * k;
+        // Keep-out oval around the items: anything inside is pushed back out along its own direction.
+        const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
+        const { rx, ry } = memberKeepOut;
+        const e = rx && ry ? Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2) : 2;
+        if (e < 1) {
+          // a hard edge: put it back on the boundary and drop any inward speed
+          const k2 = 1 / Math.max(e, 0.05);
+          o.x = (f.x ?? 0) + dx * k2;
+          o.y = (f.y ?? 0) + dy * k2;
+          const len = Math.hypot(dx, dy) || 1;
+          const inward = ((o.vx ?? 0) * dx + (o.vy ?? 0) * dy) / len;
+          if (inward < 0) { o.vx = (o.vx ?? 0) - (inward * dx) / len; o.vy = (o.vy ?? 0) - (inward * dy) / len; }
+        }
+      }
+    } : null);
 
     // Push every other group well away so the bubbles have clear space (and nothing sits behind them).
     sim.force("focusPush", () => {
@@ -1351,7 +1485,7 @@ export function createGraph(
       stat("action", "Actions"),
     );
     focusBar.appendChild(legend);
-    const classicBtn = h("button", { class: "focus-back", type: "button", title: "Stop showing bubbles when a group is clicked; just open its details panel" }, "Turn items off");
+    const classicBtn = h("button", { class: "focus-back", type: "button", title: "From now on, clicking a group only opens its details panel (turn back on in Map settings)" }, "Don't zoom in on click");
     classicBtn.addEventListener("click", () => setViewMode(false));
     focusBar.appendChild(classicBtn);
     if (!count("thought")) {
@@ -1372,7 +1506,7 @@ export function createGraph(
     const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
     const scale = Math.max(
       0.35,
-      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + 230, memberRX + 30)), vh / (2 * Math.max(ringR + 90, memberRY + 45))),
+      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + BUBBLE_R + LABEL_REACH + 20, memberRX + 40)), vh / (2 * Math.max(ringR + BUBBLE_R + 50, memberRY + 110))),
     );
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
@@ -1392,8 +1526,10 @@ export function createGraph(
     focusSim = null;
     for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     pinnedMembers = [];
-    nodeSel.classed("sats-hidden", false).classed("member-ring", false);
+    nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("linked", false).classed("focused", false);
     sim.force("focusPush", null);
+    sim.force("memberPull", null);
+    memberHome.clear();
     // Bubbles fold back into the group, then disappear.
     if (fit) {
       const nn = n;
@@ -1456,7 +1592,7 @@ export function createGraph(
       if (partial.linkDistance !== undefined) {
         linkForce.distance(linkDistanceFor);
       }
-      if (partial.repelForce !== undefined) {
+      if (partial.repelForce !== undefined || partial.coalitionRepel !== undefined) {
         chargeForce.strength(chargeStrengthFor);
       }
       if (partial.centerForce !== undefined) {
@@ -1465,7 +1601,8 @@ export function createGraph(
       }
       if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined || partial.alwaysShow !== undefined) {
         if (partial.alwaysShow !== undefined) {
-          try { localStorage.setItem("openthink.always", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
+          try { localStorage.setItem("openthink.previews", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
+          syncViewSwitch();
         }
         refreshSats();
         refreshSpacing();
@@ -1496,6 +1633,7 @@ export function createGraph(
       const forceChanged =
         partial.centerForce !== undefined ||
         partial.repelForce !== undefined ||
+        partial.coalitionRepel !== undefined ||
         partial.linkForce !== undefined ||
         partial.linkDistance !== undefined ||
         partial.nodeSize !== undefined;

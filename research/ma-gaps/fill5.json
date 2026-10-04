@@ -1,228 +1,658 @@
-{
- "orgs": {
-  "masspirg": {
-   "type": "501c4",
-   "website": "https://pirg.org/massachusetts/",
-   "sources": [
-    "https://www.influencewatch.org/non-profit/massachusetts-public-interest-research-group/",
-    "https://projects.propublica.org/nonprofits/organizations/042536325",
-    "https://pirg.org/massachusetts/about/"
-   ]
+[
+ {
+  "id": "gjc",
+  "kind": "coalition",
+  "fields": {
+   "website": "https://greenjusticecoalition.org/",
+   "description": "Partnership of community-based building nonprofits and labor organizations that grows the power of working-class people and people of color in the Greater Boston area and beyond. Its work includes energy democracy and grid modernization, project labor agreements for public infrastructure, and public transit equity.",
+   "geographic_scope": "Greater Boston and beyond",
+   "focus_tags": [
+    "clean_energy"
+   ],
+   "logo_url": "https://www.massclu.org/wp-content/uploads/2024/10/gjc_environmental-justice_logo-4a.png"
   },
-  "conservation_law_foundation": {
-   "type": "501c3",
-   "website": "https://www.clf.org/",
-   "sources": [
-    "https://www.influencewatch.org/non-profit/conservation-law-foundation/",
-    "https://projects.propublica.org/nonprofits/organizations/046149986",
-    "https://www.clf.org/how-you-can-help/ways-to-give/"
-   ]
+  "members": [
+   {
+    "name": "Alternatives for Community & Environment",
+    "org_id": "alternatives_for_community_and_environment"
+   },
+   {
+    "name": "Boston Climate Action Network",
+    "org_id": "boston_climate_action_network"
+   },
+   {
+    "name": "Building Pathways"
+   },
+   {
+    "name": "Chinese Progressive Association",
+    "org_id": "chinese_progressive_association"
+   },
+   {
+    "name": "Clean Water Action",
+    "org_id": "clean_water_action"
+   },
+   {
+    "name": "Community Labor United",
+    "org_id": "community_labor_united"
+   },
+   {
+    "name": "Greater Boston Building Trades Unions"
+   },
+   {
+    "name": "Greater Boston Labor Council"
+   },
+   {
+    "name": "IBEW Local 103"
+   },
+   {
+    "name": "Neighbor to Neighbor",
+    "org_id": "neighbor_to_neighbor_massachusetts"
+   },
+   {
+    "name": "New England Community Project"
+   },
+   {
+    "name": "Sheet Metal Workers Local 17"
+   }
+  ],
+  "sources": {
+   "website": "https://www.massclu.org/organizing/green-justice-coalition/",
+   "description": "https://www.massclu.org/organizing/green-justice-coalition/",
+   "geographic_scope": "https://www.massclu.org/organizing/green-justice-coalition/",
+   "focus_tags": "https://www.massclu.org/organizing/green-justice-coalition/",
+   "logo_url": "https://www.massclu.org/organizing/green-justice-coalition/",
+   "members": "https://www.massclu.org/organizing/green-justice-coalition/"
   },
-  "salem_alliance_for_the_environment": {
-   "type": "501c3",
-   "sources": [
-    "https://salemsafe.org/donate"
-   ]
-  },
-  "green_newton": {
-   "type": "501c3",
-   "sources": [
-    "https://www.charitynavigator.org/ein/043075981"
-   ]
-  },
-  "mount_grace_land_conservation_trust": {
-   "type": "501c3",
-   "sources": [
-    "https://www.charitynavigator.org/ein/042938967"
-   ]
-  },
-  "north_american_indian_center_of_boston": {
-   "type": "501c3",
-   "sources": [
-    "https://projects.propublica.org/nonprofits/organizations/043132204"
-   ]
-  },
-  "ma_senior_action": {
-   "type": "501c3",
-   "sources": [
-    "https://projects.propublica.org/nonprofits/organizations/042760902"
-   ]
-  },
-  "undauntedk12": {
-   "type": "501c3",
-   "sources": [
-    "https://projects.propublica.org/nonprofits/organizations/923242587"
-   ]
-  },
-  "21st_century_schools_fund": {
-   "type": "501c3",
-   "sources": [
-    "https://projects.propublica.org/nonprofits/organizations/522139122",
-    "https://www.21csf.org/"
-   ]
-  },
-  "sustainable_milton": {
-   "type": "501c3",
-   "sources": [
-    "https://www.sustainablemilton.org/donate-1"
-   ]
-  },
-  "350ma_cape_cod": {
-   "type": "informal_group",
-   "website": "https://www.350capecod.org/",
-   "sources": [
-    "https://www.350capecod.org/"
-   ]
-  },
-  "food_and_water_watch": {
-   "type": "501c3",
-   "sources": [
-    "https://www.foodandwaterwatch.org/"
-   ]
-  },
-  "american_friends_service_committee_northeast_region": {
-   "website": "https://afsc.org/",
-   "sources": [
-    "https://www.idealist.org/en/nonprofit/0af55b70989a406fa1a1901d72e363f5-american-friends-service-committeenortheast-regional-office-cambridge"
-   ]
-  },
-  "cape_downwinders": {
-   "type": "informal_group",
-   "sources": [
-    "https://www.capedownwinders.net"
-   ]
-  },
-  "the_climate_reality_project_boston_metro_chapter": {
-   "type": "informal_group",
-   "sources": [
-    "https://www.climaterealityboston.org/"
-   ]
-  },
-  "fccpr_climate_crisis_task_force": {
-   "type": "informal_group",
-   "sources": [
-    "https://grassrootsfund.org/groups/franklin-county-continuing-the-political-revolution"
-   ]
-  },
-  "pilgrim_coalition": {
-   "type": "coalition",
-   "sources": [
-    "https://grassrootsfund.org/groups/pilgrim-coalition"
-   ]
-  },
-  "quincy_climate_action_network": {
-   "type": "informal_group",
-   "sources": [
-    "https://quincycan.org/get-involved/donate/"
-   ]
-  },
-  "take_back_the_grid": {
-   "website": "https://www.takebackthegrid.org/",
-   "sources": [
-    "https://www.takebackthegrid.org/2019/07/23/bringing-public-back-reportback-from-dept-of-public-utility-hearings/"
-   ]
-  },
-  "watertown_citizens_for_peace_justice_and_the_environment": {
-   "type": "501c4",
-   "sources": [
-    "https://watertowncitizens.org/donate/"
-   ]
-  },
-  "acadia_center": {
-   "type": "501c3",
-   "sources": [
-    "https://acadiacenter.org/about/"
-   ]
-  },
-  "citizens_climate_lobby_boston": {
-   "type": "informal_group",
-   "sources": [
-    "https://citizensclimatelobby.org/chapters/MA_Boston/"
-   ]
-  },
-  "collaborative_for_high_performance_schools": {
-   "type": "501c3",
-   "sources": [
-    "https://chps.net/chpslegacy"
-   ]
-  },
-  "tree_boston": {
-   "website": "https://treeboston.org/",
-   "sources": [
-    "https://treeboston.org/support/"
-   ]
-  },
-  "ma_youth_for_climate_justice": {
-   "website": "https://www.instagram.com/mayouth4climatejustice/",
-   "sources": [
-    "https://www.instagram.com/mayouth4climatejustice/"
-   ]
-  },
-  "mass_audubon_wellfleet_bay_wildlife_sanctuary": {
-   "type": "501c3",
-   "sources": [
-    "https://www.massaudubon.org/"
-   ]
-  },
-  "sustainable_business_network_of_massachusetts": {
-   "type": "501c3",
-   "sources": [
-    "https://www.sbnmass.org/donate"
-   ]
-  },
-  "sustainable_sharon_coalition": {
-   "type": "501c3",
-   "sources": [
-    "https://www.sustainablesharon.org/about"
-   ]
-  }
+  "not_found": []
  },
- "not_found": [
-  "andover_climate_lobby",
-  "youth_action_collaborative_alumni_node_at_clean_water_action",
-  "the_enviro_show_on_wxoj_lp_103_3_fm",
-  "climate_action_now_western_ma",
-  "sierra_club",
-  "boston_climate_action_network",
-  "the_climate_reality_project_massachusetts_southcoast",
-  "passive_house_massachusetts",
-  "progressive_democrats_of_mass",
-  "sustainable_sudbury",
-  "vineyard_power_cooperative",
-  "xr_boston",
-  "citizens_climate_lobby",
-  "citizens_climate_lobby_north_shore_chapter",
-  "salem_high_school_sustainability_club",
-  "sustainable_sharon_coalition_youth",
-  "masspirg_boston",
-  "coalition_for_social_justice",
-  "hands_across_the_river_coalition_inc",
-  "no_fracked_gas_in_mass",
-  "league_of_women_voters_of_massachusetts",
-  "mass_facilities_administrators_association",
-  "newton_south_high_school_environmental_club",
-  "healthlink",
-  "act_on_mass",
-  "greenroots",
-  "climate_code_blue",
-  "jewish_alliance_for_law_and_social_action",
-  "arise_for_social_justice",
-  "charles_river_watershed_association",
-  "co_op_power_inc",
-  "greater_boston_physicians_for_social_responsibility",
-  "longmeadow_pipeline_awareness_group",
-  "no_sharon_gas_pipeline_clean_energy_now",
-  "pilgrim_watch",
-  "upper_cape_women_s_coalition",
-  "wendell_state_forest_alliance",
-  "center_for_green_schools_at_us_gbc",
-  "citizens_climate_lobby_south_shore_cape_and_islands",
-  "cooler_communities",
-  "andover_high_school_environmental_club",
-  "concerned_citizens_of_franklin_county",
-  "masscosh_tlaw_climate_change_and_environmental_justice_team",
-  "xr_youth",
-  "community_action_works"
- ],
- "notes": "Types/websites pass (Sonnet agents, 2026-10-02). Lead review dropped: MassCOSH TLAW type (parent status), Concerned Citizens of Franklin County type (EIN matched by name only), Community Action Works type (EIN + 'nonprofit' only), Andover HS club and XR Youth websites (not read). Spot-checked live: Food & Water Watch 501(c)3 footer, Acadia Center 501(c)(3), SBN Mass 501(c)(3). greenrootschelsea.org now redirects to greenrootsej.org (not changed: blank-only merge). Agent notes: Type evidenced mostly via ProPublica/Charity Navigator/InfluenceWatch (third-party pages stating IRS status); many org sites are JS-rendered/blocked and WebFetch was permission-blocked (used curl). Doubtful: concerned_citizens_of_franklin_county matched by name only to EIN 27-0507287 (ProPublica; city not verified; abetterfranklin.com is a Florida org, NOT used, no website found). andover_high_school_environmental_club website is a Project Green Schools chapter profile page (read via search-result title only; page blocked). masspirg: ProPublica lists 501(c)(4) entity 04-2536325 and a separate c3 Education Fund; masspirg.org also given by InfluenceWatch but pirg.org/massachusetts used. Left out types: Clean Water Action itself is 501(c)(4) per cleanwater.org/about/finances-and-effectiveness-clean-water-action but Youth Action node is a program/alumni chapter, not transferred. Climate Action Now WMA is a fiscally sponsored project of a c3 per InfluenceWatch (not transferred); BCAN uses fiscal sponsor Movement Sustainability Commons; XR Boston fiscal sponsor Climate Direct Action Education Fund c3 (not transferred). Vineyard Power is 501(c)(12) cooperative per ProPublica (EIN 27-1437013), no matching allowed type. Sustainable Sudbury and Passive House MA say 'non-profit' without c3/c4 number; Progressive Democrats of Mass site unreadable (ProPublica c4 name match with odd EIN prefix, not used). Sierra Club, Climate Reality Southcoast, CCL sites unreadable. | Most fetches worked only for URLs surfaced in search results. Doubtful: masscosh TLAW is a program of MassCOSH (501c3 per GuideStar) so parent status applied; xr_youth website found only as a search-result title (Home, xryouthboston.org), page could not be fetched (robots/DNS), may be Boston-only; 350ma_cape_cod informal_group from 'group of concerned Cape Cod residents, part of 350.org network' (site says on pause Fall 2023-Fall 2024, possibly inactive); fccpr and climate reality/CCL typed informal_group (volunteer/chapter) with no tax status stated; pilgrim_coalition coalition from grassrootsfund description (27 member orgs), no own website found; masspirg footer only mentions 'sister 501(c)(3)' so left blank; No Fracked Gas is a BEAT program but BEAT's 501c3 not stated on page, left blank; CSJ, LWVMA, MFAA tax status not stated on pages read; sharon youth is a committee of a 501c3 so omitted; Hands Across the River and Salem HS club websites not found (Hands Across only in grassrootsfund directory, not own site). | Most org sites blocked WebFetch/browser or returned JS-only/empty pages (curl used where possible). Doubtful: Mass Audubon Wellfleet type taken from the parent Mass Audubon footer (sanctuary is a Mass Audubon property, not a separate chapter). Community Action Works type based on footer 'EIN: 04-3211693 Nonprofit' only. MA Youth for Climate Justice website is its Instagram (Facebook also exists: facebook.com/mayouth4climatejustice). Pilgrim Watch and HealthLink self-describe as 'non-profit' only (no 501c3 stated); HealthLink also called a 'grassroots group' in a 3rd-party news article, so left out. JALSA page says 'membership-based nonprofit' without tax status. CRWA site only links a Charity Navigator badge; left out. Newton South club not listed on school clubs page (points to a Google doc). uppercapewomen.org appears hijacked (casino spam) so not used; Upper Cape Women's Coalition has no verified site."
-}
+ {
+  "id": "ejlt",
+  "kind": "coalition",
+  "fields": {
+   "website": "https://actionnetwork.org/groups/massachusetts-environmental-justice-table",
+   "description": "Statewide coalition of community-based, environmental, Indigenous and civil rights organizations, led by grassroots and community-of-color-led groups, formed in 2019 to support and influence environmental justice legislation and policy in Massachusetts.",
+   "geographic_scope": "Statewide",
+   "focus_tags": [
+    "environmental_justice"
+   ]
+  },
+  "members": [
+   {
+    "name": "Alternatives for Community & Environment",
+    "org_id": "alternatives_for_community_and_environment"
+   },
+   {
+    "name": "Clean Water Action",
+    "org_id": "clean_water_action"
+   },
+   {
+    "name": "Community Action Works",
+    "org_id": "community_action_works"
+   },
+   {
+    "name": "Conservation Law Foundation",
+    "org_id": "conservation_law_foundation"
+   },
+   {
+    "name": "Environmental League of Massachusetts",
+    "org_id": "environmental_league_of_ma"
+   },
+   {
+    "name": "GreenRoots",
+    "org_id": "greenroots"
+   },
+   {
+    "name": "Health Care Without Harm"
+   },
+   {
+    "name": "Massachusetts Climate Action Network",
+    "org_id": "massachusetts_climate_action_network"
+   },
+   {
+    "name": "Neighbor to Neighbor MA Education Fund",
+    "org_id": "neighbor_to_neighbor_massachusetts"
+   },
+   {
+    "name": "Union of Concerned Scientists"
+   },
+   {
+    "name": "Unitarian Universalist Mass Action",
+    "org_id": "unitarian_universalist_mass_action"
+   }
+  ],
+  "sources": {
+   "website": "https://actionnetwork.org/groups/massachusetts-environmental-justice-table",
+   "description": "https://www.mass.gov/doc/ma-environmental-justice-legislative-table/download",
+   "geographic_scope": "https://www.mass.gov/doc/ma-environmental-justice-legislative-table/download",
+   "focus_tags": "https://www.mass.gov/doc/ma-environmental-justice-legislative-table/download",
+   "members": "https://www.mass.gov/doc/ma-environmental-justice-legislative-table/download"
+  },
+  "not_found": [
+   "logo_url"
+  ]
+ },
+ {
+  "id": "hero",
+  "kind": "coalition",
+  "fields": {
+   "website": "https://www.mahousingclimate.org/",
+   "description": "Coalition of housing advocacy and environmental organizations working for statewide solutions to the climate and affordable housing crises. It backs legislation to raise the Massachusetts deeds excise fee and split the revenue between affordable housing and climate investments.",
+   "geographic_scope": "Statewide",
+   "focus_tags": [
+    "housing",
+    "climate_policy"
+   ]
+  },
+  "members": [
+   {
+    "name": "350 Massachusetts",
+    "org_id": "350ma"
+   },
+   {
+    "name": "Abundant Housing Massachusetts"
+   },
+   {
+    "name": "Allston Brighton Community Development Corporation"
+   },
+   {
+    "name": "Boston Climate Action Network",
+    "org_id": "boston_climate_action_network"
+   },
+   {
+    "name": "Boston Tenant Coalition"
+   },
+   {
+    "name": "Charles River Watershed Association",
+    "org_id": "charles_river_watershed_association"
+   },
+   {
+    "name": "Chinese Progressive Association",
+    "org_id": "chinese_progressive_association"
+   },
+   {
+    "name": "Citizens' Housing & Planning Association (CHAPA)"
+   },
+   {
+    "name": "City Life Vida Urbana"
+   },
+   {
+    "name": "Clean Water Action",
+    "org_id": "clean_water_action"
+   },
+   {
+    "name": "Codman Square NDC"
+   },
+   {
+    "name": "Community Labor United (CLU)",
+    "org_id": "community_labor_united"
+   },
+   {
+    "name": "Communities Responding to Extreme Weather (CREW)"
+   },
+   {
+    "name": "Conservation Law Foundation",
+    "org_id": "conservation_law_foundation"
+   },
+   {
+    "name": "Dorchester Bay EDC"
+   },
+   {
+    "name": "E4TheFuture"
+   },
+   {
+    "name": "Economic Mobility Pathways (EMPath)"
+   },
+   {
+    "name": "Fairmount Indigo CDC Collaborative"
+   },
+   {
+    "name": "Green Energy Consumers Alliance",
+    "org_id": "green_energy_consumers_alliance"
+   },
+   {
+    "name": "GreenRoots",
+    "org_id": "greenroots"
+   },
+   {
+    "name": "Groundwork Lawrence"
+   },
+   {
+    "name": "Jewish Alliance for Law and Social Action (JALSA)",
+    "org_id": "jewish_alliance_for_law_and_social_action"
+   },
+   {
+    "name": "LISC Boston"
+   },
+   {
+    "name": "Madison Park Development Corporation (MPDC)"
+   },
+   {
+    "name": "Massachusetts Affordable Housing Alliance (MAHA)"
+   },
+   {
+    "name": "Massachusetts Alliance of HUD Tenants (MAHT)"
+   },
+   {
+    "name": "Massachusetts Association of Community Development Corporations (MACDC)"
+   },
+   {
+    "name": "Massachusetts Budget and Policy Center"
+   },
+   {
+    "name": "Massachusetts Climate Action Network (MCAN)",
+    "org_id": "massachusetts_climate_action_network"
+   },
+   {
+    "name": "Massachusetts Community Action Network (MCAN)"
+   },
+   {
+    "name": "Massachusetts Law Reform Institute (MLRI)"
+   },
+   {
+    "name": "Massachusetts Public Health Association"
+   },
+   {
+    "name": "Massachusetts Smart Growth Alliance"
+   },
+   {
+    "name": "Metropolitan Area Planning Council",
+    "org_id": "metropolitan_area_planning_council"
+   },
+   {
+    "name": "Northeast Energy Efficiency Council"
+   },
+   {
+    "name": "Progressive Massachusetts"
+   },
+   {
+    "name": "Public Health Institute of Western Massachusetts"
+   },
+   {
+    "name": "Rocky Mountain Institute"
+   },
+   {
+    "name": "Sierra Club Massachusetts Chapter",
+    "org_id": "sierra_club"
+   },
+   {
+    "name": "Toxics Action Center"
+   },
+   {
+    "name": "Unitarian Universalist Mass Action Network",
+    "org_id": "unitarian_universalist_mass_action"
+   }
+  ],
+  "sources": {
+   "website": "https://350mass.betterfutureproject.org/hero_coalition",
+   "description": "https://www.mahousingclimate.org/",
+   "geographic_scope": "https://350mass.betterfutureproject.org/hero_coalition",
+   "focus_tags": "https://www.mahousingclimate.org/",
+   "members": "https://www.mahousingclimate.org/who-we-are"
+  },
+  "not_found": [
+   "logo_url"
+  ]
+ },
+ {
+  "id": "cccc",
+  "kind": "coalition",
+  "fields": {},
+  "sources": {},
+  "not_found": [
+   "website",
+   "description",
+   "geographic_scope",
+   "focus_tags",
+   "members",
+   "logo_url"
+  ]
+ },
+ {
+  "id": "scjc",
+  "kind": "coalition",
+  "fields": {
+   "geographic_scope": "Greater Springfield",
+   "focus_tags": [
+    "environmental_justice",
+    "health"
+   ]
+  },
+  "members": [
+   {
+    "name": "350 Central Mass"
+   },
+   {
+    "name": "350 Massachusetts for a Better Future",
+    "org_id": "350ma"
+   },
+   {
+    "name": "Arise for Social Justice",
+    "org_id": "arise_for_social_justice"
+   },
+   {
+    "name": "Beit Ahavah Reform Synagogue of Northampton"
+   },
+   {
+    "name": "Berkshire Environmental Action Team",
+    "org_id": "berkshire_environmental_action_team"
+   },
+   {
+    "name": "Berkshires Democratic Socialists of America"
+   },
+   {
+    "name": "Canton Residents for a Sustainable Equitable Future",
+    "org_id": "canton_residents_for_a_sustainable_equitable_future"
+   },
+   {
+    "name": "Climate Action Business Association"
+   },
+   {
+    "name": "Climate Action Now Western Mass",
+    "org_id": "climate_action_now_western_ma"
+   },
+   {
+    "name": "Community Action Works",
+    "org_id": "community_action_works"
+   },
+   {
+    "name": "Concerned Citizens of Springfield"
+   },
+   {
+    "name": "Climate Code Blue",
+    "org_id": "climate_code_blue"
+   },
+   {
+    "name": "Decarcerate Western Mass"
+   },
+   {
+    "name": "Elders Climate Action-Massachusetts Chapter",
+    "org_id": "elders_climate_action_mass"
+   },
+   {
+    "name": "Environmental Justice Team First Church of Christ Longmeadow"
+   },
+   {
+    "name": "The Enviro Show",
+    "org_id": "the_enviro_show_on_wxoj_lp_103_3_fm"
+   },
+   {
+    "name": "Extinction Rebellion Western Massachusetts",
+    "org_id": "xr_western_mass"
+   },
+   {
+    "name": "Food & Water Watch",
+    "org_id": "food_and_water_watch"
+   },
+   {
+    "name": "Franklin County Continuing the Political Revolution"
+   },
+   {
+    "name": "Grassroots Central Mass"
+   },
+   {
+    "name": "Indian Orchard Citizens Council"
+   },
+   {
+    "name": "Jewish Climate Action Network",
+    "org_id": "jewish_climate_action_network"
+   },
+   {
+    "name": "Keep Springfield Beautiful"
+   },
+   {
+    "name": "Live Well Springfield"
+   },
+   {
+    "name": "Longmeadow Pipeline Awareness Group",
+    "org_id": "longmeadow_pipeline_awareness_group"
+   },
+   {
+    "name": "Mass Forest Rescue"
+   },
+   {
+    "name": "Massachusetts Jobs With Justice",
+    "org_id": "massachusetts_jobs_with_justice"
+   },
+   {
+    "name": "Mothers Out Front Massachusetts",
+    "org_id": "mothers_out_front"
+   },
+   {
+    "name": "Massachusetts Power and Light"
+   },
+   {
+    "name": "Neighbor to Neighbor Massachusetts",
+    "org_id": "neighbor_to_neighbor_massachusetts"
+   },
+   {
+    "name": "No Fracked Gas in Mass"
+   },
+   {
+    "name": "North Parish Unitarian Universalist Climate Justice Task Force"
+   },
+   {
+    "name": "Partnership For Policy Integrity",
+    "org_id": "partnership_for_policy_integrity"
+   },
+   {
+    "name": "Pioneer Valley Asthma Coalition",
+    "org_id": "pioneer_valley_asthma_coalition"
+   },
+   {
+    "name": "Pioneer Valley Democratic Socialists of America"
+   },
+   {
+    "name": "Pioneer Valley Mothers Out Front"
+   },
+   {
+    "name": "Pioneer Valley Project"
+   },
+   {
+    "name": "Pioneer Valley Workers Center"
+   },
+   {
+    "name": "Progressive Democrats of Massachusetts",
+    "org_id": "progressive_democrats_of_mass"
+   },
+   {
+    "name": "Public Higher Education Network of Massachusetts"
+   },
+   {
+    "name": "The Resistance Center for Peace and Justice"
+   },
+   {
+    "name": "Resist the Pipeline"
+   },
+   {
+    "name": "RESTORE: The North Woods"
+   },
+   {
+    "name": "Springfield Federation of Paraprofessionals"
+   },
+   {
+    "name": "Sunrise Hampden County"
+   },
+   {
+    "name": "Sunrise Northampton"
+   },
+   {
+    "name": "Sustainable Wellesley"
+   },
+   {
+    "name": "Take Back the Grid",
+    "org_id": "take_back_the_grid"
+   },
+   {
+    "name": "Unitarian Universalist Society of Greater Springfield"
+   },
+   {
+    "name": "Unitarian Universalist Mass Action",
+    "org_id": "unitarian_universalist_mass_action"
+   },
+   {
+    "name": "Wendell State Forest Alliance",
+    "org_id": "wendell_state_forest_alliance"
+   },
+   {
+    "name": "Western Mass Medicare for All"
+   },
+   {
+    "name": "Western New England University Sunrise Hub"
+   }
+  ],
+  "sources": {
+   "geographic_scope": "https://www.notoxicbiomass.org/team",
+   "focus_tags": "https://www.notoxicbiomass.org/team",
+   "members": "https://www.notoxicbiomass.org/team"
+  },
+  "not_found": [
+   "logo_url"
+  ]
+ },
+ {
+  "id": "mycc",
+  "kind": "coalition",
+  "fields": {
+   "website": "https://ourclimate.us/state-campaigns/",
+   "description": "Youth-led, adult-supported network of climate organizations, founded in 2020, that connects and mobilizes youth leaders and their groups through rallies, lobbying events and summits."
+  },
+  "members": [
+   {
+    "name": "Greenroots ECO Team",
+    "org_id": "greenroots_eco"
+   },
+   {
+    "name": "VietAID",
+    "org_id": "vietaid"
+   },
+   {
+    "name": "Sunrise Movement hubs"
+   },
+   {
+    "name": "MASSPIRG students"
+   },
+   {
+    "name": "Mass Audubon"
+   }
+  ],
+  "sources": {
+   "website": "https://ourclimate.us/state-campaigns/",
+   "description": "https://secure.actblue.com/donate/ocmyccsummit",
+   "members": "https://ourclimate.us/behind-the-scenes-our-climates-backstage-coalition-work-before-the-coming-session/"
+  },
+  "not_found": [
+   "logo_url"
+  ]
+ },
+ {
+  "id": "healthlink",
+  "kind": "org",
+  "fields": {
+   "website": "http://www.citizensinaction.org/"
+  },
+  "sources": {
+   "website": "http://www.citizensinaction.org/about-healthlink-14.html"
+  },
+  "not_found": [
+   "type",
+   "logo_url"
+  ]
+ },
+ {
+  "id": "bodhisara_dharma_community",
+  "kind": "org",
+  "fields": {
+   "description": "Non-profit Buddhist community in western Massachusetts that offers the Buddha's teaching to all ages through classes, meditation and retreats. It aims to build a community of friends who support each other in living with awareness, kindness and compassion.",
+   "type": "faith_org",
+   "geographic_focus": "Western Massachusetts"
+  },
+  "sources": {
+   "description": "https://www.bodhisara.org/",
+   "type": "https://www.bodhisara.org/",
+   "geographic_focus": "https://www.bodhisara.org/"
+  },
+  "not_found": [
+   "logo_url"
+  ]
+ },
+ {
+  "id": "hands_across_the_river_coalition_inc",
+  "kind": "org",
+  "fields": {},
+  "sources": {},
+  "not_found": [
+   "website",
+   "type",
+   "logo_url"
+  ]
+ },
+ {
+  "id": "mass_divest_coalition",
+  "kind": "org",
+  "fields": {},
+  "sources": {},
+  "not_found": [
+   "logo_url"
+  ]
+ },
+ {
+  "id": "no_sharon_gas_pipeline_clean_energy_now",
+  "kind": "org",
+  "fields": {},
+  "sources": {},
+  "not_found": [
+   "type",
+   "logo_url"
+  ]
+ },
+ {
+  "id": "south_coast_neighbors_united",
+  "kind": "org",
+  "fields": {
+   "website": "https://www.scnu.us/",
+   "logo_url": "https://scnu.us/wp-content/uploads/2018/04/SCNU-Logo-bigger-e1525647655773.jpg"
+  },
+  "sources": {
+   "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
+   "logo_url": "https://www.scnu.us/"
+  },
+  "not_found": []
+ },
+ {
+  "id": "take_back_the_grid",
+  "kind": "org",
+  "fields": {
+   "website": "https://bostondsa.org/our-work/ecosocialism/",
+   "description": "Action arm of Boston DSA's Ecosocialism Working Group, working to democratize, decarbonize, decommodify and decolonize energy utilities in Massachusetts."
+  },
+  "sources": {
+   "website": "https://bostondsa.org/our-work/ecosocialism/",
+   "description": "https://bostondsa.org/our-work/ecosocialism/"
+  },
+  "not_found": [
+   "type",
+   "logo_url"
+  ]
+ },
+ {
+  "id": "upper_cape_women_s_coalition",
+  "kind": "org",
+  "fields": {},
+  "sources": {},
+  "not_found": [
+   "website",
+   "type",
+   "logo_url"
+  ]
+ },
+ {
+  "id": "21st_century_schools_fund",
+  "kind": "org",
+  "fields": {},
+  "sources": {},
+  "not_found": [
+   "type",
+   "logo_url"
+  ]
+ }
+]

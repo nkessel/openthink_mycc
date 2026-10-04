@@ -9,13 +9,17 @@ import { createGeographicView } from "./geographic";
 import { createEventsView } from "./events";
 import { createProjectsView } from "./projects";
 import { createActionsView } from "./actions";
+import { createTopicsView } from "./topics";
 import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
-import { setupSidebarToggle, createMapLegend } from "./sidebar";
+import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
+
+captureLandText(); // before the loading screen goes away
 import { currentMap, MAPS, type MapDef } from "./maps";
 import { rollRecurringForward } from "./recurrence";
+import { attachSectors, createSectorSection } from "./sectors";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
 type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDone?: () => void };
@@ -64,6 +68,8 @@ async function main() {
 
   bootProgress(0.8, "Drawing the map\u2026");
   await attachThoughts(data);
+  // Sector layers (Map settings → Social justice) that this browser has switched on.
+  const sectorsOn = await attachSectors(data, currentMap.id);
   // Recurring events carry one stored date; show their next occurrence.
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
 
@@ -146,6 +152,9 @@ async function main() {
       drawerApi!.open(node);
       graphApi!.setSelectedNode(node);
     },
+    onItemClick: (kind, item, owner) => {
+      drawerApi!.openItem(kind, item, owner);
+    },
     onNodeDeselect: () => {
       drawerApi!.close();
       graphApi!.setSelectedNode(null);
@@ -155,13 +164,14 @@ async function main() {
   bootProgress(0.9, "Setting up the tabs\u2026");
 
   // The key to the map sits on the map itself.
-  createMapLegend(graphContainer);
+  createMapLegend(graphContainer, sectorsOn);
 
   // Controls panel — mounts inside the sidebar
   const controls = createControls(sidebar.controlsContainer(), {
     // The Bubbles/Classic switch lives on the map itself, so saved control state never overrides it.
     onSettingsChange: (partial) => {
-      const { showBubbles: _ignored, ...rest } = partial;
+      // These two belong to the switches on the map (and their copies in the sidebar), not to saved settings.
+      const { showBubbles: _ignored, alwaysShow: _ignored2, ...rest } = partial;
       graphApi!.updateSettings(rest);
     },
     onGroupsChange: (rules) => graphApi!.setGroups(rules),
@@ -169,6 +179,8 @@ async function main() {
   });
   // The org-to-org connections toggle lives with the other advanced display options.
   controls.advancedContainer().appendChild(graphApi.orgLinkToggle());
+  // "Social justice": one switch per sector layer, closed by default, just above Advanced display settings.
+  createSectorSection(sidebar.controlsContainer(), currentMap.id);
 
   // ----- Geographic view -----
   const geoView = createGeographicView(data, {
@@ -254,6 +266,30 @@ async function main() {
   actionsView.el.style.inset = "0";
   content.appendChild(actionsView.el);
 
+  // ----- Topics view (topic galaxy; loads public/topics.json the first time it opens) -----
+  const topicsView = createTopicsView({
+    hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
+    onGroupClick: (id) => {
+      const c = data.coalitions.find((x) => x.id === id);
+      const o = data.organizations.find((x) => x.id === id);
+      const node: GraphNode | null = c ? { ...c, kind: "coalition" } : o ? { ...o, kind: "org" } : null;
+      if (!node) return false;
+      setTab("map");
+      setTimeout(() => {
+        if (!trayWouldBlockMap()) drawerApi!.open(node);
+        graphApi!.setSelectedNode(node);
+        // Same as the Events/Projects/Actions pages: zoom to coalitions (or on a phone), otherwise just open details.
+        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
+      }, 60);
+      return true;
+    },
+  });
+  topicsView.el.style.display = "none";
+  topicsView.el.style.height = "100%";
+  topicsView.el.style.position = "absolute";
+  topicsView.el.style.inset = "0";
+  content.appendChild(topicsView.el);
+
   function setTab(tab: TopTab) {
     activeTab = tab;
     topbar.setActive(tab);
@@ -263,6 +299,8 @@ async function main() {
     orgsView.el.style.display = tab === "orgs" ? "grid" : "none";
     projectsView.el.style.display = tab === "projects" ? "grid" : "none";
     actionsView.el.style.display = tab === "actions" ? "grid" : "none";
+    topicsView.el.style.display = tab === "topics" ? "grid" : "none";
+    if (tab === "topics") topicsView.show();
     if (tab === "geo") geoView.invalidate();
     if (tab === "map") setTimeout(() => graphApi?.ensureInView(), 150);
     if (tab !== "map") {
@@ -277,7 +315,11 @@ async function main() {
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
   setFormLabelData(data.organizations);
   setItemLabelData([...data.coalitions, ...data.organizations]);
-  createFab(content, () => drawerApi?.current() ?? null);
+  // Sector groups aren't in the Google Sheet yet, so the forms aren't pre-filled with them.
+  createFab(content, () => {
+    const cur = drawerApi?.current() ?? null;
+    return cur && (cur as { sector?: string }).sector ? null : cur;
+  });
 
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {

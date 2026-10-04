@@ -1,0 +1,228 @@
+{
+ "orgs": {
+  "masspirg": {
+   "type": "501c4",
+   "website": "https://pirg.org/massachusetts/",
+   "sources": [
+    "https://www.influencewatch.org/non-profit/massachusetts-public-interest-research-group/",
+    "https://projects.propublica.org/nonprofits/organizations/042536325",
+    "https://pirg.org/massachusetts/about/"
+   ]
+  },
+  "conservation_law_foundation": {
+   "type": "501c3",
+   "website": "https://www.clf.org/",
+   "sources": [
+    "https://www.influencewatch.org/non-profit/conservation-law-foundation/",
+    "https://projects.propublica.org/nonprofits/organizations/046149986",
+    "https://www.clf.org/how-you-can-help/ways-to-give/"
+   ]
+  },
+  "salem_alliance_for_the_environment": {
+   "type": "501c3",
+   "sources": [
+    "https://salemsafe.org/donate"
+   ]
+  },
+  "green_newton": {
+   "type": "501c3",
+   "sources": [
+    "https://www.charitynavigator.org/ein/043075981"
+   ]
+  },
+  "mount_grace_land_conservation_trust": {
+   "type": "501c3",
+   "sources": [
+    "https://www.charitynavigator.org/ein/042938967"
+   ]
+  },
+  "north_american_indian_center_of_boston": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/043132204"
+   ]
+  },
+  "ma_senior_action": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/042760902"
+   ]
+  },
+  "undauntedk12": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/923242587"
+   ]
+  },
+  "21st_century_schools_fund": {
+   "type": "501c3",
+   "sources": [
+    "https://projects.propublica.org/nonprofits/organizations/522139122",
+    "https://www.21csf.org/"
+   ]
+  },
+  "sustainable_milton": {
+   "type": "501c3",
+   "sources": [
+    "https://www.sustainablemilton.org/donate-1"
+   ]
+  },
+  "350ma_cape_cod": {
+   "type": "informal_group",
+   "website": "https://www.350capecod.org/",
+   "sources": [
+    "https://www.350capecod.org/"
+   ]
+  },
+  "food_and_water_watch": {
+   "type": "501c3",
+   "sources": [
+    "https://www.foodandwaterwatch.org/"
+   ]
+  },
+  "american_friends_service_committee_northeast_region": {
+   "website": "https://afsc.org/",
+   "sources": [
+    "https://www.idealist.org/en/nonprofit/0af55b70989a406fa1a1901d72e363f5-american-friends-service-committeenortheast-regional-office-cambridge"
+   ]
+  },
+  "cape_downwinders": {
+   "type": "informal_group",
+   "sources": [
+    "https://www.capedownwinders.net"
+   ]
+  },
+  "the_climate_reality_project_boston_metro_chapter": {
+   "type": "informal_group",
+   "sources": [
+    "https://www.climaterealityboston.org/"
+   ]
+  },
+  "fccpr_climate_crisis_task_force": {
+   "type": "informal_group",
+   "sources": [
+    "https://grassrootsfund.org/groups/franklin-county-continuing-the-political-revolution"
+   ]
+  },
+  "pilgrim_coalition": {
+   "type": "coalition",
+   "sources": [
+    "https://grassrootsfund.org/groups/pilgrim-coalition"
+   ]
+  },
+  "quincy_climate_action_network": {
+   "type": "informal_group",
+   "sources": [
+    "https://quincycan.org/get-involved/donate/"
+   ]
+  },
+  "take_back_the_grid": {
+   "website": "https://www.takebackthegrid.org/",
+   "sources": [
+    "https://www.takebackthegrid.org/2019/07/23/bringing-public-back-reportback-from-dept-of-public-utility-hearings/"
+   ]
+  },
+  "watertown_citizens_for_peace_justice_and_the_environment": {
+   "type": "501c4",
+   "sources": [
+    "https://watertowncitizens.org/donate/"
+   ]
+  },
+  "acadia_center": {
+   "type": "501c3",
+   "sources": [
+    "https://acadiacenter.org/about/"
+   ]
+  },
+  "citizens_climate_lobby_boston": {
+   "type": "informal_group",
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/MA_Boston/"
+   ]
+  },
+  "collaborative_for_high_performance_schools": {
+   "type": "501c3",
+   "sources": [
+    "https://chps.net/chpslegacy"
+   ]
+  },
+  "tree_boston": {
+   "website": "https://treeboston.org/",
+   "sources": [
+    "https://treeboston.org/support/"
+   ]
+  },
+  "ma_youth_for_climate_justice": {
+   "website": "https://www.instagram.com/mayouth4climatejustice/",
+   "sources": [
+    "https://www.instagram.com/mayouth4climatejustice/"
+   ]
+  },
+  "mass_audubon_wellfleet_bay_wildlife_sanctuary": {
+   "type": "501c3",
+   "sources": [
+    "https://www.massaudubon.org/"
+   ]
+  },
+  "sustainable_business_network_of_massachusetts": {
+   "type": "501c3",
+   "sources": [
+    "https://www.sbnmass.org/donate"
+   ]
+  },
+  "sustainable_sharon_coalition": {
+   "type": "501c3",
+   "sources": [
+    "https://www.sustainablesharon.org/about"
+   ]
+  }
+ },
+ "not_found": [
+  "andover_climate_lobby",
+  "youth_action_collaborative_alumni_node_at_clean_water_action",
+  "the_enviro_show_on_wxoj_lp_103_3_fm",
+  "climate_action_now_western_ma",
+  "sierra_club",
+  "boston_climate_action_network",
+  "the_climate_reality_project_massachusetts_southcoast",
+  "passive_house_massachusetts",
+  "progressive_democrats_of_mass",
+  "sustainable_sudbury",
+  "vineyard_power_cooperative",
+  "xr_boston",
+  "citizens_climate_lobby",
+  "citizens_climate_lobby_north_shore_chapter",
+  "salem_high_school_sustainability_club",
+  "sustainable_sharon_coalition_youth",
+  "masspirg_boston",
+  "coalition_for_social_justice",
+  "hands_across_the_river_coalition_inc",
+  "no_fracked_gas_in_mass",
+  "league_of_women_voters_of_massachusetts",
+  "mass_facilities_administrators_association",
+  "newton_south_high_school_environmental_club",
+  "healthlink",
+  "act_on_mass",
+  "greenroots",
+  "climate_code_blue",
+  "jewish_alliance_for_law_and_social_action",
+  "arise_for_social_justice",
+  "charles_river_watershed_association",
+  "co_op_power_inc",
+  "greater_boston_physicians_for_social_responsibility",
+  "longmeadow_pipeline_awareness_group",
+  "no_sharon_gas_pipeline_clean_energy_now",
+  "pilgrim_watch",
+  "upper_cape_women_s_coalition",
+  "wendell_state_forest_alliance",
+  "center_for_green_schools_at_us_gbc",
+  "citizens_climate_lobby_south_shore_cape_and_islands",
+  "cooler_communities",
+  "andover_high_school_environmental_club",
+  "concerned_citizens_of_franklin_county",
+  "masscosh_tlaw_climate_change_and_environmental_justice_team",
+  "xr_youth",
+  "community_action_works"
+ ],
+ "notes": "Types/websites pass (Sonnet agents, 2026-10-02). Lead review dropped: MassCOSH TLAW type (parent status), Concerned Citizens of Franklin County type (EIN matched by name only), Community Action Works type (EIN + 'nonprofit' only), Andover HS club and XR Youth websites (not read). Spot-checked live: Food & Water Watch 501(c)3 footer, Acadia Center 501(c)(3), SBN Mass 501(c)(3). greenrootschelsea.org now redirects to greenrootsej.org (not changed: blank-only merge). Agent notes: Type evidenced mostly via ProPublica/Charity Navigator/InfluenceWatch (third-party pages stating IRS status); many org sites are JS-rendered/blocked and WebFetch was permission-blocked (used curl). Doubtful: concerned_citizens_of_franklin_county matched by name only to EIN 27-0507287 (ProPublica; city not verified; abetterfranklin.com is a Florida org, NOT used, no website found). andover_high_school_environmental_club website is a Project Green Schools chapter profile page (read via search-result title only; page blocked). masspirg: ProPublica lists 501(c)(4) entity 04-2536325 and a separate c3 Education Fund; masspirg.org also given by InfluenceWatch but pirg.org/massachusetts used. Left out types: Clean Water Action itself is 501(c)(4) per cleanwater.org/about/finances-and-effectiveness-clean-water-action but Youth Action node is a program/alumni chapter, not transferred. Climate Action Now WMA is a fiscally sponsored project of a c3 per InfluenceWatch (not transferred); BCAN uses fiscal sponsor Movement Sustainability Commons; XR Boston fiscal sponsor Climate Direct Action Education Fund c3 (not transferred). Vineyard Power is 501(c)(12) cooperative per ProPublica (EIN 27-1437013), no matching allowed type. Sustainable Sudbury and Passive House MA say 'non-profit' without c3/c4 number; Progressive Democrats of Mass site unreadable (ProPublica c4 name match with odd EIN prefix, not used). Sierra Club, Climate Reality Southcoast, CCL sites unreadable. | Most fetches worked only for URLs surfaced in search results. Doubtful: masscosh TLAW is a program of MassCOSH (501c3 per GuideStar) so parent status applied; xr_youth website found only as a search-result title (Home, xryouthboston.org), page could not be fetched (robots/DNS), may be Boston-only; 350ma_cape_cod informal_group from 'group of concerned Cape Cod residents, part of 350.org network' (site says on pause Fall 2023-Fall 2024, possibly inactive); fccpr and climate reality/CCL typed informal_group (volunteer/chapter) with no tax status stated; pilgrim_coalition coalition from grassrootsfund description (27 member orgs), no own website found; masspirg footer only mentions 'sister 501(c)(3)' so left blank; No Fracked Gas is a BEAT program but BEAT's 501c3 not stated on page, left blank; CSJ, LWVMA, MFAA tax status not stated on pages read; sharon youth is a committee of a 501c3 so omitted; Hands Across the River and Salem HS club websites not found (Hands Across only in grassrootsfund directory, not own site). | Most org sites blocked WebFetch/browser or returned JS-only/empty pages (curl used where possible). Doubtful: Mass Audubon Wellfleet type taken from the parent Mass Audubon footer (sanctuary is a Mass Audubon property, not a separate chapter). Community Action Works type based on footer 'EIN: 04-3211693 Nonprofit' only. MA Youth for Climate Justice website is its Instagram (Facebook also exists: facebook.com/mayouth4climatejustice). Pilgrim Watch and HealthLink self-describe as 'non-profit' only (no 501c3 stated); HealthLink also called a 'grassroots group' in a 3rd-party news article, so left out. JALSA page says 'membership-based nonprofit' without tax status. CRWA site only links a Charity Navigator badge; left out. Newton South club not listed on school clubs page (points to a Google doc). uppercapewomen.org appears hijacked (casino spam) so not used; Upper Cape Women's Coalition has no verified site."
+}

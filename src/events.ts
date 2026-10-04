@@ -1,5 +1,6 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
-import { allEvents, ownerBadge, type Owner } from "./owners";
+import { allEvents, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
+import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { occursOn, parseRecurrence } from "./recurrence";
@@ -191,10 +192,11 @@ export function createEventsView(
     for (let i = 0; i < 42; i++) {
       const d = new Date(first.getFullYear(), first.getMonth(), first.getDate() + i);
       const k = dayKey(d);
-      const evs = byDay.get(k) || [];
+      // Sector layers (Social justice) sit under the climate events of the day, so they never crowd them out.
+      const evs = (byDay.get(k) || []).slice().sort((x, y) => Number(!!x.owner.node.sector) - Number(!!y.owner.node.sector));
       const cell = h("div", { class: `cal-day ${d.getMonth() !== monthStart.getMonth() ? "other" : ""} ${k === todayKey ? "today" : ""} ${k === selectedDay ? "selected" : ""}` }, h("div", { class: "cal-num" }, String(d.getDate())));
       for (const r of evs.slice(0, 3)) {
-        const chip = h("div", { class: "cal-ev", style: `border-left-color:${r.owner.color}`, title: r.event.name }, (r.event.recurrence ? "↻ " : "") + r.event.name);
+        const chip = h("div", { class: `cal-ev${sectorAttrs(r.owner).cls}`, style: `border-left-color:${r.owner.color}`, title: r.event.name }, (r.event.recurrence ? "↻ " : "") + r.event.name);
         chip.addEventListener("click", (ev) => { ev.stopPropagation(); selectedDay = k; showDetail(r); });
         cell.appendChild(chip);
       }
@@ -252,12 +254,11 @@ export function createEventsView(
     x.addEventListener("click", close);
     const toMap = h("button", { class: "detail-map-btn", type: "button" }, `See ${r.owner.name} on the map`);
     toMap.addEventListener("click", () => { close(); cb.onCoalitionClick(r.owner.node); });
-    const safe = (u?: string) => !!u && /^https?:\/\//.test(u);
-    const card = h("div", { class: "detail-card", role: "dialog", "aria-label": e.name },
+    const card = h("div", { class: `detail-card${sectorAttrs(r.owner).cls}`, style: sectorAttrs(r.owner).style, role: "dialog", "aria-label": e.name },
       x,
       h("div", { class: "head" },
         ownerBadge(r.owner),
-        h("div", { class: "coalition-name" }, r.owner.name)),
+        h("div", { class: "coalition-name" }, r.owner.name), sectorPill(r.owner)),
       h("h3", {}, e.name),
       h("div", { class: "meta-row" },
         h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
@@ -267,9 +268,7 @@ export function createEventsView(
       e.description ? h("p", { class: "detail-desc" }, e.description) : null,
       e.topic_tags && e.topic_tags.length ? h("div", { class: "detail-tags" }, e.topic_tags.map((t) => t.replace(/_/g, " ")).join(" · ")) : null,
       e.public_contact ? h("div", { class: "detail-contact" }, `Contact: ${e.public_contact}`) : null,
-      h("div", { class: "detail-links" },
-        safe(e.rsvp_link) ? h("a", { class: "item-link rsvp-link", href: e.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗") : null,
-        safe(e.link) ? h("a", { class: "item-link", href: e.link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗") : null),
+      itemButtons("event", e),
       staleNotice("event", r.owner.node, e.needs_info, e.verified, e),
       toMap);
     const overlay = h("div", { class: "detail-overlay" }, card);
@@ -282,12 +281,12 @@ export function createEventsView(
   function eventCard(r: Row): HTMLElement {
       const card = h(
         "div",
-        { class: "list-card" },
+        { class: `list-card${sectorAttrs(r.owner).cls}`, style: sectorAttrs(r.owner).style },
         h(
           "div",
           { class: "head" },
           ownerBadge(r.owner),
-          h("div", { class: "coalition-name" }, r.owner.name),
+          h("div", { class: "coalition-name" }, r.owner.name), sectorPill(r.owner),
         ),
         h("div", { class: "name" }, r.event.name),
         h(
@@ -297,12 +296,7 @@ export function createEventsView(
           h("span", { class: "pill kind" }, r.event.location),
           !r.isUpcoming && h("span", { class: "pill" }, "past"),
         ),
-        r.event.rsvp_link && /^https?:\/\//.test(r.event.rsvp_link)
-          ? h("a", { class: "item-link rsvp-link", href: r.event.rsvp_link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗")
-          : null,
-        r.event.link && /^https?:\/\//.test(r.event.link)
-          ? h("a", { class: "item-link", href: r.event.link, target: "_blank", rel: "noopener noreferrer", onclick: "" }, "More info ↗")
-          : null,
+        itemButtons("event", r.event),
         staleNotice("event", r.owner.node, r.event.needs_info, r.event.verified, r.event),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));

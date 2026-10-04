@@ -16,6 +16,10 @@ function editBtn(url: string, kind: string): HTMLElement {
 /** Events, projects and actions each have their own form (actions fall back to feedback until it is connected). */
 export function staleNotice(kind: "project" | "event" | "action", owner: GraphNode | null, needsInfo = false, verified = false, item: { id: string; name: string; date?: string; sheet_date?: string } | null = null): HTMLElement {
   // Until the actions form is connected (forms.config.ts), actions fall back to the feedback form.
+  if (owner && (owner as { sector?: string }).sector) {
+    // Sector layers come from community newsletters and aren't in the Google Sheet yet: no edit link.
+    return h("div", { class: "stale-notice sector" }, h("span", {}, "⚠ From a community newsletter, not confirmed by the host. This layer can't be edited through the map's forms yet."));
+  }
   const form: FormKind = kind === "action" && !FORMS.action.url ? "feedback" : kind;
   const url = formUrl(form, form === "feedback" ? null : owner, form === "feedback" ? null : item);
   if (verified && !needsInfo) {

@@ -8,9 +8,11 @@ import type {
   DataFile,
 } from "./types";
 import { initials, relTime, fmtEventTime, typeLabel } from "./util";
+import { itemButtons } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
+import { sectorById } from "./sectors";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { suggestionsFor } from "./suggestions";
 
@@ -22,7 +24,11 @@ export interface Drawer {
   isOpen(): boolean;
   current(): GraphNode | null;
   setActiveTab(tab: DrawerTab): void;
+  /** Show one event / project / action in full, with a way back to its group. */
+  openItem(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): void;
 }
+
+export type ItemKind = "event" | "project" | "action";
 
 export interface DrawerCallbacks {
   onCoalitionClick?(coalitionId: string): void;
@@ -38,7 +44,8 @@ export function createDrawer(
   parent.appendChild(el);
 
   let currentNode: GraphNode | null = null;
-  let activeTab: DrawerTab = "projects";
+  let activeTab: DrawerTab = "about";
+  let currentItem: { kind: ItemKind; item: CoalitionEvent | Project | Action } | null = null;
   const orgsById = new Map(data.organizations.map((o) => [o.id, o]));
   const coalitionsById = new Map(data.coalitions.map((c) => [c.id, c]));
 
@@ -104,6 +111,8 @@ export function createDrawer(
       if (o.profile?.youth_serving) tags.appendChild(h("span", { class: "tag" }, "Youth-serving"));
       if (o.profile?.school_club) tags.appendChild(h("span", { class: "tag" }, "School club"));
       if (o.profile?.hub) tags.appendChild(h("span", { class: "tag" }, "Hub org"));
+      const sec = sectorById(o.sector);
+      if (sec) tags.appendChild(h("span", { class: "tag sector-pill", style: `--sector:${sec.color}` }, sec.label));
       if (o.profile?.geo_precision === "approx") tags.appendChild(h("span", { class: "tag" }, "Approximate location"));
       for (const t of o.topic_tags || []) tags.appendChild(h("span", { class: "tag" }, prettifyTag(t)));
       if (tags.childNodes.length) head.appendChild(tags);
@@ -148,6 +157,7 @@ export function createDrawer(
     const tabList: { id: DrawerTab; label: string }[] =
       node.kind === "coalition"
         ? [
+            { id: "about", label: "About" },
             { id: "projects", label: `Projects (${n.projects})` },
             { id: "events", label: `Events (${n.events})` },
             { id: "actions", label: `Actions (${n.actions})` },
@@ -180,7 +190,9 @@ export function createDrawer(
     const body = h("div", { class: "body" });
     if (node.kind === "coalition") {
       const c = node as Coalition;
-      if (activeTab === "projects") {
+      if (activeTab === "about") {
+        renderCoalitionAbout(body, c);
+      } else if (activeTab === "projects") {
         renderProjects(body, c.projects, node);
       } else if (activeTab === "events") {
         renderEvents(body, c.events, node);
@@ -214,17 +226,6 @@ export function createDrawer(
     return body;
   }
 
-  /** "More info" link, shown on every item that has a source link. */
-  function linkEl(link?: string): HTMLElement | null {
-    if (!link || !/^https?:\/\//.test(link)) return null;
-    return h("a", { class: "item-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "More info ↗");
-  }
-
-  /** "RSVP" link for events that have a sign-up page; shown before the general "More info" link. */
-  function rsvpEl(link?: string): HTMLElement | null {
-    if (!link || !/^https?:\/\//.test(link)) return null;
-    return h("a", { class: "item-link rsvp-link", href: link, target: "_blank", rel: "noopener noreferrer" }, "RSVP ↗");
-  }
 
   function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
     if (!items.length) {
@@ -236,14 +237,14 @@ export function createDrawer(
         h(
           "div",
           { class: "item" },
-          h("div", { class: "name" }, p.name),
+          openName("project", p, owner),
           h("div", { class: "desc" }, p.description),
           h(
             "div",
             { class: "row" },
             h("span", { class: "pill kind" }, p.status),
           ),
-          linkEl(p.link),
+          itemButtons("project", p),
           staleNotice("project", owner, p.needs_info, p.verified, p),
         ),
       );
@@ -260,15 +261,14 @@ export function createDrawer(
         h(
           "div",
           { class: "item" },
-          h("div", { class: "name" }, e.name),
+          openName("event", e, owner),
           h(
             "div",
             { class: "row" },
             h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
             e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
-          rsvpEl(e.rsvp_link),
-          linkEl(e.link),
+          itemButtons("event", e),
           staleNotice("event", owner, e.needs_info, e.verified, e),
         ),
       );
@@ -299,10 +299,10 @@ export function createDrawer(
         h(
           "div",
           { class: "item" },
-          h("div", { class: "name" }, a.name),
+          openName("action", a, owner),
           a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
-          linkEl(a.link),
+          itemButtons("action", a),
           staleNotice("action", owner, a.needs_info, a.verified, a),
         ),
       );
@@ -393,6 +393,27 @@ export function createDrawer(
     renderOrgLinks(body, org);
   }
 
+  function renderCoalitionAbout(body: HTMLElement, c: Coalition): void {
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    row("Type", "Coalition");
+    row("Geographic scope", c.geographic_scope ? c.geographic_scope[0].toUpperCase() + c.geographic_scope.slice(1) : "");
+    row("Description", c.description);
+    row("Website", c.website ? h("a", { class: "org-website", href: c.website, target: "_blank", rel: "noopener noreferrer" }, c.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
+    row("Focus", c.focus_tags.length ? c.focus_tags.map(prettifyTag).join(", ") : "");
+    const members = c.member_ids.map((id) => data.organizations.find((o) => o.id === id)).filter((o): o is Organization => !!o)
+      .sort((a, b) => a.name.localeCompare(b.name));
+    body.appendChild(h("div", { class: "section-label" }, `Member groups (${members.length})`));
+    if (!members.length) body.appendChild(h("div", { class: "empty" }, "No member groups listed yet."));
+    for (const o of members) {
+      const r = h("div", { class: "item clickable" }, h("div", { class: "name" }, o.name), o.geographic_focus ? h("div", { class: "sub" }, o.geographic_focus) : null);
+      r.addEventListener("click", () => cb.onOrgClick?.(o.id));
+      body.appendChild(r);
+    }
+  }
+
   function renderOrgAbout(body: HTMLElement, org: Organization): void {
     const row = (name: string, value: string | Node | undefined | null) => {
       if (value === undefined || value === null || value === "") return;
@@ -416,9 +437,149 @@ export function createDrawer(
   // suppress unused-import warning
   void orgsById;
 
+  /** An item's name in a list: click it for the full view. */
+  function openName(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): HTMLElement {
+    const n = h("button", { class: "name item-open", type: "button", title: "See all the details" }, item.name, h("span", { class: "item-open-more" }, " ›"));
+    n.addEventListener("click", () => api.openItem(kind, item, owner));
+    return n;
+  }
+
+  // ----- Full view of one event / project / action -----
+  type TopicsFile = { parents: { id: string; label: string; children: { id: string; label: string }[] }[]; records: { id: string; topics: string[]; bills: string[] }[] };
+  let topicsData: TopicsFile | null = null;
+  let topicsLoading: Promise<void> | null = null;
+  function loadTopics(): Promise<void> {
+    if (topicsData || topicsLoading) return topicsLoading ?? Promise.resolve();
+    topicsLoading = fetch(`${import.meta.env.BASE_URL}topics.json`).then((r) => (r.ok ? r.json() : null)).then((j) => { topicsData = j; }).catch(() => {});
+    return topicsLoading;
+  }
+  function topicLabels(itemId: string): string[] {
+    if (!topicsData) return [];
+    const rec = topicsData.records.find((r) => r.id.endsWith(`:${itemId}`));
+    if (!rec) return [];
+    const label = new Map<string, string>();
+    for (const p of topicsData.parents) for (const c of p.children) label.set(c.id, c.label);
+    return rec.topics.filter((t) => t !== "broad").map((t) => label.get(t) || t);
+  }
+
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const stamp = (d: Date) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+  function eventTimes(e: CoalitionEvent): { start: Date; end: Date } | null {
+    if (!e.date) return null;
+    const start = new Date(e.date);
+    if (isNaN(start.getTime())) return null;
+    const end = e.end && !isNaN(new Date(e.end).getTime()) ? new Date(e.end) : new Date(start.getTime() + 60 * 60 * 1000);
+    return { start, end };
+  }
+  /** "Add to Google Calendar" and an .ics file for Apple / Outlook. Times are Massachusetts time. */
+  function calendarLinks(e: CoalitionEvent, owner: GraphNode): HTMLElement | null {
+    const t = eventTimes(e);
+    if (!t) return null;
+    const details = [e.description, e.link ? `More: ${e.link}` : "", `Hosted by ${owner.name}`].filter(Boolean).join("\n\n");
+    const g = new URL("https://calendar.google.com/calendar/render");
+    g.searchParams.set("action", "TEMPLATE");
+    g.searchParams.set("text", e.name);
+    g.searchParams.set("dates", `${stamp(t.start)}/${stamp(t.end)}`);
+    g.searchParams.set("ctz", "America/New_York");
+    g.searchParams.set("details", details);
+    if (e.location) g.searchParams.set("location", e.location);
+    const esc = (v: string) => v.replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
+    const ics = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//MA Climate Coalition Map//EN", "BEGIN:VEVENT",
+      `UID:${e.id}@openthink-map`, `DTSTAMP:${stamp(new Date())}`,
+      `DTSTART;TZID=America/New_York:${stamp(t.start)}`, `DTEND;TZID=America/New_York:${stamp(t.end)}`,
+      `SUMMARY:${esc(e.name)}`, e.location ? `LOCATION:${esc(e.location)}` : "", `DESCRIPTION:${esc(details)}`,
+      e.link ? `URL:${e.link}` : "", "END:VEVENT", "END:VCALENDAR",
+    ].filter(Boolean).join("\r\n");
+    const icsHref = `data:text/calendar;charset=utf-8,${encodeURIComponent(ics)}`;
+    const file = `${e.name.replace(/[^\w]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "event"}.ics`;
+    return h("div", { class: "item-cal" },
+      h("a", { class: "btn-cal", href: g.toString(), target: "_blank", rel: "noopener noreferrer" }, "+ Google Calendar"),
+      h("a", { class: "btn-cal", href: icsHref, download: file }, "+ Apple / Outlook (.ics)"));
+  }
+
+  function renderItem(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): void {
+    const back = h("button", { class: "item-back", type: "button" }, `← ${owner.name}`);
+    back.addEventListener("click", () => { currentItem = null; rerender(); });
+    const closeBtn = h("button", { class: "close", type: "button", "aria-label": "Close" }, "×");
+    closeBtn.addEventListener("click", () => api.close());
+    const e = item as CoalitionEvent, p = item as Project, a = item as Action;
+    const kindLabel = kind === "event" ? (e.recurrence ? "Event · repeats" : "Event")
+      : kind === "project" ? `Project · ${p.status || "active"}`
+      : a.kind === "role" ? "Volunteer role" : "Action";
+    const head = h("div", { class: "head item-head" },
+      h("div", { class: "item-top" }, back, closeBtn),
+      h("div", { class: `item-kind k-${kind}` }, kindLabel),
+      h("h2", {}, item.name));
+    el.appendChild(head);
+
+    const body = h("div", { class: "body item-detail" });
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    if (kind === "event") {
+      row("When", fmtEventTime(e.date, e.end, e.recurrence));
+      if (e.recurrence) row("Repeats", e.recurrence);
+    }
+    const loc = kind === "event" ? e.location : kind === "project" ? p.location : "";
+    if (loc) {
+      const online = /^online/i.test(loc) || (kind === "event" && e.online);
+      row("Where", online ? loc : h("span", {}, loc, " · ",
+        h("a", { href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, target: "_blank", rel: "noopener noreferrer" }, "Open in maps ↗")));
+    } else if (kind === "event" && e.online) row("Where", "Online");
+    if (kind === "action") {
+      if (a.deadline) row("Deadline", a.deadline);
+      if (a.urgency) row("Urgency", a.urgency);
+      if (a.skills_needed?.length) row("Skills that help", a.skills_needed.join(", "));
+    }
+    row("About", item.description || "");
+    const btns = itemButtons(kind, item as { rsvp_link?: string; link?: string });
+    if (btns) body.appendChild(btns);
+    if (kind === "event") { const cal = calendarLinks(e, owner); if (cal) body.appendChild(cal); }
+    const contact = (item as { public_contact?: string }).public_contact;
+    if (contact) row("Contact", contact);
+
+    const hostRow = h("div", { class: "item clickable host-row" },
+      h("div", { class: "name" }, owner.kind === "coalition" ? "Coalition" : "Hosted by"),
+      h("div", { class: "desc" }, owner.name, " ›"));
+    hostRow.addEventListener("click", () => { currentItem = null; activeTab = "about"; rerender(); });
+    body.appendChild(hostRow);
+
+    const topicsBox = h("div", { class: "item item-topics" });
+    const fillTopics = () => {
+      clear(topicsBox);
+      const labels = topicLabels(item.id);
+      if (!labels.length) { topicsBox.remove(); return; }
+      topicsBox.append(h("div", { class: "name" }, "Topics"), h("div", { class: "tags" }, ...labels.map((l) => h("span", { class: "tag" }, l))));
+    };
+    body.appendChild(topicsBox);
+    if (topicsData) fillTopics(); else loadTopics().then(() => { if (currentItem?.item === item) fillTopics(); });
+
+    body.appendChild(staleNotice(kind, owner, (item as { needs_info?: boolean }).needs_info, (item as { verified?: boolean }).verified, item as never));
+
+    const more = [
+      ...(owner.kind === "coalition" ? owner.events : orgEvents(data, owner as Organization)).map((x) => ({ kind: "event" as ItemKind, x })),
+      ...(owner.kind === "coalition" ? owner.projects : orgProjects(data, owner as Organization)).map((x) => ({ kind: "project" as ItemKind, x })),
+      ...(owner.kind === "coalition" ? owner.actions : orgActions(data, owner as Organization)).map((x) => ({ kind: "action" as ItemKind, x })),
+    ].filter((m) => m.x.id !== item.id).slice(0, 5);
+    if (more.length) {
+      body.appendChild(h("div", { class: "section-label" }, `More from ${owner.name}`));
+      for (const m of more) {
+        const r = h("div", { class: "item clickable" },
+          h("div", { class: "name" }, m.x.name),
+          h("div", { class: "sub" }, m.kind === "event" ? fmtEventTime((m.x as CoalitionEvent).date, (m.x as CoalitionEvent).end, (m.x as CoalitionEvent).recurrence) : m.kind === "project" ? "Project" : "Action"));
+        r.addEventListener("click", () => api.openItem(m.kind, m.x, owner));
+        body.appendChild(r);
+      }
+    }
+    el.appendChild(body);
+  }
+
   function rerender() {
     if (!currentNode) return;
     clear(el);
+    if (currentItem) { renderItem(currentItem.kind, currentItem.item, currentNode); return; }
     el.appendChild(renderHead(currentNode));
     el.appendChild(renderTabs(currentNode));
     el.appendChild(renderBody(currentNode));
@@ -427,8 +588,9 @@ export function createDrawer(
   const api: Drawer = {
     open(node) {
       currentNode = node;
-      // Default tab depends on node kind
-      activeTab = node.kind === "coalition" ? "projects" : "about";
+      currentItem = null;
+      // Every group opens on its About tab.
+      activeTab = "about";
       rerender();
       el.classList.add("open");
     },
@@ -445,6 +607,14 @@ export function createDrawer(
     setActiveTab(tab) {
       activeTab = tab;
       rerender();
+    },
+    openItem(kind, item, owner) {
+      currentNode = owner;
+      currentItem = { kind, item };
+      activeTab = kind === "event" ? "events" : kind === "project" ? "projects" : "actions";
+      rerender();
+      el.classList.add("open");
+      el.scrollTop = 0;
     },
   };
 

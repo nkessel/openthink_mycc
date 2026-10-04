@@ -2030,6 +2030,8 @@ text.sat-more { fill: var(--text-dim); }
 .reset-map-btn { appearance:none; border:1px solid var(--border); border-radius:999px; background:var(--bg-elev); color:var(--text-dim); font:inherit; font-size:12px; padding:6px 12px; cursor:pointer; align-self:flex-start; }
 .reset-map-btn:hover { color:var(--text); }
 .node-org.member-ring, .node-org.member-ring.partner { opacity: 1; }
+/* An organization's coalitions and partner groups, gathered on the outer orbit when it is opened: present but quiet */
+.node-coalition.member-ring, .node-coalition.member-ring.partner { opacity: 0.8; }
 .node-org.member-ring .node-name { display: block; }
 
 /* Map switcher (right-click the title) */
@@ -2126,3 +2128,327 @@ text.sat-more { fill: var(--text-dim); }
   .map-legend { bottom: 12px; }
   .map-legend:not(.open) { min-width: 0; }
 }
+
+/* The group you've opened is drawn as a big planet (graph.ts sets --fs); its moons stay full size. */
+.node-coalition > :not(.sats),
+.node-org > :not(.sats) {
+  transition: transform 0.4s ease;
+}
+.node-coalition.focused > :not(.sats),
+.node-org.focused > :not(.sats) {
+  transform: scale(var(--fs, 1.35));
+}
+
+/* "Hide / Show event & project previews": one clear button on the map */
+.preview-toggle {
+  appearance: none;
+  align-self: flex-start;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.14);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.preview-toggle:hover { background: rgba(56, 189, 248, 0.24); }
+.preview-toggle:not(.on) { border-color: var(--border); background: var(--bg-elev); color: var(--text-dim); }
+.preview-toggle:not(.on):hover { color: var(--text); }
+.kind-toggles.disabled { opacity: 0.45; }
+.slider-hint { margin: 2px 4px 8px; }
+
+/* ---------- Item cards under each icon in the zoomed-in group view ---------- */
+.item-card-fo { overflow: visible; pointer-events: none; }
+.item-card {
+  pointer-events: auto;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 6px 9px 7px;
+  border-radius: 9px;
+  background: rgba(15, 18, 28, 0.66);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-top: 2px solid var(--card-accent, rgba(148, 163, 184, 0.5));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--text);
+  font: 400 11px/1.3 system-ui, -apple-system, "Segoe UI", sans-serif;
+  text-align: center;
+  overflow-wrap: anywhere;
+  user-select: none;
+}
+.item-card.k-event { --card-accent: var(--k-event); }
+.item-card.k-project { --card-accent: var(--k-project); }
+.item-card.k-action { --card-accent: var(--k-action); }
+.item-card.k-thought { --card-accent: var(--k-thought); }
+.item-card-kind {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--card-accent);
+  margin-bottom: 2px;
+}
+.item-card-title { font-size: 12px; font-weight: 600; color: #f1f5f9; }
+.item-card-meta { font-size: 10.5px; color: var(--text-dim); margin-top: 2px; }
+.bubble:hover .item-card { border-color: rgba(226, 232, 240, 0.55); background: rgba(15, 18, 28, 0.8); }
+.map-legend-sub { margin: 8px 0 2px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); }
+.map-legend .kdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin: 0 6px 0 6px; flex: none; }
+.map-legend .kdot.k-event { background: var(--k-event); }
+.map-legend .kdot.k-project { background: var(--k-project); }
+.map-legend .kdot.k-action { background: var(--k-action); }
+
+/* Items keep a steady size on screen as you zoom (graph.ts sets --is on the node layer); they never move. */
+.sat-in { transform: scale(var(--is, 0.327)); }
+/* Zoomed in past 100%: group names and lines keep their on-screen size while planets grow (graph.ts sets --ns) */
+.node-org > text.node-name { font-size: calc(11px * var(--ns, 1)); }
+.node-coalition > text.node-name { font-size: calc(14px * var(--ns, 1)); }
+svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
+.sats.lv1 { animation: sat-fade 0.25s ease-out; }
+@keyframes sat-fade { from { opacity: 0; } to { opacity: 1; } }
+/* Item names beside their icons: only once zoomed in far enough, light and unboxed */
+.sat-label { display: none; }
+.nodes.item-names .sat-label { display: inline; }
+.sat-label, .moon-label {
+  fill: #e2e8f0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 600;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+  pointer-events: auto; /* clicking an item's name opens it, like clicking its icon */
+  cursor: pointer;
+}
+.sat-label:hover, .moon-label:hover { fill: #fff; text-decoration: underline; }
+.sat-label .lbl-meta, .moon-label .lbl-meta { fill: var(--text-dim); font-weight: 400; font-size: 0.88em; }
+.node-org.faded .sat-label { opacity: 0.4; }
+
+/* ---------- RSVP + Link to website (prominent); Edit (subtle) ---------- */
+.item-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+.btn-rsvp, .btn-site {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 700;
+  line-height: 1.2; text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.btn-rsvp { color: #0b1220; background: #fbbf24; border: 1px solid #fbbf24; }
+.btn-rsvp:hover { background: #fcd34d; border-color: #fcd34d; }
+.btn-site { color: var(--text); background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; }
+.btn-site:hover { background: rgba(56, 189, 248, 0.24); }
+.focus-card .item-buttons { margin-top: 8px; }
+/* the edit link is still there, but quiet */
+.stale-notice .edit-btn, .stale-notice.verified .edit-btn {
+  display: inline; margin: 0 0 0 4px; padding: 0; border: 0; border-radius: 0; background: none;
+  font-size: 11px; font-weight: 500; color: var(--text-dim); text-decoration: underline; text-underline-offset: 2px;
+}
+.stale-notice .edit-btn:hover { color: var(--text); background: none; }
+
+/* ---------- Topics page (topic galaxy, src/topics.ts) ---------- */
+.topics-draft {
+  font-size: 12px;
+  color: var(--warn);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.topics-body {
+  display: grid;
+  grid-template-columns: 250px 1fr auto;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.topics-panel {
+  overflow-y: auto;
+  padding: 14px 16px 40px;
+  border-right: 1px solid var(--border);
+  background: var(--bg-elev);
+}
+.topics-panel-head {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.topics-slider { margin: 14px 0 6px; }
+.topics-slider .slider { width: 100%; }
+.topics-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-faint);
+  margin-top: -2px;
+}
+.topics-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.topics-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  min-height: 34px;
+  font-size: 12px;
+}
+.topics-crumbs .crumb {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+.topics-crumbs .crumb.current { color: var(--text); cursor: default; }
+.topics-crumbs .crumb.out {
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  color: var(--text-dim);
+}
+.topics-crumbs .sep { color: var(--text-faint); }
+.topics-svg { display: block; cursor: zoom-out; }
+.topics-svg .tnode circle {
+  cursor: pointer;
+  fill-opacity: 0.16;
+  stroke-opacity: 0.55;
+  stroke-width: 1px;
+  transition: fill-opacity 0.15s;
+}
+.topics-svg .tnode.leaf circle { fill-opacity: 0.38; }
+.topics-svg .tnode circle:hover { fill-opacity: 0.55; stroke-opacity: 1; }
+.topics-svg .tnode.focus > circle { stroke-width: 2px; stroke-opacity: 1; }
+.topics-svg .tnode.broad circle { fill: #6b7280; stroke: #6b7280; fill-opacity: 0.08; stroke-dasharray: 3 3; }
+.topics-svg .tnode.empty { display: none; }
+.topics-svg .tlabel {
+  fill: var(--text);
+  text-anchor: middle;
+  pointer-events: none;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: rgba(10, 10, 15, 0.85);
+  stroke-width: 3px;
+}
+.topics-svg .tlabel.broad { fill: var(--text-faint); }
+.topics-detail {
+  display: none;
+  width: 360px;
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+  background: var(--bg-elev);
+  padding: 16px 16px 60px;
+  position: relative;
+}
+.topics-detail.open { display: block; }
+.topics-detail h3 { margin: 2px 0 4px; font-size: 16px; }
+.topics-detail-parent { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+.topics-detail-meta { font-size: 12px; color: var(--text-dim); margin-bottom: 12px; }
+.topics-records { display: grid; gap: 8px; }
+.topics-record {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  background: var(--bg);
+  font-size: 13px;
+}
+.topics-record.zero { opacity: 0.45; }
+.topics-record.related { border-style: dashed; }
+.topics-record .meta-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 4px; }
+.topics-record .name a { color: var(--text); text-decoration: none; }
+.topics-record .name a:hover { color: var(--accent); text-decoration: underline; }
+.topics-record .pill.k-event { color: var(--k-event); }
+.topics-record .pill.k-project { color: var(--k-project); }
+.topics-record .pill.k-action { color: var(--k-action); }
+.topics-host { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.topics-group {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+}
+.topics-group[disabled] { color: var(--text-dim); cursor: default; }
+@media (max-width: 900px) {
+  .topics-body { grid-template-columns: 1fr; grid-template-rows: auto minmax(360px, 1fr) auto; overflow-y: auto; }
+  .topics-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: 40vh; }
+  .topics-detail { width: auto; border-left: none; border-top: 1px solid var(--border); }
+}
+.topics-svg .tnode.selected > circle { fill-opacity: 0.7; stroke: #fff; stroke-width: 2px; stroke-opacity: 1; }
+/* ---- Sector layers (Map settings → Social justice; src/sectors.ts) ---- */
+/* A muted ring in the sector's colour, so these groups read as a separate layer on top of the climate map. */
+.node-org.sector .ring,
+.node-coalition.sector .ring {
+  stroke: var(--sector, #a16207) !important;
+  stroke-width: 2.5px !important;
+  stroke-dasharray: 4 2.5;
+  stroke-opacity: 0.9 !important;
+}
+.node-org.sector .ring { fill: color-mix(in srgb, var(--sector, #a16207) 35%, #9ca3af); }
+.list-card.sector-item,
+.detail-card.sector-item { border-left: 3px solid var(--sector, #a16207); }
+.cal-ev.sector-item { background: color-mix(in srgb, var(--sector, #a16207) 12%, transparent); }
+.pill.sector-pill,
+.tag.sector-pill {
+  background: color-mix(in srgb, var(--sector, #a16207) 14%, transparent);
+  color: var(--sector, #a16207);
+  border: 1px solid color-mix(in srgb, var(--sector, #a16207) 45%, transparent);
+  font-size: 11px;
+  margin-left: auto;
+}
+.tag.sector-pill { margin-left: 0; }
+.map-legend .swatch.sector-swatch {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border: 2px dashed var(--sector, #a16207);
+}
+.stale-notice.sector { border-color: color-mix(in srgb, #a16207 40%, transparent); }
+.sector-section .switch.on { background: var(--sector, #a16207); }
+/* The sector hub is a grouping, not a coalition: keep it quiet. */
+.node-coalition.sector .ring { fill-opacity: 0.35; }
+/* Land acknowledgement & dedication: a quiet link at the bottom of Map settings, opening the loading screen's text */
+.land-link { display: block; margin: 18px 14px 22px; padding: 0; appearance: none; border: none; background: none; color: var(--text-dim); font: inherit; font-size: 12px; text-align: left; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.land-link:hover { color: var(--text); }
+.land-overlay { position: fixed; z-index: 1000; }
+.land-card .land-text { width: auto; text-align: left; font-size: 13.5px; color: var(--text); }
+.land-card .land-text p { margin: 0 0 12px; }
+.land-card .land-text strong, .land-card .land-text .ded-head { color: var(--text); }
+.land-card .land-text a { color: #7dd3fc; }
+
+/* ---------- Full view of one event / project / action in the details tray (drawer.ts renderItem) ---------- */
+.drawer .item-head { position: sticky; top: 0; z-index: 2; background: var(--bg-elev); }
+.drawer .item-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.drawer .item-top .close { position: static; }
+.item-back { appearance: none; border: none; background: none; color: var(--accent); font: inherit; font-size: 13px; padding: 0; cursor: pointer; text-align: left; }
+.item-back:hover { text-decoration: underline; }
+.item-kind { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
+.item-kind.k-event { color: var(--k-event); }
+.item-kind.k-project { color: var(--k-project); }
+.item-kind.k-action { color: var(--k-action); }
+.drawer .item-head h2 { margin: 0; font-size: 20px; line-height: 1.3; }
+.item-detail .desc { white-space: pre-wrap; }
+.item-cal { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 10px; }
+.btn-cal { font-size: 12.5px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); color: var(--text); text-decoration: none; background: var(--bg-elev-2); }
+.btn-cal:hover { border-color: var(--accent); }
+.drawer .item.clickable { cursor: pointer; }
+.drawer .item.clickable:hover { border-color: var(--accent); }
+.item-open { appearance: none; border: none; background: none; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.item-open:hover { color: var(--accent); }
+.item-open-more { color: var(--accent); }
+.item-topics .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+
+/* An opened organization's coalitions and partner groups, on the outskirts: smaller and quieter */
+.node-coalition.linked > :not(.sats), .node-org.linked > :not(.sats) { transform: scale(0.6); }
+.node-coalition.linked, .node-org.linked { opacity: 0.75; }
+.node-coalition.linked:hover, .node-org.linked:hover { opacity: 1; }

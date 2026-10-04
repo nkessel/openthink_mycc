@@ -318,6 +318,27 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(orgRows().find((o) => o.id === blank.id).geographic_focus, "Newton");
   if (typed) assert.equal(orgRows().find((o) => o.id === typed.id).type, typed.type);
   assert.ok(res2.details >= 2);
+  // events: blank RSVP filled, general events-page link replaced by the event's own page, other links kept
+  const evRows = () => book["Events"].slice(1).map((r) => Object.fromEntries(COLS["Events"].map((c, i) => [c, r[i]])));
+  const [e1, e2, e3] = evRows();
+  const ec = COLS["Events"];
+  const setCell = (id, col, v) => { const row = book["Events"].find((r) => r[0] === id); row[ec.indexOf(col)] = v; };
+  setCell(e1.id, "rsvp_link", ""); setCell(e1.id, "link", "https://example.org/events");
+  setCell(e2.id, "link", "https://other.org/keep-me");
+  setCell(e3.id, "link", "https://www.greenenergy.example/events/"); // a listing; the specific page is /event/<slug>
+  const s3 = J(orig);
+  const evs = [...s3.coalitions, ...s3.organizations].flatMap((n) => n.events || []);
+  Object.assign(evs.find((e) => e.id === e1.id), { rsvp_link: "https://zoom.us/webinar/register/X", link: "https://example.org/events/my-event" });
+  Object.assign(evs.find((e) => e.id === e2.id), { link: "https://example.org/somewhere-else" });
+  Object.assign(evs.find((e) => e.id === e3.id), { link: "https://greenenergy.example/event/shave-the-peak" });
+  const res3 = ctx.fillLogos_(s3);
+  const after3 = evRows();
+  assert.equal(after3.find((e) => e.id === e1.id).rsvp_link, "https://zoom.us/webinar/register/X");
+  assert.equal(after3.find((e) => e.id === e1.id).link, "https://example.org/events/my-event");
+  assert.equal(after3.find((e) => e.id === e2.id).link, "https://other.org/keep-me");
+  assert.equal(after3.find((e) => e.id === e3.id).link, "https://greenenergy.example/event/shave-the-peak");
+  assert.equal(ctx.isListingFor_("https://example.org/news", "https://example.org/event/x"), false);
+  assert.ok(res3.rsvp >= 1);
   console.log("fill logos from GitHub OK");
 }
 
