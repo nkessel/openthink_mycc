@@ -1419,6 +1419,10 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
       tip.classList.remove("on");
+      selOrg = null;
+      selProb = null;
+      selItem = null;
+      renderDetail();
     },
   };
 }

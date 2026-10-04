@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import { h } from "./dom";
 import { currentMap, MAPS, type MapId } from "./maps";
 import { createCommandRoom } from "./commandroom";
+import { createBattle } from "./battle";
 
 export interface TopicRecord {
   id: string;
@@ -63,6 +64,8 @@ const SLIDERS: { key: keyof Weights; label: string; hint: string }[] = [
   { key: "related", label: "Related issues", hint: "Records about related issues (peace, housing, health…) or with no climate link." },
 ];
 const STORE = "openthink.topics.v1";
+const VIEW_STORE = "openthink.topics.view.v2";
+type View = "streams" | "battle";
 
 function loadWeights(): Weights {
   try {
@@ -94,6 +97,16 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   toolbar.appendChild(
     h("span", { class: "topics-draft" }, "Draft: this topic list is still under team review, so names and groupings will change."),
   );
+  // two views over the same data: energy streaming into topics, or the command room (problems vs. what we build)
+  const viewSwitch = h("div", { class: "cr-seg topics-viewswitch", role: "group", "aria-label": "View" });
+  const viewBtns: HTMLButtonElement[] = [];
+  for (const [v, label] of [["streams", "Streams"], ["battle", "Command room"]] as const) {
+    const b = h("button", { type: "button", "data-v": v }, label) as HTMLButtonElement;
+    b.addEventListener("click", () => setView(v));
+    viewBtns.push(b);
+    viewSwitch.appendChild(b);
+  }
+  toolbar.insertBefore(viewSwitch, count);
   wrap.appendChild(toolbar);
 
   const body = h("div", { class: "topics-body" });
@@ -107,6 +120,39 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   let file: TopicsFile | null = null;
   let loading: Promise<void> | null = null;
   let room: ReturnType<typeof createCommandRoom> | null = null;
+  let battle: ReturnType<typeof createBattle> | null = null;
+  let view: View = "streams";
+  try {
+    if (localStorage.getItem(VIEW_STORE) === "battle") view = "battle";
+  } catch {
+    /* ignore */
+  }
+  let makeViews: (() => void) | null = null;
+  function applyView() {
+    for (const b of viewBtns) b.classList.toggle("on", b.dataset.v === view);
+    makeViews?.();
+    const on = view === "streams" ? room : battle;
+    const off = view === "streams" ? battle : room;
+    if (off) {
+      off.hide();
+      off.el.style.display = "none";
+    }
+    if (on) {
+      on.el.style.display = "";
+      on.show();
+    }
+  }
+  function setView(v: View) {
+    if (v === view) return;
+    view = v;
+    try {
+      localStorage.setItem(VIEW_STORE, v);
+    } catch {
+      /* ignore */
+    }
+    applyView();
+  }
+  for (const b of viewBtns) b.classList.toggle("on", b.dataset.v === view);
 
   // ---- Sliders ----
   panel.appendChild(h("div", { class: "topics-panel-head" }, "Stream size"));
@@ -124,6 +170,7 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
         /* ignore */
       }
       room?.update();
+      battle?.update();
     });
     inputs.set(s.key, input);
     box.appendChild(input);
@@ -141,6 +188,7 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
       /* ignore */
     }
     room?.update();
+    battle?.update();
   });
   panel.appendChild(reset);
 
@@ -163,21 +211,31 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     // one colour per main topic (in list order, among those with records on this map)
     const present = f.parents.filter((p) => recs.some((r) => r.topics.some((t) => p.children.some((c) => c.id === t)))).map((p) => p.id);
     const hue = new Map(present.map((id, i) => [id, d3.hsl((i * 360) / present.length + 200, 0.55, 0.6).formatHex()]));
-    room = createCommandRoom({
+    const ctx = {
       file: f,
       mapIds,
       weight,
       cap: () => (weights.cap <= 0 ? Infinity : 1 + (1 - weights.cap) * 9),
-      colorOf: (pid) => hue.get(pid) ?? "#38bdf8",
+      colorOf: (pid: string) => hue.get(pid) ?? "#38bdf8",
       detail,
       cb,
-    });
-    stage.appendChild(room.el);
-    room.show();
+    };
+    // each view is built the first time it is shown
+    makeViews = () => {
+      if (view === "streams" && !room) {
+        room = createCommandRoom(ctx);
+        stage.appendChild(room.el);
+      }
+      if (view === "battle" && !battle) {
+        battle = createBattle(ctx);
+        stage.appendChild(battle.el);
+      }
+    };
+    applyView();
   }
 
   function show() {
-    if (file && room) room.show();
+    if (file) applyView();
     if (file || loading) return;
     loading = fetch(`${import.meta.env.BASE_URL}topics.json`)
       .then((r) => {
