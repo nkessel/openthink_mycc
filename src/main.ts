@@ -82,26 +82,37 @@ async function main() {
     return;
   }
 
-  const nItems = [...data.coalitions, ...data.organizations].reduce((n, g) => n + (g.events?.length || 0) + (g.projects?.length || 0) + (g.actions?.length || 0), 0);
   bootProgress(0.8);
-  bootDetail(`${data.coalitions.length} coalitions and ${data.organizations.length} groups, with ${nItems} events, projects and actions underway`);
+  // The loading lines Nathan picked (2026-10-05): what is loading, then true counts from the data.
+  bootDetail(`Loading ${data.coalitions.length} coalitions and ${data.organizations.length} groups`);
+  bootDetail(`Linking ${data.edges.length} coalition memberships`);
   await attachThoughts(data);
   // Sector layers (Map settings → Social justice) that this browser has switched on.
   const sectorsOn = await attachSectors(data, currentMap.id);
   // Recurring events carry one stored date; show their next occurrence.
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
-  // A few true things about what just loaded, while the map is put together.
   const groups = [...data.coalitions, ...data.organizations];
   const bridges = data.organizations.filter((o) => (o.coalition_ids?.length || 0) > 1).length;
+  const facts: string[] = [];
+  if (bridges) facts.push(`${bridges} groups work across two or more coalitions`);
   const now = Date.now();
-  const upcoming = groups.flatMap((g) => g.events || []).filter((e) => {
+  const eventsWithin = (days: number) => groups.flatMap((g) => g.events || []).filter((e) => {
     const t = e.date ? parseEventDate(e.date).getTime() : NaN;
-    return t >= now - 12 * 3600e3 && t <= now + 30 * 864e5;
+    return t >= now - 12 * 3600e3 && t <= now + days * 864e5;
   }).length;
-  if (upcoming) bootDetail(`${upcoming} chances to show up in the next 30 days`);
-  const acts = groups.flatMap((g) => g.actions || []);
+  const week = eventsWithin(7), month = eventsWithin(30);
+  if (week) facts.push(`${week} events this week`);
+  if (month) facts.push(`${month} events in the next 30 days`);
+  const projectsNow = groups.flatMap((g) => g.projects || []).filter((p) => (p.status || "active") === "active").length;
+  if (projectsNow) facts.push(`${projectsNow} projects underway`);
+  const today = new Date().toISOString().slice(0, 10);
+  const acts = groups.flatMap((g) => g.actions || []).filter((a) => !a.deadline || a.deadline >= today);
   const roles = acts.filter((a) => a.kind === "role").length;
-  if (acts.length) bootDetail(`${acts.length - roles} actions you can take${roles ? `, ${roles} ways to volunteer` : ""}`);
+  if (acts.length - roles) facts.push(`${acts.length - roles} actions you can take today`);
+  if (roles) facts.push(`${roles} ways to volunteer`);
+  // a different order each visit, so a quick load still shows something new
+  for (let i = facts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [facts[i], facts[j]] = [facts[j], facts[i]]; }
+  for (const f of facts) bootDetail(f);
   const logosReady = preloadLogos(groups.map((g) => g.logo));
 
   let activeTab: TopTab = "map";
@@ -424,9 +435,7 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
   for (let i = 0; i < map.sources.length; i++) {
     const last = i === map.sources.length - 1;
     const live = /script\.google/.test(map.sources[i]);
-    bootDetail(i === 0
-      ? (live ? "Requesting the latest data from the coalition spreadsheet\u2026" : `Loading the ${map.fullTitle} data\u2026`)
-      : "The spreadsheet is slow to answer, so loading last night's copy\u2026");
+    // (no line here: the heading already says "Loading the map…")
     try {
       return await get(map.sources[i], last ? 15000 : 8000);
     } catch (err) {

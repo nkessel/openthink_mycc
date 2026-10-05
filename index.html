@@ -183,7 +183,7 @@
         // One line at a time (main.ts bootDetail), each up long enough to read: longer lines stay longer.
         // Only the newest three wait their turn, so the screen never falls far behind what is happening.
         var queue = [], timer = null, shownAt = performance.now(), dwell = 1800;
-        var dwellFor = function (t) { return Math.min(3400, 1500 + 32 * t.length); };
+        var dwellFor = function (t) { return Math.min(2600, 1100 + 28 * t.length); };
         function pump() {
           timer = null;
           if (!queue.length) return;
@@ -202,7 +202,7 @@
         window.bootDetail = function (text) {
           if (!text || text === msg.textContent || queue[queue.length - 1] === text) return;
           queue.push(text);
-          if (queue.length > 3) queue.splice(0, queue.length - 3);
+          if (queue.length > 10) queue.splice(0, queue.length - 10);
           if (!timer) pump();
         };
         // How long until the lines already queued have all been shown (main.ts waits a little for them).
