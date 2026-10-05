@@ -60,7 +60,7 @@ export function createTopbar(
   });
   function openMenu() {
     const r = brand.getBoundingClientRect();
-    mapMenu.style.left = `${Math.max(8, r.left)}px`;
+    mapMenu.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - 220))}px`;
     mapMenu.style.top = `${r.bottom + 6}px`;
     mapMenu.style.display = "block";
     (mapMenu.querySelector(".map-opt") as HTMLElement | null)?.focus();
@@ -79,6 +79,18 @@ export function createTopbar(
     { id: "topics", label: "Topics" },
   ];
   const buttons = new Map<TopTab, HTMLElement>();
+  // On a phone the tabs don't fit: they fold into a menu opened from a button showing the current tab.
+  const nav = h("nav", { class: "tabs", id: "top-tabs", "aria-label": "Pages" });
+  const menuLabel = h("span", { class: "tab-menu-label" }, tabs.find((t) => t.id === active)?.label ?? "Menu");
+  const menuBtn = h("button", { class: "tab-menu-btn", type: "button", "aria-haspopup": "true", "aria-expanded": "false", "aria-controls": "top-tabs" },
+    menuLabel, h("span", { class: "tab-menu-icon", "aria-hidden": "true" }, "\u2630"));
+  const setOpen = (open: boolean) => {
+    bar.classList.toggle("menu-open", open);
+    menuBtn.setAttribute("aria-expanded", String(open));
+  };
+  menuBtn.addEventListener("click", (e) => { e.stopPropagation(); setOpen(!bar.classList.contains("menu-open")); });
+  document.addEventListener("click", (e) => { if (!nav.contains(e.target as Node)) setOpen(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
 
   for (const t of tabs) {
     const btn = h(
@@ -92,18 +104,27 @@ export function createTopbar(
       btn.addEventListener("click", () => {
         for (const [, el] of buttons) el.classList.remove("active");
         btn.classList.add("active");
+        menuLabel.textContent = t.label;
+        setOpen(false);
         cb.onTabChange(t.id);
       });
     }
     buttons.set(t.id, btn);
-    bar.appendChild(btn);
+    nav.appendChild(btn);
   }
+  // In the phone menu, the map switcher is a plain item (long-pressing the title is hard to discover).
+  const switchItem = h("button", { class: "tab tab-switch-map", type: "button" }, "Switch map\u2026");
+  switchItem.addEventListener("click", (e) => { e.stopPropagation(); setOpen(false); openMenu(); });
+  nav.appendChild(switchItem);
+  bar.appendChild(nav);
+  bar.appendChild(menuBtn);
 
   return {
     setActive(tab) {
       for (const [id, el] of buttons) {
         el.classList.toggle("active", id === tab);
       }
+      menuLabel.textContent = tabs.find((t) => t.id === tab)?.label ?? menuLabel.textContent;
     },
   };
 }

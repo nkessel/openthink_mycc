@@ -594,3 +594,6 @@ What / why
 - Phone loading screen: items no longer shrink when the text runs long (the progress bar had collapsed and the button was clipped).
 - Close-up view: overlapping moon names are pushed outward once the moons settle (and again after a drag), measured in screen space.
 - Item dots now trail their group like the icons do. The physics is created only while a group is dragged, for at most 16 on-screen groups that move most, and disposed when settled. Measured headless: ~10% more main-thread time during a drag, none at rest.
+
+2026-10-05 08:00 ET (Claude, mobile menu)
+- Phones: the top tabs were a hidden-scrollbar row, so only Map/Geographic/Organizations were visible and the rest were hard or impossible to reach (Nathan: "impossible to traverse the main menu in mobile"). At ≤720px the tabs now fold into a menu: a pill button shows the current page + ☰ and opens a list of all pages, plus "Switch map…" (the long-press on the title was undiscoverable). The top bar sits above page content on phones so the menu isn't covered (the Geographic panel covered it). Desktop unchanged. Tested with Playwright on iPhone 13: every tab reachable, map switcher opens, 0 page errors.
