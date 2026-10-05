@@ -17,6 +17,19 @@ export function findItem(data: DataFile, id: string): { kind: CardKind; item: Ca
   return null;
 }
 
+/** What the card's buttons do (set once by main.ts): open the full details pane, or find the item on a map. */
+export interface CardActions {
+  details(kind: CardKind, item: CardItem, owner: Owner): void;
+  locateMap(kind: CardKind, item: CardItem, owner: Owner): void;
+  locateGeo?(kind: CardKind, item: CardItem, owner: Owner): void;
+  /** Whether the item (or its group) has a place on the geographic map. */
+  hasGeo?(kind: CardKind, item: CardItem, owner: Owner): boolean;
+}
+let actions: CardActions | null = null;
+export function setCardActions(a: CardActions): void {
+  actions = a;
+}
+
 /** Show the card over `host`; "See … on the map" calls onMap. With `at` (a point on screen) it pops up beside
  *  that point instead, without covering the rest of the page, so the page's own details stay in view. */
 export function showItemCard(host: HTMLElement, kind: CardKind, item: CardItem, owner: Owner, onMap: () => void, at?: { x: number; y: number }): void {
@@ -37,11 +50,21 @@ export function showItemCard(host: HTMLElement, kind: CardKind, item: CardItem, 
   };
   const x = h("button", { class: "detail-close", type: "button", "aria-label": "Close" }, "×");
   x.addEventListener("click", close);
-  const toMap = h("button", { class: "detail-map-btn", type: "button" }, `See ${owner.name} on the map`);
-  toMap.addEventListener("click", () => {
-    close();
-    onMap();
-  });
+  // A quick look first; "More details" opens the full pane, the "Locate" buttons go to the item on a map.
+  const btn = (label: string, cls: string, go: () => void) => {
+    const b = h("button", { class: cls, type: "button" }, label);
+    b.addEventListener("click", () => {
+      close();
+      go();
+    });
+    return b;
+  };
+  const toMap = actions
+    ? h("div", { class: "card-actions" },
+        btn("More details →", "detail-map-btn primary", () => actions!.details(kind, item, owner)),
+        btn("Locate on strategy map", "detail-map-btn", () => actions!.locateMap(kind, item, owner)),
+        actions.locateGeo && (actions.hasGeo?.(kind, item, owner) ?? true) ? btn("Locate on geographic map", "detail-map-btn", () => actions!.locateGeo!(kind, item, owner)) : null)
+    : btn(`See ${owner.name} on the map`, "detail-map-btn", onMap);
   const e = item as CoalitionEvent, p = item as Project, a = item as Action;
   const pills: (HTMLElement | null)[] = [];
   if (kind === "event") {
