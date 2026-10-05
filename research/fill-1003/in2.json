@@ -1,0 +1,655 @@
+[
+ {
+  "map": "ma",
+  "id": "belmont_high_school_climate_club",
+  "name": "Belmont High School Climate Action Club",
+  "website": "https://www.belmont.k12.ma.us/o/bhs/page/activities-and-clubs/",
+  "description": "Student club at Belmont High School that runs a lunchtime composting program and pushes for less waste across Belmont schools.",
+  "type": "school_club",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Belmont High School lunchtime composting"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "boston_latin_school_youthcan",
+  "name": "Boston Latin School Youth Climate Action Network",
+  "website": "https://www.bostonlatinschoolyouthcan.org/about.html",
+  "description": "After-school climate club at Boston Latin School that runs a youth climate summit, campaigns for sustainability education in grades 7-12 and coordinates a network of youth climate groups at other Massachusetts schools.",
+  "type": "school_club",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Annual BLS Trash Dash",
+    "Annual Climate & Sustainability Youth Summit",
+    "Education for Sustainability campaign"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "masscosh_tlaw_climate_change_and_environmental_justice_team",
+  "name": "Massachusetts Coalition for Occupational Safety and Health Teens Lead at Work",
+  "website": "https://masscosh.org/",
+  "description": "Youth program of MassCOSH that trains Boston teens as peer educators and organizers on workplace rights and safety, with a goal of building young labor and environmental justice activists.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "masscosh_tlaw_climate_change_e1",
+     "name": "OSHA 10: Training (construction), Oct 8-9",
+     "date": "2026-10-08T10:00:00",
+     "link": "https://masscosh.org/events/event-listings/osha-10-training-october-8th-and-9th",
+     "rsvp_link": ""
+    },
+    {
+     "id": "masscosh_tlaw_climate_change_e2",
+     "name": "Celebrating the Movement: 50 Years of MassCOSH",
+     "date": "2026-10-23T17:00:00",
+     "link": "https://masscosh.org/events/event-listings/masscosh-celebrating-the-movement-50th-year",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Teens Lead at Work",
+    "Immigrant Worker Center",
+    "East Boston Cambria Hotel asbestos campaign"
+   ],
+   "actions": [
+    "Sign the Cambria Hotel asbestos petition"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "masspirg_boston",
+  "name": "Massachusetts Public Interest Research Group Boston",
+  "website": "https://masspirg.org/",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "xr_western_mass",
+  "name": "Extinction Rebellion Western Mass",
+  "website": "https://xrboston.org/west/",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sunrise_boston",
+  "name": "Sunrise Boston",
+  "website": "https://www.sunrisemovement.org/",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "sunrise_boston_e1",
+     "name": "Climate Standout in Beverly, MA",
+     "date": "2026-10-17T11:00:00",
+     "link": "https://www.mobilize.us/sunrisemovement/event/976143/",
+     "rsvp_link": "https://www.mobilize.us/sunrisemovement/event/976143/"
+    }
+   ],
+   "projects": [
+    "ICE Out For Good",
+    "Green New Deal for Communities"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "massachusetts_climate_action_network",
+  "name": "Massachusetts Climate Action Network",
+  "website": "https://www.massclimateaction.org/",
+  "description": "Network that supports local climate action town by town through local chapters, working with 40+ communities on decarbonization and electrification and advocating on state energy and climate policy.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Zero Carbon Renovation Fund",
+    "Fighting for Better Buildings",
+    "Embodied Carbon Act",
+    "Local Decarbonizers Program",
+    "Climate Goals Tracker",
+    "Net Zero for All Campaign"
+   ],
+   "actions": [
+    "Volunteer with MCAN"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "350ma",
+  "name": "350 Massachusetts",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Make Polluters Pay - Massachusetts Climate Superfund"
+   ],
+   "actions": [
+    "Petition: pass the Make Polluters Pay bill",
+    "Write your legislators: 350 Mass priority bills"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "conservation_law_foundation",
+  "name": "Conservation Law Foundation",
+  "website": "",
+  "description": "New England environmental advocacy group, founded in 1966 and headquartered in Boston, that uses law, science and policy on clean energy, clean air and water, oceans and environmental justice.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "CLF campaigns"
+   ],
+   "actions": [
+    "Tell your state representatives to invest in climate-ready infrastructure",
+    "Pledge to protect Boston Harbor and the public waterfront",
+    "Ask legislators to ban single-use plastic",
+    "Write Congress to save North Atlantic right whales",
+    "Report toxic blue-green algae sightings",
+    "Add your name to support CLF's litigation against polluters"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "ben_hillman_and_company",
+  "name": "Ben Hillman & Company",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "the_climate_reality_project_massachusetts_southcoast",
+  "name": "The Climate Reality Project Massachusetts Southcoast",
+  "website": "https://www.climaterealitysouthcoast.com/",
+  "description": "Southcoast chapter of The Climate Reality Project, founded in late 2019, that does public outreach, education and advocacy on climate and partners with local businesses and nonprofits on renewable energy pledges.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "first_parish_in_concord_environmental_team",
+  "name": "First Parish in Concord  Environmental Team",
+  "website": "https://firstparish.org/wp/justice/a-green-sanctuary/",
+  "description": "Environmental action team of the First Parish in Concord Unitarian Universalist congregation that leads its sustainability, environmental worship and education, and environmental justice efforts under the UUA Green Sanctuary program.",
+  "type": "faith_org",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Green Sanctuary / Environmental Action Team"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "longmeadow_pipeline_awareness_group",
+  "name": "Longmeadow Pipeline Awareness Group",
+  "website": "https://www.facebook.com/LongmeadowPipelineAwarenessGroup/",
+  "description": "Longmeadow residents' group that opposes Eversource's proposed high-pressure gas pipeline and meter station in Longmeadow and Springfield, working with the Springfield Climate Justice Coalition.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Longmeadow Pipeline Awareness Group"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "passive_house_massachusetts",
+  "name": "Passive House Massachusetts",
+  "website": "https://phmass.org/",
+  "description": "Member-based nonprofit that promotes the Passive House building standard through education, training, events and advocacy to cut building energy use and carbon emissions.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "passive_house_massachusetts_e1",
+     "name": "Simplifying Passive House Multifamily Certification with Tomás O'Leary",
+     "date": "2026-10-13T17:30:00",
+     "link": "https://phmass.org/event/simplifying-passive-house-multifamily-certification-with-tomas-oleary/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "passive_house_massachusetts_e3",
+     "name": "Green Building Showcase",
+     "date": "2026-11-04T16:00:00",
+     "link": "https://phmass.org/event/green-building-showcase/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "passive_house_massachusetts_e4",
+     "name": "2026 Passive House Symposium: Moving the Market",
+     "date": "2026-12-08",
+     "link": "https://phmass.org/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Passive House Massachusetts Training and Resources"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "solstice_initiative",
+  "name": "Solstice Initiative",
+  "website": "https://solstice.us/",
+  "description": "Cambridge-based clean energy company that connects households and businesses to community solar and runs a community benefit fund that channels money to solar projects in underserved communities.",
+  "type": "business",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": [
+    "Enroll in community solar with Solstice"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "watertown_citizens_for_peace_justice_and_the_environment",
+  "name": "Watertown Citizens for Peace, Justice, and the Environment",
+  "website": "https://watertowncitizens.org/",
+  "description": "Watertown group founded in 1979 that works on local environmental protection (Charles River cleanup, chemical-free garden tours), peace and social justice.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "watertown_citizens_for_peace_e1",
+     "name": "Palestine-Gaza Committee Weekly Vigil",
+     "date": "2026-10-03T12:00:00",
+     "link": "https://watertowncitizens.org/palestine-gaza-committee-why-we-do-what-we-do/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "watertown_citizens_for_peace_e2",
+     "name": "Watertown Celebrates Indigenous Peoples Day",
+     "date": "2026-10-11T12:00:00",
+     "link": "https://watertowncitizens.org/event/watertown-celebrates-indigenous-peoples-day-4/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "watertown_citizens_for_peace_e3",
+     "name": "Palestine Festival",
+     "date": "2026-10-18T12:00:00",
+     "link": "https://watertowncitizens.org/event/save-the-date-palestine-festival/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "aft_mass",
+  "name": "American Federation of Teachers Massachusetts",
+  "website": "https://ma.aft.org/",
+  "description": "State federation of the American Federation of Teachers, representing about 25,000 teachers, public employees, higher-ed faculty and health professionals in Massachusetts.",
+  "type": "union",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "aft_mass_e1",
+     "name": "2027 AFT Massachusetts Awards Dinner",
+     "date": "2027-04-09T18:00:00",
+     "link": "https://ma.aft.org/events/2027-aft-massachusetts-awards-dinner",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Educator pay legislation campaign (AFT Massachusetts)"
+   ],
+   "actions": [
+    "Email legislators to support educator pay legislation"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "collaborative_for_high_performance_schools",
+  "name": "Collaborative for High Performance Schools",
+  "website": "https://chps.net/",
+  "description": "Membership organization that runs a green building rating program for K-12 schools (CHPS Designed and CHPS Verified) and publishes best-practice guidance and training.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "mtacan",
+  "name": "Massachusetts Teachers Association Climate Action Network",
+  "website": "https://massteacher.org/",
+  "description": "Network of over 160 Massachusetts Teachers Association members that backs student climate strikes, writes green contract language, builds climate curriculum and partners with environmental and labor groups.",
+  "type": "union",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_350vermont",
+  "name": "350Vermont",
+  "website": "https://www.350vermont.org",
+  "description": "Statewide grassroots climate group based in Burlington, described by partners as the primary driver of Vermont's Climate Superfund Act.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vctn",
+  "name": "Vermont Community Thermal Networks",
+  "website": "https://www.vctn.org",
+  "description": "Statewide group advancing community-led thermal energy networks (shared ground-source heat loops) and coordinating with Vermont organizations to scale them.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_trust_for_public_land",
+  "name": "Trust for Public Land (Vermont)",
+  "website": "https://www.tpl.org/state/vermont",
+  "description": "Vermont office of the national land conservation nonprofit, at 3 Shipman Place in Montpelier; works on protected land and community forests.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_shelburne_farms",
+  "name": "Shelburne Farms",
+  "website": "https://www.shelburnefarms.org",
+  "description": "Shelburne-based nonprofit listed among Energy Action Network's nonprofit members.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vermont_passive_house",
+  "name": "Vermont Passive House",
+  "website": "https://www.vermontpassivehouse.org",
+  "description": "Montpelier-based group promoting Passive House building; an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_ccl_university_of_vermont",
+  "name": "Citizens' Climate Lobby - University of Vermont",
+  "website": "https://citizensclimatelobby.org/chapters/VT_University_of_Vermont",
+  "description": "Student chapter of Citizens' Climate Lobby at the University of Vermont, started in April 2023 and listed as active; it meets on Mondays at 7 pm in Aiken Hall.",
+  "type": "campus_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_center_for_sustainable_energy",
+  "name": "Center for Sustainable Energy",
+  "website": "https://www.energycenter.org",
+  "description": "Clean-energy nonprofit that runs incentive programs, advisory services and policy research on clean transportation and the built environment.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_regulatory_assistance_project",
+  "name": "Regulatory Assistance Project",
+  "website": "https://raponline.org",
+  "description": "Nonprofit that advises regulators and policymakers on clean-electricity, grid and electrification policy; its US home office is in Montpelier.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vlt",
+  "name": "Vermont Land Trust",
+  "website": "https://www.vlt.org",
+  "description": "Statewide land conservation nonprofit that works with farmers, woodland owners and communities to protect land, and hosts public events and workshops.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_vlt_e_winter_preview_2026_11_17",
+     "name": "Winter Preview: How and Where to Recreate This Winter",
+     "date": "2026-11-17T18:00:00",
+     "link": "https://www.vlt.org/events",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_bristol_energy_committee",
+  "name": "Bristol Energy Committee",
+  "website": "http://bristolvt.org/boards-commissions-committees/energy/",
+  "description": "Town committee in Bristol that meets monthly; the town lists agendas, minutes and video for its 2025 and 2026 meetings.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_huntington_energy_committee",
+  "name": "Huntington Energy Committee",
+  "website": "https://www.huntingtonvt.org/energy-committee/",
+  "description": "Selectboard-appointed committee that promotes energy savings through conservation, efficiency and renewables, supports home weatherization through the Energy Navigators program and is updating the energy section of the Town Plan.",
+  "type": "government",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_huntington_energy_committee_e_meeting_2026_10_06",
+     "name": "Huntington Energy Committee meeting",
+     "date": "2026-10-06T19:00:00",
+     "link": "https://www.huntingtonvt.org/energy-committee/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_earth_matters_manchester",
+  "name": "Earth Matters Manchester",
+  "website": "https://www.350vermont.org/nodes",
+  "description": "Southern Vermont climate-justice group and 350Vermont node that raises awareness of climate change and ways to reduce its effects; it is the environmental committee of MoveOn Manchester.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_rejoice",
+  "name": "Rural Environmental Justice Opportunities Informed by Community Expertise (REJOICE)",
+  "website": "https://environmentaljusticevt.wordpress.com/ej-legislation/",
+  "description": "Coalition project that held 19 community conversations across Vermont from 2017 to 2021 and whose findings informed the state's 2022 environmental justice law.",
+  "type": "coalition",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ }
+]

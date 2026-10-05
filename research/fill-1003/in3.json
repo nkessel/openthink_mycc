@@ -1,0 +1,682 @@
+[
+ {
+  "map": "ma",
+  "id": "northfield_mount_hermon_ecoleaders",
+  "name": "Northfield Mount Hermon Ecoleaders",
+  "website": "https://www.nmhschool.org/purpose/sustainability",
+  "description": "Student environmental group at Northfield Mount Hermon School that runs climate education events, voter and lobbying activities and upcycling workshops, and hosted a 2024 interschool youth climate summit.",
+  "type": "school_club",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "NMH Ecoleaders"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "boston_university_environmental_student_organization",
+  "name": "Boston University Environmental Student Organization",
+  "website": "https://www.bu.edu/earth/community/student-organizations/environmental-student-organization-eso/",
+  "description": "Student group at Boston University that holds community service outings, nature trips, guest speakers and documentary screenings to raise awareness of environmental issues.",
+  "type": "university",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "tree_boston",
+  "name": "Tree Boston",
+  "website": "",
+  "description": "Dorchester-based nonprofit (formerly Speak for the Trees) that plants and cares for trees and advocates for tree equity in Boston neighborhoods, including a teen urban tree corps.",
+  "type": "501c3",
+  "gaps": [
+   "website"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "tree_boston_e1",
+     "name": "Tree Planting at Malcolm X Park - Roxbury",
+     "date": "2026-10-03T11:00:00",
+     "link": "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "tree_boston_e3",
+     "name": "Annual Fall Benefit: Branching Out 2026",
+     "date": "2026-10-07T18:00:00",
+     "link": "https://treeboston.org/events/event/branchingout2026/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "tree_boston_e5",
+     "name": "Tree Giveaway at The Urban Farming Institute",
+     "date": "2026-10-10T10:00:00",
+     "link": "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "tree_boston_e7",
+     "name": "Climb for the Canopy",
+     "date": "2026-10-23T07:00:00",
+     "link": "https://treeboston.org/events/event/climb4thecanopy/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "tree_boston_e8",
+     "name": "Free Tree Giveaway - Hyde Park Public Library",
+     "date": "2026-10-24T10:00:00",
+     "link": "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "NeighborWoods Tree Plantings",
+    "Boston Tree Giveaways",
+    "Teen Urban Tree Corps"
+   ],
+   "actions": [
+    "Volunteer with Tree Boston"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "vietaid",
+  "name": "Vietnamese American Initiative for Development",
+  "website": "https://vietaid.org/",
+  "description": "Community development corporation in Fields Corner, Dorchester, serving the Vietnamese American community with civic engagement, affordable housing, small business help and child care.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "act_on_mass",
+  "name": "Act on Mass",
+  "website": "https://actonmass.org/",
+  "description": "Massachusetts advocacy group that tracks and backs state legislation (including climate bills such as the Climate Change Superfund bill) and runs campaigns on legislative accountability and transparency.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Every District Accountable Pledge",
+    "Good Government Agenda",
+    "2026 State Legislator Endorsements",
+    "Priority Bills Tracking, including Climate Change Superfund"
+   ],
+   "actions": [
+    "Ask Your Legislator to Sign the Every District Accountable Pledge"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sunrise_ipswich",
+  "name": "Sunrise Ipswich",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "pipeline_awareness_network_ne",
+  "name": "Pipeline Awareness Network Northeast",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "350ma_cape_cod",
+  "name": "350 Massachusetts Cape Cod",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "food_and_water_watch",
+  "name": "Food & Water Watch",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "food_and_water_watch_e1",
+     "name": "Stop Data Centers: Power-Building Committee (Food & Water Action meeting)",
+     "date": "2026-10-07T20:00:00",
+     "link": "https://www.foodandwaterwatch.org/events/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "food_and_water_watch_e2",
+     "name": "Community Water Affordability: Facts Behind the Crisis [Livable Future LIVE]",
+     "date": "2026-10-21T19:00:00",
+     "link": "https://www.foodandwaterwatch.org/events/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Stop AI Data Centers"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "bodhisara_dharma_community",
+  "name": "Bodhisara Dharma Community",
+  "website": "https://www.bodhisara.org/",
+  "description": "Non-profit Buddhist community in western Massachusetts that offers the Buddha's teaching to all ages through classes, meditation and retreats. It aims to build a community of friends who support each other in living with awareness, kindness and compassion.",
+  "type": "faith_org",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "the_climate_reality_project_boston_metro_chapter",
+  "name": "The Climate Reality Project Boston Metro Chapter",
+  "website": "https://www.climaterealityboston.org/",
+  "description": "Boston-area chapter of The Climate Reality Project that raises climate awareness and works on electrification, climate curricula for K-12 teachers, a trained speakers bureau, and state legislation with partners like Oxfam America.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "the_climate_reality_project__e1",
+     "name": "Wednesday standouts to stop private jet expansion at Hanscom",
+     "date": "2026-09-30T08:00:00",
+     "link": "https://actionnetwork.org/events/8526-hanscom-standout",
+     "rsvp_link": "https://actionnetwork.org/events/8526-hanscom-standout"
+    }
+   ],
+   "projects": [
+    "Home electrification outreach",
+    "Least Developed Countries Fund state legislation",
+    "Climate curricula for K-12 teachers",
+    "Speakers Bureau"
+   ],
+   "actions": [
+    "Sign the petition to stop private jet expansion at Hanscom Field",
+    "Send letters on Massachusetts forest bills (Trees as a Public Good)",
+    "Join a Climate Changemakers Hour of Action",
+    "Join the Climate Reality Boston Metro chapter"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "greater_boston_physicians_for_social_responsibility",
+  "name": "Greater Boston Physicians for Social Responsibility",
+  "website": "https://gbpsr.org/",
+  "description": "Physician-led group of health professionals and community members that educates the public and policymakers about the health effects of nuclear weapons and climate change, including fossil fuels, gas stoves and biomass.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "greater_boston_physicians_fo_e1",
+     "name": "GBPSR monthly meeting",
+     "date": "2026-10-05T19:00:00",
+     "link": "https://gbpsr.org/events/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "greater_boston_physicians_fo_e2",
+     "name": "9th Annual Global Health and Peace Awards (GBPSR & IPPNW)",
+     "date": "2026-10-24T17:00:00",
+     "link": "https://gbpsr.org/event/gbpsr-ippnws-9th-annual-global-health-and-peace-awards/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Nuclear power and weapons public health advocacy"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "mass_audubon",
+  "name": "Massachusetts Audubon Society",
+  "website": "https://www.massaudubon.org/",
+  "description": "Statewide conservation nonprofit that protects habitat, runs wildlife sanctuaries and nature programs, and works on climate action and access to nature in Massachusetts.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "mass_audubon_e1",
+     "name": "Wednesday Morning Birding",
+     "date": "2026-09-30T09:30:00",
+     "link": "https://www.massaudubon.org/programs/joppa-flats/103220-wednesday-morning-birding",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_e2",
+     "name": "Felix Neck Nature Stroll",
+     "date": "2026-09-30T10:00:00",
+     "link": "https://www.massaudubon.org/programs/felix-neck/102608-felix-neck-nature-stroll",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_e3",
+     "name": "Thursday Morning Bird Walk",
+     "date": "2026-10-01T07:30:00",
+     "link": "https://www.massaudubon.org/programs/drumlin-farm/104176-thursday-morning-bird-walk",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_e4",
+     "name": "Yes on 6 Picnic and Text Banking - Drumlin Farm",
+     "date": "2026-10-03T13:00:00",
+     "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_e6",
+     "name": "Yes on 6 Picnic and Text Banking - Belmont",
+     "date": "2026-10-04T13:00:00",
+     "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_e8",
+     "name": "Yes on 6 Picnic and Text Banking - Arcadia",
+     "date": "2026-10-10T12:00:00",
+     "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_e10",
+     "name": "Yes on 6 Picnic and Text Banking - Long Pasture",
+     "date": "2026-10-10T13:30:00",
+     "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_e11",
+     "name": "Yes on 6 Picnic and Text Banking - Ipswich River",
+     "date": "2026-10-11T12:30:00",
+     "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Vote Yes on Question 6 (Nature for All Fund)"
+   ],
+   "actions": [
+    "Pledge, volunteer or request a lawn sign for Yes on 6",
+    "Text-bank voters for Yes on 6",
+    "Volunteer with Mass Audubon"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "pilgrim_coalition",
+  "name": "Pilgrim Coalition",
+  "website": "",
+  "description": "Marshfield-based coalition of about 27 member organizations, active since 2011, that educates the public about the Pilgrim Nuclear Power Station in Plymouth and presses regulators, with decommissioning as its long-term goal.",
+  "type": "coalition",
+  "gaps": [
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Pilgrim Coalition Pilgrim Nuclear advocacy"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "south_coast_neighbors_united",
+  "name": "South Coast Neighbors United",
+  "website": "https://actionnetwork.org/groups/south-coast-neighbors-united",
+  "description": "East Freetown group, active since 2015, that formed to oppose expanded LNG storage and gas pipelines on the South Coast and now challenges development projects that threaten local environmental health.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "South Coast Neighbors United"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "wendell_state_forest_alliance",
+  "name": "Wendell State Forest Alliance",
+  "website": "https://www.wendellforest.org/",
+  "description": "Alliance that works through nonviolent means to protect Massachusetts state forests, treating forest preservation as a climate solution and training activists in nonviolent direct action.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "H.953 Act Relative to Forest Protection"
+   ],
+   "actions": [
+    "Support forest protection legislation"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "alliance_for_business_leadership",
+  "name": "Alliance for Business Leadership",
+  "website": "https://www.ablmass.org/",
+  "description": "Boston-based coalition of business leaders, a 501(c)(3) since 2008, with a climate and energy policy council that backs clean energy policy as part of an inclusive economy.",
+  "type": "501c3,business",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "cooler_communities",
+  "name": "Cooler Communities",
+  "website": "https://coolercommunities.org/",
+  "description": "Climate education group that gets young people informed and acting on climate change through school programs such as Energy Detectives, Heat Seekers, climate fairs and curriculum.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Cooler Communities K-12 Climate Education"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "northeast_climate_justice_research_collaborative",
+  "name": "Northeast Climate Justice Research Collaborative",
+  "website": "https://www.umb.edu/ssl/",
+  "description": "Research network, launched in spring 2022 and convened by UMass Boston's Sustainable Solutions Lab, that supports scholars working on climate justice with seed grants, workshops and a shared literature library.",
+  "type": "school_club",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Northeast Climate Justice Research Collaborative",
+    "Climate Adaptation Forum"
+   ],
+   "actions": [
+    "Join the Northeast Climate Justice Research Collaborative"
+   ]
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_sierra_club",
+  "name": "Sierra Club Vermont Chapter",
+  "website": "https://www.sierraclub.org/vermont",
+  "description": "Vermont chapter of the Sierra Club, working on clean transportation, climate and clean energy, and lands conservation and outings, with a legislative advocacy program.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": [
+    "Chapter Treasurer (volunteer)",
+    "Chapter Secretary (volunteer)"
+   ]
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vbsr",
+  "name": "Vermont Businesses for Social Responsibility",
+  "website": "https://www.vbsr.org",
+  "description": "Burlington-based business network that uses business power for social and environmental impact, with an advocacy program on climate and economic policy.",
+  "type": "business",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vermont_center_for_ecostudies",
+  "name": "Vermont Center for Ecostudies",
+  "website": "https://vtecostudies.org",
+  "description": "Wildlife research and conservation nonprofit in White River Junction, a 2026 Common Agenda partner.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_sustainable_woodstock",
+  "name": "Sustainable Woodstock",
+  "website": "https://www.sustainablewoodstock.org",
+  "description": "Community group in Woodstock that aims to inspire, educate and empower people to live environmentally, economically and socially responsible lives; an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_veep",
+  "name": "Vermont Energy Education Program",
+  "website": "https://veep.org/",
+  "description": "Energy education organization; a member of Transportation for Vermonters and Energy Action Network.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_releaf_collective",
+  "name": "Vermont Releaf Collective (becoming Liberation Ecosystem)",
+  "website": "https://www.vtreleafcollective.org/",
+  "description": "Group connecting and amplifying people of color in Vermont around land, environment, agriculture and foodways; its site says it is transitioning to a new identity, Liberation Ecosystem.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_ceac_addison",
+  "name": "Climate Economy Action Center of Addison County",
+  "website": "https://www.ceacac.org",
+  "description": "Addison County group that works to cut greenhouse-gas emissions equitably and support a just transition to a low-carbon local economy. It runs the Energy Navigator project, which gives renters and homeowners free advice on reducing their home's carbon footprint.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_resource_vt",
+  "name": "ReSOURCE",
+  "website": "https://www.resourcevt.org",
+  "description": "Nonprofit with stores in Burlington, Williston, Barre and Morrisville that reuses donated goods and runs job training in construction, HVAC and weatherization.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_resource_vt_e_weatherization_101_rutland_2026_10_26",
+     "name": "Weatherization 101 training - Rutland",
+     "date": "2026-10-26",
+     "link": "https://www.resourcevt.org/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vlct",
+  "name": "Vermont League of Cities and Towns",
+  "website": "https://www.vlct.org",
+  "description": "Membership association of Vermont's cities and towns that provides advocacy, training, insurance and technical help to local governments.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_hartford_energy_committee",
+  "name": "Hartford Energy Commission",
+  "website": "https://hartfordvt.gov/2509/Energy-Commission",
+  "description": "Hartford town commission working to cut the town's energy needs 30 percent by 2030, with a climate action plan and a newsletter for residents.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_stowe_energy_committee",
+  "name": "Stowe Energy Committee",
+  "website": "https://www.stowevt.gov/Meetings-Events/Board-and-Commissions/Energy-Committee",
+  "description": "Official Stowe town energy committee; its March 27, 2025 meeting took place at the Akeley Memorial Building.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_350_rutland_county",
+  "name": "350Rutland County Node",
+  "website": "https://www.350vermont.org/rutland-county-node",
+  "description": "350Vermont node working for climate justice in Rutland County through a school orchard and pollinator garden, a bicycle exchange and tree planting in Rutland City.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ }
+]

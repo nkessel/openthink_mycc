@@ -1,0 +1,672 @@
+[
+ {
+  "map": "ma",
+  "id": "salem_high_school_sustainability_club",
+  "name": "Salem High School Sustainability Club",
+  "website": "",
+  "description": "Student environmental club at Salem High School that lobbies at the State House for air quality, climate education and anti-gas-expansion bills; supported by Salem SAFE.",
+  "type": "school_club",
+  "gaps": [
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "four_rivers_climate_club",
+  "name": "Four Rivers Climate Club",
+  "website": "https://fourriverscharter.org/",
+  "description": "Student club at Four Rivers Charter Public School in Greenfield, formed in March 2024, that organizes litter cleanups and climate activism events.",
+  "type": "school_club",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "clean_water_action",
+  "name": "Clean Water Action",
+  "website": "https://cleanwater.org/states/massachusetts",
+  "description": "Advocacy organization with Boston and Northampton offices that organizes and lobbies in Massachusetts on toxic chemicals, clean energy and climate justice, lead in water, waste reduction and civic engagement.",
+  "type": "501c4",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Protecting Health from Toxic Chemicals in Massachusetts",
+    "Clean Energy and Climate Justice in Massachusetts",
+    "Protecting Massachusetts Families from Lead",
+    "Clean Water Voter: 2026 Massachusetts Endorsements",
+    "Youth Action Collaborative (YAC)",
+    "Zero Waste in MA"
+   ],
+   "actions": [
+    "Comment on the 2028-2030 Mass Save Three-Year Plan",
+    "Tell EPA: Stop Rolling Back Protections for Our Water"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "mothers_out_front",
+  "name": "Mothers Out Front",
+  "website": "https://mothersoutfront.org/",
+  "description": "Network of mothers and other caregivers organizing for climate justice; in Massachusetts its main campaign pushes to end new gas pipelines and move neighborhoods to clean heat.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "climate_xchange",
+  "name": "Climate XChange",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "climate_xchange_e1",
+     "name": "September State Climate Policy Network National Call",
+     "date": "2026-09-30T15:00:00",
+     "link": "https://climate-xchange.org/event/september-state-climate-policy-network-national-call-3/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "climate_xchange_e2",
+     "name": "Beyond EVs: How Transit Policy Delivers Climate and Community Benefits",
+     "date": "2026-10-08T14:00:00",
+     "link": "https://climate-xchange.org/event/beyond-evs-how-transit-policy-delivers-climate-and-community-benefits/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "climate_xchange_e3",
+     "name": "October State Climate Policy Network National Call",
+     "date": "2026-10-28T15:00:00",
+     "link": "https://climate-xchange.org/event/october-state-climate-policy-network-national-call-4/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "State Climate Policy Network (SCPN)",
+    "State Climate Policy Dashboard"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sunrise_western_mass",
+  "name": "Sunrise Western Mass",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sierra_club",
+  "name": "Sierra Club",
+  "website": "https://www.sierraclub.org/massachusetts",
+  "description": "Massachusetts chapter of the Sierra Club, a volunteer-led group that lobbies and organizes statewide on clean energy, fossil fuel and pipeline opposition, transit, pollution, forests and water.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "sierra_club_e1",
+     "name": "Forest Film Screening: Old Growth Forests: Nature's Biotic Water Pump",
+     "date": "2026-10-08T19:00:00",
+     "link": "https://act.sierraclub.org/events/details?formcampaignid=701Po000025ortKIAQ",
+     "rsvp_link": "https://act.sierraclub.org/events/details?formcampaignid=701Po000025ortKIAQ"
+    },
+    {
+     "id": "sc_e_film_virtual",
+     "name": "Forest film screening (virtual): Old Growth Forests, Nature's Biotic Pump",
+     "date": "2026-10-24T10:00:00",
+     "link": "http://bit.ly/OGForests",
+     "rsvp_link": ""
+    },
+    {
+     "id": "sierra_club_e3",
+     "name": "Wuerthner on Wildfire: Wildfire Myths and Reality (Zoom)",
+     "date": "2026-10-15T18:30:00",
+     "link": "https://www.savemassforests.com/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Protect the Quabbin, Ware and Wachusett watershed forests"
+   ],
+   "actions": [
+    "Sign petition to protect Quabbin, Ware and Wachusett watershed forests"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "350ma_central_mass",
+  "name": "350 Massachusetts Central Massachusetts",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "350 Central Mass priorities"
+   ],
+   "actions": [
+    "Join 350 Central Mass"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "jewish_alliance_for_law_and_social_action",
+  "name": "Jewish Alliance for Law and Social Action",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Climate Change Action Team"
+   ],
+   "actions": [
+    "Join a JALSA Issue Action Team"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "boston_catholic_climate_movement",
+  "name": "Boston Catholic Climate Movement",
+  "website": "https://bostoncatholicclimate.org/",
+  "description": "Boston chapter of the Laudato Si' Movement that works to put Pope Francis's climate teachings (Laudato Si' and Laudate Deum) into practice in the Catholic community through education and events.",
+  "type": "faith_org",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Boston Catholic Climate Movement"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "co_op_power_inc",
+  "name": "Co-op Power, Inc",
+  "website": "https://www.cooppower.coop/",
+  "description": "Network of community energy cooperatives that offers community and rooftop solar, biodiesel, home energy audits and heating-fuel buying groups, based in Shelburne Falls.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Community subscription solar",
+    "Home heating fuel buying group",
+    "Rays the Valley",
+    "Community Energy Co-ops"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "green_cambridge",
+  "name": "Green Cambridge",
+  "website": "https://www.greencambridge.org/",
+  "description": "Cambridge nonprofit that teaches teens and residents to become environmental leaders through nature-based programs, urban forest and waterway protection, and climate advocacy.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "green_cambridge_e1",
+     "name": "Alewife Brook Reservation Trash Cleanup",
+     "date": "2026-10-04T14:00:00",
+     "link": "https://www.eventbrite.com/e/alewife-brook-reservation-trash-cleanup-tickets-2002136689735",
+     "rsvp_link": "https://www.eventbrite.com/e/alewife-brook-reservation-trash-cleanup-tickets-2002136689735"
+    }
+   ],
+   "projects": [
+    "Canopy Crew",
+    "Restore Corps",
+    "Alewife Brook Reservation Stewardship"
+   ],
+   "actions": [
+    "Join the Alewife Brook Reservation volunteer interest list",
+    "Apply to Canopy Crew"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "mass_divest_coalition",
+  "name": "Mass Divest Coalition",
+  "website": "https://massdivest.org/",
+  "description": "Coalition of unions, environmental, faith and student groups campaigning for the Massachusetts state pension fund to divest from fossil fuel companies and reinvest in renewables.",
+  "type": "coalition",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Fossil fuel divestment of MA public pension funds"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "pilgrim_watch",
+  "name": "Pilgrim Watch",
+  "website": "https://www.pilgrimwatch.org/",
+  "description": "Plymouth-area nonprofit that shares factual information about safety issues at the Pilgrim Nuclear Power Station and keeps the public, officials and press informed about its decommissioning.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Pilgrim decommissioning oversight"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sunwealth",
+  "name": "Sunwealth",
+  "website": "https://www.sunwealth.com/",
+  "description": "Public benefit corporation and B Corp that develops community solar projects offering bill savings to low- and moderate-income customers in Eversource territory.",
+  "type": "business",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Community Solar and Storage Investment"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "xr_boston",
+  "name": "Extinction Rebellion Boston",
+  "website": "https://xrboston.org/",
+  "description": "Boston chapter of Extinction Rebellion that stages nonviolent direct actions and protests against government inaction on climate change and runs local gatherings and educational talks.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "xr_boston_e1",
+     "name": "No More Gas in Mass Rally",
+     "date": "2026-10-01T08:00:00",
+     "link": "https://xrboston.org/action/no-gas-in-mass-rally/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e2",
+     "name": "Rat City Rebels Gathering",
+     "date": "2026-10-04T16:00:00",
+     "link": "https://xrboston.org/action/rcr-oct4/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e3",
+     "name": "Camberville Affinity Group Meeting",
+     "date": "2026-10-05T19:00:00",
+     "link": "https://xrboston.org/action/camberville-ag-meeting105/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e4",
+     "name": "XR Boston Virtual Book Club: What If We Get It Right?",
+     "date": "2026-10-08T19:00:00",
+     "link": "https://xrboston.org/action/virtual-book-club-what-if-we-get-it-right-part-two/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e5",
+     "name": "XR at the HONK Festival",
+     "date": "2026-10-10T13:00:00",
+     "link": "https://xrboston.org/action/xr-at-the-honk-festival/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e7",
+     "name": "XR at the HONK Parade",
+     "date": "2026-10-11T11:30:00",
+     "link": "https://xrboston.org/action/xr-at-the-honk-parade/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e8",
+     "name": "Welcome Call!",
+     "date": "2026-10-13T19:30:00",
+     "link": "https://xrboston.org/action/welcome-call-oct13/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e10",
+     "name": "Drop in Art Build at Mystic Open Studio, Arlington",
+     "date": "2026-10-25T10:00:00",
+     "link": "https://xrboston.org/action/drop-in-art-build-arlington-10252/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "xr_boston_e12",
+     "name": "Route 2 Rebels Affinity Group Gathering",
+     "date": "2026-10-25T12:00:00",
+     "link": "https://xrboston.org/action/route-2-rebels-affinity-group-gathering3/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "No New Fossil Fuel Infrastructure in Massachusetts"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "center_for_green_schools_at_us_gbc",
+  "name": "Center for Green Schools at the U.S. Green Building Council",
+  "website": "https://www.centerforgreenschools.org/",
+  "description": "Program of the U.S. Green Building Council that supplies training, research, advocacy, peer networks and LEED guidance to make school buildings and campuses sustainable and healthy.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "franklin_county_and_north_quabbin_community_health_improveme",
+  "name": "Franklin County & North Quabbin Community Health Improvement Planning Network",
+  "website": "https://frcog.org/",
+  "description": "Regional health improvement network, convened by the Franklin Regional Council of Governments since 2016, that sets community health priorities such as youth substance use, mental wellness and active living.",
+  "type": "coalition",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Community Health Improvement Plan (CHIP) Network"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "pioneer_valley_asthma_coalition",
+  "name": "Pioneer Valley Asthma Coalition",
+  "website": "https://www.pvasthmacoalition.org/",
+  "description": "Springfield-based coalition, convened by the Public Health Institute of Western Massachusetts, that works to improve life for people affected by asthma through education on home hazards, school programs and clean air advocacy.",
+  "type": "coalition",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Healthy Air Network",
+    "Healthy Homes",
+    "Healthy Schools (HEAL project)"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_rev",
+  "name": "Renewable Energy Vermont",
+  "website": "https://www.revermont.org",
+  "description": "Montpelier-based renewable energy association that advocates for solar, wind, hydro and storage and hosts an annual conference.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_rev_e_rev2026_conference",
+     "name": "REV2026 Conference (25th annual)",
+     "date": "2026-10-14T07:30:00",
+     "link": "https://www.revconference.org/",
+     "rsvp_link": "https://www.eventbrite.com/e/rev2026-conference-tickets-1994711475720"
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_clf",
+  "name": "Conservation Law Foundation (Vermont)",
+  "website": "https://www.clf.org/vermont/",
+  "description": "Vermont office of the regional environmental law and advocacy organization CLF, based in Montpelier.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vermont_trout_unlimited",
+  "name": "Vermont Council of Trout Unlimited",
+  "website": "https://www.vttucouncil.org",
+  "description": "Statewide council of Trout Unlimited chapters; a partner on the Environmental Common Agenda.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vcil",
+  "name": "Vermont Center for Independent Living",
+  "website": "https://www.vcil.org",
+  "description": "Montpelier disability-rights organization run by and for people with disabilities; a member of Transportation for Vermonters and Energy Action Network.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_catma",
+  "name": "Chittenden Area Transportation Management Association",
+  "website": "https://catmavt.org",
+  "description": "Winooski transportation management association; its site says it grew out of a 1992 agreement among Champlain College, UVM Medical Center and UVM to share transportation programs. A member of Transportation for Vermonters.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_bennington_energy_committee",
+  "name": "Bennington Energy Committee",
+  "website": "https://www.benningtonvt.org/government/boards___commissions/energy_committee.php",
+  "description": "Select Board committee that implements Bennington's Town Energy Plan, advocates for conservation and renewables, and promotes composting to cut methane; listed in VECAN's committee directory.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_gopher_community_rides",
+  "name": "Community Rides Vermont (Gopher)",
+  "website": "https://gophervt.org",
+  "description": "Nonprofit that runs Gopher, a door-to-door ride service for rural central Vermonters using zero-emissions electric vehicles, with discounted, market-rate and contracted rides.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_sheo",
+  "name": "Sustainable Heating Outreach & Education",
+  "website": "https://www.sustainableheating.org",
+  "description": "Small Vermont nonprofit, based in East Calais, that provides education and outreach on sustainable home heating.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_voba",
+  "name": "Vermont Outdoor Business Alliance",
+  "website": "https://www.vermontoutdoorbusinessalliance.org",
+  "description": "Statewide nonprofit of outdoor-recreation businesses, active in networking, workforce development and advocacy, including a Climate Outdoors Workforce Initiative.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_voba_e_outdoor_economy_summit_2026",
+     "name": "8th Annual Vermont Outdoor Economy Summit",
+     "date": "2026-11-12T08:00:00",
+     "link": "https://www.vermontoutdoorbusinessalliance.org/summit",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_south_burlington_energy_committee",
+  "name": "South Burlington Energy Committee",
+  "website": "https://www.southburlingtonvt.gov/AgendaCenter/Energy-Committee-14",
+  "description": "City energy committee in South Burlington that meets monthly, with agendas and minutes posted on the city's Agenda Center.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_hinesburg_energy_committee",
+  "name": "Hinesburg Energy & Climate Action Committee",
+  "website": "https://www.hinesburg.org/AgendaCenter",
+  "description": "Hinesburg town committee on energy and climate action, with agendas posted for its 2025 and 2026 meetings.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_350_addison_county",
+  "name": "350Addison County Node",
+  "website": "https://www.350vermont.org/nodes",
+  "description": "The Middlebury-area node of 350Vermont, advocating for climate justice and a just transition for Vermont.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ }
+]

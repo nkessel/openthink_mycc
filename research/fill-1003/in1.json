@@ -1,0 +1,666 @@
+[
+ {
+  "map": "ma",
+  "id": "andover_climate_lobby",
+  "name": "Andover Climate Lobby",
+  "website": "",
+  "description": "Student initiative of the Phillips Academy Sustainability Coalition that takes students to the Massachusetts State House to lobby legislators to co-sponsor climate bills.",
+  "type": "school_club",
+  "gaps": [
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "lorax_at_milton_academy",
+  "name": "LORAX at Milton Academy",
+  "website": "https://www.milton.edu/about/sustainability-at-milton/student-involvement/",
+  "description": "Student environmental group at Milton Academy, founded in 1987, that raises ecological awareness and promotes responsible practices on campus through discussion and education.",
+  "type": "school_club",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Milton Academy Student-Led Sustainability Initiatives"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "greenroots_eco",
+  "name": "Greenroots Environmental Chelsea Organizers Youth Crew",
+  "website": "https://www.greenrootsej.org/our-work/youth-leadership",
+  "description": "Youth leadership program of GreenRoots in Chelsea where high school students run environmental justice campaigns on water quality, heat, murals and youth organizing.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Food Justice and Urban Agriculture (GreenRoots)"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "masspirg_amherst",
+  "name": "Massachusetts Public Interest Research Group Amherest",
+  "website": "https://masspirg.org/",
+  "description": "UMass Amherst chapter of the student-run MASSPIRG, active since 1972, with campaigns on campus renewable energy, pollinators, textbook costs and voter registration.",
+  "type": "campus_group",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "xr_youth",
+  "name": "Extinction Rebellion Youth",
+  "website": "",
+  "description": "Youth counterpart of Extinction Rebellion Massachusetts for people 18 and under, using nonviolent direct action to demand government action on the climate emergency.",
+  "type": "informal_group",
+  "gaps": [
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "mass_audubon_wellfleet_bay_wildlife_sanctuary",
+  "name": "Mass Audubon Wellfleet Bay Wildlife Sanctuary",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "mass_audubon_wellfleet_bay_w_e1",
+     "name": "Bird Research in Action: Bird Banding at Wellfleet Bay",
+     "date": "2026-10-02T08:30:00",
+     "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/programs-activities",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wellfleet_bay_w_e2",
+     "name": "Tunes & Tales on the Trails",
+     "date": "2026-10-03T13:00:00",
+     "link": "https://www.massaudubon.org/programs/wellfleet-bay/103688-tunes-tales-on-the-trails",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wellfleet_bay_w_e3",
+     "name": "Early Bird Walk at Wellfleet Bay",
+     "date": "2026-10-07T08:00:00",
+     "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/programs-activities",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wellfleet_bay_w_e4",
+     "name": "Field School: Hidden Cape Cod - A Fall Hiking Weekend",
+     "date": "2026-10-17T10:00:00",
+     "link": "https://www.massaudubon.org/programs/wellfleet-bay/101695-field-school-hidden-cape-cod-a-fall-hiking-weekend",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Community Science at Wellfleet Bay"
+   ],
+   "actions": [
+    "Volunteer with Mass Audubon"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "environment_massachusetts",
+  "name": "Environment Massachusetts",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "100% Renewable Campaign",
+    "Go Solar Campaign"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "slingshot",
+  "name": "Slingshot",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Alliance for Health and Environment (Saugus)",
+    "Springfield Climate Justice Coalition"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "climate_code_blue",
+  "name": "Climate Code Blue",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "balanced_rock_investment_advisors",
+  "name": "Balanced Rock Investment Advisors",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "citizens_awareness_network",
+  "name": "Citizens Awareness Network",
+  "website": "https://www.nukebusters.org/",
+  "description": "Grassroots group, founded in 1991, that works to end nuclear power in the Northeast and replace it with renewable, affordable energy, through education, community action and legislative advocacy.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "citizens_awareness_network_e1",
+     "name": "Press Conference and Demonstration at New England Regional Nuclear Policy Summit",
+     "date": "2026-09-30T08:00:00",
+     "link": "https://mailchi.mp/27641a26e67f/rally-to-keep-democracy-alive",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "No Deal to Repeal: Save Chapter 503"
+   ],
+   "actions": [
+    "Write and call the conference committee to save Chapter 503"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "fccpr_climate_crisis_task_force",
+  "name": "Franklin County Continuing the Political Revolution Climate Crisis Task Force",
+  "website": "https://fccpr.us/task-force/climate-crisis-task-force/",
+  "description": "Climate working group of Franklin County Continuing the Political Revolution (a Greenfield-based grassroots political group) that pushes for policy changes on energy, consumption and jobs to end fossil fuel dependence.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Mass Power Forward legislative agenda support"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "kearsarge_energy",
+  "name": "Kearsarge Energy",
+  "website": "https://www.kearsargeenergy.com/",
+  "description": "Boston-based company that develops, owns and operates solar and battery storage projects for public entities, with over 70 projects in Massachusetts.",
+  "type": "business",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "october_engineering_llc",
+  "name": "October Engineering LLC",
+  "website": "https://octoberengineering.com/",
+  "description": "One-person energy engineering firm in Sudbury run by a licensed professional engineer that offers free residential electrification, heat pump and ventilation design consulting.",
+  "type": "business",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Pro Bono Residential Electrification Consulting"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "solar_design_associates",
+  "name": "Solar Design Associates",
+  "website": "https://solardesign.com/",
+  "description": "Solar installation, design and engineering firm in Harvard, MA, founded in 1974, serving New England.",
+  "type": "business",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "vineyard_power_cooperative",
+  "name": "Vineyard Power Cooperative",
+  "website": "https://www.vineyardpower.org/",
+  "description": "Community-owned renewable energy cooperative on Martha's Vineyard that organized community input on offshore wind and builds local solar canopies, working toward a 100% renewable island.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Energy Transition Program"
+   ],
+   "actions": [
+    "Energy Transition Intern (Martha's Vineyard Regional High School students)",
+    "Sign up for a no-cost home energy assessment"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "acadia_center",
+  "name": "Acadia Center",
+  "website": "https://acadiacenter.org/",
+  "description": "Climate and clean energy advocacy organization that works on building and transportation electrification and clean energy policy across the Northeast, with an office in Boston.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Acadia Center Massachusetts Climate and Energy Policy Work"
+   ],
+   "actions": [
+    "Contact your state legislators about climate policy"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "citizens_climate_lobby_north_shore_chapter",
+  "name": "Citizens' Climate Lobby - North Shore Chapter",
+  "website": "https://citizensclimatelobby.org/chapters/MA_Northshore/",
+  "description": "North Shore chapter of Citizens' Climate Lobby that builds public support for climate action and lobbies members of Congress for bipartisan climate legislation.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "metropolitan_area_planning_council",
+  "name": "Metropolitan Area Planning Council",
+  "website": "https://www.mapc.org/",
+  "description": "Public regional planning agency for the 101 cities and towns of Greater Boston, founded in 1963, whose work includes climate resilience and sustainability planning.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vcv",
+  "name": "Vermont Conservation Voters",
+  "website": "https://vermontconservationvoters.com",
+  "description": "Statewide political voice for the environment in Montpelier that endorses candidates, tracks votes, and convenes the annual Environmental Common Agenda. Founded in 1982.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_vcv_e_canvass_colchester",
+     "name": "Community Canvass Tour: Colchester",
+     "date": "2026-10-03T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-colchester/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_randolph",
+     "name": "Community Canvass Tour: Randolph",
+     "date": "2026-10-04T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-randolph/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_st_albans",
+     "name": "Community Canvass Tour: St. Albans",
+     "date": "2026-10-10T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-st-albans/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_hartford",
+     "name": "Community Canvass Tour: Hartford",
+     "date": "2026-10-11T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-hartford/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_manchester",
+     "name": "Community Canvass Tour: Manchester",
+     "date": "2026-10-17T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-manchester/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_milton",
+     "name": "Community Canvass Tour: Milton",
+     "date": "2026-10-18T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-milton/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_stjohnsbury",
+     "name": "Community Canvass Tour: St. Johnsbury",
+     "date": "2026-10-24T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-stjohnsbury/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_rutland",
+     "name": "Community Canvass Tour: Rutland",
+     "date": "2026-10-25T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-rutland/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_brattleboro",
+     "name": "Community Canvass Tour: Brattleboro",
+     "date": "2026-11-01T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-brattleboro/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_canvass_burlington",
+     "name": "Community Canvass Tour: Burlington",
+     "date": "2026-11-01T10:00:00",
+     "link": "https://vermontconservationvoters.com/event/community-canvass-tour-burlington/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vcv_e_pole_2_poll",
+     "name": "Pole 2 Poll: A GOTV Celebration",
+     "date": "2026-10-23T20:00:00",
+     "link": "https://vermontconservationvoters.com/event/pole-2-poll-a-gotv-celebration/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": [
+    "Volunteer for the Community Canvass Tour (with VPIRG)"
+   ]
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vtcha",
+  "name": "Vermont Climate & Health Alliance",
+  "website": "https://www.vtcha.org",
+  "description": "Network of Vermont physicians, nurses, therapists, veterinarians and other health professionals who inform the public and lawmakers about climate change and health and push for a fast shift off fossil fuels.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_preservation_trust",
+  "name": "Preservation Trust of Vermont",
+  "website": "https://www.ptvermont.org",
+  "description": "Montpelier-based historic preservation nonprofit; a partner on the Environmental Common Agenda and an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_public_assets_institute",
+  "name": "Public Assets Institute",
+  "website": "https://www.publicassets.org",
+  "description": "Montpelier nonprofit providing tax, budget and economic data and analysis to advance equitable policies; an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vhcb",
+  "name": "Vermont Housing & Conservation Board",
+  "website": "https://www.vhcb.org",
+  "description": "Montpelier board that invests in permanently affordable housing and land conservation; an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_ccl_vermont_at_large",
+  "name": "Citizens' Climate Lobby - Vermont At Large",
+  "website": "https://citizensclimatelobby.org/chapters/Vermont_-_At_Large/",
+  "description": "Active Citizens' Climate Lobby chapter covering Vermont outside greater Burlington and the Upper Valley; volunteers meet with elected officials to build support for climate laws.",
+  "type": "informal_group",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_bppa_vt",
+  "name": "Building Performance Professionals Association of Vermont",
+  "website": "https://bppa-vt.org",
+  "description": "Trade association of Vermont building-performance and weatherization professionals.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_northern_forest_center",
+  "name": "Northern Forest Center",
+  "website": "https://www.northernforest.org",
+  "description": "Regional nonprofit working across the Northern Forest on rural community development, wood-based energy and markets, and outdoor recreation, with Vermont staff and projects in the Northeast Kingdom.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vippa",
+  "name": "Vermont Independent Power Producers Association",
+  "website": "https://www.vippahydro.org",
+  "description": "Trade association of independent power producers in Vermont.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_williston_energy_committee",
+  "name": "Williston Energy Committee",
+  "website": "https://www.willistonvtenergycommittee.org/",
+  "description": "Volunteer town committee in Williston that promotes energy saving, weatherization, electric vehicles and window-insert builds, and helped organize the 2026 Williston Green Fair.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_starksboro_energy_committee",
+  "name": "Starksboro Energy Committee",
+  "website": "https://www.starksborovt.org/energy-committee",
+  "description": "Town committee working with residents, businesses and the town on long-term energy independence, including benchmarking town buildings and offering free energy-savings kits.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_starksboro_energy_committee_e_meeting_2026_10_05",
+     "name": "Starksboro Energy Committee meeting",
+     "date": "2026-10-05",
+     "link": "https://www.starksborovt.org/energy-committee",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_350_chittenden_county",
+  "name": "350Chittenden County Node",
+  "website": "https://www.350vermont.org/nodes",
+  "description": "350Vermont node of activists who meet regularly and host events in the Burlington area to educate and organize for climate justice.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vrja",
+  "name": "Vermont Racial Justice Alliance",
+  "website": "https://vtracialjusticealliance.org",
+  "description": "Black-led Vermont organization working to dismantle systemic racism through organizing, education, policy and wellness programs; it signed the 2022 letter supporting Vermont's environmental justice law and has published a Justice Agenda tied to climate action.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ }
+]

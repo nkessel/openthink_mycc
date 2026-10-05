@@ -1,0 +1,728 @@
+[
+ {
+  "map": "ma",
+  "id": "newton_south_high_school_environmental_club",
+  "name": "Newton South High School Environmental Club",
+  "website": "",
+  "description": "Student club at Newton South High School for discussing and learning about climate change and environmental issues.",
+  "type": "school_club",
+  "gaps": [
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "roxbury_environmental_empowerment_project_by_alternatives_fo",
+  "name": "Roxbury Environmental Empowerment Project",
+  "website": "https://ace-ej.org/",
+  "description": "Youth-led environmental justice organizing program of ACE that builds leadership among young people of color from Roxbury, Dorchester and Mattapan; led the campaign for Boston's 2015 diesel emissions ordinance.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sustainable_sharon_coalition_youth",
+  "name": "Sustainable Sharon Coalition Youth Committee",
+  "website": "https://www.sustainablesharon.org/",
+  "description": "High-school-age interest group within the Sustainable Sharon Coalition, a volunteer-led environmental nonprofit in Sharon.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "jewish_climate_action_network",
+  "name": "Jewish Climate Action Network",
+  "website": "https://jewishclimate.org/",
+  "description": "Boston-area Jewish group, founded in 2013, that runs climate education, joins marches and legislative campaigns, and helps synagogues cut energy use and divest from fossil fuels.",
+  "type": "faith_org",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "jcan_e_chutzpah_calls",
+     "name": "Chutzpah 2026: Phone Calls for Our Democracy",
+     "date": "2026-10-08T18:00:00",
+     "link": "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "jcan_e_frameworks",
+     "name": "Jewish Frameworks for Our Challenging Times",
+     "date": "2026-10-12T19:00:00",
+     "link": "https://jewishclimate.org/event/jewish-frameworks-for-our-challenging-times/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "jcan_e_plastic",
+     "name": "Plastic Pollution: Health, Climate, and Solutions",
+     "date": "2026-10-20T19:00:00",
+     "link": "https://jewishclimate.org/event/plastic-pollution-health-climate-and-solutions/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "jcan_e_eco_poets",
+     "name": "Two Eco-Poets: A Conversation About Climate",
+     "date": "2026-11-30T19:00:00",
+     "link": "https://jewishclimate.org/event/7410/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "jewish_climate_action_networ_e4",
+     "name": "Data Centers: The New Goliath",
+     "date": "2026-10-15T19:00:00",
+     "link": "https://jewishclimate.org/event/data-centers-the-new-goliath/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "jewish_climate_action_networ_e6",
+     "name": "Author Talk: Courtney Humphries - Climate Change and the Future of Boston",
+     "date": "2026-10-24T14:30:00",
+     "link": "https://jewishclimate.org/event/author-talk-courtney-humphries-climate-change-and-the-future-of-boston/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "JCAN-MA Webinar Series and Climate Programming",
+    "MA Carbon Goals Tracker and Home-Energy Tools"
+   ],
+   "actions": [
+    "Phone bank for climate voters (Chutzpah 2026)"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sustainable_milton",
+  "name": "Sustainable Milton",
+  "website": "https://www.sustainablemilton.org/",
+  "description": "Neighbor-driven nonprofit in Milton, founded in 2006, that runs composting, green electricity, waste reduction and cleanup programs and advocates for local climate action.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "sustainable_milton_e1",
+     "name": "Reclaim Your Roots: How Native Plants Save Time and Money",
+     "date": "2026-09-30T18:30:00",
+     "link": "https://events.sustainablemilton.org/event/reclaim-your-roots-how-native-plants-save-time-and-money/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "sustainable_milton_e2",
+     "name": "Sustainable Milton Coffee Meetup",
+     "date": "2026-10-05T09:30:00",
+     "link": "https://events.sustainablemilton.org/event/coffee-meetup-2/2026-10-05/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "sustainable_milton_e3",
+     "name": "Emerging Clean Energy Tech: Balcony Solar, Window Heat Pump & More",
+     "date": "2026-10-14T19:00:00",
+     "link": "https://events.sustainablemilton.org/event/emerging-clean-energy-tech-balcony-solar-window-heat-pump-more/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "sustainable_milton_e5",
+     "name": "GECA webinar: Heat Pumps and Time-Varying Rates",
+     "date": "2026-10-28T12:00:00",
+     "link": "https://events.sustainablemilton.org/event/geca-heat-pumps-and-time-varying-rates/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "100% Green Electricity (Milton CEA)",
+    "Curbside and communal composting (Milton)",
+    "Sustainable Milton strategic goals 2026-27",
+    "Milton Climate Action hub"
+   ],
+   "actions": [
+    "Volunteer with Sustainable Milton",
+    "Enroll in Milton 100% Green electricity"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sunrise_lexington",
+  "name": "Sunrise Lexington",
+  "website": "https://www.sunrisemovement.org/",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "fore_river_residents_against_the_compressor_station",
+  "name": "Fore River Residents Against the Compressor Station",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Stop the Weymouth Compressor Station",
+    "West Waterfront Trail connection to King's Cove Park",
+    "FRRACS monthly community meeting"
+   ],
+   "actions": [
+    "Tell the Mayor we want the West Waterfront Trail finished",
+    "Apply for a free Braintree community air sensor"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "berkshire_environmental_action_team",
+  "name": "Berkshire Environmental Action Team",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "salem_alliance_for_the_environment",
+  "name": "Salem Alliance for the Environment",
+  "website": "https://salemsafe.org/",
+  "description": "Salem environmental advocacy group working on air quality, wind and public power, heat resilience, environmental justice and gas leaks; also supports Salem High School's environmental club.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Heat Resiliency Pilot in The Point (El Punto)",
+    "Salem Air Quality Monitoring",
+    "Public Power in Salem",
+    "Offshore Wind Advocacy",
+    "Natural Gas Leaks in Salem"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "cape_downwinders",
+  "name": "Cape Downwinders",
+  "website": "https://www.capedownwinders.net",
+  "description": "All-volunteer grassroots group on Cape Cod that works to protect communities from the dangers of nuclear power, decommissioning and nuclear waste, with a focus on the Pilgrim Nuclear Power Station in Plymouth.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Opposing the Pilgrim wastewater release"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "concerned_citizens_of_franklin_county",
+  "name": "Concerned Citizens of Franklin County",
+  "website": "",
+  "description": "Volunteer group in Greenfield, active since 2009, that researches and educates about the impacts of biomass energy on Western Massachusetts forests and organized residents against a proposed 47 MW biomass plant in Greenfield.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "green_newton",
+  "name": "Green Newton",
+  "website": "https://greennewton.org/",
+  "description": "Newton community organization, active since 1990, that helps residents, businesses and schools take climate action through clean energy, waste reduction and green living guidance.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "mount_grace_land_conservation_trust",
+  "name": "Mount Grace Land Conservation Trust",
+  "website": "https://www.mountgrace.org/",
+  "description": "Athol-based land trust that protects natural, agricultural and scenic land and encourages land stewardship in North Central and Western Massachusetts.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "mount_grace_land_conservatio_e1",
+     "name": "Four Corners Conservation Area Community Input Session 1",
+     "date": "2026-10-03T08:00:00",
+     "link": "https://www.mountgrace.org/get-involved/events/event/four-corners-conservation-area-community-input-sessions",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mount_grace_land_conservatio_e3",
+     "name": "Four Corners Conservation Area Community Input Session 2",
+     "date": "2026-10-19T17:00:00",
+     "link": "https://www.mountgrace.org/get-involved/events/event/four-corners-conservation-area-community-input-session-2",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mount_grace_land_conservatio_e4",
+     "name": "2026 Annual Meeting Celebration",
+     "date": "2026-10-25T14:00:00",
+     "link": "https://www.mountgrace.org/get-involved/events/rsvp-fee/2026-annual-meeting",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Massachusetts Dynamic Forest Restoration Initiative"
+   ],
+   "actions": [
+    "Sign Up for Mount Grace Volunteer Opportunities"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "quincy_climate_action_network",
+  "name": "Quincy Climate Action Network",
+  "website": "https://quincycan.org/",
+  "description": "Group of Quincy residents, founded in 2012, that works on local climate action: municipal and residential solar, home energy assessments, green electricity and composting programs, and environmental justice in Germantown and Quincy Point.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "quincy_climate_action_networ_e1",
+     "name": "QCAN monthly meeting",
+     "date": "2026-10-14T19:00:00",
+     "link": "https://quincycan.org/get-involved/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Quincy CAN current issues"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sustainable_sudbury",
+  "name": "Sustainable Sudbury",
+  "website": "https://www.sustainablesudbury.org/",
+  "description": "Volunteer-led Sudbury nonprofit that raises environmental awareness and runs events and webinars on clean energy, repair and recycling, and backs local climate policy.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "sustainable_sudbury_e1",
+     "name": "Fall Styrofoam Collection",
+     "date": "2026-10-03T09:00:00",
+     "link": "https://www.sustainablesudbury.org/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "plugIN home electrification service",
+    "Sudbury sustainability initiatives"
+   ],
+   "actions": [
+    "Apply: Youth Climate Solutions Challenge (high school teams)"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "neighbor_to_neighbor_massachusetts",
+  "name": "Neighbor to Neighbor Massachusetts",
+  "website": "https://n2nma.org/",
+  "description": "Statewide organizing group that advocates on economic, racial and environmental justice, with a climate justice field program and environmental justice campaigns.",
+  "type": "501c3,501c4",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Dwight Street Garden",
+    "Housing for All campaign"
+   ],
+   "actions": [
+    "Letter campaign: support the Clean Slate Act",
+    "Become a Neighbor to Neighbor member",
+    "Sign up to be a LUCE verifier"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "citizens_climate_lobby",
+  "name": "Citizens Climate Lobby",
+  "website": "https://citizensclimatelobby.org/about-ccl/chapters/",
+  "description": "Volunteer chapters of Citizens' Climate Lobby across Massachusetts that build community support for climate solutions and lobby members of Congress for bipartisan climate legislation.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "citizens_climate_lobby_e1",
+     "name": "CCL Boston tabling at Open Streets Allston",
+     "date": "2026-10-04T10:30:00",
+     "link": "https://community.citizensclimate.org/groups/events/1153",
+     "rsvp_link": ""
+    },
+    {
+     "id": "citizens_climate_lobby_e2",
+     "name": "Tabling at Open Streets Roslindale",
+     "date": "2026-10-18T10:30:00",
+     "link": "https://community.citizensclimate.org/groups/events/1153",
+     "rsvp_link": ""
+    },
+    {
+     "id": "citizens_climate_lobby_e3",
+     "name": "CCL Boston monthly chapter meeting",
+     "date": "2026-10-21T18:00:00",
+     "link": "https://community.citizensclimate.org/groups/events/1153",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "CCL Boston chapter"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "ma_senior_action",
+  "name": "Massachusetts Senior Action Council",
+  "website": "https://www.masssenioraction.org/",
+  "description": "Statewide, senior-led grassroots group founded in 1981 that organizes older adults on health care, economic security, housing, transportation and racial justice.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "ma_senior_action_e1",
+     "name": "Boston Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-08T12:30:00",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ma_senior_action_e2",
+     "name": "North Shore Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-21T10:00:00",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ma_senior_action_e3",
+     "name": "Cambridge/Somerville Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-26T11:00:00",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ma_senior_action_e4",
+     "name": "Greater Springfield Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-28T13:00:00",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ma_senior_action_e5",
+     "name": "Metro-North Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-28T13:00:00",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "undauntedk12",
+  "name": "UndauntedK12",
+  "website": "https://www.undauntedk12.org/",
+  "description": "National nonprofit, founded in 2020, that pushes for climate action in K-12 schools, including heat pumps and modern HVAC, federal tax credit guidance and climate literacy.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "UndauntedK12 in Massachusetts",
+    "Energy Tax Credits for Schools Hub",
+    "Modern HVAC Campaign"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_rad",
+  "name": "Rights & Democracy Vermont",
+  "website": "https://radmovement.org/vt/",
+  "description": "Multi-issue grassroots membership organization (Vermont and New Hampshire) working on racial, economic, environmental and social justice, including climate justice.",
+  "type": "501c4",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_connecticut_river_conservancy",
+  "name": "Connecticut River Conservancy",
+  "website": "https://www.ctriver.org",
+  "description": "Nonprofit that restores and advocates for clean water, healthy habitat and resilient communities across the Connecticut River watershed; a partner on the Vermont Environmental Common Agenda.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_capstone_community_action",
+  "name": "Capstone Community Action",
+  "website": "https://www.capstonevt.org",
+  "description": "Community action agency in Barre providing services to bridge connections and move households toward self-sufficiency; an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_veic",
+  "name": "Vermont Energy Investment Corporation",
+  "website": "https://www.veic.org",
+  "description": "Winooski nonprofit that runs Efficiency Vermont and works on energy efficiency, renewables and clean transportation; a member of Transportation for Vermonters, Energy Action Network and Vermont Clean Communities.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_american_lung_association_vt",
+  "name": "American Lung Association in Vermont",
+  "website": "",
+  "description": "Vermont office of the American Lung Association; a member of Transportation for Vermonters.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_middlebury_energy_committee",
+  "name": "Middlebury Energy Committee",
+  "website": "https://www.townofmiddlebury.org/government/boards_and_commissions/energy_committee/index.php",
+  "description": "Selectboard-appointed committee that promotes energy savings and lower emissions in Middlebury through efficiency, renewables and transportation planning; a 2026 news report says it was regrouping.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_evernorth",
+  "name": "Evernorth",
+  "website": "https://evernorthus.org",
+  "description": "Nonprofit based in Burlington that raises capital for and develops affordable housing and invests in community economic development, including energy-efficiency work.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vermont_adult_learning",
+  "name": "Vermont Adult Learning",
+  "website": "https://vtadultlearning.org",
+  "description": "Adult-education nonprofit offering basic skills, GED and English-language classes and workforce programs, including an Energy Works program.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vww",
+  "name": "Vermont Works for Women",
+  "website": "https://www.vtworksforwomen.org",
+  "description": "Winooski-based nonprofit that trains women and gender-expansive people for careers in construction and the trades and helps employers hire inclusively.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_vww_e_gather_and_give_2026",
+     "name": "Gather & Give art market and fundraiser",
+     "date": "2026-11-13",
+     "link": "https://www.vtworksforwomen.org/events",
+     "rsvp_link": ""
+    },
+    {
+     "id": "vt_vww_e_trades_meetup_burlington_2026",
+     "name": "Trades meet-up in Burlington with HELM",
+     "date": "2026-11-18",
+     "link": "https://www.vtworksforwomen.org/events",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_norwich_energy_committee",
+  "name": "Norwich Energy Committee",
+  "website": "https://norwich.vt.us/energy-committee/",
+  "description": "Norwich town committee that runs outreach on weatherization and solar, plans town building energy upgrades and works with Upper Valley partners; 2026 meetings are held on Zoom.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_arlington_energy_committee",
+  "name": "Arlington Energy Committee",
+  "website": "https://arlingtonvermont.org/energy/",
+  "description": "Committee formed in 2019 to help Arlington residents, businesses, schools and town government cut energy use and costs through conservation, efficiency and renewable energy.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_350_white_river",
+  "name": "350White River Node",
+  "website": "https://www.350vermont.org/nodes",
+  "description": "350Vermont node organizing in Bethel, Randolph, South Royalton and nearby towns for a just transition off carbon-based fuels.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ }
+]

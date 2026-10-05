@@ -1,0 +1,504 @@
+{
+  "groups": {
+    "masspirg_boston": {
+      "map": "ma",
+      "fields": {
+        "description": "MASSPIRG is the Massachusetts arm of the Public Interest Research Group network; its researchers, advocates and organizers work on consumer and public-health issues, including zero-waste, plastics, PFAS and safe drinking water bills at the State House.",
+        "geographic_focus": "Statewide",
+        "last_activity": "2026-03-02"
+      },
+      "field_sources": [
+        "https://pirg.org/massachusetts/articles/highlights-of-masspirgs-work-in-2025/",
+        "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/"
+      ],
+      "events": [],
+      "projects": [
+        {
+          "name": "Getting to Zero Waste bills",
+          "description": "Pushes 2025-2026 bills to expand the Bottle Bill to water bottles and nips, restrict single-use plastic bags and ban most polystyrene foam containers.",
+          "status": "active",
+          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/",
+          "sources": [
+            "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/"
+          ]
+        },
+        {
+          "name": "Clean water and toxic chemicals bills",
+          "description": "Backs bills to phase out PFAS in consumer products, require lead filters for school drinking water and disclose toxic chemicals in children's products.",
+          "status": "active",
+          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/",
+          "sources": [
+            "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Take action with MASSPIRG",
+          "kind": "task",
+          "description": "Sign MASSPIRG's current petitions, including ones on plastic packaging, PFAS and microplastics.",
+          "deadline": null,
+          "link": "https://pirg.org/massachusetts/take-action/",
+          "sources": [
+            "https://pirg.org/massachusetts/take-action/"
+          ]
+        }
+      ]
+    },
+    "xr_western_mass": {
+      "map": "ma",
+      "fields": {
+        "description": "Western Massachusetts local group of Extinction Rebellion, the climate movement that uses nonviolent direct action; it organizes through an email list and social media.",
+        "geographic_focus": "Western Massachusetts"
+      },
+      "field_sources": [
+        "https://xrboston.org/west/",
+        "https://xrboston.org/groups/"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": [
+        {
+          "name": "Join the XR Western Mass email list",
+          "kind": "task",
+          "description": "Sign up to get updates and get involved with Extinction Rebellion in Western Massachusetts.",
+          "deadline": null,
+          "link": "https://actionnetwork.org/forms/xr-western-massachusetts-sign-up",
+          "sources": [
+            "https://actionnetwork.org/forms/xr-western-massachusetts-sign-up",
+            "https://xrboston.org/west/"
+          ]
+        }
+      ]
+    },
+    "sunrise_boston": {
+      "map": "ma",
+      "fields": {
+        "description": "Boston hub of the Sunrise Movement, the national youth movement working to stop climate change, get fossil fuel money out of politics and elect climate leaders.",
+        "geographic_focus": "Boston"
+      },
+      "field_sources": [
+        "https://honkfest.org/community/sunrise-boston/",
+        "https://actionnetwork.org/groups/sunrise-boston"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": []
+    },
+    "350ma": {
+      "map": "ma",
+      "fields": {
+        "description": "Grassroots statewide climate network, part of Better Future Project, that works to end fossil fuel dependence and win a just transition through statewide working groups and local member-led chapters called nodes.",
+        "type": "501c3",
+        "website": "https://350mass.betterfutureproject.org/",
+        "geographic_focus": "Statewide",
+        "last_activity": "2026-09-04"
+      },
+      "field_sources": [
+        "https://350mass.betterfutureproject.org/about_us",
+        "https://350mass.betterfutureproject.org/"
+      ],
+      "events": [
+        {
+          "name": "Save Money with Clean Heat 2.0 Brainstorm",
+          "date": "2026-10-05T19:00:00",
+          "end": "2026-10-05T20:00:00",
+          "location": "Online",
+          "online": true,
+          "description": "Brainstorm on what a second Save Money with Clean Heat campaign could look like.",
+          "link": "https://350mass.betterfutureproject.org/save_money_with_clean_heat_2_brainstorm",
+          "rsvp_link": "https://350mass.betterfutureproject.org/save_money_with_clean_heat_2_brainstorm",
+          "sources": [
+            "https://350mass.betterfutureproject.org/upcoming_events",
+            "https://350mass.betterfutureproject.org/save_money_with_clean_heat_2_brainstorm"
+          ]
+        },
+        {
+          "name": "March in the HONK! Parade",
+          "date": "2026-10-11T12:00:00",
+          "end": "2026-10-11T15:00:00",
+          "location": "Day St and Herbert St parking lots, Davis Square, Somerville",
+          "description": "350 Mass marches in the HONK! activist street-band parade from Davis Square to Harvard Square; arrive by 11 AM.",
+          "link": "https://350mass.betterfutureproject.org/march_in_honk_2026",
+          "rsvp_link": "https://350mass.betterfutureproject.org/march_in_honk_2026",
+          "sources": [
+            "https://350mass.betterfutureproject.org/upcoming_events",
+            "https://350mass.betterfutureproject.org/march_in_honk_2026"
+          ]
+        },
+        {
+          "name": "Climate Justice: A Primer",
+          "date": "2026-10-14T18:00:00",
+          "end": "2026-10-14T19:30:00",
+          "location": "Online",
+          "online": true,
+          "description": "Online workshop on how climate change hits communities unequally and how to organize with frontline communities.",
+          "link": "https://350mass.betterfutureproject.org/climate_justice_a_primer_10_2026",
+          "rsvp_link": "https://350mass.betterfutureproject.org/climate_justice_a_primer_10_2026",
+          "sources": [
+            "https://350mass.betterfutureproject.org/upcoming_events",
+            "https://350mass.betterfutureproject.org/climate_justice_a_primer_10_2026"
+          ]
+        }
+      ],
+      "projects": [],
+      "actions": [
+        {
+          "name": "Join a 350 Mass working group",
+          "kind": "role",
+          "description": "Volunteer with a statewide working group such as Clean the Grid, Transportation, Science, Media Engagement, Stop and Steer the Money, Climate & Democracy or the Statewide Legislative Team.",
+          "deadline": null,
+          "link": "https://350mass.betterfutureproject.org/our_working_groups",
+          "sources": [
+            "https://350mass.betterfutureproject.org/our_working_groups"
+          ]
+        },
+        {
+          "name": "Join your local 350 Mass node",
+          "kind": "role",
+          "description": "Get involved with a member-led local chapter of 350 Mass near you.",
+          "deadline": null,
+          "link": "https://350mass.betterfutureproject.org/find_your_local_node_redirect",
+          "sources": [
+            "https://350mass.betterfutureproject.org/",
+            "https://350mass.betterfutureproject.org/about_us"
+          ]
+        }
+      ]
+    },
+    "conservation_law_foundation": {
+      "map": "ma",
+      "fields": {
+        "type": "501c3",
+        "website": "https://www.clf.org/",
+        "last_activity": "2026-10-02"
+      },
+      "field_sources": [
+        "https://www.clf.org/",
+        "https://www.clf.org/how-you-can-help/ways-to-give/",
+        "https://www.clf.org/our-newsroom/"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": []
+    },
+    "masscosh_tlaw_climate_change_and_environmental_justice_team": {
+      "map": "ma",
+      "fields": {
+        "last_activity": "2026-09-24"
+      },
+      "field_sources": [
+        "https://masscosh.org/events"
+      ],
+      "event_updates": {
+        "masscosh_tlaw_climate_change_e1": {
+          "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSemTP4T5av-L_NGuP4JX9ngUjfvoI8stncuO2lV2a1RGbuKKA/viewform",
+          "sources": [
+            "https://masscosh.org/events/event-listings/osha-10-training-october-8th-and-9th"
+          ]
+        },
+        "masscosh_tlaw_climate_change_e2": {
+          "rsvp_link": "https://www.zeffy.com/en-US/ticketing/celebrating-the-movement-50-years-of-masscosh-individual-tickets",
+          "sources": [
+            "https://masscosh.org/events"
+          ]
+        }
+      },
+      "events": [],
+      "projects": [],
+      "actions": []
+    },
+    "boston_latin_school_youthcan": {
+      "map": "ma",
+      "fields": {
+        "last_activity": "2025-05-24"
+      },
+      "field_sources": [
+        "https://www.bostonlatinschoolyouthcan.org/summit.html"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": []
+    },
+    "massachusetts_climate_action_network": {
+      "map": "ma",
+      "fields": {},
+      "field_sources": [],
+      "events": [
+        {
+          "name": "Decarbonizing: the Data with Professor Zana Cranmer",
+          "date": "2026-10-19T12:00:00",
+          "location": "Online",
+          "online": true,
+          "description": "Online talk on what municipal adoption data for solar, heat pumps and electric vehicles can teach local climate groups.",
+          "link": "https://www.massclimateaction.org/decarbonizing_the_data_--_professor_zana_cranmer",
+          "rsvp_link": "https://www.massclimateaction.org/decarbonizing_the_data_--_professor_zana_cranmer",
+          "sources": [
+            "https://www.massclimateaction.org/calendar"
+          ]
+        }
+      ],
+      "projects": [],
+      "actions": []
+    },
+    "ben_hillman_and_company": {
+      "map": "ma",
+      "fields": {
+        "description": "Berkshire-based creative studio started in 1989 that makes films, animation, design and books, including videos for nonprofits and an environmental film festival.",
+        "type": "business",
+        "website": "https://benhillman.com/",
+        "geographic_focus": "Berkshires",
+        "last_activity": "2022-01-05"
+      },
+      "field_sources": [
+        "https://benhillman.com/about-us/",
+        "https://benhillman.com/movies/",
+        "https://benhillman.com/news/",
+        "https://berkshirefilm.org/people/ben-hillman-company-inc/"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": []
+    },
+    "the_climate_reality_project_massachusetts_southcoast": {
+      "map": "ma",
+      "fields": {},
+      "field_sources": [],
+      "actions": [
+        {
+          "name": "Request a free climate speaker",
+          "kind": "task",
+          "description": "Schools, groups and businesses can ask the chapter for a free speaker presentation on the climate crisis.",
+          "deadline": null,
+          "link": "https://www.climaterealitysouthcoast.com/presentations.html",
+          "sources": [
+            "https://www.climaterealitysouthcoast.com/presentations.html"
+          ]
+        }
+      ],
+      "events": [],
+      "projects": []
+    },
+    "passive_house_massachusetts": {
+      "map": "ma",
+      "fields": {
+        "last_activity": "2026-08-04"
+      },
+      "field_sources": [
+        "https://phmass.org/"
+      ],
+      "event_updates": {
+        "passive_house_massachusetts_e1": {
+          "rsvp_link": "https://www.tickettailor.com/events/phmass/2356364",
+          "sources": [
+            "https://phmass.org/",
+            "https://phmass.org/event/green-building-showcase/"
+          ]
+        },
+        "passive_house_massachusetts_e3": {
+          "link": "https://builtenvironmentplus.org/greenbuildingshowcase/",
+          "sources": [
+            "https://phmass.org/event/green-building-showcase/"
+          ]
+        },
+        "passive_house_massachusetts_e4": {
+          "link": "https://phmass.org/symposium-26",
+          "sources": [
+            "https://phmass.org/",
+            "https://phmass.org/symposium-26"
+          ]
+        }
+      },
+      "events": [],
+      "projects": [],
+      "actions": []
+    },
+    "watertown_citizens_for_peace_justice_and_the_environment": {
+      "map": "ma",
+      "fields": {
+        "type": "501c4",
+        "last_activity": "2026-08-09"
+      },
+      "field_sources": [
+        "https://watertowncitizens.org/donate/",
+        "https://watertowncitizens.org/"
+      ],
+      "events": [
+        {
+          "name": "Stop the Madness in Washington",
+          "date": "2026-10-03T12:00:00",
+          "end": "2026-10-03T14:00:00",
+          "location": "Park Street Station, Boston",
+          "description": "Protest against war spending and for human needs, peace, justice, democracy and a livable planet; rescheduled from September 26.",
+          "link": "https://watertowncitizens.org/event/stop-the-madness-in-washington/",
+          "sources": [
+            "https://watertowncitizens.org/events/",
+            "https://watertowncitizens.org/event/stop-the-madness-in-washington/"
+          ]
+        },
+        {
+          "name": "Watertown Faces Climate Change meeting",
+          "date": "2026-10-04T17:00:00",
+          "end": "2026-10-04T18:30:00",
+          "location": "Watertown (in person with a hybrid option; details emailed before each meeting)",
+          "recurrence": "First and third Sundays, 5:00-6:30 PM",
+          "description": "Regular meeting of the group's climate working group, which works on cutting emissions from buildings and vehicles in Watertown.",
+          "link": "https://watertowncitizens.org/working-groups/climate-action/",
+          "sources": [
+            "https://watertowncitizens.org/working-groups/climate-action/"
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "name": "Watertown Faces Climate Change",
+          "description": "Working group (and 350 Mass node) that helps the city carry out its 2022 Climate and Energy Plan and looks for ways to cut emissions from buildings and vehicles.",
+          "status": "active",
+          "link": "https://watertowncitizens.org/working-groups/climate-action/",
+          "sources": [
+            "https://watertowncitizens.org/working-groups/climate-action/"
+          ]
+        },
+        {
+          "name": "Life-Friendly Garden Tour",
+          "description": "Annual tour of Watertown gardens that are cared for without chemicals; the fall 2025 tour focused on dealing with rabbits and rodents without poisons.",
+          "status": "active",
+          "link": "https://watertowncitizens.org/working-groups/life-friendly-garden-tour/",
+          "sources": [
+            "https://watertowncitizens.org/working-groups/life-friendly-garden-tour/"
+          ]
+        }
+      ],
+      "actions": []
+    },
+    "collaborative_for_high_performance_schools": {
+      "map": "ma",
+      "fields": {
+        "last_activity": "2025-06-24"
+      },
+      "field_sources": [
+        "https://chps.net/"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": []
+    },
+    "vt_350vermont": {
+      "map": "vt",
+      "fields": {
+        "type": "501c3",
+        "last_activity": "2026-06-05"
+      },
+      "field_sources": [
+        "https://www.350vermont.org/events",
+        "https://www.350vermont.org"
+      ],
+      "events": [
+        {
+          "name": "Shut Down ICE Week of Action: environmental and immigration justice day",
+          "date": "2026-10-06T10:00:00",
+          "end": "2026-10-06T16:00:00",
+          "location": "Williston, VT",
+          "description": "350Vermont joins the Shut Down ICE week of action in Williston for a day on the links between environmental justice and immigration justice (10 AM-12 PM and 2-4 PM).",
+          "link": "https://www.350vermont.org",
+          "rsvp_link": "https://baserow.climatedisobedience.org/form/xriYki_mEQG2GaLgE0u1mcqX15gFS5gBWx_0UsoABTQ",
+          "sources": [
+            "https://www.350vermont.org",
+            "https://baserow.climatedisobedience.org/form/xriYki_mEQG2GaLgE0u1mcqX15gFS5gBWx_0UsoABTQ"
+          ]
+        },
+        {
+          "name": "Campaign Planning & Strategy Training",
+          "date": "2026-10-14T18:00:00",
+          "end": "2026-10-14T19:30:00",
+          "location": "Online",
+          "online": true,
+          "description": "Online training on how organizing campaigns work and how to set campaign goals, for people who want to propose a 350Vermont campaign for 2027.",
+          "link": "https://www.350vermont.org",
+          "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLScehQY29mpX8IP8YiiFa2ZsiJb6cbNmX-BYX4hPl8lLQc8R1g/viewform",
+          "sources": [
+            "https://www.350vermont.org",
+            "https://docs.google.com/forms/d/e/1FAIpQLScehQY29mpX8IP8YiiFa2ZsiJb6cbNmX-BYX4hPl8lLQc8R1g/viewform"
+          ]
+        },
+        {
+          "name": "Families Rise Up monthly meeting",
+          "date": "2026-10-17T10:00:00",
+          "end": "2026-10-17T12:00:00",
+          "location": "Unitarian Church of Montpelier, 130 Main St, Montpelier, VT",
+          "recurrence": "Third Saturday of the month, 10 AM-12 PM",
+          "description": "Monthly gathering of families working on climate action, with snacks and childcare support.",
+          "link": "https://www.350vermont.org/events",
+          "sources": [
+            "https://www.350vermont.org/events",
+            "https://calendar.google.com/calendar/ical/rjgfkvruvo64nl0mgjb2ublr10%40group.calendar.google.com/public/basic.ics"
+          ]
+        },
+        {
+          "name": "Chittenden Node Meeting",
+          "date": "2026-10-26T19:00:00",
+          "location": "239 S Union St, Burlington, VT (or Zoom)",
+          "recurrence": "Fourth Monday of the month, 7 PM",
+          "description": "Monthly meeting of 350Vermont's Chittenden County local group.",
+          "link": "https://www.350vermont.org/events",
+          "sources": [
+            "https://www.350vermont.org/events",
+            "https://calendar.google.com/calendar/ical/rjgfkvruvo64nl0mgjb2ublr10%40group.calendar.google.com/public/basic.ics"
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "name": "Peakbusting",
+          "description": "Volunteers gather with neighbors to cut electricity use during grid demand peaks, to help retire polluting peaker plants, working with No Coal No Gas.",
+          "status": "active",
+          "link": "https://www.350vermont.org/peakbusters",
+          "sources": [
+            "https://www.350vermont.org/our-campaigns"
+          ]
+        },
+        {
+          "name": "Electric Ratepayer Protection (H.753)",
+          "description": "Campaign for a ratepayer protection program to lower electric bills for low-income households so they can switch heating and transportation to electricity.",
+          "status": "active",
+          "link": "https://www.350vermont.org/ratepayer",
+          "sources": [
+            "https://www.350vermont.org/our-campaigns"
+          ]
+        },
+        {
+          "name": "Don't Burn Our Future",
+          "description": "Local groups and allies oppose expanding the McNeil biomass plant in Burlington and a proposed new biomass plant in Lyndonville.",
+          "status": "active",
+          "link": "https://www.350vermont.org/our-campaigns",
+          "sources": [
+            "https://www.350vermont.org/our-campaigns"
+          ]
+        },
+        {
+          "name": "Community Weatherization",
+          "description": "Local groups support weatherization programs and organize hands-on work parties to insulate and air-seal Vermont homes.",
+          "status": "active",
+          "link": "https://350vermont.org/weatherization",
+          "sources": [
+            "https://www.350vermont.org/our-campaigns"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Join the Transportation Working Group",
+          "kind": "role",
+          "description": "Volunteer group supporting Green Mountain Transit; meets most Wednesdays 7-8 PM, hybrid, at the 350VT office in Burlington.",
+          "deadline": null,
+          "link": "https://www.350vermont.org/our-campaigns",
+          "sources": [
+            "https://www.350vermont.org/our-campaigns"
+          ]
+        }
+      ]
+    }
+  },
+  "not_found": [],
+  "notes": "masspirg_boston: type left out; the 2025 highlights page calls the MASSPIRG Education Fund the sister 501(c)(3), implying MASSPIRG itself is a 501(c)(4), but no page states it outright. xr_western_mass: xrwesternmass.org (found via search) now shows unrelated gambling spam, so the domain has lapsed; the xrboston.org/west page still lists the group with an email list and Facebook/Instagram, but no dated activity was found. The XR Boston events calendar is for Greater Boston groups and was not credited to XR Western Mass. sunrise_boston: no hub-specific site; Facebook/Instagram not readable. Mobilize lists Sunrise Movement events in Beverly (Oct 17) but not clearly as Sunrise Boston, so none added. masscosh_tlaw: MassCOSH calls itself a nonprofit but no page states 501(c)(3), so type left out; last_activity is a past MassCOSH OSHA training (Sept 24-25, 2026), not TLAW-specific. boston_latin_school_youthcan: site last updated for the May 24, 2025 summit; a Compost Champion volunteer form and composting program are listed but undated, so not added. ben_hillman_and_company: a for-profit film/design studio with no clear climate program; newest news post is Jan 2022; consider whether it belongs on the map. the_climate_reality_project_massachusetts_southcoast: site fails TLS for curl; presentations page (via WebFetch) newest item is June 2024 with no exact day, so no last_activity; type not stated. belmont_high_school_climate_club: school clubs page has no climate club text readable; nothing new found. longmeadow_pipeline_awareness_group: only the Facebook page (not readable) and an Action Network petition addressed to Governor Baker (so pre-2023, not current) were found; no type or recent activity found; may be dormant. collaborative_for_high_performance_schools: chps.net says CHPS joined the U.S. Green Building Council on June 24, 2025 and is now part of USGBC's Center for Green Schools; consider updating the profile or merging. passive_house_massachusetts: calls itself a member-based non-profit but no page states 501(c)(3), so type left out; the Green Building Showcase (Nov 4) is a partner event organized by Built Environment Plus; symposium tickets are sold through a Ticket Tailor checkout widget on the symposium page (session URL not stable, so no rsvp_link). watertown_citizens: Stop the Madness protest is today (2026-10-03). first_parish_in_concord_environmental_team, solstice_initiative, aft_mass, mtacan, belmont_high_school_climate_club: nothing new or dated found on their own pages."
+}

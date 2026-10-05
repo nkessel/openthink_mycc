@@ -1,0 +1,626 @@
+{
+ "groups": {
+  "belmont_hill_sustainability_club": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "boston_student_advisory_council": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "masspirg": {
+   "map": "ma",
+   "fields": {
+    "website": "https://pirg.org/massachusetts/",
+    "last_activity": "2026-10-01"
+   },
+   "field_sources": [
+    "https://pirg.org/massachusetts/latest/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "2025-2026 Legislative Agenda: bottle bill, plastic bags, polystyrene and clean energy bills",
+     "description": "Pushes state bills to expand the bottle bill, cut plastic bags and polystyrene, set clean lighting and appliance efficiency standards, and speed permitting for solar and virtual power plants.",
+     "status": "active",
+     "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/",
+     "sources": [
+      "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/"
+     ]
+    },
+    {
+     "name": "Energy Conservation & Efficiency",
+     "description": "Urges state senators not to weaken energy efficiency programs in pending energy legislation.",
+     "status": "active",
+     "link": "https://pirg.org/massachusetts/latest/",
+     "sources": [
+      "https://pirg.org/massachusetts/latest/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Tell All-Clad: Go PFAS-free",
+     "kind": "task",
+     "description": "Sign a petition asking cookware maker All-Clad to stop using PFAS chemicals.",
+     "deadline": null,
+     "link": "https://pirg.org/massachusetts/articles/tell-all-clad-go-pfas-free/",
+     "sources": [
+      "https://pirg.org/massachusetts/latest/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "the_enviro_show_on_wxoj_lp_103_3_fm": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-29"
+   },
+   "field_sources": [
+    "https://spinitron.com/WXOJ/show/113661/Enviro-Show",
+    "http://envirosho.blogspot.com/2026/09/a-moronocine-enviro-show.html"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "mass_audubon_wma": {
+   "map": "ma",
+   "fields": {
+    "description": "The western Massachusetts sanctuaries of Mass Audubon, New England's largest nature conservation nonprofit, including Arcadia in Easthampton/Northampton and Pleasant Valley in Lenox. They run nature programs, protect and restore habitat such as floodplain forest, and work on biodiversity and climate change.",
+    "website": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia",
+    "geographic_focus": "Western Massachusetts (Pioneer Valley and Berkshires)"
+   },
+   "field_sources": [
+    "https://www.massaudubon.org/about",
+    "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia",
+    "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/pleasant-valley",
+    "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia/projects"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Restoring Floodplain Forest at Arcadia",
+     "description": "Arcadia is turning 8.5 acres of field into floodplain forest of pin oak, silver maple and American elm, planted with the changing climate in mind.",
+     "status": "active",
+     "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia/projects",
+     "sources": [
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia/projects"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Volunteer at Arcadia Wildlife Sanctuary",
+     "kind": "role",
+     "description": "Help with visitor services, education, property stewardship and more at the sanctuary.",
+     "deadline": null,
+     "link": "https://volunteer.massaudubon.org/",
+     "sources": [
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia/support"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "unitarian_universalist_mass_action": {
+   "map": "ma",
+   "fields": {
+    "description": "Statewide Unitarian Universalist organizing and advocacy group, founded in 2006, that mobilizes UUs and congregations in Massachusetts to work with coalitions on justice issues, including climate and energy legislation.",
+    "website": "https://www.uumassaction.org/",
+    "geographic_focus": "Statewide",
+    "last_activity": "2026-09-30"
+   },
+   "field_sources": [
+    "https://www.uumassaction.org/about",
+    "https://www.uumassaction.org/",
+    "https://www.uumassaction.org/new-upcoming-events"
+   ],
+   "events": [
+    {
+     "name": "A Gathering of Resilience and Spirit",
+     "date": "2026-10-12T11:00:00",
+     "end": "2026-10-12T15:00:00",
+     "location": "Boston; closing service at First Church in Roxbury Meetinghouse",
+     "description": "Afternoon with UU Urban Ministry featuring a community volunteer fair, food, communal poetry and a worship service.",
+     "link": "https://www.uumassaction.org/new-upcoming-events/2026/10/12/a-gathering-of-resilience-and-spirit",
+     "sources": [
+      "https://www.uumassaction.org/new-upcoming-events"
+     ]
+    },
+    {
+     "name": "Abolition, Decarceration, and Community",
+     "date": "2026-10-14T18:00:00",
+     "end": "2026-10-14T19:00:00",
+     "location": "Shared with RSVP",
+     "description": "Conversation with Families for Justice as Healing organizers about prison abolition and how to get involved.",
+     "link": "https://www.uumassaction.org/new-upcoming-events/2026/9/24/abolition-decarceration-and-community",
+     "rsvp_link": "https://secure.everyaction.com/r4AdSsBZSEqyqmz16sLo5w2",
+     "sources": [
+      "https://www.uumassaction.org/new-upcoming-events"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "unitarian_universalist_mass__e2": {
+     "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSdSIkbugSM5yxx-Cw8yVwEKsCAY2PNHtJ0A_G3aZ6u2aLMlIg/viewform",
+     "sources": [
+      "https://www.uumassaction.org/new-upcoming-events"
+     ]
+    },
+    "unitarian_universalist_mass__e3": {
+     "link": "https://www.uumassaction.org/new-upcoming-events/2026/10/15/first-uu-action-hour-climate-justice",
+     "rsvp_link": "https://secure.everyaction.com/dEWL9ZwlxUOQV0hCzodvYg2",
+     "sources": [
+      "https://www.uumassaction.org/new-upcoming-events"
+     ]
+    }
+   }
+  },
+  "north_american_indian_center_of_boston": {
+   "map": "ma",
+   "fields": {
+    "description": "The oldest urban Indian center in Massachusetts, based in Jamaica Plain since 1974, offering cultural, social, educational and employment services to Native people. Its programs include a community garden and food forest, energy bill help, and a tribal environmental justice listening session.",
+    "website": "https://www.naicob.org/",
+    "geographic_focus": "Greater Boston",
+    "last_activity": "2026-09-30"
+   },
+   "field_sources": [
+    "https://www.naicob.org/",
+    "https://www.naicob.org/history.html",
+    "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf"
+   ],
+   "events": [
+    {
+     "name": "Indigenous Peoples Day March",
+     "date": "2026-10-10T12:00:00",
+     "end": "2026-10-10T16:00:00",
+     "location": "Starts at Park Street Station, Boston",
+     "description": "March for Indigenous Peoples Day listed on NAICOB's 2026 events calendar.",
+     "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf",
+     "sources": [
+      "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf",
+      "https://www.naicob.org/events.html"
+     ]
+    },
+    {
+     "name": "Annual Community Feast",
+     "date": "2026-11-21T15:00:00",
+     "end": "2026-11-21T18:00:00",
+     "location": "North American Indian Center of Boston, 105 South Huntington Ave, Jamaica Plain",
+     "description": "NAICOB's annual community feast.",
+     "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf",
+     "sources": [
+      "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "NAICOB Garden & Food Forest",
+     "description": "Community garden and food forest at the center, with volunteer days and community meetings.",
+     "status": "active",
+     "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf",
+     "sources": [
+      "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "climate_action_brookline": {
+   "map": "ma",
+   "fields": {
+    "description": "All-volunteer group that helps Brookline renters, homeowners, landlords and businesses cut greenhouse gas emissions from buildings, transportation and electricity, toward the town's net-zero-by-2040 goal. It holds monthly public meetings and weighs in on climate-related Town Meeting articles.",
+    "type": "501c3",
+    "website": "https://climateactionbrookline.org/",
+    "geographic_focus": "Brookline",
+    "last_activity": "2026-09-27"
+   },
+   "field_sources": [
+    "https://climateactionbrookline.org/",
+    "https://climateactionbrookline.org/about/",
+    "https://climateactionbrookline.org/events/"
+   ],
+   "events": [
+    {
+     "name": "November 2026 CAB Meeting - Town Meeting Warrant Articles",
+     "date": "2026-11-09",
+     "location": "Brookline",
+     "description": "Discussion and possible endorsements of climate-related warrant articles for fall Town Meeting; all are welcome.",
+     "link": "https://climateactionbrookline.org/events/",
+     "sources": [
+      "https://climateactionbrookline.org/events/"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Electrify Brookline",
+     "description": "Town-wide campaign with the Town's Zero Emissions Advisory Board and Brookline Mothers Out Front that offers how-to guides, incentive summaries and a contractor list to help residents electrify homes and vehicles.",
+     "status": "active",
+     "link": "https://electrifybrookline.org/",
+     "sources": [
+      "https://climateactionbrookline.org/projects/"
+     ]
+    },
+    {
+     "name": "Public EV Charging",
+     "description": "Members work with the Town's Transportation Division to expand use and locations of public EV chargers for residents without home charging.",
+     "status": "active",
+     "link": "https://climateactionbrookline.org/projects/",
+     "sources": [
+      "https://climateactionbrookline.org/projects/"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "arise_for_social_justice": {
+   "map": "ma",
+   "fields": {
+    "description": "Member-led grassroots organization in Springfield, founded in 1985, that organizes poor and working-class people on housing, homelessness, criminalization and racism. Its Environmental Justice Committee and the Springfield Climate Justice Coalition work against environmental racism and for climate action in the city.",
+    "website": "https://arisespringfield.org/",
+    "geographic_focus": "Springfield"
+   },
+   "field_sources": [
+    "https://arisespringfield.org/",
+    "https://www.mightycause.com/organization/Arise-4"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Springfield Climate Justice Coalition",
+     "description": "Coalition convened by Arise on climate justice in Springfield, including pushing for a city climate action and resiliency plan.",
+     "status": "active",
+     "link": "https://arisespringfield.org/",
+     "sources": [
+      "https://arisespringfield.org/",
+      "https://www.mightycause.com/organization/Arise-4"
+     ]
+    },
+    {
+     "name": "Environmental Justice Committee",
+     "description": "Member committee that spreads word about threats to community health and organizes to stop them.",
+     "status": "active",
+     "link": "https://arisespringfield.org/",
+     "sources": [
+      "https://arisespringfield.org/",
+      "https://www.mightycause.com/organization/Arise-4"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Join Arise's volunteer mailing list",
+     "kind": "task",
+     "description": "Sign up to hear about volunteer opportunities with Arise for Social Justice.",
+     "deadline": null,
+     "link": "https://ariseforsocialjustice.myflodesk.com/volunteer",
+     "sources": [
+      "https://arisespringfield.org/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "charles_river_watershed_association": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-09-26"
+   },
+   "field_sources": [
+    "https://www.crwa.org/financials",
+    "https://www.crwa.org/events"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "faith_science_alliance": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "islamic_society_of_boston_cultural_center": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "no_sharon_gas_pipeline_clean_energy_now": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2016-11-28",
+    "inactive": true
+   },
+   "field_sources": [
+    "https://nosharongaspipeline.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "restore_the_north_woods": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-08-27"
+   },
+   "field_sources": [
+    "https://www.restore.org/events"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "restore_the_north_woods_e1": {
+     "rsvp_link": "https://act.sierraclub.org/events/details?formcampaignid=701Po000025ortKIAQ",
+     "sources": [
+      "https://www.savemassforests.com/"
+     ]
+    },
+    "restore_the_north_woods_e2": {
+     "rsvp_link": "https://us06web.zoom.us/meeting/register/VXGfD6jCQSW0GMgEsKAIAQ",
+     "sources": [
+      "https://www.restore.org/events"
+     ]
+    }
+   }
+  },
+  "upper_cape_women_s_coalition": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "21st_century_schools_fund": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "citizens_climate_lobby_south_shore_cape_and_islands": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [
+    {
+     "name": "Join the CCL South Shore chapter",
+     "kind": "task",
+     "description": "Sign up to join volunteers on the South Shore, South Coast and Cape Cod who talk with neighbors and meet members of Congress about climate solutions.",
+     "deadline": null,
+     "link": "https://citizensclimatelobby.org/chapters/MA_South_Shore/",
+     "sources": [
+      "https://citizensclimatelobby.org/chapters/MA_South_Shore/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "massachusetts_jobs_with_justice": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_vpirg": {
+   "map": "vt",
+   "fields": {
+    "type": "501c4",
+    "last_activity": "2026-09-25"
+   },
+   "field_sources": [
+    "https://www.vpirg.org/about/",
+    "https://www.vpirg.org/support/",
+    "https://www.vpirg.org/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Make Big Oil Pay",
+     "description": "Campaign to have major oil companies pay a share of the cost of climate damage in Vermont.",
+     "status": "active",
+     "link": "http://makebigoilpay.org",
+     "sources": [
+      "https://www.vpirg.org/action/"
+     ]
+    },
+    {
+     "name": "Keep Vermont Cool",
+     "description": "Campaign to cut the pollution that drives global warming in Vermont.",
+     "status": "active",
+     "link": "http://keepvermontcool.org",
+     "sources": [
+      "https://www.vpirg.org/action/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Add your name: Keep Vermont Cool",
+     "kind": "task",
+     "description": "Sign on in support of cutting climate pollution in Vermont.",
+     "deadline": null,
+     "link": "https://www.keepvermontcool.org/getinvolved",
+     "sources": [
+      "https://www.vpirg.org/action/"
+     ]
+    },
+    {
+     "name": "Add your name: Make Big Oil Pay",
+     "kind": "task",
+     "description": "Show support for making Big Oil companies help pay for climate damage.",
+     "deadline": null,
+     "link": "https://secure.everyaction.com/EFLAFhFok0WLQjnZ0kcrBw2",
+     "sources": [
+      "https://www.vpirg.org/action/"
+     ]
+    }
+   ],
+   "event_updates": {
+    "vt_vpirg_e_democracy_town_hall_2026": {
+     "link": "https://www.vpirg.org/news/democracy-town-hall-coming-october-14th/",
+     "rsvp_link": "https://secure.ngpvan.com/36MgSM0qyU-cK5Zenw-FAQ2",
+     "sources": [
+      "https://www.vpirg.org/news/democracy-town-hall-coming-october-14th/"
+     ]
+    }
+   }
+  },
+  "vt_youth_lobby": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-03-08"
+   },
+   "field_sources": [
+    "https://youthlobby.org/2026-rally-for-the-planet-take-action/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_local_motion": {
+   "map": "vt",
+   "fields": {},
+   "field_sources": [],
+   "events": [
+    {
+     "name": "East End Forum",
+     "date": "2026-10-07T17:30:00",
+     "end": "2026-10-07T19:00:00",
+     "location": "Schmanska Park Barn, 63 Grove Street, Burlington, VT",
+     "description": "Public meeting with city staff and officials about walking and biking infrastructure in Burlington's East End.",
+     "link": "https://www.localmotion.org/east_end_forum",
+     "sources": [
+      "https://www.localmotion.org/events"
+     ]
+    },
+    {
+     "name": "Winooski Walk & Roll to School Day 2026",
+     "date": "2026-10-07T07:20:00",
+     "location": "Winooski, VT",
+     "description": "Walking and rolling school bus with pickup points along a route to school.",
+     "link": "https://www.localmotion.org/winooski_walk_bike_roll_to_school_day_2026",
+     "sources": [
+      "https://www.localmotion.org/events"
+     ]
+    },
+    {
+     "name": "Burlington Halloween Roll & Stroll",
+     "date": "2026-10-25T13:30:00",
+     "location": "City Hall Park, Burlington, VT",
+     "description": "Costumed community bike ride and walk with two route options, departing at 2 PM and ending at Old Spokes Home.",
+     "link": "https://www.localmotion.org/burlington_halloween_roll_stroll_2026",
+     "sources": [
+      "https://www.localmotion.org/events"
+     ]
+    },
+    {
+     "name": "Smart Cycling Fall Workshop",
+     "date": "2026-10-29T18:00:00",
+     "end": "2026-11-01T17:00:00",
+     "location": "Online (Oct 29) and Burlington area on-bike session (Nov 1, 2-5 PM)",
+     "description": "Two-session bike safety class covering road rules, visibility, route planning and on-bike skills.",
+     "link": "https://www.localmotion.org/smart_cycling_fall_26",
+     "sources": [
+      "https://www.localmotion.org/events"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Streets as Places",
+     "description": "Small grants and support for block parties and other projects that turn streets into community spaces across Vermont.",
+     "status": "active",
+     "link": "https://www.localmotion.org/streets_as_places",
+     "sources": [
+      "https://www.localmotion.org/",
+      "https://www.localmotion.org/streets_as_places_awards_2026"
+     ]
+    },
+    {
+     "name": "Complete Streets advocacy",
+     "description": "Advocacy for streets designed for safe walking, biking and transit.",
+     "status": "active",
+     "link": "https://www.localmotion.org/complete_streets",
+     "sources": [
+      "https://www.localmotion.org/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Volunteer with Local Motion",
+     "kind": "role",
+     "description": "Help at Local Motion programs and events such as valet bike parking and community rides.",
+     "deadline": null,
+     "link": "https://www.localmotion.org/volunteer",
+     "sources": [
+      "https://www.localmotion.org/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "vt_drive_electric_vermont": {
+   "map": "vt",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_vital_communities": {
+   "map": "vt",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  }
+ },
+ "not_found": [
+  "upper_cape_women_s_coalition"
+ ],
+ "notes": "belmont_hill_sustainability_club: school page re-read; no dated activity or new items found.\nboston_student_advisory_council: current type 'university' looks wrong; BPS page shows it is a district student council (government/school body). No dated activity on the BPS page.\nmasspirg: pirg.org blocks curl (Cloudflare); facts taken via WebFetch of pirg.org/massachusetts pages. Events page listed only past events.\nthe_enviro_show_on_wxoj_lp_103_3_fm: a radio show; none of the allowed types fits, so type left empty. Existing event e1 is dated 2026-09-29 (past); Spinitron lists the show Tuesdays 6-7 PM (playlists posted weekly through Sep 29, though the description says every other Tuesday), so its next airing is likely 2026-10-06 18:00 - consider updating e1's date/recurrence.\nmass_audubon_wma: no single 'Western MA' page found; website set to the Arcadia sanctuary page (Pleasant Valley is https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/pleasant-valley). 501(c)(3) status not stated on pages read, so type left empty. Existing event pages include registration, no separate RSVP link.\nunitarian_universalist_mass_action: existing type 'school_club' is wrong; it is a faith-based statewide advocacy network (faith_org). Event pages for Oct 12 and Oct 14 list only the group's P.O. box as venue; Oct 12 text names First Church in Roxbury Meetinghouse for the closing service, Oct 14 venue/format not stated (RSVP). Existing e3 'UU Action Hour' (Oct 15) is titled 'First UU Action Hour: Climate Justice!' on its own event page (Zoom).\nnorth_american_indian_center_of_boston: events come from the 2026 'save the dates' PDF linked on naicob.org/events.html; last_activity is the Sep 30 Orange Shirt Day observance on that calendar (time TBD). Community Feast location not stated in the PDF - assumed the center; please verify. Nonprofit status not stated on pages read (it is 'The North American Indian Center of Boston, Inc.'), type left empty. The about-us.html page returns 404.\nclimate_action_brookline: Nov 9 meeting time/location not posted (meetings are usually second Mondays; a June meeting was at 5 pm). Location given as just 'Brookline'.\narise_for_social_justice: arisespringfield.org serves a captcha to curl; read via WebFetch. Events page shows no upcoming events and no dates, so no last_activity. Has an EIN (04-2914511) but 501(c)(3) not stated; type left empty.\nfaith_science_alliance: site not reachable from shell; WebFetch of home page shows only a mission statement, no dates or items.\nislamic_society_of_boston_cultural_center: no green-initiative text found on isbcc.org home or about pages.\nno_sharon_gas_pipeline_clean_energy_now: site blocked for curl; WebFetch shows newest dated content Nov 28, 2016, so marked inactive. Type not stated.\nrestore_the_north_woods: e1 (Oct 8 film screening) is hosted by the Sierra Club Massachusetts Forest Protection Team and promoted on Save Mass Forests; RSVP is on Sierra Club's page. Save Mass Forests action pages read are from 2023-2024 (October Mountain project 'on hold indefinitely'), so no new actions added.\nupper_cape_women_s_coalition: its former domain uppercapewomen.org now serves an unrelated Russian-language casino spam site - do NOT use it as the website. No other own site or public page found; only older Cape News articles. Possibly inactive.\n21st_century_schools_fund: 501(c)(3) status not stated on pages read (site calls itself a fund founded 1994 that advises districts and non-profits). It is Washington, DC-based and national in scope (history page https://www.21csf.org/page-content.php?pid=150); the dated items on its homepage are aggregated news, not its own activity.\ncitizens_climate_lobby_south_shore_cape_and_islands: chapter page lists it as active (Plymouth) but does not state a tax status; type left empty. Facebook https://www.facebook.com/CCLSouthShore/ not readable.\nmassachusetts_jobs_with_justice: solidarity calendar is an embedded widget with no readable dates; current petition (BPS exam school timeline) is not climate-related, so not added.\nvt_vpirg: Democracy Town Hall is Oct 14, 6:00-7:30 PM at Unitarian Church Montpelier, 130 Main St.\nvt_youth_lobby: About page calls it 'a grassroots coalition of young people and adult allies' and says it is not an official lobbying organization; no tax status, so type left empty (informal_group may fit). Newest post 2026-03-08 (Rally for the Planet); nothing announced for fall 2026 yet.\nvt_local_motion: site blocks curl (Cloudflare); events and links read via WebFetch of localmotion.org/events and the home page. Volunteer description is generic (volunteer page itself not read). Homepage meta calls it a nonprofit but no 501(c) statement seen; type left empty. Also listed: 'When the Bicycle Came to Vermont', Oct 15 6:30 PM, Fletcher Free Library (https://www.localmotion.org/when_the_bicycle_came_to_vermont) - host unclear, not added.\nvt_drive_electric_vermont: About page (via WebFetch) says it was launched in 2012 by VEIC, a nonprofit, as a statewide public-private partnership, operated by VEIC and funded by the State of Vermont (VTrans), Efficiency Vermont and others; no own 501(c) status, type left empty. Its events page showed no upcoming events; site blocks curl.\nvt_vital_communities: site serves a captcha to curl and WebFetch quota ran out; nothing could be read. Pages worth checking: https://vitalcommunities.org/upcoming-events/ , https://vitalcommunities.org/energy/ , https://vitalcommunities.org/weatherize/ ."
+}

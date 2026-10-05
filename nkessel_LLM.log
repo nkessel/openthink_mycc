@@ -594,3 +594,7 @@ What / why
 - Phone loading screen: items no longer shrink when the text runs long (the progress bar had collapsed and the button was clipped).
 - Close-up view: overlapping moon names are pushed outward once the moons settle (and again after a drag), measured in screen space.
 - Item dots now trail their group like the icons do. The physics is created only while a group is dragged, for at most 16 on-screen groups that move most, and disposed when settled. Measured headless: ~10% more main-thread time during a drag, none at rest.
+
+2026-10-05 08:00 ET (Claude, MA + VT fill, partial)
+- Research helpers (research/fill-1003/INSTRUCTIONS.md, 8 org slices + coalitions) covered about half the groups before a usage limit stopped them. scripts/merge-fill-1003.mjs merges their outputs (blank fields only; newest last_activity; new items deduped by owner + similar name; no past events; text with emails/phones dropped; sources kept in research/fill-1003/merged-sources.json). This pass: 125 profile fields, 40 events, 76 projects, 51 actions, 38 RSVP links, 3 event links. Coalition member findings (out-coalitions.json new_members / not_listed) are NOT merged yet: they need review (SCJC's list is campaign supporters, not members).
+- MA items reach the live site only after the sheet picks them up; "Fill in missing details" fills blank cells but does not add new item rows yet.

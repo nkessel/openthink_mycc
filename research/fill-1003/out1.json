@@ -1,0 +1,797 @@
+{
+ "groups": {
+  "andover_climate_lobby": {
+   "map": "ma",
+   "fields": {
+    "website": "https://www.instagram.com/agreenerblue/",
+    "last_activity": "2024-02-06"
+   },
+   "field_sources": [
+    "https://www.andover.edu/news/2023/generation-green",
+    "https://phillipian.net/2024/02/09/andover-students-join-climate-lobby-to-bring-youth-voice-to-massachusetts-state-house/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "lorax_at_milton_academy": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "greenroots_eco": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-10-03"
+   },
+   "field_sources": [
+    "https://www.greenrootsej.org/our-work/youth-leadership",
+    "https://www.greenrootsej.org/get-involved/events/paint-a-mural-beat-the-heat"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Chelsea Creek Water Quality Monitoring",
+     "description": "ECO youth work with academic partners on a data visualization project tracking violations at the seven oil terminals along Chelsea Creek.",
+     "status": "active",
+     "link": "https://www.greenrootsej.org/our-work/youth-leadership",
+     "sources": [
+      "https://www.greenrootsej.org/our-work/youth-leadership"
+     ]
+    },
+    {
+     "name": "Chelsea Heat Island Studies",
+     "description": "ECO youth monitor and map urban heat island impacts across Chelsea.",
+     "status": "active",
+     "link": "https://www.greenrootsej.org/our-work/youth-leadership",
+     "sources": [
+      "https://www.greenrootsej.org/our-work/youth-leadership"
+     ]
+    },
+    {
+     "name": "ECO Community Murals",
+     "description": "Youth design and paint murals around Chelsea, including storm drain designs that warn against pollution.",
+     "status": "active",
+     "link": "https://www.greenrootsej.org/our-work/youth-leadership",
+     "sources": [
+      "https://www.greenrootsej.org/our-work/youth-leadership"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "masspirg_amherst": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "xr_youth": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2025-01-04"
+   },
+   "field_sources": [
+    "https://www.xrboston.org/action/die-in-xr-youth-jan-2025/",
+    "https://xrboston.org/action/xr-youth-end-of-summer-celebration/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "mass_audubon_wellfleet_bay_wildlife_sanctuary": {
+   "map": "ma",
+   "fields": {
+    "description": "Mass Audubon's 1,183-acre wildlife sanctuary in South Wellfleet on Cape Cod, which runs nature programs and long-running research and rescue work on sea turtles, diamondback terrapins, horseshoe crabs and migrating birds on the Outer Cape.",
+    "type": "501c3",
+    "website": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay",
+    "geographic_focus": "Outer Cape Cod",
+    "last_activity": "2026-10-03"
+   },
+   "field_sources": [
+    "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay",
+    "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects",
+    "https://www.massaudubon.org/take-action/membership/membership-faqs",
+    "https://www.massaudubon.org/programs/wellfleet-bay/103688-tunes-tales-on-the-trails"
+   ],
+   "events": [
+    {
+     "name": "Twilight Trek: Moonrise over Wellfleet Bay",
+     "date": "2026-10-24T17:00:00",
+     "end": "2026-10-24T18:30:00",
+     "location": "Wellfleet Bay Wildlife Sanctuary, South Wellfleet",
+     "description": "Guided evening walk at sunset and full-moon rise, listening for owls and other nocturnal wildlife.",
+     "link": "https://www.massaudubon.org/programs/wellfleet-bay/103677-twilight-trek-moonrise-over-wellfleet-bay",
+     "sources": [
+      "https://www.massaudubon.org/programs/wellfleet-bay/103677-twilight-trek-moonrise-over-wellfleet-bay"
+     ]
+    },
+    {
+     "name": "2026 State of Wellfleet Harbor Conference",
+     "date": "2026-11-14T08:45:00",
+     "end": "2026-11-14T13:00:00",
+     "location": "Nauset Regional High School, 100 Cable Rd, Eastham, MA",
+     "description": "Free annual conference where scientists and community members share the latest research and monitoring on Wellfleet Harbor and its ecosystem.",
+     "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/news/2026-state-of-wellfleet-harbor-conference",
+     "rsvp_link": "https://www.massaudubon.org/programs/wellfleet-bay/104322-state-of-wellfleet-harbor-conference",
+     "sources": [
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/news/2026-state-of-wellfleet-harbor-conference",
+      "https://www.massaudubon.org/programs/wellfleet-bay/104322-state-of-wellfleet-harbor-conference"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Cold-Stunned Sea Turtle Rescue",
+     "description": "Since 1979 sanctuary staff and over 200 trained volunteers patrol Cape Cod beaches each fall to find and rescue cold-stunned sea turtles.",
+     "status": "active",
+     "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/sea-turtles",
+     "sources": [
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/sea-turtles"
+     ]
+    },
+    {
+     "name": "Diamondback Terrapin Monitoring",
+     "description": "Monitoring of Outer Cape populations of the state-threatened diamondback terrapin, ongoing since 1980.",
+     "status": "active",
+     "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/diamondback-terrapins",
+     "sources": [
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects",
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/diamondback-terrapins"
+     ]
+    },
+    {
+     "name": "Horseshoe Crab Research",
+     "description": "Research and monitoring of Atlantic horseshoe crab populations on the Outer Cape since 1990 to support a sustainable fishery and local conservation.",
+     "status": "active",
+     "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/horseshoe-crabs",
+     "sources": [
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Donate to the sea turtle rescue effort",
+     "kind": "task",
+     "description": "Give money or supplies to support the yearly rescue of cold-stunned sea turtles on Cape Cod.",
+     "deadline": null,
+     "link": "https://web.massaudubon.org/site/Donation2?df_id=7901&mfc_pref=T&7901.donation=form1&s_src=turtleweb",
+     "sources": [
+      "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/sea-turtles"
+     ]
+    }
+   ],
+   "event_updates": {
+    "mass_audubon_wellfleet_bay_w_e3": {
+     "link": "https://www.massaudubon.org/programs/wellfleet-bay/103670-early-bird-walk-at-wellfleet-bay",
+     "sources": [
+      "https://www.massaudubon.org/programs/wellfleet-bay/103670-early-bird-walk-at-wellfleet-bay"
+     ]
+    }
+   }
+  },
+  "environment_massachusetts": {
+   "map": "ma",
+   "fields": {
+    "description": "Statewide environmental advocacy group, part of Environment America and The Public Interest Network, that campaigns on clean energy and solar, protecting bees and oceans, forests and reducing plastic.",
+    "website": "https://environmentamerica.org/massachusetts/",
+    "geographic_focus": "Statewide",
+    "last_activity": "2026-10-02"
+   },
+   "field_sources": [
+    "https://environmentamerica.org/massachusetts/",
+    "https://environmentamerica.org/massachusetts/latest/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Save the Bees",
+     "description": "Campaign to protect bees, including pushing Massachusetts to restrict neonicotinoid-coated seeds.",
+     "status": "active",
+     "link": "https://environmentamerica.org/massachusetts/topics/save-the-bees/",
+     "sources": [
+      "https://environmentamerica.org/massachusetts/"
+     ]
+    },
+    {
+     "name": "Protect Our Oceans",
+     "description": "Campaign to protect ocean life off Massachusetts, including North Atlantic right whales.",
+     "status": "active",
+     "link": "https://environmentamerica.org/massachusetts/campaigns/protect-our-oceans/",
+     "sources": [
+      "https://environmentamerica.org/massachusetts/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Ask Governor Healey to ban neonic-coated seeds",
+     "kind": "task",
+     "description": "Sign a petition asking the governor to restrict bee-killing neonicotinoid-coated seeds in Massachusetts.",
+     "deadline": null,
+     "link": "https://environmentamerica.org/massachusetts/take-action/ask-governor-healey-save-our-bees-ban-neonic-coated-seeds/",
+     "sources": [
+      "https://environmentamerica.org/massachusetts/"
+     ]
+    },
+    {
+     "name": "Tell your senators: protect right whales",
+     "kind": "task",
+     "description": "Send a message to your U.S. senators asking them to protect North Atlantic right whales.",
+     "deadline": null,
+     "link": "https://environmentamerica.org/massachusetts/take-action/tell-your-senators-protect-right-whales/",
+     "sources": [
+      "https://environmentamerica.org/massachusetts/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "slingshot": {
+   "map": "ma",
+   "fields": {
+    "description": "Boston-based organizing group that works with communities facing pollution threats across New England, helping residents build power against polluters on energy, water (including PFAS), waste and toxics.",
+    "website": "https://www.slingshot.org/",
+    "geographic_focus": "New England"
+   },
+   "field_sources": [
+    "https://www.slingshot.org/",
+    "https://www.slingshot.org/aboutus",
+    "https://www.slingshot.org/communitygroups",
+    "https://www.slingshot.org/2025-annual-report"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Fix the Grid",
+     "description": "Grassroots campaign across the six Northeast states pushing regional energy regulators toward wind, solar and storage instead of fossil fuels.",
+     "status": "active",
+     "link": "https://www.slingshot.org/communitygroups",
+     "sources": [
+      "https://www.slingshot.org/communitygroups"
+     ]
+    },
+    {
+     "name": "National PFAS Contamination Coalition",
+     "description": "Coalition of about 30 PFAS-impacted community groups nationwide working for clean water and polluter accountability.",
+     "status": "active",
+     "link": "https://www.slingshot.org/communitygroups",
+     "sources": [
+      "https://www.slingshot.org/communitygroups"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "climate_code_blue": {
+   "map": "ma",
+   "fields": {
+    "description": "Group of Greater Boston physicians and health experts who speak out on the health harms of climate change and fossil fuels, for example urging banks to stop financing Arctic drilling.",
+    "website": "https://www.climatecodeblue.org/",
+    "geographic_focus": "Greater Boston",
+    "last_activity": "2020-11-23",
+    "inactive": true
+   },
+   "field_sources": [
+    "https://piccolo-hibiscus-gxwd.squarespace.com/s/CCBlettertoBOA.pdf",
+    "https://www.climatecodeblue.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "balanced_rock_investment_advisors": {
+   "map": "ma",
+   "fields": {
+    "description": "Fee-only financial advisory firm in Roslindale, Boston, that offers ESG investing with fossil-fuel exclusions and local impact investing in climate justice and community economies.",
+    "type": "business",
+    "website": "https://balancedrockinvestmentadvisors.com/",
+    "geographic_focus": "Greater Boston",
+    "last_activity": "2024-04-19"
+   },
+   "field_sources": [
+    "https://balancedrockinvestmentadvisors.com/",
+    "https://balancedrockinvestmentadvisors.com/our-story",
+    "https://balancedrockinvestmentadvisors.com/esg-impact-investing",
+    "https://balancedrockinvestmentadvisors.com/blog/direct-indexing-values-tax-management-zfme3"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "citizens_awareness_network": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-30"
+   },
+   "field_sources": [
+    "https://mailchi.mp/27641a26e67f/rally-to-keep-democracy-alive",
+    "https://www.nukebusters.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "fccpr_climate_crisis_task_force": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2025-04-16"
+   },
+   "field_sources": [
+    "https://fccpr.us/task-force/climate-crisis-task-force/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "kearsarge_energy": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-07-02"
+   },
+   "field_sources": [
+    "https://www.kearsargeenergy.com/news"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "october_engineering_llc": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "solar_design_associates": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vineyard_power_cooperative": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-08-21"
+   },
+   "field_sources": [
+    "https://www.vineyardpower.org/support-us",
+    "https://www.vineyardpower.org/calendar",
+    "https://www.vineyardpower.org/news"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Resiliency and Affordability Program",
+     "description": "A $7.5 million, 15-year fund from Vineyard Power's community benefits agreement with Vineyard Wind that pays for solar and battery storage at island critical facilities and subsidizes electricity bills for income-eligible households.",
+     "status": "active",
+     "link": "https://www.vineyardpower.org/resiliency-and-affordability",
+     "sources": [
+      "https://www.vineyardpower.org/resiliency-and-affordability"
+     ]
+    },
+    {
+     "name": "Mass Save Community First Partnership",
+     "description": "Partnership with the six island towns and Cape Light Compact to raise participation in Mass Save energy efficiency and electrification programs on Martha's Vineyard.",
+     "status": "active",
+     "link": "https://www.vineyardpower.org/About",
+     "sources": [
+      "https://www.vineyardpower.org/About"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "acadia_center": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-10-01"
+   },
+   "field_sources": [
+    "https://acadiacenter.org/about/financials/",
+    "https://acadiacenter.org/latest/news/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "citizens_climate_lobby_north_shore_chapter": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [
+    {
+     "name": "Join the CCL North Shore chapter",
+     "kind": "task",
+     "description": "Sign up to volunteer with the chapter covering Salem, Lynn, Beverly, Newburyport, Gloucester, Peabody, Danvers and Essex County, building support for climate laws and meeting members of Congress.",
+     "deadline": null,
+     "link": "https://citizensclimatelobby.org/chapters/MA_Northshore/",
+     "sources": [
+      "https://citizensclimatelobby.org/chapters/MA_Northshore/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "metropolitan_area_planning_council": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [
+    {
+     "name": "Accelerating Climate Resilience Grant Program",
+     "description": "Grant program with the Barr Foundation funding 12-month municipal and community projects of up to $50,000 that protect people and places from climate impacts, with a focus on climate equity.",
+     "status": "active",
+     "link": "https://www.mapc.org/resource-library/accelerating-resiliency/",
+     "sources": [
+      "https://www.mapc.org/resource-library/accelerating-resiliency/"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_vcv": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-10-03"
+   },
+   "field_sources": [
+    "https://vermontconservationvoters.com/event/community-canvass-tour-colchester/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "vt_vcv_e_canvass_st_albans": {
+     "rsvp_link": "https://secure.ngpvan.com/UJfsHtvlrUGyUf9EII4D7A2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-st-albans/"
+     ]
+    },
+    "vt_vcv_e_canvass_hartford": {
+     "rsvp_link": "https://secure.ngpvan.com/0TGrRk1PA0CLBjVuGlZvfg2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-hartford/"
+     ]
+    },
+    "vt_vcv_e_canvass_manchester": {
+     "rsvp_link": "https://secure.ngpvan.com/8_107Cc0SUKb7DaKaJlPiA2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-manchester/"
+     ]
+    },
+    "vt_vcv_e_canvass_milton": {
+     "rsvp_link": "https://secure.ngpvan.com/whuZvnp3ZEKhWgtws5WjvA2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-milton/"
+     ]
+    },
+    "vt_vcv_e_canvass_stjohnsbury": {
+     "rsvp_link": "https://secure.ngpvan.com/YkcJNtQstEefBquIX034iw2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-stjohnsbury/"
+     ]
+    },
+    "vt_vcv_e_canvass_rutland": {
+     "rsvp_link": "https://secure.ngpvan.com/Inoo84EbQkK6vL7Viynzww2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-rutland/"
+     ]
+    },
+    "vt_vcv_e_canvass_brattleboro": {
+     "rsvp_link": "https://secure.ngpvan.com/RfjtmMteDkOkpxzBLIJEZg2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-brattleboro/"
+     ]
+    },
+    "vt_vcv_e_canvass_burlington": {
+     "rsvp_link": "https://secure.ngpvan.com/6hqlikk6lUWYooKaQSQAHw2",
+     "sources": [
+      "https://vermontconservationvoters.com/event/community-canvass-tour-burlington/"
+     ]
+    },
+    "vt_vcv_e_pole_2_poll": {
+     "rsvp_link": "https://highergroundmusic.com/events/pole-2-poll/",
+     "sources": [
+      "https://vermontconservationvoters.com/event/pole-2-poll-a-gotv-celebration/"
+     ]
+    }
+   }
+  },
+  "vt_vtcha": {
+   "map": "vt",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_preservation_trust": {
+   "map": "vt",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-05-05"
+   },
+   "field_sources": [
+    "https://ptvermont.org/about/give/",
+    "https://ptvermont.org/cat/news/ptv/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_public_assets_institute": {
+   "map": "vt",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-09-30"
+   },
+   "field_sources": [
+    "https://publicassets.org/donate/",
+    "https://publicassets.org/about/events"
+   ],
+   "events": [
+    {
+     "name": "Federal actions and the wellbeing of Vermonters: what's at stake?",
+     "date": "2026-10-07T12:30:00",
+     "location": "The Senior Center, South Burlington, VT",
+     "description": "Public Assets community conversation on housing, income supports, food security, health care and federal impacts on Vermonters.",
+     "link": "https://publicassets.org/wp-content/uploads/2026/09/Flyer-So-Burl-Julie.pdf",
+     "sources": [
+      "https://publicassets.org/about/events"
+     ]
+    },
+    {
+     "name": "Federal actions and the wellbeing of Vermonters: what's at stake?",
+     "date": "2026-10-08T19:00:00",
+     "location": "Jaquith Public Library, Marshfield, VT",
+     "description": "Public Assets community conversation on housing, income supports, food security, health care and federal impacts on Vermonters.",
+     "link": "https://publicassets.org/wp-content/uploads/2026/09/Jaquith.pdf",
+     "sources": [
+      "https://publicassets.org/about/events"
+     ]
+    },
+    {
+     "name": "Federal actions and the wellbeing of Vermonters: what's at stake?",
+     "date": "2026-10-14T13:00:00",
+     "location": "Charlotte Adult Community Center, Charlotte, VT",
+     "description": "Public Assets community conversation on housing, income supports, food security, health care and federal impacts on Vermonters.",
+     "link": "https://publicassets.org/wp-content/uploads/2026/09/Charlotte-50-Community-Ctr.pdf",
+     "sources": [
+      "https://publicassets.org/about/events"
+     ]
+    },
+    {
+     "name": "Federal actions and the wellbeing of Vermonters: what's at stake?",
+     "date": "2026-11-18T13:00:00",
+     "location": "Bugbee Senior Center, White River Junction, VT",
+     "description": "Public Assets community conversation on housing, income supports, food security, health care and federal impacts on Vermonters.",
+     "link": "https://publicassets.org/wp-content/uploads/2026/09/Flyer-Bugbee-WRJ.pdf",
+     "sources": [
+      "https://publicassets.org/about/events"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_vhcb": {
+   "map": "vt",
+   "fields": {
+    "type": "government",
+    "last_activity": "2026-09-08"
+   },
+   "field_sources": [
+    "https://vhcb.org/about/",
+    "https://vhcb.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_ccl_vermont_at_large": {
+   "map": "vt",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_bppa_vt": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2016-09-29",
+    "inactive": true
+   },
+   "field_sources": [
+    "https://bppa-vt.org/",
+    "https://bppa-vt.org/about-bppa-vt/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_northern_forest_center": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-09-09"
+   },
+   "field_sources": [
+    "https://northernforest.org/resources/resources/news-digest-back-issues/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_vippa": {
+   "map": "vt",
+   "fields": {
+    "inactive": true
+   },
+   "field_sources": [
+    "https://www.vippahydro.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_williston_energy_committee": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-05-02"
+   },
+   "field_sources": [
+    "https://www.willistonvtenergycommittee.org/"
+   ],
+   "events": [
+    {
+     "name": "Williston Energy Committee public meeting",
+     "date": "2026-10-14",
+     "location": "Williston, VT (agenda posted on the Town of Williston website)",
+     "recurrence": "Second and fourth Wednesday of each month",
+     "description": "Regular public meeting of the town energy committee; residents are welcome.",
+     "link": "https://www.willistonvtenergycommittee.org/",
+     "sources": [
+      "https://www.willistonvtenergycommittee.org/"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_starksboro_energy_committee": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-10-05"
+   },
+   "field_sources": [
+    "https://www.starksborovt.org/energy-committee",
+    "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx"
+   ],
+   "events": [
+    {
+     "name": "Starksboro Energy Committee meeting",
+     "date": "2026-11-02",
+     "location": "Starksboro, VT (see agenda on the town website; recent meetings held on Microsoft Teams)",
+     "description": "Monthly town energy committee meeting on town building upgrades, the town energy plan and renewables siting.",
+     "link": "https://www.starksborovt.org/energy-committee",
+     "sources": [
+      "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx",
+      "https://www.starksborovt.org/energy-committee"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Starksboro Town Energy Plan",
+     "description": "The committee is developing an updated town energy plan with regional planning commission data, including renewables siting in coordination with the Planning Commission.",
+     "status": "active",
+     "link": "https://www.starksborovt.org/energy-committee",
+     "sources": [
+      "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {
+    "vt_starksboro_energy_committee_e_meeting_2026_10_05": {
+     "link": "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx",
+     "sources": [
+      "https://www.starksborovt.org/energy-committee",
+      "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx"
+     ]
+    }
+   }
+  },
+  "vt_350_chittenden_county": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-10-02"
+   },
+   "field_sources": [
+    "https://groups.google.com/g/350_burlington"
+   ],
+   "events": [
+    {
+     "name": "350Chittenden node meeting",
+     "date": "2026-10-19",
+     "location": "Burlington area or online (details sent to the node's email list)",
+     "recurrence": "Third Monday of each month",
+     "description": "Monthly meeting of the 350Vermont Chittenden County node to plan local climate justice action.",
+     "link": "https://groups.google.com/g/350_burlington",
+     "sources": [
+      "https://groups.google.com/g/350_burlington/c/hcpHZRzNBrg"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "McNeil Work Group",
+     "description": "Node work group educating the public about pollution and carbon from Burlington's McNeil wood-burning power plant, through actions and community presentations.",
+     "status": "active",
+     "link": "https://groups.google.com/g/350_burlington/c/ay44aAPH9lc",
+     "sources": [
+      "https://groups.google.com/g/350_burlington/c/ay44aAPH9lc"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_vrja": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-03-17"
+   },
+   "field_sources": [
+    "https://vtracialjusticealliance.org/feed/",
+    "https://vtracialjusticealliance.org/2026/03/homeland-security-task-force-in-south-burlington/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  }
+ },
+ "not_found": [],
+ "notes": "andover_climate_lobby: No page of its own found. Website set to the Instagram of its parent Phillips Academy Sustainability Coalition (@agreenerblue), named as PASC's Instagram on andover.edu; the Instagram page itself could not be loaded. Newest dated activity found is the Feb 6, 2024 State House lobby day (Phillipian, Feb 9, 2024 'last Tuesday'). Andover's sustainability blog (agreenerblueblog.wordpress.com) is set to private/'coming soon'. | lorax_at_milton_academy: Stored website https://www.milton.edu/about/sustainability-at-milton/student-involvement/ now returns 404. Current page https://www.milton.edu/about/sustainability mentions 'the Lorax Club dedicated to environmental policies' - suggest updating the website to that. No dated activity, events or actions found. | greenroots_eco: greenrootsej.org blocks curl with a captcha; read via WebFetch. ECO Youth Organizer job posting on the site is from 2024 (rolling through mid-July), so not added. The Paint a Mural, Beat the Heat! event (Oct 3, 2026, Bear Park, Chelsea) was dropped because it is before the 2026-10-05 cutoff. | masspirg_amherst: Chapter page https://masspirgstudents.org/chapters/umass/ lists campaigns (100% renewable / 100% Clean Act, textbooks, hunger & homelessness) and Monday 6pm meetings but is undated and appears old (cites 2018 results), so nothing added. An Action Network petition for a Spring 2026 student referendum on the chapter's fee exists (https://actionnetwork.org/forms/masspirg-petition-2026) but has no exact date and the vote has passed. | xr_youth: Website gap left empty: the group's listed site www.xryouthboston.org (linked from an XR Boston event page) does not resolve. Newest activity found: an XR Youth die-in on Sat Jan 4, 2025 posted on XR Boston's site. No 2026 activity found; possibly dormant but no explicit sign it stopped, so not marked inactive. | mass_audubon_wellfleet_bay_wildlife_sanctuary: Type 501c3 is Mass Audubon's status (membership FAQ). Repeat sessions exist for existing items: Bird Banding also Fri Oct 9, 2026 8:30am (https://www.massaudubon.org/programs/wellfleet-bay/103368-bird-research-in-action-bird-banding-at-wellfleet-bay; existing e1 is dated Oct 2) and Early Bird Walk also Wed Oct 14 and later (103672/103673/103676 pages). Tunes & Tales (e2) and Field School (e4) already link to their own program pages, where registration happens. | environment_massachusetts: environmentamerica.org blocks curl (Cloudflare); read via WebFetch (home, events, latest). No events on/after 2026-10-03 on its events page. Type left out: site says its sister Research & Policy Center is a 501(c)(3), but the contact/about page with Environment Massachusetts' own status could not be read (rate limit). Action links were taken from the homepage; the petition pages themselves were not opened. | slingshot: Type not stated on the site (its donate button goes to a Conservation Law Foundation page, act.clf.org, so it may be a CLF program - not confirmed). No dated posts found on the site; a 2025 annual report page exists but has no exact date. Projects listed on the community groups page are undated. | climate_code_blue: climatecodeblue.org homepage now shows only 'Under Construction' and its old pages (/about, /initiatives-wespeakout) return 'page not found'. Only dated item found is the group's Nov 23, 2020 letter to Bank of America. Facebook page could not be read. Marked inactive on that basis - please double-check. No type stated. | balanced_rock_investment_advisors: last_activity is the newest blog post (Apr 19, 2024); the site also links a client relationship summary PDF dated 2025-03-28 in its file name. Business is clearly operating. | citizens_awareness_network: Newest activity is the Sept 30, 2026 Lowell rally (already in existing events). Its Save Chapter 503 petition/calls are already covered by existing project and action. The site also asks Vermont residents to contact legislators on VT bill H.601, but that bill's status is unclear, so not added. | fccpr_climate_crisis_task_force: Type not stated anywhere on fccpr.us (parent calls itself 'a progressive organization'). The task force page's newest date is its 'next meeting April 16, 2025' on Zoom (monthly); the parent FCCPR posts events through Sept 2026 but none are climate task force items. | october_engineering_llc: Site lists pro bono residential services (already a project) and says non-residential services are 'Retired.' No dated activity. | solar_design_associates: No dated news or events found on solardesign.com. | vineyard_power_cooperative: Site states 'Vineyard Power is a 501(c)(3) non-profit' (support-us page). Newest calendar item is Aug 21, 2026 library tabling; no events after Oct 3 listed. Newest newsletter posted 6/15/26. | acadia_center: last_activity is the newest item in Acadia Center's 'Latest / News' list (Oct 1, 2026), which is press coverage quoting them. | citizens_climate_lobby_north_shore_chapter: Type not stated on the chapter page (describes volunteers, 'regular people from Massachusetts'); could be informal_group like other CCL chapters on the map. No dated activity on the page. | metropolitan_area_planning_council: Accelerating Climate Resilience FY27 round closed May 29, 2026. MAPC's events page lists only non-climate meetings in Oct 2026 (Statewide Municipal Partnerships Conference Oct 5, Fall Council Meeting Oct 14), not added. mapc.org returns 403 to curl on some pages. | vt_vcv: Type not stated on the site. RSVP links are each event page's Register button (NGP VAN); for Burlington the page's link is malformed (URL prefix doubled) - recorded the working form https://secure.ngpvan.com/6hqlikk6lUWYooKaQSQAHw2. Pole 2 Poll rsvp_link is the Higher Ground ticket page ($20). No events beyond the existing ones on the VCV calendar. | vt_vtcha: Type not set: donations page says gifts go to SolaVida.org, 'VTCHA's 501(c)(3) fiscal sponsor', so VTCHA itself is fiscally sponsored (none of the type options fits cleanly). Newest content found is its 2022 letter (no exact date) and a 2020 State House visit; footer says (c) 2025. No current events or actions. | vt_preservation_trust: www.ptvermont.org returns HTTP 500; https://ptvermont.org/ (no www) works - consider updating website. Give page: 'a 501 c(3) nonprofit'. | vt_public_assets_institute: Events are from the group's Fall 2026 community-conversation series (economic/budget topics, not climate-specific); links are the per-event flyers listed on the events page (flyers themselves not opened). Another session is Jan 26, 2027 in Springfield. | vt_vhcb: Type government: about page says the legislature created it as a state agency under 10 V.S.A. Chapter 15, funded by property transfer tax; last_activity is the newest dated item on the homepage. | vt_ccl_vermont_at_large: Chapter page only has a generic join form; no dated activity or events found. | vt_bppa_vt: Read via WebFetch (curl blocked by proxy). About page calls it 'a non-profit trade association' founded spring 2012 - no matching type option, so type left out (maybe 'business'?). Only dated item on the site is a Sept 29, 2016 annual meeting and the events section says 'No upcoming events'; marked inactive on that basis. | vt_northern_forest_center: last_activity is the newest Northern Forest News Digest (Aug 27 - Sep 9, 2026). Type not stated on the pages read (home, donation form). | vt_vippa: www.vippahydro.org (and /contact) now shows 'Squarespace - Website Expired'. No dated activity found from the group itself (an undated VIPPA comment letter on the Standard Offer Program from about 2021 is hosted at vermontstandardoffer.com). Marked inactive because the site is gone - please double-check; the association may still exist. | vt_williston_energy_committee: Meeting schedule ('second and fourth Wednesday of each month') is from an Apr 23, 2026 committee article on its site; time and place not given there. last_activity is the May 2, 2026 Williston Green Fair. | vt_starksboro_energy_committee: Oct 5, 2026 agenda: 12:00-1:00 pm, virtual Microsoft Teams meeting; it lists the next meeting as November 2, 2026 (time/format for Nov not stated). The existing Oct 5 event is today, so its update is kept in case it is still in range. | vt_350_chittenden_county: Source is the node's public Google Group (350_Burlington). A Sept 8, 2026 post moved node meetings to the third Monday of the month (first one Sept 21), so Oct 19 is inferred as the next date; time/place not stated in that post (older meetings were 7 pm, in person and/or Zoom). last_activity is the newest group post (Oct 2, 2026). Aug 2026 note says the McNeil work group plans two fall community meetings in Burlington/South Burlington, dates not yet set. | vt_vrja: Type not stated on about/donate pages. Newest post (RSS feed): 'Homeland Security Task Force In South Burlington', Mar 17, 2026 (UTC). The Feb 2025 Justice Agenda post exists but no current climate project found. | General: cutoff moved to 2026-10-05 per coordinator; events before that were dropped."
+}

@@ -1,0 +1,609 @@
+{
+ "groups": {
+  "youth_climate_action_now": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "youth_action_collaborative_alumni_node_at_clean_water_action": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [
+    "https://cleanwater.org/ma-youth-action-collaborative"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Youth Action Collaborative at Malden High School",
+     "description": "Leadership program that teaches Malden High School students about climate justice, drinking water, toxic chemicals and zero waste and trains them in organizing and advocacy; Clean Water Action says applications for Fall 2026 are coming.",
+     "status": "active",
+     "link": "https://cleanwater.org/youth-action-collaborative",
+     "sources": [
+      "https://cleanwater.org/youth-action-collaborative",
+      "https://cleanwater.org/publications/new-england-currents-summer-2026"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "healthlink": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3"
+   },
+   "field_sources": [
+    "http://www.citizensinaction.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "climate_action_now_western_ma": {
+   "map": "ma",
+   "fields": {
+    "type": "informal_group"
+   },
+   "field_sources": [
+    "https://climateactionnowma.org/about/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Wildlands Campaign",
+     "description": "Working group that identifies undeveloped land in Massachusetts and New England and advocates for its permanent protection.",
+     "status": "active",
+     "link": "https://climateactionnowma.org/get-involved/",
+     "sources": [
+      "https://climateactionnowma.org/get-involved/"
+     ]
+    },
+    {
+     "name": "No Toxic Biomass",
+     "description": "Campaign against public subsidies for biomass energy.",
+     "status": "active",
+     "link": "https://climateactionnowma.org/get-involved/",
+     "sources": [
+      "https://climateactionnowma.org/get-involved/"
+     ]
+    },
+    {
+     "name": "Stop the Eversource Pipeline",
+     "description": "Springfield-area working group opposing expansion of natural gas pipelines.",
+     "status": "active",
+     "link": "https://climateactionnowma.org/get-involved/",
+     "sources": [
+      "https://climateactionnowma.org/get-involved/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Volunteer with the Miyawaki Forest Project",
+     "kind": "role",
+     "description": "Help plant and care for small, fast-growing native forests.",
+     "deadline": null,
+     "link": "https://climateactionnowma.org/get-involved/",
+     "sources": [
+      "https://climateactionnowma.org/get-involved/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "boston_climate_action_network": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-24"
+   },
+   "field_sources": [
+    "https://calendar.google.com/calendar/ical/bostonclimateaction%40gmail.com/public/basic.ics",
+    "https://bostonclimatenetwork.substack.com/feed"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "boston_climate_action_networ_e1": {
+     "rsvp_link": "https://zoom.us/meeting/register/FIcXmQCiQPuyYNU2uDN4Pw",
+     "sources": [
+      "https://calendar.google.com/calendar/ical/bostonclimateaction%40gmail.com/public/basic.ics",
+      "https://bostonclimateaction.org/upcoming-events/"
+     ]
+    }
+   }
+  },
+  "community_labor_united": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [
+    {
+     "name": "Energy Democracy and Grid Modernization",
+     "description": "Green Justice Coalition campaign for community control and local benefits as the electric grid is rebuilt for clean energy.",
+     "status": "active",
+     "link": "https://www.massclu.org/green-justice-coalition/",
+     "sources": [
+      "https://www.massclu.org/green-justice-coalition/"
+     ]
+    },
+    {
+     "name": "Project Labor Agreements Now for Massachusetts (PLAN for Mass)",
+     "description": "Campaign to build public climate and infrastructure projects under Project Labor Agreements that open building-trades careers to women and people of color.",
+     "status": "active",
+     "link": "https://www.massclu.org/green-justice-coalition/",
+     "sources": [
+      "https://www.massclu.org/green-justice-coalition/"
+     ]
+    },
+    {
+     "name": "Public Transit Public Good",
+     "description": "Partnership of transit workers and riders pushing for a safe, reliable, affordable MBTA with good jobs.",
+     "status": "active",
+     "link": "https://www.massclu.org/green-justice-coalition/",
+     "sources": [
+      "https://www.massclu.org/green-justice-coalition/"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "green_energy_consumers_alliance": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-30"
+   },
+   "field_sources": [
+    "https://blog.greenenergyconsumers.org/blog/shave-the-peak-summer-2026-wrap-up"
+   ],
+   "events": [
+    {
+     "name": "Electric Trunk-or-Treat",
+     "date": "2026-10-24T11:00:00",
+     "end": "2026-10-24T15:00:00",
+     "location": "India Point Park, 201 India St, Providence, RI",
+     "description": "Family event with treats from EV Ambassadors and a chance to see electric cars, e-bikes and other clean transportation; costumes welcome.",
+     "link": "https://www.greenenergyconsumers.org/event/electrictrunkortreat",
+     "rsvp_link": "https://www.eventbrite.com/e/electric-trunk-or-treat-tickets-2001901826252",
+     "sources": [
+      "https://www.greenenergyconsumers.org/event/electrictrunkortreat",
+      "https://www.greenenergyconsumers.org/events"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "massachusetts_peace_action": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-24"
+   },
+   "field_sources": [
+    "https://masspeaceaction.org/our-issues/peace-and-climate/"
+   ],
+   "events": [
+    {
+     "name": "Eyes Wide Open II @ HONK! Festival",
+     "date": "2026-10-10T13:00:00",
+     "end": "2026-10-10T17:00:00",
+     "location": "Elm Street, Davis Square, Somerville",
+     "description": "Traveling exhibit on the human cost of the war on Iran, with postcards to elected officials and drawing activities for children.",
+     "link": "https://masspeaceaction.org/event/eyes-wide-open-ii-honk-festival/",
+     "rsvp_link": "https://masspeace.us/EyesWideOpen-HONKFestival",
+     "sources": [
+      "https://masspeaceaction.org/event/eyes-wide-open-ii-honk-festival/"
+     ]
+    },
+    {
+     "name": "Our Choice: Peace and Building Democracy Together (MAPAEF 2026 Annual Dinner)",
+     "date": "2026-11-01T16:00:00",
+     "end": "2026-11-01T19:00:00",
+     "location": "Dante Alighieri Society, 41 Hampshire Street, Cambridge",
+     "description": "Annual dinner honoring Massachusetts activists, with music, two days before the election.",
+     "link": "https://masspeaceaction.org/event/our-choice-peace-and-building-democracy-together-mapaef-2026-annual-dinner/",
+     "sources": [
+      "https://masspeaceaction.org/event/our-choice-peace-and-building-democracy-together-mapaef-2026-annual-dinner/"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Peace & Climate",
+     "description": "Education and action on the links between U.S. militarism and the climate and ecological crisis, working in solidarity with climate justice movements.",
+     "status": "active",
+     "link": "https://masspeaceaction.org/our-issues/peace-and-climate/",
+     "sources": [
+      "https://masspeaceaction.org/our-issues/peace-and-climate/"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {
+    "massachusetts_peace_action_e4": {
+     "rsvp_link": "https://masspeace.us/EyesWideOpen-OpenStreets",
+     "sources": [
+      "https://masspeaceaction.org/event/eyes-wide-open-ii-at-open-streets-allston-brighton/"
+     ]
+    },
+    "massachusetts_peace_action_e5": {
+     "rsvp_link": "http://masspeace.us/Ballot-Questions",
+     "sources": [
+      "https://masspeaceaction.org/event/your-guide-to-the-ma-2026-ballot-questions/"
+     ]
+    },
+    "massachusetts_peace_action_e6": {
+     "rsvp_link": "https://secure.everyaction.com/tMbgW2LFL0C1UhEqtEXxQQ2",
+     "sources": [
+      "https://masspeaceaction.org/event/earths-greatest-enemy-a-conversation-with-abby-martin/"
+     ]
+    }
+   }
+  },
+  "progressive_democrats_of_mass": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-10-02"
+   },
+   "field_sources": [
+    "https://www.progressivedemsofmass.org/events"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "sustainable_sharon_coalition": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-25"
+   },
+   "field_sources": [
+    "https://www.sustainablesharon.org/blog/ssc-community-meeting-sharons-energy"
+   ],
+   "events": [
+    {
+     "name": "Energy Bill Clinic",
+     "date": "2026-10-29T17:00:00",
+     "end": "2026-10-29T19:00:00",
+     "location": "Sharon Public Library, Sharon",
+     "description": "Bring your energy bills to get help from Sharon's Energy Advocate on lowering electricity costs, cancelling third-party supply contracts and signing up for the heat pump rate.",
+     "link": "https://www.sustainablesharon.org/events/energy-bill-clinic",
+     "sources": [
+      "https://www.sustainablesharon.org/events/energy-bill-clinic"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "league_of_women_voters_of_massachusetts": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-23"
+   },
+   "field_sources": [
+    "https://lwvma.org/events/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "chinese_progressive_association": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-05-04"
+   },
+   "field_sources": [
+    "https://cpaboston.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "green_weymouth": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2018-06-19",
+    "inactive": true
+   },
+   "field_sources": [
+    "https://greenweymouth.com/feed/",
+    "https://greenweymouth.com/programs/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "sustainable_business_network_of_massachusetts": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-02-07"
+   },
+   "field_sources": [
+    "https://www.sbnmass.org/donate",
+    "https://www.sbnmass.org/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "students_for_environmental_action_at_weston_high_school": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "sunrise_amherst": {
+   "map": "ma",
+   "fields": {
+    "description": "Climate group started in 2019 by Amherst Regional High School and Amherst College students, with members from elementary school through adulthood, that works on local climate issues and pushes for a Green New Deal; it also endorses candidates in Amherst town elections.",
+    "geographic_focus": "Amherst"
+   },
+   "field_sources": [
+    "https://hubs.sunrisemovement.org/amherst/",
+    "https://linktr.ee/sunrisemvmt_amherst"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "coalition_for_social_justice": {
+   "map": "ma",
+   "fields": {
+    "description": "Grassroots organization founded in 1994 that organizes low-income residents of Brockton, Fall River and New Bedford on economic justice issues such as childcare, the welfare safety net, fair taxes and free or low-cost transit, and lists environmental justice among its volunteer areas.",
+    "type": "501c4",
+    "website": "https://coalitionforsocialjustice.org/",
+    "geographic_focus": "Southeastern Massachusetts (Brockton, Fall River, New Bedford)",
+    "last_activity": "2026-05-19"
+   },
+   "field_sources": [
+    "https://coalitionforsocialjustice.org/who-we-are/",
+    "https://coalitionforsocialjustice.org/who-we-are/what-we-do/",
+    "https://coalitionforsocialjustice.org/get-involved/",
+    "https://coalitionforsocialjustice.org/donate/",
+    "https://coalitionforsocialjustice.org/feed/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "350ma_berkshires": {
+   "map": "ma",
+   "fields": {
+    "description": "Volunteer climate action group founded in 2014 as the Berkshire County node of 350 Mass; it helped defeat the Northeast Energy Direct pipeline and works on local clean energy, legislation and environmental justice for more just, fossil-fuel-free communities.",
+    "website": "https://350mass.betterfutureproject.org/350mass_berkshires",
+    "geographic_focus": "Berkshire County"
+   },
+   "field_sources": [
+    "https://350mass.betterfutureproject.org/350mass_berkshires",
+    "https://350mass.betterfutureproject.org/our_nodes"
+   ],
+   "events": [
+    {
+     "name": "350 Mass Berkshires monthly meeting",
+     "date": "2026-10-21T18:00:00",
+     "location": "Online (Zoom)",
+     "online": true,
+     "recurrence": "Third Wednesday of each month, 6 PM",
+     "description": "Monthly node meeting on Zoom.",
+     "link": "https://350mass.betterfutureproject.org/350mass_berkshires",
+     "sources": [
+      "https://350mass.betterfutureproject.org/350mass_berkshires"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "partnership_for_policy_integrity": {
+   "map": "ma",
+   "fields": {
+    "description": "Organization that uses data-driven advocacy and litigation to protect forests, communities and the climate, best known for its work against biomass energy; it started in 2008 over biomass plants proposed in western Massachusetts and now works on state, federal and international policy.",
+    "website": "https://www.pfpi.net/",
+    "geographic_focus": "Statewide, national and international",
+    "last_activity": "2026-08-18"
+   },
+   "field_sources": [
+    "https://www.pfpi.net/about-us/",
+    "https://www.pfpi.net/2026/08/new-analysis-measures-benefits-of-intact-roadless-forests/",
+    "https://www.pfpi.net/2026/07/partnership-for-policy-integrity-applauds-massachusetts-senate-vote-to-close-biomass-loophole/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_vtipl": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-02-19"
+   },
+   "field_sources": [
+    "https://vtipl.org/faith-climate-action-day-2026/",
+    "https://vtipl.org/newsletters/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "vt_lake_champlain_committee": {
+   "map": "vt",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-10-02"
+   },
+   "field_sources": [
+    "https://www.lakechamplaincommittee.org/support/donate",
+    "https://www.lakechamplaincommittee.org/about",
+    "https://www.lakechamplaincommittee.org/"
+   ],
+   "events": [
+    {
+     "name": "Saranac River Clean Up Day",
+     "date": "2026-10-03T10:00:00",
+     "end": "2026-10-03T13:00:00",
+     "location": "7 Rugar St., Plattsburgh, NY (behind Harrington Hall, SUNY Plattsburgh)",
+     "description": "Community cleanup along the Saranac River with supplies provided; trash collected is sorted and recorded, and space is capped at 25 people.",
+     "link": "https://www.lakechamplaincommittee.org/event/saranac-river-clean-up-day",
+     "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSdO1U7msHlDzFIX2FpBWOOhTt97qvheYKZwgT3nPArLKz1Vdg/viewform",
+     "sources": [
+      "https://www.lakechamplaincommittee.org/event/saranac-river-clean-up-day"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Cyanobacteria Monitoring Program",
+     "description": "Trained volunteers check sites around Lake Champlain each week and report blooms, feeding a public tracking map that health officials use.",
+     "status": "active",
+     "link": "https://www.lakechamplaincommittee.org/get-involved/volunteers/cyanobacteriamonitors",
+     "sources": [
+      "https://www.lakechamplaincommittee.org/get-involved/volunteers/cyanobacteriamonitors",
+      "https://www.lakechamplaincommittee.org/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Become a cyanobacteria monitor",
+     "kind": "role",
+     "description": "Visit an assigned lake site once a week from mid-June into the fall and report water conditions; training is provided.",
+     "deadline": null,
+     "link": "https://www.lakechamplaincommittee.org/get-involved/volunteers/cyanobacteriamonitors",
+     "sources": [
+      "https://www.lakechamplaincommittee.org/get-involved/volunteers/cyanobacteriamonitors"
+     ]
+    },
+    {
+     "name": "Take the Lake Protection Pledge",
+     "kind": "task",
+     "description": "Commit to everyday actions at home and outdoors that protect Lake Champlain's water quality.",
+     "deadline": null,
+     "link": "https://www.lakechamplaincommittee.org/get-involved/protection-pledge",
+     "sources": [
+      "https://www.lakechamplaincommittee.org/get-involved/protection-pledge"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "vt_carshare_vermont": {
+   "map": "vt",
+   "fields": {
+    "type": "501c3"
+   },
+   "field_sources": [
+    "https://www.carsharevt.org/about/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "MobilityShare",
+     "description": "Reduced-cost carsharing for lower-income households; CarShare Vermont is seeking new funding after losing support for it in 2025.",
+     "status": "active",
+     "link": "https://www.carsharevt.org/news/",
+     "sources": [
+      "https://www.carsharevt.org/news/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Outreach volunteer or Neighborhood Ambassador",
+     "kind": "role",
+     "description": "Table at community events or introduce neighbors to carsharing through house parties, flyers or online posts.",
+     "deadline": null,
+     "link": "https://www.carsharevt.org/volunteer/",
+     "sources": [
+      "https://www.carsharevt.org/volunteer/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "vt_vcrd": {
+   "map": "vt",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-09-16"
+   },
+   "field_sources": [
+    "https://www.vtrural.org/support-us/",
+    "https://www.vtrural.org/feed/"
+   ],
+   "events": [
+    {
+     "name": "Vermont Community Leadership Summit 2026",
+     "date": "2026-10-06",
+     "location": "Vermont State University Castleton, Castleton, VT",
+     "description": "Annual day-long summit for local leaders and community builders, with some sessions livestreamed for free virtual access; walk-ins welcome.",
+     "link": "https://www.vtrural.org/summit/",
+     "sources": [
+      "https://www.vtrural.org/summit/"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Climate Economy Initiative",
+     "description": "Helps Vermont communities plan and carry out priority actions that build economic vitality and affordability in a time of climate change.",
+     "status": "active",
+     "link": "https://www.vtrural.org/climate-economy/",
+     "sources": [
+      "https://www.vtrural.org/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Apply to the Climate Catalysts Innovation Fund",
+     "kind": "task",
+     "description": "Small grants for local climate and energy projects; towns, committees, schools, businesses, volunteer groups and nonprofits can apply.",
+     "deadline": "2026-10-14",
+     "link": "https://www.vtrural.org/climate-economy/climate-catalysts-innovation-fund/",
+     "sources": [
+      "https://www.vtrural.org/applications-open-for-vcrds-climate-catalysts-innovation-fund-2/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "vt_charlotte_energy_committee": {
+   "map": "vt",
+   "fields": {
+    "last_activity": "2026-05-15"
+   },
+   "field_sources": [
+    "https://www.charlotteenergy.org/post/statement-on-artificial-turf"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  }
+ },
+ "not_found": [],
+ "notes": ""
+}

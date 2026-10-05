@@ -1,0 +1,304 @@
+{
+ "groups": {
+  "salem_high_school_sustainability_club": {
+   "map": "ma",
+   "fields": {
+    "website": "https://spssalemhs.salemk12.org/programs-and-culture/student-activities/",
+    "last_activity": "2026-02-12"
+   },
+   "field_sources": [
+    "https://spssalemhs.salemk12.org/programs-and-culture/student-activities/",
+    "https://salemsafe.org/2026/02/19/salem-high-school-environmental-club-shows-up-at-advocacy-day-2026/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "four_rivers_climate_club": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2025-12-11"
+   },
+   "field_sources": [
+    "https://fourriverscharter.org/currents-12-11-25/",
+    "https://fourriverscharter.org/currents-11-13-25/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "clean_water_action": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-10-02"
+   },
+   "field_sources": [
+    "https://cleanwater.org/states/massachusetts",
+    "https://cleanwater.org/2026/10/02/good-news-jp-were-taking-take-out-trash"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "ReThink Disposable: Jamaica Plain take-out trash project",
+     "description": "With a MassDEP grant, Clean Water Action is helping downtown Jamaica Plain restaurants cut single-use take-out waste through Skip the Stuff and Bring Your Own policies and a reusable take-out container pilot, and plans more local outreach.",
+     "status": "active",
+     "link": "https://cleanwater.org/2026/10/02/good-news-jp-were-taking-take-out-trash",
+     "sources": [
+      "https://cleanwater.org/2026/10/02/good-news-jp-were-taking-take-out-trash",
+      "https://cleanwater.org/campaign/rethink-disposable"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "climate_xchange": {
+   "map": "ma",
+   "fields": {
+    "description": "Boston-based nonprofit that works to advance state climate policy across the US. It runs the State Climate Policy Network, which connects advocates and policymakers, and a dashboard tracking climate policies in all 50 states.",
+    "type": "501c3",
+    "website": "https://climate-xchange.org/",
+    "geographic_focus": "National (state policy in all 50 states); based in Boston",
+    "last_activity": "2026-10-01"
+   },
+   "field_sources": [
+    "https://climate-xchange.org/mission-impact/",
+    "https://climate-xchange.org/contact-us/",
+    "https://climate-xchange.org/"
+   ],
+   "events": [
+    {
+     "name": "State Policy Solutions for Data Centers: Tax, Employment, and Economic Impacts",
+     "date": "2026-10-14T15:00:00",
+     "end": "2026-10-14T16:00:00",
+     "location": "Online",
+     "online": true,
+     "description": "Webinar on state policy options for data center subsidies, transparency, jobs and economic impacts.",
+     "link": "https://climate-xchange.org/event/state-policy-solutions-for-data-centers-tax-employment-and-economic-impacts/",
+     "rsvp_link": "https://join.climate-xchange.org/a/state-policy-solutions-data-centers-tax-employment-and-economic-impacts",
+     "sources": [
+      "https://climate-xchange.org/events/list/",
+      "https://climate-xchange.org/event/state-policy-solutions-for-data-centers-tax-employment-and-economic-impacts/"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "climate_xchange_e2": {
+     "rsvp_link": "https://join.climate-xchange.org/a/beyond-evs-how-transit-policy-delivers-climate-and-community-benefits",
+     "sources": [
+      "https://climate-xchange.org/event/beyond-evs-how-transit-policy-delivers-climate-and-community-benefits/"
+     ]
+    },
+    "climate_xchange_e3": {
+     "rsvp_link": "https://join.climate-xchange.org/a/october-state-climate-policy-network-national-call-2026",
+     "sources": [
+      "https://climate-xchange.org/event/october-state-climate-policy-network-national-call-4/"
+     ]
+    }
+   }
+  },
+  "350ma_central_mass": {
+   "map": "ma",
+   "fields": {
+    "description": "All-volunteer climate action group in Central Massachusetts and an affiliate of 350 Mass. It works to end reliance on fossil fuels through stand-outs and rallies, lobbying legislators, and campaigns against fossil fuel infrastructure.",
+    "type": "informal_group",
+    "website": "https://www.350centralmass.org/",
+    "geographic_focus": "Central Massachusetts"
+   },
+   "field_sources": [
+    "https://www.350centralmass.org/",
+    "https://www.350centralmass.org/about-us"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "jewish_alliance_for_law_and_social_action": {
+   "map": "ma",
+   "fields": {
+    "description": "Membership-based Jewish social justice organization, founded in 2001, that organizes the Jewish community and allies across Massachusetts on civil rights and social, economic and environmental justice. Its climate work includes a Climate Change Action Team and support for bills such as a Climate Change Superfund and a Zero Carbon Renovation Fund.",
+    "type": "faith_org",
+    "website": "https://www.jalsa.org/",
+    "geographic_focus": "Statewide"
+   },
+   "field_sources": [
+    "https://www.jalsa.org/about",
+    "https://www.jalsa.org/take-action",
+    "https://www.jalsa.org/legislative-priorities"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Climate bills in JALSA's 2025-2026 legislative priorities",
+     "description": "JALSA backs a Climate Change Superfund (H.1014/S.588), a Zero Carbon Renovation Fund (H.3577/S.2286), and a deeds excise bill funding affordable housing and climate adaptation (H.3194/S.1973).",
+     "status": "active",
+     "link": "https://www.jalsa.org/legislative-priorities",
+     "sources": [
+      "https://www.jalsa.org/legislative-priorities"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "mothers_out_front": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-08-04"
+   },
+   "field_sources": [
+    "https://mothersoutfront.org/",
+    "https://mothersoutfront.org/2026/08/04/we-showed-up-mof-fights-a-climate-rollback-in-ma/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Massachusetts State Campaign: stop the climate rollback",
+     "description": "Mothers Out Front members lobby the Legislature to protect the state's binding 2030 climate goals and push for an energy bill that protects Mass Save, reforms the Gas System Enhancement Program and advances neighborhood electrification.",
+     "status": "active",
+     "link": "https://mothersoutfront.org/2026/08/04/we-showed-up-mof-fights-a-climate-rollback-in-ma/",
+     "sources": [
+      "https://mothersoutfront.org/2026/08/04/we-showed-up-mof-fights-a-climate-rollback-in-ma/"
+     ]
+    },
+    {
+     "name": "Moms v. Methane (Clean Affordable Heat Now in Massachusetts)",
+     "description": "Campaign to stop new gas pipelines and gas plants and move existing gas heating to clean energy; in Massachusetts it runs as the Clean Affordable Heat Now campaign.",
+     "status": "active",
+     "link": "https://mothersoutfront.org/moms-v-methane/",
+     "sources": [
+      "https://mothersoutfront.org/moms-v-methane/"
+     ]
+    },
+    {
+     "name": "Make Polluters Pay",
+     "description": "Mobilizes mothers to support state Climate Superfund bills that would charge fossil fuel companies for climate recovery and resilience costs.",
+     "status": "active",
+     "link": "https://mothersoutfront.org/make-polluters-pay/",
+     "sources": [
+      "https://mothersoutfront.org/make-polluters-pay/"
+     ]
+    },
+    {
+     "name": "Sustainable Schools, Resilient Communities",
+     "description": "Equips parents to push for decarbonized public schools with clean air and water, healthy HVAC, renewable power and green transportation, and for community resilience hubs.",
+     "status": "active",
+     "link": "https://mothersoutfront.org/sustainable-schools-resilient-communities/",
+     "sources": [
+      "https://mothersoutfront.org/sustainable-schools-resilient-communities/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Volunteer with Mothers Out Front",
+     "kind": "role",
+     "description": "Mothers, grandmothers and caregivers can share their interest in volunteering, join a local team or campaign, or book a one-on-one call about taking a leadership role.",
+     "deadline": null,
+     "link": "https://mothersoutfront.org/volunteer/",
+     "sources": [
+      "https://mothersoutfront.org/volunteer/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "sierra_club": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-07-07"
+   },
+   "field_sources": [
+    "https://www.sierraclub.org/massachusetts"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [
+    {
+     "name": "Volunteer with the Massachusetts Sierra Club",
+     "kind": "role",
+     "description": "Sign up to volunteer with the volunteer-led Massachusetts chapter on its environmental and climate justice work.",
+     "deadline": null,
+     "link": "https://act.sierraclub.org/actions/Massachusetts?actionId=AR0285505",
+     "sources": [
+      "https://www.sierraclub.org/massachusetts"
+     ]
+    }
+   ],
+   "event_updates": {
+    "sc_e_film_virtual": {
+     "link": "https://act.sierraclub.org/events/details?formcampaignid=701Po0000262G2eIAE",
+     "rsvp_link": "https://act.sierraclub.org/events/details?formcampaignid=701Po0000262G2eIAE",
+     "sources": [
+      "https://www.savemassforests.com/"
+     ]
+    },
+    "sierra_club_e3": {
+     "rsvp_link": "https://us06web.zoom.us/meeting/register/VXGfD6jCQSW0GMgEsKAIAQ#/registration",
+     "sources": [
+      "https://www.savemassforests.com/"
+     ]
+    }
+   }
+  },
+  "boston_catholic_climate_movement": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2024-10-26"
+   },
+   "field_sources": [
+    "https://bostoncatholicclimate.org/events/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "co_op_power_inc": {
+   "map": "ma",
+   "fields": {
+    "type": "business"
+   },
+   "field_sources": [
+    "https://www.cooppower.coop/whyjoin",
+    "https://www.cooppower.coop/about-us"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [
+    {
+     "name": "Join Co-op Power as an owner-member",
+     "kind": "task",
+     "description": "Become a member-owner of Co-op Power or a local Community Energy Co-op, with an equal vote on the co-op's priorities and programs.",
+     "deadline": null,
+     "link": "https://www.cooppower.coop/join-coop-power",
+     "sources": [
+      "https://www.cooppower.coop/join-coop-power"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "sunrise_western_mass": {
+   "map": "ma",
+   "fields": {
+    "website": "https://x.com/sunrisewmass",
+    "geographic_focus": "Western Massachusetts"
+   },
+   "field_sources": [
+    "https://x.com/sunrisewmass"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  }
+ },
+ "not_found": [],
+ "notes": ""
+}

@@ -1,0 +1,700 @@
+[
+ {
+  "map": "ma",
+  "id": "belmont_hill_sustainability_club",
+  "name": "Belmont Hill Sustainability Club",
+  "website": "https://www.belmonthill.org/academics/sustainability-at-belmont-hill/environmental-courses-groups-and-trips",
+  "description": "Student group at Belmont Hill School (Upper School Sustainability Group) that educates the school community on environmental issues and promotes sustainable change on campus.",
+  "type": "school_club",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Upper School Sustainability Group (Belmont Hill)",
+    "Middle School Green Team and Green Cup Challenge (Belmont Hill)"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "boston_student_advisory_council",
+  "name": "Boston Student Advisory Council",
+  "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac",
+  "description": "Citywide council of Boston Public Schools students that advocates on student issues; climate justice has been a focus, including helping write the district's climate change curriculum.",
+  "type": "university",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Boston Student Advisory Council"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "masspirg",
+  "name": "Massachusetts Public Interest Research Group",
+  "website": "",
+  "description": "State advocacy group of the PIRG network that lobbies on consumer protection, waste reduction, transportation and clean energy, and runs campus chapters.",
+  "type": "501c4",
+  "gaps": [
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "the_enviro_show_on_wxoj_lp_103_3_fm",
+  "name": "The Enviro Show on WXOJ-LP (103.3 fm)",
+  "website": "http://envirosho.blogspot.com/",
+  "description": "Biweekly environmental news and commentary radio show on Valley Free Radio (WXOJ-LP 103.3 FM, Florence), also broadcast in Greenfield and North Adams, covering climate, conservation and local ecology.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "the_enviro_show_on_wxoj_lp_1_e1",
+     "name": "The Enviro Show (WXOJ-LP 103.3 FM)",
+     "date": "2026-09-29T18:00:00",
+     "link": "https://spinitron.com/WXOJ/show/113661/Enviro-Show",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "mass_audubon_wma",
+  "name": "Mass Audubon - WMa",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "mass_audubon_wma_e1",
+     "name": "Golden Hour by Canoe",
+     "date": "2026-10-01T16:00:00",
+     "link": "https://www.massaudubon.org/programs/pleasant-valley/103551-golden-hour-by-canoe",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e2",
+     "name": "Get Ready for Winter: Backyard Birds & Feeders",
+     "date": "2026-10-03T09:00:00",
+     "link": "https://www.massaudubon.org/programs/arcadia/103606-get-ready-for-winter-backyard-birds-feeders",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e3",
+     "name": "The Secret Lives of Bats",
+     "date": "2026-10-03T10:30:00",
+     "link": "https://www.massaudubon.org/programs/arcadia/103605-the-secret-lives-of-bats",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e4",
+     "name": "Ecological Management Walk at Laughing Brook",
+     "date": "2026-10-03T13:30:00",
+     "link": "https://www.massaudubon.org/programs/arcadia/104235-ecological-management-walk-at-laughing-brook",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e5",
+     "name": "Learn to Bird: Fall Migration",
+     "date": "2026-10-04T09:00:00",
+     "link": "https://www.massaudubon.org/programs/pleasant-valley/103553-learn-to-bird-fall-migration",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e6",
+     "name": "Hawk Migration Watch at Blueberry Hill",
+     "date": "2026-10-04T10:00:00",
+     "link": "https://www.massaudubon.org/programs/arcadia/102878-hawk-migration-watch-at-blueberry-hill",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e7",
+     "name": "Trees Without Leaves: A Fall Tree ID Walk",
+     "date": "2026-10-07T09:00:00",
+     "link": "https://www.massaudubon.org/programs/arcadia/103607-trees-without-leaves-a-fall-tree-id-walk",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e9",
+     "name": "First Child in the Woods: Caregiver & Young Child Walk",
+     "date": "2026-10-09T10:00:00",
+     "link": "https://www.massaudubon.org/programs/arcadia/103608-first-child-in-the-woods-caregiver-young-child-walk",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e10",
+     "name": "Tiny Trekkers: Toddler Nature Time",
+     "date": "2026-10-09T10:00:00",
+     "link": "https://www.massaudubon.org/programs/pleasant-valley/103548-tiny-trekkers-toddler-nature-time",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e11",
+     "name": "Fall Colors by Canoe",
+     "date": "2026-10-10T08:30:00",
+     "link": "https://www.massaudubon.org/programs/pleasant-valley/103554-fall-colors-by-canoe",
+     "rsvp_link": ""
+    },
+    {
+     "id": "mass_audubon_wma_e12",
+     "name": "A Nature Year at Pleasant Valley: Fall Series",
+     "date": "2026-10-17T17:00:00",
+     "link": "https://www.massaudubon.org/programs/pleasant-valley/98865-a-nature-year-at-pleasant-valley-fall-series",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "unitarian_universalist_mass_action",
+  "name": "Unitarian Universalist Mass Action",
+  "website": "",
+  "description": "",
+  "type": "school_club",
+  "gaps": [
+   "description",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "unitarian_universalist_mass__e1",
+     "name": "What You Need to Know about the 9 Massachusetts Ballot Questions",
+     "date": "2026-09-30T19:30:00",
+     "link": "https://www.uumassaction.org/new-upcoming-events/2026/9/30/what-you-need-to-know-about-thenbsp9-massachusetts-ballot-questions",
+     "rsvp_link": ""
+    },
+    {
+     "id": "unitarian_universalist_mass__e2",
+     "name": "MA Solidarity Summit - We Are Builders, Democracy Defenders",
+     "date": "2026-10-06T09:00:00",
+     "link": "https://www.uumassaction.org/new-upcoming-events/2026/10/6/ma-solidarity-summit-we-are-builders-democracy-defenders-1",
+     "rsvp_link": ""
+    },
+    {
+     "id": "unitarian_universalist_mass__e3",
+     "name": "UU Action Hour",
+     "date": "2026-10-15T12:00:00",
+     "link": "https://www.uumassaction.org/action-hour",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Climate & Environmental Justice Campaign"
+   ],
+   "actions": [
+    "Contact Your Senator on the Massachusetts Senate Energy Bill",
+    "Stop Private Jet Expansion at Hanscom Field"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "north_american_indian_center_of_boston",
+  "name": "North American Indian Center of Boston",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "NAICOB community programming"
+   ],
+   "actions": [
+    "Volunteer with NAICOB"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "climate_action_brookline",
+  "name": "Climate Action Brookline",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "climate_action_brookline_e1",
+     "name": "Climate Action Brookline Monthly Meeting",
+     "date": "2026-10-12",
+     "link": "https://climateactionbrookline.org/events/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Micromobility Advocacy",
+    "Brookline Climate Action and Resiliency Plan"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "arise_for_social_justice",
+  "name": "Arise for Social Justice",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "charles_river_watershed_association",
+  "name": "Charles River Watershed Association",
+  "website": "https://www.crwa.org/",
+  "description": "Nonprofit founded in 1965 that uses science, advocacy and the law to protect and restore the Charles River, including work on stormwater and climate resilience across the watershed.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "charles_river_watershed_asso_e1",
+     "name": "Combined Sewer Overflow Control Plan Public Hearing #3",
+     "date": "2026-10-28T18:00:00",
+     "link": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
+     "rsvp_link": ""
+    },
+    {
+     "id": "charles_river_watershed_asso_e2",
+     "name": "Clean Charles Convening",
+     "date": "2026-11-19T08:00:00",
+     "link": "https://www.crwa.org/events/clean-charles-convening-2026",
+     "rsvp_link": ""
+    },
+    {
+     "id": "charles_river_watershed_asso_e3",
+     "name": "Run of the Charles Paddle Race",
+     "date": "2027-04-25",
+     "link": "https://www.crwa.org/rotc",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Cut the Crap: Sewage-Free Charles Campaign",
+    "Meet Your Watershed Event Series"
+   ],
+   "actions": [
+    "Become a Volunteer Monthly Monitor",
+    "Volunteer for Invasive Plant Removals",
+    "Become a Cyanobacteria Visual Monitor",
+    "Volunteer as a Biological Monitor",
+    "Volunteer Photographer for CRWA",
+    "Submit a Public Comment on the CSO Plan"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "faith_science_alliance",
+  "name": "Faith Science Alliance",
+  "website": "https://faithsciencealliance.org/",
+  "description": "Coalition of faith leaders and scientists that advocates for bold Massachusetts climate policy with attention to justice and equity.",
+  "type": "coalition",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "islamic_society_of_boston_cultural_center",
+  "name": "Islamic Society of Boston Cultural Center",
+  "website": "https://isbcc.org/",
+  "description": "Roxbury mosque and community center serving over 1,500 congregants with a school, social services and event spaces; its site lists green initiatives.",
+  "type": "faith_org",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "no_sharon_gas_pipeline_clean_energy_now",
+  "name": "No Sharon Gas Pipeline | Clean Energy Now",
+  "website": "https://nosharongaspipeline.org/",
+  "description": "Sharon residents' group, partnered with Mass Power Forward, that opposed a new gas pipeline through Sharon and works to move the town toward local clean energy through green community status, energy assessments, community choice energy and EV incentives.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "restore_the_north_woods",
+  "name": "RESTORE: The North Woods",
+  "website": "https://www.restore.org/",
+  "description": "Forest protection nonprofit that campaigns to permanently protect Massachusetts state forests from logging and to end biomass energy subsidies that encourage forest cutting.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "restore_the_north_woods_e1",
+     "name": "Old Growth Forests film screening and panel, Patagonia Cambridge",
+     "date": "2026-10-08T19:00:00",
+     "link": "https://www.savemassforests.com/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "restore_the_north_woods_e2",
+     "name": "Wuerthner on Wildfire: Myths and Reality (RESTORE Speaker Series)",
+     "date": "2026-10-15T18:30:00",
+     "link": "https://www.restore.org/events/2026/10/15/wildfire-myths-and-reality",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Save Massachusetts Forests"
+   ],
+   "actions": [
+    "Save Mass Forests action pages"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "upper_cape_women_s_coalition",
+  "name": "Upper Cape Women's Coalition",
+  "website": "",
+  "description": "Upper Cape Cod women's civic group that organizes rallies and community events to encourage women's participation and advocacy in public life.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "website"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "21st_century_schools_fund",
+  "name": "21st Century Schools Fund",
+  "website": "https://www.21csf.org/",
+  "description": "Nonprofit, established in 1994, that works to build public will and capacity to modernize public school facilities so they support quality education and community revitalization.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "citizens_climate_lobby_south_shore_cape_and_islands",
+  "name": "Citizens Climate Lobby",
+  "website": "https://citizensclimatelobby.org/chapters/MA_South_Shore/",
+  "description": "South Shore chapter of Citizens' Climate Lobby covering the South Shore, South Coast and Cape Cod, doing community outreach and lobbying members of Congress for bipartisan climate legislation.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "massachusetts_jobs_with_justice",
+  "name": "Massachusetts Jobs with Justice",
+  "website": "https://www.massjwj.net/",
+  "description": "Coalition of labor, faith and student organizations that builds solidarity for workers' rights through rallies and picket-line support, with offices in Jamaica Plain and Springfield.",
+  "type": "coalition",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "CARE Initiative (Community Aligned Response Essentials)"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vpirg",
+  "name": "Vermont Public Interest Research Group",
+  "website": "https://www.vpirg.org",
+  "description": "Statewide consumer, environmental and democracy advocacy group in Montpelier; leads on clean energy and climate policy, and runs a grassroots canvass.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_vpirg_e_democracy_town_hall_2026",
+     "name": "Democracy Town Hall: How to End Corporate Cash in Elections",
+     "date": "2026-10-14T18:00:00",
+     "link": "https://www.vpirg.org/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_youth_lobby",
+  "name": "Youth Lobby",
+  "website": "https://youthlobby.org",
+  "description": "Vermont youth advocacy group focused on climate action and justice; runs the annual Rally for the Planet and trainings such as how to write your legislator.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_local_motion",
+  "name": "Local Motion",
+  "website": "https://www.localmotion.org",
+  "description": "Burlington nonprofit advocating for walking and biking; a member of Transportation for Vermonters and Energy Action Network and a 2026 Common Agenda partner.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_drive_electric_vermont",
+  "name": "Drive Electric Vermont",
+  "website": "https://www.driveelectricvt.com",
+  "description": "Winooski-based electric vehicle information and outreach program; an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vital_communities",
+  "name": "Vital Communities",
+  "website": "https://vitalcommunities.org",
+  "description": "White River Junction regional nonprofit that supports Upper Valley town energy committees and takes part in VECAN, EAN and regional climate workgroups.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_sunrise_vermont",
+  "name": "Sunrise Vermont",
+  "website": "https://actionnetwork.org/groups/sunrise-vermont",
+  "description": "Sunrise Movement hub for Vermont, listed on Action Network.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_aia_vermont",
+  "name": "AIA Vermont",
+  "website": "https://www.aiavt.org",
+  "description": "Vermont chapter of the American Institute of Architects, offering design awards, continuing education, member events and public-policy and environment-committee resources.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_grassroots_fund",
+  "name": "New England Grassroots Environment Fund (Grassroots Fund)",
+  "website": "https://grassrootsfund.org",
+  "description": "Regional funder that gives seed and grow grants to small community environmental and climate groups and supports them through practice-sharing and convenings.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_green_building_network",
+  "name": "Vermont Green Building Network",
+  "website": "https://www.vtgreenbuildingnetwork.org",
+  "description": "Nonprofit founded in 2002 that promotes green design, construction and building operation through tours, networking and educational events; it sponsors the Burlington 2030 District.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_green_building_network_e_building_science_beer_autumn_2026",
+     "name": "Building Science and Beer Autumn Gathering",
+     "date": "2026-10-07T17:00:00",
+     "link": "https://www.vtgreenbuildingnetwork.org/events",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_northfield_energy_committee",
+  "name": "Northfield Energy Committee",
+  "website": "https://www.northfield-vt.gov/energy-committee-minutes",
+  "description": "Northfield town energy committee that holds monthly public meetings, with agendas and minutes posted on the town website.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_st_johnsbury_energy_committee",
+  "name": "St. Johnsbury Energy Committee",
+  "website": "https://docs.stjvt.com/index.php/town-government/public-meetings/energy-committee/2026-agenda-15",
+  "description": "Town of St. Johnsbury energy committee that publishes monthly agendas for its public meetings.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_climate_advocates_bennington",
+  "name": "Climate Advocates Bennington",
+  "website": "https://www.350vermont.org/nodes",
+  "description": "Bennington residents affiliated with 350Vermont who work for a sustainable future, a livable planet and climate justice.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_climate_action_collective",
+  "name": "Climate Action Collective (students)",
+  "website": "https://www.350vermont.org/nodes",
+  "description": "350Vermont-sponsored student group, mostly from UVM, Champlain College and St. Michael's College, that develops student solutions to the climate crisis.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ }
+]

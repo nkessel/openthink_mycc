@@ -1,0 +1,1803 @@
+{
+  "groups": {
+    "mpf": {
+      "map": "ma",
+      "fields": {
+        "last_activity": "2026-09-18"
+      },
+      "field_sources": [
+        "https://www.mapowerforward.com/dashboard/"
+      ],
+      "new_members": [
+        {
+          "name": "Our Climate",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Unitarian Universalist Mass Action",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "North Quabbin Energy",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Andover WECAN",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Boston Latin School Youth Climate Action Network (YouthCAN)",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "ConcordCAN",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "MassEnergize",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "North Reading Green Alliance",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Third Act Massachusetts",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Acadia Center",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Rewiring America",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Fairmount Indigo CDC Collaborative",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Progressive Mass",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Residents' Climate Change Committee, Brookhaven at Lexington",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Lexington Climate Action Network (LexCAN)",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Sustainable Wellesley",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Sustainable Weston Action Group",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Trees as a Public Good Network",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Vote Solar",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Woodbourne Neighborhood Green Committee",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Green Era MA",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Massachusetts Climate Education Organization",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Sunrise Worcester",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Health Care Without Harm",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Church of the Covenant, Boston",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Dayenu: A Jewish Call to Climate Action",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "RAC-MA",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Worcester Congregations for Climate and Environmental Justice",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        },
+        {
+          "name": "Solar United Neighbors",
+          "sources": [
+            "https://www.mapowerforward.com/ourcoalition/"
+          ]
+        }
+      ],
+      "not_listed": [
+        "Andover Climate Lobby",
+        "Belmont High School Climate Action Club",
+        "LORAX at Milton Academy",
+        "Roxbury Environmental Empowerment Project",
+        "Alternatives for Community and Environment",
+        "Boston Student Advisory Council",
+        "Greenroots Environmental Chelsea Organizers Youth Crew",
+        "Massachusetts Youth for Climate Justice",
+        "The Enviro Show on WXOJ-LP (103.3 fm)",
+        "Act on Mass",
+        "Sustainable Milton",
+        "Elders Climate Action Massachusetts",
+        "Sunrise Western Mass",
+        "Environment Massachusetts",
+        "Coalition for Social Justice",
+        "Greenroots",
+        "North American Indian Center of Boston",
+        "Community Labor United",
+        "Environmental League of Massachusetts",
+        "League of Women Voters of Massachusetts",
+        "Neighbor to Neighbor Massachusetts",
+        "Community Action Works"
+      ],
+      "events": [],
+      "projects": [
+        {
+          "name": "People Over Energy Profits",
+          "description": "Campaign by local advocacy, environmental and faith groups to rein in for-profit gas utilities: stop unnecessary gas pipeline spending and stop charging customers for utility lobbying, advertising and perks.",
+          "status": "active",
+          "link": "https://www.mapowerforward.com/people-over-energy-profits/",
+          "sources": [
+            "https://www.mapowerforward.com/people-over-energy-profits/"
+          ]
+        },
+        {
+          "name": "2025–2026 legislative priorities",
+          "description": "Bills the coalition is backing this session: no more gas expansion, no ratepayer money for utility lobbying, a Climate Change Superfund, and cleaner outdoor and indoor air for environmental justice communities.",
+          "status": "active",
+          "link": "https://www.mapowerforward.com/mpf-current-campaigns/",
+          "sources": [
+            "https://www.mapowerforward.com/mpf-current-campaigns/"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Send a letter: don't let for-profit gas utilities rip us off",
+          "kind": "task",
+          "description": "Online letter to decision makers asking them to rein in utility bills, gas expansion and utility lobbying charged to customers.",
+          "deadline": null,
+          "link": "https://actionnetwork.org/letters/dont-let-the-for-profit-gas-utility-companies-rip-us-off/",
+          "sources": [
+            "https://www.mapowerforward.com/people-over-energy-profits/",
+            "https://actionnetwork.org/letters/dont-let-the-for-profit-gas-utility-companies-rip-us-off/"
+          ]
+        },
+        {
+          "name": "Ask your legislator to sign the No Utility Money Challenge",
+          "kind": "task",
+          "description": "Ask your state legislator to pledge not to take campaign money from utility executives, lobbyists and PACs.",
+          "deadline": null,
+          "link": "https://www.mapowerforward.com/dashboard/",
+          "sources": [
+            "https://www.mapowerforward.com/dashboard/"
+          ]
+        },
+        {
+          "name": "Action Guide 2026",
+          "kind": "task",
+          "description": "The coalition's 2026 guide to actions supporters can take on its legislative priorities.",
+          "deadline": null,
+          "link": "https://www.mapowerforward.com/take-action/",
+          "sources": [
+            "https://www.mapowerforward.com/take-action/"
+          ]
+        }
+      ],
+      "event_updates": {}
+    },
+    "mycc": {
+      "map": "ma",
+      "fields": {},
+      "field_sources": [],
+      "new_members": [
+        {
+          "name": "Conserve Our World (The Winsor School)",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Fridays for Future MA",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Green Heifers (Gann Academy)",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "MassCOSH Youth Environmental Branch",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Middlesex School Biology Club",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "MIT Divest",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "New England Aquarium ClimaTeens",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Neighborhood of Affordable Housing (NOAH) Youth Organizers",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Northampton High School Environmental Club",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Speak for the Trees, Boston",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Spring Forward",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        },
+        {
+          "name": "Wayland High School Green Team",
+          "sources": [
+            "https://docs.google.com/document/d/1M_tVuaBl2rzaOxSgOeLqLCE4AjZ7dRSNnXQu1fasZOI/edit"
+          ]
+        }
+      ],
+      "not_listed": [
+        "Northfield Mount Hermon Ecoleaders",
+        "Andover High School Environmental Club",
+        "Belmont Hill Sustainability Club",
+        "Tree Boston",
+        "Clean Water Action",
+        "Massachusetts Youth for Climate Justice",
+        "Mothers Out Front",
+        "HealthLink",
+        "Jewish Climate Action Network",
+        "Massachusetts Interfaith Power & Light",
+        "The Enviro Show on WXOJ-LP (103.3 fm)",
+        "Extinction Rebellion Youth",
+        "Extinction Rebellion Western Mass",
+        "Act on Mass",
+        "Climate XChange",
+        "Climate Action Now Western Massachusetts",
+        "Sustainable Milton",
+        "Elders Climate Action Massachusetts",
+        "Mass Audubon - WMa",
+        "Mass Audubon Wellfleet Bay Wildlife Sanctuary",
+        "MIT Students for Environmental Action",
+        "Citizens' Climate Lobby - North Shore Chapter"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": [],
+      "event_updates": {}
+    },
+    "ejlt": {
+      "map": "ma",
+      "fields": {},
+      "field_sources": [],
+      "new_members": [
+        {
+          "name": "Health Care Without Harm",
+          "sources": [
+            "https://www.mass.gov/doc/ma-environmental-justice-legislative-table/download"
+          ]
+        },
+        {
+          "name": "Union of Concerned Scientists",
+          "sources": [
+            "https://www.mass.gov/doc/ma-environmental-justice-legislative-table/download"
+          ]
+        }
+      ],
+      "not_listed": [
+        "Green Energy Consumers Alliance"
+      ],
+      "events": [],
+      "projects": [],
+      "actions": [],
+      "event_updates": {}
+    },
+    "scjc": {
+      "map": "ma",
+      "fields": {
+        "last_activity": "2026-07-03"
+      },
+      "field_sources": [
+        "https://www.notoxicbiomass.org/"
+      ],
+      "new_members": [
+        {
+          "name": "350 Central Mass",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.350centralmass.org"
+        },
+        {
+          "name": "Beit Ahavah Reform Synagogue of Northampton",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.beitahavah.org"
+        },
+        {
+          "name": "Berkshire Environmental Action Team",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.thebeatnews.org/BeatTeam/"
+        },
+        {
+          "name": "Berkshires Democratic Socialists of America",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://berkshiresdsa.org"
+        },
+        {
+          "name": "350 Massachusetts",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://350mass.betterfutureproject.org"
+        },
+        {
+          "name": "Canton Residents for a Sustainable Equitable Future",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.sustainablecanton.com"
+        },
+        {
+          "name": "Climate Action Business Association",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://cabaus.org"
+        },
+        {
+          "name": "Concerned Citizens of Springfield",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.concernedcitizensforspringfield.org/"
+        },
+        {
+          "name": "Climate Code Blue",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.climatecodeblue.org"
+        },
+        {
+          "name": "Decarcerate Western Mass",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.facebook.com/decarwmass/"
+        },
+        {
+          "name": "Elders Climate Action Massachusetts",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.eldersclimateaction.org/mass-chapter/"
+        },
+        {
+          "name": "Environmental Justice Team, First Church of Christ Longmeadow",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ]
+        },
+        {
+          "name": "The Enviro Show on WXOJ-LP (103.3 fm)",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://enviroshow.wordpress.com/"
+        },
+        {
+          "name": "Extinction Rebellion Western Mass",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.xrwesternmass.org/"
+        },
+        {
+          "name": "Food & Water Watch",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ]
+        },
+        {
+          "name": "Franklin County Continuing the Political Revolution",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://fccpr.us"
+        },
+        {
+          "name": "Grassroots Central Mass",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://grassrootscentralmass.com"
+        },
+        {
+          "name": "Indian Orchard Citizens Council",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.facebook.com/myiocc/"
+        },
+        {
+          "name": "Jewish Climate Action Network",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.jewishclimate.org"
+        },
+        {
+          "name": "Keep Springfield Beautiful",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.facebook.com/KeepSpringfieldBeautiful"
+        },
+        {
+          "name": "Live Well Springfield",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://livewellspringfield.org/"
+        },
+        {
+          "name": "Longmeadow Pipeline Awareness Group",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.facebook.com/LongmeadowPipelineAwarenessGroup/"
+        },
+        {
+          "name": "Mass Forest Rescue",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.facebook.com/4climatenhealth/"
+        },
+        {
+          "name": "Mothers Out Front",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.mothersoutfront.org/team/massachusetts/"
+        },
+        {
+          "name": "Massachusetts Interfaith Power & Light",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.massipl.org"
+        },
+        {
+          "name": "No Fracked Gas in Mass",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://nofrackedgasbulletins.wordpress.com"
+        },
+        {
+          "name": "North Parish Unitarian Universalist Climate Justice Task Force",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ]
+        },
+        {
+          "name": "Partnership for Policy Integrity",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.pfpi.net/"
+        },
+        {
+          "name": "Pioneer Valley Asthma Coalition",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.pvasthmacoalition.org/"
+        },
+        {
+          "name": "Pioneer Valley Democratic Socialists of America",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://pioneervalleydsa.org"
+        },
+        {
+          "name": "Pioneer Valley Mothers Out Front",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.mothersoutfront.org/team/massachusetts/amherst/"
+        },
+        {
+          "name": "Pioneer Valley Project",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.pioneervalleyproject.org/"
+        },
+        {
+          "name": "Pioneer Valley Workers Center",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://pvworkerscenter.org"
+        },
+        {
+          "name": "Progressive Democrats of Mass",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.progressivedemsofmass.org/"
+        },
+        {
+          "name": "Public Higher Education Network of Massachusetts",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://phenomonline.org/"
+        },
+        {
+          "name": "The Resistance Center for Peace and Justice",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.theresistancecenter.org/"
+        },
+        {
+          "name": "Resist the Pipeline",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ]
+        },
+        {
+          "name": "RESTORE: The North Woods",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.restore.org"
+        },
+        {
+          "name": "Springfield Federation of Paraprofessionals",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.springfieldfederationofparaprofessionals.org/about"
+        },
+        {
+          "name": "Sunrise Hampden County",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.facebook.com/Sunrise-Movement-Hampden-County-100732674750863/"
+        },
+        {
+          "name": "Sunrise Northampton",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ]
+        },
+        {
+          "name": "Sustainable Wellesley",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.sustainablewellesley.com"
+        },
+        {
+          "name": "Take Back the Grid",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "http://www.takebackthegrid.org"
+        },
+        {
+          "name": "Unitarian Universalist Society of Greater Springfield",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "http://www.uuspringfield.org/"
+        },
+        {
+          "name": "Western Mass Medicare for All",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ],
+          "website": "https://www.wmmedicareforall.org/"
+        },
+        {
+          "name": "Western New England University Sunrise Hub",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ]
+        }
+      ],
+      "not_listed": [
+        "Conservation Law Foundation"
+      ],
+      "events": [],
+      "projects": [
+        {
+          "name": "No Toxic Biomass legislative campaign",
+          "description": "Campaign to close the loophole that lets municipal utilities count biomass toward their clean energy standard and to remove woody biomass from the Alternative Portfolio Standard (S.2288/H.3549), while opposing the proposed Palmer Renewable Energy biomass plant in East Springfield.",
+          "status": "active",
+          "link": "https://www.notoxicbiomass.org/legislative-campaign",
+          "sources": [
+            "https://www.notoxicbiomass.org/legislative-campaign",
+            "https://www.notoxicbiomass.org/"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Ask your legislators to keep the biomass loophole fix in the final energy bill",
+          "kind": "task",
+          "description": "Thank your state legislators and ask them to make sure the House-Senate compromise energy bill closes the municipal utility biomass loophole and removes biomass from the Alternative Portfolio Standard.",
+          "deadline": null,
+          "link": "https://www.notoxicbiomass.org/legislative-campaign",
+          "sources": [
+            "https://www.notoxicbiomass.org/legislative-campaign"
+          ]
+        },
+        {
+          "name": "Join the Springfield Climate Justice Coalition or the No Toxic Biomass campaign",
+          "kind": "task",
+          "description": "Organizations can sign on as partners in the fight against the Palmer biomass plant or join the coalition through an online form.",
+          "deadline": null,
+          "link": "https://docs.google.com/forms/d/e/1FAIpQLSeoZ6KD5jOGFej0JhHYaV2N0HFuSh8jixKD4jhd8J4kMyNJfw/viewform",
+          "sources": [
+            "https://www.notoxicbiomass.org/team"
+          ]
+        }
+      ],
+      "event_updates": {}
+    },
+    "gjc": {
+      "map": "ma",
+      "fields": {},
+      "field_sources": [],
+      "new_members": [
+        {
+          "name": "Building Pathways",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        },
+        {
+          "name": "Greater Boston Building Trades Unions",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        },
+        {
+          "name": "Greater Boston Labor Council",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        },
+        {
+          "name": "IBEW Local 103",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        },
+        {
+          "name": "New England Community Project",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        },
+        {
+          "name": "Sheet Metal Workers Local 17",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        }
+      ],
+      "not_listed": [
+        "Boston Student Advisory Council",
+        "Greenroots Environmental Chelsea Organizers Youth Crew",
+        "Coalition for Social Justice",
+        "Greenroots",
+        "Massachusetts Senior Action Council"
+      ],
+      "events": [],
+      "projects": [
+        {
+          "name": "Energy Democracy and Grid Modernization",
+          "description": "Campaign for community control over how the electric grid is rebuilt, so neighborhoods get a real voice and real benefits from new clean energy equipment and spending.",
+          "status": "active",
+          "link": "https://www.massclu.org/organizing/green-justice-coalition/",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        },
+        {
+          "name": "Project Labor Agreements Now for Massachusetts (PLAN for Mass)",
+          "description": "Push for public infrastructure projects to be built under Project Labor Agreements that open building-trades careers to women and people of color.",
+          "status": "active",
+          "link": "https://www.massclu.org/organizing/green-justice-coalition/",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        },
+        {
+          "name": "Public Transit Public Good",
+          "description": "Partnership of transit workers and riders working for a safe, reliable, affordable and accessible MBTA with good jobs.",
+          "status": "active",
+          "link": "https://www.massclu.org/organizing/green-justice-coalition/",
+          "sources": [
+            "https://www.massclu.org/organizing/green-justice-coalition/"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Join the Green Justice Coalition",
+          "kind": "task",
+          "description": "Sign-up form to get involved with the coalition's organizing.",
+          "deadline": null,
+          "link": "https://www.massclu.org/take-action/",
+          "sources": [
+            "https://www.massclu.org/take-action/"
+          ]
+        }
+      ],
+      "event_updates": {}
+    },
+    "crs": {
+      "map": "ma",
+      "fields": {
+        "last_activity": "2026-05-26"
+      },
+      "field_sources": [
+        "https://www.climateresilientschoolsma.org/"
+      ],
+      "new_members": [
+        {
+          "name": "UndauntedK12",
+          "website": "https://www.undauntedk12.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Mass Audubon",
+          "website": "https://www.massaudubon.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Massachusetts Teachers Association",
+          "website": "https://www.massteacher.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Green Energy Consumers Alliance",
+          "website": "https://www.greenenergyconsumers.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "350 Massachusetts",
+          "website": "https://350mass.betterfutureproject.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "AFT Massachusetts",
+          "website": "https://ma.aft.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Center for Green Schools",
+          "website": "https://centerforgreenschools.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Rewiring America",
+          "website": "https://www.rewiringamerica.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Clean Water Fund - ReThink Disposable",
+          "website": "https://cleanwaterfund.org/campaign/rethink-disposable",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Green Hudson",
+          "website": "https://greenhudson.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Sierra Club Massachusetts Chapter",
+          "website": "https://www.sierraclub.org/massachusetts",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "MTA Climate Action Network",
+          "website": "https://massteacher.org/current-initiatives/mta-climate-action-network",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Mothers Out Front Massachusetts",
+          "website": "https://www.mothersoutfront.org/team/massachusetts/",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Third Act",
+          "website": "https://thirdact.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Charles River Watershed Association",
+          "website": "https://www.crwa.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Hitchcock Center for the Environment",
+          "website": "https://www.hitchcockcenter.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Franklin County Continuing the Political Revolution",
+          "website": "https://fccpr.us/home/",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Health Resources in Action",
+          "website": "https://hria.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Massachusetts Building Electrification Accelerator",
+          "website": "https://electrifybuildings.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "MIT Climate Action Through Education (CATE)",
+          "website": "https://cate.mit.edu",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Elders Climate Action Massachusetts",
+          "website": "https://ecamass.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "ReVision Energy",
+          "website": "https://www.revisionenergy.com",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        },
+        {
+          "name": "Cooler Communities",
+          "website": "https://coolercommunities.org",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        }
+      ],
+      "not_listed": [],
+      "events": [],
+      "projects": [
+        {
+          "name": "District climate resolutions",
+          "description": "Supports local teams of students, teachers and residents (40+ districts) to write and win school-committee resolutions committing to climate education and climate-resilient school buildings, with bi-monthly network meetings, templates and office hours.",
+          "status": "active",
+          "link": "https://www.climateresilientschoolsma.org/ourstrategy",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/ourstrategy",
+            "https://www.climateresilientschoolsma.org/aboutus"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Join or start a district team",
+          "kind": "task",
+          "description": "Find your school district on the coalition's statewide map and join the local team pushing for a climate resolution.",
+          "deadline": null,
+          "link": "https://www.climateresilientschoolsma.org/ourstrategy",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/ourstrategy"
+          ]
+        },
+        {
+          "name": "Join the mailing list for network meetings",
+          "kind": "task",
+          "description": "Sign up to hear about the coalition's statewide network meetings and news.",
+          "deadline": null,
+          "link": "https://www.climateresilientschoolsma.org/contact",
+          "sources": [
+            "https://www.climateresilientschoolsma.org/contact"
+          ]
+        }
+      ],
+      "event_updates": {}
+    },
+    "hero": {
+      "map": "ma",
+      "fields": {},
+      "field_sources": [],
+      "new_members": [
+        {
+          "name": "Abundant Housing Massachusetts",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Agawam Democratic Committee",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Allandale Coalition",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Allston Brighton Community Development Corporation",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Boston Tenant Coalition",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Church of the Covenant Climate Jubilee Team",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Citizens' Housing & Planning Association (CHAPA)",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "City Life Vida Urbana",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Codman Square NDC",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Communities Responding to Extreme Weather (CREW)",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Dorchester Bay EDC",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "E4TheFuture",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Economic Mobility Pathways (EMPath)",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Equal Justice Needham Housing Group",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Fairmount Indigo CDC Collaborative",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Groundwork Lawrence",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Harborlight Community Partners",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Housing Corporation of Arlington",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Island Housing Trust",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "LISC Boston",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Madison Park Development Corporation",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Affordable Housing Alliance (MAHA)",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Alliance of HUD Tenants",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Association of Community Development Corporations (MACDC)",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Budget and Policy Center",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Community Action Network",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Law Reform Institute",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Public Health Association",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Smart Growth Alliance",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Massachusetts Voter Table",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Metro West Collaborative Development",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Neighborhood of Affordable Housing (NOAH), East Boston",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Northeast Energy Efficiency Council",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Progressive Democrats of Mass",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Progressive Massachusetts",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Progressive Needham",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Public Health Institute of Western Massachusetts",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Resonant Energy",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Rocky Mountain Institute",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Rosie's Place",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "South Boston NDC",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Southwest Boston CDC",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        },
+        {
+          "name": "Community Action Works",
+          "sources": [
+            "https://www.mahousingclimate.org/who-we-are"
+          ]
+        }
+      ],
+      "not_listed": [],
+      "events": [],
+      "projects": [
+        {
+          "name": "The AHEAD Act (S.1973/H.3194)",
+          "description": "Bill to double the Massachusetts deeds excise fee, raising over $400 million a year split evenly between affordable housing trust funds and the Global Warming Solutions Trust Fund for climate mitigation and adaptation.",
+          "status": "active",
+          "link": "https://www.mahousingclimate.org/our-campaign",
+          "sources": [
+            "https://www.mahousingclimate.org/",
+            "https://www.mahousingclimate.org/our-campaign"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Endorse the AHEAD campaign",
+          "kind": "task",
+          "description": "Organizations and individuals can endorse the campaign to raise the deeds excise fee for housing and climate investments.",
+          "deadline": null,
+          "link": "https://www.mahousingclimate.org/endorse",
+          "sources": [
+            "https://www.mahousingclimate.org/endorse"
+          ]
+        }
+      ],
+      "event_updates": {}
+    },
+    "vt_environmental_common_agenda": {
+      "map": "vt",
+      "fields": {
+        "last_activity": "2026-01-14"
+      },
+      "field_sources": [
+        "https://vermontconservationvoters.com/commonagenda26/"
+      ],
+      "new_members": [],
+      "not_listed": [],
+      "events": [],
+      "projects": [],
+      "actions": [],
+      "event_updates": {}
+    },
+    "vt_energy_action_network": {
+      "map": "vt",
+      "fields": {
+        "last_activity": "2026-09-23"
+      },
+      "field_sources": [
+        "https://eanvt.org/2026-ean-annual-network-summit/"
+      ],
+      "new_members": [],
+      "not_listed": [],
+      "events": [],
+      "projects": [
+        {
+          "name": "2026 Annual Progress Report for Vermont",
+          "description": "EAN's yearly report tracking Vermont's energy use, costs and greenhouse gas emissions against the state's climate goals; key findings were presented at the September 2026 Network Summit.",
+          "status": "active",
+          "link": "https://eanvt.org/2026-annual-report/",
+          "sources": [
+            "https://eanvt.org/2026-ean-annual-network-summit/",
+            "https://eanvt.org/"
+          ]
+        }
+      ],
+      "actions": [],
+      "event_updates": {}
+    },
+    "vt_vecan": {
+      "map": "vt",
+      "fields": {
+        "last_activity": "2026-08-10"
+      },
+      "field_sources": [
+        "https://www.vecan.net/energynews"
+      ],
+      "new_members": [
+        {
+          "name": "Energy Action Network",
+          "website": "https://eanvt.org",
+          "sources": [
+            "https://www.vecan.net/theteam"
+          ]
+        }
+      ],
+      "not_listed": [],
+      "events": [],
+      "projects": [],
+      "actions": [
+        {
+          "name": "Start or join a town energy committee",
+          "kind": "task",
+          "description": "Check the statewide map to see if your town has an energy committee and join it, or use VECAN's guide to start one.",
+          "deadline": null,
+          "link": "https://www.vecan.net/take-action",
+          "sources": [
+            "https://www.vecan.net/take-action"
+          ]
+        }
+      ],
+      "event_updates": {}
+    },
+    "vt_actonclimatevt": {
+      "map": "vt",
+      "fields": {
+        "last_activity": "2025-09-21"
+      },
+      "field_sources": [
+        "https://www.actonclimatevt.org/events"
+      ],
+      "new_members": [
+        {
+          "name": "Audubon Vermont",
+          "website": "https://vt.audubon.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Capstone Community Action",
+          "website": "https://www.capstonevt.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Cathedral Square Corporation",
+          "website": "https://cathedralsquare.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Champlain Valley Office of Economic Opportunity",
+          "website": "https://www.cvoeo.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Community Action Works",
+          "website": "https://communityactionworks.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Conservation Law Foundation (Vermont)",
+          "website": "https://www.clf.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Downstreet Housing & Community Development",
+          "website": "https://downstreet.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "NeighborWorks of Western Vermont - Heat Squad",
+          "website": "https://www.heatsquad.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "NOFA-VT",
+          "website": "https://nofavt.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Renewable Energy Vermont",
+          "website": "https://www.revermont.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Rights & Democracy Vermont",
+          "website": "https://www.radvt.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Sierra Club Vermont Chapter",
+          "website": "https://www.sierraclub.org/vermont",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "The Nature Conservancy in Vermont",
+          "website": "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Third Act Vermont",
+          "website": "https://thirdact.org/vermont/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Affordable Housing Coalition",
+          "website": "https://www.vtaffordablehousing.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Businesses for Social Responsibility",
+          "website": "https://vbsr.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Climate & Health Alliance",
+          "website": "https://www.vtcha.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Conservation Voters",
+          "website": "https://vermontconservationvoters.com/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Interfaith Action",
+          "website": "https://viavt.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Interfaith Power & Light",
+          "website": "https://vtipl.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Low Income Advocacy Council",
+          "website": "http://www.vliac.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Natural Resources Council",
+          "website": "https://vnrc.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Public Interest Research Group",
+          "website": "https://www.vpirg.org",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Yankee Decommissioning Alliance",
+          "website": "https://vydecommissioning.com/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Youth Lobby",
+          "website": "http://www.youthlobby.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "Vermonters for a New Economy",
+          "website": "https://www.neweconomyvt.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        },
+        {
+          "name": "350Vermont",
+          "website": "https://350vermont.org/",
+          "sources": [
+            "https://www.actonclimatevt.org/about"
+          ]
+        }
+      ],
+      "not_listed": [],
+      "events": [],
+      "projects": [],
+      "actions": [],
+      "event_updates": {}
+    },
+    "vt_t4vt": {
+      "map": "vt",
+      "fields": {
+        "last_activity": "2026-09-23"
+      },
+      "field_sources": [
+        "https://www.t4vt.org/in-the-news"
+      ],
+      "new_members": [
+        {
+          "name": "Old Spokes Home",
+          "sources": [
+            "https://www.t4vt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Businesses for Social Responsibility",
+          "sources": [
+            "https://www.t4vt.org/about"
+          ]
+        },
+        {
+          "name": "Vermont Clean Communities (Clean Cities Coalition)",
+          "website": "https://vtcleancommunities.org",
+          "sources": [
+            "https://www.t4vt.org/about"
+          ]
+        },
+        {
+          "name": "Vital Communities",
+          "sources": [
+            "https://www.t4vt.org/about"
+          ]
+        }
+      ],
+      "not_listed": [
+        "American Lung Association in Vermont"
+      ],
+      "events": [],
+      "projects": [
+        {
+          "name": "Ride Public campaign",
+          "description": "Statewide campaign, launched September 22, 2026 in Burlington, for dedicated and sustainable funding for Vermont's public transit as essential infrastructure.",
+          "status": "active",
+          "link": "https://www.t4vt.org/ride-public",
+          "sources": [
+            "https://www.t4vt.org/ride-public",
+            "https://www.t4vt.org/in-the-news"
+          ]
+        },
+        {
+          "name": "2026 legislative priorities",
+          "description": "Policy priorities for affordable, sustainable mobility: protecting transit, safer streets and clean vehicle programs, and aligning transportation spending with Vermont's climate, housing and equity goals.",
+          "status": "active",
+          "link": "https://www.t4vt.org/advocate",
+          "sources": [
+            "https://www.t4vt.org/advocate"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Sign the Ride Public petition",
+          "kind": "task",
+          "description": "Petition calling for dedicated, sustainable funding for Vermont public transit.",
+          "deadline": null,
+          "link": "https://secure.ngpvan.com/lyw_-zUHCkCk41d3VtmIjQ2",
+          "sources": [
+            "https://www.t4vt.org/ride-public"
+          ]
+        },
+        {
+          "name": "Share your transit story",
+          "kind": "task",
+          "description": "Tell T4VT how public transit (or the lack of it) affects you or someone you know, to support the Ride Public campaign.",
+          "deadline": null,
+          "link": "https://www.t4vt.org/tell-your-story",
+          "sources": [
+            "https://www.t4vt.org/ride-public"
+          ]
+        }
+      ],
+      "event_updates": {}
+    },
+    "vt_clean_communities_coalition": {
+      "map": "vt",
+      "fields": {},
+      "field_sources": [],
+      "new_members": [
+        {
+          "name": "Climate Economy Action Center of Addison County",
+          "sources": [
+            "https://vtcleancommunities.org/about/current-stakeholders/"
+          ]
+        },
+        {
+          "name": "Old Spokes Home",
+          "sources": [
+            "https://vtcleancommunities.org/about/current-stakeholders/"
+          ]
+        },
+        {
+          "name": "Vermont Energy & Climate Action Network",
+          "sources": [
+            "https://vtcleancommunities.org/about/current-stakeholders/"
+          ]
+        },
+        {
+          "name": "Chittenden Area Transportation Management Association",
+          "sources": [
+            "https://vtcleancommunities.org/about/current-stakeholders/"
+          ]
+        },
+        {
+          "name": "Brandon Energy Committee",
+          "sources": [
+            "https://vtcleancommunities.org/about/current-stakeholders/"
+          ]
+        },
+        {
+          "name": "Vermont Foodbank",
+          "sources": [
+            "https://vtcleancommunities.org/about/current-stakeholders/"
+          ]
+        }
+      ],
+      "not_listed": [],
+      "events": [],
+      "projects": [],
+      "actions": [],
+      "event_updates": {}
+    },
+    "vt_ej_network": {
+      "map": "vt",
+      "fields": {
+        "last_activity": "2026-06-13"
+      },
+      "field_sources": [
+        "https://environmentaljusticevt.org/ej-summit-2026/"
+      ],
+      "new_members": [],
+      "not_listed": [],
+      "events": [],
+      "projects": [],
+      "actions": [
+        {
+          "name": "Become a member of the VT-EJ Network",
+          "kind": "task",
+          "description": "Sign-up form to join the Vermont Environmental Justice Network.",
+          "deadline": null,
+          "link": "https://docs.google.com/forms/d/e/1FAIpQLSfPClALaaokiKYuQkSWF_Z1Phw-ZAmyq2Jnx710Oxq-VPhKjQ/viewform",
+          "sources": [
+            "https://environmentaljusticevt.org/"
+          ]
+        }
+      ],
+      "event_updates": {}
+    }
+  },
+  "not_found": [
+    "cccc"
+  ],
+  "notes": "[mpf] Member comparison uses the 'Our Coalition' page (planning team + leader team organizations by category, ~110 names). Matched loosely: 'Pilgrim Coalition' = 'Pilgrim Legislative Advisory Coalition' (assumed same, so not in new/not_listed); '350 Massachusetts' = '350Mass/Better Future Project'. Many not_listed entries look like they came from the MYCC list rather than the MPF page. Events page says 'Check back soon'; no upcoming events found. The Utility Influence Dashboard press event (2026-09-29) is past. [mycc] MYCC has no website of its own; the only published member list found is its Purpose Statement (Google Doc linked from ourclimate.us/state-campaigns/), whose 'Who we are' section names ~30 youth members. Its 'Founding members', 'Additional members' and 'Adult Ally Organizations' sections are blank in the text export (probably images), so adult supporter groups in not_listed (Mothers Out Front, JCAN, MIPL, Climate XChange, etc.) may simply be unreadable rather than dropped. The doc's membership note is dated 9/27/22 and says Sunrise Boston/Western MA/Worcester hubs were inactive and Mass Audubon was not then an official member. Loose matches treated as listed: Salem HS Sustainability Club = Salem HS Environmental Club; Newton South HS Environmental Club ~ Newton South Sustainability Squad; MASSPIRG Amherst/Boston = MASSPIRG Students; MassCOSH Teens Lead at Work ~ MassCOSH Youth Environmental Branch (also listed as new in case they differ); Sunrise hubs = 'Sunrise Movement'. 'Tree Boston' may be the same group as 'Speak for the Trees, Boston' - check before acting. No new public events found; the existing 2026-10-04 call has no public page. MYCC Instagram is @mayouthclimatecoalition (not readable without login). [ejlt] The Table's Action Network group page shows no description, actions or member list. Member comparison uses the Table's own joint comments of April 15, 2021 (hosted on mass.gov), which list 11 member organizations - an old list. No current events/projects/actions found on its own pages. [cccc] Not found: no own website, social page, or MYCC page about the Cross Campus Climate Coalition turned up (searches for the name return only a Timeful scheduling poll titled 'Cross Campus Climate Coalition' and an unrelated Jan 2025 Colleges of the Fenway 'Cross-Campus Climate Mixer'). The MYCC Instagram (@mayouthclimatecoalition) may mention it but requires login. Ask MYCC for a link. [scjc] The site's 'Who we are' page lists 'Organizations that support the No Toxic Biomass campaign' (~55, including SCJC itself); it does not separate SCJC members from campaign supporters, so new_members are campaign supporters. Food & Water Watch's link there points to a staging site, so no website recorded. 'Massachusetts Power and Light' on the page links to massipl.org, recorded as Massachusetts Interfaith Power & Light. Site footer says (c) 2021, but news posts run to July 3, 2026. [gjc] greenjusticecoalition.org now redirects (302) to Community Labor United's page https://www.massclu.org/organizing/green-justice-coalition/ - consider updating the website field. Member comparison uses that page's 'Leadership Team and Our Partners' list (12 organizations; individual names not recorded). No dated events found; newest dated item on the page is from 2024. [crs] Members are the 23 partner logos on the About page (names from logo alt text/link targets; e.g. 'Clean Water Fund - ReThink Disposable', 'Massachusetts Building Electrification Accelerator' (electrifybuildings.org) inferred from logo file names and links). The page also has a map of 40+ district teams (not listed as members). Last announced network meeting was May 26, 2026; no fall 2026 date posted yet. [hero] The coalition now calls itself the AHEAD Coalition (Affordable Housing and Environmental Adaptation Dollars); the bill was originally named HERO. Consider renaming. All 14 current members are on its 'Coalition Members' list. 'Toxics Action Center' on the list is recorded as Community Action Works (its current name); 'Massachusetts Community Action Network' is a different group from the Massachusetts Climate Action Network. The site's Take Action page still points to an old-session HERO bill (S.1799/H.2894) letter tool, so it was not recorded. No dated events or posts newer than 2019 on the site. [vt_environmental_common_agenda] All 22 partners on the 2026 partner list match our members; nothing new or dropped. The agenda is a VCV project with no event calendar of its own; VCV's fall canvass tour (with VPIRG) is VCV's, not the coalition's, so it was not added here. [vt_energy_action_network] Every non-profit on the Members & Partners page is already linked (VECAN, Vermont Clean Communities and VHFA excluded as before); nothing in not_listed. The existing Dec 1 Post-Election Gathering page already is our link; it has pricing (early-bird by Nov 6) but no separate registration link yet, so no event_update. Agenda due early November. [vt_vecan] The VECAN Partners page names five support organizations (VNRC, Vital Communities, EAN, VCRD, Efficiency Vermont); EAN was missing from our members. The town energy committee map is an Atlist embed whose data API requires login, so committees could not be listed. No upcoming events posted; the 2025 conference is the latest in the archive. [vt_actonclimatevt] Member list is the 'Coalition Members' section of the About page (27 organizations; names normalized to the names used elsewhere on our VT map where obvious). The site's platform is labelled 2021 and the newest events are from 2025 (Sun Day, Sept 21, 2025); no upcoming events or current campaigns posted. Possibly winding down - not marked inactive. [vt_t4vt] Members from the logo line on the About page (16 organizations). American Lung Association in Vermont is no longer in it. The Ride Public page also promotes the national Week Without Driving (Oct 1-8, 2026), which T4VT does not host, so it was not added as an event. [vt_clean_communities_coalition] Current Stakeholders page lists ~85 stakeholders, mostly businesses, utilities, towns and agencies; only non-profit/community ones are listed as new_members, following the existing scope. All 7 current members still appear. The /projects/ page shows several projects (Northeast Renewable Diesel Working Group, Energy to Community Stowe EV readiness, EMPOWER workplace charging, Replace Your Ride, Future of Rural Transit, CIISR) but none is dated as current, so none was added. No dated news or events found. [vt_ej_network] No organizational member list is published; the 'About the Team' page lists a steering committee of individuals only (not recorded). Its June 12-13, 2026 EJ Summit is past; no upcoming events posted. Socials: instagram.com/vtej.network."
+}

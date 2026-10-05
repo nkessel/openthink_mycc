@@ -1,0 +1,723 @@
+[
+ {
+  "map": "ma",
+  "id": "students_for_environmental_action_at_weston_high_school",
+  "name": "Students for Environmental Action at Weston High School",
+  "website": "https://www.westonschools.org/high/student-activities-overview-handbook/students-for-environmental-action/",
+  "description": "Student club at Weston High School that runs recycling and composting, removes invasive plants, grows lettuce in the school greenhouse and lobbies state legislators on climate bills.",
+  "type": "university",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "youth_climate_action_now",
+  "name": "Youth Climate Action Now",
+  "website": "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/",
+  "description": "Youth-led group under Climate Action Now that holds monthly workshops, webinars, creative events and advocacy training to get young people involved in climate action.",
+  "type": "youth_org",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Youth Climate Action Now"
+   ],
+   "actions": [
+    "Join Youth Climate Action Now"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "youth_action_collaborative_alumni_node_at_clean_water_action",
+  "name": "Youth Action Collaborative Alumni Node at  Clean Water Action",
+  "website": "https://cleanwater.org/",
+  "description": "Clean Water Action program that trains high school students from environmental justice communities as advocates on climate justice, PFAS, lead and zero waste; started with a Malden High School cohort, with an alumni chapter planned.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "healthlink",
+  "name": "HealthLink",
+  "website": "http://www.citizensinaction.org/",
+  "description": "Grassroots environmental group based in Swampscott focused on reducing pollution and toxins, especially power plant and air pollution, and promoting renewable energy.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "climate_action_now_western_ma",
+  "name": "Climate Action Now Western Massachusetts",
+  "website": "https://climateactionnowma.org/",
+  "description": "Grassroots volunteer group in Western Massachusetts focused on climate justice organizing and public education; its youth wing is Youth Climate Action Now.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "can_e_fall_gathering",
+     "name": "Fall Gathering: Nurturing biodiversity in a time of ecological chaos",
+     "date": "2026-09-29T17:30:00",
+     "link": "https://climateactionnowma.org",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ev_can_1",
+     "name": "Sierra Club Forest Protection Team Monthly Meeting",
+     "date": "2026-10-08T19:00:00",
+     "link": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ev_can_2",
+     "name": "Racism, White Supremacy and Climate Justice Working Group Meeting",
+     "date": "2026-10-12T18:00:00",
+     "link": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ev_can_3",
+     "name": "Wildlands Campaign Working Group Meeting",
+     "date": "2026-10-14T19:00:00",
+     "link": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ev_can_4",
+     "name": "Monthly Gathering - 4th Monday",
+     "date": "2026-10-26T19:00:00",
+     "link": "https://climateactionnowma.org/event/monthly-gathering-4th-monday/2026-10-26/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "ev_can_5",
+     "name": "MA Pollinator Network monthly session",
+     "date": "2026-10-27T19:00:00",
+     "link": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "CREATE farmer mutual aid",
+    "Miyawaki mini-forest group",
+    "No Clearcut for Profit (Eversource tree clearing)",
+    "A Climate Justice Plan for Springfield",
+    "Mutual Aid"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sunrise_amherst",
+  "name": "Sunrise Amherst",
+  "website": "https://hubs.sunrisemovement.org/amherst/",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "coalition_for_social_justice",
+  "name": "Coalition for Social Justice",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": [
+    "Volunteer with Coalition for Social Justice"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "350ma_berkshires",
+  "name": "350 Massachusetts Berkshires",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "partnership_for_policy_integrity",
+  "name": "Partnership for Policy Integrity",
+  "website": "",
+  "description": "",
+  "type": "unknown",
+  "gaps": [
+   "description",
+   "type",
+   "website",
+   "geographic_focus"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Massachusetts Biomass Policy Work"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "boston_climate_action_network",
+  "name": "Boston Climate Action Network",
+  "website": "https://bostonclimateaction.org/",
+  "description": "Resident-led group that organizes Boston neighborhoods and works with social justice allies to push the city and state for climate justice, on issues like green buildings, community choice electricity, gas leaks and school sustainability.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "boston_climate_action_networ_e1",
+     "name": "BCAN Action Team meeting",
+     "date": "2026-10-22",
+     "link": "https://bostonclimateaction.org/upcoming-events/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Boston Public Schools campaign",
+    "Housing Justice is Climate Justice campaign",
+    "Green Buildings, Not Greenhouse Gases (BERDO)",
+    "Stop Energy Scams"
+   ],
+   "actions": [
+    "Volunteer with BCAN"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "community_labor_united",
+  "name": "Community Labor United",
+  "website": "https://www.massclu.org/",
+  "description": "Boston coalition-building organization that brings community groups and labor unions together on campaigns for working families, including green energy through the Green Justice Coalition, childcare, transit and construction worker protections.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Green Justice Coalition"
+   ],
+   "actions": [
+    "Join the Green Justice Coalition"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "green_energy_consumers_alliance",
+  "name": "Green Energy Consumers Alliance",
+  "website": "https://www.greenenergyconsumers.org/",
+  "description": "Cambridge-based consumer nonprofit that educates and organizes households to switch to clean energy through programs for green power, electric vehicles, solar, heat pumps and efficiency, and advocates for climate policy.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "green_energy_consumers_allia_e2",
+     "name": "Shave the Peak: Save Energy When It Matters Most (webinar)",
+     "date": "2026-10-02T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_WkagQhN9RcmCgQZhNdc1fw"
+    },
+    {
+     "id": "green_energy_consumers_allia_e3",
+     "name": "Everything You Need to Know About Charging Adaptors",
+     "date": "2026-10-09T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_fq7m_wHXTtiQvE8_8Y2inw"
+    },
+    {
+     "id": "green_energy_consumers_allia_e5",
+     "name": "Harvest Your Energy Festival (Medford)",
+     "date": "2026-10-17T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/harvestfestival0",
+     "rsvp_link": ""
+    },
+    {
+     "id": "green_energy_consumers_allia_e6",
+     "name": "Heat Pumps & Time-Varying Rates",
+     "date": "2026-10-28T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/heatpumpstimevaryingrates",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_nNcxKAsERNyNLzbJlqHwSA"
+    },
+    {
+     "id": "green_energy_consumers_allia_e7",
+     "name": "Emerging Clean Energy Technologies",
+     "date": "2026-11-03T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/emergingcleantechnologies",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_g39im1dzSQyV1KQRFd_GrA"
+    },
+    {
+     "id": "green_energy_consumers_allia_e8",
+     "name": "How to Use Online Tools to Plan an Electric Road Trip",
+     "date": "2026-11-04T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_F0cBDW9IQDWqBr-ZEpxVZw"
+    },
+    {
+     "id": "green_energy_consumers_allia_e9",
+     "name": "Annual Fall Meeting",
+     "date": "2026-11-09T17:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
+     "rsvp_link": "https://www.eventbrite.com/e/green-energy-consumers-annual-fall-meeting-tickets-2001889844414"
+    },
+    {
+     "id": "green_energy_consumers_allia_e10",
+     "name": "Winter Driving in an Electric Car",
+     "date": "2026-12-03T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/winterdrivingelectriccar",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_-i5Utq1BQaedL7kwKraILw"
+    },
+    {
+     "id": "green_energy_consumers_allia_e11",
+     "name": "Electric Vehicle Battery Health",
+     "date": "2026-12-16T12:00:00",
+     "link": "https://www.greenenergyconsumers.org/event/electricvehiclebatteryhealth",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_bzvXot2bST68BWwiX_I-rQ"
+    }
+   ],
+   "projects": [
+    "Shave the Peak",
+    "Heat pump program",
+    "Green Powered, Solar and Drive Green programs"
+   ],
+   "actions": [
+    "Become an EV Ambassador",
+    "Sign up for Shave the Peak alerts"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "massachusetts_peace_action",
+  "name": "Massachusetts Peace Action",
+  "website": "https://masspeaceaction.org/",
+  "description": "Cambridge-based peace organization working on nuclear disarmament and diplomacy that also runs a Peace and Climate campaign linking militarism and the climate crisis.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [
+    {
+     "id": "massachusetts_peace_action_e1",
+     "name": "Protest Governor Healey's Pro-Nuclear Power Summit",
+     "date": "2026-09-30T08:00:00",
+     "link": "https://masspeaceaction.org/event/protest-governor-healeys-pro-nuclear-power-summit/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "massachusetts_peace_action_e2",
+     "name": "Stop the Madness in Washington (protest)",
+     "date": "2026-10-03T12:00:00",
+     "link": "https://masspeaceaction.org/event/stop-the-madness-in-washington/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "massachusetts_peace_action_e3",
+     "name": "Earth's Greatest Enemy: In-Person Film Screening",
+     "date": "2026-10-03T14:00:00",
+     "link": "https://masspeaceaction.org/event/earths-greatest-enemy-an-in-person-film-screening/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "massachusetts_peace_action_e4",
+     "name": "Eyes Wide Open II at Open Streets Allston/Brighton",
+     "date": "2026-10-04T10:30:00",
+     "link": "https://masspeaceaction.org/event/eyes-wide-open-ii-at-open-streets-allston-brighton/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "massachusetts_peace_action_e5",
+     "name": "Your Guide to the MA 2026 Ballot Questions",
+     "date": "2026-10-05T19:30:00",
+     "link": "https://masspeaceaction.org/event/your-guide-to-the-ma-2026-ballot-questions/",
+     "rsvp_link": ""
+    },
+    {
+     "id": "massachusetts_peace_action_e6",
+     "name": "Earth's Greatest Enemy: Conversation with Director Abby Martin",
+     "date": "2026-10-08T19:00:00",
+     "link": "https://masspeaceaction.org/event/earths-greatest-enemy-a-conversation-with-abby-martin/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "progressive_democrats_of_mass",
+  "name": "Progressive Democrats of Mass",
+  "website": "https://www.progressivedemsofmass.org/",
+  "description": "Statewide group of progressive citizens that works on elections, training and coalition work for social justice and reform, and takes part in the Mass Power Forward clean energy coalition.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "progressive_democrats_of_mas_e1",
+     "name": "PDM Public Policy Forum: Question 3, the Top Two Primary",
+     "date": "2026-10-02T11:00:00",
+     "link": "https://www.progressivedemsofmass.org/events",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sustainable_sharon_coalition",
+  "name": "Sustainable Sharon Coalition",
+  "website": "https://www.sustainablesharon.org/",
+  "description": "Sharon community group, active since 2013, that educates and organizes residents on sustainability, including land and water conservation, energy and home energy assessments.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "sustainable_sharon_coalition_e1",
+     "name": "SSC Community Meeting",
+     "date": "2026-12-08T18:30:00",
+     "link": "https://www.sustainablesharon.org/blog/ssc-community-meeting-sharons-energy",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [
+    "Sustainable Sharon Coalition Initiatives",
+    "Solarize Sharon campaign"
+   ],
+   "actions": [
+    "Join an SSC interest group or volunteer position"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "league_of_women_voters_of_massachusetts",
+  "name": "League of Women Voters of Massachusetts",
+  "website": "https://lwvma.org/",
+  "description": "State League of Women Voters that has a steering committee on environmental action and advocates for climate, energy and water legislation and runs a Climate and Energy Solutions series.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "2026 Ballot Question Voter Guide"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "chinese_progressive_association",
+  "name": "Chinese Progressive Association",
+  "website": "https://cpaboston.org/",
+  "description": "Boston community organizing group, founded in 1977, that organizes Chinese-American residents; its Green Justice program covers weatherization jobs, transit justice, air quality and community microgrids through the Green Justice Coalition.",
+  "type": "501c3",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Green Justice (Environmental Justice)"
+   ],
+   "actions": [
+    "Volunteer or Become a Member of CPA"
+   ]
+  }
+ },
+ {
+  "map": "ma",
+  "id": "green_weymouth",
+  "name": "Green Weymouth",
+  "website": "https://greenweymouth.com/",
+  "description": "Weymouth community coalition that educates and advocates for conservation, sustainable policies, clean energy and green growth in town.",
+  "type": "coalition",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "ma",
+  "id": "sustainable_business_network_of_massachusetts",
+  "name": "Sustainable Business Network of Massachusetts",
+  "website": "https://www.sbnmass.org/",
+  "description": "Cambridge nonprofit business association, founded in 1988, that builds networks of independent, socially and environmentally minded businesses and runs programs such as the Boston Local Food Network.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Sustainable Business of the Year Awards"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vtipl",
+  "name": "Vermont Interfaith Power & Light",
+  "website": "https://www.vtipl.org",
+  "description": "Faith-based climate group that partners with 75+ faith communities and gives Climate Action Grants for building energy upgrades.",
+  "type": "faith_org",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Climate Action Grants for faith communities"
+   ],
+   "actions": [
+    "Board member (several openings)"
+   ]
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_lake_champlain_committee",
+  "name": "Lake Champlain Committee",
+  "website": "https://www.lakechamplaincommittee.org",
+  "description": "Burlington-based advocacy group working since 1963 for a healthy, accessible Lake Champlain; a partner on the Environmental Common Agenda.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_carshare_vermont",
+  "name": "CarShare Vermont",
+  "website": "https://www.carsharevt.org",
+  "description": "Car-sharing service in the Burlington area; a member of Transportation for Vermonters, Energy Action Network and Vermont Clean Communities.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vcrd",
+  "name": "Vermont Council on Rural Development",
+  "website": "https://www.vtrural.org",
+  "description": "Montpelier nonprofit supporting community development; one of the five supporting organizations of VECAN and an Energy Action Network member.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_aarp_vermont",
+  "name": "AARP Vermont",
+  "website": "https://states.aarp.org/vermont",
+  "description": "Vermont state office of AARP; a member of Transportation for Vermonters.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_charlotte_energy_committee",
+  "name": "Charlotte Energy & Climate Action Committee",
+  "website": "https://www.charlotteenergy.org",
+  "description": "Town committee working on energy since 2010; championed the 2025-26 Town Energy Modernization Project (rooftop solar and heat pumps for town buildings).",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [
+    "Town Energy Modernization Project"
+   ],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_cornerstone_housing_partners",
+  "name": "Cornerstone Housing Partners",
+  "website": "https://www.cornerstonehousingpartners.org",
+  "description": "Rutland-based housing nonprofit that offers homebuyer assistance, home repair grants and loans, and the Heat Squad energy audits and energy loans for efficient home upgrades.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_nature_conservancy_vt",
+  "name": "The Nature Conservancy in Vermont",
+  "website": "https://www.nature.org/en-us/about-us/where-we-work/united-states/vermont/",
+  "description": "Vermont chapter of The Nature Conservancy, which has protected over 300,000 acres, stewards dozens of natural areas and runs a conservation grant program.",
+  "type": "unknown",
+  "gaps": [
+   "type",
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_vsjf",
+  "name": "Vermont Sustainable Jobs Fund",
+  "website": "https://www.vsjf.org",
+  "description": "Montpelier nonprofit that supports Vermont's sustainable economy through business accelerators in clean energy and forestry, business coaching for energy contractors and the Farm to Plate network.",
+  "type": "unknown",
+  "gaps": [
+   "type"
+  ],
+  "existing": {
+   "events": [
+    {
+     "id": "vt_vsjf_e_farm_to_plate_gathering_2026",
+     "name": "16th Annual Farm to Plate Network Gathering",
+     "date": "2026-11-19",
+     "link": "https://www.vsjf.org/",
+     "rsvp_link": ""
+    }
+   ],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_greensboro_energy_committee",
+  "name": "Greensboro Energy & Climate Action Committee",
+  "website": "https://greensborovt.gov/energy-committee/",
+  "description": "Town committee working for an equitable transition to a sustainable energy future through home energy efficiency, clean energy projects, education and community action.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_shelburne_energy_committee",
+  "name": "Shelburne Climate & Energy Committee",
+  "website": "https://www.shelburnevt.org/470/Climate-Energy-Committee",
+  "description": "Town committee that works on the Shelburne long-term energy future per the Town Plan, with projects on renewable-energy requirements for new construction, low-income weatherization and rooftop solar on town buildings.",
+  "type": "government",
+  "gaps": [],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ },
+ {
+  "map": "vt",
+  "id": "vt_families_rise_up",
+  "name": "Families Rise Up",
+  "website": "https://www.350vermont.org/nodes",
+  "description": "Group of central Vermont families organizing together toward a just transition, listed as a 350Vermont node.",
+  "type": "informal_group",
+  "gaps": [
+   "last_activity"
+  ],
+  "existing": {
+   "events": [],
+   "projects": [],
+   "actions": []
+  }
+ }
+]

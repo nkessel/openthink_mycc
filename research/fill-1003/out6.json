@@ -1,0 +1,412 @@
+{
+ "groups": {
+  "newton_south_high_school_environmental_club": {
+   "map": "ma",
+   "fields": {
+    "website": "https://nshs.newton.k12.ma.us/student-activities/clubs-activities"
+   },
+   "field_sources": [
+    "https://nshs.newton.k12.ma.us/student-activities/clubs-activities",
+    "https://docs.google.com/document/d/1m0hkd6w8q69CKeWG6MezjyLS_yffAqY_TcGy8quKSpQ/edit?usp=sharing"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "sustainable_sharon_coalition_youth": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3"
+   },
+   "field_sources": [
+    "https://www.sustainablesharon.org/about",
+    "https://www.sustainablesharon.org/about/interest-groups"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "jewish_climate_action_network": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-24"
+   },
+   "field_sources": [
+    "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy-5/"
+   ],
+   "events": [
+    {
+     "name": "Chutzpah 2026: Phone Calls for Our Democracy (Oct 14)",
+     "date": "2026-10-14T18:00:00",
+     "end": "2026-10-14T20:00:00",
+     "location": "Online",
+     "online": true,
+     "description": "Phone bank with JALSA and the Western Massachusetts Dayenu Circle to get climate voters to the polls for the midterms; training provided for first-time callers.",
+     "link": "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy-3/",
+     "rsvp_link": "https://www.mobilize.us/jalsa/event/1012121/",
+     "sources": [
+      "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy-3/"
+     ]
+    },
+    {
+     "name": "Chutzpah 2026: Phone Calls for Our Democracy (Oct 27)",
+     "date": "2026-10-27T18:00:00",
+     "location": "Online",
+     "online": true,
+     "description": "Phone bank with JALSA and the Western Massachusetts Dayenu Circle to get climate voters to the polls for the midterms; training provided for first-time callers.",
+     "link": "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy-4/",
+     "rsvp_link": "https://www.mobilize.us/jalsa/event/1012121/",
+     "sources": [
+      "https://jewishclimate.org/wp-json/tribe/events/v1/events?start_date=2026-10-03&per_page=50"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "jcan_e_chutzpah_calls": {
+     "rsvp_link": "https://secure.everyaction.com/YPQ-ToRwlUWPPNCyArD94w2?group=410&role=338244&shifts=232482&location=8279",
+     "sources": [
+      "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy/"
+     ]
+    },
+    "jcan_e_frameworks": {
+     "rsvp_link": "https://us02web.zoom.us/meeting/register/SpSbJLG9R3aRlh5jBN9JMQ",
+     "sources": [
+      "https://jewishclimate.org/event/jewish-frameworks-for-our-challenging-times/"
+     ]
+    },
+    "jcan_e_plastic": {
+     "rsvp_link": "https://us02web.zoom.us/meeting/register/GOWw8_-zQkukWNsqxy_lHg",
+     "sources": [
+      "https://jewishclimate.org/event/plastic-pollution-health-climate-and-solutions/"
+     ]
+    },
+    "jcan_e_eco_poets": {
+     "rsvp_link": "https://us02web.zoom.us/meeting/register/WwHk9wRWSUmPl3uT4VZrVw",
+     "sources": [
+      "https://jewishclimate.org/event/7410/"
+     ]
+    }
+   }
+  },
+  "sustainable_milton": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-09-30"
+   },
+   "field_sources": [
+    "https://www.sustainablemilton.org/donate-1",
+    "https://www.miltonma.gov/887/Sustainable-Milton",
+    "https://events.sustainablemilton.org/event/reclaim-your-roots-how-native-plants-save-time-and-money/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "sustainable_milton_e5": {
+     "rsvp_link": "https://www.greenenergyconsumers.org/event/heatpumpstimevaryingrates",
+     "sources": [
+      "https://events.sustainablemilton.org/event/geca-heat-pumps-and-time-varying-rates/"
+     ]
+    }
+   }
+  },
+  "sunrise_lexington": {
+   "map": "ma",
+   "fields": {
+    "description": "Youth-led local hub of the Sunrise Movement in Lexington that uses nonviolent direct action to push for a climate emergency declaration, net-zero targets, a Green New Deal and environmental justice.",
+    "geographic_focus": "Lexington"
+   },
+   "field_sources": [
+    "https://www.sunriselexington.org/about"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "fore_river_residents_against_the_compressor_station": {
+   "map": "ma",
+   "fields": {
+    "description": "Community group of Weymouth, Quincy and Braintree residents that has opposed Enbridge's fracked-gas compressor station in North Weymouth since 2015, and works on air quality, sewage overflows and waterfront access in the Fore River Basin.",
+    "type": "informal_group",
+    "website": "https://www.nocompressor.com/",
+    "geographic_focus": "Fore River Basin (Weymouth, Quincy, Braintree)",
+    "last_activity": "2026-07-07"
+   },
+   "field_sources": [
+    "https://www.nocompressor.com/",
+    "https://www.nocompressor.com/about/",
+    "https://www.nocompressor.com/donate",
+    "https://www.nocompressor.com/news/2026/7/7/take-action-tell-the-mayor-we-want-our-trail"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "berkshire_environmental_action_team": {
+   "map": "ma",
+   "fields": {
+    "description": "Pittsfield-based nonprofit, founded in 2002, that protects the environment for wildlife in Berkshire County and western Massachusetts through watchdog work, habitat stewardship and education, including opposition to new gas pipelines and PFAS-laden sewage sludge.",
+    "type": "501c3",
+    "website": "https://www.thebeatnews.org/BeatTeam/",
+    "geographic_focus": "Berkshire County",
+    "last_activity": "2026-09-21"
+   },
+   "field_sources": [
+    "https://www.thebeatnews.org/BeatTeam/about-the-berkshire-environmental-action-team-beat/",
+    "https://www.thebeatnews.org/BeatTeam/pipelines/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Gas pipelines and fossil fuel infrastructure",
+     "description": "Tracks and opposes new gas pipeline expansions in the Northeast, including the Constitution Pipeline, Algonquin and Cape Cod Canal projects, through FERC comments and public guides.",
+     "status": "active",
+     "link": "https://www.thebeatnews.org/BeatTeam/pipelines/",
+     "sources": [
+      "https://www.thebeatnews.org/BeatTeam/pipelines/"
+     ]
+    },
+    {
+     "name": "PFAS and sewage sludge",
+     "description": "Researches where PFAS-contaminated sewage sludge is spread in Berkshire County and pushes MassDEP and legislators to stop land application; part of the Coalition for Sludge Free Land.",
+     "status": "active",
+     "link": "https://www.thebeatnews.org/BeatTeam/sludge/",
+     "sources": [
+      "https://www.thebeatnews.org/BeatTeam/sludge/"
+     ]
+    },
+    {
+     "name": "Clean energy alternatives to peaker power plants",
+     "description": "Campaign for clean energy solutions to replace fossil-fuel peaker plants.",
+     "status": "active",
+     "link": "https://www.thebeatnews.org/BeatTeam/clean-energy-solutions-alternatives-to-peaker-power-plants/",
+     "sources": [
+      "https://www.thebeatnews.org/BeatTeam/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Ask your legislator to support S.56 to protect farms from PFAS",
+     "kind": "task",
+     "description": "Contact your state legislator in support of S.56, An Act protecting our soil and farms from PFAS contamination.",
+     "deadline": null,
+     "link": "https://www.thebeatnews.org/BeatTeam/sludge/",
+     "sources": [
+      "https://www.thebeatnews.org/BeatTeam/sludge/"
+     ]
+    },
+    {
+     "name": "Volunteer: water quality monitoring and river cleanups",
+     "kind": "role",
+     "description": "Sample outfall pipes flowing into the Housatonic River (April-October), help with river cleanups, stream crossing surveys, amphibian crossings or outreach tabling.",
+     "deadline": null,
+     "link": "https://www.thebeatnews.org/BeatTeam/volunteer/",
+     "sources": [
+      "https://www.thebeatnews.org/BeatTeam/volunteer/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "salem_alliance_for_the_environment": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-09-23"
+   },
+   "field_sources": [
+    "https://salemsafe.org/donate/",
+    "https://salemsafe.org/2026/09/23/a-victory-for-access-to-nature-and-a-chance-to-dream-bigger/"
+   ],
+   "events": [
+    {
+     "name": "Turning the Tides: Who Builds Gloucester's Energy Future?",
+     "date": "2026-10-13T18:30:00",
+     "end": "2026-10-13T20:30:00",
+     "location": "Sawyer Free Library, 2 Dale Ave, Gloucester, MA",
+     "description": "Free discussion, co-hosted with the North Shore Labor Council, on how offshore wind and green energy can bring union jobs to Gloucester; dinner and Spanish interpretation provided.",
+     "link": "https://salemsafe.org/events-calendar/",
+     "rsvp_link": "https://forms.gle/G3KtuJDRJNJq2hzaA",
+     "sources": [
+      "https://salemsafe.org/events-calendar/",
+      "https://calendar.google.com/calendar/ical/calendar%40salemsafe.org/public/basic.ics"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Opposing an AI data center in The Point",
+     "description": "SAFE tracked and publicly commented against a building permit at Shetland Park that turned out to be for an AI data center in Salem's hottest neighborhood; the Zoning Board of Appeals denied the developer's appeal on Sept 16, 2026.",
+     "status": "active",
+     "link": "https://salemsafe.org/2026/09/17/ai-data-center-permit-revoked-in-the-point/",
+     "sources": [
+      "https://salemsafe.org/2026/09/17/ai-data-center-permit-revoked-in-the-point/"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "cape_downwinders": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2025-11-24"
+   },
+   "field_sources": [
+    "https://myemail.constantcontact.com/NDCAP-Monday-Nov-24.html?soid=1117009498084&aid=u_T2BUxYMP8"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Keep voter approval for new nuclear plants (oppose Section 45 of H.4144)",
+     "description": "Testimony and a petition against the section of the Governor's energy bill that would repeal the 1982 voter-approval requirement for new nuclear reactors in Massachusetts.",
+     "status": "active",
+     "link": "https://www.capedownwinders.net",
+     "sources": [
+      "https://www.capedownwinders.net",
+      "https://www.change.org/p/keep-democracy-alive-remove-section-45"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Sign: Keep Democracy Alive, Remove Section 45",
+     "kind": "task",
+     "description": "Petition asking legislators to drop the section of H.4144 that would repeal the 1982 voter-approval requirement for new nuclear power plants.",
+     "deadline": null,
+     "link": "https://www.change.org/p/keep-democracy-alive-remove-section-45",
+     "sources": [
+      "https://www.capedownwinders.net",
+      "https://www.change.org/p/keep-democracy-alive-remove-section-45"
+     ]
+    },
+    {
+     "name": "Volunteer with Cape Downwinders",
+     "kind": "role",
+     "description": "Join the mailing list, write letters to the editor about Holtec's plan to discharge Pilgrim wastewater into Cape Cod Bay, and sign up to volunteer for direct actions.",
+     "deadline": null,
+     "link": "https://www.capedownwinders.net/take-action",
+     "sources": [
+      "https://www.capedownwinders.net/take-action"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "concerned_citizens_of_franklin_county": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3"
+   },
+   "field_sources": [
+    "https://projects.propublica.org/nonprofits/organizations/270507287",
+    "https://grassrootsfund.org/groups/concerned-citizens-of-franklin-county"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "green_newton": {
+   "map": "ma",
+   "fields": {
+    "type": "501c3",
+    "last_activity": "2026-10-01"
+   },
+   "field_sources": [
+    "https://greennewton.networkforgood.com/projects/86756-green-newton",
+    "https://greennewton.org/event/elc-2026/"
+   ],
+   "events": [
+    {
+     "name": "GreenEXPO 2026 at the Harvest Fair",
+     "date": "2026-10-18T11:00:00",
+     "end": "2026-10-18T16:00:00",
+     "location": "City of Newton Harvest Fair, Newton",
+     "description": "Annual sustainability expo held alongside Newton's Harvest Fair, with eco-friendly products, local green businesses and groups, city departments and kids' activities.",
+     "link": "https://greennewton.org/event/green-expo/",
+     "sources": [
+      "https://greennewton.org/event/green-expo/"
+     ]
+    },
+    {
+     "name": "Energy Help: Drop-In Office Hours at Cooper Center",
+     "date": "2026-10-20T11:00:00",
+     "end": "2026-10-20T13:00:00",
+     "location": "Cooper Center for Active Living, 345 Walnut St, Newton, MA",
+     "description": "Free one-on-one help with energy bills, fuel assistance sign-ups, home energy assessments and heat pumps, with the City of Newton Climate & Sustainability Team.",
+     "link": "https://greennewton.org/event/energy-office-hours/2026-10-20/",
+     "sources": [
+      "https://greennewton.org/event/energy-office-hours/2026-10-20/"
+     ]
+    },
+    {
+     "name": "Green Drinks at Baramor",
+     "date": "2026-11-03T19:30:00",
+     "end": "2026-11-03T21:00:00",
+     "location": "Baramor, 45 Union St, Newton, MA",
+     "recurrence": "First Tuesday of every other month, 7:30 PM",
+     "description": "Casual evening meetup for people who want to connect over building a sustainable Newton.",
+     "link": "https://greennewton.org/event/all-welcome-to-green-drinks-2-2-4/",
+     "sources": [
+      "https://greennewton.org/event/all-welcome-to-green-drinks-2-2-4/"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Local climate policy advocacy",
+     "description": "Advocates in Newton for building electrification and clean energy (including BERDO and networked geothermal), waste-reduction ordinances such as Skip the Stuff, and equitable access to efficiency programs.",
+     "status": "active",
+     "link": "https://greennewton.org/advocacy",
+     "sources": [
+      "https://greennewton.org/advocacy"
+     ]
+    },
+    {
+     "name": "Energy Help and free energy coach",
+     "description": "Free home energy coaching and drop-in office hours to help residents with energy bills, assistance programs, assessments and heat pumps.",
+     "status": "active",
+     "link": "https://greennewton.org/event/energy-office-hours/2026-10-20/",
+     "sources": [
+      "https://greennewton.org/event/energy-office-hours/2026-10-20/",
+      "https://greennewton.org/news/auction-2026/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Sign up for Green Newton advocacy alerts",
+     "kind": "task",
+     "description": "Get alerts on Newton environmental policy initiatives and how to weigh in.",
+     "deadline": null,
+     "link": "https://docs.google.com/forms/d/e/1FAIpQLSesoAL1OGR1LNL0QJCyeSaWzzpWLkAs4ujCyep5svCXOA36hQ/viewform",
+     "sources": [
+      "https://greennewton.org/advocacy"
+     ]
+    },
+    {
+     "name": "Event Day Volunteer",
+     "kind": "role",
+     "description": "Help for 1-3 hours at a Green Newton event: greet attendees, staff the booth, set up and clean up, and share information about programs.",
+     "deadline": null,
+     "link": "https://greennewton.org/volunteer",
+     "sources": [
+      "https://greennewton.org/volunteer"
+     ]
+    }
+   ],
+   "event_updates": {}
+  }
+ },
+ "not_found": [],
+ "notes": "newton_south_high_school_environmental_club: the 2025-26 NSHS clubs list (linked from the school's clubs page) names it 'Environmental Awareness & Appreciation Club' (hikes, clean-ups, volunteering); the same list also has 'Sustainability Squad' and 'ECOBiodiversity Club'. No separate club page, so website is the school's clubs page. sustainable_sharon_coalition_youth: type 501c3 is the parent Sustainable Sharon Coalition's status (the youth group is one of its interest groups listed on /about/interest-groups); no youth-specific dated activity found, so last_activity left empty. jewish_climate_action_network: last_activity is the most recent past event (Sept 24 phone bank); the Chutzpah phone bank repeats Oct 8/14/27 - the Oct 14 and 27 shifts were added as separate events. The 'Data Centers' event page's registration links are tracked email links containing a personal email, so not recorded. sustainable_milton: Coffee Meetup repeats on the first Monday of each month, 9:30-10:30 AM at Revive & Co., 7 Pleasant St (next after Oct 5: Nov 2); not added as a new item since it already exists. sunrise_lexington: the hub's own site is https://www.sunriselexington.org/ (better than the generic sunrisemovement.org link), but its About page carries a 2020 copyright and the site now intermittently returns 502; Facebook pages (facebook.com/SunriseLexington, facebook.com/sunrisemvmtlex) are login-walled. No 2025-26 activity found and no Mobilize events near Lexington; may be dormant, but no explicit sign it stopped, so not marked inactive. Type not stated on the page. fore_river_residents_against_the_compressor_station: donate page says FRRACS is 'filed as a community organization' with Community Action Works (a 501c3) as fiscal sponsor and is not itself a 501c3, hence informal_group. Newest dated post found: 2026-07-07 news items. Its site calendar shows only 2023-2024 events; no upcoming events found. berkshire_environmental_action_team: site is behind Cloudflare for curl, read via WebFetch. Its events calendar lists many community events, but those checked (Habitat Chat, Youth Climate Solutions Challenge, 350Mass Berkshires, Pittsfield Farmers Market) are hosted by other groups, so none added. last_activity = date of BEAT's filed FERC comment on the Constitution Pipeline (PDF dated 2026-09-21, linked from its pipelines page). salem_alliance_for_the_environment: the Turning the Tides event has no page of its own; link is SAFE's events calendar (Google Calendar calendar@salemsafe.org), which mostly lists other groups' events. The data-center item may be better treated as a recent win than an ongoing project. cape_downwinders: type not stated (donate page only says to contact them for tax-deductible donation info). Newest dated item found is the NDCAP meeting alert for Monday Nov 24 (2025, per its linked 2025-11-07 Boston Globe article); the homepage 'Latest News' newsletter on Holtec 'forced evaporation' is undated. The Section 45 petition was created 2025-06 by Cape Downwinders; H.4144 is a 2025-26 session bill. Also linked from the homepage: an Action Network letter on H.4744 (sponsored by Citizens Awareness Network, not added) and a change.org petition to Sen. Barrett by an individual (not added). concerned_citizens_of_franklin_county: no own website or social page found; the only group profile is on the New England Grassroots Environment Fund site (https://grassrootsfund.org/groups/concerned-citizens-of-franklin-county), which could serve as a fallback website if acceptable. 501(c)(3) status (Greenfield, EIN 27-0507287, ruling 2012) is from IRS data on ProPublica; its latest 990-EZ data (2023) shows $0 revenue, so the group may be largely dormant, but no explicit sign it stopped. Note abetterfranklin.com is a different 'Concerned Citizens of Franklin County' in Florida. green_newton: GreenEXPO page gives no street address, only 'held alongside the City of Newton's Harvest Fair'. last_activity = Environmental Leadership Celebration on 2026-10-01 (also the auction close date)."
+}

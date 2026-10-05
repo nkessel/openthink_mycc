@@ -1,0 +1,286 @@
+{
+ "groups": {
+  "tree_boston": {
+   "map": "ma",
+   "fields": {
+    "website": "https://treeboston.org/",
+    "last_activity": "2026-10-03"
+   },
+   "field_sources": [
+    "https://treeboston.org/",
+    "https://treeboston.org/events/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "tree_boston_e3": {
+     "rsvp_link": "https://treeboston.org/civicrm/event/register/?reset=1&id=363",
+     "sources": [
+      "https://treeboston.org/events/event/branchingout2026/"
+     ]
+    },
+    "tree_boston_e7": {
+     "rsvp_link": "https://runsignup.com/Race/MA/Allston/REACHGREENStadiumChallengeTreeBoston",
+     "sources": [
+      "https://treeboston.org/events/event/climb4thecanopy/"
+     ]
+    }
+   }
+  },
+  "pipeline_awareness_network_ne": {
+   "map": "ma",
+   "fields": {
+    "description": "Regional nonprofit (PLAN-NE) working to stop the overbuild of natural gas pipelines and other fossil fuel infrastructure in the Northeast, mainly by intervening in federal and state regulatory proceedings, and to promote clean energy.",
+    "type": "501c3",
+    "website": "https://plan4ne.wordpress.com/",
+    "geographic_focus": "New England / Northeast",
+    "last_activity": "2026-09-21"
+   },
+   "field_sources": [
+    "https://plan4ne.wordpress.com/",
+    "https://plan4ne.wordpress.com/about/",
+    "https://plan4ne.wordpress.com/about/williams-constitution-pipeline/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Opposing the Constitution Pipeline and Wright Interconnect revival",
+     "description": "Filing protests and comments at FERC against reinstating the certificates for Williams' Constitution Pipeline and Iroquois' Wright Interconnect, which could open the way to new gas pipeline expansions into New England.",
+     "status": "active",
+     "link": "https://plan4ne.wordpress.com/about/williams-constitution-pipeline/",
+     "sources": [
+      "https://plan4ne.wordpress.com/about/williams-constitution-pipeline/"
+     ]
+    },
+    {
+     "name": "Enbridge Algonquin expansion (AGT-E / R.A.R.E.) watch",
+     "description": "Tracking Algonquin's 2026 FERC pre-filing for pipeline expansion work through Mendon, Bellingham, Franklin and Wrentham, MA and parts of Rhode Island.",
+     "status": "active",
+     "link": "https://plan4ne.wordpress.com/about/enbridge-project-maple/",
+     "sources": [
+      "https://plan4ne.wordpress.com/about/enbridge-project-maple/"
+     ]
+    }
+   ],
+   "actions": [],
+   "event_updates": {}
+  },
+  "350ma_cape_cod": {
+   "map": "ma",
+   "fields": {
+    "description": "Volunteer group of Cape Cod residents in the 350.org network and 350 Mass that did climate education and advocacy, backing offshore wind and opposing new fossil fuel infrastructure on the Cape.",
+    "type": "informal_group",
+    "website": "https://www.350capecod.org/",
+    "geographic_focus": "Cape Cod",
+    "last_activity": "2023-03-21",
+    "inactive": true
+   },
+   "field_sources": [
+    "https://www.350capecod.org/",
+    "https://www.350capecod.org/new-page-2",
+    "https://www.350capecod.org/take-action"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "food_and_water_watch": {
+   "map": "ma",
+   "fields": {
+    "description": "National nonprofit that campaigns for safe food, clean water and a livable climate, working to end fossil fuels and fracking, stop AI data centers and keep water affordable.",
+    "type": "501c3",
+    "website": "https://www.foodandwaterwatch.org/",
+    "geographic_focus": "National"
+   },
+   "field_sources": [
+    "https://www.foodandwaterwatch.org/who-we-are/",
+    "https://www.foodandwaterwatch.org/events/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "food_and_water_watch_e1": {
+     "link": "https://www.mobilize.us/fww/event/1000349/",
+     "rsvp_link": "https://www.mobilize.us/fww/event/1000349/",
+     "sources": [
+      "https://www.foodandwaterwatch.org/events/"
+     ]
+    },
+    "food_and_water_watch_e2": {
+     "link": "https://www.mobilize.us/fww/event/1000408/",
+     "rsvp_link": "https://www.mobilize.us/fww/event/1000408/",
+     "sources": [
+      "https://www.foodandwaterwatch.org/events/"
+     ]
+    }
+   }
+  },
+  "act_on_mass": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-10-03"
+   },
+   "field_sources": [
+    "https://actonmass.org/"
+   ],
+   "events": [],
+   "projects": [
+    {
+     "name": "Stipend Reform ballot question",
+     "description": "Campaign to change who controls extra 'leadership pay' for state legislators, including a statewide ballot question filed in 2025.",
+     "status": "active",
+     "link": "https://actonmass.org/stipends/",
+     "sources": [
+      "https://actonmass.org/stipends/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Vote Yes on Question 1 (public records for the Legislature and governor)",
+     "kind": "task",
+     "description": "Act on Mass asks voters to support Question 1, which would make the Legislature and governor's office subject to the state public records law.",
+     "deadline": "2026-11-03",
+     "link": "https://actonmass.org/2026/10/03/vote-yes-on-1-for-sunshine-in-state-government/",
+     "sources": [
+      "https://actonmass.org/2026/10/03/vote-yes-on-1-for-sunshine-in-state-government/",
+      "https://vietaid.org/2026/09/24/massachusetts-2026-election-information-for-voters/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "vietaid": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-24"
+   },
+   "field_sources": [
+    "https://vietaid.org/feed/"
+   ],
+   "events": [
+    {
+     "name": "VietAID 2026 Gala Fundraiser: Beyond Our Bridge",
+     "date": "2026-10-30T18:00:00",
+     "end": "2026-10-30T21:00:00",
+     "location": "To be announced",
+     "description": "Annual fundraising gala celebrating VietAID's 32 years of work in Fields Corner, with food and community.",
+     "link": "https://vietaid.org/2026/08/24/save-the-date-vietaids-2026-gala-fundraiser/",
+     "sources": [
+      "https://vietaid.org/2026/08/24/save-the-date-vietaids-2026-gala-fundraiser/"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "bodhisara_dharma_community": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-09-15"
+   },
+   "field_sources": [
+    "https://www.bodhisara.org/"
+   ],
+   "events": [
+    {
+     "name": "What is Spiritual Growth? (online class)",
+     "date": "2026-10-06T19:00:00",
+     "end": "2026-10-06T20:30:00",
+     "location": "Online",
+     "online": true,
+     "recurrence": "Tuesdays, 7:00–8:30 PM, Sept 15 – Oct 27",
+     "description": "Weekly online course with guided meditation, teaching and discussion on the dimensions of spiritual growth; fee with scholarships available.",
+     "link": "https://www.bodhisara.org/",
+     "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSfRHAMsZH28eB05Af0i2rEclC9hMogs5kuCwCAIVelU3qO-bw/viewform",
+     "sources": [
+      "https://www.bodhisara.org/"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "the_climate_reality_project_boston_metro_chapter": {
+   "map": "ma",
+   "fields": {},
+   "field_sources": [],
+   "events": [],
+   "projects": [],
+   "actions": [
+    {
+     "name": "Sign the Trees as a Public Good petition to protect Massachusetts trees",
+     "kind": "task",
+     "description": "Petition, shared by the chapter, asking Massachusetts to preserve and expand trees to reduce drought and heat.",
+     "deadline": null,
+     "link": "https://actionnetwork.org/petitions/preserve-expand-ma-trees-to-reduce-droughts-heat",
+     "sources": [
+      "https://www.climaterealityboston.org/actions",
+      "https://tinyurl.com/petition2save-MA-trees"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "greater_boston_physicians_for_social_responsibility": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-07-18"
+   },
+   "field_sources": [
+    "https://gbpsr.org/feed/"
+   ],
+   "events": [
+    {
+     "name": "GBPSR November Monthly Meeting",
+     "date": "2026-11-02T19:00:00",
+     "location": "Online (Zoom)",
+     "online": true,
+     "description": "Greater Boston PSR's monthly meeting, open to all; Zoom details from the group.",
+     "link": "https://gbpsr.org/event/gbpsrs-november-monthly-meeting/",
+     "sources": [
+      "https://gbpsr.org/",
+      "https://gbpsr.org/wp-json/tribe/events/v1/events?start_date=2026-10-03"
+     ]
+    },
+    {
+     "name": "GBPSR December Monthly Meeting",
+     "date": "2026-12-07T19:00:00",
+     "end": "2026-12-07T20:00:00",
+     "location": "Online (Zoom)",
+     "online": true,
+     "description": "Greater Boston PSR's monthly meeting, open to all; Zoom details from the group.",
+     "link": "https://gbpsr.org/event/greater-boston-psrs-december-monthly-meeting/",
+     "sources": [
+      "https://gbpsr.org/wp-json/tribe/events/v1/events?start_date=2026-10-03"
+     ]
+    }
+   ],
+   "projects": [],
+   "actions": [],
+   "event_updates": {
+    "greater_boston_physicians_fo_e1": {
+     "link": "https://gbpsr.org/event/gbpsrs-october-monthly-meeting/",
+     "sources": [
+      "https://gbpsr.org/wp-json/tribe/events/v1/events?start_date=2026-10-03"
+     ]
+    },
+    "greater_boston_physicians_fo_e2": {
+     "rsvp_link": "https://ticketstripe.com/Health-Peace-Award",
+     "sources": [
+      "https://gbpsr.org/get-involved/annual-event/2026-annual-global-health-and-peace-awards/"
+     ]
+    }
+   }
+  }
+ },
+ "not_found": [
+  "sunrise_ipswich"
+ ],
+ "notes": "sunrise_ipswich: No website, social page or event listing found for a Sunrise hub in Ipswich (searched web, Sunrise hub pages, Ipswich climate strike pages). Earlier fill also could not find it. | 350ma_cape_cod: Site says the group was 'on pause from Fall 2023 to Fall 2024' and points people to other Cape groups; newest dated item is a 2023-03-21 action. No sign of restart found; marked inactive. 350mass.org returned 403 so I could not check its node list. | pipeline_awareness_network_ne: plan-ne.org returned 503; used plan4ne.wordpress.com (states 501(c)(3)). last_activity is PLAN's FERC comment dated 9/21/2026 listed on its Constitution page. | food_and_water_watch: National org; no Massachusetts office or MA-specific events listed on its events page. Existing events are national online events; added their Mobilize pages. | act_on_mass: Site calls itself 'a small nonprofit' and endorses candidates, but does not state 501(c)(3) or (c)(4), so type left blank. No upcoming events on its calendar. | the_climate_reality_project_boston_metro_chapter: Chapter of the Climate Reality Project; site does not state a legal type, so type left blank. The Hanscom Wednesday standouts (existing e1) are sponsored by Stop Private Jet Expansion at Hanscom, not the chapter; next is 2026-10-07 8-9 AM at actionnetwork.org/events/8526-hanscom-standout. | greater_boston_physicians_for_social_responsibility: Type not stated on site. November meeting is listed in the calendar as 8am-5pm but its text says Zoom at 7:00pm; used 7 PM. | vietaid: Gala venue not announced yet ('save the date'), location set to 'To be announced'. Not a climate-specific event. | bodhisara_dharma_community: Class Sept 15–Oct 27 (year not printed but Sept 15 is a Tuesday in 2026 and it is on the current homepage); last_activity set to class start date. Not climate-specific."
+}

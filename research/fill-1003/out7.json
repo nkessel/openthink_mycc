@@ -1,0 +1,250 @@
+{
+ "groups": {
+  "massachusetts_interfaith_power_and_light": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-10-02"
+   },
+   "field_sources": [
+    "https://www.massipl.org/blog-and-news",
+    "https://www.massipl.org/blog/september-recap"
+   ],
+   "events": [
+    {
+     "name": "Spirit in Nature: A Guided Meditation Walk at Wolbach Farm",
+     "date": "2026-11-05T11:00:00",
+     "end": "2026-11-05T12:15:00",
+     "location": "Wolbach Farm, 18 Wolbach Road, Sudbury, MA",
+     "description": "Interfaith meditative walk led by Rabbi Katy Allen on the accessible All Persons' Trail, with stops for poetry and reflection; co-sponsored by Sudbury Valley Trustees and JCAN-MA.",
+     "link": "https://www.massipl.org/blog/september-recap",
+     "sources": [
+      "https://www.massipl.org/blog/september-recap"
+     ]
+    },
+    {
+     "name": "Light the Way: Energy Justice and the One Billion People Left Behind",
+     "date": "2026-11-17T19:00:00",
+     "location": "Online",
+     "online": true,
+     "description": "Online session with JCAN-MA and SolarBuddy on how congregations can build and send small solar lights to families without reliable electricity.",
+     "link": "https://www.massipl.org/blog/september-recap",
+     "sources": [
+      "https://www.massipl.org/blog/september-recap"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Sustainable Faith: An Interfaith Season of Creation Series",
+     "description": "Weekly series of essays from religious and ethical leaders across Massachusetts on how faith sustains their climate work, running through October 11, 2026.",
+     "status": "active",
+     "link": "https://www.massipl.org/news-and-blogs-categories/sustainable-faith",
+     "sources": [
+      "https://www.massipl.org/blog/september-recap"
+     ]
+    },
+    {
+     "name": "Climate Action Alerts",
+     "description": "Timely calls to action for people of faith when their voice matters at the State House and beyond.",
+     "status": "active",
+     "link": "https://www.massipl.org/initiatives/climate-action-alerts",
+     "sources": [
+      "https://www.massipl.org/initiative-categories/mobilize"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Congregations: take the MassIPL member pledge",
+     "kind": "task",
+     "description": "Houses of worship pledge to take at least one meaningful climate action each year (pray, act, mobilize) and join a network of 250+ member congregations.",
+     "deadline": null,
+     "link": "https://massipl.fillout.com/congregations",
+     "sources": [
+      "https://www.massipl.org/join-us"
+     ]
+    },
+    {
+     "name": "Start a congregational solar project before the federal direct-pay deadline",
+     "kind": "task",
+     "description": "MassIPL helps houses of worship use the federal direct-pay incentive, which can cover up to 40% of a solar project; projects must be running by December 31, 2027.",
+     "deadline": "2027-12-31",
+     "link": "https://www.massipl.org/blog/september-recap",
+     "sources": [
+      "https://www.massipl.org/blog/september-recap"
+     ]
+    }
+   ],
+   "event_updates": {
+    "massachusetts_interfaith_pow_e1": {
+     "rsvp_link": "https://www.eventbrite.com/e/hope-takes-root-tickets-1995477238136",
+     "sources": [
+      "https://www.massipl.org/event/hope-takes-root"
+     ]
+    }
+   }
+  },
+  "andover_high_school_environmental_club": {
+   "map": "ma",
+   "fields": {
+    "website": "https://projectgreenschools.org/chapter-profile/andover-high-school-environmental-club/",
+    "geographic_focus": "Andover"
+   },
+   "field_sources": [
+    "https://projectgreenschools.org/chapter-profile/andover-high-school-environmental-club/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "alternatives_for_community_and_environment": {
+   "map": "ma",
+   "fields": {
+    "last_activity": "2026-10-01"
+   },
+   "field_sources": [
+    "https://ace-ej.org/"
+   ],
+   "events": [
+    {
+     "name": "ACE Youth Innovation Summit",
+     "date": "2026-10-10T13:00:00",
+     "end": "2026-10-10T17:00:00",
+     "location": "First Parish Dorchester, 10 Parish Street, Dorchester, MA 02122",
+     "description": "Free community event celebrating young people's work in their neighborhoods, with workshops, activities, music, AC unit registration, college readiness sessions and backpack giveaways.",
+     "link": "https://ace-ej.org/2026-youth-summit/",
+     "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSd4LowS-8WrvUA7Cz8Klalturp4S-CHVGxtOB0qTu0TlTy7fQ/viewform",
+     "sources": [
+      "https://ace-ej.org/2026-youth-summit/",
+      "https://ace-ej.org/news/announcements/"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Environmental Justice Assistance Network (EJAN)",
+     "description": "Pro bono network that matches community groups facing environmental justice and public health problems with volunteer experts in law, science, planning and public health.",
+     "status": "active",
+     "link": "https://ace-ej.org/ejan/",
+     "sources": [
+      "https://ace-ej.org/ejan/"
+     ]
+    },
+    {
+     "name": "ACE Policy Agenda 2025-26",
+     "description": "ACE's legislative and policy priorities for the 2025-2026 session.",
+     "status": "active",
+     "link": "https://ace-ej.org/policy-agenda-2025/",
+     "sources": [
+      "https://ace-ej.org/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Volunteer your professional skills with EJAN",
+     "kind": "role",
+     "description": "Attorneys, licensed site professionals, planners, scientists, public health and other professionals can volunteer to support community groups facing environmental justice problems.",
+     "deadline": null,
+     "link": "https://www.hear-db.org/user/register",
+     "sources": [
+      "https://ace-ej.org/ejan/"
+     ]
+    },
+    {
+     "name": "Join ACE as a member or volunteer",
+     "kind": "task",
+     "description": "Sign up to become an ACE member or volunteer with its Roxbury-based organizing work.",
+     "deadline": null,
+     "link": "https://ace-ej.org/get-involved/",
+     "sources": [
+      "https://ace-ej.org/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  },
+  "ma_youth_for_climate_justice": {
+   "map": "ma",
+   "fields": {
+    "website": "https://www.instagram.com/mayouth4climatejustice/"
+   },
+   "field_sources": [
+    "https://www.instagram.com/mayouth4climatejustice/"
+   ],
+   "events": [],
+   "projects": [],
+   "actions": [],
+   "event_updates": {}
+  },
+  "elders_climate_action_mass": {
+   "map": "ma",
+   "fields": {
+    "description": "Massachusetts chapter of the national Elders Climate Action, a volunteer group of older adults who educate and organize in their communities, advocate for state climate legislation and work with allied groups.",
+    "website": "https://ecamass.org/",
+    "geographic_focus": "Statewide",
+    "last_activity": "2026-08-24"
+   },
+   "field_sources": [
+    "https://ecamass.org/about-us/",
+    "https://ecamass.org/category/meeting-reminder/"
+   ],
+   "events": [
+    {
+     "name": "ECA Mass Monthly Chapter Meeting",
+     "date": "2026-10-13T12:00:00",
+     "end": "2026-10-13T14:00:00",
+     "location": "Online (Zoom)",
+     "online": true,
+     "recurrence": "Second Tuesday of each month, 12–2 PM",
+     "description": "Regular chapter meeting on Zoom; registration is required to get the meeting link.",
+     "link": "https://ecamass.org/eca-mass-event-calendar/",
+     "sources": [
+      "https://ecamass.org/eca-mass-event-calendar/"
+     ]
+    },
+    {
+     "name": "ECA Mass Deep Dialogue",
+     "date": "2026-10-26T16:00:00",
+     "end": "2026-10-26T17:30:00",
+     "location": "Online (Zoom)",
+     "online": true,
+     "description": "Session of the chapter's Deep Dialogue conversation series on Zoom; registration required.",
+     "link": "https://ecamass.org/eca-mass-event-calendar/",
+     "sources": [
+      "https://ecamass.org/eca-mass-event-calendar/"
+     ]
+    }
+   ],
+   "projects": [
+    {
+     "name": "Deep Dialogues and Expert Series",
+     "description": "Recurring online conversation series with speakers on climate topics; recordings are posted on the chapter website.",
+     "status": "active",
+     "link": "https://ecamass.org/category/deep-dialogues/",
+     "sources": [
+      "https://ecamass.org/eca-mass-event-calendar/"
+     ]
+    }
+   ],
+   "actions": [
+    {
+     "name": "Join an ECA Mass team",
+     "kind": "role",
+     "description": "Volunteer with one of the chapter's teams, such as Action Planning (lobbying and protests), Legislative (bill tracking and testimony), Research, or Presentation and Education.",
+     "deadline": null,
+     "link": "https://ecamass.org/eca-mass-teams/",
+     "sources": [
+      "https://ecamass.org/eca-mass-teams/"
+     ]
+    }
+   ],
+   "event_updates": {}
+  }
+ },
+ "not_found": [
+  "mit_sea"
+ ],
+ "notes": "andover_high_school_environmental_club: website is the club's chapter profile on Project Green Schools (no own site or social found); the profile is undated so no last_activity. projectgreenschools.org shows a bot challenge to curl; read via WebFetch. alternatives_for_community_and_environment: ace-ej.org shows a SiteGround captcha to curl; pages were read via WebFetch. ma_youth_for_climate_justice: only public presence found is Instagram (@mayouth4climatejustice) and a Facebook page; both block automated readers, so website comes from search results only and no description/focus/date could be verified. Consider a manual check. elders_climate_action_mass: type left blank (site says it is a volunteer chapter of national ECA; no tax status shown). ecamass.org intermittently shows a SiteGround captcha; some pages read via WebFetch. Its event calendar also lists other groups' meetings; only ECA Mass's own were recorded. An Oct 19 'Is Nuclear Power the Answer?' calendar entry repeats May text and was skipped as unreliable. mit_sea: no MIT group named 'Students for Environmental Action' found on MIT sustainability pages or the MIT Student Sustainability Coalition member list (ssc.mit.edu/?p=7). The only 'MIT SEA' there is the Sustainable Energy Alliance, a different undergraduate energy club (facebook.com/mitsea) - the entry may be mislabelled; worth asking MYCC which group is meant."
+}
