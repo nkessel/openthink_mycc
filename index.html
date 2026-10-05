@@ -13,6 +13,8 @@
       #boot .bar b{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width .25s linear}
       #boot .boot-msg{min-height:2.7em;max-width:340px;padding:0 16px;text-align:center;line-height:1.35;display:flex;align-items:center;justify-content:center;transition:opacity .35s ease}
       #boot .boot-msg.fade{opacity:0}
+      #boot .boot-hint{max-width:360px;padding:0 16px;text-align:center;font-size:12.5px;line-height:1.45;color:#7dd3fc}
+      #boot .boot-hint b{color:#bae6fd;font-weight:600}
       .land-text{width:min(560px,calc(100% - 32px));font-size:13.5px;line-height:1.7;color:#b6c2d3;text-align:center;text-wrap:pretty}
       .land-text p{margin:0 0 12px}
       .land-text strong{color:#cbd5e1;font-weight:600}
@@ -45,6 +47,7 @@
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
       <div class="boot-msg">Loading the map&hellip;</div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
+      <div class="boot-hint" hidden></div>
       <div class="land-text" id="land-dedication">
         <p>This platform was designed on the homelands of the Massachusett, Nipmuc and Wampanoag peoples (Natick, Wellesley and Boston) with the help of Claude Code (AI).</p>
         <p>Claude was designed on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know.</p>
@@ -71,6 +74,25 @@
         var boot = document.getElementById("boot");
         var bar = boot.querySelector(".bar"), fill = bar.querySelector("b");
         var msg = boot.querySelector(".boot-msg");
+        // One quiet tip per visit, for someone's first few visits only (then the screen is just the facts).
+        (function () {
+          var TIPS = [
+            "Click any group to see its projects, events and actions.",
+            "Scroll or pinch to zoom in: each group's events, projects and actions circle around it.",
+            "On the Events page, pick <b>This weekend</b> or <b>Evenings</b> to find something that fits your week.",
+            "On the Geographic map, a <b>+N</b> badge means more groups share that spot. Click it to spread them out.",
+            "Map settings, on the left, let you show only the coalitions you care about.",
+            "The Topics page shows where the groups' energy goes: the problems they're solving and the solutions they're building.",
+            "Part of a group? The <b>+</b> button lets you add or update its events, projects and actions.",
+            "Turn on <b>Show past events, projects and actions</b> in Map settings to see what groups have already done.",
+          ];
+          var n = 0;
+          try { n = (+localStorage.getItem("openthink.visits") || 0) + 1; localStorage.setItem("openthink.visits", String(n)); } catch (e) { n = 1; }
+          if (n > 5) return;
+          var el = boot.querySelector(".boot-hint");
+          el.innerHTML = "Tip: " + TIPS[(n - 1) % TIPS.length];
+          el.hidden = false;
+        })();
         var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         window.bootProgress = function (p) {
