@@ -95,6 +95,27 @@ async function main() {
   const bridges = data.organizations.filter((o) => (o.coalition_ids?.length || 0) > 1).length;
   const facts: string[] = [];
   if (bridges) facts.push(`${bridges} groups work across two or more coalitions`);
+  // "Connecting N groups across N towns": each placed group goes to its nearest town centre (Massachusetts towns list)
+  if (currentMap.id === "ma") {
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}geo/ma-town-centroids.json`);
+      const centres = Object.entries((await res.json()) as Record<string, [number, number]>);
+      const towns = new Set<string>();
+      let placed = 0;
+      for (const o of data.organizations) {
+        if (o.remote || !Number.isFinite(o.lat) || !Number.isFinite(o.lng) || (Math.abs(o.lat - 42.3601) < 1e-4 && Math.abs(o.lng + 71.0589) < 1e-4)) continue;
+        let best = "", bd = Infinity;
+        for (const [name, [la, ln]] of centres) {
+          const d = (la - o.lat) ** 2 + ((ln - o.lng) * 0.74) ** 2;
+          if (d < bd) { bd = d; best = name; }
+        }
+        if (best && Math.sqrt(bd) < 0.08) { towns.add(best); placed++; } // within ~9 km of a town centre
+      }
+      if (towns.size > 1) facts.push(`Connecting ${placed} groups across ${towns.size} towns`);
+    } catch {
+      /* no towns list: skip this line */
+    }
+  }
   const now = Date.now();
   const eventsWithin = (days: number) => groups.flatMap((g) => g.events || []).filter((e) => {
     const t = e.date ? parseEventDate(e.date).getTime() : NaN;
