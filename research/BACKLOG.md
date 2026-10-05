@@ -20,6 +20,11 @@ before pushing; log in `nkessel_LLM.log`; never push to `main` or `development_b
       don't show sign-up links. Ready to run when someone is present: `research/rsvp/INSTRUCTIONS.md` +
       `input_1..3.json` (107 upcoming events without an RSVP link: 82 MA, 25 VT). The same block hits every
       research item below this run (MA types, VT dates/types, new states)._
+      _2026-10-05: still blocked. WebFetch still fails "PROVENANCE_REQUIRED" for event pages, and the permission
+      check refused delegating the item to research agents under these conditions, so nothing was researched. The
+      next item that doesn't need page reads (switcher: only 4 states; USA view: needs a decision; district
+      outlines: needs a data download) is also blocked. To unblock: run this item in a session someone is
+      watching (approve the hosts once), or allow-list the hosts for scheduled runs._
 
 - [x] **Remove research notes from public text.** Done 2026-10-02 (PR #39). About 30 descriptions in `public/data.json` and `public/maps/vt.json`
       contain notes meant for us, not the public ("no climate work found", "its own website blocks automated readers",
