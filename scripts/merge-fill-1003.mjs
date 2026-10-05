@@ -3,15 +3,16 @@
 // Rules: profile fields only fill blanks (type also replaces "unknown"); last_activity takes the newest real date;
 // new items are added only when they're not already there (same owner, similar name); past events and past-deadline
 // actions are skipped; any text with an email address or phone number is dropped. Sources go to
-// research/fill-1003/merged-sources.json (data.json carries no sources). Safe to re-run: it starts from git HEAD.
-// Usage: node scripts/merge-fill-1003.mjs [--today=YYYY-MM-DD]
+// research/fill-1003/merged-sources.json (data.json carries no sources). Safe to re-run: it starts from --base (default HEAD).
+// Usage: node scripts/merge-fill-1003.mjs [--today=YYYY-MM-DD] [--base=<git ref of the data before any merge>]
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { execSync } from "node:child_process";
 
 const TODAY = (process.argv.find((a) => a.startsWith("--today=")) || "").slice(8) || new Date().toISOString().slice(0, 10);
 const DIR = "research/fill-1003";
 const FILES = { ma: "public/data.json", vt: "public/maps/vt.json" };
-const fromHead = (f) => JSON.parse(execSync(`git show HEAD:${f}`, { encoding: "utf8", maxBuffer: 64 << 20 }));
+const BASE = (process.argv.find((a) => a.startsWith("--base=")) || "").slice(7) || "HEAD";
+const fromHead = (f) => JSON.parse(execSync(`git show ${BASE}:${f}`, { encoding: "utf8", maxBuffer: 64 << 20 }));
 const data = { ma: fromHead(FILES.ma), vt: fromHead(FILES.vt) };
 const TYPES = new Set(["501c3", "501c4", "coalition", "school_club", "campus_group", "faith_org", "mutual_aid", "government", "business", "union", "informal_group"]);
 const EMAIL = /[\w.+-]+@[\w-]+\.[\w.-]+/;
@@ -80,6 +81,7 @@ for (const f of files) {
       if (list.some((x) => similar(x.name, name) && (kind !== "events" || !x.date || !raw.date || x.date.slice(0, 10) === String(raw.date).slice(0, 10) || raw.recurrence || x.recurrence))) { counts.skipped_dup++; return; }
       const item = build(name, src);
       if (!item) return;
+      if (isOrg && !item.host_org_id) item.host_org_id = id; // org items name their host, like the sheet does
       list.push(item);
       sources[item.id] = src;
       counts[kind]++;

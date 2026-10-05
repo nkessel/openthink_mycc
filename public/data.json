@@ -1120,7 +1120,8 @@
           "end": "2026-10-10T17:00:00",
           "description": "Free community event celebrating young people's work in their neighborhoods, with workshops, activities, music, AC unit registration, college readiness sessions and backpack giveaways.",
           "link": "https://ace-ej.org/2026-youth-summit/",
-          "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSd4LowS-8WrvUA7Cz8Klalturp4S-CHVGxtOB0qTu0TlTy7fQ/viewform"
+          "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSd4LowS-8WrvUA7Cz8Klalturp4S-CHVGxtOB0qTu0TlTy7fQ/viewform",
+          "host_org_id": "alternatives_for_community_and_environment"
         }
       ],
       "projects": [
@@ -1130,7 +1131,8 @@
           "description": "Pro bono network that matches community groups facing environmental justice and public health problems with volunteer experts in law, science, planning and public health.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://ace-ej.org/ejan/"
+          "link": "https://ace-ej.org/ejan/",
+          "host_org_id": "alternatives_for_community_and_environment"
         },
         {
           "id": "alternatives_for_community_and_environment_p_ace_policy_agenda_2025_26",
@@ -1138,7 +1140,8 @@
           "description": "ACE's legislative and policy priorities for the 2025-2026 session.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://ace-ej.org/policy-agenda-2025/"
+          "link": "https://ace-ej.org/policy-agenda-2025/",
+          "host_org_id": "alternatives_for_community_and_environment"
         }
       ],
       "actions": [
@@ -1149,7 +1152,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Attorneys, licensed site professionals, planners, scientists, public health and other professionals can volunteer to support community groups facing environmental justice problems.",
-          "link": "https://www.hear-db.org/user/register"
+          "link": "https://www.hear-db.org/user/register",
+          "host_org_id": "alternatives_for_community_and_environment"
         },
         {
           "id": "alternatives_for_community_and_environment_a_join_ace_as_a_member_or",
@@ -1158,7 +1162,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign up to become an ACE member or volunteer with its Roxbury-based organizing work.",
-          "link": "https://ace-ej.org/get-involved/"
+          "link": "https://ace-ej.org/get-involved/",
+          "host_org_id": "alternatives_for_community_and_environment"
         }
       ]
     },
@@ -1248,7 +1253,8 @@
           "description": "ECO youth work with academic partners on a data visualization project tracking violations at the seven oil terminals along Chelsea Creek.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.greenrootsej.org/our-work/youth-leadership"
+          "link": "https://www.greenrootsej.org/our-work/youth-leadership",
+          "host_org_id": "greenroots_eco"
         },
         {
           "id": "greenroots_eco_p_chelsea_heat_island_studies",
@@ -1256,7 +1262,8 @@
           "description": "ECO youth monitor and map urban heat island impacts across Chelsea.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.greenrootsej.org/our-work/youth-leadership"
+          "link": "https://www.greenrootsej.org/our-work/youth-leadership",
+          "host_org_id": "greenroots_eco"
         },
         {
           "id": "greenroots_eco_p_eco_community_murals",
@@ -1264,11 +1271,11 @@
           "description": "Youth design and paint murals around Chelsea, including storm drain designs that warn against pollution.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.greenrootsej.org/our-work/youth-leadership"
+          "link": "https://www.greenrootsej.org/our-work/youth-leadership",
+          "host_org_id": "greenroots_eco"
         }
       ],
-      "website": "https://www.greenrootsej.org/our-work/youth-leadership",
-      "events": []
+      "website": "https://www.greenrootsej.org/our-work/youth-leadership"
     },
     {
       "id": "masscosh_tlaw_climate_change_and_environmental_justice_team",
@@ -1575,7 +1582,8 @@
           "description": "With a MassDEP grant, Clean Water Action is helping downtown Jamaica Plain restaurants cut single-use take-out waste through Skip the Stuff and Bring Your Own policies and a reusable take-out container pilot, and plans more local outreach.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://cleanwater.org/2026/10/02/good-news-jp-were-taking-take-out-trash"
+          "link": "https://cleanwater.org/2026/10/02/good-news-jp-were-taking-take-out-trash",
+          "host_org_id": "clean_water_action"
         }
       ],
       "actions": [
@@ -1630,7 +1638,8 @@
           "description": "Leadership program that teaches Malden High School students about climate justice, drinking water, toxic chemicals and zero waste and trains them in organizing and advocacy; Clean Water Action says applications for Fall 2026 are coming.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://cleanwater.org/youth-action-collaborative"
+          "link": "https://cleanwater.org/youth-action-collaborative",
+          "host_org_id": "youth_action_collaborative_alumni_node_at_clean_water_action"
         }
       ]
     },
@@ -1714,7 +1723,8 @@
           "description": "Pushes state bills to expand the bottle bill, cut plastic bags and polystyrene, set clean lighting and appliance efficiency standards, and speed permitting for solar and virtual power plants.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/"
+          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/",
+          "host_org_id": "masspirg"
         },
         {
           "id": "masspirg_p_energy_conservation_and_efficiency",
@@ -1722,7 +1732,8 @@
           "description": "Urges state senators not to weaken energy efficiency programs in pending energy legislation.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://pirg.org/massachusetts/latest/"
+          "link": "https://pirg.org/massachusetts/latest/",
+          "host_org_id": "masspirg"
         }
       ],
       "actions": [
@@ -1733,7 +1744,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign a petition asking cookware maker All-Clad to stop using PFAS chemicals.",
-          "link": "https://pirg.org/massachusetts/articles/tell-all-clad-go-pfas-free/"
+          "link": "https://pirg.org/massachusetts/articles/tell-all-clad-go-pfas-free/",
+          "host_org_id": "masspirg"
         }
       ]
     },
@@ -1795,7 +1807,8 @@
           "description": "Pushes 2025-2026 bills to expand the Bottle Bill to water bottles and nips, restrict single-use plastic bags and ban most polystyrene foam containers.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/"
+          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/",
+          "host_org_id": "masspirg_boston"
         },
         {
           "id": "masspirg_boston_p_clean_water_and_toxic_chemicals_bills",
@@ -1803,7 +1816,8 @@
           "description": "Backs bills to phase out PFAS in consumer products, require lead filters for school drinking water and disclose toxic chemicals in children's products.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/"
+          "link": "https://pirg.org/massachusetts/resources/masspirgs-2025-2026-legislative-agenda/",
+          "host_org_id": "masspirg_boston"
         }
       ],
       "actions": [
@@ -1814,7 +1828,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign MASSPIRG's current petitions, including ones on plastic packaging, PFAS and microplastics.",
-          "link": "https://pirg.org/massachusetts/take-action/"
+          "link": "https://pirg.org/massachusetts/take-action/",
+          "host_org_id": "masspirg_boston"
         }
       ]
     },
@@ -1852,7 +1867,8 @@
           "location": "To be announced",
           "end": "2026-10-30T21:00:00",
           "description": "Annual fundraising gala celebrating VietAID's 32 years of work in Fields Corner, with food and community.",
-          "link": "https://vietaid.org/2026/08/24/save-the-date-vietaids-2026-gala-fundraiser/"
+          "link": "https://vietaid.org/2026/08/24/save-the-date-vietaids-2026-gala-fundraiser/",
+          "host_org_id": "vietaid"
         }
       ]
     },
@@ -1890,7 +1906,8 @@
           "description": "Mothers Out Front members lobby the Legislature to protect the state's binding 2030 climate goals and push for an energy bill that protects Mass Save, reforms the Gas System Enhancement Program and advances neighborhood electrification.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://mothersoutfront.org/2026/08/04/we-showed-up-mof-fights-a-climate-rollback-in-ma/"
+          "link": "https://mothersoutfront.org/2026/08/04/we-showed-up-mof-fights-a-climate-rollback-in-ma/",
+          "host_org_id": "mothers_out_front"
         },
         {
           "id": "mothers_out_front_p_moms_v_methane_clean_affordable_heat",
@@ -1898,7 +1915,8 @@
           "description": "Campaign to stop new gas pipelines and gas plants and move existing gas heating to clean energy; in Massachusetts it runs as the Clean Affordable Heat Now campaign.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://mothersoutfront.org/moms-v-methane/"
+          "link": "https://mothersoutfront.org/moms-v-methane/",
+          "host_org_id": "mothers_out_front"
         },
         {
           "id": "mothers_out_front_p_make_polluters_pay",
@@ -1906,7 +1924,8 @@
           "description": "Mobilizes mothers to support state Climate Superfund bills that would charge fossil fuel companies for climate recovery and resilience costs.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://mothersoutfront.org/make-polluters-pay/"
+          "link": "https://mothersoutfront.org/make-polluters-pay/",
+          "host_org_id": "mothers_out_front"
         },
         {
           "id": "mothers_out_front_p_sustainable_schools_resilient_communities",
@@ -1914,7 +1933,8 @@
           "description": "Equips parents to push for decarbonized public schools with clean air and water, healthy HVAC, renewable power and green transportation, and for community resilience hubs.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://mothersoutfront.org/sustainable-schools-resilient-communities/"
+          "link": "https://mothersoutfront.org/sustainable-schools-resilient-communities/",
+          "host_org_id": "mothers_out_front"
         }
       ],
       "actions": [
@@ -1925,7 +1945,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Mothers, grandmothers and caregivers can share their interest in volunteering, join a local team or campaign, or book a one-on-one call about taking a leadership role.",
-          "link": "https://mothersoutfront.org/volunteer/"
+          "link": "https://mothersoutfront.org/volunteer/",
+          "host_org_id": "mothers_out_front"
         }
       ]
     },
@@ -2072,7 +2093,8 @@
           "description": "Phone bank with JALSA and the Western Massachusetts Dayenu Circle to get climate voters to the polls for the midterms; training provided for first-time callers.",
           "online": true,
           "link": "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy-3/",
-          "rsvp_link": "https://www.mobilize.us/jalsa/event/1012121/"
+          "rsvp_link": "https://www.mobilize.us/jalsa/event/1012121/",
+          "host_org_id": "jewish_climate_action_network"
         },
         {
           "id": "jewish_climate_action_network_e_chutzpah_2026_phone_calls_for_our_2",
@@ -2082,7 +2104,8 @@
           "description": "Phone bank with JALSA and the Western Massachusetts Dayenu Circle to get climate voters to the polls for the midterms; training provided for first-time callers.",
           "online": true,
           "link": "https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy-4/",
-          "rsvp_link": "https://www.mobilize.us/jalsa/event/1012121/"
+          "rsvp_link": "https://www.mobilize.us/jalsa/event/1012121/",
+          "host_org_id": "jewish_climate_action_network"
         }
       ],
       "projects": [
@@ -2190,7 +2213,8 @@
           "description": "Weekly series of essays from religious and ethical leaders across Massachusetts on how faith sustains their climate work, running through October 11, 2026.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massipl.org/news-and-blogs-categories/sustainable-faith"
+          "link": "https://www.massipl.org/news-and-blogs-categories/sustainable-faith",
+          "host_org_id": "massachusetts_interfaith_power_and_light"
         },
         {
           "id": "massachusetts_interfaith_power_and_light_p_climate_action_alerts",
@@ -2198,7 +2222,8 @@
           "description": "Timely calls to action for people of faith when their voice matters at the State House and beyond.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massipl.org/initiatives/climate-action-alerts"
+          "link": "https://www.massipl.org/initiatives/climate-action-alerts",
+          "host_org_id": "massachusetts_interfaith_power_and_light"
         }
       ],
       "events": [
@@ -2221,7 +2246,8 @@
           "location": "Wolbach Farm, 18 Wolbach Road, Sudbury, MA",
           "end": "2026-11-05T12:15:00",
           "description": "Interfaith meditative walk led by Rabbi Katy Allen on the accessible All Persons' Trail, with stops for poetry and reflection; co-sponsored by Sudbury Valley Trustees and JCAN-MA.",
-          "link": "https://www.massipl.org/blog/september-recap"
+          "link": "https://www.massipl.org/blog/september-recap",
+          "host_org_id": "massachusetts_interfaith_power_and_light"
         },
         {
           "id": "massachusetts_interfaith_power_and_light_e_light_the_way_energy_justice_and",
@@ -2230,7 +2256,8 @@
           "location": "Online",
           "description": "Online session with JCAN-MA and SolarBuddy on how congregations can build and send small solar lights to families without reliable electricity.",
           "online": true,
-          "link": "https://www.massipl.org/blog/september-recap"
+          "link": "https://www.massipl.org/blog/september-recap",
+          "host_org_id": "massachusetts_interfaith_power_and_light"
         }
       ],
       "actions": [
@@ -2261,7 +2288,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Houses of worship pledge to take at least one meaningful climate action each year (pray, act, mobilize) and join a network of 250+ member congregations.",
-          "link": "https://massipl.fillout.com/congregations"
+          "link": "https://massipl.fillout.com/congregations",
+          "host_org_id": "massachusetts_interfaith_power_and_light"
         },
         {
           "id": "massachusetts_interfaith_power_and_light_a_start_a_congregational_solar_project_before",
@@ -2270,7 +2298,8 @@
           "skills_needed": [],
           "deadline": "2027-12-31",
           "description": "MassIPL helps houses of worship use the federal direct-pay incentive, which can cover up to 40% of a solar project; projects must be running by December 31, 2027.",
-          "link": "https://www.massipl.org/blog/september-recap"
+          "link": "https://www.massipl.org/blog/september-recap",
+          "host_org_id": "massachusetts_interfaith_power_and_light"
         }
       ],
       "website": "https://www.massipl.org/"
@@ -2374,7 +2403,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign up to get updates and get involved with Extinction Rebellion in Western Massachusetts.",
-          "link": "https://actionnetwork.org/forms/xr-western-massachusetts-sign-up"
+          "link": "https://actionnetwork.org/forms/xr-western-massachusetts-sign-up",
+          "host_org_id": "xr_western_mass"
         }
       ]
     },
@@ -2450,7 +2480,8 @@
           "description": "Campaign to change who controls extra 'leadership pay' for state legislators, including a statewide ballot question filed in 2025.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://actonmass.org/stipends/"
+          "link": "https://actonmass.org/stipends/",
+          "host_org_id": "act_on_mass"
         }
       ],
       "actions": [
@@ -2471,7 +2502,8 @@
           "skills_needed": [],
           "deadline": "2026-11-03",
           "description": "Act on Mass asks voters to support Question 1, which would make the Legislature and governor's office subject to the state public records law.",
-          "link": "https://actonmass.org/2026/10/03/vote-yes-on-1-for-sunshine-in-state-government/"
+          "link": "https://actonmass.org/2026/10/03/vote-yes-on-1-for-sunshine-in-state-government/",
+          "host_org_id": "act_on_mass"
         }
       ],
       "website": "https://actonmass.org/"
@@ -2571,7 +2603,8 @@
           "description": "Webinar on state policy options for data center subsidies, transparency, jobs and economic impacts.",
           "online": true,
           "link": "https://climate-xchange.org/event/state-policy-solutions-for-data-centers-tax-employment-and-economic-impacts/",
-          "rsvp_link": "https://join.climate-xchange.org/a/state-policy-solutions-data-centers-tax-employment-and-economic-impacts"
+          "rsvp_link": "https://join.climate-xchange.org/a/state-policy-solutions-data-centers-tax-employment-and-economic-impacts",
+          "host_org_id": "climate_xchange"
         }
       ],
       "website": "https://climate-xchange.org/"
@@ -2683,7 +2716,8 @@
           "description": "Working group that identifies undeveloped land in Massachusetts and New England and advocates for its permanent protection.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://climateactionnowma.org/get-involved/"
+          "link": "https://climateactionnowma.org/get-involved/",
+          "host_org_id": "climate_action_now_western_ma"
         },
         {
           "id": "climate_action_now_western_ma_p_no_toxic_biomass",
@@ -2691,7 +2725,8 @@
           "description": "Campaign against public subsidies for biomass energy.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://climateactionnowma.org/get-involved/"
+          "link": "https://climateactionnowma.org/get-involved/",
+          "host_org_id": "climate_action_now_western_ma"
         },
         {
           "id": "climate_action_now_western_ma_p_stop_the_eversource_pipeline",
@@ -2699,7 +2734,8 @@
           "description": "Springfield-area working group opposing expansion of natural gas pipelines.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://climateactionnowma.org/get-involved/"
+          "link": "https://climateactionnowma.org/get-involved/",
+          "host_org_id": "climate_action_now_western_ma"
         }
       ],
       "events": [
@@ -2783,7 +2819,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Help plant and care for small, fast-growing native forests.",
-          "link": "https://climateactionnowma.org/get-involved/"
+          "link": "https://climateactionnowma.org/get-involved/",
+          "host_org_id": "climate_action_now_western_ma"
         }
       ]
     },
@@ -2964,7 +3001,8 @@
           "description": "Recurring online conversation series with speakers on climate topics; recordings are posted on the chapter website.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://ecamass.org/category/deep-dialogues/"
+          "link": "https://ecamass.org/category/deep-dialogues/",
+          "host_org_id": "elders_climate_action_mass"
         }
       ],
       "website": "https://ecamass.org/",
@@ -2978,7 +3016,8 @@
           "description": "Regular chapter meeting on Zoom; registration is required to get the meeting link.",
           "recurrence": "Second Tuesday of each month, 12–2 PM",
           "online": true,
-          "link": "https://ecamass.org/eca-mass-event-calendar/"
+          "link": "https://ecamass.org/eca-mass-event-calendar/",
+          "host_org_id": "elders_climate_action_mass"
         },
         {
           "id": "elders_climate_action_mass_e_eca_mass_deep_dialogue",
@@ -2988,7 +3027,8 @@
           "end": "2026-10-26T17:30:00",
           "description": "Session of the chapter's Deep Dialogue conversation series on Zoom; registration required.",
           "online": true,
-          "link": "https://ecamass.org/eca-mass-event-calendar/"
+          "link": "https://ecamass.org/eca-mass-event-calendar/",
+          "host_org_id": "elders_climate_action_mass"
         }
       ],
       "actions": [
@@ -2999,7 +3039,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Volunteer with one of the chapter's teams, such as Action Planning (lobbying and protests), Legislative (bill tracking and testimony), Research, or Presentation and Education.",
-          "link": "https://ecamass.org/eca-mass-teams/"
+          "link": "https://ecamass.org/eca-mass-teams/",
+          "host_org_id": "elders_climate_action_mass"
         }
       ]
     },
@@ -3157,7 +3198,8 @@
           "description": "Arcadia is turning 8.5 acres of field into floodplain forest of pin oak, silver maple and American elm, planted with the changing climate in mind.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia/projects"
+          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/arcadia/projects",
+          "host_org_id": "mass_audubon_wma"
         }
       ],
       "actions": [
@@ -3168,7 +3210,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Help with visitor services, education, property stewardship and more at the sanctuary.",
-          "link": "https://volunteer.massaudubon.org/"
+          "link": "https://volunteer.massaudubon.org/",
+          "host_org_id": "mass_audubon_wma"
         }
       ]
     },
@@ -3211,7 +3254,8 @@
           "description": "Since 1979 sanctuary staff and over 200 trained volunteers patrol Cape Cod beaches each fall to find and rescue cold-stunned sea turtles.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/sea-turtles"
+          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/sea-turtles",
+          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         },
         {
           "id": "mass_audubon_wellfleet_bay_wildlife_sanctuary_p_diamondback_terrapin_monitoring",
@@ -3219,7 +3263,8 @@
           "description": "Monitoring of Outer Cape populations of the state-threatened diamondback terrapin, ongoing since 1980.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/diamondback-terrapins"
+          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/diamondback-terrapins",
+          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         },
         {
           "id": "mass_audubon_wellfleet_bay_wildlife_sanctuary_p_horseshoe_crab_research",
@@ -3227,7 +3272,8 @@
           "description": "Research and monitoring of Atlantic horseshoe crab populations on the Outer Cape since 1990 to support a sustainable fishery and local conservation.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/horseshoe-crabs"
+          "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/projects/horseshoe-crabs",
+          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         }
       ],
       "events": [
@@ -3281,7 +3327,8 @@
           "location": "Wellfleet Bay Wildlife Sanctuary, South Wellfleet",
           "end": "2026-10-24T18:30:00",
           "description": "Guided evening walk at sunset and full-moon rise, listening for owls and other nocturnal wildlife.",
-          "link": "https://www.massaudubon.org/programs/wellfleet-bay/103677-twilight-trek-moonrise-over-wellfleet-bay"
+          "link": "https://www.massaudubon.org/programs/wellfleet-bay/103677-twilight-trek-moonrise-over-wellfleet-bay",
+          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         },
         {
           "id": "mass_audubon_wellfleet_bay_wildlife_sanctuary_e_2026_state_of_wellfleet_harbor_conference",
@@ -3291,7 +3338,8 @@
           "end": "2026-11-14T13:00:00",
           "description": "Free annual conference where scientists and community members share the latest research and monitoring on Wellfleet Harbor and its ecosystem.",
           "link": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/news/2026-state-of-wellfleet-harbor-conference",
-          "rsvp_link": "https://www.massaudubon.org/programs/wellfleet-bay/104322-state-of-wellfleet-harbor-conference"
+          "rsvp_link": "https://www.massaudubon.org/programs/wellfleet-bay/104322-state-of-wellfleet-harbor-conference",
+          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         }
       ],
       "actions": [
@@ -3312,7 +3360,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Give money or supplies to support the yearly rescue of cold-stunned sea turtles on Cape Cod.",
-          "link": "https://web.massaudubon.org/site/Donation2?df_id=7901&mfc_pref=T&7901.donation=form1&s_src=turtleweb"
+          "link": "https://web.massaudubon.org/site/Donation2?df_id=7901&mfc_pref=T&7901.donation=form1&s_src=turtleweb",
+          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         }
       ],
       "website": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay"
@@ -3587,7 +3636,8 @@
           "location": "Boston; closing service at First Church in Roxbury Meetinghouse",
           "end": "2026-10-12T15:00:00",
           "description": "Afternoon with UU Urban Ministry featuring a community volunteer fair, food, communal poetry and a worship service.",
-          "link": "https://www.uumassaction.org/new-upcoming-events/2026/10/12/a-gathering-of-resilience-and-spirit"
+          "link": "https://www.uumassaction.org/new-upcoming-events/2026/10/12/a-gathering-of-resilience-and-spirit",
+          "host_org_id": "unitarian_universalist_mass_action"
         },
         {
           "id": "unitarian_universalist_mass_action_e_abolition_decarceration_and_community",
@@ -3597,7 +3647,8 @@
           "end": "2026-10-14T19:00:00",
           "description": "Conversation with Families for Justice as Healing organizers about prison abolition and how to get involved.",
           "link": "https://www.uumassaction.org/new-upcoming-events/2026/9/24/abolition-decarceration-and-community",
-          "rsvp_link": "https://secure.everyaction.com/r4AdSsBZSEqyqmz16sLo5w2"
+          "rsvp_link": "https://secure.everyaction.com/r4AdSsBZSEqyqmz16sLo5w2",
+          "host_org_id": "unitarian_universalist_mass_action"
         }
       ],
       "actions": [
@@ -3674,7 +3725,8 @@
           "description": "Campaign to protect bees, including pushing Massachusetts to restrict neonicotinoid-coated seeds.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://environmentamerica.org/massachusetts/topics/save-the-bees/"
+          "link": "https://environmentamerica.org/massachusetts/topics/save-the-bees/",
+          "host_org_id": "environment_massachusetts"
         },
         {
           "id": "environment_massachusetts_p_protect_our_oceans",
@@ -3682,7 +3734,8 @@
           "description": "Campaign to protect ocean life off Massachusetts, including North Atlantic right whales.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://environmentamerica.org/massachusetts/campaigns/protect-our-oceans/"
+          "link": "https://environmentamerica.org/massachusetts/campaigns/protect-our-oceans/",
+          "host_org_id": "environment_massachusetts"
         }
       ],
       "website": "https://environmentamerica.org/massachusetts/",
@@ -3694,7 +3747,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign a petition asking the governor to restrict bee-killing neonicotinoid-coated seeds in Massachusetts.",
-          "link": "https://environmentamerica.org/massachusetts/take-action/ask-governor-healey-save-our-bees-ban-neonic-coated-seeds/"
+          "link": "https://environmentamerica.org/massachusetts/take-action/ask-governor-healey-save-our-bees-ban-neonic-coated-seeds/",
+          "host_org_id": "environment_massachusetts"
         },
         {
           "id": "environment_massachusetts_a_tell_your_senators_protect_right_whales",
@@ -3703,7 +3757,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Send a message to your U.S. senators asking them to protect North Atlantic right whales.",
-          "link": "https://environmentamerica.org/massachusetts/take-action/tell-your-senators-protect-right-whales/"
+          "link": "https://environmentamerica.org/massachusetts/take-action/tell-your-senators-protect-right-whales/",
+          "host_org_id": "environment_massachusetts"
         }
       ]
     },
@@ -3819,7 +3874,8 @@
           "description": "Online talk on what municipal adoption data for solar, heat pumps and electric vehicles can teach local climate groups.",
           "online": true,
           "link": "https://www.massclimateaction.org/decarbonizing_the_data_--_professor_zana_cranmer",
-          "rsvp_link": "https://www.massclimateaction.org/decarbonizing_the_data_--_professor_zana_cranmer"
+          "rsvp_link": "https://www.massclimateaction.org/decarbonizing_the_data_--_professor_zana_cranmer",
+          "host_org_id": "massachusetts_climate_action_network"
         }
       ]
     },
@@ -3855,7 +3911,8 @@
           "description": "Filing protests and comments at FERC against reinstating the certificates for Williams' Constitution Pipeline and Iroquois' Wright Interconnect, which could open the way to new gas pipeline expansions into New England.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://plan4ne.wordpress.com/about/williams-constitution-pipeline/"
+          "link": "https://plan4ne.wordpress.com/about/williams-constitution-pipeline/",
+          "host_org_id": "pipeline_awareness_network_ne"
         },
         {
           "id": "pipeline_awareness_network_ne_p_enbridge_algonquin_expansion_agt_e_r",
@@ -3863,7 +3920,8 @@
           "description": "Tracking Algonquin's 2026 FERC pre-filing for pipeline expansion work through Mendon, Bellingham, Franklin and Wrentham, MA and parts of Rhode Island.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://plan4ne.wordpress.com/about/enbridge-project-maple/"
+          "link": "https://plan4ne.wordpress.com/about/enbridge-project-maple/",
+          "host_org_id": "pipeline_awareness_network_ne"
         }
       ]
     },
@@ -3967,7 +4025,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign up to volunteer with the volunteer-led Massachusetts chapter on its environmental and climate justice work.",
-          "link": "https://act.sierraclub.org/actions/Massachusetts?actionId=AR0285505"
+          "link": "https://act.sierraclub.org/actions/Massachusetts?actionId=AR0285505",
+          "host_org_id": "sierra_club"
         }
       ],
       "website": "https://www.sierraclub.org/massachusetts"
@@ -4159,7 +4218,8 @@
           "description": "Community garden and food forest at the center, with volunteer days and community meetings.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf"
+          "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf",
+          "host_org_id": "north_american_indian_center_of_boston"
         }
       ],
       "actions": [
@@ -4183,7 +4243,8 @@
           "location": "Starts at Park Street Station, Boston",
           "end": "2026-10-10T16:00:00",
           "description": "March for Indigenous Peoples Day listed on NAICOB's 2026 events calendar.",
-          "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf"
+          "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf",
+          "host_org_id": "north_american_indian_center_of_boston"
         },
         {
           "id": "north_american_indian_center_of_boston_e_annual_community_feast",
@@ -4192,7 +4253,8 @@
           "location": "North American Indian Center of Boston, 105 South Huntington Ave, Jamaica Plain",
           "end": "2026-11-21T18:00:00",
           "description": "NAICOB's annual community feast.",
-          "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf"
+          "link": "https://www.naicob.org/uploads/4/6/9/1/46918873/2026_naicob_save_the_dates-3.pdf",
+          "host_org_id": "north_american_indian_center_of_boston"
         }
       ]
     },
@@ -4244,7 +4306,8 @@
           "description": "Grassroots campaign across the six Northeast states pushing regional energy regulators toward wind, solar and storage instead of fossil fuels.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.slingshot.org/communitygroups"
+          "link": "https://www.slingshot.org/communitygroups",
+          "host_org_id": "slingshot"
         },
         {
           "id": "slingshot_p_national_pfas_contamination_coalition",
@@ -4252,7 +4315,8 @@
           "description": "Coalition of about 30 PFAS-impacted community groups nationwide working for clean water and polluter accountability.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.slingshot.org/communitygroups"
+          "link": "https://www.slingshot.org/communitygroups",
+          "host_org_id": "slingshot"
         }
       ],
       "website": "https://www.slingshot.org/"
@@ -4324,7 +4388,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Volunteer with a statewide working group such as Clean the Grid, Transportation, Science, Media Engagement, Stop and Steer the Money, Climate & Democracy or the Statewide Legislative Team.",
-          "link": "https://350mass.betterfutureproject.org/our_working_groups"
+          "link": "https://350mass.betterfutureproject.org/our_working_groups",
+          "host_org_id": "350ma"
         },
         {
           "id": "350ma_a_join_your_local_350_mass_node",
@@ -4333,7 +4398,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Get involved with a member-led local chapter of 350 Mass near you.",
-          "link": "https://350mass.betterfutureproject.org/find_your_local_node_redirect"
+          "link": "https://350mass.betterfutureproject.org/find_your_local_node_redirect",
+          "host_org_id": "350ma"
         }
       ],
       "website": "https://350mass.betterfutureproject.org/",
@@ -4347,7 +4413,8 @@
           "description": "Brainstorm on what a second Save Money with Clean Heat campaign could look like.",
           "online": true,
           "link": "https://350mass.betterfutureproject.org/save_money_with_clean_heat_2_brainstorm",
-          "rsvp_link": "https://350mass.betterfutureproject.org/save_money_with_clean_heat_2_brainstorm"
+          "rsvp_link": "https://350mass.betterfutureproject.org/save_money_with_clean_heat_2_brainstorm",
+          "host_org_id": "350ma"
         },
         {
           "id": "350ma_e_march_in_the_honk_parade",
@@ -4357,7 +4424,8 @@
           "end": "2026-10-11T15:00:00",
           "description": "350 Mass marches in the HONK! activist street-band parade from Davis Square to Harvard Square; arrive by 11 AM.",
           "link": "https://350mass.betterfutureproject.org/march_in_honk_2026",
-          "rsvp_link": "https://350mass.betterfutureproject.org/march_in_honk_2026"
+          "rsvp_link": "https://350mass.betterfutureproject.org/march_in_honk_2026",
+          "host_org_id": "350ma"
         },
         {
           "id": "350ma_e_climate_justice_a_primer",
@@ -4368,7 +4436,8 @@
           "description": "Online workshop on how climate change hits communities unequally and how to organize with frontline communities.",
           "online": true,
           "link": "https://350mass.betterfutureproject.org/climate_justice_a_primer_10_2026",
-          "rsvp_link": "https://350mass.betterfutureproject.org/climate_justice_a_primer_10_2026"
+          "rsvp_link": "https://350mass.betterfutureproject.org/climate_justice_a_primer_10_2026",
+          "host_org_id": "350ma"
         }
       ]
     },
@@ -4481,7 +4550,8 @@
           "description": "Monthly node meeting on Zoom.",
           "recurrence": "Third Wednesday of each month, 6 PM",
           "online": true,
-          "link": "https://350mass.betterfutureproject.org/350mass_berkshires"
+          "link": "https://350mass.betterfutureproject.org/350mass_berkshires",
+          "host_org_id": "350ma_berkshires"
         }
       ]
     },
@@ -4517,7 +4587,8 @@
           "description": "Tracks and opposes new gas pipeline expansions in the Northeast, including the Constitution Pipeline, Algonquin and Cape Cod Canal projects, through FERC comments and public guides.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.thebeatnews.org/BeatTeam/pipelines/"
+          "link": "https://www.thebeatnews.org/BeatTeam/pipelines/",
+          "host_org_id": "berkshire_environmental_action_team"
         },
         {
           "id": "berkshire_environmental_action_team_p_pfas_and_sewage_sludge",
@@ -4525,7 +4596,8 @@
           "description": "Researches where PFAS-contaminated sewage sludge is spread in Berkshire County and pushes MassDEP and legislators to stop land application; part of the Coalition for Sludge Free Land.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.thebeatnews.org/BeatTeam/sludge/"
+          "link": "https://www.thebeatnews.org/BeatTeam/sludge/",
+          "host_org_id": "berkshire_environmental_action_team"
         },
         {
           "id": "berkshire_environmental_action_team_p_clean_energy_alternatives_to_peaker_power",
@@ -4533,7 +4605,8 @@
           "description": "Campaign for clean energy solutions to replace fossil-fuel peaker plants.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.thebeatnews.org/BeatTeam/clean-energy-solutions-alternatives-to-peaker-power-plants/"
+          "link": "https://www.thebeatnews.org/BeatTeam/clean-energy-solutions-alternatives-to-peaker-power-plants/",
+          "host_org_id": "berkshire_environmental_action_team"
         }
       ],
       "actions": [
@@ -4544,7 +4617,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Contact your state legislator in support of S.56, An Act protecting our soil and farms from PFAS contamination.",
-          "link": "https://www.thebeatnews.org/BeatTeam/sludge/"
+          "link": "https://www.thebeatnews.org/BeatTeam/sludge/",
+          "host_org_id": "berkshire_environmental_action_team"
         },
         {
           "id": "berkshire_environmental_action_team_a_volunteer_water_quality_monitoring_and_river",
@@ -4553,7 +4627,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sample outfall pipes flowing into the Housatonic River (April-October), help with river cleanups, stream crossing surveys, amphibian crossings or outreach tabling.",
-          "link": "https://www.thebeatnews.org/BeatTeam/volunteer/"
+          "link": "https://www.thebeatnews.org/BeatTeam/volunteer/",
+          "host_org_id": "berkshire_environmental_action_team"
         }
       ]
     },
@@ -4631,7 +4706,8 @@
           "description": "Town-wide campaign with the Town's Zero Emissions Advisory Board and Brookline Mothers Out Front that offers how-to guides, incentive summaries and a contractor list to help residents electrify homes and vehicles.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://electrifybrookline.org/"
+          "link": "https://electrifybrookline.org/",
+          "host_org_id": "climate_action_brookline"
         },
         {
           "id": "climate_action_brookline_p_public_ev_charging",
@@ -4639,7 +4715,8 @@
           "description": "Members work with the Town's Transportation Division to expand use and locations of public EV chargers for residents without home charging.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://climateactionbrookline.org/projects/"
+          "link": "https://climateactionbrookline.org/projects/",
+          "host_org_id": "climate_action_brookline"
         }
       ],
       "events": [
@@ -4659,7 +4736,8 @@
           "date": "2026-11-09",
           "location": "Brookline",
           "description": "Discussion and possible endorsements of climate-related warrant articles for fall Town Meeting; all are welcome.",
-          "link": "https://climateactionbrookline.org/events/"
+          "link": "https://climateactionbrookline.org/events/",
+          "host_org_id": "climate_action_brookline"
         }
       ],
       "website": "https://climateactionbrookline.org/"
@@ -4893,7 +4971,8 @@
           "description": "JALSA backs a Climate Change Superfund (H.1014/S.588), a Zero Carbon Renovation Fund (H.3577/S.2286), and a deeds excise bill funding affordable housing and climate adaptation (H.3194/S.1973).",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.jalsa.org/legislative-priorities"
+          "link": "https://www.jalsa.org/legislative-priorities",
+          "host_org_id": "jewish_alliance_for_law_and_social_action"
         }
       ],
       "actions": [
@@ -5025,7 +5104,8 @@
           "description": "SAFE tracked and publicly commented against a building permit at Shetland Park that turned out to be for an AI data center in Salem's hottest neighborhood; the Zoning Board of Appeals denied the developer's appeal on Sept 16, 2026.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://salemsafe.org/2026/09/17/ai-data-center-permit-revoked-in-the-point/"
+          "link": "https://salemsafe.org/2026/09/17/ai-data-center-permit-revoked-in-the-point/",
+          "host_org_id": "salem_alliance_for_the_environment"
         }
       ],
       "website": "https://salemsafe.org/",
@@ -5038,7 +5118,8 @@
           "end": "2026-10-13T20:30:00",
           "description": "Free discussion, co-hosted with the North Shore Labor Council, on how offshore wind and green energy can bring union jobs to Gloucester; dinner and Spanish interpretation provided.",
           "link": "https://salemsafe.org/events-calendar/",
-          "rsvp_link": "https://forms.gle/G3KtuJDRJNJq2hzaA"
+          "rsvp_link": "https://forms.gle/G3KtuJDRJNJq2hzaA",
+          "host_org_id": "salem_alliance_for_the_environment"
         }
       ]
     },
@@ -5100,7 +5181,8 @@
           "description": "Coalition convened by Arise on climate justice in Springfield, including pushing for a city climate action and resiliency plan.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://arisespringfield.org/"
+          "link": "https://arisespringfield.org/",
+          "host_org_id": "arise_for_social_justice"
         },
         {
           "id": "arise_for_social_justice_p_environmental_justice_committee",
@@ -5108,7 +5190,8 @@
           "description": "Member committee that spreads word about threats to community health and organizes to stop them.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://arisespringfield.org/"
+          "link": "https://arisespringfield.org/",
+          "host_org_id": "arise_for_social_justice"
         }
       ],
       "actions": [
@@ -5119,7 +5202,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign up to hear about volunteer opportunities with Arise for Social Justice.",
-          "link": "https://ariseforsocialjustice.myflodesk.com/volunteer"
+          "link": "https://ariseforsocialjustice.myflodesk.com/volunteer",
+          "host_org_id": "arise_for_social_justice"
         }
       ]
     },
@@ -5205,7 +5289,8 @@
           "recurrence": "Tuesdays, 7:00–8:30 PM, Sept 15 – Oct 27",
           "online": true,
           "link": "https://www.bodhisara.org/",
-          "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSfRHAMsZH28eB05Af0i2rEclC9hMogs5kuCwCAIVelU3qO-bw/viewform"
+          "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSfRHAMsZH28eB05Af0i2rEclC9hMogs5kuCwCAIVelU3qO-bw/viewform",
+          "host_org_id": "bodhisara_dharma_community"
         }
       ]
     },
@@ -5376,7 +5461,8 @@
           "description": "Testimony and a petition against the section of the Governor's energy bill that would repeal the 1982 voter-approval requirement for new nuclear reactors in Massachusetts.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.capedownwinders.net"
+          "link": "https://www.capedownwinders.net",
+          "host_org_id": "cape_downwinders"
         }
       ],
       "website": "https://www.capedownwinders.net",
@@ -5388,7 +5474,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Petition asking legislators to drop the section of H.4144 that would repeal the 1982 voter-approval requirement for new nuclear power plants.",
-          "link": "https://www.change.org/p/keep-democracy-alive-remove-section-45"
+          "link": "https://www.change.org/p/keep-democracy-alive-remove-section-45",
+          "host_org_id": "cape_downwinders"
         },
         {
           "id": "cape_downwinders_a_volunteer_with_cape_downwinders",
@@ -5397,7 +5484,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Join the mailing list, write letters to the editor about Holtec's plan to discharge Pilgrim wastewater into Cape Cod Bay, and sign up to volunteer for direct actions.",
-          "link": "https://www.capedownwinders.net/take-action"
+          "link": "https://www.capedownwinders.net/take-action",
+          "host_org_id": "cape_downwinders"
         }
       ]
     },
@@ -5673,7 +5761,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Schools, groups and businesses can ask the chapter for a free speaker presentation on the climate crisis.",
-          "link": "https://www.climaterealitysouthcoast.com/presentations.html"
+          "link": "https://www.climaterealitysouthcoast.com/presentations.html",
+          "host_org_id": "the_climate_reality_project_massachusetts_southcoast"
         }
       ]
     },
@@ -5800,7 +5889,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Petition, shared by the chapter, asking Massachusetts to preserve and expand trees to reduce drought and heat.",
-          "link": "https://actionnetwork.org/petitions/preserve-expand-ma-trees-to-reduce-droughts-heat"
+          "link": "https://actionnetwork.org/petitions/preserve-expand-ma-trees-to-reduce-droughts-heat",
+          "host_org_id": "the_climate_reality_project_boston_metro_chapter"
         }
       ],
       "website": "https://www.climaterealityboston.org/"
@@ -5876,7 +5966,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Become a member-owner of Co-op Power or a local Community Energy Co-op, with an equal vote on the co-op's priorities and programs.",
-          "link": "https://www.cooppower.coop/join-coop-power"
+          "link": "https://www.cooppower.coop/join-coop-power",
+          "host_org_id": "co_op_power_inc"
         }
       ]
     },
@@ -5923,7 +6014,8 @@
           "description": "Green Justice Coalition campaign for community control and local benefits as the electric grid is rebuilt for clean energy.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massclu.org/green-justice-coalition/"
+          "link": "https://www.massclu.org/green-justice-coalition/",
+          "host_org_id": "community_labor_united"
         },
         {
           "id": "community_labor_united_p_project_labor_agreements_now_for_massachusetts",
@@ -5931,7 +6023,8 @@
           "description": "Campaign to build public climate and infrastructure projects under Project Labor Agreements that open building-trades careers to women and people of color.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massclu.org/green-justice-coalition/"
+          "link": "https://www.massclu.org/green-justice-coalition/",
+          "host_org_id": "community_labor_united"
         },
         {
           "id": "community_labor_united_p_public_transit_public_good",
@@ -5939,7 +6032,8 @@
           "description": "Partnership of transit workers and riders pushing for a safe, reliable, affordable MBTA with good jobs.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.massclu.org/green-justice-coalition/"
+          "link": "https://www.massclu.org/green-justice-coalition/",
+          "host_org_id": "community_labor_united"
         }
       ],
       "actions": [
@@ -6475,7 +6569,8 @@
           "end": "2026-10-24T15:00:00",
           "description": "Family event with treats from EV Ambassadors and a chance to see electric cars, e-bikes and other clean transportation; costumes welcome.",
           "link": "https://www.greenenergyconsumers.org/event/electrictrunkortreat",
-          "rsvp_link": "https://www.eventbrite.com/e/electric-trunk-or-treat-tickets-2001901826252"
+          "rsvp_link": "https://www.eventbrite.com/e/electric-trunk-or-treat-tickets-2001901826252",
+          "host_org_id": "green_energy_consumers_alliance"
         }
       ],
       "actions": [
@@ -6534,7 +6629,8 @@
           "location": "City of Newton Harvest Fair, Newton",
           "end": "2026-10-18T16:00:00",
           "description": "Annual sustainability expo held alongside Newton's Harvest Fair, with eco-friendly products, local green businesses and groups, city departments and kids' activities.",
-          "link": "https://greennewton.org/event/green-expo/"
+          "link": "https://greennewton.org/event/green-expo/",
+          "host_org_id": "green_newton"
         },
         {
           "id": "green_newton_e_energy_help_drop_in_office_hours",
@@ -6543,7 +6639,8 @@
           "location": "Cooper Center for Active Living, 345 Walnut St, Newton, MA",
           "end": "2026-10-20T13:00:00",
           "description": "Free one-on-one help with energy bills, fuel assistance sign-ups, home energy assessments and heat pumps, with the City of Newton Climate & Sustainability Team.",
-          "link": "https://greennewton.org/event/energy-office-hours/2026-10-20/"
+          "link": "https://greennewton.org/event/energy-office-hours/2026-10-20/",
+          "host_org_id": "green_newton"
         },
         {
           "id": "green_newton_e_green_drinks_at_baramor",
@@ -6553,7 +6650,8 @@
           "end": "2026-11-03T21:00:00",
           "description": "Casual evening meetup for people who want to connect over building a sustainable Newton.",
           "recurrence": "First Tuesday of every other month, 7:30 PM",
-          "link": "https://greennewton.org/event/all-welcome-to-green-drinks-2-2-4/"
+          "link": "https://greennewton.org/event/all-welcome-to-green-drinks-2-2-4/",
+          "host_org_id": "green_newton"
         }
       ],
       "projects": [
@@ -6563,7 +6661,8 @@
           "description": "Advocates in Newton for building electrification and clean energy (including BERDO and networked geothermal), waste-reduction ordinances such as Skip the Stuff, and equitable access to efficiency programs.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://greennewton.org/advocacy"
+          "link": "https://greennewton.org/advocacy",
+          "host_org_id": "green_newton"
         },
         {
           "id": "green_newton_p_energy_help_and_free_energy_coach",
@@ -6571,7 +6670,8 @@
           "description": "Free home energy coaching and drop-in office hours to help residents with energy bills, assistance programs, assessments and heat pumps.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://greennewton.org/event/energy-office-hours/2026-10-20/"
+          "link": "https://greennewton.org/event/energy-office-hours/2026-10-20/",
+          "host_org_id": "green_newton"
         }
       ],
       "actions": [
@@ -6582,7 +6682,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Get alerts on Newton environmental policy initiatives and how to weigh in.",
-          "link": "https://docs.google.com/forms/d/e/1FAIpQLSesoAL1OGR1LNL0QJCyeSaWzzpWLkAs4ujCyep5svCXOA36hQ/viewform"
+          "link": "https://docs.google.com/forms/d/e/1FAIpQLSesoAL1OGR1LNL0QJCyeSaWzzpWLkAs4ujCyep5svCXOA36hQ/viewform",
+          "host_org_id": "green_newton"
         },
         {
           "id": "green_newton_a_event_day_volunteer",
@@ -6591,7 +6692,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Help for 1-3 hours at a Green Newton event: greet attendees, staff the booth, set up and clean up, and share information about programs.",
-          "link": "https://greennewton.org/volunteer"
+          "link": "https://greennewton.org/volunteer",
+          "host_org_id": "green_newton"
         }
       ]
     },
@@ -7000,7 +7102,8 @@
           "end": "2026-10-10T17:00:00",
           "description": "Traveling exhibit on the human cost of the war on Iran, with postcards to elected officials and drawing activities for children.",
           "link": "https://masspeaceaction.org/event/eyes-wide-open-ii-honk-festival/",
-          "rsvp_link": "https://masspeace.us/EyesWideOpen-HONKFestival"
+          "rsvp_link": "https://masspeace.us/EyesWideOpen-HONKFestival",
+          "host_org_id": "massachusetts_peace_action"
         },
         {
           "id": "massachusetts_peace_action_e_our_choice_peace_and_building_democracy",
@@ -7009,7 +7112,8 @@
           "location": "Dante Alighieri Society, 41 Hampshire Street, Cambridge",
           "end": "2026-11-01T19:00:00",
           "description": "Annual dinner honoring Massachusetts activists, with music, two days before the election.",
-          "link": "https://masspeaceaction.org/event/our-choice-peace-and-building-democracy-together-mapaef-2026-annual-dinner/"
+          "link": "https://masspeaceaction.org/event/our-choice-peace-and-building-democracy-together-mapaef-2026-annual-dinner/",
+          "host_org_id": "massachusetts_peace_action"
         }
       ],
       "website": "https://masspeaceaction.org/",
@@ -7020,7 +7124,8 @@
           "description": "Education and action on the links between U.S. militarism and the climate and ecological crisis, working in solidarity with climate justice movements.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://masspeaceaction.org/our-issues/peace-and-climate/"
+          "link": "https://masspeaceaction.org/our-issues/peace-and-climate/",
+          "host_org_id": "massachusetts_peace_action"
         }
       ]
     },
@@ -7745,7 +7850,8 @@
           "location": "Sharon Public Library, Sharon",
           "end": "2026-10-29T19:00:00",
           "description": "Bring your energy bills to get help from Sharon's Energy Advocate on lowering electricity costs, cancelling third-party supply contracts and signing up for the heat pump rate.",
-          "link": "https://www.sustainablesharon.org/events/energy-bill-clinic"
+          "link": "https://www.sustainablesharon.org/events/energy-bill-clinic",
+          "host_org_id": "sustainable_sharon_coalition"
         }
       ],
       "actions": [
@@ -7915,7 +8021,8 @@
           "description": "A $7.5 million, 15-year fund from Vineyard Power's community benefits agreement with Vineyard Wind that pays for solar and battery storage at island critical facilities and subsidizes electricity bills for income-eligible households.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.vineyardpower.org/resiliency-and-affordability"
+          "link": "https://www.vineyardpower.org/resiliency-and-affordability",
+          "host_org_id": "vineyard_power_cooperative"
         },
         {
           "id": "vineyard_power_cooperative_p_mass_save_community_first_partnership",
@@ -7923,7 +8030,8 @@
           "description": "Partnership with the six island towns and Cape Light Compact to raise participation in Mass Save energy efficiency and electrification programs on Martha's Vineyard.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.vineyardpower.org/About"
+          "link": "https://www.vineyardpower.org/About",
+          "host_org_id": "vineyard_power_cooperative"
         }
       ],
       "actions": [
@@ -8014,7 +8122,8 @@
           "end": "2026-10-04T18:30:00",
           "description": "Regular meeting of the group's climate working group, which works on cutting emissions from buildings and vehicles in Watertown.",
           "recurrence": "First and third Sundays, 5:00-6:30 PM",
-          "link": "https://watertowncitizens.org/working-groups/climate-action/"
+          "link": "https://watertowncitizens.org/working-groups/climate-action/",
+          "host_org_id": "watertown_citizens_for_peace_justice_and_the_environment"
         }
       ],
       "projects": [
@@ -8024,7 +8133,8 @@
           "description": "Working group (and 350 Mass node) that helps the city carry out its 2022 Climate and Energy Plan and looks for ways to cut emissions from buildings and vehicles.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://watertowncitizens.org/working-groups/climate-action/"
+          "link": "https://watertowncitizens.org/working-groups/climate-action/",
+          "host_org_id": "watertown_citizens_for_peace_justice_and_the_environment"
         },
         {
           "id": "watertown_citizens_for_peace_justice_and_the_environment_p_life_friendly_garden_tour",
@@ -8032,7 +8142,8 @@
           "description": "Annual tour of Watertown gardens that are cared for without chemicals; the fall 2025 tour focused on dealing with rabbits and rodents without poisons.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://watertowncitizens.org/working-groups/life-friendly-garden-tour/"
+          "link": "https://watertowncitizens.org/working-groups/life-friendly-garden-tour/",
+          "host_org_id": "watertown_citizens_for_peace_justice_and_the_environment"
         }
       ]
     },
@@ -8721,7 +8832,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign up to join volunteers on the South Shore, South Coast and Cape Cod who talk with neighbors and meet members of Congress about climate solutions.",
-          "link": "https://citizensclimatelobby.org/chapters/MA_South_Shore/"
+          "link": "https://citizensclimatelobby.org/chapters/MA_South_Shore/",
+          "host_org_id": "citizens_climate_lobby_south_shore_cape_and_islands"
         }
       ]
     },
@@ -8759,7 +8871,8 @@
           "skills_needed": [],
           "deadline": null,
           "description": "Sign up to volunteer with the chapter covering Salem, Lynn, Beverly, Newburyport, Gloucester, Peabody, Danvers and Essex County, building support for climate laws and meeting members of Congress.",
-          "link": "https://citizensclimatelobby.org/chapters/MA_Northshore/"
+          "link": "https://citizensclimatelobby.org/chapters/MA_Northshore/",
+          "host_org_id": "citizens_climate_lobby_north_shore_chapter"
         }
       ]
     },
@@ -9019,7 +9132,8 @@
           "description": "Grant program with the Barr Foundation funding 12-month municipal and community projects of up to $50,000 that protect people and places from climate impacts, with a focus on climate equity.",
           "status": "active",
           "skills_needed": [],
-          "link": "https://www.mapc.org/resource-library/accelerating-resiliency/"
+          "link": "https://www.mapc.org/resource-library/accelerating-resiliency/",
+          "host_org_id": "metropolitan_area_planning_council"
         }
       ]
     },

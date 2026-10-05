@@ -204,12 +204,6 @@
  "vt_vcv": [
   "https://vermontconservationvoters.com/event/community-canvass-tour-colchester/"
  ],
- "vt_vcv_e_canvass_colchester": [
-  "https://vermontconservationvoters.com/event/community-canvass-tour-colchester/"
- ],
- "vt_vcv_e_canvass_randolph": [
-  "https://vermontconservationvoters.com/event/community-canvass-tour-randolph/"
- ],
  "vt_vcv_e_canvass_st_albans": [
   "https://vermontconservationvoters.com/event/community-canvass-tour-st-albans/"
  ],
@@ -236,6 +230,63 @@
  ],
  "vt_vcv_e_pole_2_poll": [
   "https://vermontconservationvoters.com/event/pole-2-poll-a-gotv-celebration/"
+ ],
+ "vt_preservation_trust": [
+  "https://ptvermont.org/about/give/",
+  "https://ptvermont.org/cat/news/ptv/"
+ ],
+ "vt_public_assets_institute": [
+  "https://publicassets.org/donate/",
+  "https://publicassets.org/about/events"
+ ],
+ "vt_public_assets_institute_e_federal_actions_and_the_wellbeing_of": [
+  "https://publicassets.org/about/events"
+ ],
+ "vt_public_assets_institute_e_federal_actions_and_the_wellbeing_of_2": [
+  "https://publicassets.org/about/events"
+ ],
+ "vt_public_assets_institute_e_federal_actions_and_the_wellbeing_of_3": [
+  "https://publicassets.org/about/events"
+ ],
+ "vt_public_assets_institute_e_federal_actions_and_the_wellbeing_of_4": [
+  "https://publicassets.org/about/events"
+ ],
+ "vt_vhcb": [
+  "https://vhcb.org/about/",
+  "https://vhcb.org/"
+ ],
+ "vt_bppa_vt": [
+  "https://bppa-vt.org/",
+  "https://bppa-vt.org/about-bppa-vt/"
+ ],
+ "vt_northern_forest_center": [
+  "https://northernforest.org/resources/resources/news-digest-back-issues/"
+ ],
+ "vt_vippa": [
+  "https://www.vippahydro.org/"
+ ],
+ "vt_williston_energy_committee_e_williston_energy_committee_public_meeting": [
+  "https://www.willistonvtenergycommittee.org/"
+ ],
+ "vt_starksboro_energy_committee": [
+  "https://www.starksborovt.org/energy-committee",
+  "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx"
+ ],
+ "vt_starksboro_energy_committee_e_starksboro_energy_committee_meeting": [
+  "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx",
+  "https://www.starksborovt.org/energy-committee"
+ ],
+ "vt_starksboro_energy_committee_p_starksboro_town_energy_plan": [
+  "https://www.starksborovt.org/sites/default/files/uploads/agendas/starksboro-energy-committee-agenda-for-10-5-26.docx"
+ ],
+ "vt_350_chittenden_county": [
+  "https://groups.google.com/g/350_burlington"
+ ],
+ "vt_350_chittenden_county_e_350chittenden_node_meeting": [
+  "https://groups.google.com/g/350_burlington/c/hcpHZRzNBrg"
+ ],
+ "vt_350_chittenden_county_p_mcneil_work_group": [
+  "https://groups.google.com/g/350_burlington/c/ay44aAPH9lc"
  ],
  "masspirg_boston": [
   "https://pirg.org/massachusetts/articles/highlights-of-masspirgs-work-in-2025/",
