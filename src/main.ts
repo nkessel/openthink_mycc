@@ -10,6 +10,7 @@ import { createEventsView } from "./events";
 import { createProjectsView } from "./projects";
 import { createActionsView } from "./actions";
 import { createTopicsView } from "./topics";
+import { findItem, showItemCard } from "./itemcard";
 import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
@@ -24,13 +25,13 @@ import { attachSectors, createSectorSection } from "./sectors";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
 type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDetail?: (text: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void; bootDetailPendingMs?: () => number };
-/** The loading screen's second line: exactly what is being loaded right now. */
+/** The loading screen's one line of text: short, true, and about the people on the map. */
 function bootDetail(text: string) {
   bootWin.bootDetail?.(text);
 }
 const bootWin = window as BootWindow;
-function bootProgress(p: number, label?: string) {
-  bootWin.bootProgress?.(p, label);
+function bootProgress(p: number) {
+  bootWin.bootProgress?.(p);
 }
 
 /** Fill the bar, then fade out the splash that index.html shows while the data and map load. */
@@ -42,15 +43,15 @@ function hideBoot() {
     el.classList.add("done");
     setTimeout(() => el.remove(), 600);
   };
-  bootWin.bootProgress?.(1, "The map is ready");
-  // Someone pressed "Read more": wait for their "Open the map".
+  bootWin.bootProgress?.(1);
+  // Someone pressed "Keep this screen open": wait for their "Open the map".
   if (bootWin.bootHeld) {
-    bootDetail("Everything is loaded. Open the map whenever you like.");
+    bootDetail("Everything's here. Open the map whenever you're ready.");
     bootWin.bootRelease = go;
     return;
   }
   // Otherwise let the last few loading lines finish showing (briefly), then open.
-  const pending = Math.min(1600, bootWin.bootDetailPendingMs?.() ?? 0);
+  const pending = Math.min(3000, bootWin.bootDetailPendingMs?.() ?? 0);
   setTimeout(() => (bootWin.bootHeld ? (bootWin.bootRelease = go) : go()), 250 + pending);
 }
 
@@ -62,7 +63,7 @@ async function main() {
   // Fetch data
   let data: DataFile;
   try {
-    bootProgress(0.03, "Fetching the latest data\u2026");
+    bootProgress(0.03);
     data = await loadData();
   } catch (err) {
     createTopbar(app, { onTabChange: () => {} });
@@ -82,8 +83,8 @@ async function main() {
   }
 
   const nItems = [...data.coalitions, ...data.organizations].reduce((n, g) => n + (g.events?.length || 0) + (g.projects?.length || 0) + (g.actions?.length || 0), 0);
-  bootProgress(0.8, "Drawing the map\u2026");
-  bootDetail(`${data.coalitions.length} coalitions, ${data.organizations.length} organizations, ${nItems} events, projects and actions loaded`);
+  bootProgress(0.8);
+  bootDetail(`${data.coalitions.length} coalitions and ${data.organizations.length} groups, with ${nItems} events, projects and actions underway`);
   await attachThoughts(data);
   // Sector layers (Map settings → Social justice) that this browser has switched on.
   const sectorsOn = await attachSectors(data, currentMap.id);
@@ -92,23 +93,16 @@ async function main() {
   // A few true things about what just loaded, while the map is put together.
   const groups = [...data.coalitions, ...data.organizations];
   const bridges = data.organizations.filter((o) => (o.coalition_ids?.length || 0) > 1).length;
-  bootDetail(`Linking ${data.edges.length} coalition memberships. ${bridges} organizations work across two or more coalitions`);
   const now = Date.now();
   const upcoming = groups.flatMap((g) => g.events || []).filter((e) => {
     const t = e.date ? parseEventDate(e.date).getTime() : NaN;
     return t >= now - 12 * 3600e3 && t <= now + 30 * 864e5;
   }).length;
-  if (upcoming) bootDetail(`Finding what's coming up: ${upcoming} events in the next 30 days`);
+  if (upcoming) bootDetail(`${upcoming} chances to show up in the next 30 days`);
   const acts = groups.flatMap((g) => g.actions || []);
   const roles = acts.filter((a) => a.kind === "role").length;
-  if (acts.length) bootDetail(`Gathering ${acts.length - roles} actions you can take${roles ? ` and ${roles} ways to volunteer` : ""}`);
-  const newest = groups.map((g) => g.last_activity || "").sort().pop();
-  if (newest) {
-    const days = Math.floor((now - new Date(newest).getTime()) / 864e5);
-    if (days >= 0 && days < 60) bootDetail(`Checking for news: the latest update from a group was ${days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`}`);
-  }
+  if (acts.length) bootDetail(`${acts.length - roles} actions you can take${roles ? `, ${roles} ways to volunteer` : ""}`);
   const logosReady = preloadLogos(groups.map((g) => g.logo));
-  bootDetail(`Placing ${groups.length} groups and their links on the map\u2026`);
 
   let activeTab: TopTab = "map";
 
@@ -192,14 +186,14 @@ async function main() {
     onItemClick: (kind, item, owner) => {
       drawerApi!.openItem(kind, item, owner);
     },
+    showsDetailsOf: (node) => (trayWouldBlockMap() ? !drawerApi!.showingItem() : drawerApi!.isOpen() && !drawerApi!.showingItem() && drawerApi!.current()?.id === node.id),
     onNodeDeselect: () => {
       drawerApi!.close();
       graphApi!.setSelectedNode(null);
     },
   });
   graphApi.setVisibleCoalitions(sidebar.getVisibleCoalitions());
-  bootProgress(0.9, "Setting up the tabs\u2026");
-  bootDetail("Building the Events, Projects, Actions and Topics pages\u2026");
+  bootProgress(0.9);
 
   // The key to the map sits on the map itself.
   createMapLegend(graphContainer, sectorsOn);
@@ -308,21 +302,27 @@ async function main() {
   const topicsView = createTopicsView({
     hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
     logoOf: (id) => (data.coalitions.find((c) => c.id === id) ?? data.organizations.find((o) => o.id === id))?.logo || undefined,
-    onGroupClick: (id) => {
-      const c = data.coalitions.find((x) => x.id === id);
-      const o = data.organizations.find((x) => x.id === id);
-      const node: GraphNode | null = c ? { ...c, kind: "coalition" } : o ? { ...o, kind: "org" } : null;
-      if (!node) return false;
-      setTab("map");
-      setTimeout(() => {
-        if (!trayWouldBlockMap()) drawerApi!.open(node);
-        graphApi!.setSelectedNode(node);
-        // Same as the Events/Projects/Actions pages: zoom to coalitions (or on a phone), otherwise just open details.
-        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
-      }, 60);
-      return true;
+    hasItem: (rid) => !!findItem(data, rid.slice(rid.indexOf(":") + 1)),
+    openItem: (rid, at) => {
+      const f = findItem(data, rid.slice(rid.indexOf(":") + 1));
+      if (f) showItemCard(topicsView.el, f.kind, f.item, f.owner, () => openGroup(f.owner.node.id), at);
     },
+    onGroupClick: (id) => openGroup(id),
   });
+  function openGroup(id: string): boolean {
+    const c = data.coalitions.find((x) => x.id === id);
+    const o = data.organizations.find((x) => x.id === id);
+    const node: GraphNode | null = c ? { ...c, kind: "coalition" } : o ? { ...o, kind: "org" } : null;
+    if (!node) return false;
+    setTab("map");
+    setTimeout(() => {
+      if (!trayWouldBlockMap()) drawerApi!.open(node);
+      graphApi!.setSelectedNode(node);
+      // Same as the Events/Projects/Actions pages: zoom to coalitions (or on a phone), otherwise just open details.
+      if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
+    }, 60);
+    return true;
+  }
   topicsView.el.style.display = "none";
   topicsView.el.style.height = "100%";
   topicsView.el.style.position = "absolute";
@@ -408,8 +408,8 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
     const last = i === map.sources.length - 1;
     const live = /script\.google/.test(map.sources[i]);
     bootDetail(i === 0
-      ? (live ? "Requesting the latest data from the coalition spreadsheet\u2026" : `Loading the ${map.fullTitle} data\u2026`)
-      : "The spreadsheet didn't answer in time, so loading the saved copy\u2026");
+      ? (live ? "Asking the coalitions for today's news\u2026" : `Opening the ${map.fullTitle}\u2026`)
+      : "Still waiting on the live sheet, so opening last night's copy\u2026");
     try {
       return await get(map.sources[i], last ? 15000 : 8000);
     } catch (err) {
@@ -434,7 +434,6 @@ async function readWithProgress(res: Response): Promise<string> {
     got += value.length;
     // content-length can be the compressed size, so cap the share this step may claim
     bootProgress(0.05 + Math.min(1, got / total) * 0.7);
-    bootDetail(`Downloading map data: ${Math.round(got / 1024)} KB`);
   }
   const all = new Uint8Array(got);
   let at = 0;
@@ -458,7 +457,6 @@ function preloadLogos(logos: (string | undefined)[]): Promise<void> {
   return new Promise((resolve) => {
     const tick = () => {
       done++;
-      bootDetail(`Loading the groups' logos: ${done} of ${urls.length}`);
       if (done === urls.length) resolve();
     };
     for (const u of urls) {

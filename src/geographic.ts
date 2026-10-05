@@ -1,6 +1,6 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { DataFile, GraphNode } from "./types";
+import type { Coalition, DataFile, GraphNode, Organization } from "./types";
 import { currentMap } from "./maps";
 import { h } from "./dom";
 import { initials, typeLabel } from "./util";
@@ -24,6 +24,18 @@ const MA_BOUNDS: L.LatLngBoundsExpression = [
   [42.95, -69.85],
 ];
 
+/** The point the data uses when it only knows "Massachusetts" (statewide, national, or no address yet). */
+const atFallback = (lat: number, lng: number) => Math.abs(lat - 42.3601) < 1e-4 && Math.abs(lng + 71.0589) < 1e-4;
+/** A real place for this group: not remote, and not the fallback point (unless the group really is in Boston). */
+export function orgPlaced(o: Organization): boolean {
+  if (o.remote || !Number.isFinite(o.lat) || !Number.isFinite(o.lng) || (o.lat === 0 && o.lng === 0)) return false;
+  return !(o.profile?.geo_precision !== "exact" && atFallback(o.lat, o.lng) && !/\bboston\b/i.test(o.geographic_focus || ""));
+}
+/** Coalitions are placed by their members; statewide and national ones have no one place, so they aren't pinned. */
+export function coalitionPlaced(c: Coalition): boolean {
+  return c.member_count > 0 && !/statewide|national/i.test(c.geographic_scope || "") && !atFallback(c.lat, c.lng);
+}
+
 export function createGeographicView(data: DataFile, cb: GeoCallbacks): GeographicView {
   /** Massachusetts opens on the state; other maps open on wherever their groups are. */
   function startBounds(): L.LatLngBoundsExpression {
@@ -39,8 +51,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
 
   const events = allEvents(data).filter(({ event: e }) => !e.online && e.lat !== undefined && e.lng !== undefined);
   const projects = allProjects(data).filter(({ project: p }) => !p.online && p.lat !== undefined && p.lng !== undefined);
-  const pinnedOrgs = data.organizations.filter((o) => !o.remote && Number.isFinite(o.lat) && Number.isFinite(o.lng));
+  const pinnedOrgs = data.organizations.filter(orgPlaced);
   const remoteCount = data.organizations.length - pinnedOrgs.length;
+  const pinnedCoalitions = data.coalitions.filter(coalitionPlaced);
 
   // Which layers are on. Events and projects start off.
   const on: Record<LayerKey, boolean> = { coalitions: true, orgs: true, events: false, projects: false };
@@ -57,7 +70,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
 
   const layers = h("div", { class: "geo-layers" }, h("h3", {}, "Show on the map"));
   const layerDefs: { key: LayerKey; label: string; swatch: string }[] = [
-    { key: "coalitions", label: `Coalitions (${data.coalitions.length})`, swatch: "background:#34d399;border-radius:50%" },
+    { key: "coalitions", label: `Coalitions (${pinnedCoalitions.length})`, swatch: "background:#34d399;border-radius:50%" },
     { key: "orgs", label: `Organizations (${pinnedOrgs.length})`, swatch: "background:#2a2a36;border:1px solid #fff;border-radius:50%" },
     { key: "events", label: `Events (${events.length})`, swatch: "background:#f472b6;border-radius:3px" },
     { key: "projects", label: `Projects (${projects.length})`, swatch: "background:#38bdf8;transform:rotate(45deg)" },
@@ -72,7 +85,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
       h("label", { class: "geo-layer" }, box, h("span", { class: "swatch", style: `width:10px;height:10px;${d.swatch}` }), h("span", {}, d.label)),
     );
   }
-  if (remoteCount) layers.appendChild(h("div", { class: "geo-note" }, `${remoteCount} remote organization${remoteCount === 1 ? "" : "s"} not pinned.`));
+  if (remoteCount) layers.appendChild(h("div", { class: "geo-note" }, `${remoteCount} organization${remoteCount === 1 ? "" : "s"} with no address on file (remote, statewide or national) ${remoteCount === 1 ? "isn't" : "aren't"} pinned.`));
+  const unpinnedC = data.coalitions.length - pinnedCoalitions.length;
+  if (unpinnedC) layers.appendChild(h("div", { class: "geo-note" }, `${unpinnedC} statewide or national coalition${unpinnedC === 1 ? "" : "s"} ${unpinnedC === 1 ? "isn't" : "aren't"} pinned; search for one to see its members.`));
   const pinless = allEvents(data).length + allProjects(data).length - events.length - projects.length;
   if (pinless) layers.appendChild(h("div", { class: "geo-note" }, `${pinless} online or unlocated events/projects are in the lists.`));
   panel.appendChild(layers);
@@ -107,7 +122,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   const groups: Record<LayerKey, L.LayerGroup> = {
     coalitions: L.layerGroup(), orgs: L.layerGroup(), events: L.layerGroup(), projects: L.layerGroup(),
   };
-  const orgMarkers = new Map<string, L.CircleMarker>();
+  const orgMarkers = new Map<string, L.Marker>();
   const pinMarkers = new Map<string, L.Marker>();
   let highlight: L.Layer | null = null;
 
@@ -198,8 +213,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     }).addTo(map);
 
     // Coalitions (large colored circles with abbrev label)
-    for (const c of data.coalitions) {
-      if (!c.member_count) continue; // no member locations to place it by
+    for (const c of pinnedCoalitions) {
       const r = 14 + Math.sqrt(c.member_count) * 2.5;
       const labelNode = document.createElement("div");
       labelNode.className = "geo-coalition-label";
@@ -207,7 +221,13 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
       labelNode.style.width = `${r * 2}px`;
       labelNode.style.height = `${r * 2}px`;
       labelNode.style.lineHeight = `${r * 2}px`;
-      labelNode.textContent = c.abbrev || initials(c.name);
+      if (c.logo) {
+        labelNode.classList.add("has-logo");
+        const img = document.createElement("img");
+        img.src = c.logo;
+        img.alt = "";
+        labelNode.appendChild(img);
+      } else labelNode.textContent = c.abbrev || initials(c.name);
       const marker = L.marker([c.lat, c.lng], {
         icon: L.divIcon({ className: "", iconSize: [r * 2, r * 2], iconAnchor: [r, r], html: labelNode.outerHTML }),
       });
@@ -220,10 +240,20 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     }
 
     // Organizations (HQ pins; remote orgs are skipped)
+    // groups show their logos; the size follows the zoom through a CSS variable
+    const sizeOrgs = () => mapEl.style.setProperty("--geo-org", `${2 * orgRadiusAt(map!.getZoom()) + (map!.getZoom() >= 10 ? 8 : 4)}px`);
+    sizeOrgs();
     for (const o of pinnedOrgs) {
-      const dot = L.circleMarker([o.lat, o.lng], {
-        radius: orgRadiusAt(map.getZoom()), color: "#94a3b8", weight: 1, opacity: 0.8, fillColor: "#2a2a36", fillOpacity: 0.95,
-      });
+      const inner = document.createElement("div");
+      inner.className = `geo-org${o.logo ? " has-logo" : ""}`;
+      if (o.logo) {
+        const img = document.createElement("img");
+        img.src = o.logo;
+        img.alt = "";
+        img.loading = "lazy";
+        inner.appendChild(img);
+      }
+      const dot = L.marker([o.lat, o.lng], { icon: L.divIcon({ className: "geo-org-icon", iconSize: [0, 0], html: inner.outerHTML }) });
       const approx = o.profile?.geo_precision === "approx" ? " · approximate location" : "";
       dot.bindTooltip(
         `<strong>${escapeHTML(o.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML([typeLabel(o.type), o.geographic_focus].filter(Boolean).join(" · "))}${approx}</span>`,
@@ -234,7 +264,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
       orgMarkers.set(o.id, dot);
     }
 
-    map.on("zoomend", () => { const r = orgRadiusAt(map!.getZoom()); for (const d of orgMarkers.values()) d.setRadius(r); });
+    map.on("zoomend", sizeOrgs);
     const publishBounds = () => { const b = map!.getBounds(); setMapBounds({ south: b.getSouth(), west: b.getWest(), north: b.getNorth(), east: b.getEast() }); };
     map.on("moveend", publishBounds);
     publishBounds();
@@ -280,7 +310,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     if (item.kind === "coalition") {
       const c = data.coalitions.find((x) => x.id === item.id)!;
       const pts = pinnedOrgs.filter((o) => o.coalition_ids.includes(c.id)).map((o) => L.latLng(o.lat, o.lng));
-      pts.push(L.latLng(c.lat, c.lng));
+      if (coalitionPlaced(c) || !pts.length) pts.push(L.latLng(c.lat, c.lng));
       setLayer("coalitions", true);
       setLayer("orgs", true);
       m.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 12 });
@@ -292,7 +322,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     if (item.kind === "org") {
       const o = data.organizations.find((x) => x.id === item.id)!;
       cb.onNodeClick({ ...o, kind: "org" });
-      if (item.lat === undefined) return; // remote: details only
+      if (!orgPlaced(o)) return; // no address on file: details only
       setLayer("orgs", true);
       m.setView([o.lat, o.lng], 14);
       mark([o.lat, o.lng]);

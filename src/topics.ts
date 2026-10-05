@@ -7,6 +7,7 @@ import { h } from "./dom";
 import { currentMap, MAPS, type MapId } from "./maps";
 import { createCommandRoom } from "./commandroom";
 import { createBattle } from "./battle";
+import { feedbackBid } from "./feedback";
 
 export interface TopicRecord {
   id: string;
@@ -39,6 +40,10 @@ export interface TopicsCallbacks {
   hasGroup(hostId: string): boolean;
   /** The group's logo URL, if it has one. */
   logoOf?(hostId: string): string | undefined;
+  /** True when the map data has this record's event, project or action (record ids are "<map>:<item id>"). */
+  hasItem?(recordId: string): boolean;
+  /** Show the item's detail card, the same one the Events page uses. */
+  openItem?(recordId: string, at?: { x: number; y: number }): void;
 }
 
 interface Weights {
@@ -94,9 +99,7 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   toolbar.appendChild(h("h2", {}, "Topics"));
   const count = h("span", { class: "count" }, "");
   toolbar.appendChild(count);
-  toolbar.appendChild(
-    h("span", { class: "topics-draft" }, "Draft: this topic list is still under team review, so names and groupings will change."),
-  );
+  toolbar.appendChild(feedbackBid("This Topics page", "Do the topics, problems and solutions fit your work?"));
   // two views over the same data: energy streaming into topics, or the command room (problems vs. what we build)
   const viewSwitch = h("div", { class: "cr-seg topics-viewswitch", role: "group", "aria-label": "View" });
   const viewBtns: HTMLButtonElement[] = [];
