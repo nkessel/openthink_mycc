@@ -2780,3 +2780,11 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .locate-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .locate-btn { appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; }
 .locate-btn:hover { border-color: var(--accent); }
+.act-past { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 8px; }
+.act-past > summary { cursor: pointer; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); padding: 4px 0; }
+.act-past > .act-list { opacity: 0.8; margin-top: 6px; }
+/* Events page: "When" quick ranges + time of day */
+.item-filters .when-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.item-filters .when-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.item-filters .when-custom { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.item-filters .when-custom .range-in { width: 150px; color-scheme: dark; }

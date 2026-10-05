@@ -12,6 +12,7 @@ import type {
 } from "./types";
 import { itemButtons } from "./links";
 import { h } from "./dom";
+import { shown as shownNow } from "./past";
 import { typeIcon, VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS } from "./icons";
 import { staleNotice } from "./notice";
 import { sectorById } from "./sectors";
@@ -199,6 +200,14 @@ export function createGraph(
   // The sidebar has the same switches; they talk to us through window events.
   window.addEventListener("openthink:setview", (e) => setViewMode(!!(e as CustomEvent).detail?.bubbles));
   window.addEventListener("openthink:setpreviews", (e) => setPreviews(!!(e as CustomEvent).detail?.on));
+  // Map settings → "Show past events, projects and actions": redraw every group's items
+  window.addEventListener("openthink:showpast", () => {
+    const f = focusId;
+    if (f) exitFocus(false);
+    refreshSpacing(0.3);
+    refreshSats();
+    if (f) enterFocus(f);
+  });
   /** "Zoom in on a group when you click it" (and show its items around it). */
   function setViewMode(bubbles: boolean) {
     api.updateSettings({ showBubbles: bubbles });
@@ -1145,9 +1154,10 @@ export function createGraph(
 
   function bubblesFor(n: GraphNode): Bubble[] {
     const thoughts: Thought[] = n.thoughts || [];
-    const projects: Project[] = n.kind === "org" ? orgProjects(data, n) : n.projects;
-    const events: CoalitionEvent[] = n.kind === "org" ? orgEvents(data, n) : n.events;
-    const actions: Action[] = n.kind === "org" ? orgActions(data, n) : n.actions;
+    // past items stay in the details pane unless Map settings → "Show past…" is on
+    const projects: Project[] = shownNow("project", n.kind === "org" ? orgProjects(data, n) : n.projects);
+    const events: CoalitionEvent[] = shownNow("event", n.kind === "org" ? orgEvents(data, n) : n.events);
+    const actions: Action[] = shownNow("action", n.kind === "org" ? orgActions(data, n) : n.actions || []);
     const sortedEvents = [...events].sort((a, b) => parseEventDate(a.date).getTime() - parseEventDate(b.date).getTime());
     return [
       ...thoughts.map((t): Bubble => ({

@@ -3,6 +3,7 @@ import type { Action, DataFile, GraphNode } from "./types";
 import { allActions, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
 import { showItemCard } from "./itemcard";
+import { isPast, showPast } from "./past";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 
@@ -109,7 +110,8 @@ export function createActionsView(data: DataFile, cb: ActionsCallbacks): Actions
 
   function render() {
     clear(body);
-    const filtered = rows.filter(matches);
+    // past ones only when Map settings → "Show past events, projects and actions" is on
+    const filtered = rows.filter((r) => matches(r) && (showPast() || !isPast("action", r.action)));
     count.textContent = `${filtered.length} item${filtered.length === 1 ? "" : "s"}`;
     if (!filtered.length) {
       body.appendChild(h("div", { class: "list-empty" }, "Nothing matches."));
@@ -140,5 +142,6 @@ export function createActionsView(data: DataFile, cb: ActionsCallbacks): Actions
   }
 
   render();
+  window.addEventListener("openthink:showpast", () => render());
   return { el: wrap, refresh: render };
 }
