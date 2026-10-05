@@ -1,6 +1,8 @@
 import type { DataFile, Project, GraphNode } from "./types";
 import { allProjects, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
+import { showItemCard } from "./itemcard";
+import { isPast, showPast } from "./past";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { createItemFilters, placeFor, termsMatch } from "./itemfilters";
@@ -133,7 +135,8 @@ export function createProjectsView(
 
   function render() {
     clear(body);
-    const filtered = rows.filter(matches);
+    // past ones only when Map settings → "Show past events, projects and actions" is on
+    const filtered = rows.filter((r) => matches(r) && (showPast() || !isPast("project", r.project)));
     count.textContent = `${filtered.length} project${filtered.length === 1 ? "" : "s"}`;
     if (!filtered.length) {
       body.appendChild(h("div", { class: "list-empty" }, "No projects match."));
@@ -163,13 +166,13 @@ export function createProjectsView(
         staleNotice("project", r.owner.node, r.project.needs_info, r.project.verified, r.project),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
-      card.addEventListener("click", () => {
-        cb.onCoalitionClick(r.owner.node);
-      });
+      // a quick look at the project in a card, without leaving the page
+      card.addEventListener("click", () => showItemCard(wrap, "project", r.project, r.owner, () => cb.onCoalitionClick(r.owner.node)));
       body.appendChild(card);
     }
   }
 
   render();
+  window.addEventListener("openthink:showpast", () => render());
   return { el: wrap, refresh: render };
 }

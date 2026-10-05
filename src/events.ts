@@ -1,6 +1,7 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
+import { showItemCard } from "./itemcard";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { occursOn, parseRecurrence } from "./recurrence";
@@ -107,15 +108,71 @@ export function createEventsView(
 
   // ---- Filters: zip + miles, online, in view on the map, free food, public / affiliated-only, date + time range ----
   const itemFilters = createItemFilters({ online: true, inView: true, freeFood: true, publicSwitch: true }, () => render());
+  // When: one tap for the usual ranges, or "Pick dates…" for two plain date boxes; and a time of day.
   let rangeFrom = "";
   let rangeTo = "";
-  const fromIn = h("input", { type: "datetime-local", class: "search range-in", "aria-label": "From" }) as HTMLInputElement;
-  const toIn = h("input", { type: "datetime-local", class: "search range-in", "aria-label": "Until" }) as HTMLInputElement;
-  fromIn.addEventListener("change", () => { rangeFrom = fromIn.value; render(); });
-  toIn.addEventListener("change", () => { rangeTo = toIn.value; render(); });
-  const clearRange = h("button", { class: "chip", type: "button" }, "Clear dates");
-  clearRange.addEventListener("click", () => { fromIn.value = toIn.value = rangeFrom = rangeTo = ""; render(); });
-  itemFilters.el.append(h("div", { class: "filter-group range-group" }, h("span", { class: "range-lbl" }, "From"), fromIn, h("span", { class: "range-lbl" }, "until"), toIn, clearRange));
+  let whenId = "any";
+  let partOfDay: "any" | "morning" | "afternoon" | "evening" = "any";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const ymd = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const dayStart = (d: Date) => `${ymd(d)}T00:00`;
+  const dayEnd = (d: Date) => `${ymd(d)}T23:59`;
+  const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const WHEN: { id: string; label: string; range?: () => [string, string] }[] = [
+    { id: "any", label: "Any date" },
+    { id: "today", label: "Today", range: () => [dayStart(new Date()), dayEnd(new Date())] },
+    { id: "tomorrow", label: "Tomorrow", range: () => [dayStart(addDays(new Date(), 1)), dayEnd(addDays(new Date(), 1))] },
+    { id: "weekend", label: "This weekend", range: () => {
+      const t = new Date(), dow = t.getDay(); // Sat 6, Sun 0
+      const sat = dow === 0 ? addDays(t, -1) : addDays(t, 6 - dow);
+      return [dayStart(dow === 0 ? t : sat), dayEnd(addDays(sat, 1))];
+    } },
+    { id: "week", label: "Next 7 days", range: () => [dayStart(new Date()), dayEnd(addDays(new Date(), 6))] },
+    { id: "month", label: "Next 30 days", range: () => [dayStart(new Date()), dayEnd(addDays(new Date(), 29))] },
+    { id: "custom", label: "Pick dates…" },
+  ];
+  const fromIn = h("input", { type: "date", class: "search range-in", "aria-label": "From date" }) as HTMLInputElement;
+  const toIn = h("input", { type: "date", class: "search range-in", "aria-label": "Until date" }) as HTMLInputElement;
+  const custom = h("div", { class: "when-custom" }, h("span", { class: "range-lbl" }, "From"), fromIn, h("span", { class: "range-lbl" }, "to"), toIn);
+  custom.style.display = "none";
+  const applyCustom = () => {
+    if (fromIn.value && toIn.value && toIn.value < fromIn.value) toIn.value = fromIn.value;
+    rangeFrom = fromIn.value ? `${fromIn.value}T00:00` : "";
+    rangeTo = toIn.value ? `${toIn.value}T23:59` : "";
+    render();
+  };
+  fromIn.addEventListener("change", applyCustom); // "to" left empty = from that day on
+  toIn.addEventListener("change", applyCustom);
+  const whenChips = h("div", { class: "when-chips", role: "group", "aria-label": "When" });
+  const whenBtns: HTMLButtonElement[] = [];
+  for (const w of WHEN) {
+    const b = h("button", { class: `chip ${w.id === whenId ? "active" : ""}`, type: "button", "aria-pressed": String(w.id === whenId) }, w.label) as HTMLButtonElement;
+    b.addEventListener("click", () => {
+      whenId = w.id;
+      for (const x of whenBtns) { const on = x === b; x.classList.toggle("active", on); x.setAttribute("aria-pressed", String(on)); }
+      custom.style.display = w.id === "custom" ? "" : "none";
+      if (w.id === "custom") { applyCustom(); fromIn.focus(); return; }
+      [rangeFrom, rangeTo] = w.range ? w.range() : ["", ""];
+      // a date range ahead of today implies upcoming events
+      if (w.range && timeFilter === "past") chipEls.get("all")?.click();
+      render();
+    });
+    whenBtns.push(b);
+    whenChips.appendChild(b);
+  }
+  const dayParts = h("div", { class: "when-chips", role: "group", "aria-label": "Time of day" });
+  const partBtns: HTMLButtonElement[] = [];
+  for (const [id, label] of [["any", "Any time"], ["morning", "Mornings"], ["afternoon", "Afternoons"], ["evening", "Evenings"]] as const) {
+    const b = h("button", { class: `chip ${id === partOfDay ? "active" : ""}`, type: "button", "aria-pressed": String(id === partOfDay) }, label) as HTMLButtonElement;
+    b.addEventListener("click", () => {
+      partOfDay = id;
+      for (const x of partBtns) { const on = x === b; x.classList.toggle("active", on); x.setAttribute("aria-pressed", String(on)); }
+      render();
+    });
+    partBtns.push(b);
+    dayParts.appendChild(b);
+  }
+  itemFilters.el.append(h("div", { class: "filter-group when-group" }, h("span", { class: "range-lbl" }, "When"), whenChips, custom, dayParts));
   wrap.appendChild(itemFilters.el);
 
   const factsOf = (r: Row): Facts => ({
@@ -229,7 +286,13 @@ export function createEventsView(
     const f = factsOf(r);
     if (q && !termsMatch(q, f.hay)) return false;
     if (!itemFilters.test(f)) return false;
-    return inRange(r);
+    return inRange(r) && inPartOfDay(r);
+  }
+  /** Mornings before noon, afternoons noon–5 PM, evenings from 5 PM. Events with no posted time always count. */
+  function inPartOfDay(r: Row): boolean {
+    if (partOfDay === "any" || !hasTime(r.event.date)) return true;
+    const hr = parseEventDate(r.event.date).getHours();
+    return partOfDay === "morning" ? hr < 12 : partOfDay === "afternoon" ? hr >= 12 && hr < 17 : hr >= 17;
   }
 
   function render() {
@@ -246,36 +309,7 @@ export function createEventsView(
 
   /** A detail card over the Events tab: everything we know about the event, without leaving the page. */
   function showDetail(r: Row) {
-    wrap.querySelectorAll(".detail-overlay").forEach((n) => n.remove());
-    const e = r.event;
-    const close = () => { overlay.remove(); document.removeEventListener("keydown", onKey, true); };
-    const onKey = (ev: KeyboardEvent) => { if (ev.key === "Escape") { ev.stopPropagation(); close(); } };
-    const x = h("button", { class: "detail-close", type: "button", "aria-label": "Close" }, "×");
-    x.addEventListener("click", close);
-    const toMap = h("button", { class: "detail-map-btn", type: "button" }, `See ${r.owner.name} on the map`);
-    toMap.addEventListener("click", () => { close(); cb.onCoalitionClick(r.owner.node); });
-    const card = h("div", { class: `detail-card${sectorAttrs(r.owner).cls}`, style: sectorAttrs(r.owner).style, role: "dialog", "aria-label": e.name },
-      x,
-      h("div", { class: "head" },
-        ownerBadge(r.owner),
-        h("div", { class: "coalition-name" }, r.owner.name), sectorPill(r.owner)),
-      h("h3", {}, e.name),
-      h("div", { class: "meta-row" },
-        h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
-        e.location ? h("span", { class: "pill kind" }, e.location) : null,
-        e.online ? h("span", { class: "pill" }, "online") : null,
-        !r.isUpcoming ? h("span", { class: "pill" }, "past") : null),
-      e.description ? h("p", { class: "detail-desc" }, e.description) : null,
-      e.topic_tags && e.topic_tags.length ? h("div", { class: "detail-tags" }, e.topic_tags.map((t) => t.replace(/_/g, " ")).join(" · ")) : null,
-      e.public_contact ? h("div", { class: "detail-contact" }, `Contact: ${e.public_contact}`) : null,
-      itemButtons("event", e),
-      staleNotice("event", r.owner.node, e.needs_info, e.verified, e),
-      toMap);
-    const overlay = h("div", { class: "detail-overlay" }, card);
-    overlay.addEventListener("click", (ev) => { if (ev.target === overlay) close(); });
-    document.addEventListener("keydown", onKey, true);
-    wrap.appendChild(overlay);
-    x.focus();
+    showItemCard(wrap, "event", r.event, r.owner, () => cb.onCoalitionClick(r.owner.node));
   }
 
   function eventCard(r: Row): HTMLElement {

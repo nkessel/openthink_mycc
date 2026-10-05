@@ -107,6 +107,9 @@ body {
   color: var(--text-faint);
 }
 
+.topbar .tabs { display: flex; align-items: center; gap: 4px; }
+.tab-menu-btn, .tab-switch-map { display: none; }
+
 /* ---------- Main layout ---------- */
 .main {
   display: grid;
@@ -1638,6 +1641,24 @@ body {
   .tab {
     padding: 0 9px;
   }
+  /* Tabs fold into a menu: a button with the current page opens a list of all pages. */
+  .topbar { overflow: visible; justify-content: space-between; position: relative; z-index: 2000; }
+  .tab-menu-btn {
+    display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0;
+    appearance: none; font: inherit; font-size: 14px; color: var(--text);
+    background: var(--bg-elev); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; cursor: pointer;
+  }
+  .tab-menu-icon { font-size: 15px; line-height: 1; color: var(--text-dim); }
+  .topbar .tabs {
+    display: none; position: fixed; top: var(--topbar-h); right: 8px; z-index: 1000;
+    flex-direction: column; align-items: stretch; gap: 0; min-width: 200px; padding: 6px;
+    background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow);
+  }
+  .topbar.menu-open .tabs { display: flex; }
+  .topbar .tabs .tab { height: 44px; text-align: left; padding: 0 14px; border-radius: 8px; }
+  .topbar .tabs .tab.active { background: var(--bg-elev-2); }
+  .topbar .tabs .tab.active::after { left: 0; right: auto; top: 10px; bottom: 10px; width: 3px; height: auto; }
+  .topbar .tabs .tab-switch-map { display: block; border-top: 1px solid var(--border); border-radius: 0 0 8px 8px; color: var(--text-dim); }
   /* Sidebar opens as an overlay; the map always keeps the full width. */
   .view.map,
   .view.map.sidebar-collapsed {
@@ -2157,8 +2178,8 @@ text.sat-more { fill: var(--text-dim); }
 }
 
 /* The group you've opened is drawn as a big planet (graph.ts sets --fs); its moons stay full size. */
-.node-coalition > :not(.sats),
-.node-org > :not(.sats) {
+.node-coalition > *,
+.node-org > * {
   transition: transform 0.4s ease;
 }
 .node-coalition.focused > :not(.sats),
@@ -2616,9 +2637,14 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .item-open-more { color: var(--accent); }
 .item-topics .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
 
-/* An opened organization's coalitions and partner groups, on the outskirts: smaller and quieter */
-.node-coalition.linked > :not(.sats), .node-org.linked > :not(.sats) { transform: scale(0.6); }
-.node-coalition.linked, .node-org.linked { opacity: 0.75; }
+/* An opened organization's coalitions and partner groups, on the outskirts. The whole group scales (its dots too,
+   so they never float loose while it moves into place). Coalitions are drawn big, so they read as bigger than
+   groups even when they spill past the edges; partner groups are a little smaller and quieter. */
+.node-coalition.linked > * { transform: scale(1.5); }
+.node-org.linked > * { transform: scale(0.75); }
+.node-coalition.linked { opacity: 0.9; }
+.node-coalition.linked .ring { stroke-width: 4px; }
+.node-org.linked { opacity: 0.75; }
 .node-coalition.linked:hover, .node-org.linked:hover { opacity: 1; }
 
 /* ---------- Topics page: command room (src/battle.ts) ---------- */
@@ -2714,3 +2740,72 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 /* an item's name in the Topics details: opens its card */
 .topics-item-open { appearance: none; background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--text); text-align: left; cursor: pointer; text-decoration: underline; text-decoration-color: rgba(125, 211, 252, 0.5); text-underline-offset: 3px; }
 .topics-item-open:hover { color: #7dd3fc; }
+
+/* ---- Command room: items as moons, ring headings, effect sliders ---- */
+.bt-node .lbl { font-size: calc(13.5px * var(--bt-lf, 1)); }
+.bt-node.lv1 .lbl { font-size: calc(12px * var(--bt-lf, 1)); }
+.bt-items .bt-item { cursor: pointer; transition: opacity 0.25s; }
+.bt-items .bt-item circle { stroke-width: 1px; }
+.bt-items .bt-item.k-mission circle { stroke-width: 1.3px; }
+.bt-items .bt-item:hover circle, .bt-items .bt-item.sel circle { stroke: #fff; stroke-width: 1.6px; }
+.bt-item-lbl { fill: #e5e7eb; font-size: 11px; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+.bt-head-ring { display: none; position: absolute; left: 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; pointer-events: none; z-index: 1; white-space: nowrap; }
+.bt-head-ring.top { top: 10px; color: #86efac; }
+.bt-head-ring.top::before { content: "▲ "; }
+.bt-head-ring.bot { bottom: 54px; color: #fda4af; }
+.bt-head-ring.bot::before { content: "▼ "; }
+.bt[data-layout="circle"] .bt-heads { display: none; }
+.bt[data-layout="circle"][data-show="both"] .bt-head-ring { display: block; }
+.bt-fx {
+  display: none; position: absolute; top: 10px; right: 10px; z-index: 6; width: min(340px, calc(100% - 20px)); max-height: calc(100% - 20px); overflow-y: auto;
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); padding: 12px 14px; font-size: 12px;
+}
+.bt-fx.on { display: block; }
+.bt-fx-head { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.bt-fx-group { margin: 10px 0 4px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+.bt-fx-row { display: grid; grid-template-columns: 1fr 110px 38px; align-items: center; gap: 8px; color: var(--text-dim); margin: 3px 0; }
+.bt-fx-row input { width: 100%; accent-color: #22d3ee; }
+.bt-fx-val { text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
+.bt-fx-btns { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+.bt-fx-status { margin-top: 8px; color: var(--text-dim); min-height: 1em; }
+
+/* The details tray never moves or resizes the picture: it slides over it instead of taking room from it. */
+@media (min-width: 901px) {
+  .topics-body { grid-template-columns: 250px 1fr; position: relative; }
+  .topics-detail { position: absolute; top: 0; right: 0; bottom: 0; z-index: 8; box-shadow: -12px 0 30px rgba(0, 0, 0, 0.35); }
+}
+
+/* ---- Geographic map: stacked groups ("+N", click to fan out) and the group card by the click ---- */
+.geo-more-icon { overflow: visible; }
+.geo-more {
+  position: absolute; left: calc(var(--off, 10px) - 6px); top: calc(-1 * var(--off, 10px) - 8px);
+  min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px; border: 1.5px solid #0f172a;
+  background: #22d3ee; color: #04202a; font: 700 11px system-ui, sans-serif; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+.geo-more:hover { background: #67e8f9; }
+.geo-card-pop .leaflet-popup-content-wrapper { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
+.geo-card-pop .leaflet-popup-tip { background: var(--bg-elev); }
+.geo-card-pop .leaflet-popup-content { margin: 12px 14px; font-size: 12.5px; line-height: 1.45; }
+.geo-card-pop a.leaflet-popup-close-button { color: var(--text-dim); }
+.geo-card-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; padding-right: 10px; }
+.geo-card-head img { width: 40px; height: 40px; border-radius: 50%; background: #f8fafc; object-fit: contain; padding: 3px; flex: none; }
+.geo-card-head strong { font-size: 14px; display: block; }
+.geo-card-kind { font-size: 11px; color: var(--text-faint); }
+.geo-card p { margin: 0 0 6px; color: var(--text-dim); }
+.geo-card-meta { font-size: 11.5px; color: var(--text-dim); }
+.geo-card-btn { margin-top: 8px; appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; }
+.geo-card-btn:hover { border-color: var(--accent); }
+.card-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.card-actions .detail-map-btn { margin: 0; }
+.detail-map-btn.primary { background: var(--accent); color: #04202a; border-color: var(--accent); font-weight: 600; }
+.locate-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.locate-btn { appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; }
+.locate-btn:hover { border-color: var(--accent); }
+.act-past { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 8px; }
+.act-past > summary { cursor: pointer; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); padding: 4px 0; }
+.act-past > .act-list { opacity: 0.8; margin-top: 6px; }
+/* Events page: "When" quick ranges + time of day */
+.item-filters .when-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.item-filters .when-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.item-filters .when-custom { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.item-filters .when-custom .range-in { width: 150px; color-scheme: dark; }

@@ -1,6 +1,7 @@
 import type { GraphNode, OrgNode, CoalitionNode } from "./types";
 import type { GraphSettings, GroupRule } from "./graph";
 import { DEFAULT_GRAPH_SETTINGS } from "./graph";
+import { showPast, setShowPast } from "./past";
 import { h, clear } from "./dom";
 import { typeLabel, typeList } from "./util";
 
@@ -200,6 +201,11 @@ export function createControls(
   hideRow.classList.add("show-text-row");
   const hideSwitch = hideRow.querySelector<HTMLElement>(".switch")!;
   parent.appendChild(hideRow);
+  // One switch for past items everywhere (they are always in each group's details pane, under "Past")
+  const pastRow = makeToggle("Show past events, projects and actions", showPast(), (v) => setShowPast(v));
+  pastRow.classList.add("show-text-row");
+  pastRow.title = "Finished projects, events that have happened and actions whose deadline has passed. Each group's details always list them under Past.";
+  parent.appendChild(pastRow);
 
   const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
 
