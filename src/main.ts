@@ -84,7 +84,13 @@ async function main() {
 
   bootProgress(0.8);
   // The loading lines Nathan picked (2026-10-05): what is loading, then true counts from the data.
-  bootDetail("Inviting everyone to a seat at the table\u2026");
+  // One welcome line per visit, taking turns, so the two never sit side by side
+  {
+    const WELCOME = ["Inviting everyone to a seat at the table\u2026", "Making room for every voice\u2026"];
+    let v = 0;
+    try { v = Number(localStorage.getItem("openthink.visits")) || 0; } catch { /* private mode */ }
+    bootDetail(WELCOME[v % WELCOME.length]);
+  }
   bootDetail(`Loading ${data.coalitions.length} coalitions and ${data.organizations.length} groups`);
   bootDetail(`Linking ${data.edges.length} coalition memberships`);
   await attachThoughts(data);
