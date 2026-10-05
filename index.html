@@ -11,9 +11,8 @@
       #boot canvas{width:280px;height:190px}
       #boot .bar{width:240px;height:6px;border-radius:3px;background:#1e293b;overflow:hidden}
       #boot .bar b{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width .25s linear}
-      #boot .boot-quip{font-size:13px;color:#7dd3fc;font-style:italic;min-height:1.3em;transition:opacity .35s ease;text-align:center;padding:0 16px}
-      #boot .boot-quip.fade{opacity:0}
-      #boot .boot-left{font-size:12px;color:#94a3b8;min-height:1.2em;font-variant-numeric:tabular-nums}
+      #boot .boot-msg{min-height:2.7em;max-width:340px;padding:0 16px;text-align:center;line-height:1.35;display:flex;align-items:center;justify-content:center;transition:opacity .35s ease}
+      #boot .boot-msg.fade{opacity:0}
       .land-text{width:min(600px,calc(100% - 32px));font-size:12px;line-height:1.6;color:#94a3b8;text-align:center}
       .land-text p{margin:0 0 9px}
       .land-text strong{color:#cbd5e1;font-weight:600}
@@ -36,7 +35,6 @@
       @media (max-width:600px){
         #boot{gap:9px;padding:14px 0}
         #boot canvas{width:200px;height:136px}
-        #boot .boot-quip{min-height:2.6em;line-height:1.3;display:flex;align-items:center;justify-content:center}
         #boot .land-text{font-size:10.5px;line-height:1.5;margin-top:10px}
         #boot .land-text p{margin-bottom:6px}
       }
@@ -45,10 +43,8 @@
   <body>
     <div id="boot" role="status" aria-live="polite">
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
-      <div class="boot-msg">Loading the map&hellip;</div>
-      <div class="boot-quip" aria-hidden="true"></div>
+      <div class="boot-msg">Gathering the movement&hellip;</div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
-      <div class="boot-left"></div>
       <div class="land-text" id="land-dedication">
         <p>This site was made with the help of Claude Code (AI).</p>
         <p>It was made on the homelands of the Massachusett, Nipmuc and Wampanoag peoples (Natick, Wellesley and Boston). Claude was designed on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know. We honor these peoples, who have cared for these lands and waters for thousands of years, and who live and lead here today.</p>
@@ -63,8 +59,8 @@
       <button type="button" id="boot-hold" class="boot-hold" title="The map keeps loading behind this screen">Keep this screen open</button>
     </div>
     <script>
-      // Loading splash: a progress bar with an estimate of the time left (from how long the last loads took,
-      // sharpened by real progress reported from main.ts), and bubbles that grow and split as loading goes on.
+      // Loading splash: one line of text at a time (main.ts bootDetail), a progress bar paced by how long the last
+      // loads took and by real progress reported from main.ts, and bubbles that grow and split as loading goes on.
       (function () {
         var KEY = "openthink.loadMs";
         var expected = 6000;
@@ -72,12 +68,11 @@
         var t0 = performance.now(), real = 0, finished = false;
         var boot = document.getElementById("boot");
         var bar = boot.querySelector(".bar"), fill = bar.querySelector("b");
-        var msg = boot.querySelector(".boot-msg"), left = boot.querySelector(".boot-left");
+        var msg = boot.querySelector(".boot-msg");
         var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        window.bootProgress = function (p, label) {
+        window.bootProgress = function (p) {
           real = Math.max(real, Math.min(1, p));
-          if (label) msg.textContent = label;
         };
         // The map opens by itself once it's loaded. "Keep this screen open" keeps this screen up (the map keeps loading behind it)
         // until "Open the map" (main.ts hideBoot calls bootRelease).
@@ -106,13 +101,6 @@
           var est = el < expected ? 0.9 * el / expected : 0.9 + 0.07 * (1 - Math.exp(-(el - expected) / expected));
           return Math.min(0.97, Math.max(real, est));
         }
-        function secondsLeft(p) {
-          var el = performance.now() - t0;
-          var byTime = expected - el;
-          var byRate = real > 0.15 ? el * (1 - real) / real : byTime;
-          return Math.max(0, Math.min(byTime > 0 ? byTime : byRate, byRate));
-        }
-
         // ---- the map assembling itself from nothing: coalitions appear, organizations bud off them and link up,
         // and the network fills in as loading goes on (how much may exist follows the progress)
         var cv = document.getElementById("boot-bubbles"), ctx = cv.getContext("2d");
@@ -189,37 +177,36 @@
           var p = progress();
           fill.style.width = (p * 100).toFixed(1) + "%";
           bar.setAttribute("aria-valuenow", String(Math.round(p * 100)));
-          if (finished) { left.textContent = "Ready"; return; }
-          var s = Math.ceil(secondsLeft(p) / 1000);
-          left.textContent = s > 1 ? "About " + s + " seconds left" : "Almost there\u2026";
         }
-        // The line under the main message says, literally, what is being loaded right now (main.ts bootDetail).
-        var quip = boot.querySelector(".boot-quip");
-        quip.textContent = "Starting up\u2026";
-        // Each line stays up long enough to read (lines arrive faster than that once the data is in).
-        // Repeats of the same step (e.g. "Downloading map data: N KB") update in place instead of queueing.
-        var queue = [], timer = null, shownAt = 0, DWELL = 600;
-        function same(a, b) { return a.slice(0, 18) === b.slice(0, 18); }
+        // One line at a time (main.ts bootDetail), each up long enough to read: longer lines stay longer.
+        // Only the newest three wait their turn, so the screen never falls far behind what is happening.
+        var queue = [], timer = null, shownAt = performance.now(), dwell = 1800;
+        var dwellFor = function (t) { return Math.min(3400, 1500 + 32 * t.length); };
         function pump() {
           timer = null;
           if (!queue.length) return;
-          var wait = DWELL - (performance.now() - shownAt);
+          var wait = dwell - (performance.now() - shownAt);
           if (wait > 0) { timer = setTimeout(pump, wait); return; }
-          quip.textContent = queue.shift();
+          var next = queue.shift();
+          msg.classList.add("fade");
+          setTimeout(function () {
+            msg.textContent = next;
+            msg.classList.remove("fade");
+          }, reduce ? 0 : 300);
           shownAt = performance.now();
-          if (queue.length) timer = setTimeout(pump, DWELL);
+          dwell = dwellFor(next);
+          if (queue.length) timer = setTimeout(pump, dwell);
         }
         window.bootDetail = function (text) {
-          if (!text) return;
-          if (!queue.length && same(quip.textContent, text)) { quip.textContent = text; return; }
-          if (queue.length && same(queue[queue.length - 1], text)) queue[queue.length - 1] = text;
-          else queue.push(text);
-          if (queue.length > 8) queue.splice(0, queue.length - 8); // never fall far behind
+          if (!text || text === msg.textContent || queue[queue.length - 1] === text) return;
+          queue.push(text);
+          if (queue.length > 3) queue.splice(0, queue.length - 3);
           if (!timer) pump();
         };
         // How long until the lines already queued have all been shown (main.ts waits a little for them).
         window.bootDetailPendingMs = function () {
-          return queue.length ? queue.length * DWELL - Math.min(DWELL, performance.now() - shownAt) : 0;
+          var left = Math.max(0, dwell - (performance.now() - shownAt));
+          return queue.reduce(function (n, t) { return n + dwellFor(t); }, left);
         };
 
         var last = 0;

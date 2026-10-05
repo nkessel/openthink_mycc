@@ -159,7 +159,6 @@ export function createMapLegend(parent: HTMLElement, sectors: { label: string; c
       row(h("span", { class: "swatch", style: "width:18px;height:18px" }), "Coalition (size = member groups)"),
       row(h("span", { class: "swatch", style: "width:9px;height:9px" }), "Organization"),
       row(h("span", { class: "line" }), "Member of a coalition"),
-      row(h("span", { class: "line org" }), "Orgs that work together"),
       h("div", { class: "map-legend-sub" }, "Dots around each group"),
       row(h("span", { class: "kdot k-event" }), "Event"),
       row(h("span", { class: "kdot k-project" }), "Project"),

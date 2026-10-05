@@ -17,7 +17,15 @@ import { orgProjects, orgEvents, orgActions } from "./owners";
 import { typeIcon } from "./icons";
 import { suggestionsFor } from "./suggestions";
 
-type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
+type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
+/** The kinds of item in the Activity tab, each with its own filter pill. */
+type ActKind = "event" | "project" | "action" | "volunteer";
+const ACT_KINDS: { k: ActKind; label: string }[] = [
+  { k: "event", label: "Events" },
+  { k: "project", label: "Projects" },
+  { k: "action", label: "Actions" },
+  { k: "volunteer", label: "Volunteer" },
+];
 
 export interface Drawer {
   open(node: GraphNode): void;
@@ -27,6 +35,8 @@ export interface Drawer {
   setActiveTab(tab: DrawerTab): void;
   /** Show one event / project / action in full, with a way back to its group. */
   openItem(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): void;
+  /** True while it shows one item rather than its group. */
+  showingItem(): boolean;
 }
 
 export type ItemKind = "event" | "project" | "action";
@@ -46,6 +56,7 @@ export function createDrawer(
 
   let currentNode: GraphNode | null = null;
   let activeTab: DrawerTab = "about";
+  let actFilter = new Set<ActKind>(); // empty = everything
   let currentItem: { kind: ItemKind; item: CoalitionEvent | Project | Action } | null = null;
   const orgsById = new Map(data.organizations.map((o) => [o.id, o]));
   const coalitionsById = new Map(data.coalitions.map((c) => [c.id, c]));
@@ -155,20 +166,16 @@ export function createDrawer(
       events: node.kind === "coalition" ? node.events.length : orgEvents(data, node).length,
       actions: node.kind === "coalition" ? node.actions.length : orgActions(data, node).length,
     };
-    const tabList: { id: DrawerTab; label: string }[] =
-      node.kind === "coalition"
-        ? [
-            { id: "about", label: "About" },
-            { id: "projects", label: `Projects (${n.projects})` },
-            { id: "events", label: `Events (${n.events})` },
-            { id: "actions", label: `Actions (${n.actions})` },
-          ]
-        : [
-            { id: "about", label: "About" },
-            { id: "projects", label: `Projects (${n.projects})` },
-            { id: "events", label: `Events (${n.events})` },
-            { id: "actions", label: `Actions (${n.actions})` },
-          ];
+    const total = n.projects + n.events + n.actions;
+    const tabList: { id: DrawerTab; label: string }[] = [
+      { id: "about", label: "About" },
+      { id: "activity", label: `Activity (${total})` },
+    ];
+    // older links to a single kind open Activity filtered to that kind
+    if (activeTab === "projects" || activeTab === "events" || activeTab === "actions") {
+      actFilter = new Set<ActKind>(activeTab === "projects" ? ["project"] : activeTab === "events" ? ["event"] : ["action", "volunteer"]);
+      activeTab = "activity";
+    }
     // Ensure activeTab is valid for this node kind
     if (!tabList.find((t) => t.id === activeTab)) {
       activeTab = tabList[0].id;
@@ -179,7 +186,7 @@ export function createDrawer(
         {
           class: `drawer-tab ${t.id === activeTab ? "active" : ""}`,
         },
-        t.id === "projects" ? typeIcon("project", 14) : t.id === "events" ? typeIcon("event", 14) : t.id === "actions" ? typeIcon("action", 14) : null,
+        null,
         t.label,
       );
       btn.addEventListener("click", () => api.setActiveTab(t.id));
@@ -194,12 +201,8 @@ export function createDrawer(
       const c = node as Coalition;
       if (activeTab === "about") {
         renderCoalitionAbout(body, c);
-      } else if (activeTab === "projects") {
-        renderProjects(body, c.projects, node);
-      } else if (activeTab === "events") {
-        renderEvents(body, c.events, node);
-      } else if (activeTab === "actions") {
-        renderActions(body, c.actions, node);
+      } else if (activeTab === "activity") {
+        renderActivity(body, c.events, c.projects, c.actions || [], node);
       }
     } else {
       const o = node as Organization;
@@ -210,12 +213,8 @@ export function createDrawer(
         renderSuggestions(body, o);
       } else if (activeTab === "suggested") {
         renderSuggestions(body, o);
-      } else if (activeTab === "projects") {
-        renderProjects(body, orgProjects(data, o), node);
-      } else if (activeTab === "events") {
-        renderEvents(body, orgEvents(data, o), node);
-      } else if (activeTab === "actions") {
-        renderActions(body, orgActions(data, o), node);
+      } else if (activeTab === "activity") {
+        renderActivity(body, orgEvents(data, o), orgProjects(data, o), orgActions(data, o), node);
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
         // Connections live at the end of About (they used to be a fifth tab that wrapped the tab row).
@@ -229,11 +228,49 @@ export function createDrawer(
   }
 
 
-  function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
-    if (!items.length) {
-      body.appendChild(h("div", { class: "empty" }, "No active projects."));
+  /** Everything a group is doing in one list: a pill per kind picks what shows; each entry leads with its kind's icon. */
+  function renderActivity(body: HTMLElement, events: CoalitionEvent[], projects: Project[], actions: Action[], owner: GraphNode): void {
+    const roles = actions.filter((a) => a.kind === "role");
+    const acts = actions.filter((a) => a.kind !== "role");
+    const count: Record<ActKind, number> = { event: events.length, project: projects.length, action: acts.length, volunteer: roles.length };
+    if (!events.length && !projects.length && !actions.length) {
+      body.appendChild(h("div", { class: "empty" }, "Nothing listed yet."));
       return;
     }
+    const pills = h("div", { class: "act-pills", role: "group", "aria-label": "Show" });
+    const list = h("div", { class: "act-list" });
+    const present = ACT_KINDS.filter((x) => count[x.k] > 0);
+    const shows = (k: ActKind) => actFilter.size === 0 || actFilter.has(k);
+    const draw = () => {
+      for (const b of pills.querySelectorAll<HTMLButtonElement>("button")) b.classList.toggle("on", shows(b.dataset.k as ActKind) && actFilter.size > 0);
+      clear(list);
+      if (shows("event")) renderEvents(list, events, owner);
+      if (shows("project")) renderProjects(list, projects, owner);
+      if (shows("action")) renderActions(list, acts, owner);
+      if (shows("volunteer")) renderActions(list, roles, owner);
+      if (!list.childElementCount) list.appendChild(h("div", { class: "empty" }, "Nothing of this kind yet."));
+    };
+    if (present.length > 1) {
+      for (const x of present) {
+        const b = h("button", { type: "button", class: `act-pill k-${x.k}`, "data-k": x.k, "aria-pressed": "false" }, typeIcon(x.k, 13), ` ${x.label} `, h("span", { class: "n" }, String(count[x.k]))) as HTMLButtonElement;
+        b.addEventListener("click", () => {
+          // pick one kind; pick more to add them; pick them all (or the only one again) to show everything
+          if (actFilter.has(x.k)) actFilter.delete(x.k);
+          else actFilter.add(x.k);
+          if (actFilter.size === present.length) actFilter.clear();
+          b.setAttribute("aria-pressed", String(actFilter.has(x.k)));
+          draw();
+        });
+        pills.appendChild(b);
+      }
+      body.appendChild(pills);
+    }
+    body.appendChild(list);
+    draw();
+  }
+
+  function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
+    if (!items.length) return;
     for (const p of items) {
       body.appendChild(
         h(
@@ -254,10 +291,7 @@ export function createDrawer(
   }
 
   function renderEvents(body: HTMLElement, items: CoalitionEvent[], owner: GraphNode): void {
-    if (!items.length) {
-      body.appendChild(h("div", { class: "empty" }, "No upcoming events."));
-      return;
-    }
+    if (!items.length) return;
     for (const e of items) {
       body.appendChild(
         h(
@@ -278,10 +312,7 @@ export function createDrawer(
   }
 
   function renderActions(body: HTMLElement, items: Action[], owner: GraphNode): void {
-    if (!items.length) {
-      body.appendChild(h("div", { class: "empty" }, "No open actions."));
-      return;
-    }
+    if (!items.length) return;
     for (const a of items) {
       const row = h(
         "div",
@@ -441,7 +472,9 @@ export function createDrawer(
 
   /** An item's name in a list: click it for the full view. */
   function openName(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): HTMLElement {
-    const n = h("button", { class: "name item-open", type: "button", title: "See all the details" }, item.name, h("span", { class: "item-open-more" }, " ›"));
+    const ik = kind === "action" && (item as Action).kind === "role" ? "volunteer" : kind;
+    const n = h("button", { class: "name item-open", type: "button", title: "See all the details" },
+      h("span", { class: `item-kind-icon k-${ik}` }, typeIcon(ik, 16)), h("span", { class: "item-open-name" }, item.name, h("span", { class: "item-open-more" }, " ›")));
     n.addEventListener("click", () => api.openItem(kind, item, owner));
     return n;
   }
@@ -543,9 +576,12 @@ export function createDrawer(
     const contact = (item as { public_contact?: string }).public_contact;
     if (contact) row("Contact", contact);
 
+    const ownerLogo = (owner as { logo?: string }).logo;
     const hostRow = h("div", { class: "item clickable host-row" },
       h("div", { class: "name" }, owner.kind === "coalition" ? "Coalition" : "Hosted by"),
-      h("div", { class: "desc" }, owner.name, " ›"));
+      h("div", { class: "desc host-who" },
+        ownerLogo ? h("span", { class: "host-logo" }, h("img", { src: ownerLogo, alt: "" })) : null,
+        h("span", {}, owner.name, " ›")));
     hostRow.addEventListener("click", () => { currentItem = null; activeTab = "about"; rerender(); });
     body.appendChild(hostRow);
 
@@ -592,7 +628,8 @@ export function createDrawer(
     open(node) {
       currentNode = node;
       currentItem = null;
-      // Every group opens on its About tab.
+      // Every group opens on its About tab, with Activity showing everything.
+      actFilter = new Set();
       activeTab = "about";
       rerender();
       el.classList.add("open");
@@ -611,10 +648,13 @@ export function createDrawer(
       activeTab = tab;
       rerender();
     },
+    showingItem() {
+      return el.classList.contains("open") && !!currentItem;
+    },
     openItem(kind, item, owner) {
       currentNode = owner;
       currentItem = { kind, item };
-      activeTab = kind === "event" ? "events" : kind === "project" ? "projects" : "actions";
+      activeTab = "activity";
       rerender();
       el.classList.add("open");
       el.scrollTop = 0;

@@ -2,10 +2,11 @@
 const NS = "http://www.w3.org/2000/svg";
 
 // Shared with the map bubbles (graph.ts) so the volunteer icon looks the same everywhere.
-export const VOL_HEAD = "M-5.6-1.5a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0-7.2 0";
-export const VOL_BODY = "M-10.5 10.5C-10.5 5-7 3.4-2 3.4C1.5 3.4 3.6 4.4 4.8 6";
-export const VOL_ARM = "M4.8 6L7.6-4.5";
-export const VOL_FINGERS = "M6.2-4.6L6.7-10.2M8.2-4.2L9.4-9.6M9.6-3L11.4-6.6";
+// A person (head and shoulders) raising an open hand, palm out: "I'll help".
+export const VOL_HEAD = "M-7.4 0a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0-6.8 0";
+export const VOL_BODY = "M-11 11C-11 6.2-8.2 4.6-4 4.6C-0.6 4.6 1.6 5.8 3 8";
+export const VOL_ARM = "M3 8L5.6-2";
+export const VOL_FINGERS = "M4.4-2.6V-8.8a1 1 0 0 1 2 0V-5M6.4-9.6a1 1 0 0 1 2 0V-5M8.4-8.8a1 1 0 0 1 2 0V-3.6C10.4-1.4 9-0.4 7-0.6H6C5-0.6 4.4-1.4 4.4-2.6M4.4-4.6L3-6.2a1 1 0 0 0-1.6 1.2L4.4-1.6";
 
 const PATHS: Record<string, string[]> = {
   // calendar
@@ -14,7 +15,7 @@ const PATHS: Record<string, string[]> = {
   project: ["M-8 9H8", "M0 9V-1", "M0 3C-8 3-10-3-10-6C-4-6 0-3 0 3", "M0-1C0-7 4-11 10-11C10-5 6-1 0-1"],
   // checkmark
   action: ["M-7 0.5L-2.2 5.5L7.5-5"],
-  // a person (head and shoulders) with one hand raised
+  // a person (head and shoulders) raising an open hand
   volunteer: [VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS],
 };
 

@@ -7,6 +7,7 @@
 // Calm by design: comets and seeds are launched at a slow, steady rate (each problem is hit about 1–3 times every
 // few seconds), drawn on canvas with additive glow; prefers-reduced-motion shows a still picture.
 import * as d3 from "d3";
+import { animAuto, animSimple, onAnimChange, reportFrame, setAnim, type AnimChoice } from "./perf";
 import { h, clear } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { PROBLEMS, VISIONS, SUB_SOLUTIONS, FIGHT_STRATEGIES } from "./problems";
@@ -23,8 +24,6 @@ export interface BattleCtx {
 }
 
 type Show = "both" | "problems" | "solutions";
-type Hit = "ripple" | "push" | "light";
-type Feed = "grow" | "bloom" | "glow";
 type Split = "strategy" | "both";
 
 interface Org {
@@ -87,7 +86,7 @@ interface Fx {
   a: number; // direction the shot was travelling
   t0: number;
   life: number;
-  kind: Hit | Feed;
+  kind: "hit" | "feed";
   seed: number;
 }
 
@@ -108,7 +107,10 @@ function hash(s: string): number {
   for (let i = 0; i < s.length; i++) x = Math.imul(x ^ s.charCodeAt(i), 16777619);
   return ((x >>> 0) % 10000) / 10000;
 }
+const ITEM_COLOR: Record<string, string> = { event: "#f472b6", project: "#34d399", action: "#fbbf24", mission: "#cbd5e1" };
 const isMission = (r: TopicRecord) => r.kind === "org_mission" || r.kind === "coalition_mission";
+type BLayout = "columns" | "circle";
+
 function within(p: Target, q: Target): boolean {
   for (let x: Target | null = p; x; x = x.up) if (x === q) return true;
   return false;
@@ -117,18 +119,17 @@ function within(p: Target, q: Target): boolean {
 export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void; show(): void; hide(): void } {
   const saved = (() => {
     try {
-      return JSON.parse(localStorage.getItem(STORE) || "{}") as Partial<{ show: Show; hit: Hit; feed: Feed; split: Split }>;
+      return JSON.parse(localStorage.getItem(STORE) || "{}") as Partial<{ show: Show; split: Split; layout: BLayout }>;
     } catch {
       return {};
     }
   })();
   let showing: Show = saved.show ?? "both";
-  let hitMode: Hit = saved.hit ?? "ripple";
-  let feedMode: Feed = saved.feed ?? "grow";
   let split: Split = saved.split ?? "strategy";
+  let layout: BLayout = saved.layout === "circle" ? "circle" : "columns";
   const save = () => {
     try {
-      localStorage.setItem(STORE, JSON.stringify({ show: showing, hit: hitMode, feed: feedMode, split }));
+      localStorage.setItem(STORE, JSON.stringify({ show: showing, split, layout }));
     } catch {
       /* ignore */
     }
@@ -276,23 +277,22 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     showing = v as Show;
     el.dataset.show = showing;
     shots = [];
-    refresh();
-  }).g);
-  bar.appendChild(seg("When a problem is hit", [["ripple", "Shield ripples"], ["push", "Pushed back"], ["light", "Light breaks in"]], () => hitMode, (v) => {
-    hitMode = v as Hit;
-    el.dataset.hit = hitMode;
-    paintSvg();
-  }).g);
-  bar.appendChild(seg("When a solution is fed", [["grow", "Grows"], ["bloom", "Blooms"], ["glow", "Lights up"]], () => feedMode, (v) => {
-    feedMode = v as Feed;
-    el.dataset.feed = feedMode;
-    paintSvg();
+    fx = [];
+    relayout(true);
   }).g);
   bar.appendChild(seg("Energy", [["strategy", "Split by strategy"], ["both", "Every item both ways"]], () => split, (v) => {
     split = v as Split;
     compute(true);
     relayout(true);
   }).g);
+  bar.appendChild(seg("Layout", [["columns", "Columns"], ["circle", "Circle"]], () => layout, (v) => {
+    layout = v as BLayout;
+    el.dataset.layout = layout;
+    shots = [];
+    fx = [];
+    relayout(true);
+  }).g);
+  el.dataset.layout = layout;
   let splitAll = false;
   let zoomSplit = false;
   const splitSeg = seg("Detail", [["main", "Main"], ["split", "Split all"]], () => (splitAll || zoomSplit ? "split" : "main"), (v) => {
@@ -300,6 +300,27 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     relayout(true);
   });
   bar.appendChild(splitSeg.g);
+  // Full or simple animation (switches to simple by itself when the browser can't keep up)
+  let simple = animSimple();
+  const animSeg = seg("Animation", [["full", "Full"], ["simple", "Simple"]], () => (simple ? "simple" : "full"), (v) => setAnim(v as AnimChoice));
+  bar.appendChild(animSeg.g);
+  const animNote = h("span", { class: "cr-anim-note" }, "auto");
+  animNote.title = "Switched to simple animation because this browser was drawing slowly. Pick Full to switch back.";
+  animSeg.g.appendChild(animNote);
+  const syncAnim = () => {
+    simple = animSimple();
+    animSeg.sync();
+    animNote.style.display = animAuto() ? "" : "none";
+    el.classList.toggle("simple", simple);
+  };
+  syncAnim();
+  onAnimChange(() => {
+    syncAnim();
+    if (!shown) return;
+    measure();
+    baseDirty = true;
+    kick();
+  });
   const legend = h("div", { class: "cr-legend" });
   const infoBtn = h("button", { type: "button", class: "cr-info", "aria-expanded": "false" }, "How to read") as HTMLButtonElement;
   infoBtn.addEventListener("click", () => {
@@ -310,8 +331,6 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   bar.appendChild(infoBtn);
   el.appendChild(bar);
   el.dataset.show = showing;
-  el.dataset.hit = hitMode;
-  el.dataset.feed = feedMode;
 
   const viewport = h("div", { class: "cr-viewport" });
   const canvas = document.createElement("canvas");
@@ -341,6 +360,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   const bg = svg.append("rect").attr("class", "cr-bg");
   const zg = svg.append("g");
   const gHits = zg.append("g").attr("class", "cr-hits");
+  const gItems = svg.append("g").attr("class", "bt-items");
   const gProbs = svg.append("g").attr("class", "bt-probs");
   const gVis = svg.append("g").attr("class", "bt-visions");
   const gOrgs = svg.append("g").attr("class", "cr-orgs");
@@ -348,12 +368,17 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   // ---------- State ----------
   let W = 800, H = 600, dpr = 1;
   let tr = d3.zoomIdentity;
-  // zooming stretches the rows vertically only, so problems, groups and solutions all stay in view
+  // zooming moves things apart (it doesn't blow them up), so you can zoom into any part: groups, streams, a problem
+  const X = (x: number) => tr.k * x + tr.x;
   const Y = (y: number) => tr.k * y + tr.y;
+  /** Problems and solutions grow a little as you zoom in, so their icons get easier to see. */
+  const nodeScale = () => Math.min(1.8, Math.sqrt(tr.k));
   const expanded = new Set<string>();
   let selOrg: Org | null = null;
   let selT: Target | null = null;
   let hover: Stream | null = null;
+  let hoverT: Target | null = null;
+  let selItem: TopicRecord | null = null;
   let visProbs: Target[] = [];
   let visVis: Target[] = [];
   let visStreams: Stream[] = [];
@@ -367,6 +392,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   let geomVer = 0;
   let paintedGeom = -1;
   let orgKey = "";
+  // circle layout: the ring's centre and radius, and each target's angle on it
+  let ccx = 400, ccy = 300, R = 200;
+  const angOf = new Map<string, number>();
   const stats = { frames: 0, workMs: 0, avgMs: 0, maxMs: 0, intervalMs: 0, shots: 0, hits: 0, fx: 0 };
   (window as unknown as { __battle: typeof stats }).__battle = stats;
 
@@ -380,7 +408,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const r = viewport.getBoundingClientRect();
     W = Math.max(320, r.width);
     H = Math.max(300, r.height);
-    dpr = Math.min(2, window.devicePixelRatio || 1);
+    dpr = simple ? 1 : Math.min(2, window.devicePixelRatio || 1);
     for (const c of [canvas, base]) {
       c.width = Math.round(W * dpr);
       c.height = Math.round(H * dpr);
@@ -399,6 +427,16 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     xV = W - xP;
     cx = W / 2;
     band = Math.min(W * 0.11, 160);
+    // only one side shown: two columns, problems on the left and groups on the right (or groups left, solutions right)
+    if (showing === "problems") {
+      xP = small ? Math.max(110, W * 0.3) : Math.min(380, Math.max(240, W * 0.3));
+      cx = xP + (W - xP) * 0.55;
+      band = Math.min(W * 0.16, 220);
+    } else if (showing === "solutions") {
+      xV = W - (small ? Math.max(110, W * 0.3) : Math.min(380, Math.max(240, W * 0.3)));
+      cx = xV * 0.45;
+      band = Math.min(W * 0.16, 220);
+    }
     // Each main topic owns a fixed band of rows, shared by its problem (left) and its solution (right) and sized
     // for its sub-topics, so splitting one topic fans it out inside its band and nothing else moves.
     const bands = new Map<string, [number, number]>();
@@ -413,13 +451,38 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     }
     const total = u || 1;
     const yOf = (unit: number) => top + (unit / total) * (bot - top);
+    // circle: problems around the left half and solutions around the right (or one kind all the way round),
+    // in the same order as the columns, top to bottom; the groups sit inside the ring
+    const circle = layout === "circle";
+    const full = showing !== "both";
+    const M = 0.14;
+    const span = full ? 2 * Math.PI : Math.PI - 2 * M;
+    if (circle) {
+      ccx = W / 2;
+      ccy = (top + bot) / 2 + 8;
+      R = Math.max(110, Math.min(W / 2 - (small ? 80 : 200), (bot - top) / 2 - 8));
+    }
+    const angle = (kind: Target["kind"], unit: number) =>
+      full ? -Math.PI / 2 + (2 * Math.PI * unit) / total
+        : kind === "prob" ? -Math.PI / 2 - M - (unit / total) * span : -Math.PI / 2 + M + (unit / total) * span;
+    const extent = circle ? span * R : bot - top; // length of the line the targets sit along
     const placeSide = (mains: Target[], x: number): Target[] => {
       const vis: Target[] = [];
       for (const m of mains) {
         const b = bands.get(m.topic);
         if (!b || m.base <= 0) continue;
         const g = isOpen(m) ? liveKids(m) : [m];
-        g.forEach((t, i) => target.set(t.id, [x, yOf(b[0] + ((i + 0.5) * (b[1] - b[0])) / g.length)]));
+        g.forEach((t, i) => {
+          const unit = b[0] + ((i + 0.5) * (b[1] - b[0])) / g.length;
+          if (circle) {
+            const a = angle(t.kind, unit);
+            angOf.set(t.id, a);
+            target.set(t.id, [ccx + R * Math.cos(a), ccy + R * Math.sin(a)]);
+          } else {
+            angOf.delete(t.id);
+            target.set(t.id, [x, yOf(unit)]);
+          }
+        });
         vis.push(...g);
       }
       return vis;
@@ -433,7 +496,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     for (const t of [...visProbs, ...visVis]) {
       const b = bands.get(t.topic)!;
       const n = t.level && t.up && isOpen(t.up) ? liveKids(t.up).length : 1;
-      const row = ((b[1] - b[0]) / n / total) * (bot - top);
+      const row = ((b[1] - b[0]) / n / total) * extent;
       const k = Math.sqrt(Math.min(1, t.base / levelMax[`${t.kind}${t.level}`]));
       const want = t.level ? 7 + 6 * k : 10 + 10 * k;
       t.r = Math.max(5, Math.min(want, row * 0.42));
@@ -442,12 +505,46 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     // recomputed only when the size or weights change, so zooming and splitting don't move them
     const maxO = d3.max(orgList, (o) => o.base) || 1;
     for (const o of orgList) o.r = o.base > 0 ? (small ? 2.5 : 3) + (small ? 4 : 7) * Math.sqrt(o.base / maxO) : 0;
-    const key = `${Math.round(W)}|${Math.round(H)}|${baseVer}`;
+    const key = `${Math.round(W)}|${Math.round(H)}|${baseVer}|${showing}|${layout}`;
     if (key === orgKey) return;
     orgKey = key;
     const oBot = H - 96; // the site's round + button sits at the bottom centre
     const live = orgList.filter((o) => o.base > 0);
     const byOrg = d3.group(allStreams.filter((s) => s.base > 0 && s.t.level === 0), (s) => s.org.key);
+    if (circle) {
+      // inside the ring, pulled toward the problems and solutions each group works on
+      const inner = R * 0.62;
+      const cn = live.map((o) => {
+        let sx = 0, sy = 0, sw = 0;
+        for (const s of byOrg.get(o.key) ?? []) {
+          if (!showKind(s.kind)) continue;
+          const p = target.get(s.t.id);
+          if (!p) continue;
+          sx += (p[0] - ccx) * s.base;
+          sy += (p[1] - ccy) * s.base;
+          sw += s.base;
+        }
+        const tx = ccx + (sw ? (sx / sw) * 0.6 : 0), ty = ccy + (sw ? (sy / sw) * 0.6 : 0);
+        return { o, tx, ty, x: tx, y: ty };
+      });
+      const cs = d3.forceSimulation(cn)
+        .force("x", d3.forceX<(typeof cn)[number]>((d) => d.tx).strength(0.2))
+        .force("y", d3.forceY<(typeof cn)[number]>((d) => d.ty).strength(0.2))
+        .force("c", d3.forceCollide<(typeof cn)[number]>((d) => d.o.r + 2.2))
+        .stop();
+      for (let i = 0; i < 120; i++) {
+        cs.tick();
+        for (const n of cn) {
+          const dx = n.x - ccx, dy = n.y - ccy, d = Math.hypot(dx, dy), lim = inner - n.o.r;
+          if (d > lim) {
+            n.x = ccx + (dx / d) * lim;
+            n.y = ccy + (dy / d) * lim;
+          }
+        }
+      }
+      for (const n of cn) target.set(n.o.key, [n.x, n.y]);
+      return;
+    }
     const nodes = live.map((o) => {
       let sy = 0, sw = 0;
       for (const s of byOrg.get(o.key) ?? []) {
@@ -458,7 +555,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       }
       const y0 = sw ? sy / sw : (top + bot) / 2;
       const ty = top + ((y0 - top) * (oBot - top)) / (bot - top);
-      const lean = o.fight + o.build > 0 ? (o.build - o.fight) / (o.build + o.fight) : 0;
+      const lean = showing !== "both" ? 0 : o.fight + o.build > 0 ? (o.build - o.fight) / (o.build + o.fight) : 0;
       const tx = cx + lean * band * 0.85;
       return { o, tx, ty, x: tx, y: ty };
     });
@@ -489,6 +586,17 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   function buildGeom(s: Stream) {
     const o = s.org, t = s.t;
     const pts: number[] = [];
+    if (layout === "circle") {
+      // in the ring: a gentle curve out to the rim, bending one way or the other
+      const dx = t.x - o.x, dy = t.y - o.y, d = Math.hypot(dx, dy) || 1;
+      const bend = (s.seed - 0.5) * 0.5 * d;
+      const qx = (o.x + t.x) / 2 - (dy / d) * bend, qy = (o.y + t.y) / 2 + (dx / d) * bend;
+      for (let i = 0; i <= 36; i++) {
+        const f = i / 36, a = 1 - f;
+        pts.push(a * a * o.x + 2 * a * f * qx + f * f * t.x, a * a * o.y + 2 * a * f * qy + f * f * t.y);
+      }
+      return finishGeom(s, pts);
+    }
     // a lobbed arc, up and over to the target
     const dx = t.x - o.x;
     const lift = Math.min(130, Math.abs(dx) * (0.2 + 0.16 * s.seed));
@@ -498,6 +606,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const f = i / 36, a = 1 - f;
       pts.push(a * a * a * o.x + 3 * a * a * f * c1x + 3 * a * f * f * c2x + f * f * f * t.x, a * a * a * o.y + 3 * a * a * f * c1y + 3 * a * f * f * c2y + f * f * f * t.y);
     }
+    finishGeom(s, pts);
+  }
+  function finishGeom(s: Stream, pts: number[]) {
     s.pts = Float32Array.from(pts);
     const n = pts.length / 2;
     const cum = new Float32Array(n);
@@ -522,9 +633,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     out[1] = u[2 * i + 1] + (u[2 * i + 3] - u[2 * i + 1]) * t;
   }
 
-  /** Like at(), in screen space (with the vertical zoom). */
+  /** Like at(), in screen space. */
   function atS(s: Stream, f: number, out: [number, number]) {
     at(s, f, out);
+    out[0] = X(out[0]);
     out[1] = Y(out[1]);
   }
 
@@ -535,7 +647,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     if (selT && !within(s.t, selT)) return 0;
     let a = 1;
     if (s.t.topic === BROAD) a *= 0.4;
+    if (selItem && !s.recs.includes(selItem)) a *= 0.12;
     if (withHover && hover && hover !== s) a *= 0.45;
+    if (withHover && hoverT && !selT && !within(s.t, hoverT)) a *= 0.1;
+    if (withHover && hoverO && !selOrg && s.org !== hoverO) a *= 0.08;
     return a;
   }
   function refreshStreams() {
@@ -544,17 +659,117 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   // ---------- SVG ----------
   const hue = (t: Target) => (t.topic === BROAD ? "#9ca3af" : ctx.colorOf(t.topic));
-  const orgScale = () => Math.max(1, Math.min(1.7, Math.pow(tr.k, 0.5)));
+  const orgScale = () => Math.max(1, Math.min(2.4, Math.pow(tr.k, 0.75)));
   let feeding: Set<string> | null = null;
-  const orgOpacity = (o: Org) => (selOrg ? (o === selOrg ? 1 : 0.25) : feeding ? (feeding.has(o.key) ? 1 : 0.18) : 1);
+  const orgOpacity = (o: Org) => (selOrg ? (o === selOrg ? 1 : 0.25) : hoverO ? (o === hoverO ? 1 : 0.3) : feeding ? (feeding.has(o.key) ? 1 : 0.18) : 1);
+  /** Which side of a problem or solution its name goes: outward from the ring, or away from the groups. */
+  const labelSide = (t: Target) => {
+    const a = angOf.get(t.id);
+    if (layout === "circle" && a !== undefined) return Math.cos(a) < -0.02 ? -1 : 1;
+    return t.kind === "prob" ? -1 : 1;
+  };
   const iconPaths = (t: Target) => (t.kind === "prob" ? PROBLEM_ICONS : SOLUTION_ICONS)[t.topic] ?? [];
   const targetOpacity = (t: Target) => {
     if (selT) return within(t, selT) || within(selT, t) ? 1 : 0.3;
+    if (hoverT) return within(t, hoverT) || within(hoverT, t) ? 1 : 0.4;
+    if (hoverO && !selOrg) return visStreams.some((s) => s.org === hoverO && within(s.t, t) && showKind(s.kind) && s.value > 0) ? 1 : 0.3;
+    if (selItem) return visStreams.some((s) => s.t === t && s.recs.includes(selItem!)) ? 1 : 0.3;
     if (selOrg) return visStreams.some((s) => s.org === selOrg && s.t === t && s.value > 0) ? 1 : 0.28;
     return 1;
   };
 
+  /** The group under the mouse: its paths to problems and solutions light up. */
+  let hoverO: Org | null = null;
+  function setHoverO(o: Org | null) {
+    if (hoverO === o) return;
+    hoverO = o;
+    baseDirty = true;
+    paintSvg();
+    kick();
+  }
+  function setHoverT(t: Target | null) {
+    if (hoverT === t) return;
+    hoverT = t;
+    baseDirty = true;
+    paintSvg();
+    kick();
+  }
+
+  // ---------- Items: the projects, events, actions and mission statements that make up each stream ----------
+  interface Item {
+    key: string;
+    s: Stream;
+    r: TopicRecord;
+    f: number;
+  }
+  let items: Item[] = [];
+  const ITEM_K = 2.4; // zoom where every stream shows its items
+  function computeItems() {
+    items = [];
+    const focus = selT ?? hoverT;
+    for (const s of visStreams) {
+      if (s.value <= 0 || !showKind(s.kind)) continue;
+      const on = focus ? within(s.t, focus) && (!selOrg || s.org === selOrg)
+        : selOrg ? s.org === selOrg
+        : hoverO ? s.org === hoverO
+        : selItem ? s.recs.includes(selItem)
+        : tr.k >= ITEM_K;
+      if (!on) continue;
+      const list = s.recs.filter((r) => (recW.get(r.id) ?? 0) > 0).sort((a, b) => (recW.get(b.id) ?? 0) - (recW.get(a.id) ?? 0));
+      list.forEach((r, i) => items.push({ key: `${s.kind}|${s.org.key}|${s.t.id}|${r.id}`, s, r, f: 0.3 + (0.45 * (i + 0.5)) / list.length }));
+    }
+  }
+  const kindKey = (r: TopicRecord) => (isMission(r) ? "mission" : r.kind);
+  function paintItems() {
+    computeItems();
+    const is = gItems.selectAll<SVGCircleElement, Item>("circle").data(items, (d) => d.key);
+    is.exit().remove();
+    is.enter().append("circle")
+      .on("mouseenter", (ev: MouseEvent, d) => showItemTip(ev, d))
+      .on("mousemove", (ev: MouseEvent, d) => showItemTip(ev, d))
+      .on("mouseleave", () => tip.classList.remove("on"))
+      .on("click", (ev: MouseEvent, d) => {
+        ev.stopPropagation();
+        selectItem(d.r, { x: ev.clientX, y: ev.clientY });
+      })
+      .merge(is)
+      .attr("class", (d) => `bt-item k-${kindKey(d.r)}${d.r === selItem ? " sel" : ""}`)
+      .attr("r", (d) => (d.r === selItem ? 4.5 : isMission(d.r) ? 2.4 : 3))
+      .attr("fill", (d) => (isMission(d.r) ? "none" : ITEM_COLOR[kindKey(d.r)]))
+      .attr("stroke", (d) => (isMission(d.r) ? ITEM_COLOR.mission : "rgba(10,10,15,0.85)"))
+      .attr("opacity", (d) => (selItem && d.r !== selItem ? 0.35 : 0.9));
+    placeItems();
+  }
+  function placeItems() {
+    gItems.selectAll<SVGCircleElement, Item>("circle").each(function (d) {
+      atS(d.s, d.f, P);
+      this.setAttribute("cx", P[0].toFixed(1));
+      this.setAttribute("cy", P[1].toFixed(1));
+    });
+  }
+  function showItemTip(ev: MouseEvent, d: Item) {
+    clear(tip);
+    const r = d.r;
+    tip.append(
+      h("div", { class: "cr-tip-meta" }, `${KIND_LABEL[r.kind]}${r.date ? ` · ${r.date}` : ""}${r.recurring ? " · repeats" : ""}`),
+      h("div", { class: "cr-tip-title" }, isMission(r) ? `Mission of ${r.host_name}` : r.name),
+      h("div", { class: "cr-tip-meta" }, isMission(r) ? "" : r.host_name),
+      h("div", { class: "cr-tip-item" }, `${d.s.kind === "fight" ? "solving" : "nurturing"}: ${d.s.t.label}`),
+    );
+    placeTip(ev);
+  }
+  function selectItem(r: TopicRecord, at?: { x: number; y: number }) {
+    selT = null;
+    selOrg = null;
+    selItem = selItem === r ? null : r;
+    if (selItem) ctx.cb.openItem?.(r.id, at);
+    shots = [];
+    refresh();
+    renderDetail();
+  }
+
   function paintSvg() {
+    paintItems();
     const moved = paintedGeom !== geomVer;
     paintedGeom = geomVer;
     // hover paths
@@ -588,7 +803,6 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const en = sel.enter().append("g").attr("class", (t) => `bt-node bt-${kind} lv${t.level}${t.topic === BROAD ? " broad" : ""}`).attr("data-id", (t) => t.id);
       const inner = en.append("g").attr("class", "inner");
       inner.append("circle").attr("class", "halo").attr("filter", "url(#bt-blur)");
-      if (kind === "vis") inner.append("g").attr("class", "petals").selectAll("ellipse").data(d3.range(8)).enter().append("ellipse");
       if (kind === "prob") inner.append("circle").attr("class", "field");
       inner.append("circle").attr("class", "core");
       inner.append("g").attr("class", "icon").each(function (t) {
@@ -607,9 +821,15 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           renderDetail();
         } else selectTarget(t);
       })
-        .on("mouseenter", (ev: MouseEvent, t) => showTargetTip(ev, t))
+        .on("mouseenter", (ev: MouseEvent, t) => {
+          showTargetTip(ev, t);
+          setHoverT(t);
+        })
         .on("mousemove", (ev: MouseEvent, t) => showTargetTip(ev, t))
-        .on("mouseleave", () => tip.classList.remove("on"));
+        .on("mouseleave", () => {
+          tip.classList.remove("on");
+          setHoverT(null);
+        });
       const all = en.merge(sel);
       all.classed("sel", (t) => t === selT).attr("opacity", targetOpacity).style("display", (t) => (sideShown(t) ? null : "none"));
       all.each(function (t) {
@@ -620,25 +840,20 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         g.select(".core").attr("r", r);
         const s = (r * 1.25) / 24;
         g.select(".icon").attr("transform", `translate(${-12 * s},${-12 * s}) scale(${s})`);
-        g.select(".petals").selectAll<SVGEllipseElement, number>("ellipse")
-          .attr("rx", r * (0.26 + 0.1 * glow)).attr("ry", r * (0.4 + 0.45 * glow))
-          .attr("cy", -r * (0.85 + 0.35 * glow))
-          .attr("transform", (i) => `rotate(${i * 45})`)
-          .attr("fill", d3.hsl(c).brighter(0.6).formatHex()).attr("opacity", 0.25 + 0.55 * glow);
         g.select(".hit").attr("r", r + 9);
-        const side = kind === "prob" ? -1 : 1;
-        const sx = (target.get(t.id)?.[0] ?? t.x);
-        const room = Math.max(10, Math.min(46, Math.floor((kind === "prob" ? sx - r - 18 : W - sx - r - 18) / (t.level ? 6 : 6.6))));
+        const side = labelSide(t);
+        const sx = X(target.get(t.id)?.[0] ?? t.x);
+        const room = Math.max(10, Math.min(46, Math.floor((side < 0 ? sx - r - 18 : W - sx - r - 18) / (t.level ? 6 : 6.6))));
         g.select(".lbl").text(t.label.length > room ? `${t.label.slice(0, room - 1)}…` : t.label)
-          .attr("x", side * (r + (kind === "prob" ? 13 : 12))).attr("y", 0).attr("dy", "0.35em").attr("text-anchor", kind === "prob" ? "end" : "start");
+          .attr("x", side * (r * nodeScale() + (kind === "prob" ? 13 : 12))).attr("y", 0).attr("dy", "0.35em").attr("text-anchor", side < 0 ? "end" : "start");
       });
       // crowded column: keep the labels of the busiest targets that fit, hide the rest (they show on hover)
       const keep = new Set<string>();
-      const ys: number[] = [];
+      const ys: [number, number][] = [];
       for (const t of [...list].sort((a, b) => b.energy - a.energy)) {
-        const y = Y(target.get(t.id)?.[1] ?? t.y);
-        if (ys.some((v) => Math.abs(v - y) < 14)) continue;
-        ys.push(y);
+        const y = Y(target.get(t.id)?.[1] ?? t.y), sd = labelSide(t);
+        if (ys.some(([v, w]) => w === sd && Math.abs(v - y) < 14)) continue;
+        ys.push([y, sd]);
         keep.add(t.id);
       }
       all.select(".lbl").style("display", (t) => (keep.has(t.id) ? null : "none"));
@@ -657,11 +872,19 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       ev.stopPropagation();
       selectOrg(o);
     })
-      .on("mouseenter", (ev: MouseEvent, o) => showOrgTip(ev, o))
+      .on("mouseenter", (ev: MouseEvent, o) => {
+        showOrgTip(ev, o);
+        setHoverO(o);
+      })
       .on("mousemove", (ev: MouseEvent, o) => showOrgTip(ev, o))
-      .on("mouseleave", () => tip.classList.remove("on"));
+      .on("mouseleave", () => {
+        tip.classList.remove("on");
+        setHoverO(null);
+      });
     const oall = oe.merge(os);
-    feeding = selT ? new Set(visStreams.filter((s) => streamAlpha(s, false) > 0.2 && s.value > 0).map((s) => s.org.key)) : null;
+    const focus = selT ?? hoverT;
+    feeding = focus ? new Set(visStreams.filter((s) => within(s.t, focus) && showKind(s.kind) && s.value > 0 && (!selOrg || s.org === selOrg)).map((s) => s.org.key))
+      : selItem ? new Set([`${selItem.map}:${selItem.host}`]) : null;
     oall.classed("sel", (o) => o === selOrg).attr("opacity", orgOpacity);
     const osz = moved ? oall : oe;
     osz.select(".dot").attr("r", (o) => o.r);
@@ -677,14 +900,15 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const cand = new Set<string>();
     for (const o of [...live].sort((a, b) => b.base - a.base).slice(0, tr.k >= 1.5 ? 400 : 10)) cand.add(o.key);
     if (selOrg) cand.add(selOrg.key);
-    if (selT) for (const st of visStreams.filter((x) => streamAlpha(x, false) > 0.2 && x.value > 0).sort((a, b) => b.value - a.value).slice(0, 14)) cand.add(st.org.key);
+    const focus = selT ?? hoverT;
+    if (focus) for (const st of visStreams.filter((x) => within(x.t, focus) && x.value > 0).sort((a, b) => b.value - a.value).slice(0, 14)) cand.add(st.org.key);
     for (const o of live) if (orgOpacity(o) < 0.3) cand.delete(o.key);
     const boxes: [number, number, number, number][] = [];
     const show = new Set<string>();
     for (const o of [...live].sort((a, b) => (a === selOrg ? -1 : b === selOrg ? 1 : b.base - a.base))) {
       if (!cand.has(o.key)) continue;
       const [lx, ly] = target.get(o.key) ?? [o.x, o.y];
-      const x = (lx), y = Y(ly);
+      const x = X(lx), y = Y(ly);
       if (x < -50 || x > W + 50 || y < -20 || y > H + 20) continue;
       const w = Math.min(30, o.name.length) * 5.6;
       const box: [number, number, number, number] = [x - w / 2, y - o.r * s - 16, x + w / 2, y - o.r * s - 3];
@@ -701,17 +925,17 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   /** Where a target is drawn now: its place, plus any knock-back, with its pulse/shrink as a scale. */
   function nodeTransform(t: Target): string {
-    let sc = 1 + 0.14 * t.pulse;
-    if (t.kind === "prob" && hitMode === "push") sc = (1 - 0.22 * t.glow) * (1 - 0.1 * t.pulse);
+    const sc = nodeScale() * (t.kind === "prob" ? 1 - 0.12 * t.pulse : 1 + 0.14 * t.pulse);
     return `translate(${t.kx.toFixed(2)},${t.ky.toFixed(2)}) scale(${sc.toFixed(3)})`;
   }
   function placeSvg() {
     const s = orgScale();
     for (const layer of [gProbs, gVis]) {
-      layer.selectAll<SVGGElement, Target>("g.bt-node").attr("transform", (t) => `translate(${(t.x)},${Y(t.y)})`)
+      layer.selectAll<SVGGElement, Target>("g.bt-node").attr("transform", (t) => `translate(${X(t.x)},${Y(t.y)})`)
         .select(".inner").attr("transform", nodeTransform).style("--light", (t) => t.light.toFixed(2));
     }
-    gOrgs.selectAll<SVGGElement, Org>("g.cr-org").attr("transform", (o) => `translate(${(o.x)},${Y(o.y)}) scale(${s})`);
+    gOrgs.selectAll<SVGGElement, Org>("g.cr-org").attr("transform", (o) => `translate(${X(o.x)},${Y(o.y)}) scale(${s})`);
+    placeItems();
   }
 
   // ---------- Tooltips ----------
@@ -758,6 +982,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   // ---------- Selection + detail ----------
   function selectTarget(t: Target) {
     selOrg = null;
+    selItem = null;
     selT = selT === t ? null : t;
     shots = [];
     refresh();
@@ -765,6 +990,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   }
   function selectOrg(o: Org) {
     selT = null;
+    selItem = null;
     selOrg = selOrg === o ? null : o;
     shots = [];
     refresh();
@@ -773,6 +999,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   function clearSel() {
     selOrg = null;
     selT = null;
+    selItem = null;
     refresh();
     renderDetail();
   }
@@ -783,6 +1010,18 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     return b;
   }
   const logoImg = (o: Org) => (o.logo ? h("img", { class: "cr-detail-logo", src: o.logo, alt: "" }) : h("span", { class: "cr-feeder-dot" }));
+  /** An item's name: opens its detail card (like on the other pages) when the map has it, else its link. */
+  function recName(r: TopicRecord): HTMLElement | string {
+    if (ctx.cb.hasItem?.(r.id)) {
+      const b = h("button", { type: "button", class: "topics-item-open" }, r.name) as HTMLButtonElement;
+      b.addEventListener("click", () => {
+        const rc = b.getBoundingClientRect();
+        ctx.cb.openItem?.(r.id, { x: rc.left, y: rc.top + rc.height / 2 });
+      });
+      return b;
+    }
+    return r.link ? h("a", { href: r.link, target: "_blank", rel: "noopener noreferrer" }, `${r.name} ↗`) : r.name;
+  }
   function recordRow(r: TopicRecord): HTMLElement {
     const m = isMission(r);
     const f = recFight.get(r.id) ?? 0.5;
@@ -794,12 +1033,12 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         r.recurring ? h("span", { class: "pill" }, "repeats") : null,
         r.date ? h("span", { class: "pill deadline" }, r.date) : null),
       m ? h("div", { class: "topics-host" }, "Mission of ", groupBtn)
-        : h("div", {}, h("div", { class: "name" }, r.link ? h("a", { href: r.link, target: "_blank", rel: "noopener noreferrer" }, `${r.name} ↗`) : r.name), h("div", { class: "topics-host" }, groupBtn)));
+        : h("div", {}, h("div", { class: "name" }, recName(r)), h("div", { class: "topics-host" }, groupBtn)));
   }
   function renderDetail() {
     const d = ctx.detail;
     clear(d);
-    if (!selOrg && !selT) {
+    if (!selOrg && !selT && !selItem) {
       d.classList.remove("open");
       return;
     }
@@ -843,6 +1082,27 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const box = h("div", { class: "topics-records" });
       for (const r of items) box.appendChild(recordRow(r));
       d.appendChild(box);
+    } else if (selItem) {
+      const r = selItem;
+      const org = orgs.get(`${r.map}:${r.host}`);
+      d.append(h("div", { class: "topics-detail-parent" }, KIND_LABEL[r.kind]), h("h3", {}, isMission(r) ? `Mission of ${r.host_name}` : r.name), recordRow(r));
+      if (org) {
+        const b = h("button", { type: "button", class: "cr-mapbtn" }, `Show all of ${org.name}'s comets and seeds`);
+        b.addEventListener("click", () => selectOrg(org));
+        d.appendChild(b);
+      }
+      for (const kind of ["fight", "feed"] as const) {
+        const ss = (recStreams.get(r.id) ?? []).filter((s) => s.kind === kind && s.t.level === 0);
+        if (!ss.length) continue;
+        d.appendChild(h("div", { class: "cr-sub" }, kind === "fight" ? "Problems it is solving" : "Solutions it is nurturing"));
+        const box = h("div", { class: "cr-chips" });
+        for (const s of ss) {
+          const b = h("button", { type: "button" }, s.t.label);
+          b.addEventListener("click", () => selectTarget(s.t));
+          box.appendChild(b);
+        }
+        d.appendChild(box);
+      }
     } else if (selOrg) {
       const o = selOrg;
       d.append(h("div", { class: "cr-detail-head" }, logoImg(o), h("div", {}, h("div", { class: "topics-detail-parent" }, "Group"), h("h3", {}, o.name))),
@@ -899,9 +1159,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const g = base.getContext("2d")!;
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, base.width, base.height);
-    g.setTransform(dpr, 0, 0, dpr * tr.k, 0, dpr * tr.y);
+    g.setTransform(dpr * tr.k, 0, 0, dpr * tr.k, dpr * tr.x, dpr * tr.y);
     g.lineCap = "round";
-    const lw = 1 / Math.sqrt(tr.k);
+    const lw = 1 / tr.k;
     const live = visStreams.filter((s) => s.value > 0);
     const vmax = d3.max(live, (s) => s.value) || 1;
     g.globalCompositeOperation = "lighter";
@@ -909,11 +1169,22 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const a = streamAlpha(s);
       if (a <= 0) continue;
       const k = Math.sqrt(s.value / vmax);
-      const c = d3.color(s.kind === "fight" ? tColor(s.t) : "#a3e635")!;
-      c.opacity = (s === hover ? 0.7 : (s.kind === "fight" ? 0.025 + 0.09 * k : 0.02 + 0.07 * k) * a) * (reduced ? 2.2 : 1);
-      g.strokeStyle = c.formatRgb();
-      g.lineWidth = (s === hover ? 2 : 0.5 + 1.1 * k) * lw;
-      if (s.kind === "feed") g.setLineDash([1.5, 5]);
+      const op = (s === hover ? 0.7 : (s.kind === "fight" ? 0.05 + 0.16 * k : 0.03 + 0.1 * k) * a) * (reduced ? 2.2 : 1);
+      const n = s.pts.length;
+      if (s.kind === "fight") {
+        // paths to problems: dashed, in the problem's colour
+        const c = d3.color(tColor(s.t))!;
+        c.opacity = op;
+        g.strokeStyle = c.formatRgb();
+        g.setLineDash([3 * lw, 4 * lw]);
+      } else {
+        // paths to solutions: solid rainbow rivers
+        const gr = g.createLinearGradient(s.pts[0], s.pts[1], s.pts[n - 2], s.pts[n - 1]);
+        const h0 = hash(s.org.key) * 360;
+        for (let i = 0; i <= 5; i++) gr.addColorStop(i / 5, `hsla(${(h0 + i * 60) % 360},85%,65%,${op})`);
+        g.strokeStyle = gr;
+      }
+      g.lineWidth = (s === hover ? 2 : 0.5 + 1.1 * k) * lw * (s.kind === "feed" ? 1.3 : 1);
       g.beginPath();
       g.moveTo(s.pts[0], s.pts[1]);
       for (let i = 2; i < s.pts.length; i += 2) g.lineTo(s.pts[i], s.pts[i + 1]);
@@ -934,9 +1205,18 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     }
     for (const [t, list] of byTarget) {
       if (shots.length > 140) break;
-      let rate = (t.kind === "prob" ? 0.18 + 0.55 * t.glow : 0.2 + 0.6 * t.glow) * (t.topic === BROAD ? 0.4 : 1);
-      if (selOrg) rate = 0.35 * list.length; // one group selected: each of its streams fires now and then
+      let rate = (t.kind === "prob" ? 0.135 + 0.41 * t.glow : 0.27 + 0.81 * t.glow) * (t.topic === BROAD ? 0.4 : 1);
+      const one = selOrg ?? hoverO;
+      if (one) {
+        // one group selected or hovered: only its streams fire, each now and then
+        const mine = list.filter((s) => s.org === one);
+        if (!mine.length) continue;
+        list.length = 0;
+        list.push(...mine);
+        rate = (t.kind === "prob" ? 0.26 : 0.47) * list.length;
+      }
       if (selT) rate *= 1.6;
+      if (simple) rate *= 0.5;
       if (Math.random() >= rate * dt) continue;
       // pick one of its streams, weighted by energy
       const tot = d3.sum(list, (s) => s.value);
@@ -952,29 +1232,29 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const speed = pick.kind === "fight" ? 120 : 75; // px per second: slow, so the eye can follow
       shots.push({ s: pick, t0: now, dur: (pick.len / speed) * 1000 });
     }
-    if (hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? 120 : 75)) * 1000 });
+    if (!simple && hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? 120 : 75)) * 1000 });
   }
 
   function arrive(sh: Shot, now: number) {
     const s = sh.s, t = s.t;
     // where it struck, in screen space, as an offset from the target's centre
     atS(s, 0.96, Q);
-    const a = Math.atan2(Y(t.y) - Q[1], t.x - Q[0]);
-    const rr = t.r + (t.kind === "prob" ? 7 : 2);
+    const a = Math.atan2(Y(t.y) - Q[1], X(t.x) - Q[0]);
+    const rr = t.r * nodeScale() + (t.kind === "prob" ? 7 : 2);
     const x = -Math.cos(a) * rr, y = -Math.sin(a) * rr;
     stats.hits++;
     if (t.kind === "prob") {
-      if (hitMode === "push") {
-        t.vx += Math.cos(a) * 40;
-        t.vy += Math.sin(a) * 40;
-        t.pulse = Math.min(1, t.pulse + 0.6);
-      } else if (hitMode === "light") t.light = Math.min(1, t.light + 0.55);
-      else t.pulse = Math.min(1, t.pulse + 0.35);
-      fx.push({ t, x, y, a, t0: now, life: hitMode === "light" ? 1800 : hitMode === "push" ? 700 : 1100, kind: hitMode, seed: Math.random() });
+      // the forcefield ripples, the problem is knocked back and flinches, and light breaks in
+      t.vx += Math.cos(a) * 34;
+      t.vy += Math.sin(a) * 34;
+      t.pulse = Math.min(1, t.pulse + 0.55);
+      t.light = Math.min(1, t.light + 0.45);
+      fx.push({ t, x, y, a, t0: now, life: 1700, kind: "hit", seed: Math.random() });
     } else {
-      t.pulse = Math.min(1, t.pulse + (feedMode === "grow" ? 0.5 : 0.35));
-      if (feedMode === "glow") t.light = Math.min(1, t.light + 0.6);
-      fx.push({ t, x, y, a, t0: now, life: feedMode === "grow" ? 2200 : feedMode === "bloom" ? 1300 : 1500, kind: feedMode, seed: Math.random() });
+      // the solution grows (sprouts branch out all around it) and lights up
+      t.pulse = Math.min(1, t.pulse + 0.45);
+      t.light = Math.min(1, t.light + 0.5);
+      fx.push({ t, x, y, a, t0: now, life: 2400, kind: "feed", seed: Math.random() });
     }
     if (fx.length > 90) fx.shift();
   }
@@ -1033,25 +1313,38 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const s = sh.s;
       const a = Math.max(0.25, streamAlpha(s));
       if (s.kind === "fight") {
-        const spr = sprite(tColor(s.t));
-        const tail = 26 / s.len;
-        for (let k = 4; k >= 0; k--) {
-          const ff = f - k * tail * 0.3;
-          if (ff < 0) continue;
-          atS(s, ff, P);
-          const size = (8 - k * 1.3) * sz;
-          g.globalAlpha = Math.min(1, (0.75 - k * 0.14) * a);
-          g.drawImage(spr, P[0] - size / 2, P[1] - size / 2, size, size);
+        // one comet: a bright head with a single tapering tail behind it
+        const col = tColor(s.t);
+        const tailLen = 46 / s.len;
+        atS(s, f, P);
+        let px = P[0], py = P[1];
+        g.lineCap = "round";
+        g.strokeStyle = col;
+        for (let k = 1; k <= (simple ? 0 : 10); k++) {
+          const ff = f - (k / 10) * tailLen;
+          if (ff < 0) break;
+          atS(s, ff, Q);
+          g.globalAlpha = Math.min(1, 0.7 * (1 - k / 11) * a);
+          g.lineWidth = 3.2 * (1 - k / 11) * sz;
+          g.beginPath();
+          g.moveTo(px, py);
+          g.lineTo(Q[0], Q[1]);
+          g.stroke();
+          px = Q[0];
+          py = Q[1];
         }
+        g.globalAlpha = Math.min(1, 0.95 * a);
+        g.drawImage(sprite(col), P[0] - 5 * sz, P[1] - 5 * sz, 10 * sz, 10 * sz);
+        g.drawImage(sprite("#ffffff"), P[0] - 2 * sz, P[1] - 2 * sz, 4 * sz, 4 * sz);
       } else {
         // a seed bomb: a small tumbling seed with a faint trail of pollen
         atS(s, f, P);
         g.globalAlpha = Math.min(1, 0.85 * a);
         const size = (6 + Math.sin(now / 120 + s.seed * 9)) * sz;
         g.drawImage(sprite("#bef264"), P[0] - size / 2, P[1] - size / 2, size, size);
-        for (let k = 1; k <= 3; k++) {
-          atS(s, f - (k * 10) / s.len, Q);
-          g.globalAlpha = (0.3 - k * 0.08) * a;
+        for (let k = 1; k <= (simple ? 0 : 5); k++) {
+          atS(s, f - (k * 7) / s.len, Q);
+          g.globalAlpha = (0.34 - k * 0.055) * a;
           g.drawImage(sprite("#fde68a"), Q[0] - 1.5 * sz, Q[1] - 1.5 * sz, 3 * sz, 3 * sz);
         }
       }
@@ -1065,92 +1358,96 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const age = (now - e.t0) / e.life;
       const t = e.t;
       if (!t.visible || !sideShown(t)) continue;
-      const cx0 = t.x + t.kx, cy0 = Y(t.y) + t.ky;
+      const cx0 = X(t.x) + t.kx, cy0 = Y(t.y) + t.ky;
       const ex = cx0 + e.x, ey = cy0 + e.y;
-      if (e.kind === "ripple") {
-        // the forcefield lights up where it was struck, and a ring runs around it
-        const fr = t.r + 7;
-        g.globalAlpha = 0.85 * (1 - age);
+      const rs = t.r * nodeScale();
+      if (simple) {
+        // simple: one fading ring, no sparks or sprouts
+        g.globalAlpha = 0.6 * (1 - age);
+        g.strokeStyle = e.kind === "hit" ? "#fda4af" : "#fde68a";
+        g.lineWidth = 1.5;
+        g.beginPath();
+        g.arc(cx0, cy0, rs + 4 + age * 10, 0, Math.PI * 2);
+        g.stroke();
+        continue;
+      }
+      if (e.kind === "hit") {
+        // 1. the forcefield lights up where it was struck, and a ring runs around it
+        const fr = rs + 7;
+        const ra = Math.min(1, age * 1.5);
+        g.globalAlpha = 0.85 * (1 - ra);
         g.strokeStyle = "#fda4af";
-        g.lineWidth = (2.4 - 1.6 * age) * sz;
+        g.lineWidth = 2.4 - 1.6 * ra;
         g.beginPath();
-        g.arc(cx0, cy0, fr, e.a + Math.PI - 0.7 - age * 1.6, e.a + Math.PI + 0.7 + age * 1.6);
+        g.arc(cx0, cy0, fr, e.a + Math.PI - 0.7 - ra * 1.6, e.a + Math.PI + 0.7 + ra * 1.6);
         g.stroke();
-        g.globalAlpha = 0.35 * (1 - age);
-        g.lineWidth = 1 * sz;
+        g.globalAlpha = 0.3 * (1 - ra);
+        g.lineWidth = 1;
         g.beginPath();
-        g.arc(cx0, cy0, fr + age * 10, 0, Math.PI * 2);
+        g.arc(cx0, cy0, fr + ra * 10, 0, Math.PI * 2);
         g.stroke();
-        g.globalAlpha = 0.7 * (1 - age);
-        g.drawImage(sprite("#ffe4e6"), ex - 7 * sz, ey - 7 * sz, 14 * sz, 14 * sz);
-      } else if (e.kind === "push") {
-        // a sharp spark at the point of impact; the problem itself is knocked back and shrinks (SVG)
-        g.globalAlpha = 0.8 * (1 - age);
-        g.strokeStyle = "#fcd34d";
-        g.lineWidth = 1.2 * sz;
-        g.beginPath();
-        for (let k = 0; k < 6; k++) {
-          const an = e.a + Math.PI + (k - 2.5) * 0.45;
-          g.moveTo(ex + Math.cos(an) * (2 + age * 4) * sz, ey + Math.sin(an) * (2 + age * 4) * sz);
-          g.lineTo(ex + Math.cos(an) * (5 + age * 12) * sz, ey + Math.sin(an) * (5 + age * 12) * sz);
+        // 2. a spark at the point of impact
+        const sp = Math.min(1, age * 3);
+        if (sp < 1) {
+          g.globalAlpha = 0.8 * (1 - sp);
+          g.strokeStyle = "#fcd34d";
+          g.lineWidth = 1.2;
+          g.beginPath();
+          for (let k = 0; k < 6; k++) {
+            const an = e.a + Math.PI + (k - 2.5) * 0.45;
+            g.moveTo(ex + Math.cos(an) * (2 + sp * 4), ey + Math.sin(an) * (2 + sp * 4));
+            g.lineTo(ex + Math.cos(an) * (5 + sp * 12), ey + Math.sin(an) * (5 + sp * 12));
+          }
+          g.stroke();
+          g.globalAlpha = 0.7 * (1 - sp);
+          g.drawImage(sprite("#ffe4e6"), ex - 7, ey - 7, 14, 14);
         }
-        g.stroke();
-      } else if (e.kind === "light") {
-        // light seeps through the shield and into the problem
-        const fr = t.r + 7;
-        const p = Math.min(1, age * 2.2);
+        // 3. light seeps through the shield and into the problem
+        const p = Math.min(1, age * 1.6);
         const lx = ex + (cx0 - ex) * p, ly = ey + (cy0 - ey) * p;
-        g.globalAlpha = 0.65 * (1 - age);
-        g.drawImage(sprite("#fde68a"), lx - 9 * sz, ly - 9 * sz, 18 * sz, 18 * sz);
-        g.globalAlpha = 0.35 * (1 - age);
-        g.strokeStyle = "#fde68a";
-        g.lineWidth = 1 * sz;
-        for (let k = -1; k <= 1; k++) {
-          const an = e.a + k * 0.35;
-          g.beginPath();
-          g.moveTo(cx0 - Math.cos(an) * fr * 1.6, cy0 - Math.sin(an) * fr * 1.6);
-          g.lineTo(cx0 - Math.cos(an) * fr * (1 - p), cy0 - Math.sin(an) * fr * (1 - p));
-          g.stroke();
-        }
-      } else if (e.kind === "grow") {
-        // a sprout: two little stems with leaves grow out from where the seed landed, then fade
-        const p = Math.min(1, age * 2.5);
-        const fade = age < 0.6 ? 1 : 1 - (age - 0.6) / 0.4;
-        g.strokeStyle = "#86efac";
-        g.lineWidth = 1.2 * sz;
-        for (const side of [-1, 1]) {
-          const an = e.a + Math.PI + side * (0.5 + e.seed * 0.4);
-          const L = (5 + 6 * e.seed) * p * sz * 1.3;
-          const tx2 = ex + Math.cos(an) * L, ty2 = ey + Math.sin(an) * L;
-          g.globalAlpha = 0.85 * fade;
-          g.beginPath();
-          g.moveTo(ex, ey);
-          g.quadraticCurveTo(ex + Math.cos(an + side * 0.6) * L * 0.6, ey + Math.sin(an + side * 0.6) * L * 0.6, tx2, ty2);
-          g.stroke();
-          g.globalAlpha = 0.7 * fade;
-          g.drawImage(sprite("#4ade80", 0.5), tx2 - 3 * sz, ty2 - 3 * sz, 6 * sz, 6 * sz);
-        }
-      } else if (e.kind === "bloom") {
-        // a burst of petals
-        for (let k = 0; k < 7; k++) {
-          const an = (k * Math.PI * 2) / 7 + e.seed * 6;
-          const rr = (3 + age * 16) * sz;
-          g.globalAlpha = 0.6 * (1 - age);
-          g.drawImage(sprite(k % 2 ? "#f9a8d4" : "#fde68a"), ex + Math.cos(an) * rr - 3 * sz, ey + Math.sin(an) * rr - 3 * sz, 6 * sz, 6 * sz);
-        }
-      } else {
-        // it lights up: a warm ring of light spreads out from the solution
         g.globalAlpha = 0.5 * (1 - age);
+        g.drawImage(sprite("#fde68a"), lx - 8, ly - 8, 16, 16);
+      } else {
+        // 1. sprouts branch out in every direction from the solution's rim, each forking once, with leaves
+        const p = Math.min(1, age * 2.2);
+        const fade = age < 0.55 ? 1 : 1 - (age - 0.55) / 0.45;
+        const n = 8;
+        g.strokeStyle = "#86efac";
+        g.lineWidth = 1.1;
+        for (let k = 0; k < n; k++) {
+          const an = e.seed * 6.28 + (k * Math.PI * 2) / n + Math.sin(k * 7.1 + e.seed * 20) * 0.18;
+          const L = (6 + 6 * ((k * 0.37 + e.seed) % 1)) * p;
+          const x0 = cx0 + Math.cos(an) * (rs + 1), y0 = cy0 + Math.sin(an) * (rs + 1);
+          const x1 = x0 + Math.cos(an) * L, y1 = y0 + Math.sin(an) * L;
+          g.globalAlpha = 0.8 * fade;
+          g.beginPath();
+          g.moveTo(x0, y0);
+          g.lineTo(x1, y1);
+          if (p > 0.45) {
+            const f2 = (p - 0.45) / 0.55;
+            for (const side of [-1, 1]) {
+              const b = an + side * 0.6;
+              g.moveTo(x0 + Math.cos(an) * L * 0.6, y0 + Math.sin(an) * L * 0.6);
+              g.lineTo(x0 + Math.cos(an) * L * 0.6 + Math.cos(b) * L * 0.5 * f2, y0 + Math.sin(an) * L * 0.6 + Math.sin(b) * L * 0.5 * f2);
+            }
+          }
+          g.stroke();
+          g.globalAlpha = 0.6 * fade;
+          g.drawImage(sprite("#4ade80", 0.5), x1 - 2.5, y1 - 2.5, 5, 5);
+        }
+        // 2. and it lights up: a warm ring of light spreads out, with a few sparkles
+        const la = Math.min(1, age * 1.4);
+        g.globalAlpha = 0.45 * (1 - la);
         g.strokeStyle = "#fde68a";
-        g.lineWidth = 1.6 * sz;
+        g.lineWidth = 1.5;
         g.beginPath();
-        g.arc(cx0, cy0, t.r + 3 + age * 22, 0, Math.PI * 2);
+        g.arc(cx0, cy0, rs + 3 + la * 24, 0, Math.PI * 2);
         g.stroke();
         for (let k = 0; k < 5; k++) {
           const an = e.seed * 6 + k * 1.3;
-          const rr = t.r + 4 + age * 14;
-          g.globalAlpha = 0.5 * (1 - age);
-          g.drawImage(sprite("#fef9c3"), cx0 + Math.cos(an) * rr - 2 * sz, cy0 + Math.sin(an) * rr - 2 * sz, 4 * sz, 4 * sz);
+          const rr = rs + 4 + la * 16;
+          g.globalAlpha = 0.45 * (1 - la);
+          g.drawImage(sprite("#fef9c3"), cx0 + Math.cos(an) * rr - 2, cy0 + Math.sin(an) * rr - 2, 4, 4);
         }
       }
     }
@@ -1158,8 +1455,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     for (const t of [...visProbs, ...visVis]) {
       if (t.light <= 0.01 || !sideShown(t)) continue;
       g.globalAlpha = 0.55 * t.light;
-      const size = t.r * 3.2;
-      g.drawImage(sprite("#fde68a", 0.6), t.x + t.kx - size / 2, Y(t.y) + t.ky - size / 2, size, size);
+      const size = t.r * nodeScale() * 3.2;
+      g.drawImage(sprite("#fde68a", 0.6), X(t.x) + t.kx - size / 2, Y(t.y) + t.ky - size / 2, size, size);
     }
     stats.fx = fx.length;
     g.globalAlpha = 1;
@@ -1173,7 +1470,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     raf = 0;
     if (!shown || !el.isConnected || el.offsetParent === null) return;
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
-    if (last) stats.intervalMs = stats.intervalMs ? stats.intervalMs * 0.95 + (now - last) * 0.05 : now - last;
+    if (last) {
+      stats.intervalMs = stats.intervalMs ? stats.intervalMs * 0.95 + (now - last) * 0.05 : now - last;
+      reportFrame(now - last, now);
+    }
     last = now;
     const t0 = performance.now();
     if (anim) {
@@ -1215,7 +1515,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   // ---------- Zoom ----------
   const zoom = d3.zoom<SVGSVGElement, unknown>().scaleExtent([0.7, 5]).on("zoom", (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
     tr = ev.transform;
-    zg.attr("transform", `matrix(1,0,0,${tr.k},0,${tr.y})`);
+    zg.attr("transform", tr.toString());
     placeSvg();
     tip.classList.remove("on");
     baseDirty = true;
@@ -1244,7 +1544,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   });
   bg.on("dblclick", () => svg.call(zoom.transform, d3.zoomIdentity));
   bg.on("click", () => {
-    if (selOrg || selT) clearSel();
+    if (selOrg || selT || selItem) clearSel();
     else if (expanded.size) {
       expanded.clear();
       relayout(true);
@@ -1292,11 +1592,13 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   clear(legend);
   legend.append(
-    h("div", {}, "Left: problems the groups are solving. Each sits inside a forcefield; comets from the groups strike it. Right: solutions they are nurturing, fed by seed bombs."),
-    h("div", {}, "Centre: the groups, with their logos. Groups that mostly confront problems lean left; groups that mostly build solutions lean right."),
-    h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are also hit (or fed) more often, about 1–3 times every few seconds."),
-    h("div", {}, "Each item's weight (the sliders) is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution. “Every item both ways” sends the full weight to both."),
-    h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones; zoom in to split them all. The problem and solution names are a draft for the team to review."),
+    h("div", {}, "Left: problems the groups are solving, reached by dashed paths. Each sits in a forcefield; when a comet strikes, the forcefield ripples, the problem is knocked back and light breaks in."),
+    h("div", {}, "Right: solutions they are nurturing, reached by solid rainbow rivers. When a seed lands, the solution lights up and grows: shoots branch out in every direction."),
+    h("div", {}, "Centre: the groups, with their logos. Groups that mostly confront problems lean left; groups that mostly build solutions lean right. Showing only problems or only solutions puts the groups on the opposite side."),
+    h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are hit (or fed) more often, about 1–3 times every few seconds."),
+    h("div", {}, "Each item's weight (the sliders) is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
+    h("div", {}, "Hover a problem or solution to light up the paths, groups and items behind it. Zoom in anywhere (groups, paths, a problem) to spread things apart; past 2.4× every item shows as a dot along its path."),
+    h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or use Detail → Split all. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),
   );
 
   let first = true;
@@ -1339,6 +1641,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       tip.classList.remove("on");
       selOrg = null;
       selT = null;
+      selItem = null;
+      hoverT = null;
+      hoverO = null;
       renderDetail();
     },
   };

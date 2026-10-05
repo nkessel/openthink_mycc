@@ -27,6 +27,8 @@ export interface GraphCallbacks {
   onNodeDeselect?(node: GraphNode): void;
   /** The summary card at the top was tapped: show the full details panel. */
   onOpenDetails?(node: GraphNode): void;
+  /** Whether the details panel already shows this group (not one of its items, and not closed). */
+  showsDetailsOf?(node: GraphNode): boolean;
   /** An event / project / action bubble was clicked: show it in full (the details tray). */
   onItemClick?(kind: "event" | "project" | "action", item: Project | CoalitionEvent | Action, owner: GraphNode): void;
 }
@@ -186,6 +188,7 @@ export function createGraph(
   resetBtn.textContent = "⟲ Reset map";
   resetBtn.title = "Zoom out to show the whole network again";
   resetBtn.addEventListener("click", () => {
+    beforeFocus = null; // the whole network, not the view before the group was opened
     if (focusId) exitFocus();
     else fitToView(true);
   });
@@ -263,6 +266,8 @@ export function createGraph(
 
   let currentZoomScale = 1;
   let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
+  /** The view just before a group was opened, so closing it goes back there. */
+  let beforeFocus: d3.ZoomTransform | null = null;
   function applyTextFade() {
     // The threshold slider value 0..1 maps to a zoom scale 0.2..2.5.
     // Below that scale, node-name labels fade out.
@@ -588,6 +593,19 @@ export function createGraph(
   // ----- Item physics: items on a ring push each other apart like the group bubbles do, can be dragged,
   // and spring back to their place on the ring. One small simulation per ring (a few dozen items at most).
   interface RingNode extends d3.SimulationNodeDatum { tx: number; ty: number; r: number; }
+  /** Each item's faint line back to its group ("home planet"), drawn under the planet so it starts at its rim. */
+  const tetherOf = new WeakMap<Element, SVGLineElement>();
+  function moveTether(el: Element, x: number, y: number) {
+    const l = tetherOf.get(el);
+    if (!l) return;
+    l.setAttribute("x2", String(x));
+    l.setAttribute("y2", String(y));
+  }
+  function addTether(tg: d3.Selection<SVGGElement, unknown, null, undefined>, el: Element, a: number, rr: number, kind: string) {
+    const l = tg.append("line").attr("class", `sat-tether t-${kind}`).attr("x1", 0).attr("y1", 0).node()!;
+    tetherOf.set(el, l);
+    moveTether(el, Math.cos(a) * rr, Math.sin(a) * rr);
+  }
   function ringPhysics(
     els: SVGGElement[],
     angles: number[],
@@ -604,7 +622,10 @@ export function createGraph(
       tx: Math.cos(angles[i]) * ringR, ty: Math.sin(angles[i]) * ringR, r: radii[i],
     }));
     const place = () => {
-      els.forEach((el, i) => el.setAttribute("transform", `translate(${nodes[i].x},${nodes[i].y})`));
+      els.forEach((el, i) => {
+        el.setAttribute("transform", `translate(${nodes[i].x},${nodes[i].y})`);
+        moveTether(el, nodes[i].x ?? 0, nodes[i].y ?? 0);
+      });
       onTick?.(nodes);
     };
     const home = (alpha: number) => {
@@ -691,7 +712,11 @@ export function createGraph(
         sim.stop();
         dots.sim = null;
         // back exactly on the orbit
-        dots.els.forEach((el, i) => el.setAttribute("transform", `translate(${Math.cos(dots.angles[i]) * dots.rr},${Math.sin(dots.angles[i]) * dots.rr})`));
+        dots.els.forEach((el, i) => {
+          const x = Math.cos(dots.angles[i]) * dots.rr, y = Math.sin(dots.angles[i]) * dots.rr;
+          el.setAttribute("transform", `translate(${x},${y})`);
+          moveTether(el, x, y);
+        });
       });
       dots.sim = sim;
       nudgeRing(sim, f.dx, f.dy);
@@ -749,11 +774,12 @@ export function createGraph(
     satSims.delete(n.id);
     satDots.get(n.id)?.sim?.stop();
     satDots.delete(n.id);
-    sel.selectAll("g.sats").remove();
+    sel.selectAll("g.sats, g.sat-tethers").remove();
     satLevel.set(n.id, level);
     if (!settings.alwaysShow) return;
     const items = satItemsOf(n);
     if (!items.length) return;
+    const tg = sel.insert("g", ":first-child").attr("class", "sat-tethers") as unknown as d3.Selection<SVGGElement, unknown, null, undefined>;
     const g = sel.append("g").attr("class", `sats lv${level}`);
     const rr = satOrbitR(n); // everything sits on this one circle, just outside the planet
     const shown = satShown(n, items);
@@ -767,6 +793,7 @@ export function createGraph(
           .attr("transform", `translate(${Math.cos(a) * rr},${Math.sin(a) * rr})`).attr("r", SAT_DOT_R);
         dots.els.push(c.node()!);
         dots.angles.push(a);
+        addTether(tg, c.node()!, a, rr, b.kind);
       });
       satDots.set(n.id, dots);
       if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
@@ -780,6 +807,7 @@ export function createGraph(
       const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}${isRoleB(b) ? " b-role" : ""}`).style("cursor", "pointer");
       els.push(bg.node()!);
       angles.push(a);
+      addTether(tg, bg.node()!, a, rr, b.kind);
       bg.append("title").text(fullName(b));
       const inner = bg.append("g").attr("class", "sat-in");
       inner.append("circle").attr("r", SAT_BUB_R);
@@ -913,7 +941,12 @@ export function createGraph(
     .on("click", function (event, d) {
       event.stopPropagation();
       if (focusId === d.id) {
-        // Clicking the open group again folds its bubbles back in.
+        // Looking at one of its items (or the panel was closed): the first click brings back the group's details,
+        if (cb.showsDetailsOf && !cb.showsDetailsOf(d)) {
+          cb.onOpenDetails?.(d);
+          return;
+        }
+        // and clicking the open group again folds its bubbles back in.
         exitFocus();
         cb.onNodeDeselect?.(d);
         return;
@@ -1363,6 +1396,7 @@ export function createGraph(
       svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(-(n.x ?? 0) * k - panel / 2, -(n.y ?? 0) * k).scale(k));
       return;
     }
+    if (!focusId) beforeFocus = currentTransform; // closing the group returns here
     if (focusId && focusId !== id) exitFocus(false);
     for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     focusId = id;
@@ -1639,7 +1673,13 @@ export function createGraph(
     linkSel.classed("faded", false);
     focusBar.style.display = "none";
     focusCard.style.display = "none";
-    if (fit) setTimeout(() => { if (!focusId) fitToView(true); }, 450);
+    // back to the view from before the group was opened (or the whole network)
+    if (fit) setTimeout(() => {
+      if (focusId) return;
+      if (beforeFocus) svg.transition().duration(600).call(zoom.transform, beforeFocus);
+      else fitToView(true);
+      beforeFocus = null;
+    }, 450);
     sim.alpha(0.6).restart();
   }
 

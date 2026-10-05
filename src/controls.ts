@@ -259,7 +259,7 @@ export function createControls(
     }, { hint: "All the way down makes every coalition the same size." }),
   );
   const sliderBox = h("div", { class: "weight-sliders" });
-  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Bigger for groups with more going on (0 = don't count it):"));
+  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Increase bubble size for groups with more events, actions and projects:"));
   for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
     sliderBox.appendChild(
       makeSlider(label, state.settings[key], (v) => {
