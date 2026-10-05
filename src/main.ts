@@ -84,6 +84,7 @@ async function main() {
 
   bootProgress(0.8);
   // The loading lines Nathan picked (2026-10-05): what is loading, then true counts from the data.
+  bootDetail("Inviting everyone to a seat at the table\u2026");
   bootDetail(`Loading ${data.coalitions.length} coalitions and ${data.organizations.length} groups`);
   bootDetail(`Linking ${data.edges.length} coalition memberships`);
   await attachThoughts(data);
