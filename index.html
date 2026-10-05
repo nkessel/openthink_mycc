@@ -20,7 +20,8 @@
       .land-text a{color:#7dd3fc;text-decoration:underline;text-underline-offset:2px}
       .land-text .ded-head{margin-top:16px;color:#cbd5e1}
       #boot .land-text{margin-top:22px}
-      /* "Read more" / "Open the map": a glossy blue-green pill with a slow light sweep */
+      #boot .boot-hold{margin:6px 0 10px}
+      /* "Keep this screen open" / "Open the map": a glossy blue-green pill with a slow light sweep */
       #boot .boot-hold{position:relative;overflow:hidden;appearance:none;border:1px solid rgba(125,211,252,.55);cursor:pointer;
         font:inherit;font-size:13px;font-weight:600;letter-spacing:.01em;color:#04202a;padding:8px 22px;border-radius:999px;
         background:linear-gradient(135deg,#5eead4 0%,#22d3ee 48%,#38bdf8 100%);
@@ -48,7 +49,6 @@
       <div class="boot-quip" aria-hidden="true"></div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
       <div class="boot-left"></div>
-      <button type="button" id="boot-hold" class="boot-hold">Read more</button>
       <div class="land-text" id="land-dedication">
         <p>This site was made with the help of Claude Code (AI).</p>
         <p>It was made on the homelands of the Massachusett, Nipmuc and Wampanoag peoples (Natick, Wellesley and Boston). Claude was designed on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know. We honor these peoples, who have cared for these lands and waters for thousands of years, and who live and lead here today.</p>
@@ -60,6 +60,7 @@
           <strong>Learn more:</strong> <a href="https://www.pokagonband-nsn.gov" target="_blank" rel="noopener noreferrer">Pokagon Band of Potawatomi</a>
         </p>
       </div>
+      <button type="button" id="boot-hold" class="boot-hold" title="The map keeps loading behind this screen">Keep this screen open</button>
     </div>
     <script>
       // Loading splash: a progress bar with an estimate of the time left (from how long the last loads took,
@@ -78,7 +79,7 @@
           real = Math.max(real, Math.min(1, p));
           if (label) msg.textContent = label;
         };
-        // The map opens by itself once it's loaded. "Read more" keeps this screen up (the map keeps loading behind it)
+        // The map opens by itself once it's loaded. "Keep this screen open" keeps this screen up (the map keeps loading behind it)
         // until "Open the map" (main.ts hideBoot calls bootRelease).
         var hold = document.getElementById("boot-hold");
         hold.addEventListener("click", function () {

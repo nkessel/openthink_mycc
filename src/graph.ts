@@ -68,10 +68,10 @@ export interface GraphSettings {
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   centerForce: 0.5,
-  repelForce: 0.3, // how hard bubbles push apart (lower = orgs closer)
-  coalitionRepel: 0.3, // how hard coalitions push apart
+  repelForce: 0.42, // how hard bubbles push apart (lower = orgs closer)
+  coalitionRepel: 0.7, // how hard coalitions push apart
   linkForce: 0.5,
-  linkDistance: 0.25,
+  linkDistance: 0.4,
   nodeSize: 1,
   linkThickness: 1,
   textFadeThreshold: 0.5,

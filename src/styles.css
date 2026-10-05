@@ -2410,7 +2410,8 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
   background: rgba(10, 10, 15, 0.6);
 }
 .cr-seg { display: inline-flex; align-items: center; gap: 2px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 999px; padding: 2px; }
-.cr-seg-label { color: var(--text-faint); padding: 0 6px 0 8px; font-size: 11px; }
+.cr-ctl { display: inline-flex; align-items: center; gap: 7px; }
+.cr-ctl-label { font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); cursor: default; user-select: none; }
 .cr-seg button {
   background: none;
   border: none;
@@ -2435,7 +2436,7 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
 .cr-prob .shield { fill: none; stroke-width: 1.2px; }
 .cr-prob .core { stroke-width: 1px; stroke-opacity: 0.6; }
 .cr-prob .lbl { fill: var(--text); font-size: 12px; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
-.cr-prob.child .lbl { font-size: 10.5px; fill: var(--text-dim); }
+.cr-prob.child .lbl { font-size: 11px; fill: var(--text-dim); }
 .cr-prob.broad .lbl { fill: var(--text-faint); }
 .cr-prob.broad .core, .cr-prob.broad .shield { stroke-dasharray: 3 3; }
 .cr-prob.broad { opacity: 0.55; }
@@ -2512,16 +2513,16 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
 .cr-feeder-map:hover, .cr-mapbtn:hover { color: var(--accent); border-color: var(--accent); }
 .cr-feeder-map[disabled], .cr-mapbtn[disabled] { opacity: 0.4; cursor: default; }
 @media (max-width: 760px) {
-  .cr-seg-label { display: none; }
+  .cr-ctl-label { display: none; }
   .cr-legend { display: none; }
   .cr-bar { gap: 6px; padding: 6px 8px; }
 }
-.cr-prob.lv2 .lbl { font-size: 10px; fill: var(--text-dim); }
+.cr-prob.lv2 .lbl { font-size: 11px; fill: var(--text-dim); }
 .cr-prob.has-kids .shield { stroke-dasharray: 2 2; }
 .cr-org.has-logo .dot { fill: #f8fafc; fill-opacity: 1; stroke: rgba(255, 255, 255, 0.5); }
 .cr-org .logo { pointer-events: none; }
 .cr-grp.lv1 path { stroke-dasharray: 1 3; }
-.cr-items circle { cursor: pointer; stroke-width: 1px; transition: opacity 0.3s; }
+.cr-items circle { cursor: pointer; stroke-width: 1px; transition: opacity 0.3s; pointer-events: all; /* hollow mission rings are hoverable inside too */ }
 .cr-items circle.k-mission { stroke-width: 1.2px; }
 .cr-items circle:hover, .cr-items circle.sel { stroke: #fff; stroke-width: 1.5px; opacity: 1; }
 .cr-zoom {
@@ -2599,47 +2600,54 @@ svg.zoomed-in .link { vector-effect: non-scaling-stroke; }
 .cr.bt {
   background:
     radial-gradient(ellipse at 8% 50%, rgba(127, 29, 29, 0.16), transparent 45%),
-    radial-gradient(ellipse at 92% 50%, rgba(52, 211, 153, 0.08), transparent 45%),
-    radial-gradient(ellipse at 50% 45%, rgba(129, 140, 248, 0.06), transparent 55%),
+    radial-gradient(ellipse at 92% 50%, rgba(52, 211, 153, 0.09), transparent 45%),
+    radial-gradient(ellipse at 50% 45%, rgba(129, 140, 248, 0.05), transparent 55%),
     var(--bg);
 }
 .bt-heads {
   position: absolute;
-  top: 8px;
+  top: 0;
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
-  padding: 0 16px;
-  font-size: 10.5px;
+  padding: 10px 16px 0;
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-faint);
   pointer-events: none;
+  z-index: 1;
+  padding-bottom: 14px;
+  background: linear-gradient(to bottom, var(--bg) 55%, transparent);
 }
-.bt-heads span:first-child { color: #fca5a5; opacity: 0.7; }
-.bt-heads span:last-child { color: #86efac; opacity: 0.7; }
-.bt-prob { cursor: pointer; transition: opacity 0.4s; }
-.bt-prob .aura { fill: #f97316; }
-.bt-prob .orb { fill: url(#bt-orb); stroke: #3f1d33; stroke-width: 1px; }
-.bt-prob .rim { fill: none; stroke: #f59e0b; stroke-width: 1px; stroke-dasharray: 1 3; }
-.bt-prob .cracks path { fill: none; stroke: #fbbf24; stroke-width: 1.3px; stroke-linecap: round; stroke-linejoin: round; }
-.bt-prob .hit, .bt-vis .hit { fill: transparent; }
-.bt-prob .lbl, .bt-vis .lbl { fill: var(--text); font-size: 12px; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
-.bt-prob .lbl { text-anchor: end; }
-.bt-prob.lv1 .lbl { font-size: 10.5px; fill: var(--text-dim); }
-.bt-prob.broad, .bt-vis.broad { opacity: 0.5; }
-.bt-prob.sel .lbl, .bt-vis.sel .lbl { fill: #fff; font-weight: 600; }
-.bt-prob.sel .rim { stroke-dasharray: none; stroke-width: 2px; stroke-opacity: 1; }
-.bt-vis { cursor: pointer; transition: opacity 0.4s; }
-.bt-vis .spin { animation: bt-spin 60s linear infinite; transform-origin: 0 0; }
-.bt-vis.sel .heart { stroke: #fff; stroke-width: 1.5px; }
-.bt[data-garden="blooms"] .bt-vis .star, .bt[data-garden="stars"] .bt-vis .bloom { display: none; }
-.bt[data-show="fight"] .bt-vis, .bt[data-show="feed"] .bt-prob { opacity: 0.3; }
-@keyframes bt-spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) {
-  .bt-vis .spin { animation: none; }
-}
+.bt-heads .h-prob { color: #fda4af; }
+/* zoom buttons sit in the bottom-left corner, clear of the labels and the + button */
+.bt .cr-zoom { right: auto; left: 12px; bottom: 10px; flex-direction: row; }
+.bt-heads .h-vis { color: #86efac; }
+.bt[data-show="problems"] .bt-heads .h-vis, .bt[data-show="solutions"] .bt-heads .h-prob { visibility: hidden; }
+.bt-node { cursor: pointer; transition: opacity 0.4s; }
+.bt-node .hit { fill: transparent; }
+.bt-node .lbl { fill: var(--text); font-size: 12.5px; paint-order: stroke; stroke: var(--bg); stroke-width: 3.5px; stroke-linejoin: round; pointer-events: none; }
+.bt-node.lv1 .lbl { font-size: 11.5px; fill: #d1d5db; }
+.bt-node.broad { opacity: 0.55; }
+.bt-node.sel .lbl { fill: #fff; font-weight: 600; }
+.bt-node .icon path { fill: none; stroke-width: 1.7px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+/* problems: a dark core with a red icon, inside a forcefield */
+.bt-prob .core { fill: #1f0d16; stroke: #9f1239; stroke-width: 1px; }
+.bt-prob .icon path { stroke: #fda4af; }
+.bt-prob .field { fill: url(#bt-field); stroke: #fb7185; stroke-width: 1px; stroke-opacity: 0.45; }
+.bt[data-hit="light"] .bt-prob .icon path { stroke: color-mix(in srgb, #fde68a calc(var(--light, 0) * 100%), #fda4af); }
+.bt[data-hit="push"] .bt-prob .field { stroke-dasharray: 2 3; }
+.bt-prob.sel .field { stroke-opacity: 1; stroke-width: 1.6px; }
+/* solutions: a green core with a light icon; petals open in Blooms mode */
+.bt-vis .core { fill: #062a1d; stroke: #34d399; stroke-width: 1px; }
+.bt-vis .icon path { stroke: #bbf7d0; }
+.bt-vis .petals { display: none; }
+.bt[data-feed="bloom"] .bt-vis .petals { display: inline; }
+.bt[data-feed="glow"] .bt-vis .core { stroke: #fde68a; }
+.bt-vis.sel .core { stroke-width: 2px; stroke: #fff; }
 @media (max-width: 760px) {
   .bt-heads { font-size: 9px; }
 }

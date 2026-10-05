@@ -43,7 +43,7 @@ function hideBoot() {
     setTimeout(() => el.remove(), 600);
   };
   bootWin.bootProgress?.(1, "The map is ready");
-  // Someone pressed "Read more": wait for their "Open the map".
+  // Someone pressed "Keep this screen open": wait for their "Open the map".
   if (bootWin.bootHeld) {
     bootDetail("Everything is loaded. Open the map whenever you like.");
     bootWin.bootRelease = go;

@@ -223,6 +223,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       if (s.prob.level === 0) s.org.energy += s.value;
     }
     if (intoBase) {
+      baseVer++;
       for (const s of allStreams) s.base = s.value;
       for (const p of probs.values()) p.base = p.energy;
       for (const o of orgList) o.base = o.energy;
@@ -236,8 +237,9 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   const el = h("div", { class: "cr" });
   const bar = h("div", { class: "cr-bar" });
   const seg = (name: string, opts: [string, string][], cur: () => string, set: (v: string) => void) => {
+    // the title sits outside the pill, as plain text, so it doesn't look like another button
     const g = h("div", { class: "cr-seg", role: "group", "aria-label": name });
-    g.appendChild(h("span", { class: "cr-seg-label" }, name));
+    const box = h("div", { class: "cr-ctl" }, h("span", { class: "cr-ctl-label" }, name), g);
     const btns: HTMLButtonElement[] = [];
     for (const [v, label] of opts) {
       const b = h("button", { type: "button", "data-v": v }, label) as HTMLButtonElement;
@@ -252,7 +254,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       for (const x of btns) x.classList.toggle("on", x.dataset.v === cur());
     };
     sync();
-    return { g, sync };
+    return { g: box, sync };
   };
   const layoutSeg = seg("Layout", [["center", "Groups in the middle"], ["sides", "Groups ← → topics"]], () => layout, (v) => {
     layout = v as Layout;
@@ -393,23 +395,26 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       for (const p of visProbs) p.r = Math.min(p.r, Math.max(3, room * 0.36));
     }
     // slots: one per visible topic, with a gap between main topics (wider around split ones)
+    // Each main topic owns a fixed slice of the ring (or column), sized for its sub-topics, so splitting one topic
+    // fans its finer topics out inside its own slice and nothing else moves when you zoom.
     const units: number[] = [];
+    const mainPos = new Map<string, number>(); // main topic id → centre of its slice (in units)
     let u = 0;
-    for (const g of groups) {
-      const gap = g.length > 1 || g[0].level > 0 ? 1.1 : 0.35;
-      u += gap / 2;
-      for (let i = 0; i < g.length; i++) {
-        // a small extra gap where a sub-topic's bills start and end
-        if (i > 0 && g[i].up !== g[i - 1].up) u += 0.4;
-        units.push(u + 0.5);
-        u += 1;
-      }
-      u += gap / 2;
+    let gi = 0;
+    for (const p of parents) {
+      if (p.base <= 0) continue;
+      const kids = p.kids.filter((k) => k.base > 0).length;
+      const size = kids > 1 ? 0.5 + 0.55 * kids : 1;
+      const a = u + 0.2, b = a + size;
+      mainPos.set(p.id, (a + b) / 2);
+      const g = groups[gi++];
+      g.forEach((_, i) => units.push(a + ((i + 0.5) * (b - a)) / g.length));
+      u = b + 0.2;
     }
     const total = u || 1;
+    const top = layout === "center" ? 30 : 26, bottom = layout === "center" ? H - 100 : H - 22;
     if (layout === "center") {
       // leave room for labels at the top and for the site's round + button at the bottom
-      const top = 30, bottom = H - 100;
       cx = W / 2;
       R = Math.max(105, Math.min((bottom - top) / 2 - 18, W / 2 - (W < 640 ? 80 : 190)));
       cy = (top + bottom) / 2;
@@ -422,35 +427,38 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     } else {
       xo = W < 640 ? 70 : Math.max(170, W * 0.2);
       xp = W - (W < 640 ? 110 : Math.max(220, W * 0.24));
-      const top = 26, bot = H - 22;
       visProbs.forEach((p, i) => {
-        const y = top + (units[i] / total) * (bot - top);
+        const y = top + (units[i] / total) * (bottom - top);
         target.set(p.id, [xp, y]);
         p.qx = xp - (xp - xo) * 0.28;
         p.qy = y;
       });
     }
-    // organizations: placed by where their energy goes
+    // organizations: placed by where their energy goes among the main topics only, and only recomputed when
+    // the layout, the window size or the weights change (so zooming and splitting don't move them)
     const maxO = d3.max(orgList, (o) => o.base) || 1;
-    const live = orgList.filter((o) => o.base > 0);
-    const visIndex = new Map(visProbs.map((p, i) => [p.id, i]));
-    const byOrg = d3.group(allStreams.filter((s) => s.base > 0 && s.prob.visible), (s) => s.org.key);
     for (const o of orgList) o.r = o.base > 0 ? (small ? 2 : 3) + (small ? 4 : 7) * Math.sqrt(o.base / maxO) : 0;
+    const key = `${layout}|${Math.round(W)}|${Math.round(H)}|${baseVer}`;
+    if (key === orgKey) return;
+    orgKey = key;
+    const live = orgList.filter((o) => o.base > 0);
+    const byOrg = d3.group(allStreams.filter((s) => s.base > 0 && s.prob.level === 0 && mainPos.has(s.prob.id)), (s) => s.org.key);
+    const angleOf = (pid: string) => -Math.PI / 2 + (mainPos.get(pid)! / total) * Math.PI * 2;
     if (layout === "center") {
       const Rin = R * 0.6;
       const nodes = live.map((o) => {
         let sx = 0, sy = 0, sw = 0;
         for (const s of byOrg.get(o.key) ?? []) {
-          sx += Math.cos(s.prob.angle) * s.base;
-          sy += Math.sin(s.prob.angle) * s.base;
+          const a = angleOf(s.prob.id);
+          sx += Math.cos(a) * s.base;
+          sy += Math.sin(a) * s.base;
           sw += s.base;
         }
         const rho = sw ? Math.hypot(sx, sy) / sw : 0;
         const a = Math.atan2(sy, sx);
         const dist = Rin * (0.12 + 0.88 * Math.pow(rho, 1.3));
         const tx = cx + dist * Math.cos(a), ty = cy + dist * Math.sin(a);
-        const prev = target.get(o.key);
-        return { o, tx, ty, x: prev ? prev[0] : tx, y: prev ? prev[1] : ty } as { o: Org; tx: number; ty: number; x: number; y: number };
+        return { o, tx, ty, x: tx, y: ty } as { o: Org; tx: number; ty: number; x: number; y: number };
       });
       const sim = d3.forceSimulation(nodes)
         .force("x", d3.forceX<(typeof nodes)[number]>((d) => d.tx).strength(0.25))
@@ -467,18 +475,19 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       for (const o of live) {
         let sy = 0, sw = 0;
         for (const s of byOrg.get(o.key) ?? []) {
-          sy += (visIndex.get(s.prob.id) ?? 0) * s.base;
+          sy += mainPos.get(s.prob.id)! * s.base;
           sw += s.base;
         }
         o.order = sw ? sy / sw : 0;
       }
       live.sort((a, b) => a.order - b.order || b.base - a.base);
-      const top = 26, bot = H - 22;
-      const step = (bot - top) / Math.max(1, live.length);
+      const step = (bottom - top) / Math.max(1, live.length);
       const cols = step < 9 ? 3 : step < 14 ? 2 : 1; // stagger crowded columns so the dots don't overlap
       live.forEach((o, i) => target.set(o.key, [xo - (i % cols) * 13, top + (i + 0.5) * step]));
     }
   }
+  let orgKey = "";
+  let baseVer = 0;
 
   function applyPositions(t: number) {
     const e = d3.easeCubicInOut(t);
@@ -754,11 +763,18 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         lbl.attr("x", vert ? 0 : ca * d).attr("y", vert ? (sa > 0 ? d + 4 : -d - 4) : sa * d).attr("dy", "0.35em")
           .attr("text-anchor", vert ? "middle" : ca > 0 ? "start" : "end");
       } else lbl.attr("x", r + 11).attr("y", 0).attr("dy", "0.35em").attr("text-anchor", "start");
-      // crowded: smaller labels so neighbours don't overlap
-      const spacing = layout === "sides" ? ((H - 48) * tr.k) / Math.max(1, visProbs.length) : (2 * Math.PI * R * tr.k) / Math.max(1, visProbs.length);
-      if (spacing < 16) lbl.style("font-size", `${Math.max(7.5, Math.min(p.level === 0 ? 12 : 10.5, spacing * 0.92))}px`);
-      else lbl.style("font-size", null);
     });
+    // crowded: keep the labels of the busiest topics that fit (readable size), hide the rest; zoom in to see them
+    const kept: [number, number][] = [];
+    const keep = new Set<string>();
+    for (const p of [...visProbs].sort((a, b) => b.energy - a.energy)) {
+      const [x0, y0] = target.get(p.id) ?? [p.x, p.y];
+      const x = tr.applyX(x0), y = tr.applyY(y0);
+      if (kept.some(([kx, ky]) => (layout === "sides" ? Math.abs(ky - y) < 12 : Math.hypot(kx - x, ky - y) < 15))) continue;
+      kept.push([x, y]);
+      keep.add(p.id);
+    }
+    all.select(".lbl").style("display", (p) => (keep.has(p.id) ? null : "none"));
 
     // organizations, with their logos
     const live = orgList.filter((o) => o.base > 0);
@@ -1390,6 +1406,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     if (Math.abs(r.width - W) < 2 && Math.abs(r.height - H) < 2) return;
     measure();
     target.clear();
+    orgKey = "";
     relayout(false);
   }).observe(viewport);
 
@@ -1400,6 +1417,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       if (first) return;
       compute(true);
       target.clear();
+      orgKey = "";
       relayout(true);
       if (selOrg || selProb || selItem) renderDetail();
     },
