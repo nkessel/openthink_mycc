@@ -2157,8 +2157,8 @@ text.sat-more { fill: var(--text-dim); }
 }
 
 /* The group you've opened is drawn as a big planet (graph.ts sets --fs); its moons stay full size. */
-.node-coalition > :not(.sats),
-.node-org > :not(.sats) {
+.node-coalition > *,
+.node-org > * {
   transition: transform 0.4s ease;
 }
 .node-coalition.focused > :not(.sats),
@@ -2616,9 +2616,14 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .item-open-more { color: var(--accent); }
 .item-topics .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
 
-/* An opened organization's coalitions and partner groups, on the outskirts: smaller and quieter */
-.node-coalition.linked > :not(.sats), .node-org.linked > :not(.sats) { transform: scale(0.6); }
-.node-coalition.linked, .node-org.linked { opacity: 0.75; }
+/* An opened organization's coalitions and partner groups, on the outskirts. The whole group scales (its dots too,
+   so they never float loose while it moves into place). Coalitions are drawn big, so they read as bigger than
+   groups even when they spill past the edges; partner groups are a little smaller and quieter. */
+.node-coalition.linked > * { transform: scale(1.5); }
+.node-org.linked > * { transform: scale(0.75); }
+.node-coalition.linked { opacity: 0.9; }
+.node-coalition.linked .ring { stroke-width: 4px; }
+.node-org.linked { opacity: 0.75; }
 .node-coalition.linked:hover, .node-org.linked:hover { opacity: 1; }
 
 /* ---------- Topics page: command room (src/battle.ts) ---------- */
@@ -2748,3 +2753,30 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
   .topics-body { grid-template-columns: 250px 1fr; position: relative; }
   .topics-detail { position: absolute; top: 0; right: 0; bottom: 0; z-index: 8; box-shadow: -12px 0 30px rgba(0, 0, 0, 0.35); }
 }
+
+/* ---- Geographic map: stacked groups ("+N", click to fan out) and the group card by the click ---- */
+.geo-more-icon { overflow: visible; }
+.geo-more {
+  position: absolute; left: calc(var(--off, 10px) - 6px); top: calc(-1 * var(--off, 10px) - 8px);
+  min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px; border: 1.5px solid #0f172a;
+  background: #22d3ee; color: #04202a; font: 700 11px system-ui, sans-serif; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+.geo-more:hover { background: #67e8f9; }
+.geo-card-pop .leaflet-popup-content-wrapper { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
+.geo-card-pop .leaflet-popup-tip { background: var(--bg-elev); }
+.geo-card-pop .leaflet-popup-content { margin: 12px 14px; font-size: 12.5px; line-height: 1.45; }
+.geo-card-pop a.leaflet-popup-close-button { color: var(--text-dim); }
+.geo-card-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; padding-right: 10px; }
+.geo-card-head img { width: 40px; height: 40px; border-radius: 50%; background: #f8fafc; object-fit: contain; padding: 3px; flex: none; }
+.geo-card-head strong { font-size: 14px; display: block; }
+.geo-card-kind { font-size: 11px; color: var(--text-faint); }
+.geo-card p { margin: 0 0 6px; color: var(--text-dim); }
+.geo-card-meta { font-size: 11.5px; color: var(--text-dim); }
+.geo-card-btn { margin-top: 8px; appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; }
+.geo-card-btn:hover { border-color: var(--accent); }
+.card-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.card-actions .detail-map-btn { margin: 0; }
+.detail-map-btn.primary { background: var(--accent); color: #04202a; border-color: var(--accent); font-weight: 600; }
+.locate-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.locate-btn { appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; }
+.locate-btn:hover { border-color: var(--accent); }

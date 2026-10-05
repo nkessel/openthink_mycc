@@ -1,6 +1,7 @@
 import type { DataFile, Project, GraphNode } from "./types";
 import { allProjects, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
+import { showItemCard } from "./itemcard";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { createItemFilters, placeFor, termsMatch } from "./itemfilters";
@@ -163,9 +164,8 @@ export function createProjectsView(
         staleNotice("project", r.owner.node, r.project.needs_info, r.project.verified, r.project),
       );
       card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
-      card.addEventListener("click", () => {
-        cb.onCoalitionClick(r.owner.node);
-      });
+      // a quick look at the project in a card, without leaving the page
+      card.addEventListener("click", () => showItemCard(wrap, "project", r.project, r.owner, () => cb.onCoalitionClick(r.owner.node)));
       body.appendChild(card);
     }
   }

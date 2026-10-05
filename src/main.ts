@@ -1,5 +1,5 @@
 import "./styles.css";
-import type { DataFile, GraphNode, Thought } from "./types";
+import type { Action, CoalitionEvent, DataFile, GraphNode, Project, Thought } from "./types";
 import { createTopbar, type TopTab } from "./topbar";
 import { createSidebar } from "./sidebar";
 import { createGraph } from "./graph";
@@ -10,7 +10,7 @@ import { createEventsView } from "./events";
 import { createProjectsView } from "./projects";
 import { createActionsView } from "./actions";
 import { createTopicsView } from "./topics";
-import { findItem, showItemCard } from "./itemcard";
+import { findItem, showItemCard, setCardActions } from "./itemcard";
 import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
@@ -46,7 +46,7 @@ function hideBoot() {
   bootWin.bootProgress?.(1);
   // Someone pressed "Keep this screen open": wait for their "Open the map".
   if (bootWin.bootHeld) {
-    bootDetail("Everything's here. Open the map whenever you're ready.");
+    bootDetail("Everything is loaded. Open the map when you're ready.");
     bootWin.bootRelease = go;
     return;
   }
@@ -157,7 +157,6 @@ async function main() {
       const node: GraphNode = { ...org, kind: "org" };
       drawerApi!.open(node);
       graphApi?.setSelectedNode(node);
-      if (activeTab === "map") graphApi?.focusOnNode(id);
     },
     onCoalitionClick: (cid) => {
       const coalition = data.coalitions.find((c) => c.id === cid);
@@ -165,8 +164,13 @@ async function main() {
       const node: GraphNode = { ...coalition, kind: "coalition" };
       drawerApi!.open(node);
       graphApi?.setSelectedNode(node);
-      graphApi?.focusOnCoalition(cid);
     },
+    // The pane never moves a map on its own; only these buttons do.
+    onLocate: (where, node, it) => {
+      if (where === "map") locateOnMap(node, it);
+      else locateOnGeo(node, it);
+    },
+    canLocateGeo: (node, item) => geoView.canLocate(node, item as { lat?: number; lng?: number } | undefined),
   });
 
   // On a phone the details tray would cover the group you just opened, so with bubbles on we show only
@@ -219,6 +223,11 @@ async function main() {
     onNodeClick: (node) => {
       drawerApi!.open(node);
     },
+    onItemClick: (_kind, id, at) => {
+      const f = findItem(data, id);
+      if (f) showItemCard(geoView.el, f.kind, f.item, f.owner, () => locateOnMap(f.owner.node), at);
+    },
+    onLocateMap: (node) => locateOnMap(node),
   });
   geoView.el.style.display = "none";
   geoView.el.style.height = "100%";
@@ -236,13 +245,7 @@ async function main() {
   // ----- Events view -----
   const eventsView = createEventsView(data, {
     onCoalitionClick: (node) => {
-      setTab("map");
-      // Defer drawer open so the map is visible first
-      setTimeout(() => {
-        if (!trayWouldBlockMap()) drawerApi!.open(node);
-        graphApi!.setSelectedNode(node);
-        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
-      }, 60);
+      openDetails(node);
     },
   });
   eventsView.el.style.display = "none";
@@ -267,12 +270,7 @@ async function main() {
   // ----- Projects view -----
   const projectsView = createProjectsView(data, {
     onCoalitionClick: (node) => {
-      setTab("map");
-      setTimeout(() => {
-        if (!trayWouldBlockMap()) drawerApi!.open(node);
-        graphApi!.setSelectedNode(node);
-        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
-      }, 60);
+      openDetails(node);
     },
   });
   projectsView.el.style.display = "none";
@@ -284,12 +282,7 @@ async function main() {
   // ----- Actions & volunteer opportunities view -----
   const actionsView = createActionsView(data, {
     onCoalitionClick: (node) => {
-      setTab("map");
-      setTimeout(() => {
-        if (!trayWouldBlockMap()) drawerApi!.open(node);
-        graphApi!.setSelectedNode(node);
-        if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
-      }, 60);
+      openDetails(node);
     },
   });
   actionsView.el.style.display = "none";
@@ -314,13 +307,7 @@ async function main() {
     const o = data.organizations.find((x) => x.id === id);
     const node: GraphNode | null = c ? { ...c, kind: "coalition" } : o ? { ...o, kind: "org" } : null;
     if (!node) return false;
-    setTab("map");
-    setTimeout(() => {
-      if (!trayWouldBlockMap()) drawerApi!.open(node);
-      graphApi!.setSelectedNode(node);
-      // Same as the Events/Projects/Actions pages: zoom to coalitions (or on a phone), otherwise just open details.
-      if (node.kind === "coalition" || trayWouldBlockMap()) graphApi!.focusOnNode(node.id);
-    }, 60);
+    openDetails(node);
     return true;
   }
   topicsView.el.style.display = "none";
@@ -328,6 +315,36 @@ async function main() {
   topicsView.el.style.position = "absolute";
   topicsView.el.style.inset = "0";
   content.appendChild(topicsView.el);
+
+  /** A group's full details in the pane, over whatever page you're on. Nothing moves. */
+  function openDetails(node: GraphNode) {
+    drawerApi!.open(node);
+    graphApi!.setSelectedNode(node);
+  }
+  /** "Locate on strategy map": go to the group (and open the item, if one was asked for). */
+  function locateOnMap(node: GraphNode, it?: { kind: "event" | "project" | "action"; item: CoalitionEvent | Project | Action }) {
+    setTab("map");
+    setTimeout(() => {
+      graphApi!.setSelectedNode(node);
+      graphApi!.focusOnNode(node.id);
+      if (it) drawerApi!.openItem(it.kind, it.item, node);
+      else if (!trayWouldBlockMap()) drawerApi!.open(node);
+    }, 60);
+  }
+  /** "Locate on geographic map": the item's pin, or the group's place. */
+  function locateOnGeo(node: GraphNode, it?: { kind: "event" | "project" | "action"; item: CoalitionEvent | Project | Action }) {
+    setTab("geo");
+    const pt = it?.item as { lat?: number; lng?: number } | undefined;
+    geoView.locate(node, it ? { kind: it.kind, id: it.item.id, lat: pt?.lat, lng: pt?.lng } : undefined);
+    if (it) drawerApi!.openItem(it.kind, it.item, node);
+    else drawerApi!.open(node);
+  }
+  setCardActions({
+    details: (kind, item, owner) => drawerApi!.openItem(kind, item, owner.node),
+    locateMap: (kind, item, owner) => locateOnMap(owner.node, { kind, item }),
+    locateGeo: (kind, item, owner) => locateOnGeo(owner.node, { kind, item }),
+    hasGeo: (_kind, item, owner) => geoView.canLocate(owner.node, item as { lat?: number; lng?: number }),
+  });
 
   function setTab(tab: TopTab) {
     activeTab = tab;
@@ -408,8 +425,8 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
     const last = i === map.sources.length - 1;
     const live = /script\.google/.test(map.sources[i]);
     bootDetail(i === 0
-      ? (live ? "Asking the coalitions for today's news\u2026" : `Opening the ${map.fullTitle}\u2026`)
-      : "Still waiting on the live sheet, so opening last night's copy\u2026");
+      ? (live ? "Requesting the latest data from the coalition spreadsheet\u2026" : `Loading the ${map.fullTitle} data\u2026`)
+      : "The spreadsheet is slow to answer, so loading last night's copy\u2026");
     try {
       return await get(map.sources[i], last ? 15000 : 8000);
     } catch (err) {

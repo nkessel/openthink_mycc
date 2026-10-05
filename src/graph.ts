@@ -1391,7 +1391,7 @@ export function createGraph(
     if (!settings.showBubbles) {
       // Classic view: just bring the group to the middle, no bubbles.
       const { w, h: vh } = dimensions();
-      const panel = w > 900 ? 420 : 0;
+      const panel = 0; // the details pane never moves the map
       const k = Math.max(currentZoomScale, 0.8);
       svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(-(n.x ?? 0) * k - panel / 2, -(n.y ?? 0) * k).scale(k));
       return;
@@ -1440,12 +1440,14 @@ export function createGraph(
         if (o && (n.kind === "org" || o.kind === "org")) pinnedMembers.push(o);
       }
       if (pinnedMembers.length) {
-        pinnedMembers.sort((a, b) => nodeRadiusOf(b) - nodeRadiusOf(a));
-        const maxR = Math.max(...pinnedMembers.map((o) => nodeRadiusOf(o)));
+        // as drawn: an opened org's coalitions are scaled 1.5×, its partner groups 0.75× (styles.css .linked)
+        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? (o.kind === "coalition" ? 1.5 : 0.75) : 1);
+        pinnedMembers.sort((a, b) => drawnR(b) - drawnR(a));
+        const maxR = Math.max(...pinnedMembers.map((o) => drawnR(o)));
         const spacing = 2 * maxR + 12; // between neighbours along a row
         const rowGap = 2 * maxR + 20; // between rows (room for a name under each)
         // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
-        let rx = (bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR * 0.6 : 0);
+        let rx = (bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR + 10 : 0); // big coalitions sit fully outside the moons' names
         let ry = rx;
         // Members may jostle, but never into the items and their labels.
         memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
@@ -1630,7 +1632,8 @@ export function createGraph(
 
     // Zoom so the ring fills the view (nudged left when the details panel covers the right side).
     const { w, h: vh } = dimensions();
-    const panel = w > 900 ? 420 : 0; // width of the details panel that overlays the right side
+    // The details pane slides over the map; it never decides where the map looks (Nathan, 2026-10-05).
+    const panel = 0;
     const scale = Math.max(
       0.35,
       Math.min(2.2, (w - panel) / (2 * Math.max(ringR + BUBBLE_R + LABEL_REACH + 20, memberRX + 40)), vh / (2 * Math.max(ringR + BUBBLE_R + 50, memberRY + 110))),

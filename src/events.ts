@@ -1,6 +1,7 @@
 import type { DataFile, CoalitionEvent, GraphNode } from "./types";
 import { allEvents, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
+import { showItemCard } from "./itemcard";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { occursOn, parseRecurrence } from "./recurrence";
@@ -246,36 +247,7 @@ export function createEventsView(
 
   /** A detail card over the Events tab: everything we know about the event, without leaving the page. */
   function showDetail(r: Row) {
-    wrap.querySelectorAll(".detail-overlay").forEach((n) => n.remove());
-    const e = r.event;
-    const close = () => { overlay.remove(); document.removeEventListener("keydown", onKey, true); };
-    const onKey = (ev: KeyboardEvent) => { if (ev.key === "Escape") { ev.stopPropagation(); close(); } };
-    const x = h("button", { class: "detail-close", type: "button", "aria-label": "Close" }, "×");
-    x.addEventListener("click", close);
-    const toMap = h("button", { class: "detail-map-btn", type: "button" }, `See ${r.owner.name} on the map`);
-    toMap.addEventListener("click", () => { close(); cb.onCoalitionClick(r.owner.node); });
-    const card = h("div", { class: `detail-card${sectorAttrs(r.owner).cls}`, style: sectorAttrs(r.owner).style, role: "dialog", "aria-label": e.name },
-      x,
-      h("div", { class: "head" },
-        ownerBadge(r.owner),
-        h("div", { class: "coalition-name" }, r.owner.name), sectorPill(r.owner)),
-      h("h3", {}, e.name),
-      h("div", { class: "meta-row" },
-        h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
-        e.location ? h("span", { class: "pill kind" }, e.location) : null,
-        e.online ? h("span", { class: "pill" }, "online") : null,
-        !r.isUpcoming ? h("span", { class: "pill" }, "past") : null),
-      e.description ? h("p", { class: "detail-desc" }, e.description) : null,
-      e.topic_tags && e.topic_tags.length ? h("div", { class: "detail-tags" }, e.topic_tags.map((t) => t.replace(/_/g, " ")).join(" · ")) : null,
-      e.public_contact ? h("div", { class: "detail-contact" }, `Contact: ${e.public_contact}`) : null,
-      itemButtons("event", e),
-      staleNotice("event", r.owner.node, e.needs_info, e.verified, e),
-      toMap);
-    const overlay = h("div", { class: "detail-overlay" }, card);
-    overlay.addEventListener("click", (ev) => { if (ev.target === overlay) close(); });
-    document.addEventListener("keydown", onKey, true);
-    wrap.appendChild(overlay);
-    x.focus();
+    showItemCard(wrap, "event", r.event, r.owner, () => cb.onCoalitionClick(r.owner.node));
   }
 
   function eventCard(r: Row): HTMLElement {

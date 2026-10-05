@@ -2,6 +2,7 @@
 import type { Action, DataFile, GraphNode } from "./types";
 import { allActions, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
 import { itemButtons } from "./links";
+import { showItemCard } from "./itemcard";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 
@@ -132,7 +133,8 @@ export function createActionsView(data: DataFile, cb: ActionsCallbacks): Actions
         staleNotice("action", r.owner.node, a.needs_info, a.verified, a),
       );
       card.querySelectorAll("a").forEach((l) => l.addEventListener("click", (ev) => ev.stopPropagation()));
-      card.addEventListener("click", () => cb.onCoalitionClick(r.owner.node));
+      // a quick look at the action in a card, without leaving the page
+      card.addEventListener("click", () => showItemCard(wrap, "action", a, r.owner, () => cb.onCoalitionClick(r.owner.node)));
       body.appendChild(card);
     }
   }

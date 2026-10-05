@@ -11,10 +11,18 @@ import { createNodeSearch, everythingForSearch, findPlaces, type SearchItem } fr
 export interface GeographicView {
   el: HTMLElement;
   invalidate(): void;
+  /** Show this group, or one of its events / projects, on the map (the only thing here that moves the view). */
+  locate(node: GraphNode, item?: { kind: "event" | "project" | "action"; id: string; lat?: number; lng?: number }): void;
+  /** Whether locate() has a place to go to. */
+  canLocate(node: GraphNode, item?: { lat?: number; lng?: number }): boolean;
 }
 
 export interface GeoCallbacks {
   onNodeClick(node: GraphNode): void;
+  /** An event or project pin was clicked at (x, y) on screen: show its card there. */
+  onItemClick?(kind: "event" | "project", id: string, at: { x: number; y: number }): void;
+  /** The "Locate on strategy map" button in a group's card. */
+  onLocateMap?(node: GraphNode): void;
 }
 
 type LayerKey = "coalitions" | "orgs" | "events" | "projects";
@@ -132,6 +140,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     if (!map) return;
     if (value) groups[key].addTo(map);
     else groups[key].remove();
+    if (key === "orgs") recluster();
   }
 
   let boundaryLayer: L.GeoJSON | null = null;
@@ -199,7 +208,101 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   }
 
   /** Every organization is the same size: easy to see, a little bigger as you zoom in. */
-  const orgRadiusAt = (zoom: number) => Math.max(5, Math.min(13, 3 + (zoom - 6) * 1.1));
+  const orgRadiusAt = (zoom: number) => Math.max(9, Math.min(22, 6 + (zoom - 6) * 1.7));
+
+  // ---- Groups that sit on top of each other: one shows, with a "+N" badge that fans the rest out around it ----
+  const clusterLayer = L.layerGroup();
+  const hidden = new Set<string>();
+  let spread: { ids: string[]; lines: L.Layer[] } | null = null;
+  function collapse() {
+    if (!spread || !map) return;
+    for (const id of spread.ids) {
+      const o = pinnedOrgs.find((x) => x.id === id)!;
+      orgMarkers.get(id)!.setLatLng([o.lat, o.lng]);
+      if (hidden.has(id)) groups.orgs.removeLayer(orgMarkers.get(id)!);
+    }
+    for (const l of spread.lines) l.remove();
+    spread = null;
+  }
+  function recluster() {
+    if (!map) return;
+    collapse();
+    clusterLayer.clearLayers();
+    for (const id of hidden) groups.orgs.addLayer(orgMarkers.get(id)!);
+    hidden.clear();
+    if (!on.orgs) return;
+    const size = 2 * orgRadiusAt(map.getZoom()) + (map.getZoom() >= 10 ? 8 : 4);
+    const view = map.getBounds().pad(0.2);
+    const pts = pinnedOrgs.filter((o) => view.contains([o.lat, o.lng])).map((o) => ({ o, p: map!.latLngToContainerPoint([o.lat, o.lng]) }));
+    // groups with logos and more coalitions stay on top
+    pts.sort((a, b) => Number(!!b.o.logo) - Number(!!a.o.logo) || (b.o.coalition_ids?.length || 0) - (a.o.coalition_ids?.length || 0));
+    const taken = new Set<string>();
+    for (const a of pts) {
+      if (taken.has(a.o.id)) continue;
+      taken.add(a.o.id);
+      const near = pts.filter((b) => !taken.has(b.o.id) && a.p.distanceTo(b.p) < size * 0.75);
+      if (!near.length) continue;
+      for (const b of near) {
+        taken.add(b.o.id);
+        hidden.add(b.o.id);
+        groups.orgs.removeLayer(orgMarkers.get(b.o.id)!);
+      }
+      const ids = [a.o.id, ...near.map((b) => b.o.id)];
+      const badge = L.marker([a.o.lat, a.o.lng], {
+        icon: L.divIcon({ className: "geo-more-icon", iconSize: [0, 0], html: `<button type="button" class="geo-more" style="--off:${(size / 2).toFixed(0)}px" aria-label="${near.length} more groups here">+${near.length}</button>` }),
+        zIndexOffset: 1000,
+      });
+      badge.bindTooltip(`${near.length + 1} groups here: ${escapeHTML(ids.map((id) => pinnedOrgs.find((o) => o.id === id)!.name).slice(0, 6).join(", "))}${ids.length > 6 ? "…" : ""}`, { direction: "top", offset: [size / 2, -size / 2] });
+      badge.on("click", (ev: L.LeafletMouseEvent) => {
+        L.DomEvent.stopPropagation(ev);
+        fanOut(ids, a.p, size);
+      });
+      clusterLayer.addLayer(badge);
+    }
+  }
+  /** Spread a stack of groups around where they are, with a thin line back to each one's real place. */
+  function fanOut(ids: string[], at: L.Point, size: number) {
+    if (!map) return;
+    collapse();
+    const n = ids.length;
+    const r = Math.max(size * 1.2, (n * (size + 6)) / (2 * Math.PI));
+    const lines: L.Layer[] = [];
+    ids.forEach((id, i) => {
+      const a = -Math.PI / 2 + (2 * Math.PI * i) / n;
+      const ll = map!.containerPointToLatLng(L.point(at.x + Math.cos(a) * r, at.y + Math.sin(a) * r));
+      const m = orgMarkers.get(id)!;
+      const o = pinnedOrgs.find((x) => x.id === id)!;
+      lines.push(L.polyline([[o.lat, o.lng], ll], { color: "#94a3b8", weight: 1, opacity: 0.7, interactive: false }).addTo(map!));
+      m.setLatLng(ll);
+      groups.orgs.addLayer(m);
+    });
+    spread = { ids, lines };
+  }
+
+  /** A group was clicked: a small card beside it, and its full details in the pane. Neither moves the map. */
+  function openGroupCard(n: Organization | Coalition, marker: L.Marker) {
+    const isCoal = "member_ids" in n;
+    const node: GraphNode = isCoal ? { ...(n as Coalition), kind: "coalition" } : { ...(n as Organization), kind: "org" };
+    const count = (k: "events" | "projects" | "actions") => ((n as unknown as Record<string, unknown[] | undefined>)[k])?.length || 0;
+    const coals = isCoal ? [] : data.coalitions.filter((c) => (n as Organization).coalition_ids?.includes(c.id)).map((c) => c.abbrev || c.name);
+    const desc = n.description ? (n.description.length > 170 ? `${n.description.slice(0, 168)}…` : n.description) : "";
+    const box = h("div", { class: "geo-card" },
+      h("div", { class: "geo-card-head" },
+        n.logo ? h("img", { src: n.logo, alt: "" }) : null,
+        h("div", {}, h("div", { class: "geo-card-kind" }, isCoal ? `Coalition · ${(n as Coalition).member_count} member groups` : [typeLabel((n as Organization).type), (n as Organization).geographic_focus].filter(Boolean).join(" · ")),
+          h("strong", {}, n.name))),
+      desc ? h("p", {}, desc) : null,
+      h("div", { class: "geo-card-meta" }, [count("events") && `${count("events")} events`, count("projects") && `${count("projects")} projects`, count("actions") && `${count("actions")} actions`].filter(Boolean).join(" · ")),
+      coals.length ? h("div", { class: "geo-card-meta" }, `In ${coals.join(", ")}`) : null,
+    );
+    if (cb.onLocateMap) {
+      const b = h("button", { type: "button", class: "geo-card-btn" }, "Locate on strategy map");
+      b.addEventListener("click", () => cb.onLocateMap!(node));
+      box.appendChild(b);
+    }
+    L.popup({ autoPan: false, closeButton: true, className: "geo-card-pop", offset: [0, -8], maxWidth: 300 }).setLatLng(marker.getLatLng()).setContent(box).openOn(map!);
+    cb.onNodeClick(node);
+  }
 
   function ensureMap() {
     if (map) return map;
@@ -235,7 +338,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
         `<strong>${escapeHTML(c.name)}</strong><br/><span style="color:#94a3b8">${c.member_count} member ${c.member_count === 1 ? "group" : "groups"} · ${escapeHTML(c.geographic_scope)}</span>`,
         { direction: "top", offset: [0, -2] },
       );
-      marker.on("click", () => cb.onNodeClick({ ...c, kind: "coalition" }));
+      marker.on("click", () => openGroupCard(c, marker));
       marker.addTo(groups.coalitions);
     }
 
@@ -259,12 +362,15 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
         `<strong>${escapeHTML(o.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML([typeLabel(o.type), o.geographic_focus].filter(Boolean).join(" · "))}${approx}</span>`,
         { direction: "top", offset: [0, -2] },
       );
-      dot.on("click", () => cb.onNodeClick({ ...o, kind: "org" }));
+      dot.on("click", () => openGroupCard(o, dot));
       dot.addTo(groups.orgs);
       orgMarkers.set(o.id, dot);
     }
 
     map.on("zoomend", sizeOrgs);
+    map.on("zoomend moveend", () => recluster());
+    map.on("click zoomstart", () => collapse());
+    clusterLayer.addTo(map);
     const publishBounds = () => { const b = map!.getBounds(); setMapBounds({ south: b.getSouth(), west: b.getWest(), north: b.getNorth(), east: b.getEast() }); };
     map.on("moveend", publishBounds);
     publishBounds();
@@ -276,7 +382,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
         `<strong>${escapeHTML(e.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML(e.date.slice(0, 10))} · ${escapeHTML(e.location || "")}<br/>${ownerLine(owner)}</span>`,
         { direction: "top", offset: [0, -6] },
       );
-      m.on("click", () => cb.onNodeClick(owner.node));
+      m.on("click", (ev: L.LeafletMouseEvent) => (cb.onItemClick ? cb.onItemClick("event", e.id, { x: ev.originalEvent.clientX, y: ev.originalEvent.clientY }) : cb.onNodeClick(owner.node)));
       m.addTo(groups.events);
       pinMarkers.set(`event:${e.id}`, m);
     }
@@ -286,12 +392,13 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
         `<strong>${escapeHTML(p.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML(p.status)} · ${escapeHTML(p.location || "")}<br/>${ownerLine(owner)}</span>`,
         { direction: "top", offset: [0, -6] },
       );
-      m.on("click", () => cb.onNodeClick(owner.node));
+      m.on("click", (ev: L.LeafletMouseEvent) => (cb.onItemClick ? cb.onItemClick("project", p.id, { x: ev.originalEvent.clientX, y: ev.originalEvent.clientY }) : cb.onNodeClick(owner.node)));
       m.addTo(groups.projects);
       pinMarkers.set(`project:${p.id}`, m);
     }
 
     (Object.keys(groups) as LayerKey[]).forEach((k) => on[k] && groups[k].addTo(map!));
+    setTimeout(() => recluster(), 0);
     return map;
   }
 
@@ -399,6 +506,24 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     invalidate() {
       const m = ensureMap();
       setTimeout(() => m.invalidateSize(), 50);
+    },
+    canLocate(node, item) {
+      if (item && item.lat !== undefined && item.lng !== undefined) return true;
+      return node.kind === "coalition" ? true : orgPlaced(node as Organization);
+    },
+    locate(node, item) {
+      const m = ensureMap();
+      setTimeout(() => {
+        m.invalidateSize();
+        if (item && item.lat !== undefined && item.lng !== undefined && item.kind !== "action") {
+          setLayer(item.kind === "event" ? "events" : "projects", true);
+          m.setView([item.lat, item.lng], 14);
+          pinMarkers.get(`${item.kind}:${item.id}`)?.openTooltip();
+          mark([item.lat, item.lng]);
+          return;
+        }
+        goTo({ kind: node.kind === "coalition" ? "coalition" : "org", id: node.id, label: node.name } as SearchItem);
+      }, 80);
     },
   };
 }

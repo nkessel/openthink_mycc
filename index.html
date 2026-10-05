@@ -13,8 +13,8 @@
       #boot .bar b{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width .25s linear}
       #boot .boot-msg{min-height:2.7em;max-width:340px;padding:0 16px;text-align:center;line-height:1.35;display:flex;align-items:center;justify-content:center;transition:opacity .35s ease}
       #boot .boot-msg.fade{opacity:0}
-      .land-text{width:min(600px,calc(100% - 32px));font-size:12px;line-height:1.6;color:#94a3b8;text-align:center}
-      .land-text p{margin:0 0 9px}
+      .land-text{width:min(560px,calc(100% - 32px));font-size:13.5px;line-height:1.7;color:#b6c2d3;text-align:center;text-wrap:pretty}
+      .land-text p{margin:0 0 12px}
       .land-text strong{color:#cbd5e1;font-weight:600}
       .land-text a{color:#7dd3fc;text-decoration:underline;text-underline-offset:2px}
       .land-text .ded-head{margin-top:16px;color:#cbd5e1}
@@ -35,20 +35,22 @@
       @media (max-width:600px){
         #boot{gap:9px;padding:14px 0}
         #boot canvas{width:200px;height:136px}
-        #boot .land-text{font-size:10.5px;line-height:1.5;margin-top:10px}
-        #boot .land-text p{margin-bottom:6px}
+        #boot .land-text{font-size:12px;line-height:1.55;margin-top:10px}
+        #boot .land-text p{margin-bottom:8px}
       }
     </style>
   </head>
   <body>
     <div id="boot" role="status" aria-live="polite">
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
-      <div class="boot-msg">Gathering the movement&hellip;</div>
+      <div class="boot-msg">Loading the map&hellip;</div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
       <div class="land-text" id="land-dedication">
-        <p>This site was made with the help of Claude Code (AI).</p>
-        <p>It was made on the homelands of the Massachusett, Nipmuc and Wampanoag peoples (Natick, Wellesley and Boston). Claude was designed on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know. We honor these peoples, who have cared for these lands and waters for thousands of years, and who live and lead here today.</p>
-        <p>We receive the gifts of the Earth with gratitude: the water that cools these data centers, and the electricity drawn from coal, gas, wind, and sunlight. We acknowledge the harm woven into how AI operates and came into being. We dedicate this platform to all those harmed, to all of our ancestors, and to all of our future ancestors. May we offer our lives for the welfare and benefit of all life on Earth.</p>
+        <p>This platform was designed on the homelands of the Massachusett, Nipmuc and Wampanoag peoples (Natick, Wellesley and Boston) with the help of Claude Code (AI).</p>
+        <p>Claude was designed on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know.</p>
+        <p>We honor these peoples, who have cared for these lands and waters for thousands of years and who carry that care forward today.</p>
+        <p>We receive the gifts of the Earth with gratitude: the water that cools these data centers, and the electricity drawn from coal, gas, wind, and sunlight. We acknowledge the harm woven into how AI operates and came into being.</p>
+        <p>We dedicate this platform to all those harmed, to all of our ancestors, and to all of our future ancestors. May we offer our lives for the welfare and benefit of all life on Earth.</p>
         <p class="land-links"><strong>Whose land are you on?</strong> <a href="https://native-land.ca" target="_blank" rel="noopener noreferrer">Native Land Digital</a><br>
           <strong>Give back:</strong> <a href="https://www.realrentduwamish.org" target="_blank" rel="noopener noreferrer">Real Rent Duwamish</a>,
           <a href="https://www.ramaytush.org/donate.html" target="_blank" rel="noopener noreferrer">Association of Ramaytush Ohlone</a>,

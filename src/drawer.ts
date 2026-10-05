@@ -44,6 +44,9 @@ export type ItemKind = "event" | "project" | "action";
 export interface DrawerCallbacks {
   onCoalitionClick?(coalitionId: string): void;
   onOrgClick?(orgId: string): void;
+  /** "Locate on strategy map / geographic map": the only buttons in the pane that move a map. */
+  onLocate?(where: "map" | "geo", node: GraphNode, item?: { kind: ItemKind; item: CoalitionEvent | Project | Action }): void;
+  canLocateGeo?(node: GraphNode, item?: CoalitionEvent | Project | Action): boolean;
 }
 
 export function createDrawer(
@@ -60,6 +63,20 @@ export function createDrawer(
   let currentItem: { kind: ItemKind; item: CoalitionEvent | Project | Action } | null = null;
   const orgsById = new Map(data.organizations.map((o) => [o.id, o]));
   const coalitionsById = new Map(data.coalitions.map((c) => [c.id, c]));
+
+  /** The pane never moves a map by itself; these buttons do, when you ask. */
+  function locateRow(node: GraphNode, item?: { kind: ItemKind; item: CoalitionEvent | Project | Action }): HTMLElement | null {
+    if (!cb.onLocate) return null;
+    const row = h("div", { class: "locate-row" });
+    const b = (label: string, where: "map" | "geo") => {
+      const x = h("button", { type: "button", class: "locate-btn" }, label);
+      x.addEventListener("click", () => cb.onLocate!(where, node, item));
+      row.appendChild(x);
+    };
+    b("Locate on strategy map", "map");
+    if (cb.canLocateGeo?.(node, item?.item) ?? true) b("Locate on geographic map", "geo");
+    return row;
+  }
 
   function renderHead(node: GraphNode): HTMLElement {
     const head = h("div", { class: "head" });
@@ -547,6 +564,8 @@ export function createDrawer(
       h("div", { class: `item-kind k-${a.kind === "role" && kind === "action" ? "volunteer" : kind}` },
         typeIcon(kind === "action" && a.kind === "role" ? "volunteer" : kind, 15), " ", kindLabel),
       h("h2", {}, item.name));
+    const locBtns = locateRow(owner, { kind, item });
+    if (locBtns) head.appendChild(locBtns);
     el.appendChild(head);
 
     const body = h("div", { class: "body item-detail" });
@@ -619,7 +638,10 @@ export function createDrawer(
     if (!currentNode) return;
     clear(el);
     if (currentItem) { renderItem(currentItem.kind, currentItem.item, currentNode); return; }
-    el.appendChild(renderHead(currentNode));
+    const head = renderHead(currentNode);
+    const loc = locateRow(currentNode);
+    if (loc) head.appendChild(loc);
+    el.appendChild(head);
     el.appendChild(renderTabs(currentNode));
     el.appendChild(renderBody(currentNode));
   }
