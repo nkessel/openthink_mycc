@@ -61,6 +61,15 @@ async function main() {
   clear(app);
 
   // Fetch data
+  // The map's name at the top of the loading screen, and the welcome line while the data is on its way
+  const bootTitle = document.querySelector<HTMLElement>("#boot .boot-title");
+  if (bootTitle) bootTitle.textContent = currentMap.fullTitle;
+  {
+    const WELCOME = ["Inviting everyone to a seat at the table\u2026", "Making room for every voice\u2026"];
+    let v = 0;
+    try { v = Number(localStorage.getItem("openthink.visits")) || 0; } catch { /* private mode */ }
+    bootDetail(WELCOME[v % WELCOME.length]);
+  }
   let data: DataFile;
   try {
     bootProgress(0.03);
@@ -84,15 +93,11 @@ async function main() {
 
   bootProgress(0.8);
   // The loading lines Nathan picked (2026-10-05): what is loading, then true counts from the data.
-  // One welcome line per visit, taking turns, so the two never sit side by side
-  {
-    const WELCOME = ["Inviting everyone to a seat at the table\u2026", "Making room for every voice\u2026"];
-    let v = 0;
-    try { v = Number(localStorage.getItem("openthink.visits")) || 0; } catch { /* private mode */ }
-    bootDetail(WELCOME[v % WELCOME.length]);
-  }
-  bootDetail(`Loading ${data.coalitions.length} coalitions and ${data.organizations.length} groups`);
-  bootDetail(`Linking ${data.edges.length} coalition memberships`);
+  // Each line says what is loading, with its count running up on screen ("(1/25)" … "(25/25)", index.html)
+  const n = (label: string, count: number) => `Loading ${label} (${count}/${count})`;
+  bootDetail(n("coalitions", data.coalitions.length));
+  bootDetail(n("groups", data.organizations.length));
+  bootDetail(`Linking coalition memberships (${data.edges.length}/${data.edges.length})`);
   await attachThoughts(data);
   // Sector layers (Map settings → Social justice) that this browser has switched on.
   const sectorsOn = await attachSectors(data, currentMap.id);
@@ -101,7 +106,7 @@ async function main() {
   const groups = [...data.coalitions, ...data.organizations];
   const bridges = data.organizations.filter((o) => (o.coalition_ids?.length || 0) > 1).length;
   const facts: string[] = [];
-  if (bridges) facts.push(`${bridges} groups work across two or more coalitions`);
+  if (bridges) facts.push(`Finding groups that work across coalitions (${bridges}/${bridges})`);
   // "Connecting N groups across N towns": each placed group goes to its nearest town centre (Massachusetts towns list)
   if (currentMap.id === "ma") {
     try {
@@ -118,7 +123,7 @@ async function main() {
         }
         if (best && Math.sqrt(bd) < 0.08) { towns.add(best); placed++; } // within ~9 km of a town centre
       }
-      if (towns.size > 1) facts.push(`Connecting ${placed} groups across ${towns.size} towns`);
+      if (towns.size > 1) facts.push(`Connecting ${placed} groups across towns (${towns.size}/${towns.size})`);
     } catch {
       /* no towns list: skip this line */
     }
@@ -129,15 +134,15 @@ async function main() {
     return t >= now - 12 * 3600e3 && t <= now + days * 864e5;
   }).length;
   const week = eventsWithin(7), month = eventsWithin(30);
-  if (week) facts.push(`${week} events this week`);
-  if (month) facts.push(`${month} events in the next 30 days`);
+  if (week) facts.push(n("events this week", week));
+  if (month) facts.push(n("events in the next 30 days", month));
   const projectsNow = groups.flatMap((g) => g.projects || []).filter((p) => (p.status || "active") === "active").length;
-  if (projectsNow) facts.push(`${projectsNow} projects underway`);
+  if (projectsNow) facts.push(n("projects underway", projectsNow));
   const today = new Date().toISOString().slice(0, 10);
   const acts = groups.flatMap((g) => g.actions || []).filter((a) => !a.deadline || a.deadline >= today);
   const roles = acts.filter((a) => a.kind === "role").length;
-  if (acts.length - roles) facts.push(`${acts.length - roles} actions you can take today`);
-  if (roles) facts.push(`${roles} ways to volunteer`);
+  if (acts.length - roles) facts.push(n("actions you can take", acts.length - roles));
+  if (roles) facts.push(n("volunteer opportunities", roles));
   // a different order each visit, so a quick load still shows something new
   for (let i = facts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [facts[i], facts[j]] = [facts[j], facts[i]]; }
   for (const f of facts) bootDetail(f);
