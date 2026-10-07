@@ -12,6 +12,7 @@ import { h, clear } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { PROBLEMS, VISIONS, SUB_SOLUTIONS, FIGHT_STRATEGIES } from "./problems";
 import { PROBLEM_ICONS, SOLUTION_ICONS } from "./topicIcons";
+import { PATHS as ICON_PATHS } from "./icons";
 
 export interface BattleCtx {
   file: TopicsFile;
@@ -112,7 +113,7 @@ const ITEM_COLOR: Record<string, string> = { event: "#2dd4bf", project: "#bef264
 
 /** The look of hits and nourishment. Site-wide defaults live here; "Save" in the Effects panel keeps a browser's own. */
 export const FX_DEFAULTS = {
-  hitRate: 1, // how often problems are hit (× the usual 1–3 hits every few seconds)
+  hitRate: 0.5, // how often problems are hit (× the usual 1–3 hits every few seconds)
   cometSpeed: 120, // px per second
   knock: 34, // how far a hit knocks a problem back
   flinch: 0.55, // how much a problem shrinks for a moment when hit
@@ -487,7 +488,13 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   // circle layout: solutions round the top, problems round the bottom, each named on its side
   const headTop = h("div", { class: "bt-head-ring top" }, "Solutions we are nurturing");
   const headBot = h("div", { class: "bt-head-ring bot" }, "Problems we are solving");
-  viewport.append(heads, headTop, headBot, tip, legend, fxPanel, zoomBox);
+  // A clear way out of a selection (clicking empty space or pressing Esc works too)
+  const deselBtn = h("button", { type: "button", class: "bt-deselect", title: "Show everything again (or click empty space, or press Esc)" }, "✕ Clear selection") as HTMLButtonElement;
+  deselBtn.addEventListener("click", (ev) => {
+    ev.stopPropagation();
+    clearSel();
+  });
+  viewport.append(heads, headTop, headBot, tip, legend, fxPanel, zoomBox, deselBtn);
   el.appendChild(viewport);
 
   const defs = svg.append("defs");
@@ -574,11 +581,11 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     if (showing === "problems") {
       xP = small ? Math.max(110, W * 0.3) : Math.min(380, Math.max(240, W * 0.3));
       cx = xP + (W - xP) * 0.55;
-      band = Math.min(W * 0.16, 220);
+      band = Math.min(W * 0.24, 340);
     } else if (showing === "solutions") {
       xV = W - (small ? Math.max(110, W * 0.3) : Math.min(380, Math.max(240, W * 0.3)));
       cx = xV * 0.45;
-      band = Math.min(W * 0.16, 220);
+      band = Math.min(W * 0.24, 340);
     }
     // Each main topic owns a fixed band of rows, shared by its problem (left) and its solution (right) and sized
     // for its sub-topics, so splitting one topic fans it out inside its band and nothing else moves.
@@ -675,7 +682,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const cs = d3.forceSimulation(cn)
         .force("x", d3.forceX<(typeof cn)[number]>((d) => d.tx).strength(0.2))
         .force("y", d3.forceY<(typeof cn)[number]>((d) => d.ty).strength(0.2))
-        .force("c", d3.forceCollide<(typeof cn)[number]>((d) => d.o.r + 2.2))
+        .force("c", d3.forceCollide<(typeof cn)[number]>((d) => d.o.r + (full ? 6 : 2.2)))
         .stop();
       for (let i = 0; i < 120; i++) {
         cs.tick();
@@ -704,13 +711,25 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const tx = cx + lean * band * 0.85;
       return { o, tx, ty, x: tx, y: ty };
     });
+    // one side shown: the groups have the whole width beside it, so give them room to be explored: spread them
+    // over the full height (keeping their top-to-bottom order) and across a wide band
+    const roomy = showing !== "both";
+    if (roomy) {
+      const byY = [...nodes].sort((a, b) => a.ty - b.ty);
+      byY.forEach((n, i) => {
+        n.ty = 0.35 * n.ty + 0.65 * (top + ((i + 0.5) / byY.length) * (oBot - top));
+        n.x = n.tx + (hash(n.o.key) - 0.5) * band * 2;
+      });
+    }
     const sim = d3.forceSimulation(nodes)
-      .force("x", d3.forceX<(typeof nodes)[number]>((d) => d.tx).strength(0.18))
-      .force("y", d3.forceY<(typeof nodes)[number]>((d) => d.ty).strength(0.3))
-      .force("c", d3.forceCollide<(typeof nodes)[number]>((d) => d.o.r + 2.2))
+      .force("x", d3.forceX<(typeof nodes)[number]>((d) => d.tx).strength(roomy ? 0.004 : 0.18))
+      .force("y", d3.forceY<(typeof nodes)[number]>((d) => d.ty).strength(roomy ? 0.2 : 0.3))
+      .force("c", d3.forceCollide<(typeof nodes)[number]>((d) => d.o.r + (roomy ? 10 : 2.2)))
       .stop();
-    for (let i = 0; i < 100; i++) sim.tick();
-    for (const n of nodes) target.set(n.o.key, [Math.max(cx - band * 1.6, Math.min(cx + band * 1.6, n.x)), Math.max(top, Math.min(oBot, n.y))]);
+    for (let i = 0; i < (roomy ? 180 : 100); i++) sim.tick();
+    const xMin = roomy ? (showing === "problems" ? xP + 70 : 30) : cx - band * 1.6;
+    const xMax = roomy ? (showing === "problems" ? W - 30 : xV - 70) : cx + band * 1.6;
+    for (const n of nodes) target.set(n.o.key, [Math.max(xMin, Math.min(xMax, n.x)), Math.max(top, Math.min(oBot, n.y))]);
   }
 
   function applyPositions(t: number) {
@@ -837,6 +856,23 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     return 1;
   };
 
+  /** Paths light up only once the pointer rests on something for a moment, so sweeping the mouse across the
+   *  picture doesn't set off a dozen redraws. Leaving is quicker than arriving. */
+  let hoverTimer = 0;
+  function hoverSoon(fn: () => void, ms = 160) {
+    clearTimeout(hoverTimer);
+    hoverTimer = window.setTimeout(fn, ms);
+  }
+  /** Whatever the pointer has moved onto replaces what it was on before (only one thing lit at a time). */
+  function onlyHover(keep: "" | "o" | "t" | "i" | "s") {
+    if (keep !== "o") setHoverO(null);
+    if (keep !== "t") setHoverT(null);
+    if (keep !== "i") setHoverI(null);
+    if (keep !== "s" && hover) {
+      hover = null;
+      baseDirty = true;
+    }
+  }
   /** The group under the mouse: its paths to problems and solutions light up. */
   let hoverO: Org | null = null;
   function setHoverO(o: Org | null) {
@@ -907,7 +943,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   const kindRank = (r: TopicRecord) => ({ mission: 0, project: 1, event: 2, action: 3 } as Record<string, number>)[kindKey(r)] ?? 4;
   /** Screen size of a group's dot, and of its item moons. */
   const orgR = (o: Org) => o.r * orgScale();
-  const itemR = (o: Org) => Math.max(2.6, Math.min(7, 2 + orgR(o) * 0.16));
+  /** Past this size on screen a group's items show as icons (calendar, seedling, check) instead of dots. */
+  const ICON_R = 15;
+  const iconMode = (o: Org) => orgR(o) >= ICON_R;
+  const itemR = (o: Org) => (iconMode(o) ? Math.min(15, 6 + orgR(o) * 0.18) : Math.max(2.6, Math.min(7, 2 + orgR(o) * 0.16)));
   /** Where an item's moon sits: on a ring just outside its group (a wider ring when it has many). */
   const ringR = (o: Org, n: number) => { const ir = itemR(o); return Math.max(orgR(o) + ir + 4, (n * (2 * ir + 2.5)) / (2 * Math.PI)); };
   const ringOf = new Map<string, number>(); // groups showing items: their ring's radius (screen px)
@@ -918,33 +957,39 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     out[1] = Y(d.o.y) + Math.sin(a) * ring;
     return a;
   }
-  function paintItems() {
+  function paintItems(tidy = true) {
     computeItems();
     const is = gItems.selectAll<SVGGElement, Item>("g.bt-item").data(items, (d) => d.key);
     is.exit().remove();
     const en = is.enter().append("g").attr("class", "bt-item")
       .on("mouseenter", (ev: MouseEvent, d) => {
         showItemTip(ev, d);
-        setHoverI(d.r);
+        hoverSoon(() => { onlyHover("i"); setHoverI(d.r); });
       })
       .on("mousemove", (ev: MouseEvent, d) => showItemTip(ev, d))
       .on("mouseleave", () => {
         tip.classList.remove("on");
-        setHoverI(null);
+        hoverSoon(() => onlyHover(""), 70);
       })
       .on("click", (ev: MouseEvent, d) => {
         ev.stopPropagation();
         selectItem(d.r, { x: ev.clientX, y: ev.clientY });
       });
     en.append("circle");
+    // the item's icon, drawn when zoomed in far enough (same icons as the map and the details pane)
+    en.append("g").attr("class", "bt-item-icon").each(function (d) {
+      const g = d3.select(this);
+      const k = kindKey(d.r);
+      if (k === "mission") {
+        g.append("path").attr("d", "M-7-8h14v13h-9l-5 4z"); // a speech bubble: what the group says it does
+      } else for (const p of ICON_PATHS[k] ?? []) g.append("path").attr("d", p);
+    });
     en.append("text").attr("class", "bt-item-lbl");
-    en.merge(is)
-      .attr("class", (d) => `bt-item k-${kindKey(d.r)}${d.r === selItem ? " sel" : ""}`)
-      .select("circle")
-      .attr("fill", (d) => (isMission(d.r) ? "none" : ITEM_COLOR[kindKey(d.r)]))
-      .attr("stroke", (d) => (isMission(d.r) ? ITEM_COLOR.mission : "rgba(10,10,15,0.85)"));
+    // moons fade in instead of popping up
+    en.classed("fresh", true); // CSS fades them in
+    en.merge(is).attr("class", (d) => `bt-item k-${kindKey(d.r)}${d.r === selItem ? " sel" : ""}`);
     placeItems();
-    declutterItems();
+    if (tidy) declutterItems();
   }
   /** Item names that would run into each other: keep the first (the one you point at first), hide the rest. */
   function declutterItems() {
@@ -960,28 +1005,77 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       else boxes.push(bb);
     }
   }
+  /** One short line under an item's name: when it is, or what kind of thing it is. */
+  function itemMeta(r: TopicRecord): string {
+    if (isMission(r)) return "Mission statement";
+    if (r.kind === "event" && r.date) {
+      const d = new Date(r.date.length > 10 ? r.date : `${r.date}T12:00:00`);
+      const when = Number.isNaN(d.getTime()) ? r.date : d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      return r.recurring ? `${when} · repeats` : when;
+    }
+    return r.kind === "project" ? `Project${r.status ? ` · ${r.status}` : ""}` : KIND_LABEL[r.kind];
+  }
   function placeItems() {
     const lit = hoverI ?? selItem;
     gItems.selectAll<SVGGElement, Item>("g.bt-item").each(function (d) {
       const a = itemPos(d, P);
-      const ir = itemR(d.o) * (d.r === selItem || d.r === hoverI ? 1.4 : 1);
+      const icons = iconMode(d.o);
+      const ir = itemR(d.o) * (d.r === selItem || d.r === hoverI ? (icons ? 1.15 : 1.4) : 1);
       this.setAttribute("transform", `translate(${P[0].toFixed(1)},${P[1].toFixed(1)})`);
       this.style.opacity = String(lit && d.r !== lit ? 0.45 : orgOpacity(d.o) < 0.5 && !lit ? 0.35 : 1);
+      this.classList.toggle("icons", icons);
       const c = this.firstChild as SVGCircleElement;
       c.setAttribute("r", ir.toFixed(1));
+      const col = ITEM_COLOR[kindKey(d.r)];
+      if (icons) {
+        c.setAttribute("fill", "#0f172a");
+        c.setAttribute("stroke", col);
+      } else {
+        c.setAttribute("fill", isMission(d.r) ? "none" : col);
+        c.setAttribute("stroke", isMission(d.r) ? ITEM_COLOR.mission : "rgba(10,10,15,0.85)");
+      }
+      const ic = this.childNodes[1] as SVGGElement;
+      ic.style.display = icons ? "" : "none";
+      if (icons) {
+        ic.setAttribute("transform", `scale(${(ir / 17).toFixed(3)})`);
+        ic.style.stroke = col;
+      }
       const t = this.lastChild as SVGTextElement;
-      // zoomed in far enough: the item's name beside its moon, reading away from its group
+      // zoomed in far enough: the item's full name (on up to two lines) and when / what it is, reading away from its group
       const named = orgR(d.o) >= ITEM_LABEL_R || d.r === hoverI || d.r === selItem;
       t.style.display = named ? "" : "none";
       if (named) {
-        const name = isMission(d.r) ? "Mission statement" : d.r.name;
-        const max = orgR(d.o) >= 40 ? 44 : 30;
-        t.textContent = name.length > max ? `${name.slice(0, max - 1)}…` : name;
+        const per = orgR(d.o) >= 40 ? 32 : 24;
+        // (a mission statement is just named as such: its group's name is right above it)
+        const lines = wrap(isMission(d.r) ? "Mission statement" : d.r.name, per);
+        if (lines.length > 2) lines.splice(1, lines.length - 1, `${lines.slice(1).join(" ").slice(0, per - 1)}…`);
+        const meta = icons && !isMission(d.r) ? itemMeta(d.r) : "";
         const c0 = Math.cos(a), s0 = Math.sin(a);
-        t.setAttribute("x", (c0 * (ir + 4)).toFixed(1));
-        t.setAttribute("y", (s0 * (ir + 4)).toFixed(1));
-        t.setAttribute("text-anchor", c0 > 0.3 ? "start" : c0 < -0.3 ? "end" : "middle");
-        t.setAttribute("dy", s0 > 0.5 ? "0.9em" : s0 < -0.5 ? "-0.25em" : "0.35em");
+        const x = c0 * (ir + 5), y = s0 * (ir + 5);
+        const n = lines.length + (meta ? 1 : 0);
+        const y0 = s0 > 0.5 ? 0.9 : s0 < -0.5 ? -(n - 1) * 1.15 - 0.3 : 0.35 - ((n - 1) * 1.15) / 2;
+        const key = `${lines.join("|")}|${meta}|${x.toFixed(0)}|${y.toFixed(0)}`;
+        if (t.dataset.k !== key) {
+          t.dataset.k = key;
+          t.textContent = "";
+          t.setAttribute("text-anchor", c0 > 0.3 ? "start" : c0 < -0.3 ? "end" : "middle");
+          lines.forEach((ln, i) => {
+            const sp = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            sp.setAttribute("x", x.toFixed(1));
+            sp.setAttribute(i ? "dy" : "y", i ? "1.15em" : y.toFixed(1));
+            if (!i) sp.setAttribute("dy", `${y0}em`);
+            sp.textContent = ln;
+            t.appendChild(sp);
+          });
+          if (meta) {
+            const sp = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            sp.setAttribute("x", x.toFixed(1));
+            sp.setAttribute("dy", lines.length ? "1.2em" : `${y0}em`);
+            sp.setAttribute("class", "bt-item-meta");
+            sp.textContent = meta;
+            t.appendChild(sp);
+          }
+        }
       }
     });
   }
@@ -1016,19 +1110,27 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     hits.exit().remove();
     const hitsIn = hits.enter().append("path")
       .on("mouseenter", (ev: MouseEvent, s) => {
-        hover = s;
-        baseDirty = true;
+        hoverSoon(() => {
+          onlyHover("s");
+          hover = s;
+          baseDirty = true;
+          kick();
+        });
         showStreamTip(ev, s);
       })
       .on("mousemove", (ev: MouseEvent, s) => showStreamTip(ev, s))
       .on("mouseleave", () => {
-        hover = null;
-        baseDirty = true;
+        hoverSoon(() => {
+          hover = null;
+          baseDirty = true;
+          kick();
+        }, 70);
         tip.classList.remove("on");
       })
-      .on("click", (ev: MouseEvent, s) => {
+      // the paths are thin and nearly invisible, so a click on one counts as a click on empty space
+      .on("click", (ev: MouseEvent) => {
         ev.stopPropagation();
-        selectTarget(s.t);
+        blankClick();
       });
     (moved ? hitsIn.merge(hits) : hitsIn).attr("d", (s) => {
       let d = "";
@@ -1061,12 +1163,12 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       })
         .on("mouseenter", (ev: MouseEvent, t) => {
           showTargetTip(ev, t);
-          setHoverT(t);
+          hoverSoon(() => { onlyHover("t"); setHoverT(t); });
         })
         .on("mousemove", (ev: MouseEvent, t) => showTargetTip(ev, t))
         .on("mouseleave", () => {
           tip.classList.remove("on");
-          setHoverT(null);
+          hoverSoon(() => onlyHover(""), 70);
         });
       const all = en.merge(sel);
       all.classed("sel", (t) => t === selT).attr("opacity", targetOpacity).style("display", (t) => (sideShown(t) ? null : "none"));
@@ -1138,18 +1240,41 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     oe.filter((o) => !!o.logo).append("image").attr("class", "logo").attr("href", (o) => o.logo!).attr("clip-path", "url(#bt-logo-clip)").attr("preserveAspectRatio", "xMidYMid meet");
     oe.append("circle").attr("class", "hit");
     oe.append("text").attr("class", "lbl");
+    // Drag a group to move it (like the main map); its paths and items follow it.
+    oe.call(
+      d3.drag<SVGGElement, Org>()
+        .clickDistance(4)
+        .on("start", () => {
+          tip.classList.remove("on");
+          clearTimeout(hoverTimer);
+        })
+        .on("drag", (ev: d3.D3DragEvent<SVGGElement, Org, Org>, o) => {
+          const [px, py] = d3.pointer(ev.sourceEvent, svg.node());
+          o.x = (px - tr.x) / tr.k;
+          o.y = (py - tr.y) / tr.k;
+          target.set(o.key, [o.x, o.y]);
+          for (const st of allStreams) if (st.org === o) buildGeom(st);
+          baseDirty = true;
+          placeSvg();
+          kick();
+        })
+        .on("end", () => {
+          geomVer++;
+          paintSvg();
+        }),
+    );
     oe.on("click", (ev: MouseEvent, o) => {
       ev.stopPropagation();
       selectOrg(o);
     })
       .on("mouseenter", (ev: MouseEvent, o) => {
         showOrgTip(ev, o);
-        setHoverO(o);
+        hoverSoon(() => { onlyHover("o"); setHoverO(o); });
       })
       .on("mousemove", (ev: MouseEvent, o) => showOrgTip(ev, o))
       .on("mouseleave", () => {
         tip.classList.remove("on");
-        setHoverO(null);
+        hoverSoon(() => onlyHover(""), 70);
       });
     const oall = oe.merge(os);
     const focus = selT ?? hoverT;
@@ -1307,6 +1432,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         : h("div", {}, h("div", { class: "name" }, recName(r)), h("div", { class: "topics-host" }, groupBtn)));
   }
   function renderDetail() {
+    deselBtn.classList.toggle("on", !!(selOrg || selT || selItem));
     const d = ctx.detail;
     clear(d);
     if (!selOrg && !selT && !selItem) {
@@ -1457,7 +1583,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         for (let i = 0; i <= 5; i++) gr.addColorStop(i / 5, `hsla(${(h0 + i * 60) % 360},85%,65%,${op})`);
         g.strokeStyle = gr;
       }
-      g.lineWidth = (lit ? 1.6 + 1.4 * k : 0.5 + 1.1 * k) * lw * (s.kind === "feed" ? 1.3 : 1);
+      g.lineWidth = (lit ? 0.9 + 0.7 * k : 0.5 + 1.1 * k) * lw * (s.kind === "feed" ? 1.2 : 1);
       g.beginPath();
       g.moveTo(s.pts[0], s.pts[1]);
       for (let i = 2; i < s.pts.length; i += 2) g.lineTo(s.pts[i], s.pts[i + 1]);
@@ -1465,8 +1591,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       if (lit) {
         // a soft glow under a lit path
         g.setLineDash([]);
-        g.globalAlpha = 0.18 * FX.lit;
-        g.lineWidth = (5 + 4 * k) * lw;
+        g.globalAlpha = 0.12 * FX.lit;
+        g.lineWidth = (2.5 + 1.5 * k) * lw;
         g.stroke();
         g.globalAlpha = 1;
       }
@@ -1809,13 +1935,22 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   }
 
   // ---------- Zoom ----------
+  let itemsQueued = false;
   const zoom = d3.zoom<SVGSVGElement, unknown>().scaleExtent([0.7, 14]).on("zoom", (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
     tr = ev.transform;
     zg.attr("transform", tr.toString());
     // names of problems and solutions get a little bigger as you zoom in
     svg.style("--bt-lf", Math.min(1.5, Math.pow(Math.max(1, tr.k), 0.22)).toFixed(3));
-    paintItems();
     placeSvg();
+    // which groups show items can change as you zoom: check once per frame, not on every wheel tick
+    if (!itemsQueued) {
+      itemsQueued = true;
+      requestAnimationFrame(() => {
+        itemsQueued = false;
+        paintItems(false); // names are tidied when the zoom settles
+        placeOrgLabels();
+      });
+    }
     tip.classList.remove("on");
     baseDirty = true;
     const want = tr.k >= SPLIT_K ? true : tr.k < SPLIT_K - 0.25 ? false : zoomSplit;
@@ -1843,12 +1978,18 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     else (reduced ? svg : svg.transition().duration(600)).call(zoom.transform as never, d3.zoomIdentity);
   });
   bg.on("dblclick", () => svg.call(zoom.transform, d3.zoomIdentity));
-  bg.on("click", () => {
+  /** A click on empty space (or a path) lets go of whatever was picked, then folds split topics back. */
+  function blankClick() {
     if (selOrg || selT || selItem) clearSel();
     else if (expanded.size) {
       expanded.clear();
       relayout(true);
     }
+  }
+  bg.on("click", blankClick);
+  // Esc does the same
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Escape" && shown && (selOrg || selT || selItem)) clearSel();
   });
 
   // ---------- Updates ----------

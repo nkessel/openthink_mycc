@@ -8,7 +8,7 @@ export const VOL_BODY = "M-11 11C-11 6.2-8.2 4.6-4 4.6C-0.6 4.6 1.6 5.8 3 8";
 export const VOL_ARM = "M3 8L5.6-2";
 export const VOL_FINGERS = "M4.4-2.6V-8.8a1 1 0 0 1 2 0V-5M6.4-9.6a1 1 0 0 1 2 0V-5M8.4-8.8a1 1 0 0 1 2 0V-3.6C10.4-1.4 9-0.4 7-0.6H6C5-0.6 4.4-1.4 4.4-2.6M4.4-4.6L3-6.2a1 1 0 0 0-1.6 1.2L4.4-1.6";
 
-const PATHS: Record<string, string[]> = {
+export const PATHS: Record<string, string[]> = {
   // calendar
   event: ["M-8 -7h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2z", "M-10 -2h20", "M-4 -10v5", "M4 -10v5"],
   // seedling

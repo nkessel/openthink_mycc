@@ -224,19 +224,45 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     for (const l of spread.lines) l.remove();
     spread = null;
   }
+  /** Which group each hidden one is stacked under (to animate it in from, or out to, that spot). */
+  const leaderOf = new Map<string, string>();
+  const orgById = new Map(pinnedOrgs.map((o) => [o.id, o]));
+  const innerOf = (id: string) => orgMarkers.get(id)?.getElement()?.querySelector<HTMLElement>(".geo-org") ?? null;
+  /** Slide a group's icon from (dx, dy) px away to its place, growing in; or the reverse, then call done. */
+  function glide(id: string, dx: number, dy: number, into: boolean, done?: () => void) {
+    const el = innerOf(id);
+    if (!el || reduceMotion) { done?.(); return; }
+    // (the icon is centred on its point with translate(-50%, -50%) in styles.css; keep that)
+    const away = `translate(-50%, -50%) translate(${dx.toFixed(0)}px, ${dy.toFixed(0)}px) scale(0.35)`;
+    el.style.transition = "none";
+    el.style.transform = into ? away : "";
+    el.style.opacity = into ? "0" : "1";
+    void el.offsetWidth; // start from there
+    el.style.transition = "transform 0.32s ease-out, opacity 0.32s ease-out";
+    el.style.transform = into ? "" : away;
+    el.style.opacity = into ? "1" : "0";
+    setTimeout(() => {
+      el.style.transition = "";
+      if (!into) { el.style.transform = ""; el.style.opacity = ""; }
+      done?.();
+    }, 340);
+  }
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  let firstStack = true;
+
   function recluster() {
     if (!map) return;
     collapse();
     clusterLayer.clearLayers();
-    for (const id of hidden) groups.orgs.addLayer(orgMarkers.get(id)!);
-    hidden.clear();
-    if (!on.orgs) return;
     const size = 2 * orgRadiusAt(map.getZoom()) + (map.getZoom() >= 10 ? 8 : 4);
     const view = map.getBounds().pad(0.2);
-    const pts = pinnedOrgs.filter((o) => view.contains([o.lat, o.lng])).map((o) => ({ o, p: map!.latLngToContainerPoint([o.lat, o.lng]) }));
+    const pt = (o: Organization) => map!.latLngToContainerPoint([o.lat, o.lng]);
+    const pts = on.orgs ? pinnedOrgs.filter((o) => view.contains([o.lat, o.lng])).map((o) => ({ o, p: pt(o) })) : [];
     // groups with logos and more coalitions stay on top
     pts.sort((a, b) => Number(!!b.o.logo) - Number(!!a.o.logo) || (b.o.coalition_ids?.length || 0) - (a.o.coalition_ids?.length || 0));
     const taken = new Set<string>();
+    const nowHidden = new Map<string, string>(); // hidden id → its stack's leader
+    const stacks: { lead: Organization; ids: string[] }[] = [];
     for (const a of pts) {
       if (taken.has(a.o.id)) continue;
       taken.add(a.o.id);
@@ -244,21 +270,80 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
       if (!near.length) continue;
       for (const b of near) {
         taken.add(b.o.id);
-        hidden.add(b.o.id);
-        groups.orgs.removeLayer(orgMarkers.get(b.o.id)!);
+        nowHidden.set(b.o.id, a.o.id);
       }
-      const ids = [a.o.id, ...near.map((b) => b.o.id)];
-      const badge = L.marker([a.o.lat, a.o.lng], {
-        icon: L.divIcon({ className: "geo-more-icon", iconSize: [0, 0], html: `<button type="button" class="geo-more" style="--off:${(size / 2).toFixed(0)}px" aria-label="${near.length} more groups here">+${near.length}</button>` }),
+      stacks.push({ lead: a.o, ids: [a.o.id, ...near.map((b) => b.o.id)] });
+    }
+    // Groups coming out of a stack slide out of it; groups joining one slide into it, then disappear.
+    for (const id of [...hidden]) {
+      if (nowHidden.has(id)) continue;
+      hidden.delete(id);
+      groups.orgs.addLayer(orgMarkers.get(id)!);
+      const lead = orgById.get(leaderOf.get(id) ?? "");
+      const me = orgById.get(id)!;
+      if (lead) {
+        const d = pt(lead).subtract(pt(me));
+        requestAnimationFrame(() => glide(id, d.x, d.y, true));
+      }
+    }
+    for (const [id, lead] of nowHidden) {
+      if (hidden.has(id)) continue;
+      hidden.add(id);
+      const d = pt(orgById.get(lead)!).subtract(pt(orgById.get(id)!));
+      const drop = () => { if (hidden.has(id)) groups.orgs.removeLayer(orgMarkers.get(id)!); };
+      if (firstStack) drop(); // the first time the map is drawn, nothing to animate
+      else glide(id, d.x, d.y, false, drop);
+    }
+    leaderOf.clear();
+    for (const [id, lead] of nowHidden) leaderOf.set(id, lead);
+    firstStack = false;
+    for (const { lead, ids } of stacks) {
+      const n = ids.length - 1;
+      // a quiet grey "+N" about the size of a group, tucked against the group on top
+      const d = Math.round(size * 0.82);
+      const badge = L.marker([lead.lat, lead.lng], {
+        icon: L.divIcon({ className: "geo-more-icon", iconSize: [0, 0], html: `<button type="button" class="geo-more" style="--off:${(size / 2).toFixed(0)}px;--d:${d}px" aria-label="${n} more groups here: zoom in">+${n}</button>` }),
         zIndexOffset: 1000,
       });
-      badge.bindTooltip(`${near.length + 1} groups here: ${escapeHTML(ids.map((id) => pinnedOrgs.find((o) => o.id === id)!.name).slice(0, 6).join(", "))}${ids.length > 6 ? "…" : ""}`, { direction: "top", offset: [size / 2, -size / 2] });
+      badge.bindTooltip(`${n + 1} groups here: ${escapeHTML(ids.map((id) => orgById.get(id)!.name).slice(0, 6).join(", "))}${ids.length > 6 ? "…" : ""}<br><span style="color:#94a3b8">Click to zoom in</span>`, { direction: "top", offset: [size / 2, -size / 2] });
       badge.on("click", (ev: L.LeafletMouseEvent) => {
         L.DomEvent.stopPropagation(ev);
-        fanOut(ids, a.p, size);
+        openStack(ids, pt(lead), size);
       });
       clusterLayer.addLayer(badge);
     }
+  }
+
+  // "+N" zooms in until the stack's groups separate; "−" (bottom-left) zooms back to where you were.
+  let before: { center: L.LatLng; zoom: number } | null = null;
+  const backBtn = h("button", { type: "button", class: "geo-back", title: "Back to the view you had before" }, "− Zoom back out") as HTMLButtonElement;
+  backBtn.style.display = "none";
+  backBtn.addEventListener("click", () => {
+    if (!map || !before) return;
+    map.flyTo(before.center, before.zoom, { duration: 0.6 });
+    before = null;
+    backBtn.style.display = "none";
+  });
+  function openStack(ids: string[], at: L.Point, size: number) {
+    if (!map) return;
+    const pts = ids.map((id) => L.latLng(orgById.get(id)!.lat, orgById.get(id)!.lng));
+    const bounds = L.latLngBounds(pts);
+    // the same address (or nearly): zooming won't separate them, so fan them out instead
+    if (bounds.getNorthEast().distanceTo(bounds.getSouthWest()) < 40) return fanOut(ids, at, size);
+    if (!before) before = { center: map.getCenter(), zoom: map.getZoom() };
+    backBtn.style.display = "";
+    // zoom until the closest pair is a group's width apart (or as far as the map goes)
+    let z = map.getZoom();
+    const maxZ = 18;
+    const apart = (zz: number) => {
+      const ps = pts.map((ll) => map!.project(ll, zz));
+      let m = Infinity;
+      for (let i = 0; i < ps.length; i++) for (let j = i + 1; j < ps.length; j++) m = Math.min(m, ps[i].distanceTo(ps[j]));
+      return m;
+    };
+    while (z < maxZ && apart(z) < 2 * orgRadiusAt(z) + 10) z += 0.5;
+    const fit = map.getBoundsZoom(bounds.pad(0.3));
+    map.flyTo(bounds.getCenter(), Math.min(maxZ, Math.max(z, Math.min(fit, z + 1))), { duration: 0.7 });
   }
   /** Spread a stack of groups around where they are, with a thin line back to each one's real place. */
   function fanOut(ids: string[], at: L.Point, size: number) {
@@ -306,7 +391,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
 
   function ensureMap() {
     if (map) return map;
-    map = L.map(mapEl, { zoomControl: true, attributionControl: true });
+    // finer zoom steps and a gentler wheel, so zooming glides instead of jumping a whole level
+    map = L.map(mapEl, { zoomControl: true, attributionControl: true, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 110, wheelDebounceTime: 25 });
+    mapEl.appendChild(backBtn);
     map.fitBounds(startBounds(), { padding: [20, 20] });
     // OpenStreetMap's own tiles need no API key (CARTO's now do). They're light, so CSS
     // (.geo-view .leaflet-tile-pane) darkens them to match the site.
@@ -369,6 +456,8 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
 
     map.on("zoomend", sizeOrgs);
     map.on("zoomend moveend", () => recluster());
+    // zoomed back out past where "+N" started: the "−" button has done its job
+    map.on("zoomend", () => { if (before && map!.getZoom() <= before.zoom) { before = null; backBtn.style.display = "none"; } });
     map.on("click zoomstart", () => collapse());
     clusterLayer.addTo(map);
     const publishBounds = () => { const b = map!.getBounds(); setMapBounds({ south: b.getSouth(), west: b.getWest(), north: b.getNorth(), east: b.getEast() }); };

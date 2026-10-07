@@ -13,11 +13,14 @@
       #boot .bar b{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width .25s linear}
       #boot .boot-msg{min-height:2.7em;max-width:340px;padding:0 16px;text-align:center;line-height:1.35;display:flex;align-items:center;justify-content:center;transition:opacity .35s ease}
       #boot .boot-msg.fade{opacity:0}
+      #boot .boot-title{font-size:22px;font-weight:700;letter-spacing:.01em;text-align:center;padding:0 16px;
+        background:linear-gradient(90deg,#22d3ee 0%,#a78bfa 50%,#ec4899 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
       #boot .boot-hint{max-width:360px;padding:0 16px;text-align:center;font-size:12.5px;line-height:1.45;color:#7dd3fc}
       #boot .boot-hint b{color:#bae6fd;font-weight:600}
-      .land-text{width:min(540px,calc(100% - 40px));font-size:15px;line-height:1.75;color:#d5dde8;text-align:left;text-wrap:pretty;letter-spacing:.005em}
+      .land-text{width:min(860px,calc(100% - 40px));font-size:19px;font-weight:300;line-height:1.65;color:#d5dde8;text-align:left;text-wrap:pretty;letter-spacing:.005em}
       .land-text p{margin:0 0 16px}
-      .land-text .land-links{text-align:center}
+      .land-text .land-links{text-align:center;font-size:.85em}
+      .land-text .land-links strong{font-weight:500}
       .land-text strong{color:#cbd5e1;font-weight:600}
       .land-text a{color:#7dd3fc;text-decoration:underline;text-underline-offset:2px}
       .land-text .ded-head{margin-top:16px;color:#cbd5e1}
@@ -38,21 +41,23 @@
       @media (max-width:600px){
         #boot{gap:9px;padding:14px 0}
         #boot canvas{width:200px;height:136px}
-        #boot .land-text{font-size:13.5px;line-height:1.65;margin-top:12px}
+        #boot .land-text{font-size:16px;line-height:1.55;margin-top:12px}
         #boot .land-text p{margin-bottom:12px}
       }
     </style>
   </head>
   <body>
     <div id="boot" role="status" aria-live="polite">
+      <div class="boot-title">Climate Coalition Map</div>
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
       <div class="boot-msg">Gathering the movement&hellip;</div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
       <div class="boot-hint" hidden></div>
       <div class="land-text" id="land-dedication">
-        <p>This platform was designed on the homelands of the Massachusett, Nipmuc and Wampanoag peoples (Natick, Wellesley and Boston) with the help of Claude Code (AI).</p>
-        <p>Claude was built on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs in data centers on the stolen homeland of the Pokagon Potawatomi in Indiana, and in other places whose names we don't yet know. We honor these first peoples, and the lands and waters they have cared for through countless generations.</p>
-        <p>With respect and gratitude, we receive the gifts of the Earth that power this platform: the minerals in every chip, the waters cooling the data centers, and the electricity from coal, gas, wind, and sunlight. We recognize the harm woven into all of this, and commit to its repair, beginning with the return of land to Indigenous peoples.</p>
+        <p>This platform was designed in Natick, Wellesley, and Boston, on the original homelands of the Massachusett, Nipmuc and Wampanoag peoples.</p>
+        <p>It was built with the help of Claude (AI), which was built on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs on data centers in the stolen homeland of the Pokagon Potawatomi in Indiana, and other places whose names we don't yet know. We honor these first peoples, and the lands and waters they have cared for countless generations.</p>
+        <p>With respect and gratitude, we receive the gifts of the Earth and the labor of our sisters and brothers across the planet: the minerals mined by slaves in every chip, the waters extracted for cooling the data centers, and the electricity generated from coal, gas, wind, and sunlight that powers this platform.</p>
+        <p>We recognize the harm woven into all of this, and commit to its repair, beginning with the return of land to Indigenous peoples and the freedom of enslaved people everywhere.</p>
         <p>This platform is dedicated to all of our ancestors, all of our future ancestors, and to the welfare and benefit of all life on Earth.</p>
         <p class="land-links"><strong>Whose land are you on?</strong> <a href="https://native-land.ca" target="_blank" rel="noopener noreferrer">Native Land Digital</a><br>
           <strong>Give back:</strong> <a href="https://www.realrentduwamish.org" target="_blank" rel="noopener noreferrer">Real Rent Duwamish</a>,
@@ -202,8 +207,19 @@
         }
         // One line at a time (main.ts bootDetail), each up long enough to read: longer lines stay longer.
         // Only the newest three wait their turn, so the screen never falls far behind what is happening.
-        var queue = [], timer = null, shownAt = performance.now(), dwell = 1800;
-        var dwellFor = function (t) { return Math.min(2600, 1100 + 28 * t.length); };
+        var queue = [], timer = null, shownAt = performance.now(), dwell = 900; // the opening line moves on quickly
+        var dwellFor = function (t) { return Math.min(1600, 750 + 16 * t.length); };
+        // "Loading volunteer opportunities (25/25)" shows its count running up from 1
+        function countUp(text) {
+          var m = /^(.*\()(\d+)\/(\d+)(\).*)$/.exec(text);
+          if (!m || reduce) { msg.textContent = text; return; }
+          var total = +m[3], t0 = performance.now(), span = Math.min(800, 250 + total * 6);
+          (function tick() {
+            var f = Math.min(1, (performance.now() - t0) / span);
+            msg.textContent = m[1] + Math.max(1, Math.round(total * f)) + "/" + total + m[4];
+            if (f < 1 && msg.dataset.line === text) requestAnimationFrame(tick);
+          })();
+        }
         function pump() {
           timer = null;
           if (!queue.length) return;
@@ -212,15 +228,16 @@
           var next = queue.shift();
           msg.classList.add("fade");
           setTimeout(function () {
-            msg.textContent = next;
+            msg.dataset.line = next;
+            countUp(next);
             msg.classList.remove("fade");
-          }, reduce ? 0 : 300);
+          }, reduce ? 0 : 250);
           shownAt = performance.now();
           dwell = dwellFor(next);
           if (queue.length) timer = setTimeout(pump, dwell);
         }
         window.bootDetail = function (text) {
-          if (!text || text === msg.textContent || queue[queue.length - 1] === text) return;
+          if (!text || text === msg.dataset.line || queue[queue.length - 1] === text) return;
           queue.push(text);
           if (queue.length > 10) queue.splice(0, queue.length - 10);
           if (!timer) pump();
