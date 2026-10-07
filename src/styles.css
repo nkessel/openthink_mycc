@@ -2809,3 +2809,14 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .item-filters .when-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .item-filters .when-custom { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .item-filters .when-custom .range-in { width: 150px; color-scheme: dark; }
+
+/* Command room: item moons fade in; icons and details when zoomed in */
+@keyframes btFade { from { opacity: 0; } }
+.bt-items .bt-item.fresh { animation: btFade 0.3s ease-out; }
+@media (prefers-reduced-motion: reduce) { .bt-items .bt-item.fresh { animation: none; } }
+.bt-items .bt-item.icons circle { stroke-width: 1.6px; }
+.bt-items .bt-item-icon path { fill: none; stroke-width: 1.6px; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.bt-item-meta { fill: #94a3b8; font-size: 0.88em; }
+.bt-deselect { display: none; position: absolute; top: 34px; left: 50%; transform: translateX(-50%); z-index: 5; appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 12.5px; cursor: pointer; box-shadow: var(--shadow); }
+.bt-deselect.on { display: block; }
+.bt-deselect:hover { border-color: var(--accent); }

@@ -646,3 +646,7 @@ What / why
 - Loading line "Connecting {n} groups across {n} towns" (MA: each placed group to its nearest town centre within ~9 km; currently 105 groups across 41 towns). "Gathering the movement…" restored as the opening line.
 
 2026-10-05 10:00 ET (Claude): Dedication rewritten with Nathan (fewer "We" openings; gratitude for minerals, water and electricity; "We recognize the harm woven into all of this, and commit to its repair, beginning with the return of land to Indigenous peoples."; "This platform is dedicated to…"). Easier to read: 15px (13.5px on phones), line-height 1.75, brighter text, narrower left-aligned column, more space between paragraphs.
+
+2026-10-07 (Claude, Oct 7 polish)
+- Command room: lit paths thinner (0.9–1.6px, faint glow); comets halved (FX hitRate default 0.5); paths light up only after the pointer rests ~0.16s (leaving after 0.07s; one lit thing at a time); "✕ Clear selection" button, Esc, and clicks on empty space or on a (nearly invisible) path all deselect; groups can be dragged (their paths and items follow); with only problems or only solutions shown, the groups spread over the whole free area; zoomed in, items show as icons (calendar, seedling, check, speech bubble for missions) with their full name on up to two lines and a date / kind line, fading in; item repaint throttled to once per frame while zooming (names tidied when the zoom settles).
+- Dedication column 700px, 17px text (15px on phones) — carried over from Oct 5 (#50 merged before it was pushed).
