@@ -2778,11 +2778,20 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 /* ---- Geographic map: stacked groups ("+N", click to fan out) and the group card by the click ---- */
 .geo-more-icon { overflow: visible; }
 .geo-more {
-  position: absolute; left: calc(var(--off, 10px) - 6px); top: calc(-1 * var(--off, 10px) - 8px);
-  min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px; border: 1.5px solid #0f172a;
-  background: #22d3ee; color: #04202a; font: 700 11px system-ui, sans-serif; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  position: absolute; left: calc(var(--off, 10px) * 0.35); top: calc(-1 * var(--off, 10px) * 1.25);
+  width: var(--d, 22px); height: var(--d, 22px); min-width: 0; padding: 0; border-radius: 50%;
+  border: 1.5px solid rgba(15, 23, 42, 0.9); background: rgba(71, 85, 105, 0.92); color: #e2e8f0;
+  font: 600 calc(var(--d, 22px) * 0.38) / 1 system-ui, sans-serif; cursor: pointer; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  display: flex; align-items: center; justify-content: center; transition: background 0.15s, transform 0.15s;
 }
-.geo-more:hover { background: #67e8f9; }
+.geo-more:hover { background: #64748b; transform: scale(1.06); }
+.geo-back {
+  position: absolute; left: 12px; bottom: 28px; z-index: 800; appearance: none; border: 1px solid var(--border);
+  background: var(--bg-elev); color: var(--text); border-radius: 999px; padding: 7px 14px; font: inherit; font-size: 13px;
+  cursor: pointer; box-shadow: var(--shadow);
+}
+.geo-back:hover { border-color: var(--accent); }
+.geo-org { will-change: transform; }
 .geo-card-pop .leaflet-popup-content-wrapper { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
 .geo-card-pop .leaflet-popup-tip { background: var(--bg-elev); }
 .geo-card-pop .leaflet-popup-content { margin: 12px 14px; font-size: 12.5px; line-height: 1.45; }
