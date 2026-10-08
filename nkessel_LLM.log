@@ -656,3 +656,6 @@ What / why
 - Loading screen: map title shown at the very top so people know what's loading; welcome line shows while data is fetched (shorter "Gathering the movement…" wait); lines now read "Loading volunteer opportunities (25/25)" etc., with the first number counting up quickly; line dwell 0.75–1.6s (was longer).
 - Dedication: Nathan's new text (Natick/Wellesley/Boston; Claude's land and data centers; gifts and harm; repair; dedication). Column 860px wide, 19px light (300) text, left-aligned; 16px on phones.
 - Branch includes #51 (merged in) so it can be merged alone.
+
+2026-10-07 (Claude, dedication v2)
+- Dedication: Nathan's updated wording (verbatim; "--" shown as an em dash, closing period added to the fourth paragraph). Text is now centered.
