@@ -202,6 +202,13 @@ export function createEventsView(
     return false;
   }
 
+  // how many upcoming events each switch would show
+  const upcomingRows = rows.filter((r) => r.isUpcoming);
+  itemFilters.setCounts({
+    freeFood: upcomingRows.filter((r) => r.event.free_food).length,
+    affiliated: upcomingRows.filter((r) => r.event.affiliated_only).length,
+  });
+
   // ---- Body ----
   const body = h("div", { class: "list-body" });
   wrap.appendChild(body);
@@ -288,11 +295,17 @@ export function createEventsView(
     if (!itemFilters.test(f)) return false;
     return inRange(r) && inPartOfDay(r);
   }
-  /** Mornings before noon, afternoons noon–5 PM, evenings from 5 PM. Events with no posted time always count. */
+  /** Mornings before noon, afternoons noon–5 PM, evenings from 5 PM. An event counts for every part of the day it
+   *  runs through (start to end; one hour when no end is posted). Events with no posted time always count. */
   function inPartOfDay(r: Row): boolean {
     if (partOfDay === "any" || !hasTime(r.event.date)) return true;
-    const hr = parseEventDate(r.event.date).getHours();
-    return partOfDay === "morning" ? hr < 12 : partOfDay === "afternoon" ? hr >= 12 && hr < 17 : hr >= 17;
+    const s = parseEventDate(r.event.date);
+    const startH = s.getHours() + s.getMinutes() / 60;
+    const e = r.event.end && hasTime(r.event.end) ? parseEventDate(r.event.end) : null;
+    let endH = e && e.getTime() > s.getTime() ? e.getHours() + e.getMinutes() / 60 : startH + 1;
+    if (e && e.toDateString() !== s.toDateString()) endH = 24; // runs past midnight
+    const [a, b] = partOfDay === "morning" ? [0, 12] : partOfDay === "afternoon" ? [12, 17] : [17, 24];
+    return startH < b && endH > a;
   }
 
   function render() {
@@ -301,7 +314,7 @@ export function createEventsView(
     const filtered = rows.filter(matches);
     count.textContent = `${filtered.length} event${filtered.length === 1 ? "" : "s"}`;
     if (!filtered.length) {
-      body.appendChild(h("div", { class: "list-empty" }, "No events match."));
+      body.appendChild(h("div", { class: "list-empty" }, itemFilters.emptyReason() || "No events match."));
       return;
     }
     for (const r of filtered) body.appendChild(eventCard(r));

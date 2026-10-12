@@ -124,6 +124,16 @@ export async function attachSectors(data: DataFile, map: MapId): Promise<SectorD
 }
 
 const REOPEN_KEY = "openthink.sectors.reopen";
+/** Reload with a small "Adding…" card instead of the full loading screen, and reopen this section afterwards. */
+function reloadQuick() {
+  try {
+    sessionStorage.setItem(REOPEN_KEY, "1");
+    sessionStorage.setItem("openthink.quickboot", "1");
+  } catch {
+    /* ignore */
+  }
+  location.reload();
+}
 
 /**
  * The "Social justice" section of Map settings: closed by default (like Advanced display settings), one switch
@@ -152,6 +162,28 @@ export function createSectorSection(parent: HTMLElement, map: MapId): HTMLElemen
   hint.textContent = "Groups and events from other movements, shown on top of the climate map with their own colour. Off by default.";
   body.appendChild(hint);
   const on = enabledSectors();
+  const avail = SECTORS.filter((s) => s.maps.includes(map));
+  if (avail.length > 1) {
+    const allOn = avail.every((s) => on.has(s.id));
+    const row = document.createElement("div");
+    row.className = "control toggle-row sector-all";
+    const label = document.createElement("label");
+    label.className = "ctrl-label";
+    label.textContent = "All social justice groups";
+    const sw = document.createElement("button");
+    sw.type = "button";
+    sw.className = `switch ${allOn ? "on" : ""}`;
+    sw.setAttribute("role", "switch");
+    sw.setAttribute("aria-checked", String(allOn));
+    sw.setAttribute("aria-label", "All social justice groups");
+    sw.innerHTML = '<span class="knob"></span>';
+    sw.addEventListener("click", () => {
+      for (const s of avail) setSectorEnabled(s.id, !allOn);
+      reloadQuick();
+    });
+    row.append(label, sw);
+    body.appendChild(row);
+  }
   for (const s of SECTORS) {
     const available = s.maps.includes(map);
     const row = document.createElement("div");
@@ -173,12 +205,7 @@ export function createSectorSection(parent: HTMLElement, map: MapId): HTMLElemen
       const next = !sw.classList.contains("on");
       sw.classList.toggle("on", next);
       setSectorEnabled(s.id, next);
-      try {
-        sessionStorage.setItem(REOPEN_KEY, "1");
-      } catch {
-        /* ignore */
-      }
-      location.reload();
+      reloadQuick();
     });
     row.append(label, sw);
     body.appendChild(row);

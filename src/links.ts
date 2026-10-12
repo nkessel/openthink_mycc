@@ -47,3 +47,44 @@ export function itemButtons(kind: "event" | "project" | "action", item: { rsvp_l
     site ? stop(h("a", { class: "btn-site", href: site, target: "_blank", rel: "noopener noreferrer" }, `${linkLabel(kind, site, item.kind)} ↗`)) : null,
   );
 }
+
+/** A contact as links: emails become mailto: links, web addresses open in a new tab, phone numbers become tel: links.
+ *  Anything else stays plain text. */
+export function contactLinks(text: string): HTMLElement {
+  const out = h("span", { class: "contact-links" });
+  const re = /([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})|(https?:\/\/[^\s,;]+)|(www\.[^\s,;]+)|(\+?1?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/gi;
+  let last = 0;
+  for (const m of text.matchAll(re)) {
+    if (m.index! > last) out.append(text.slice(last, m.index));
+    const [whole, email, url, www, phone] = m;
+    const href = email ? `mailto:${email}` : url ? url : www ? `https://${www}` : `tel:${phone.replace(/[^\d+]/g, "")}`;
+    const a = h("a", { href, ...(email || phone ? {} : { target: "_blank", rel: "noopener noreferrer" }) }, whole);
+    a.addEventListener("click", (ev) => ev.stopPropagation());
+    out.append(a);
+    last = m.index! + whole.length;
+  }
+  if (last < text.length) out.append(text.slice(last));
+  return out;
+}
+
+/** "How to join" for a project or volunteer role: its own contact or page, else its group's contact or website. */
+export function joinInfo(item: { public_contact?: string; link?: string }, owner: { public_contact?: string; website?: string; name: string }): { text: string; via: "item" | "group" } | null {
+  if (item.public_contact) return { text: item.public_contact, via: "item" };
+  if (item.link && SAFE.test(item.link)) return { text: item.link, via: "item" };
+  if (owner.public_contact) return { text: owner.public_contact, via: "group" };
+  if (owner.website && SAFE.test(owner.website)) return { text: owner.website, via: "group" };
+  return null;
+}
+
+/** Ongoing and asking for help: the group answered "Help wanted: yes" or listed skills it needs. */
+export function wantsHelp(p: { help_wanted?: boolean; status?: string; skills_needed?: string[] }): boolean {
+  if (p.status === "completed" || p.help_wanted === false) return false;
+  return p.help_wanted === true || (p.skills_needed?.length ?? 0) > 0;
+}
+
+/** The "How to join" line for cards and the details pane. */
+export function joinLine(item: { public_contact?: string; link?: string }, owner: { public_contact?: string; website?: string; name: string }): HTMLElement {
+  const j = joinInfo(item, owner);
+  if (!j) return h("div", { class: "join-line none" }, "How to join: not listed yet. Ask the group, or suggest a contact with the + button.");
+  return h("div", { class: "join-line" }, h("strong", {}, "How to join: "), j.via === "group" ? `contact ${owner.name}, ` : "", contactLinks(j.text));
+}

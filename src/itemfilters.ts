@@ -8,6 +8,8 @@ export interface Facts {
   hay: string;
   lat?: number;
   lng?: number;
+  /** Placed by its town or its group's HQ rather than its own address. */
+  approx?: boolean;
   online?: boolean;
   free_food?: boolean;
   affiliated_only?: boolean;
@@ -26,13 +28,21 @@ export function termsMatch(query: string, hay: string): boolean {
 }
 
 // ---- Geographic map view, shared by the Geographic tab ----
-export interface Bounds { south: number; west: number; north: number; east: number }
-let mapBounds: Bounds = { south: 41.45, west: -73.55, north: 42.95, east: -69.85 };
+export interface Bounds { south: number; west: number; north: number; east: number; zoom?: number }
+let mapBounds: Bounds = { south: 41.45, west: -73.55, north: 42.95, east: -69.85, zoom: 8 };
 export function setMapBounds(b: Bounds): void {
   mapBounds = b;
   window.dispatchEvent(new CustomEvent("openthink:mapbounds"));
 }
-const inBounds = (lat: number, lng: number) => lat >= mapBounds.south && lat <= mapBounds.north && lng >= mapBounds.west && lng <= mapBounds.east;
+/** Zoomed in closer than this, an item placed only by its town (or its group's HQ) no longer counts as "in view":
+ *  the town's centre may be on screen while the item itself could be anywhere in town. */
+export const APPROX_MAX_ZOOM = 11;
+/** Is this item in view on the Geographic map? Shared by the map's "events in view" list and the list pages. */
+export function inMapView(f: { lat?: number; lng?: number; approx?: boolean; online?: boolean }, b: Bounds = mapBounds): boolean {
+  if (f.online || f.lat === undefined || f.lng === undefined) return false;
+  if (f.approx && (b.zoom ?? 0) > APPROX_MAX_ZOOM) return false;
+  return f.lat >= b.south && f.lat <= b.north && f.lng >= b.west && f.lng <= b.east;
+}
 
 // ---- Zip codes (Massachusetts only, bundled) ----
 let zips: Record<string, [number, number]> | null = null;
@@ -63,15 +73,15 @@ export function loadTowns(): Promise<void> {
   return townsLoading;
 }
 /** Coordinates for an item: its own, else the town named in `location`, else the owner's HQ. */
-export function placeFor(item: { lat?: number; lng?: number; online?: boolean; location?: string }, owner?: { lat?: number; lng?: number; remote?: boolean; kind?: string } | null): { lat?: number; lng?: number } {
+export function placeFor(item: { lat?: number; lng?: number; online?: boolean; location?: string }, owner?: { lat?: number; lng?: number; remote?: boolean; kind?: string } | null): { lat?: number; lng?: number; approx?: boolean } {
   if (item.online) return {};
   if (item.lat !== undefined && item.lng !== undefined) return { lat: item.lat, lng: item.lng };
   const loc = item.location || "";
   // The town list is Massachusetts': don't put "Milton, VT" in Milton, MA.
   const otherState = /,\s*(?!MA\b|Mass\b|Massachusetts\b)(?:[A-Z]{2}|Vermont|New Hampshire|New York|Connecticut|Rhode Island|Maine)\b/.test(loc);
   const hit = loc && towns && !otherState ? towns.find((t) => t.re.test(loc)) : undefined;
-  if (hit) return { lat: hit.at[0], lng: hit.at[1] };
-  if (owner && owner.kind === "org" && !owner.remote && Number.isFinite(owner.lat) && Number.isFinite(owner.lng)) return { lat: owner.lat, lng: owner.lng };
+  if (hit) return { lat: hit.at[0], lng: hit.at[1], approx: true };
+  if (owner && owner.kind === "org" && !owner.remote && Number.isFinite(owner.lat) && Number.isFinite(owner.lng)) return { lat: owner.lat, lng: owner.lng, approx: true };
   return {};
 }
 
@@ -94,6 +104,10 @@ export interface FilterOpts {
 export interface ItemFilters {
   el: HTMLElement;
   test(f: Facts): boolean;
+  /** How many items each switch would show, so a switch with nothing behind it says so instead of seeming broken. */
+  setCounts(c: { freeFood?: number; affiliated?: number; helpWanted?: number }): void;
+  /** Why the list is empty, when one of these switches is the reason (or ""). */
+  emptyReason(): string;
 }
 
 export function createItemFilters(opts: FilterOpts, onChange: () => void): ItemFilters {
@@ -131,20 +145,26 @@ export function createItemFilters(opts: FilterOpts, onChange: () => void): ItemF
   });
   el.appendChild(zipWrap);
 
-  const check = (label: string, initial: boolean, set: (v: boolean) => void): HTMLElement => {
+  const counts: { freeFood?: number; affiliated?: number; helpWanted?: number } = {};
+  const countEls: Partial<Record<"freeFood" | "affiliated" | "helpWanted", HTMLElement>> = {};
+  const check = (label: string, initial: boolean, set: (v: boolean) => void, key?: "freeFood" | "helpWanted", hint?: string): HTMLElement => {
     const box = h("input", { type: "checkbox" }) as HTMLInputElement;
     box.checked = initial;
     box.addEventListener("change", () => { set(box.checked); onChange(); });
-    return h("label", { class: "check" }, box, " " + label);
+    const n = key ? (countEls[key] = h("span", { class: "check-count" }, "")) : null;
+    return h("label", { class: "check", title: hint || "" }, box, " " + label, n);
   };
   if (opts.online) el.appendChild(check("Include online / remote", state.online, (v) => (state.online = v)));
-  if (opts.inView) el.appendChild(check("Only what's in view on the Geographic map", state.inView, (v) => (state.inView = v)));
-  if (opts.freeFood) el.appendChild(check("Free food only", state.freeFood, (v) => (state.freeFood = v)));
-  if (opts.helpWanted) el.appendChild(check("Help wanted only", state.helpWanted, (v) => (state.helpWanted = v)));
+  if (opts.inView) el.appendChild(check("Only what's in view on the Geographic map", state.inView, (v) => (state.inView = v), undefined,
+    "Items with an exact address in the map's current view. Items known only by town count when you're zoomed out to town level."));
+  if (opts.freeFood) el.appendChild(check("Free food only", state.freeFood, (v) => (state.freeFood = v), "freeFood", "Only items whose group said there will be food."));
+  if (opts.helpWanted) el.appendChild(check("Help wanted only", state.helpWanted, (v) => (state.helpWanted = v), "helpWanted",
+    "Ongoing projects whose group said they want help, or listed skills they need."));
   if (opts.publicSwitch) {
     const seg = h("div", { class: "filters public-switch", role: "group", "aria-label": "Who can come" });
     const a = h("button", { class: "chip active", type: "button" }, "Open to the public");
-    const b = h("button", { class: "chip", type: "button" }, "Affiliated-only");
+    const bCount = (countEls.affiliated = h("span", { class: "check-count" }, ""));
+    const b = h("button", { class: "chip", type: "button", title: "Only items for a group's own members" }, "Affiliated-only", bCount);
     a.addEventListener("click", () => { state.publicOnly = true; state.affiliated = false; a.classList.add("active"); b.classList.remove("active"); onChange(); });
     b.addEventListener("click", () => { state.publicOnly = false; state.affiliated = true; b.classList.add("active"); a.classList.remove("active"); onChange(); });
     seg.append(a, b);
@@ -158,16 +178,30 @@ export function createItemFilters(opts: FilterOpts, onChange: () => void): ItemF
       const located = f.lat !== undefined && f.lng !== undefined && !f.online;
       if (f.online && !state.online) return false;
       if (opts.freeFood && state.freeFood && !f.free_food) return false;
-      if (opts.helpWanted && state.helpWanted && f.help_wanted === false) return false;
+      if (opts.helpWanted && state.helpWanted && !f.help_wanted) return false;
       if (opts.publicSwitch) {
         if (state.publicOnly && f.affiliated_only) return false;
         if (state.affiliated && !f.affiliated_only) return false;
       }
-      if (state.inView && !(located && inBounds(f.lat!, f.lng!))) return false;
+      if (state.inView && !inMapView(f)) return false;
       if (center && !f.online) {
         if (!located || miles(center[0], center[1], f.lat!, f.lng!) > state.radius) return false;
       }
       return true;
+    },
+    setCounts(c) {
+      Object.assign(counts, c);
+      for (const k of ["freeFood", "affiliated", "helpWanted"] as const) {
+        const el2 = countEls[k];
+        if (el2 && counts[k] !== undefined) el2.textContent = ` (${counts[k]})`;
+      }
+    },
+    emptyReason() {
+      if (opts.freeFood && state.freeFood && counts.freeFood === 0) return "No upcoming items say there will be free food yet. Groups can add this in the event and project form.";
+      if (opts.publicSwitch && state.affiliated && counts.affiliated === 0) return "Nothing here is marked members-only. Switch back to \"Open to the public\".";
+      if (opts.helpWanted && state.helpWanted && counts.helpWanted === 0) return "No projects are asking for help yet. Turn off \"Help wanted only\" to see them all.";
+      if (state.inView) return "Nothing with an exact address is in view on the Geographic map. Zoom out there, or turn off \"Only what's in view\".";
+      return "";
     },
   };
 }

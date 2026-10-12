@@ -83,6 +83,12 @@ export function typeList(t: string | undefined): string[] {
   return (t || "").split(",").map((x) => x.trim()).filter(Boolean);
 }
 
+/** The type label for display next to a name: "" when the type isn't known, so no "Unknown" shows. */
+export function shownType(t: string): string {
+  const l = typeLabel(t);
+  return /^unknown$/i.test(l) ? "" : l;
+}
+
 export function typeLabel(t: string): string {
   const parts = typeList(t);
   if (parts.length > 1) return parts.map(typeLabel).join(" + ");

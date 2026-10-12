@@ -2841,3 +2841,30 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
   color: var(--text);
   font-size: 13px;
 }
+
+/* Long dates ("Second Monday of each month, 6:00-7:30 PM · next Oct 12") and places wrap inside their pill
+   instead of running past the card. */
+.pill { max-width: 100%; }
+.pill.deadline, .pill.kind { white-space: normal; line-height: 1.35; overflow-wrap: anywhere; }
+.meta-row { flex-wrap: wrap; min-width: 0; }
+.check-count { color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.join-line { margin-top: 8px; font-size: 12px; color: var(--text-dim); line-height: 1.45; overflow-wrap: anywhere; }
+.join-line strong { color: var(--text); font-weight: 600; }
+.join-line.none { color: var(--text-faint); font-style: italic; }
+.contact-links a { color: #7dd3fc; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Leaflet's panes use z-indexes in the hundreds; keep them inside the geographic view so they can never paint over
+   the details pane (which flashed behind the map while zooming out). */
+.geo-view, .geo-map { isolation: isolate; }
+
+/* Details pane: title on top, then About / Activity; the summary leads the About tab. */
+.drawer .head.compact { padding-bottom: 12px; }
+.drawer .head.compact .locate-row { margin-top: 10px; }
+.drawer .about-summary { margin: -4px 0 14px; }
+.drawer .about-summary > .desc:first-child { margin-top: 0; }
+
+/* An opened org's coalitions: scaled by graph.ts (--ls) so they never dwarf the group you opened. */
+.node-coalition.linked > * { transform: scale(var(--ls, 1.5)); }
+/* Members of an opened group fade in one after another at their place around it. */
+.node-coalition.arriving, .node-org.arriving { animation: node-arrive 0.45s ease-out backwards; animation-delay: var(--arrive-delay, 0ms); }
+@keyframes node-arrive { from { opacity: 0; } }

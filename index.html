@@ -7,6 +7,14 @@
     <style>
       #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:14px;overflow:auto;padding:24px 0;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
       #boot.done{opacity:0;pointer-events:none}
+      /* switching a Social justice layer reloads the page: a small card over a dimmed page instead of the full screen */
+      #boot.quick{background:rgba(15,23,42,.72);justify-content:center}
+      #boot.quick > :not(.boot-msg):not(.bar){display:none}
+      #boot.quick .boot-msg{background:#111827;border:1px solid #1e293b;border-radius:12px 12px 0 0;padding:14px 22px 10px;min-height:0}
+      #boot.quick .bar{margin-top:-14px;width:min(340px,80vw);border-radius:0 0 6px 6px}
+      /* still working after the bar's estimate ran out: a soft sweep so it never looks stuck */
+      #boot .bar.busy b{background:linear-gradient(90deg,#34d399,#38bdf8,#a7f3d0,#38bdf8,#34d399);background-size:200% 100%;animation:bootBusy 1.4s linear infinite}
+      @keyframes bootBusy{from{background-position:0 0}to{background-position:-200% 0}}
       #boot > *{flex-shrink:0} /* when the text runs long on a phone, scroll instead of squashing the bar and button */
       #boot canvas{width:280px;height:190px}
       #boot .bar{width:240px;height:6px;border-radius:3px;background:#1e293b;overflow:hidden}
@@ -52,11 +60,12 @@
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
       <div class="boot-msg">Gathering the movement&hellip;</div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
+      <button type="button" id="boot-hold" class="boot-hold" title="The map keeps loading behind this screen">Keep this screen open</button>
       <div class="boot-hint" hidden></div>
       <div class="land-text" id="land-dedication">
-        <p>This platform was designed in Natick, Wellesley, and Boston&mdash;on the original homelands of the Massachusett, Nipmuc and Wampanoag peoples.</p>
+        <p>This platform was designed in Natick, Wellesley, and Boston&mdash;on the ancestral homelands of the Massachusett, Nipmuc and Wampanoag peoples.</p>
         <p>It was built with the help of Claude (AI), which was built on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs on data centers in the stolen homeland of the Pokagon Potawatomi in Indiana, and other places whose names we don't yet know. We honor these first peoples, and the lands and waters they have cared for countless generations.</p>
-        <p>With respect and gratitude, we receive the many gifts of the Earth along with the great labors of our sisters and brothers across the planet: including minerals mined by slaves in our computer chips, water extracted for cooling data centers, and the electricity generated from coal, gas, wind, and sunlight that powers this platform.</p>
+        <p>With respect and gratitude, we receive the many gifts of the Earth along with the great labors of our sisters and brothers across the planet: including minerals in our computer chips mined by slaves, water extracted for cooling data centers, and the electricity generated from coal, gas, wind, and sunlight that powers this platform.</p>
         <p>We acknowledge the harm woven into this, and commit to its repair, beginning with the return of land to Indigenous peoples and the freedom of enslaved people everywhere.</p>
         <p>This platform is dedicated to all of our ancestors, all of our future ancestors, and to the welfare and benefit of all life on Earth.</p>
         <p class="land-links"><strong>Whose land are you on?</strong> <a href="https://native-land.ca" target="_blank" rel="noopener noreferrer">Native Land Digital</a><br>
@@ -66,7 +75,6 @@
           <strong>Learn more:</strong> <a href="https://www.pokagonband-nsn.gov" target="_blank" rel="noopener noreferrer">Pokagon Band of Potawatomi</a>
         </p>
       </div>
-      <button type="button" id="boot-hold" class="boot-hold" title="The map keeps loading behind this screen">Keep this screen open</button>
     </div>
     <script>
       // Loading splash: one line of text at a time (main.ts bootDetail), a progress bar paced by how long the last
@@ -77,6 +85,7 @@
         try { var v = +localStorage.getItem(KEY); if (v > 500 && v < 60000) expected = v; } catch (e) {}
         var t0 = performance.now(), real = 0, finished = false;
         var boot = document.getElementById("boot");
+        try { if (sessionStorage.getItem("openthink.quickboot")) { boot.classList.add("quick"); sessionStorage.removeItem("openthink.quickboot"); } } catch (e) {}
         var bar = boot.querySelector(".bar"), fill = bar.querySelector("b");
         var msg = boot.querySelector(".boot-msg");
         // One quiet tip per visit, for someone's first few visits only (then the screen is just the facts).
@@ -121,12 +130,25 @@
           var ms = performance.now() - t0;
           try { localStorage.setItem(KEY, String(Math.round(expected * 0.4 + ms * 0.6))); } catch (e) {}
         };
+        // Two stages, each with its own share of the bar, so it is full only when the map really opens:
+        //  1. fetching the data (0-55%): paced by how long the last fetch took, and by real download progress;
+        //  2. building the map (55-100%): one step per loading line shown, so the lines and the bar move together.
+        var phase = "fetch", shownB = 0, totalB = 0;
+        var FKEY = "openthink.fetchMs", expectedFetch = expected * 0.6;
+        try { var fv = +localStorage.getItem(FKEY); if (fv > 300 && fv < 60000) expectedFetch = fv; } catch (e) {}
+        window.bootPhase = function (p) {
+          if (p !== "build" || phase === "build") return;
+          phase = "build";
+          try { localStorage.setItem(FKEY, String(Math.round(expectedFetch * 0.4 + (performance.now() - t0) * 0.6))); } catch (e) {}
+        };
         function progress() {
-          if (finished) return 1;
+          if (finished && !queue.length && performance.now() - shownAt > 200) return 1;
           var el = performance.now() - t0;
-          // steady with time up to 90% at the usual load time, then creeps towards 97%
-          var est = el < expected ? 0.9 * el / expected : 0.9 + 0.07 * (1 - Math.exp(-(el - expected) / expected));
-          return Math.min(0.97, Math.max(real, est));
+          if (phase === "fetch") {
+            var est = el < expectedFetch ? 0.5 * el / expectedFetch : 0.5 + 0.05 * (1 - Math.exp(-(el - expectedFetch) / expectedFetch));
+            return Math.min(0.55, Math.max(Math.min(real, 0.75) * 0.73, est));
+          }
+          return 0.55 + 0.43 * (totalB ? shownB / totalB : 0);
         }
         // ---- the map assembling itself from nothing: coalitions appear, organizations bud off them and link up,
         // and the network fills in as loading goes on (how much may exist follows the progress)
@@ -202,13 +224,15 @@
         if (reduce) { for (var w = 0; w < 400; w++) { real = Math.max(real, w / 400); step(); } real = 0; }
         function ui() {
           var p = progress();
+          bar.classList.toggle("busy", phase === "fetch" && performance.now() - t0 > expectedFetch * 1.2);
           fill.style.width = (p * 100).toFixed(1) + "%";
           bar.setAttribute("aria-valuenow", String(Math.round(p * 100)));
         }
         // One line at a time (main.ts bootDetail), each up long enough to read: longer lines stay longer.
         // Only the newest three wait their turn, so the screen never falls far behind what is happening.
         var queue = [], timer = null, shownAt = performance.now(), dwell = 900; // the opening line moves on quickly
-        var dwellFor = function (t) { return Math.min(1600, 750 + 16 * t.length); };
+        // once the map is ready, the lines still waiting go by quickly instead of keeping everyone waiting
+        var dwellFor = function (t) { return finished ? 480 : Math.min(1600, 750 + 16 * t.length); };
         // "Loading volunteer opportunities (25/25)" shows its count running up from 1
         function countUp(text) {
           var m = /^(.*\()(\d+)\/(\d+)(\).*)$/.exec(text);
@@ -226,6 +250,7 @@
           var wait = dwell - (performance.now() - shownAt);
           if (wait > 0) { timer = setTimeout(pump, wait); return; }
           var next = queue.shift();
+          if (phase === "build") shownB++;
           msg.classList.add("fade");
           setTimeout(function () {
             msg.dataset.line = next;
@@ -235,13 +260,31 @@
           shownAt = performance.now();
           dwell = dwellFor(next);
           if (queue.length) timer = setTimeout(pump, dwell);
+          else if (waiters.length) setTimeout(flushWaiters, dwell + 450); // the line fades in over 250ms, then stays readable
         }
+        // main.ts opens the map once the last line has been up long enough to read (or after maxMs at most)
+        var waiters = [];
+        function flushWaiters() { var w = waiters; waiters = []; w.forEach(function (f) { f(); }); }
+        window.bootAfterLines = function (cb, maxMs) {
+          if (!queue.length) { setTimeout(cb, Math.max(150, dwell + 450 - (performance.now() - shownAt))); return; }
+          waiters.push(cb);
+          setTimeout(flushWaiters, maxMs);
+        };
         window.bootDetail = function (text) {
           if (!text || text === msg.dataset.line || queue[queue.length - 1] === text) return;
+          if (phase === "fetch") queue = queue.filter(function (q) { return WAITING.indexOf(q) < 0; }); // real news replaces "still fetching"
           queue.push(text);
-          if (queue.length > 10) queue.splice(0, queue.length - 10);
+          if (phase === "build") totalB++;
+          if (queue.length > 10) { var cut = queue.length - 10; queue.splice(0, cut); if (phase === "build") shownB += cut; }
           if (!timer) pump();
         };
+        // While the data is still on its way, the line changes every few seconds so the screen never looks stuck.
+        var WAITING = ["Fetching today's events, projects and actions\u2026", "Checking the coalition's sheet for updates\u2026", "Still gathering \u2014 thanks for your patience\u2026"];
+        var waitI = 0;
+        var waitTimer = setInterval(function () {
+          if (phase !== "fetch" || !document.body.contains(boot)) { clearInterval(waitTimer); return; }
+          if (!queue.length && performance.now() - shownAt > 2600) window.bootDetail(WAITING[waitI++ % WAITING.length]);
+        }, 400);
         // How long until the lines already queued have all been shown (main.ts waits a little for them).
         window.bootDetailPendingMs = function () {
           var left = Math.max(0, dwell - (performance.now() - shownAt));

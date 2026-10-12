@@ -1,7 +1,7 @@
 // The detail card for one event, project or action, shown over a page (Events, Topics…) without leaving it.
 import type { Action, CoalitionEvent, DataFile, Project } from "./types";
 import { allActions, allEvents, allProjects, ownerBadge, sectorAttrs, sectorPill, type Owner } from "./owners";
-import { itemButtons } from "./links";
+import { contactLinks, itemButtons, joinLine } from "./links";
 import { h } from "./dom";
 import { staleNotice } from "./notice";
 import { fmtEventTime, hasTime, parseEventDate } from "./util";
@@ -96,7 +96,9 @@ export function showItemCard(host: HTMLElement, kind: CardKind, item: CardItem, 
     item.description ? h("p", { class: "detail-desc" }, item.description) : null,
     tags && tags.length ? h("div", { class: "detail-tags" }, tags.map((t) => t.replace(/_/g, " ")).join(" · ")) : null,
     skills && skills.length ? h("div", { class: "detail-tags" }, `Skills that help: ${skills.join(", ")}`) : null,
-    contact ? h("div", { class: "detail-contact" }, `Contact: ${contact}`) : null,
+    kind !== "event" && !(kind === "project" && p.status === "completed")
+      ? joinLine(item as { public_contact?: string; link?: string }, owner.node as unknown as { public_contact?: string; website?: string; name: string })
+      : contact ? h("div", { class: "detail-contact" }, "Contact: ", contactLinks(contact)) : null,
     itemButtons(kind, item as { rsvp_link?: string; link?: string }),
     staleNotice(kind, owner.node, (item as { needs_info?: boolean }).needs_info, (item as { verified?: boolean }).verified, item as never),
     toMap);

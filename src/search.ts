@@ -106,6 +106,7 @@ export function createNodeSearch(
   let results: SearchItem[] = [];
   let active = 0;
   let seq = 0;
+  let timer: number | undefined;
 
   const close = () => {
     list.replaceChildren();
@@ -114,6 +115,9 @@ export function createNodeSearch(
   };
   const pick = (item: SearchItem) => {
     input.value = item.label;
+    // a place lookup still on its way must not reopen the list after a pick
+    seq++;
+    window.clearTimeout(timer);
     close();
     onPick(item.id, item);
   };
@@ -153,7 +157,6 @@ export function createNodeSearch(
     }
   };
 
-  let timer: number | undefined;
   input.addEventListener("input", () => {
     window.clearTimeout(timer);
     timer = window.setTimeout(update, opts.extra ? 250 : 0);

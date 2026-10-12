@@ -25,7 +25,7 @@ import { parseEventDate } from "./util";
 import { attachSectors, createSectorSection } from "./sectors";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
-type BootWindow = Window & { bootProgress?: (p: number, label?: string) => void; bootDetail?: (text: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void; bootDetailPendingMs?: () => number };
+type BootWindow = Window & { bootPhase?: (p: "build") => void; bootProgress?: (p: number, label?: string) => void; bootDetail?: (text: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void; bootDetailPendingMs?: () => number; bootAfterLines?: (cb: () => void, maxMs: number) => void };
 /** The loading screen's one line of text: short, true, and about the people on the map. */
 function bootDetail(text: string) {
   bootWin.bootDetail?.(text);
@@ -44,16 +44,16 @@ function hideBoot() {
     el.classList.add("done");
     setTimeout(() => el.remove(), 600);
   };
-  bootWin.bootProgress?.(1);
   // Someone pressed "Keep this screen open": wait for their "Open the map".
   if (bootWin.bootHeld) {
     bootDetail("Everything is loaded. Open the map when you're ready.");
     bootWin.bootRelease = go;
     return;
   }
-  // Otherwise let the last few loading lines finish showing (briefly), then open.
-  const pending = Math.min(3000, bootWin.bootDetailPendingMs?.() ?? 0);
-  setTimeout(() => (bootWin.bootHeld ? (bootWin.bootRelease = go) : go()), 250 + pending);
+  // Otherwise let the last loading lines finish (they speed up now); the bar fills as they do, then the map opens.
+  const open = () => (bootWin.bootHeld ? (bootWin.bootRelease = go) : go());
+  if (bootWin.bootAfterLines) bootWin.bootAfterLines(open, 4500);
+  else setTimeout(open, 250);
 }
 
 async function main() {
@@ -92,7 +92,7 @@ async function main() {
     return;
   }
 
-  bootProgress(0.8);
+  bootWin.bootPhase?.("build"); // the bar's second stage follows the lines below
   // The loading lines Nathan picked (2026-10-05): what is loading, then true counts from the data.
   // Each line says what is loading, with its count running up on screen ("(1/25)" … "(25/25)", index.html)
   const n = (label: string, count: number) => `Loading ${label} (${count}/${count})`;
@@ -216,6 +216,7 @@ async function main() {
       else locateOnGeo(node, it);
     },
     canLocateGeo: (node, item) => geoView.canLocate(node, item as { lat?: number; lng?: number } | undefined),
+    currentView: () => activeTab,
   });
 
   // On a phone the details tray would cover the group you just opened, so with bubbles on we show only
@@ -404,6 +405,7 @@ async function main() {
     actionsView.el.style.display = tab === "actions" ? "grid" : "none";
     topicsView.el.style.display = tab === "topics" ? "grid" : "none";
     if (tab === "topics") topicsView.show();
+    drawerApi?.refresh(); // its "Locate on …" buttons depend on the page
     if (tab === "geo") geoView.invalidate();
     if (tab === "map") setTimeout(() => graphApi?.ensureInView(), 150);
     if (tab !== "map") {
