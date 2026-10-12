@@ -8,6 +8,7 @@ import { currentMap, MAPS, type MapId } from "./maps";
 import { createCommandRoom } from "./commandroom";
 import { createBattle } from "./battle";
 import { feedbackBid } from "./feedback";
+import { topicsUrl, topicListInfo, onTopicListChange } from "./topiclist";
 
 export interface TopicRecord {
   id: string;
@@ -210,7 +211,8 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     const mapIds: string[] = currentMap.combine ? [...currentMap.combine] : [currentMap.id];
     const recs = f.records.filter((r) => mapIds.includes(r.map));
     const tagged = recs.filter((r) => r.topics.length || r.bills.length).length;
-    count.textContent = `${tagged} of ${recs.length} records tagged · ${mapIds.map((m) => MAPS[m as MapId]?.name ?? m).join(" + ")}`;
+    count.textContent = `${topicListInfo().label} topics · ${tagged} of ${recs.length} records tagged · ${mapIds.map((m) => MAPS[m as MapId]?.name ?? m).join(" + ")}`;
+    count.title = `${topicListInfo().hint} Change it in Map settings → Advanced display settings → Topic list.`;
     // one colour per main topic (in list order, among those with records on this map)
     const present = f.parents.filter((p) => recs.some((r) => r.topics.some((t) => p.children.some((c) => c.id === t)))).map((p) => p.id);
     const hue = new Map(present.map((id, i) => [id, d3.hsl((i * 360) / present.length + 200, 0.55, 0.6).formatHex()]));
@@ -240,12 +242,14 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   function show() {
     if (file) applyView();
     if (file || loading) return;
-    loading = fetch(`${import.meta.env.BASE_URL}topics.json`)
+    const url = topicsUrl();
+    loading = fetch(url)
       .then((r) => {
-        if (!r.ok) throw new Error(`topics.json: ${r.status}`);
+        if (!r.ok) throw new Error(`${url.split("/").pop()}: ${r.status}`);
         return r.json() as Promise<TopicsFile>;
       })
       .then((f) => {
+        if (url !== topicsUrl()) return; // the list was switched while this one loaded
         file = f;
         setup(f);
       })
@@ -253,6 +257,22 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
         stage.appendChild(h("div", { class: "list-empty" }, `Couldn't load the topic data (${(err as Error).message}).`));
       });
   }
+
+  // Switching the topic list (Advanced display settings) rebuilds both views from the other file.
+  onTopicListChange(() => {
+    for (const v of [room, battle]) {
+      v?.hide();
+      v?.el.remove();
+    }
+    room = battle = null;
+    makeViews = null;
+    file = null;
+    loading = null;
+    detail.replaceChildren();
+    stage.replaceChildren();
+    count.textContent = "";
+    if (wrap.isConnected && wrap.offsetParent !== null) show();
+  });
 
   return { el: wrap, show };
 }

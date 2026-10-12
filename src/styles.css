@@ -2829,3 +2829,15 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .bt-deselect { display: none; position: absolute; top: 34px; left: 50%; transform: translateX(-50%); z-index: 5; appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 12.5px; cursor: pointer; box-shadow: var(--shadow); }
 .bt-deselect.on { display: block; }
 .bt-deselect:hover { border-color: var(--accent); }
+
+/* ---------- Topic list choice (Advanced display settings) ---------- */
+.topic-list-control .ctrl-select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: 13px;
+}

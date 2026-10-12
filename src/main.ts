@@ -1,4 +1,5 @@
 import "./styles.css";
+import { topicListControl } from "./topiclist";
 import type { Action, CoalitionEvent, DataFile, GraphNode, Project, Thought } from "./types";
 import { createTopbar, type TopTab } from "./topbar";
 import { createSidebar } from "./sidebar";
@@ -259,6 +260,8 @@ async function main() {
   });
   // The org-to-org connections toggle lives with the other advanced display options.
   controls.advancedContainer().appendChild(graphApi.orgLinkToggle());
+  // Which topic list the Topics page uses (Wikipedia-based by default; group-based kept for comparison).
+  controls.advancedContainer().appendChild(topicListControl());
   // "Social justice": one switch per sector layer, closed by default, just above Advanced display settings.
   createSectorSection(sidebar.controlsContainer(), currentMap.id);
 

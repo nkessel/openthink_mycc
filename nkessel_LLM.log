@@ -659,3 +659,9 @@ What / why
 
 2026-10-07 (Claude, dedication v2)
 - Dedication: Nathan's updated wording (verbatim; "--" shown as an em dash, closing period added to the fourth paragraph). Text is now centered.
+
+2026-10-12 (Claude, Wikipedia-based topics as default)
+- Topics page now uses Turibius's Wikipedia-based topics by default: his 13 seed topics are the main topics; sub-topics are his topics that our items actually use. The group-based list (public/topics.json, unchanged) stays available in Map settings → Advanced display settings → Topic list (remembered per browser; ?topics=groups|wiki in links). Item cards follow the same choice.
+- scripts/merge-wiki-topics.mjs merges his topics + aliases CSVs (his spec: hop_distance,topic,aliases,qid,seeds,lift_lcb_max) → research/topics/wiki/topics-merged.csv. scripts/wiki-topics.mjs tags each item's already-extracted topic phrases against topic names/aliases (exact, then a topic name inside a longer phrase, with a stoplist of vague words) → public/topics-wiki.json + research/topics/wiki/coverage.md (what is lost).
+- Lift cutoff 8 (not his suggested 10): 10 tags only 133 of 618 items (22%); 8 tags 374 (61%); group-based tags 550 (89%). Topics reached from several seeds sit under the first seed listed.
+- Command room: problem/vision wording for the 13 seeds (src/problems.ts); their sub-topics use their own names.

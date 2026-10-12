@@ -17,6 +17,7 @@ import { orgProjects, orgEvents, orgActions } from "./owners";
 import { isPastAction, isPastEvent, isPastProject } from "./past";
 import { typeIcon } from "./icons";
 import { suggestionsFor } from "./suggestions";
+import { topicsUrl, onTopicListChange } from "./topiclist";
 
 type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
 /** The kinds of item in the Activity tab, each with its own filter pill. */
@@ -517,9 +518,13 @@ export function createDrawer(
   type TopicsFile = { parents: { id: string; label: string; children: { id: string; label: string }[] }[]; records: { id: string; topics: string[]; bills: string[] }[] };
   let topicsData: TopicsFile | null = null;
   let topicsLoading: Promise<void> | null = null;
+  onTopicListChange(() => {
+    topicsData = null;
+    topicsLoading = null;
+  });
   function loadTopics(): Promise<void> {
     if (topicsData || topicsLoading) return topicsLoading ?? Promise.resolve();
-    topicsLoading = fetch(`${import.meta.env.BASE_URL}topics.json`).then((r) => (r.ok ? r.json() : null)).then((j) => { topicsData = j; }).catch(() => {});
+    topicsLoading = fetch(topicsUrl()).then((r) => (r.ok ? r.json() : null)).then((j) => { topicsData = j; }).catch(() => {});
     return topicsLoading;
   }
   function topicLabels(itemId: string): string[] {
