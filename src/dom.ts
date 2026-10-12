@@ -44,3 +44,21 @@ function appendChildren(parent: Element, children: Child[]): void {
     }
   }
 }
+
+/** On phones: fold a panel behind one button (closed at first), keeping `keep` (e.g. its search box) in view. */
+export function makeFoldable(panel: HTMLElement, label: string, keep: HTMLElement[] = []): void {
+  panel.classList.add("foldable");
+  for (const k of keep) k.classList.add("fold-keep");
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "panel-fold";
+  const phone = () => window.matchMedia("(max-width: 720px)").matches;
+  const set = (open: boolean) => {
+    panel.classList.toggle("folded", !open);
+    btn.setAttribute("aria-expanded", String(open));
+    btn.textContent = `${open ? "Hide" : "Show"} ${label} ${open ? "\u25B4" : "\u25BE"}`;
+  };
+  btn.addEventListener("click", () => set(panel.classList.contains("folded")));
+  set(!phone());
+  panel.insertBefore(btn, keep.length ? keep[keep.length - 1].nextSibling : panel.firstChild);
+}

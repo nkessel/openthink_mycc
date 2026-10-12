@@ -17,9 +17,9 @@ import { orgProjects, orgEvents, orgActions } from "./owners";
 import { isPastAction, isPastEvent, isPastProject } from "./past";
 import { typeIcon } from "./icons";
 import { suggestionsFor } from "./suggestions";
-import { topicsUrl, onTopicListChange } from "./topiclist";
+import { topicsUrl, topicListInfo, onTopicListChange } from "./topiclist";
 
-type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
+type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about" | "topics";
 /** The kinds of item in the Activity tab, each with its own filter pill. */
 type ActKind = "event" | "project" | "action" | "volunteer";
 const ACT_KINDS: { k: ActKind; label: string }[] = [
@@ -196,6 +196,7 @@ export function createDrawer(
     const tabList: { id: DrawerTab; label: string }[] = [
       { id: "about", label: "About" },
       { id: "activity", label: `Activity (${total})` },
+      { id: "topics", label: "Topics" },
     ];
     // older links to a single kind open Activity filtered to that kind
     if (activeTab === "projects" || activeTab === "events" || activeTab === "actions") {
@@ -223,6 +224,10 @@ export function createDrawer(
 
   function renderBody(node: GraphNode): HTMLElement {
     const body = h("div", { class: "body" });
+    if (activeTab === "topics") {
+      renderTopicsTab(body, node);
+      return body;
+    }
     if (node.kind === "coalition") {
       const c = node as Coalition;
       if (activeTab === "about") {
@@ -541,6 +546,42 @@ export function createDrawer(
     const label = new Map<string, string>();
     for (const p of topicsData.parents) for (const c of p.children) label.set(c.id, c.label);
     return rec.topics.filter((t) => t !== "broad").map((t) => label.get(t) || t);
+  }
+
+  /** The group's topics (from the topic list chosen in settings): each topic, and the group's items on it. */
+  function renderTopicsTab(body: HTMLElement, node: GraphNode): void {
+    const fill = () => {
+      clear(body);
+      if (!topicsData) { body.appendChild(h("div", { class: "empty" }, "Couldn't load the topics.")); return; }
+      const recs = topicsData.records.filter((r) => (r as unknown as { host: string }).host === node.id);
+      const parentOf = new Map<string, { label: string; child: string }>();
+      for (const p of topicsData.parents) for (const c of p.children) parentOf.set(c.id, { label: p.label, child: c.label });
+      const byTopic = new Map<string, typeof recs>();
+      for (const r of recs) for (const t of r.topics) (byTopic.get(t) ?? byTopic.set(t, []).get(t)!).push(r);
+      body.appendChild(h("div", { class: "ctrl-hint topics-tab-note" }, `${topicListInfo().label} topics, from this group's events, projects, actions and mission. Change the list in Map settings → Advanced display settings.`));
+      if (!byTopic.size) { body.appendChild(h("div", { class: "empty" }, "No topics found for this group yet.")); return; }
+      const sorted = [...byTopic].sort((a, b) => b[1].length - a[1].length);
+      for (const [t, rs] of sorted) {
+        const info = parentOf.get(t);
+        const box = h("div", { class: "item topic-row" },
+          h("div", { class: "name" }, info?.child ?? t, h("span", { class: "topic-count" }, ` · ${rs.length}`)),
+          info ? h("div", { class: "sub" }, info.label) : null);
+        const list = h("div", { class: "topic-items" });
+        for (const r of rs) {
+          const rr = r as unknown as { id: string; kind: string; name: string };
+          const id = rr.id.slice(rr.id.indexOf(":") + 1);
+          const found = rr.kind === "event" ? (node.kind === "coalition" ? node.events : orgEvents(data, node)).find((x) => x.id === id)
+            : rr.kind === "project" ? (node.kind === "coalition" ? node.projects : orgProjects(data, node)).find((x) => x.id === id)
+            : rr.kind === "action" ? (node.kind === "coalition" ? node.actions || [] : orgActions(data, node)).find((x) => x.id === id) : undefined;
+          if (found) list.appendChild(openName(rr.kind as ItemKind, found, node));
+          else list.appendChild(h("div", { class: "sub" }, rr.kind.endsWith("mission") ? "Mission statement" : rr.name));
+        }
+        box.appendChild(list);
+        body.appendChild(box);
+      }
+    };
+    if (topicsData) fill();
+    else { body.appendChild(h("div", { class: "empty" }, "Loading topics…")); loadTopics().then(() => { if (activeTab === "topics") fill(); }); }
   }
 
   const pad = (n: number) => String(n).padStart(2, "0");

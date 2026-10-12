@@ -626,7 +626,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     for (const s of visStreams) {
       if (s.value <= 0 || shownAlpha(s) < 0.2) continue;
       const list = s.recs.filter((r) => (recWeight.get(r.id) ?? 0) > 0).sort((a, b) => (recWeight.get(b.id) ?? 0) - (recWeight.get(a.id) ?? 0));
-      list.forEach((r, i) => items.push({ key: `${s.org.key}|${s.prob.id}|${r.id}`, s, r, f: 0.3 + (0.45 * (i + 0.5)) / list.length }));
+      // the items sit just outside their group, each on the path it feeds: they read as the group's own work
+      list.forEach((r, i) => items.push({ key: `${s.org.key}|${s.prob.id}|${r.id}`, s, r, f: 0.07 + (0.16 * (i + 0.5)) / list.length }));
     }
   }
 
@@ -1003,6 +1004,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     selOrg = selOrg === o ? null : o;
     refresh();
     renderDetail();
+    // a group's details open in the same pane as everywhere else on the site (with its Topics tab)
+    if (selOrg) ctx.cb.onGroupClick(selOrg.host);
   }
   function selectItem(r: TopicRecord, at?: { x: number; y: number }) {
     selProb = null;
@@ -1060,7 +1063,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function renderDetail() {
     const d = ctx.detail;
     clear(d);
-    if (!selOrg && !selProb && !selItem) {
+    // a group alone opens the site's standard details pane (selectOrg), not this one
+    if (!selProb && !selItem) {
       d.classList.remove("open");
       return;
     }
@@ -1188,7 +1192,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       for (const s of list) {
         const a = streamAlpha(s);
         if (a <= 0) continue;
-        const k = Math.sqrt(s.value / vmax);
+        // with one group picked, every one of its paths shows clearly, however little energy it carries
+        const k = selOrg ? Math.max(0.55, Math.sqrt(s.value / vmax)) : Math.sqrt(s.value / vmax);
         const c = d3.color(pColor(s.prob))!;
         c.opacity = (s === hover ? 0.75 : (0.035 + 0.16 * k) * a) * (reduced ? 1.6 : 1);
         g.strokeStyle = c.formatRgb();
@@ -1200,7 +1205,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       for (const s of list) {
         const a = streamAlpha(s);
         if (a <= 0) continue;
-        const k = Math.sqrt(s.value / vmax);
+        const k = selOrg ? Math.max(0.55, Math.sqrt(s.value / vmax)) : Math.sqrt(s.value / vmax);
         g.strokeStyle = s === hover ? "rgba(186,230,253,0.85)" : `rgba(96,165,250,${(0.08 + 0.3 * k) * a})`;
         g.lineWidth = (s === hover ? 2.6 : 0.5 + 2.4 * k) / tr.k;
         line(s, 0, s.riverAt);

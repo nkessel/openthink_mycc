@@ -2,7 +2,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Coalition, DataFile, GraphNode, Organization } from "./types";
 import { currentMap } from "./maps";
-import { h } from "./dom";
+import { h, makeFoldable } from "./dom";
 import { initials, shownType, hasTime, parseEventDate } from "./util";
 import { allEvents, allProjects, type Owner } from "./owners";
 import { APPROX_MAX_ZOOM, inMapView, loadTowns, placeFor, setMapBounds } from "./itemfilters";
@@ -69,12 +69,11 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   // ---- Panel: search, layer checkboxes, near me
   const panel = h("div", { class: "geo-panel" });
   wrap.appendChild(panel);
-  panel.appendChild(
-    createNodeSearch(everythingForSearch(data), (_id, item) => goTo(item), {
-      placeholder: "Search a place, organization, coalition, event…",
-      extra: findPlaces,
-    }),
-  );
+  const geoSearch = createNodeSearch(everythingForSearch(data), (_id, item) => goTo(item), {
+    placeholder: "Search a place, organization, coalition, event…",
+    extra: findPlaces,
+  });
+  panel.appendChild(geoSearch);
 
   const layers = h("div", { class: "geo-layers" }, h("h3", {}, "Show on the map"));
   const layerDefs: { key: LayerKey; label: string; swatch: string }[] = [
@@ -628,6 +627,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
       { timeout: 10000 },
     );
   });
+
+  // on a phone the layers and lists fold away behind one button, so the map itself stays in view
+  makeFoldable(panel, "map options", [geoSearch]);
 
   return {
     el: wrap,

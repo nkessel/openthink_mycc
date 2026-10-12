@@ -1,11 +1,11 @@
 // Animation level for the Topics views. "Full" draws everything; "Simple" draws fewer, plainer particles at
 // a lower canvas resolution. With no choice saved, the views start in Full and switch themselves to Simple
-// when the browser can't keep up (frames slower than about 20 per second for a few seconds).
+// when the browser can't keep up (frames slower than about 30 per second for a few seconds).
 
 export type AnimChoice = "full" | "simple";
 const KEY = "openthink.anim.v1";
-const SLOW_MS = 50; // a frame interval above this (under ~20 fps) counts as slow
-const SLOW_FOR_MS = 4000; // ...for this long before switching
+const SLOW_MS = 34; // a frame interval above this (under ~30 fps) counts as slow
+const SLOW_FOR_MS = 3000; // ...for this long before switching
 
 let choice: AnimChoice | null = null;
 try {
@@ -19,7 +19,7 @@ const subs = new Set<() => void>();
 const notify = () => subs.forEach((f) => f());
 
 /** True when the views should draw the simple animation. */
-export const animSimple = () => (choice ?? (auto ? "simple" : "full")) === "simple";
+export const animSimple = () => document.documentElement.classList.contains("low-power") || (choice ?? (auto ? "simple" : "full")) === "simple";
 /** True when Simple was turned on automatically (not chosen). */
 export const animAuto = () => choice === null && auto;
 

@@ -106,6 +106,9 @@
           el.hidden = false;
         })();
         var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        // low-power mode (Map settings → Advanced): no bubble animation here either
+        try { if (localStorage.getItem("openthink.lowpower") === "1") reduce = true; } catch (e) {}
+        try { if (localStorage.getItem("openthink.largeprint") === "1") boot.querySelector(".boot-hint").remove(); } catch (e) {}
 
         window.bootProgress = function (p) {
           real = Math.max(real, Math.min(1, p));

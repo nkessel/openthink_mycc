@@ -391,16 +391,19 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   })();
   const FX: FxParams = { ...fx0 };
   const fxPanel = h("div", { class: "bt-fx", role: "dialog", "aria-label": "Effect settings" });
-  const fxBtn = h("button", { type: "button", class: "cr-info", "aria-expanded": "false" }, "Effects") as HTMLButtonElement;
-  fxBtn.addEventListener("click", () => {
-    const on = !fxPanel.classList.contains("on");
+  const fxBtn = h("button", { type: "button", class: "cr-info", "aria-expanded": "false" }, "Modify Visual Effects") as HTMLButtonElement;
+  const showFx = (on: boolean) => {
     fxPanel.classList.toggle("on", on);
     fxBtn.setAttribute("aria-expanded", String(on));
-  });
+  };
+  fxBtn.addEventListener("click", () => showFx(!fxPanel.classList.contains("on")));
   const fxInputs = new Map<keyof FxParams, [HTMLInputElement, HTMLElement]>();
   const fmt = (k: keyof FxParams, v: number) => (FX_SLIDERS.find((x) => x.key === k)!.step >= 1 ? String(Math.round(v)) : v.toFixed(2).replace(/\.?0+$/, ""));
   let lastGroup = "";
-  fxPanel.appendChild(h("div", { class: "bt-fx-head" }, "Effects"));
+  const fxHide = h("button", { type: "button", class: "bt-fx-hide", "aria-label": "Hide visual effects" }, "Hide ✕") as HTMLButtonElement;
+  fxHide.addEventListener("click", () => showFx(false));
+  fxPanel.appendChild(h("div", { class: "bt-fx-head" }, h("span", {}, "Visual effects"), fxHide));
+  fxPanel.appendChild(h("div", { class: "bt-fx-note" }, "Changes show right away and last until you leave the page. Use the buttons at the bottom to keep them."));
   for (const sl of FX_SLIDERS) {
     if (sl.group !== lastGroup) {
       lastGroup = sl.group;
@@ -428,27 +431,38 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     kick();
   };
   const fxStatus = h("div", { class: "bt-fx-status", "aria-live": "polite" });
-  const fxSave = h("button", { type: "button", class: "on" }, "Save as default") as HTMLButtonElement;
-  fxSave.title = "Use these settings every time you open the Command room in this browser";
+  // Three plain choices: keep mine, go back to what I had, or start over from the site's settings.
+  let keptFx: FxParams = { ...fx0 };
+  const fxSave = h("button", { type: "button", class: "on" }, "Keep these settings") as HTMLButtonElement;
+  fxSave.title = "Use these effects every time you open the Command room in this browser";
   fxSave.addEventListener("click", () => {
     try {
       localStorage.setItem(FX_STORE, JSON.stringify(FX));
-      fxStatus.textContent = "Saved. These are now your default effects in this browser.";
+      keptFx = { ...FX };
+      fxStatus.textContent = "Kept. You'll see these effects whenever you open the Command room in this browser.";
     } catch {
       fxStatus.textContent = "Couldn't save in this browser.";
     }
   });
-  const fxReset = h("button", { type: "button" }, "Site defaults") as HTMLButtonElement;
+  const fxUndo = h("button", { type: "button" }, "Undo changes") as HTMLButtonElement;
+  fxUndo.title = "Go back to the effects you last kept (or the site's, if you never kept any)";
+  fxUndo.addEventListener("click", () => {
+    setFx({ ...keptFx });
+    fxStatus.textContent = "Back to the effects you had.";
+  });
+  const fxReset = h("button", { type: "button" }, "Site's settings") as HTMLButtonElement;
+  fxReset.title = "Use the site's own effects and forget the ones you kept";
   fxReset.addEventListener("click", () => {
     setFx({ ...FX_DEFAULTS });
+    keptFx = { ...FX_DEFAULTS };
     try {
       localStorage.removeItem(FX_STORE);
     } catch {
       /* ignore */
     }
-    fxStatus.textContent = "Back to the site's defaults.";
+    fxStatus.textContent = "Now using the site's settings. Your kept effects were cleared.";
   });
-  const fxCopy = h("button", { type: "button" }, "Copy for everyone") as HTMLButtonElement;
+  const fxCopy = h("button", { type: "button" }, "Share") as HTMLButtonElement;
   fxCopy.title = "Copy these settings, to send to the site's maintainers so they become everyone's default";
   fxCopy.addEventListener("click", async () => {
     const text = `Command room effects: ${JSON.stringify(FX)}`;
@@ -459,7 +473,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       fxStatus.textContent = text;
     }
   });
-  fxPanel.append(h("div", { class: "cr-seg bt-fx-btns" }, fxSave, fxReset, fxCopy), fxStatus);
+  fxPanel.append(h("div", { class: "cr-seg bt-fx-btns" }, fxSave, fxUndo, fxReset, fxCopy), fxStatus);
   const legend = h("div", { class: "cr-legend" });
   const infoBtn = h("button", { type: "button", class: "cr-info", "aria-expanded": "false" }, "How to read") as HTMLButtonElement;
   infoBtn.addEventListener("click", () => {
@@ -859,7 +873,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   /** Paths light up only once the pointer rests on something for a moment, so sweeping the mouse across the
    *  picture doesn't set off a dozen redraws. Leaving is quicker than arriving. */
   let hoverTimer = 0;
-  function hoverSoon(fn: () => void, ms = 160) {
+  function hoverSoon(fn: () => void, ms = 40) {
     clearTimeout(hoverTimer);
     hoverTimer = window.setTimeout(fn, ms);
   }
@@ -910,7 +924,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   }
   let items: Item[] = [];
   const ITEM_K = 2.4; // zoom where every group on screen shows its items
-  const ITEM_LABEL_R = 20; // a group this big on screen (px) also names its items
+  const ITEM_LABEL_R = 32; // a group this big on screen (px) also names its items (later than the icons, so names have room)
   const orgRecs = new Map<string, TopicRecord[]>();
   for (const r of recs) {
     const k = `${r.map}:${r.host}`;
@@ -1254,6 +1268,25 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           o.y = (py - tr.y) / tr.k;
           target.set(o.key, [o.x, o.y]);
           for (const st of allStreams) if (st.org === o) buildGeom(st);
+          // other groups move out of the way (and push the ones behind them), like on the main map
+          const moved = new Set<Org>([o]);
+          const gap = 4 / tr.k;
+          for (let pass = 0; pass < 3; pass++) {
+            for (const a of moved) {
+              for (const b of orgs.values()) {
+                if (b === a || b === o || !Number.isFinite(b.x) || !Number.isFinite(a.x)) continue;
+                const min = ((a.r + b.r) * orgScale()) / tr.k + gap;
+                const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01;
+                if (d >= min) continue;
+                b.x = a.x + (dx / d) * min;
+                b.y = a.y + (dy / d) * min;
+                target.set(b.key, [b.x, b.y]);
+                moved.add(b);
+              }
+            }
+          }
+          moved.delete(o);
+          if (moved.size) for (const st of allStreams) if (moved.has(st.org)) buildGeom(st);
           baseDirty = true;
           placeSvg();
           kick();
@@ -1391,6 +1424,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     shots = [];
     refresh();
     renderDetail();
+    // a group's details open in the same pane as everywhere else on the site (with its Topics tab)
+    if (selOrg) ctx.cb.onGroupClick(selOrg.host);
   }
   function clearSel() {
     selOrg = null;
@@ -1435,7 +1470,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     deselBtn.classList.toggle("on", !!(selOrg || selT || selItem));
     const d = ctx.detail;
     clear(d);
-    if (!selOrg && !selT && !selItem) {
+    // a group alone opens the site's standard details pane (selectOrg), not this one
+    if (!selT && !selItem) {
       d.classList.remove("open");
       return;
     }
@@ -1638,7 +1674,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         }
       }
       const speed = pick.kind === "fight" ? FX.cometSpeed : FX.seedSpeed; // px per second: slow, so the eye can follow
-      shots.push({ s: pick, t0: now, dur: (pick.len / speed) * 1000 });
+      // seeds drift a little slower than comets fly, so the nourishing side feels calmer
+      shots.push({ s: pick, t0: now, dur: (pick.len / speed) * 1000 * (pick.kind === "fight" ? 1 : 1.45) });
     }
     if (!simple && hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? FX.cometSpeed : FX.seedSpeed)) * 1000 });
   }
@@ -1662,7 +1699,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       // the solution grows (sprouts branch out all around it) and lights up
       t.pulse = Math.min(1, t.pulse + 1);
       t.light = Math.min(1, t.light + FX.lightUp);
-      fx.push({ t, x, y, a, t0: now, life: 2400, kind: "feed", seed: Math.random() });
+      fx.push({ t, x, y, a, t0: now, life: 3600, kind: "feed", seed: Math.random() });
     }
     if (fx.length > 90) fx.shift();
   }
@@ -1711,7 +1748,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     // comets and seeds in flight
     const keep: Shot[] = [];
     for (const sh of shots) {
-      const f = (now - sh.t0) / sh.dur;
+      let f = (now - sh.t0) / sh.dur;
       if (f >= 1) {
         if (sh.s.t.visible) arrive(sh, now);
         continue;
@@ -1721,9 +1758,11 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const s = sh.s;
       const a = Math.max(0.25, streamAlpha(s));
       if (s.kind === "fight") {
-        // one comet: a bright head with a single tapering tail behind it
+        // one comet: a bright head with a single tapering tail behind it; it leaves fast and slows as it goes,
+        // like something thrown (an ease-out along the path)
         const col = tColor(s.t);
         const tailLen = 46 / s.len;
+        f = 1 - Math.pow(1 - f, 1.7);
         atS(s, f, P);
         let px = P[0], py = P[1];
         g.lineCap = "round";
@@ -1745,15 +1784,20 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         g.drawImage(sprite(col), P[0] - 5 * sz, P[1] - 5 * sz, 10 * sz, 10 * sz);
         g.drawImage(sprite("#ffffff"), P[0] - 2 * sz, P[1] - 2 * sz, 4 * sz, 4 * sz);
       } else {
-        // a seed bomb: a small tumbling seed with a faint trail of pollen
+        // a seed of light: it floats along with a soft glow, and a trail of pollen that twinkles and drifts sideways
         atS(s, f, P);
+        const sway = Math.sin(now / 520 + s.seed * 12) * 2.2;
+        g.globalAlpha = Math.min(1, 0.32 * a);
+        g.drawImage(sprite("#fef9c3"), P[0] - 7 * sz, P[1] - 7 * sz + sway, 14 * sz, 14 * sz);
         g.globalAlpha = Math.min(1, 0.85 * a);
-        const size = (6 + Math.sin(now / 120 + s.seed * 9)) * sz;
-        g.drawImage(sprite("#bef264"), P[0] - size / 2, P[1] - size / 2, size, size);
-        for (let k = 1; k <= (simple ? 0 : 5); k++) {
-          atS(s, f - (k * 7) / s.len, Q);
-          g.globalAlpha = (0.34 - k * 0.055) * a;
-          g.drawImage(sprite("#fde68a"), Q[0] - 1.5 * sz, Q[1] - 1.5 * sz, 3 * sz, 3 * sz);
+        const size = (5.5 + Math.sin(now / 260 + s.seed * 9)) * sz;
+        g.drawImage(sprite("#bef264"), P[0] - size / 2, P[1] - size / 2 + sway, size, size);
+        for (let k = 1; k <= (simple ? 0 : 8); k++) {
+          atS(s, f - (k * 6) / s.len, Q);
+          const tw = 0.55 + 0.45 * Math.sin(now / 180 + k * 1.9 + s.seed * 30);
+          const drift = Math.sin(now / 700 + k * 0.8 + s.seed * 5) * (1 + k * 0.6);
+          g.globalAlpha = Math.max(0, (0.36 - k * 0.04) * a * tw);
+          g.drawImage(sprite(k % 3 ? "#fde68a" : "#f0abfc"), Q[0] - 1.4 * sz + drift, Q[1] - 1.4 * sz - drift * 0.6, 2.8 * sz, 2.8 * sz);
         }
       }
     }
@@ -1797,7 +1841,19 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           g.globalAlpha = Math.min(1, 0.9 * FX.spark * (1 - sp));
           g.drawImage(sprite("#ffe4e6"), ex - 7, ey - 7, 14, 14);
         }
-        // 2. grey bits break off the problem and drift away, as if it is being worn down
+        // 1b. the problem shrinks back: a dim ring closes in on it (light radiating inward, the opposite of a solution)
+        {
+          const ia = Math.min(1, age * 1.3);
+          g.globalCompositeOperation = "source-over";
+          g.globalAlpha = 0.55 * (1 - ia);
+          g.strokeStyle = "#7f1d1d";
+          g.lineWidth = 2 * (1 - ia) + 0.6;
+          g.beginPath();
+          g.arc(cx0, cy0, rs + 22 * (1 - ia) + 1, 0, Math.PI * 2);
+          g.stroke();
+          g.globalCompositeOperation = "lighter";
+        }
+        // 2. bits of the problem itself break off its surface and drift away, as if it is being worn down
         const cl = Math.max(300, FX.chunkLife);
         if (ms < cl && FX.chunks > 0) {
           const ca = ms / cl, sec = ms / 1000;
@@ -1805,14 +1861,14 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           for (let k = 0; k < Math.round(FX.chunks); k++) {
             const r1 = (Math.sin((k + 1) * 12.9898 + e.seed * 78.233) * 43758.5453) % 1;
             const q1 = Math.abs(r1), q2 = Math.abs((r1 * 7.31) % 1), q3 = Math.abs((r1 * 3.17) % 1);
-            const an = e.a + Math.PI + (q1 - 0.5) * 2.6; // out of the struck side
+            const an = e.a + Math.PI + (q1 - 0.5) * 3.4; // from all around the struck half of its surface
             const v = FX.chunkSpeed * (0.55 + 0.9 * q2);
-            const d0 = rs * (0.75 + 0.2 * q3);
+            const d0 = rs * (0.55 + 0.4 * q3); // starting inside its edge: chipped off the body, not the comet
             const px = cx0 + Math.cos(an) * (d0 + v * sec), py = cy0 + Math.sin(an) * (d0 + v * sec) + 10 * sec * sec;
             const sz = FX.chunkSize * (0.7 + 0.8 * q3);
             const rot = q2 * 6.28 + sec * (q1 - 0.5) * 6;
             g.globalAlpha = 0.8 * (1 - ca * ca);
-            g.fillStyle = q3 > 0.5 ? "#9ca3af" : "#6b7280";
+            g.fillStyle = q3 > 0.5 ? "#7f1d1d" : "#57534e"; // the problem's own dark colours
             g.beginPath();
             for (let j = 0; j < 3; j++) {
               const aa = rot + (j * 2 * Math.PI) / 3, rr2 = sz * (j === 1 ? 1.3 : 0.9);
@@ -1858,7 +1914,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           g.drawImage(sprite("#4ade80", 0.5), x1 - 2.5, y1 - 2.5, 5, 5);
         }
         // 2. and it lights up: a warm ring of light spreads out, with a few sparkles
-        const la = Math.min(1, age * 1.4);
+        // (slow: the ring takes most of the effect's life to spread)
+        const la = Math.min(1, age * 1.05);
         g.globalAlpha = 0.9 * FX.lightUp * (1 - la);
         g.strokeStyle = "#fde68a";
         g.lineWidth = 1.5;
@@ -2038,7 +2095,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     h("div", {}, "Centre: the groups, with their logos. Groups that mostly confront problems lean left; groups that mostly build solutions lean right. Showing only problems or only solutions puts the groups on the opposite side."),
     h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are hit (or fed) more often, about 1–3 times every few seconds."),
     h("div", {}, "Each item's weight (the sliders) is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
-    h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. The Effects button tunes the animation."),
+    h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. The Modify Visual Effects button tunes the animation."),
     h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or use Detail → Split all. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),
   );
 

@@ -1,5 +1,8 @@
 import "./styles.css";
 import { topicListControl } from "./topiclist";
+import { displayControls, initDisplay, largePrint, onDisplayChange } from "./display";
+
+initDisplay();
 import type { Action, CoalitionEvent, DataFile, GraphNode, Project, Thought } from "./types";
 import { createTopbar, type TopTab } from "./topbar";
 import { createSidebar } from "./sidebar";
@@ -263,6 +266,10 @@ async function main() {
   controls.advancedContainer().appendChild(graphApi.orgLinkToggle());
   // Which topic list the Topics page uses (Wikipedia-based by default; group-based kept for comparison).
   controls.advancedContainer().appendChild(topicListControl());
+  // Large print and low-power mode (also: the "Aa" button in the top bar for large print).
+  controls.advancedContainer().appendChild(displayControls());
+  // Large print leaves out the Topics page; if it was showing, go back to the map.
+  onDisplayChange(() => { if (largePrint() && activeTab === "topics") setTab("map"); });
   // "Social justice": one switch per sector layer, closed by default, just above Advanced display settings.
   createSectorSection(sidebar.controlsContainer(), currentMap.id);
 
@@ -399,11 +406,11 @@ async function main() {
     topbar.setActive(tab);
     mapView.style.display = tab === "map" ? "grid" : "none";
     geoView.el.style.display = tab === "geo" ? "block" : "none";
-    eventsView.el.style.display = tab === "events" ? "grid" : "none";
-    orgsView.el.style.display = tab === "orgs" ? "grid" : "none";
-    projectsView.el.style.display = tab === "projects" ? "grid" : "none";
-    actionsView.el.style.display = tab === "actions" ? "grid" : "none";
-    topicsView.el.style.display = tab === "topics" ? "grid" : "none";
+    eventsView.el.style.display = tab === "events" ? "flex" : "none";
+    orgsView.el.style.display = tab === "orgs" ? "flex" : "none";
+    projectsView.el.style.display = tab === "projects" ? "flex" : "none";
+    actionsView.el.style.display = tab === "actions" ? "flex" : "none";
+    topicsView.el.style.display = tab === "topics" ? "flex" : "none";
     if (tab === "topics") topicsView.show();
     drawerApi?.refresh(); // its "Locate on …" buttons depend on the page
     if (tab === "geo") geoView.invalidate();

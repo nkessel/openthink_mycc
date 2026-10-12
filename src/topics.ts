@@ -3,7 +3,7 @@
 // inside "Climate policy & legislation". Each stream's size is a weighted sum of a group's records for a topic,
 // and the sliders here set those weights. The topic list is a draft under team review.
 import * as d3 from "d3";
-import { h } from "./dom";
+import { h, makeFoldable } from "./dom";
 import { currentMap, MAPS, type MapId } from "./maps";
 import { createCommandRoom } from "./commandroom";
 import { createBattle } from "./battle";
@@ -195,6 +195,7 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     battle?.update();
   });
   panel.appendChild(reset);
+  makeFoldable(panel, "stream size sliders");
 
   // ---- Weighting ----
   const today = Date.now();

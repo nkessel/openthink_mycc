@@ -1,7 +1,7 @@
 // Shared filters for the Events and Projects pages: merged comma-separated search, zip code + miles,
 // online/remote, "in view on the geographic map", free food, public vs affiliated-only, help wanted.
 import { currentMap } from "./maps";
-import { h } from "./dom";
+import { h, makeFoldable } from "./dom";
 
 export interface Facts {
   /** Everything a search should look in: name, description, location, owner, topics. */
@@ -171,6 +171,8 @@ export function createItemFilters(opts: FilterOpts, onChange: () => void): ItemF
     el.appendChild(seg);
   }
   window.addEventListener("openthink:mapbounds", () => { if (state.inView) onChange(); });
+  // on a phone the filters fold behind one button, so the list starts at the top of the screen
+  queueMicrotask(() => makeFoldable(el, "filters"));
 
   return {
     el,
