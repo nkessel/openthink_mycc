@@ -231,7 +231,92 @@ function onOpen() {
     .addItem('Switch forms to typed answers (orgs + topics)', 'typeAnswersOnForms')
     .addItem('Show form + data links', 'showLinks')
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
+    .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
+    .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
     .addToUi();
+}
+
+/**
+ * Finds in-person events and projects whose pin is missing, outside Massachusetts, or (for a location with no town)
+ * far from where the host's town puts it, and geocodes them again
+ * (room words dropped, host's town added). Each fix is recorded in Change Log.
+ */
+function fixPinsOutsideMa() {
+  var t = readAll_();
+  var fixed = fixPins_(t, geocode_);
+  var ss = ss_();
+  fixed.forEach(function (f) {
+    var sheet = ss.getSheetByName(f.tab);
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) { return String(h).trim(); });
+    sheet.getRange(f.row, headers.indexOf('lat') + 1).setValue(f.lat);
+    sheet.getRange(f.row, headers.indexOf('lng') + 1).setValue(f.lng);
+    logChange_('', 'Menu', 'applied', '', f.type, f.id, f.name, 'pin moved to ' + f.lat + ', ' + f.lng + ' (re-checked with the host org town)');
+  });
+  ss.toast(fixed.length ? 'Moved ' + fixed.length + ' pin(s). See Change Log.' : 'No pins needed fixing.');
+}
+
+/** The questions each form should require, so filters like "Free food only" have answers to work with. */
+var REQUIRED_KEYS = {
+  FORM_EVENT: ['eventName', 'eventDate', 'online', 'freeFood', 'who'],
+  FORM_PROJECT: ['projectName', 'online', 'freeFood', 'who', 'helpWanted'],
+};
+
+/**
+ * Menu: mark the key questions required on the event and project forms. Edit links are pre-filled with the
+ * current answers, so point-people only have to answer the ones still blank. Location can't be required
+ * (online events have none); an in-person event saved without one keeps its "needs info" note instead.
+ */
+function requireKeyQuestions() {
+  var props = PropertiesService.getScriptProperties();
+  var done = [];
+  Object.keys(REQUIRED_KEYS).forEach(function (prop) {
+    var id = props.getProperty(prop);
+    if (!id) return;
+    var form = FormApp.openById(id);
+    var titles = REQUIRED_KEYS[prop].map(function (k) { return Q[k]; });
+    form.getItems().forEach(function (it) {
+      if (titles.indexOf(it.getTitle()) === -1) return;
+      var typed = asTypedItem_(it);
+      if (typed && typed.setRequired) { typed.setRequired(true); done.push(it.getTitle()); }
+    });
+  });
+  ss_().toast(done.length ? 'Required now: ' + uniq_(done).join('; ') : 'No matching questions found.');
+}
+
+/** A form item as its own type (only typed items have setRequired). */
+function asTypedItem_(it) {
+  var T = FormApp.ItemType;
+  switch (it.getType()) {
+    case T.TEXT: return it.asTextItem();
+    case T.PARAGRAPH_TEXT: return it.asParagraphTextItem();
+    case T.MULTIPLE_CHOICE: return it.asMultipleChoiceItem();
+    case T.CHECKBOX: return it.asCheckboxItem();
+    case T.LIST: return it.asListItem();
+    case T.DATE: return it.asDateItem();
+    case T.TIME: return it.asTimeItem();
+    default: return null;
+  }
+}
+
+/** Pure: which rows need a new pin, and where. `geo(place, hint)` returns [lat, lng] or null. */
+function fixPins_(t, geo) {
+  var out = [];
+  [['events', TAB.events, 'event'], ['projects', TAB.projects, 'project']].forEach(function (k) {
+    (t[k[0]] || []).forEach(function (r) {
+      if (!r.id || isTrue_(r.online) || !str_(r.location)) return;
+      var lat = Number(r.lat), lng = Number(r.lng);
+      var hint = placeHint_({}, r, t);
+      var place = cleanPlace_(r.location);
+      var townless = hint && !/,/.test(place) && !/\b\d{5}\b/.test(place);
+      var bad = !(str_(r.lat) && str_(r.lng) && inMass_(lat, lng));
+      if (!bad && !townless) return;
+      var ll = geo(str_(r.location), hint);
+      // A town-less location (e.g. "George Sherman Hall, 2nd floor") is moved only if the host's town puts it
+      // somewhere clearly different (about 2 km or more).
+      if (ll && (bad || Math.abs(ll[0] - lat) + Math.abs(ll[1] - lng) > 0.02)) out.push({ tab: k[1], type: k[2], row: r._row, id: r.id, name: str_(r.name), lat: ll[0], lng: ll[1] });
+    });
+  });
+  return out;
 }
 
 /**
@@ -1172,6 +1257,7 @@ function processSubmission_(kind, a, email, approver) {
     queueForReview_(kind, a, email, { label: miss.typed, id: '' }, 'UNMATCHED ORG — "' + miss.typed + '" is not on the list' + (miss.closest ? ' (closest: ' + miss.closest + ')' : ''));
     return;
   }
+  if (kind === 'org' && a[COALITION_EDIT]) return saveCoalitionSubmission_(a, email, approver, t);
   var target = describeTarget_(kind, a, t);
   var access = approver ? { ok: true } : authorize_(email, kind, a, target, t);
   if (!access.ok) {
@@ -1184,6 +1270,31 @@ function processSubmission_(kind, a, email, approver) {
   // An approved new org: its submitter becomes that org's point-person.
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
   if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
+  refreshDropdowns();
+}
+
+/** The org form used for a coalition: its point people (Editors → coalition_ids) or admins may update it. */
+function saveCoalitionSubmission_(a, email, approver, t) {
+  var cid = a[COALITION_EDIT];
+  var label = LABEL_INDEX_.byId.coalition[cid];
+  var target = { kind: 'coalition', isNew: false, id: cid, label: label };
+  if (!approver) {
+    var perms = email ? permissionsFor_(email, t.editors) : null;
+    var ok = perms && (perms.admin || perms.all || perms.coalitions[cid]);
+    if (!ok) {
+      queueForReview_('org', a, email, target, email ? 'UNAUTHORIZED — ' + email + ' does not manage the coalition ' + cid : 'NO EMAIL — form did not record a signed-in email');
+      return;
+    }
+  }
+  var patch = {};
+  put_(patch, 'name', a[Q.orgName]);
+  put_(patch, 'abbrev', a[Q.orgAbbrev]);
+  put_(patch, 'description', a[Q.orgDesc]);
+  put_(patch, 'website', a[Q.website]);
+  put_(patch, 'geographic_scope', a[Q.orgTown]);
+  if (a[Q.logo]) put_(patch, 'logo', driveImage_(String(a[Q.logo]).trim()));
+  var result = upsert_(TAB.coalitions, 'coalition', label, NEW_ORG, patch);
+  logChange_(email, FORM_NAMES.org, result.action, approver ? 'approved by ' + approver : 'coalition', 'coalition', result.id, result.name, result.changes);
   refreshDropdowns();
 }
 
@@ -1202,12 +1313,24 @@ function normalizeTyped_(kind, a, approver) {
   var id = idFromLabel_(typed, 'org');
   if (id && LABEL_INDEX_.byId.org[id]) { a[field] = LABEL_INDEX_.byId.org[id]; return null; }
   var closest = MISSES_.length > before ? MISSES_[MISSES_.length - 1].closest : '';
+  // A coalition typed where an organization was asked (e.g. "CCCC"): the coalition is the owner / the record edited.
+  var cid = idFromLabel_(typed, 'coalition');
+  if (cid && LABEL_INDEX_.byId.coalition[cid]) {
+    MISSES_.splice(before); // not a miss after all
+    if (kind === 'org') { a[COALITION_EDIT] = cid; return null; }
+    a[Q.coalition] = LABEL_INDEX_.byId.coalition[cid];
+    a[field] = NONE;
+    return null;
+  }
   if (approver && kind === 'org') {
     a[field] = NEW_ORG; if (!str_(a[Q.orgName])) a[Q.orgName] = typed; // approving = "yes, it is a new organization"
     return null;
   }
   return { field: field, typed: typed, closest: closest };
 }
+
+/** Set on an org-form answer set when the "organization" typed is a coalition: the coalition's own row is edited. */
+var COALITION_EDIT = '__coalition_id';
 
 var FORM_NAMES = { org: 'Update your organization', event: 'Add or edit an event', project: 'Add or edit a project', action: 'Add or edit an action or volunteer opportunity', feedback: 'Send feedback' };
 
@@ -1315,6 +1438,7 @@ function savePointPerson_(orgId, a) {
 }
 
 function queueForReview_(kind, a, email, target, reason) {
+  if (RECHECK_) { RECHECK_.queued = reason; return; } // re-checking a held submission: don't queue it twice
   var sheet = ss_().getSheetByName(TAB.review);
   var summary = Object.keys(a).filter(function (k) {
     var v = a[k]; return v !== '' && v !== null && !(Array.isArray(v) && !v.length);
@@ -1337,8 +1461,42 @@ function queueForReview_(kind, a, email, target, reason) {
 }
 
 /** Installable onEdit trigger: ticking "approve" on Needs Review applies the change. */
+/** Set while held submissions are re-checked (see recheckWaiting_). @type {{ queued?: string } | null} */
+var RECHECK_ = null;
+
+/**
+ * Someone was added to (or changed on) the Editors tab: every submission still "waiting" is checked again, and
+ * the ones that are now allowed are applied — no need to approve them one by one.
+ */
+function recheckWaiting_() {
+  var sheet = ss_().getSheetByName(TAB.review);
+  var table = readTable_(sheet);
+  var applied = 0;
+  table.rows.forEach(function (r) {
+    if (String(r.status) !== 'waiting' || !str_(r.payload)) return;
+    var p;
+    try { p = JSON.parse(r.payload); } catch (err) { return; }
+    RECHECK_ = { queued: '' };
+    try {
+      processSubmission_(p.kind, p.answers, p.email, null);
+    } finally {
+      var still = RECHECK_.queued;
+      RECHECK_ = null;
+      if (still) writeFields_(sheet, table.headers, r._row, { reason: still });
+      else { writeFields_(sheet, table.headers, r._row, { status: 'applied (editor added)', reviewed_at: nowIso_() }); applied++; }
+    }
+  });
+  if (applied) SpreadsheetApp.getActive().toast(applied + ' held submission' + (applied === 1 ? ' was' : 's were') + ' applied now that the editor is listed.');
+}
+
 function onReviewEdit(e) {
   var sheet = e.range.getSheet();
+  if (sheet.getName() === TAB.editors) {
+    var lock0 = LockService.getScriptLock();
+    lock0.waitLock(30000);
+    try { recheckWaiting_(); } finally { lock0.releaseLock(); }
+    return;
+  }
   if (sheet.getName() !== TAB.review || e.range.getNumColumns() !== 1) return;
   var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
   if (e.range.getColumn() !== headers.indexOf('approve') + 1 || e.range.getValue() !== true) return;
@@ -1526,7 +1684,7 @@ function saveEvent_(a, t) {
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
   var existing = a[Q.whichEvent] === NEW_EVENT ? null : findById_(t.events, idFromLabel_(a[Q.whichEvent], 'event'));
-  locationPatch_(patch, a, existing);
+  locationPatch_(patch, a, existing, t);
   var date = a[Q.eventDate], time = a[Q.eventTime];
   if (date || time) {
     var old = existing ? String(existing.date) : '';
@@ -1540,6 +1698,9 @@ function saveEvent_(a, t) {
     if (day) patch.end = day + 'T' + endTime + ':00';
   }
   if (!isRemove_(a)) { patch.needs_info = 'FALSE'; patch.verified = 'TRUE'; } // a point person just reviewed it
+  // An in-person event with no location can't be placed or found: keep the "needs info" note on it.
+  var inPerson = patch.online ? !isTrue_(patch.online) : !(existing && isTrue_(existing.online));
+  if (!isRemove_(a) && inPerson && !patch.location && !(existing && str_(existing.location))) patch.needs_info = 'TRUE';
   addMissingColumns_(ss_().getSheetByName(TAB.events), COLS[TAB.events]);
   return upsert_(TAB.events, 'event', a[Q.whichEvent], NEW_EVENT, patch);
 }
@@ -1559,7 +1720,7 @@ function saveProject_(a, t) {
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
   var existing = a[Q.whichProject] === NEW_PROJECT ? null : findById_(t.projects, idFromLabel_(a[Q.whichProject], 'project'));
-  locationPatch_(patch, a, existing);
+  locationPatch_(patch, a, existing, t);
   if (!isRemove_(a)) { patch.needs_info = 'FALSE'; patch.verified = 'TRUE'; } // a point person just reviewed it
   addMissingColumns_(ss_().getSheetByName(TAB.projects), COLS[TAB.projects]);
   return upsert_(TAB.projects, 'project', a[Q.whichProject], NEW_PROJECT, patch);
@@ -1590,7 +1751,7 @@ function ownerPatch_(patch, a) {
 }
 
 /** Location text + online flag; geocode new/changed in-person locations for the map pin. */
-function locationPatch_(patch, a, existing) {
+function locationPatch_(patch, a, existing, t) {
   put_(patch, 'location', a[Q.location]);
   if (a[Q.online]) patch.online = a[Q.online] === 'Yes' ? 'TRUE' : 'FALSE';
   var online = patch.online ? isTrue_(patch.online) : existing ? isTrue_(existing.online) : false;
@@ -1598,7 +1759,7 @@ function locationPatch_(patch, a, existing) {
   var changed = patch.location && (!existing || str_(existing.location) !== patch.location);
   var becameInPerson = patch.online === 'FALSE' && existing && isTrue_(existing.online);
   if (!online && loc && (changed || becameInPerson || (existing && !str_(existing.lat)))) {
-    var ll = geocode_(loc);
+    var ll = geocode_(loc, placeHint_(patch, existing, t));
     if (ll) { patch.lat = ll[0]; patch.lng = ll[1]; }
   }
 }
@@ -1951,17 +2112,62 @@ function findRow_(sheet, text) {
   return 0;
 }
 
-function geocode_(place) {
-  try {
-    place = String(place).trim();
-    if (/^(statewide|national|new england|northeast|online|remote|zoom)$/i.test(place)) return null;
-    var q = /\b(MA|Massachusetts)\b/i.test(place) ? place : place + ', Massachusetts';
-    var res = Maps.newGeocoder().setRegion('us').geocode(q);
-    if (res.status === 'OK' && res.results.length) {
-      var loc = res.results[0].geometry.location;
-      return [Math.round(loc.lat * 1e6) / 1e6, Math.round(loc.lng * 1e6) / 1e6];
-    }
-  } catch (e) { /* fall through */ }
+var VAGUE_PLACE = /^(statewide|national|nationwide|new england|northeast|online|remote|zoom|virtual|massachusetts|ma)$/i;
+
+/** Drop the parts of a location a map can't use: "2nd floor", "Room 104", "Suite B", "basement", "lobby". */
+function cleanPlace_(place) {
+  return String(place || '')
+    .replace(/\b\d+(st|nd|rd|th)\s+(floor|fl\.?)\b/gi, '')
+    .replace(/\b(floor|fl\.?)\s*\d+\b/gi, '')
+    .replace(/\b(room|rm\.?|suite|ste\.?|unit|apt\.?)\s*#?\s*[\w-]+\b/gi, '')
+    .replace(/\b(basement|lobby|ground floor|upstairs|downstairs|main hall)\b/gi, '')
+    .replace(/\s*,\s*(,\s*)+/g, ', ')
+    .replace(/^[\s,]+|[\s,]+$/g, '')
+    .replace(/\s{2,}/g, ' ');
+}
+
+/** Rough box around Massachusetts; a pin outside it is a wrong match (e.g. a hall name found in another state). */
+function inMass_(lat, lng) {
+  return lat >= 41.18 && lat <= 42.89 && lng >= -73.51 && lng <= -69.85;
+}
+
+/** The town to add when an event or project location has none: its host org's HQ or town, else its coalition's area. */
+function placeHint_(patch, existing, t) {
+  if (!t) return '';
+  var orgId = patch.host_org_id || (existing ? str_(existing.host_org_id) : '');
+  var coId = patch.coalition_id || (existing ? str_(existing.coalition_id) : '');
+  var org = orgId && t.orgs ? findById_(t.orgs, orgId) : null;
+  var co = coId && t.coalitions ? findById_(t.coalitions, coId) : null;
+  var picks = [org && str_(org.hq_address), org && str_(org.geographic_focus), co && str_(co.geographic_scope)];
+  for (var i = 0; i < picks.length; i++) if (picks[i] && !VAGUE_PLACE.test(picks[i]) && !REMOTE_WORDS.test(picks[i])) return picks[i];
+  return '';
+}
+
+/** The queries to try, best first: a location with no town gets the hint's town added. */
+function geocodeQueries_(place, hint) {
+  place = cleanPlace_(place);
+  if (!place || VAGUE_PLACE.test(place)) return [];
+  var withMa = function (s) { return /\b(MA|Massachusetts)\b/i.test(s) ? s : s + ', Massachusetts'; };
+  var qs = [];
+  var hasTown = /,/.test(place) || /\b\d{5}\b/.test(place);
+  if (hint && !hasTown) qs.push(withMa(place + ', ' + hint));
+  qs.push(withMa(place));
+  if (hint && hasTown) qs.push(withMa(place + ', ' + hint));
+  return qs;
+}
+
+function geocode_(place, hint) {
+  var qs = geocodeQueries_(place, hint);
+  for (var i = 0; i < qs.length; i++) {
+    try {
+      var res = Maps.newGeocoder().setRegion('us').geocode(qs[i]);
+      if (res.status !== 'OK') continue;
+      for (var j = 0; j < res.results.length; j++) {
+        var loc = res.results[j].geometry.location;
+        if (inMass_(loc.lat, loc.lng)) return [Math.round(loc.lat * 1e6) / 1e6, Math.round(loc.lng * 1e6) / 1e6];
+      }
+    } catch (e) { /* try the next query */ }
+  }
   return null;
 }
 

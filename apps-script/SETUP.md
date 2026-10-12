@@ -70,6 +70,10 @@ To move an item from a coalition to an org only, clear its `coalition_id` cell i
 
 - Review **Needs Review** when the alert email arrives; tick **approve** or leave it (set `status` to `rejected` for your own records).
 - Add point-people on **Editors**. Then run **MA Climate Coalition Map → Refresh form dropdowns** if you edited orgs/events/projects by hand.
+- When someone is added to **Editors**, anything of theirs waiting in Needs Review is re-checked and saved automatically.
+- A pin in the wrong town? Event and project locations without a town (e.g. "George Sherman Hall, 2nd floor") are now placed using the host org's town, and matches outside Massachusetts are ignored. To fix pins saved before this change, run **MA Climate Coalition Map → Re-check event and project pins**.
+- To stop key questions being skipped, run **MA Climate Coalition Map → Make key questions required** once (event: name, date, online?, free food, who can come; project: name, online?, free food, who can come, help wanted). Location stays optional because online events have none; an in-person event saved without one keeps its "needs info" note.
+- New organizations from anyone who isn't an admin wait in **Needs Review**. Admins' new orgs are saved straight away.
 - The 1–4 scores (`ej_focus`, `grassroots`, `policy_expertise`, `in_building`) and `coalition_weights` are core-team columns; no form changes them.
 
 ## Limits worth knowing
