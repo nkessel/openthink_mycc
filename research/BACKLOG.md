@@ -40,6 +40,8 @@ pages, copy to `public/maps/<st>.json`, then register it in `src/maps.ts` (MapId
 `editable: false`, `maGeo: false`; add to the `us` map's `combine`; add a place-search box in `src/search.ts`
 PLACE_BOX) and add it to the switcher list in `src/topbar.ts`. Check it loads with Playwright (`?map=<st>`).
 
+- [x] Oregon (OR) — done 2026-10-13 out of order (Nathan asked). Follow-ups: last_activity for 124 groups, OJTA members,
+      OLCV/Sierra Club/Third Act calendars, 29 missing logos.
 - [ ] New Hampshire (NH)
 - [ ] Maine (ME)
 - [ ] Rhode Island (RI)

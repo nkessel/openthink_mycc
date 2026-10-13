@@ -1,0 +1,904 @@
+{
+ "or_orcah": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://orclimatehub.org/wp-content/uploads/2026/09/ORCAH_logo_simple_2026_color.png",
+  "size": [
+   700,
+   170
+  ],
+  "source_site": "https://orclimatehub.org/"
+ },
+ "or_zero": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/a0a55fb3-97b7-4131-9093-a987b45901a1/ZERO+Logo+2021.png?format=1500w",
+  "size": [
+   554,
+   558
+  ],
+  "source_site": "https://www.zerocoalitionoregon.org/"
+ },
+ "or_ojta": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://images.squarespace-cdn.com/content/v1/5f334acfc96b0b3698a02edb/cc7ea118-e6e8-4396-aa68-b4432a4e0624/favicon.ico?format=100w",
+  "size": [
+   100,
+   100
+  ],
+  "source_site": "https://www.ojta.org/"
+ },
+ "or_energize_bend": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/64fa5a36811b1e69d30f1ff6/4149a98d-f42f-4d4a-abc4-17ed08ab4b6e/Logo+-+energize+bend+PNG.png?format=1500w",
+  "size": [
+   1500,
+   239
+  ],
+  "source_site": "https://energizebend.org/"
+ },
+ "or_1000_friends": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://friends.org/sites/default/files/otfologo_0_0_0.png",
+  "size": [
+   131,
+   130
+  ],
+  "source_site": "https://friends.org"
+ },
+ "or_beyond_toxics": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.beyondtoxics.org/wp-content/uploads/2011/11/BT_HorizLogo_RGB_WebRes_400pxWide.jpg",
+  "size": [
+   500,
+   189
+  ],
+  "source_site": "https://www.beyondtoxics.org"
+ },
+ "or_cascadia_wildlands": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://cascwild.org/wp-content/uploads/2025/06/CW-Logo_Soil-03-scaled.png",
+  "size": [
+   2560,
+   783
+  ],
+  "source_site": "https://cascwild.org"
+ },
+ "or_cbd": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.biologicaldiversity.org/assets/img/bluesky-logo-green-square.png",
+  "size": [
+   2061,
+   2059
+  ],
+  "source_site": "https://www.biologicaldiversity.org"
+ },
+ "or_cfs": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://centerforfoodsafety.org/wp-content/themes/cfs-2026/images/CFS - Logo.png",
+  "size": [
+   1119,
+   317
+  ],
+  "source_site": "https://www.centerforfoodsafety.org"
+ },
+ "or_landwatch": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/56be0f012eeb81b2be55a0cc/3920a957-72d4-4413-8b94-f1d434fd46a0/COLW-Logo-Full-Color-Transparent-Best-Quality.png?format=1500w",
+  "size": [
+   1080,
+   580
+  ],
+  "source_site": "https://www.centraloregonlandwatch.org"
+ },
+ "or_defenders": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://defenders.org/themes/custom/particle/dist/assets/logo.png",
+  "size": [
+   300,
+   254
+  ],
+  "source_site": "https://defenders.org"
+ },
+ "or_dra": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/6489e4b32e53c92ef9b05d0b/6c870709-cab1-4a76-a735-c5c8a7feb3f1/Deschutes-river-alliance-logo.png?format=1500w",
+  "size": [
+   1500,
+   362
+  ],
+  "source_site": "https://deschutesriveralliance.org"
+ },
+ "or_gorge_friends": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://gorgefriends.org/wp-content/uploads/2025/03/logo-2020.png",
+  "size": [
+   220,
+   220
+  ],
+  "source_site": "https://gorgefriends.org"
+ },
+ "or_foff": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://friendsoffamilyfarmers.org/wp-content/uploads/2026/02/cropped-FoFF-mark-192x192.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://friendsoffamilyfarmers.org"
+ },
+ "or_lwvor": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://static.wixstatic.com/media/cf41d8_d7b82bb3cbb14320a00461b599e67bf4%7Emv2.jpg/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/cf41d8_d7b82bb3cbb14320a00461b599e67bf4%7Emv2.jpg",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://www.lwvor.org"
+ },
+ "or_oceana": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://oceana.org/wp-content/uploads/sites/18/logo_en_full.png",
+  "size": [
+   544,
+   64
+  ],
+  "source_site": "https://oceana.org"
+ },
+ "or_oec": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://oeconline.org/wp-content/uploads/2016/12/cropped-OEC-sq-sm-192x192.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://oeconline.org"
+ },
+ "or_oregon_shores": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-192",
+  "url": "https://oregonshores.org/wp-content/uploads/2025/05/cropped-Oregon-Shores-Favicon-192x192.png",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://oregonshores.org"
+ },
+ "or_rnw": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://renewablenw.org/sites/default/files/Logo-Formats_RNW_Final-01-1_1.png",
+  "size": [
+   1295,
+   435
+  ],
+  "source_site": "https://renewablenw.org"
+ },
+ "or_rogue_riverkeeper": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/595e7778cd0f68f56c121393/1612396670077-CJF5DCZXP238V1F0ATIU/RRK+Logo+Trans.png",
+  "size": [
+   830,
+   826
+  ],
+  "source_site": "https://rogueriverkeeper.org"
+ },
+ "or_street_trust": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.thestreettrust.org/wp-content/uploads/2020/01/2017-09-27.logoblocks1.png",
+  "size": [
+   6147,
+   2788
+  ],
+  "source_site": "https://www.thestreettrust.org"
+ },
+ "or_surfrider": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://oregon.surfrider.org/hs-fs/hubfs/Regional%20Logos/Oregon-Region-Logo_Web.png?width=300&height=108&name=Oregon-Region-Logo_Web.png",
+  "size": [
+   300,
+   108
+  ],
+  "source_site": "https://oregon.surfrider.org"
+ },
+ "or_trk": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-180",
+  "url": "https://tualatinriverkeepers.org/img/asset/YXNzZXRzL2dsb2JhbC1hc3NldHMvdHJrLWZhdmljb24ucG5n?w=180&h=180&fit=crop&s=0a50a3e1a07e77a5ffef8a527f390e31",
+  "size": [
+   180,
+   180
+  ],
+  "source_site": "https://tualatinriverkeepers.org"
+ },
+ "or_willamette_riverkeeper": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/56e9748b2b8dded5bd87e565/1547150599214-STDE6XH92EHCGE84UEGH/WRK+1996+Logo+Big+72.jpg",
+  "size": [
+   357,
+   497
+  ],
+  "source_site": "https://willamette-riverkeeper.org"
+ },
+ "or_pft": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://www.pacificforest.org/wp-content/uploads/2015/12/PFT_favi.png",
+  "size": [
+   100,
+   100
+  ],
+  "source_site": "https://www.pacificforest.org"
+ },
+ "or_oece": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "og-image",
+  "url": "https://lh7-us.googleusercontent.com/sitesv-images-rt/AMxu72tfE84l6iS4kYiDabalsuyZn7_a_bBiJ2TKNhhD-MZMEiMGi58Ydw1wbcXN4HmCk4ip8_bUz0zC5upT_6kZ-7lkTgLMeLfpzT19PDmvMbo0hjo8s8Q9tEkVz7S0qeRMZqfziFeLwqGkAt-BXfNaEku-MclRRyrTGEVVVW5CGNLASuQYukhNqgdkYfQc=w1280",
+  "size": [
+   500,
+   500
+  ],
+  "source_site": "https://www.oregonclimateed.org"
+ },
+ "or_hazadapt": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-180",
+  "url": "https://app.hazadapt.com/logo192.png?v=2",
+  "size": [
+   192,
+   192
+  ],
+  "source_site": "https://app.hazadapt.com"
+ },
+ "or_nyc": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.nwyouthcorps.org/wp-content/uploads/2024/04/cropped-2021-NYC-logo-email-1-135x136.png",
+  "size": [
+   135,
+   136
+  ],
+  "source_site": "https://www.nwyouthcorps.org"
+ },
+ "or_verde": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/6323963f363db1199ad021d1/125909d5-702d-4836-9a24-aea7a65aca7d/verde-logo-notag.png?format=1500w",
+  "size": [
+   1500,
+   281
+  ],
+  "source_site": "https://www.verdenw.org"
+ },
+ "or_confluence": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/54405678e4b0635ae5d5c4c2/1423074387039-H9HC3U9MUGH0P3A4KOB2/ConfluenceNonProfit_RGB.jpg?format=1500w",
+  "size": [
+   1500,
+   640
+  ],
+  "source_site": "https://www.confluencecenter.org"
+ },
+ "or_electrify_oregon": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/68f15250cd03464d5c4a8c07/a9736054-6eee-4b8b-88ad-a0bee96f2010/logo-forest-box_500.png?format=1500w",
+  "size": [
+   500,
+   288
+  ],
+  "source_site": "https://www.electrifyoregon.org"
+ },
+ "or_climate_interactive": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-0",
+  "url": "https://img.climateinteractive.org/assets/images/favicon.ico",
+  "size": [
+   48,
+   48
+  ],
+  "source_site": "https://www.climateinteractive.org"
+ },
+ "or_emo": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://emoregon.org/wp-content/uploads/2024/12/cropped-EMO-HORIZONTAL-4C.png",
+  "size": [
+   9999,
+   5008
+  ],
+  "source_site": "https://emoregon.org"
+ },
+ "or_350_deschutes": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://350deschutes.org/files/2024/05/350-deschutes-logo.png",
+  "size": [
+   250,
+   194
+  ],
+  "source_site": "https://350deschutes.org"
+ },
+ "or_hecc": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.oregon.gov/highered/SiteAssets/hecc-logo.png",
+  "size": [
+   536,
+   256
+  ],
+  "source_site": "https://www.oregon.gov/highered"
+ },
+ "or_sunrise_pdx": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5cc78d7077b903ed3206598a/1560465570087-9T9ZTAP5SA31LCONN50N/sunrise+web+logo+header.png",
+  "size": [
+   747,
+   100
+  ],
+  "source_site": "https://www.sunrisepdx.org"
+ },
+ "or_sopa": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://southernoregonpachamama.org/wp-content/uploads/2020/07/Logo-92x92.jpg",
+  "size": [
+   92,
+   92
+  ],
+  "source_site": "https://southernoregonpachamama.org"
+ },
+ "or_cascadia_stack": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-180",
+  "url": "https://cascadiastack.org/assets/images/apple-touch-icon.png?v=eed30f9b",
+  "size": [
+   228,
+   228
+  ],
+  "source_site": "https://www.cascadiastack.org"
+ },
+ "or_elakha": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.elakhaalliance.org/wp-content/uploads/2021/08/HeaderLogo.png",
+  "size": [
+   512,
+   512
+  ],
+  "source_site": "https://www.elakhaalliance.org"
+ },
+ "or_losn": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://losn.org/wp-content/uploads/2022/01/logo4.jpg",
+  "size": [
+   1551,
+   500
+  ],
+  "source_site": "https://losn.org"
+ },
+ "or_solar_oregon": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://solaroregon.org/wp-content/uploads/2019/06/solar-oregon-logo.gif",
+  "size": [
+   184,
+   83
+  ],
+  "source_site": "https://solaroregon.org"
+ },
+ "or_electrifypdx": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://electrifypdx.org/wp-content/uploads/2022/09/ElectrifyBadgeNavyWhiteBorderShadow.png",
+  "size": [
+   222,
+   160
+  ],
+  "source_site": "https://www.electrifypdx.org"
+ },
+ "or_jca": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://justcrossing.org/wp-content/uploads/2022/04/JCA-logo-final-horizontal.jpg",
+  "size": [
+   936,
+   265
+  ],
+  "source_site": "https://justcrossing.org"
+ },
+ "or_milwaukie": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.milwaukieoregon.gov/_assets_/images/logo.png",
+  "size": [
+   1523,
+   204
+  ],
+  "source_site": "https://www.milwaukieoregon.gov"
+ },
+ "or_rooted_homes": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/698fa76c4964af4ea06edf04/2d7b4942-9f4a-4ba6-88ac-41290c29ba90/ROOTEDHOMES-Logo-FINAL-%283%29.png?format=1500w",
+  "size": [
+   1500,
+   913
+  ],
+  "source_site": "https://rootedhomes.org"
+ },
+ "or_ossia": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5a8c8bacf14aa1f660ad2992/687bc97f-e14c-4ecf-ab9f-731c7bb02473/OSSIA.png",
+  "size": [
+   2406,
+   961
+  ],
+  "source_site": "https://www.orssia.org"
+ },
+ "or_ashland": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://ashlandoregon.gov/ImageRepository/Document?documentID=66",
+  "size": [
+   1056,
+   213
+  ],
+  "source_site": "https://www.ashland.or.us"
+ },
+ "or_lake_oswego": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://www.ci.oswego.or.us/sites/all/themes/lo2017/logo.png",
+  "size": [
+   100,
+   100
+  ],
+  "source_site": "https://www.ci.oswego.or.us"
+ },
+ "or_breach": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5e345da13c0fb26d48290567/b8500ce2-ef59-48b7-b2d4-0b53e5bad5ae/BCNewLogoFull.png?format=1500w",
+  "size": [
+   1500,
+   540
+  ],
+  "source_site": "https://www.breachcollective.org"
+ },
+ "or_apano": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://cdn.prod.website-files.com/69db1f4a1158df7a0783b712/69dbd3168d20077a2754dd3e_logo-main-p-500.png",
+  "size": [
+   500,
+   101
+  ],
+  "source_site": "https://www.apano.org"
+ },
+ "or_naya": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://cdn.prod.website-files.com/6786f6413e94faa2908eb35e/680ff42d5b359199f1b37946_NAYA%20Web%20Logo%20(1).png",
+  "size": [
+   776,
+   413
+  ],
+  "source_site": "https://nayapdx.org"
+ },
+ "or_tnc": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "icon-180",
+  "url": "https://www.nature.org/content/dam/tnc/nature/en/icons/general-icons/tnc-standard-favicon.png",
+  "size": [
+   144,
+   144
+  ],
+  "source_site": "https://www.nature.org/en-us/about-us/where-we-work/united-states/oregon/"
+ },
+ "or_cra": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://coastrange.org/wp-content/uploads/2024/08/CRA-logo_horizontal_black.png",
+  "size": [
+   712,
+   223
+  ],
+  "source_site": "https://coastrange.org"
+ },
+ "or_unite_oregon": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/61ee54a7db284e6806eafe68/dbdee933-0112-4052-a768-2571ce122819/Unite+Oregon+Logo+-horizonal+color.png?format=1500w",
+  "size": [
+   1500,
+   311
+  ],
+  "source_site": "https://www.uniteoregon.org"
+ },
+ "or_our_childrens_trust": {
+  "from": "own site",
+  "status": "ok",
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/655a2d016eb74e41dc292ed5/0bb400e6-4890-4e98-a6cd-43f98bc723c0/OCT+Logo+Blue+and+Cyan.png?format=1500w",
+  "size": [
+   1396,
+   269
+  ],
+  "source_site": "https://www.ourchildrenstrust.org"
+ },
+ "or_ffe": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1686765383922-PEDBXIFE8K9S4ISSU1Z2/Circle-Fossil-Free-Eugene-logo-1024x1024.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   500
+  ]
+ },
+ "or_climate_solutions": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1529092627757-EC3PU1055Z3MI0HF3XZG/Climate+Solutions+logo+for+web_Page_1.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   253
+  ]
+ },
+ "or_envirocenter": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1565124319800-YOP8C6UH6RRI1XJXELLI/Logo+and+Tag+%281%29.PNG",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   440
+  ]
+ },
+ "or_olcv": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1684883904927-ZCG2SIBXOIVYBZ7QWJNQ/OLCV+new.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   141
+  ]
+ },
+ "or_sierra_club": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1686764288132-BS4TX1IDORJOV27VNU7R/oregonSClogo.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   109
+  ]
+ },
+ "or_ob4c": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1778279357870-94W490H5RSGIW1VU3Z3M/AIorK4y56jjH3A4qpjEb4217M3rltLrQ4TmvFZ7pP2xeL1I6muOXv4xsWGU5k7d3rSqH_HN0bIcjc6E.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   100,
+   70
+  ]
+ },
+ "or_350_eugene": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683746143749-7NOWCHQOE6LTPDAXNGV5/350EugeneNewLogo.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   375
+  ]
+ },
+ "or_nbi": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1529091956765-0ROHKENSNXXNBCB0BW9H/Layer+1.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   424,
+   77
+  ]
+ },
+ "or_cep": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1605141559808-3O542HUSWMW1X1QWLREJ/CEP_Logo_Transparent+%281%29.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   210
+  ]
+ },
+ "or_third_act_oregon": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1779294116416-1BJ5W6LLUV807EKTQOKV/TAWG_Oregon_Logo-Stacked_Digital%28CMYK%29-Dark.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   421
+  ]
+ },
+ "or_nwec": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1529092151258-70FQ9ZF9Q8XY9JCOACJQ/NWEC_Logo_stacked_slogan-230x300.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   230,
+   300
+  ]
+ },
+ "or_earth_advantage": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1529091265226-7KA8028QLRRLXMQZYAA2/EA-Logo-140904-300x388.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   300,
+   388
+  ]
+ },
+ "or_portland_bps": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1583270963046-R89WAXHJNIXN840G9HHM/bps-horizontal-print_color+%281%29.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   78
+  ]
+ },
+ "or_tigard": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1677091938481-9Z3XCX21MSKBKVIAYZ89/City+of+Tigard+logo.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   212
+  ]
+ },
+ "or_electrify_now": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1632029864099-64PM9WJSJSUFT8JQG6D7/Electrify+Now+logo+2021.09.16.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   175
+  ]
+ },
+ "or_olcv_mcat": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1672445098413-Z7DA6R6L5K6RVNIA6W2Y/MCAT_Logo_Square_21_0719.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   500
+  ]
+ },
+ "or_phnw": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1529090730070-3QRJDUPS7U9W0Y1XBADI/Passive+House+NW+logo.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   273
+  ]
+ },
+ "or_bga": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1562188920111-QGQF421HJWQX0WF0HQP8/logos-bga-a.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   186,
+   43
+  ]
+ },
+ "or_gresham": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1783357395383-4HETHMZLAFWHI5LUHAU4/COG_Circle_Blue.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   500
+  ]
+ },
+ "or_latino_built": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683746706691-2175813HEMT1LNLHZ7BH/LatinoBuilt-Logo-2c.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   160
+  ]
+ },
+ "or_central_city_concern": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683746618565-31EO37F8N6K4YE9HPH8F/CCC_Logo.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   365
+  ]
+ },
+ "or_multco_sustainability": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1690230140710-CYG84BMYCO28Y2DFJHEL/mult.co.logo.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   145,
+   45
+  ]
+ },
+ "or_neea": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683746307120-YT9CX9CBL2MR9E0Q7OH3/NEEAweb_600x250.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   208
+  ]
+ },
+ "or_deq": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683747202912-NU27GHKBPRZ0IU8DOYG5/DEQ-logo-color210x318.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   100,
+   151
+  ]
+ },
+ "or_elevate": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683746531700-CAOEW3ZCZGFAGMTAA27G/Elevate+vertical-logo.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   283,
+   226
+  ]
+ },
+ "or_gei": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683747384915-U27UTK6U4PFPQ91OPDBD/GEI%2Blogo%2B2020%2B%281%29.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   300,
+   88
+  ]
+ },
+ "or_bend": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683747588239-MPKK5TOCU1PU30EG67YA/COB-H_RGB_300.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   300,
+   75
+  ]
+ },
+ "or_hood_river": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1683747355657-0U1KLT706TH722HKEYYO/City_of_Hood_River_logo2018_2color.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   300,
+   168
+  ]
+ },
+ "or_afro_village": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1731090623395-XGWXEVWFJRCFJKCSRQS5/AfroVillage%2B2024%2BLogo.png",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   500
+  ]
+ },
+ "or_oti": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/5b030f0fb105984c3524fa62/1775168822177-N4D39Y1J6HLPAKBYHUG8/Oregon+Tradeswomen+logo.pdf.jpg",
+  "page": "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+  "size": [
+   500,
+   90
+  ]
+ },
+ "or_sierra_juniper": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/64fa5a36811b1e69d30f1ff6/c36b1173-db40-4a60-bbfe-acd302b7e14f/Sierra.png",
+  "page": "https://energizebend.org/",
+  "size": [
+   186,
+   186
+  ]
+ },
+ "or_ccl_bend": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/64fa5a36811b1e69d30f1ff6/e041b25c-d1e7-40d5-a219-bddd4ae51fdd/CCL.png",
+  "page": "https://energizebend.org/",
+  "size": [
+   186,
+   186
+  ]
+ },
+ "or_dycc": {
+  "from": "coalition member page",
+  "url": "https://images.squarespace-cdn.com/content/v1/64fa5a36811b1e69d30f1ff6/d80935e8-aa38-4ef9-8f06-b4c07952d801/DYCC.png",
+  "page": "https://energizebend.org/",
+  "size": [
+   186,
+   186
+  ]
+ }
+}
