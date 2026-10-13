@@ -33,6 +33,18 @@ const MA_BOUNDS: L.LatLngBoundsExpression = [
 ];
 
 /** The point the data uses when it only knows "Massachusetts" (statewide, national, or no address yet). */
+// Voting district outlines (public/geo/ma-*.geojson, from MassGIS; rebuilt by scripts/fetch-districts.sh).
+// Representatives' names change between elections, so a district links to an official "find your …" page instead.
+type District = { id: string; label: string; kind: string; color: string; weight: number; dash?: string; minZoom?: number; link: string; linkText: string };
+const FIND_LEGISLATOR = "https://malegislature.gov/Search/FindMyLegislator";
+const DISTRICTS: District[] = [
+  { id: "congress", label: "US Congress (9)", kind: "US Congressional district", color: "#f59e0b", weight: 2.5, link: "https://www.house.gov/representatives/find-your-representative", linkText: "Find your US Representative" },
+  { id: "senate", label: "State Senate (40)", kind: "State Senate district", color: "#a78bfa", weight: 2, link: FIND_LEGISLATOR, linkText: "Find your State Senator" },
+  { id: "house", label: "State House (160)", kind: "State House district", color: "#34d399", weight: 1.5, dash: "6 4", link: FIND_LEGISLATOR, linkText: "Find your State Representative" },
+  { id: "wards", label: "City wards (285)", kind: "City ward", color: "#f472b6", weight: 1.2, dash: "2 4", link: "https://www.sec.state.ma.us/WhereDoIVoteMA/", linkText: "Where do I vote?" },
+  { id: "precincts", label: "Voting precincts (2,256)", kind: "Voting precinct", color: "#94a3b8", weight: 0.8, dash: "1 3", minZoom: 12, link: "https://www.sec.state.ma.us/WhereDoIVoteMA/", linkText: "Where do I vote?" },
+];
+
 const atFallback = (lat: number, lng: number) => Math.abs(lat - 42.3601) < 1e-4 && Math.abs(lng + 71.0589) < 1e-4;
 /** A real place for this group: not remote, and not the fallback point (unless the group really is in Boston). */
 export function orgPlaced(o: Organization): boolean {
@@ -118,7 +130,22 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     boundRow.appendChild(btn);
   }
   boundsBox.appendChild(boundRow);
-  boundsBox.appendChild(h("div", { class: "geo-note" }, "Voting districts aren't on the map yet."));
+  const districtBoxes = new Map<string, HTMLInputElement>();
+  // Voting districts: each its own outline, on or off independently (they overlap, so line styles differ).
+  boundsBox.appendChild(h("h3", { class: "geo-sub" }, "Voting districts"));
+  for (const d of DISTRICTS) {
+    const box = h("input", { type: "checkbox" }) as HTMLInputElement;
+    box.addEventListener("change", () => setDistrict(d, box.checked));
+    districtBoxes.set(d.id, box);
+    boundsBox.appendChild(
+      h("label", { class: "geo-layer" }, box,
+        h("span", { class: "swatch", style: `width:14px;height:0;border-top:${d.weight + 0.5}px ${d.dash ? "dashed" : "solid"} ${d.color}` }),
+        h("span", {}, d.label)),
+    );
+  }
+  const precinctNote = h("div", { class: "geo-note", hidden: "" }, "Precincts show when you zoom in to street level.");
+  boundsBox.appendChild(precinctNote);
+  boundsBox.appendChild(h("div", { class: "geo-note" }, "District lines: MassGIS (State House and Senate 2021, US Congress 2022–, wards and precincts 2022). Click a district to find who represents it."));
   // The town/county outlines are Massachusetts-only for now.
   if (currentMap.id === "ma" || currentMap.id === "us") panel.insertBefore(boundsBox, nearBtn);
 
@@ -178,6 +205,59 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
       },
     }).addTo(m);
     boundaryLayer.bringToBack();
+  }
+
+  const districtLayers = new Map<string, L.GeoJSON>();
+  const districtOn = new Set<string>();
+  const PRECINCT_ZOOM = 12;
+  async function setDistrict(d: District, value: boolean) {
+    const m = ensureMap();
+    if (value) districtOn.add(d.id);
+    else districtOn.delete(d.id);
+    districtBoxes.get(d.id)!.checked = value;
+    if (!value) { districtLayers.get(d.id)?.remove(); syncPrecinctNote(); return; }
+    let layer = districtLayers.get(d.id);
+    if (!layer) {
+      let json: unknown;
+      try {
+        json = await (await fetch(`${import.meta.env.BASE_URL}geo/ma-${d.id}.geojson`)).json();
+      } catch (_) { return; }
+      const style: L.PathOptions = { color: d.color, weight: d.weight, opacity: 0.85, dashArray: d.dash, fillColor: d.color, fillOpacity: 0.01 };
+      layer = L.geoJSON(json as GeoJSON.GeoJsonObject, {
+        style: () => style,
+        onEachFeature: (f, l) => {
+          const name = String((f.properties as { name?: string }).name || "");
+          l.bindTooltip(`${escapeHTML(name)} <span class="geo-tip-kind">${escapeHTML(d.kind)}</span>`, { sticky: true });
+          l.bindPopup(`<b>${escapeHTML(name)}</b><br><span class="geo-tip-kind">${escapeHTML(d.kind)}</span><br><a href="${d.link}" target="_blank" rel="noopener">${escapeHTML(d.linkText)} ↗</a>`);
+          l.on("mouseover", () => (l as L.Path).setStyle({ fillOpacity: 0.1, weight: d.weight + 1 }));
+          l.on("mouseout", () => (l as L.Path).setStyle(style));
+          l.on("click", (e) => L.DomEvent.stopPropagation(e));
+        },
+      });
+      districtLayers.set(d.id, layer);
+    }
+    if (!districtOn.has(d.id)) return; // switched off while loading
+    if (d.minZoom && m.getZoom() < d.minZoom) { syncPrecinctNote(); return; }
+    layer.addTo(m);
+    layer.bringToBack();
+    boundaryLayer?.bringToBack();
+    syncPrecinctNote();
+  }
+  // Precincts (2,256 small shapes) only appear zoomed in, so the map stays readable and quick.
+  function syncDistrictZoom() {
+    if (!map) return;
+    for (const d of DISTRICTS) {
+      if (!d.minZoom || !districtOn.has(d.id)) continue;
+      const layer = districtLayers.get(d.id);
+      if (!layer) continue;
+      const show = map.getZoom() >= d.minZoom;
+      if (show && !map.hasLayer(layer)) { layer.addTo(map); layer.bringToBack(); }
+      if (!show && map.hasLayer(layer)) layer.remove();
+    }
+    syncPrecinctNote();
+  }
+  function syncPrecinctNote() {
+    precinctNote.hidden = !(districtOn.has("precincts") && (!map || map.getZoom() < PRECINCT_ZOOM));
   }
 
   // "Show list of events in view": upcoming events whose address is in view (or, zoomed out to town level, whose
@@ -494,6 +574,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     clusterLayer.addTo(map);
     const publishBounds = () => { const b = map!.getBounds(); setMapBounds({ south: b.getSouth(), west: b.getWest(), north: b.getNorth(), east: b.getEast(), zoom: map!.getZoom() }); };
     map.on("moveend", publishBounds);
+    map.on("zoomend", syncDistrictZoom);
     map.on("moveend", () => { if (inViewOpen) void renderInView(); });
     // a search highlight goes when you click the map
     map.on("click", () => { highlight?.remove(); highlight = null; });
