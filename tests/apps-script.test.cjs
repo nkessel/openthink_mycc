@@ -401,6 +401,30 @@ console.log("second round trip (org-owned items, locations, links) OK");
   console.log("typed answers (orgs + topics + unmatched log) OK");
 }
 
+// 6) coalitions typed where an organization is asked: a coalition can host items and be edited on the org form;
+//    and a held submission is applied once its sender is added on the Editors tab
+{
+  const coal = ctx.readAll_().coalitions[0];
+  // host = a coalition (typed by its short name)
+  submit("fp", "nathandkessel@gmail.com", { [Q.whichProject]: NEW_PROJECT, [Q.hostOrg]: coal.abbrev || coal.name, [Q.projectName]: "Coalition-hosted project" });
+  let dd = data();
+  assert.ok(dd.coalitions.find((c) => c.id === coal.id).projects.some((p) => p.name === "Coalition-hosted project"), "typed coalition becomes the project's owner");
+  // org form used for a coalition: an admin's edit lands on the coalition's own row
+  submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: coal.abbrev || coal.name, [Q.orgDesc]: "Updated through the org form" });
+  dd = data();
+  assert.equal(dd.coalitions.find((c) => c.id === coal.id).description, "Updated through the org form", "coalition edited");
+  // an unknown sender's project waits; adding them as an editor of that coalition applies it
+  const n0 = review().length;
+  submit("fp", "newcomer@example.org", { [Q.whichProject]: NEW_PROJECT, [Q.hostOrg]: coal.abbrev || coal.name, [Q.projectName]: "Held until editor added" });
+  assert.equal(review().length, n0 + 1);
+  assert.equal(review().at(-1).status, "waiting");
+  ctx.appendObject_(sheet("Editors"), { email: "newcomer@example.org", role: "editor", coalition_ids: coal.id });
+  ctx.onReviewEdit({ range: sheet("Editors").getRange(2, 1), user: { getEmail: () => "ab130@wellesley.edu" } });
+  assert.ok(JSON.stringify(data()).includes("Held until editor added"), "applied once the editor is listed");
+  assert.match(review().at(-1).status, /^applied/);
+  console.log("coalitions as owners + held submissions re-checked OK");
+}
+
 // 7. site form config: entry ids come out for typed (TEXT) questions too, and a flaky openById is retried
 {
   const T = { LIST: "LIST", TEXT: "TEXT", CHECKBOX: "CHECKBOX", PARAGRAPH_TEXT: "PARAGRAPH_TEXT", MULTIPLE_CHOICE: "MULTIPLE_CHOICE" };
@@ -443,4 +467,90 @@ console.log("second round trip (org-owned items, locations, links) OK");
   }
   assert.equal(flaky, -1, "retried past two transient failures");
   console.log("site form config with typed questions OK");
+}
+
+// 7. Event/project pins: room words stripped, the host's town added, and matches outside Massachusetts rejected.
+{
+  const clean = G("cleanPlace_");
+  assert.equal(clean("George Sherman Hall, 2nd floor"), "George Sherman Hall");
+  assert.equal(clean("Room 104, 12 Main St, Lowell"), "12 Main St, Lowell");
+  assert.equal(clean("Suite B, 5 Elm St"), "5 Elm St");
+  const qs = J(G("geocodeQueries_")("George Sherman Hall, 2nd floor", "Boston"));
+  assert.deepEqual(qs, ["George Sherman Hall, Boston, Massachusetts", "George Sherman Hall, Massachusetts"]);
+  assert.deepEqual(J(G("geocodeQueries_")("Statewide", "Boston")), []);
+  const saved = ctx.Maps;
+  const asked = [];
+  ctx.Maps = { newGeocoder: () => ({ setRegion() { return this; }, geocode: (q) => {
+    asked.push(q);
+    // The bare hall name matches a place in Ohio first, then (with the town added) the real one in Boston.
+    return /Boston/.test(q) ? { status: "OK", results: [{ geometry: { location: { lat: 42.3134, lng: -71.0386 } } }] }
+      : { status: "OK", results: [{ geometry: { location: { lat: 40.0, lng: -83.0 } } }] };
+  } }) };
+  assert.deepEqual(J(G("geocode_")("George Sherman Hall, 2nd floor", "Boston")), [42.3134, -71.0386]);
+  assert.equal(asked.length, 1, "town-first query used");
+  assert.equal(G("geocode_")("George Sherman Hall"), null, "out-of-state match rejected");
+  ctx.Maps = saved;
+  console.log("event pins: cleaned, host town added, out-of-state rejected OK");
+}
+{
+  const t = {
+    orgs: [{ id: "cccc_org", hq_address: "Boston" }], coalitions: [],
+    events: [
+      { _row: 2, id: "ev_mixer", name: "Cross Campus Mixer", host_org_id: "cccc_org", location: "George Sherman Hall, 2nd floor", online: "FALSE", lat: 42.38, lng: -71.42 },
+      { _row: 3, id: "ev_ok", name: "Fine", location: "Lowell", online: "FALSE", lat: 42.63, lng: -71.31 },
+      { _row: 5, id: "ev_far", name: "Far", location: "12 Main St, Springfield", online: "FALSE", lat: 40, lng: -83 },
+      { _row: 6, id: "ev_same", name: "Same", host_org_id: "cccc_org", location: "Campus Center", online: "FALSE", lat: 42.3135, lng: -71.0385 },
+      { _row: 4, id: "ev_web", name: "Webinar", location: "Zoom", online: "TRUE", lat: "", lng: "" },
+    ],
+    projects: [],
+  };
+  const hints = [];
+  const out = J(G("fixPins_")(t, (place, hint) => { hints.push(hint); return [42.3134, -71.0386]; }));
+  assert.deepEqual(out.map((o) => o.id), ["ev_mixer", "ev_far"], "Sudbury pin moved; out-of-state moved; close one kept");
+  assert.deepEqual(hints, ["Boston", "", "Boston"]);
+  console.log("menu: re-place pins outside Massachusetts OK");
+}
+{
+  const T = { TEXT: "TEXT", MULTIPLE_CHOICE: "MC", DATE: "DATE", CHECKBOX: "CB", PARAGRAPH_TEXT: "P", LIST: "L", TIME: "TIME" };
+  const req = [];
+  const mk = (title, type) => { const typed = { setRequired: (v) => req.push([title, v]) }; return { getTitle: () => title, getType: () => type, asTextItem: () => typed, asMultipleChoiceItem: () => typed, asDateItem: () => typed }; };
+  const ev = { getItems: () => [mk(Q.eventName, T.TEXT), mk(Q.freeFood, T.MULTIPLE_CHOICE), mk(Q.location, T.TEXT), mk(Q.eventDate, T.DATE)] };
+  const pr = { getItems: () => [mk(Q.helpWanted, T.MULTIPLE_CHOICE), mk(Q.link, T.TEXT)] };
+  ctx.FormApp = { ItemType: T, openById: (id) => (id === "e" ? ev : pr) };
+  Object.assign(props, { FORM_EVENT: "e", FORM_PROJECT: "p" });
+  G("requireKeyQuestions")();
+  assert.deepEqual(req.map((r) => r[0]).sort(), [Q.eventDate, Q.eventName, Q.freeFood, Q.helpWanted].sort(), "location and link stay optional");
+  console.log("menu: key questions required OK");
+}
+
+// 10. Wikipedia-based topics on the forms: Topics tab rows, seed checkboxes, typed topics matched by name or alias.
+{
+  const rows = [
+    ["hop_distance", "topic", "aliases", "qid", "seeds", "lift_lcb_max"],
+    ["1", "Heat pump", "Heat pumps | Air-source heat pump", "Q1", "Q125928", "12"],
+    ["0", "Climate change", "Global warming | Climate crisis", "Q125928", "", ""],
+    ["1", "Zivildienst", "", "Q2", "Q125928", "3"],
+    ["0", "Climate justice", "", "Q1291678", "", ""],
+    ["1", "Washington, D.C.", "DC | District of Columbia", "Q61", "Q1291678,Q125928", "9"],
+  ];
+  const out = J(G("wikiTopicRows_")(rows, 8));
+  assert.deepEqual(out.map((r) => r[0]), ["Climate change", "Climate justice", "Heat pump", "Washington, D.C."], "seeds first, low lift dropped");
+  assert.equal(out[2][2], "Under Climate change · Wikidata Q1");
+  assert.equal(out[3][4], "Climate justice", "first seed listed");
+  const t = { topics: out.map((r) => ({ name: r[0], aliases: r[1], notes: r[2] })), coalitions: [], orgs: [], events: [], projects: [] };
+  assert.deepEqual(J(G("tagChoices_")(t, "wiki")), ["Climate change", "Climate justice", "Youth serving"]);
+  assert.ok(J(G("tagChoices_")(t, "groups")).includes("Clean energy"), "group-based choices unchanged");
+  const r = J(G("resolveTopics_")("global warming, heat pumps, District of Columbia, heat pumpp, basket weaving", t));
+  assert.deepEqual(r.slugs, ["climate_change", "heat_pump", "washington_d_c", "heat_pump"]);
+  assert.deepEqual(r.missed.map((m) => m.typed), ["basket weaving"]);
+  console.log("Wikipedia-based topics on the forms OK");
+}
+{
+  const msg = G("orgConfirmation_")("https://p", "https://e", "");
+  assert.match(msg, /Add a project: https:\/\/p/);
+  assert.match(msg, /Add an event: https:\/\/e/);
+  assert.ok(!/action/.test(msg.split("Next")[1]), "no link for a missing form");
+  assert.equal(Q.orgDesc, "Mission statement and description");
+  assert.ok(G("FEEDBACK_AREAS").includes("Topics page (Streams or Command room)"));
+  console.log("org form next steps, mission statement title, feedback areas OK");
 }

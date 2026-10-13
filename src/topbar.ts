@@ -1,3 +1,4 @@
+import { largePrintButton } from "./display";
 import { h } from "./dom";
 import { currentMap, MAPS, switchMap, type MapId } from "./maps";
 
@@ -97,6 +98,7 @@ export function createTopbar(
       "button",
       {
         class: `tab ${t.id === active ? "active" : ""} ${t.disabled ? "disabled" : ""}`,
+        "data-tab": t.id,
       },
       t.label,
     );
@@ -117,6 +119,7 @@ export function createTopbar(
   switchItem.addEventListener("click", (e) => { e.stopPropagation(); setOpen(false); openMenu(); });
   nav.appendChild(switchItem);
   bar.appendChild(nav);
+  bar.appendChild(largePrintButton());
   bar.appendChild(menuBtn);
 
   return {

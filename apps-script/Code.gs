@@ -58,7 +58,7 @@ var REMOTE_YES = "We're remote / have no public location — don't show a pin"; 
 /** Typed into the HQ question instead of an address: no public location, no pin. */
 var REMOTE_WORDS = /^\s*(remote|none|no public location|n\/?a)\s*\.?\s*$/i;
 var ORG_HELP = {
-  desc: 'What your organization does, who you serve, your current campaigns, and what you could use help with. Write as much as you like: the map shows all of it, and more detail helps it suggest organizations doing similar work.',
+  desc: 'Start with your mission statement, then what your organization does, who you serve, your current campaigns, and what you could use help with. Write as much as you like: the map shows all of it, the Topics page reads it to place your group under the topics you work on, and more detail helps it suggest organizations doing similar work.',
   hq: 'A street address or just a town. Places your pin on the geographic map. If you have no public location, type "remote" and no pin is shown.',
 };
 
@@ -101,7 +101,8 @@ var Q = {
   pointName: 'Point person — name',
   pointEmail: 'Point person — email',
   pointPhone: 'Point person — phone (optional)',
-  orgDesc: 'Short description',
+  orgDesc: 'Mission statement and description',
+  orgDescOld: 'Short description', // title before Oct 2026; held submissions may still use it
   orgCoalitions: 'Coalitions you belong to',
   youth: 'Is your organization youth-serving?', // older forms; now the "Youth serving" topic tag
   membership: 'About how many active members do you have?',
@@ -190,7 +191,7 @@ var COLS = {
     'description', 'link', 'needs_info', 'verified'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
   // The master topic list (any length). People type topics on the forms; typed text is matched against name + aliases.
-  'Topics': ['name', 'aliases', 'notes'],
+  'Topics': ['name', 'aliases', 'notes', 'qid', 'seed'],
   // Typed organization or topic names that matched nothing. Add the right alias on Topics (or fix the org) and mark it resolved.
   'Unmatched Input': ['logged_at', 'email', 'form', 'what', 'field', 'typed', 'closest_match', 'status', 'resolution'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
@@ -231,7 +232,179 @@ function onOpen() {
     .addItem('Switch forms to typed answers (orgs + topics)', 'typeAnswersOnForms')
     .addItem('Show form + data links', 'showLinks')
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
+    .addItem('Use Wikipedia-based topics on the forms (Turibius)', 'useWikiTopicsOnForms')
+    .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
+    .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
+    .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
+    .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
     .addToUi();
+}
+
+/**
+ * Finds in-person events and projects whose pin is missing, outside Massachusetts, or (for a location with no town)
+ * far from where the host's town puts it, and geocodes them again
+ * (room words dropped, host's town added). Each fix is recorded in Change Log.
+ */
+function fixPinsOutsideMa() {
+  var t = readAll_();
+  var fixed = fixPins_(t, geocode_);
+  var ss = ss_();
+  fixed.forEach(function (f) {
+    var sheet = ss.getSheetByName(f.tab);
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) { return String(h).trim(); });
+    sheet.getRange(f.row, headers.indexOf('lat') + 1).setValue(f.lat);
+    sheet.getRange(f.row, headers.indexOf('lng') + 1).setValue(f.lng);
+    logChange_('', 'Menu', 'applied', '', f.type, f.id, f.name, 'pin moved to ' + f.lat + ', ' + f.lng + ' (re-checked with the host org town)');
+  });
+  ss.toast(fixed.length ? 'Moved ' + fixed.length + ' pin(s). See Change Log.' : 'No pins needed fixing.');
+}
+
+// ---------------------------------------------------------------- topic lists on the forms
+var WIKI_TOPICS_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/research/topics/wiki/topics-merged.csv';
+var WIKI_MIN_LIFT = 8; // same cutoff as the map's Topics page (public/topics-wiki.json)
+var ALIAS_CELL_MAX = 45000; // a sheet cell holds 50,000 characters
+
+/**
+ * Pure: rows of topics-merged.csv (header hop_distance,topic,aliases,qid,seeds,lift_lcb_max) → Topics tab rows
+ * [name, aliases, notes, qid, seed]: the seed topics plus every topic at or above the lift cutoff. Seeds first.
+ */
+function wikiTopicRows_(rows, minLift) {
+  var head = rows[0].map(function (h) { return String(h).trim(); });
+  var col = function (n) { return head.indexOf(n); };
+  var H = col('hop_distance'), T = col('topic'), A = col('aliases'), Qd = col('qid'), S = col('seeds'), L = col('lift_lcb_max');
+  var body = rows.slice(1).filter(function (r) { return r[T]; });
+  var seedName = {};
+  body.forEach(function (r) { if (String(r[H]) === '0') seedName[r[Qd]] = r[T]; });
+  return body
+    .filter(function (r) { return String(r[H]) === '0' || Number(r[L]) >= minLift; })
+    .sort(function (a, b) { return (String(a[H]) === '0' ? 0 : 1) - (String(b[H]) === '0' ? 0 : 1); })
+    .map(function (r) {
+      var seed = String(r[H]) === '0' ? r[Qd] : String(r[S]).split(',')[0];
+      var al = String(r[A] || '');
+      if (al.length > ALIAS_CELL_MAX) al = al.slice(0, al.lastIndexOf(' | ', ALIAS_CELL_MAX));
+      var note = String(r[H]) === '0' ? 'Seed topic' : 'Under ' + (seedName[seed] || seed);
+      return [r[T], al, note + ' · Wikidata ' + r[Qd], r[Qd], seedName[seed] || ''];
+    });
+}
+
+/** The form's topic checkboxes: the seed topics (Wikipedia-based) or every tag in use (group-based). */
+function tagChoices_(t, mode) {
+  if (mode === 'wiki') {
+    var seeds = (t.topics || []).filter(function (r) { return /^Seed topic/.test(str_(r.notes)); }).map(function (r) { return str_(r.name); });
+    // "Youth serving" stays: it also sets an organization's youth_serving flag.
+    if (seeds.length) return seeds.concat(['Youth serving']);
+  }
+  return uniq_(BASE_TAGS.concat(
+    flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); })),
+    flat_(t.orgs.map(function (r) { return list_(r.topic_tags); })),
+    flat_(t.events.map(function (r) { return list_(r.topic_tags); })),
+    flat_(t.projects.map(function (r) { return list_(r.topic_tags); }))
+  )).sort().map(humanize_);
+}
+
+/**
+ * Menu: Turibius's Wikipedia-based topics on the forms. Fills the Topics tab with his list (seeds + topics at
+ * lift ≥ 8, with aliases), makes the 13 seed topics the forms' checkboxes, and matches the "More topics" box
+ * against all of them (names and aliases). Anything typed that matches nothing goes to Unmatched Input as before.
+ */
+function useWikiTopicsOnForms() {
+  var csv = UrlFetchApp.fetch(WIKI_TOPICS_URL).getContentText();
+  var rows = wikiTopicRows_(Utilities.parseCsv(csv), WIKI_MIN_LIFT);
+  var sh = ss_().getSheetByName(TAB.topics) || ss_().insertSheet(TAB.topics);
+  sh.clearContents();
+  var cols = COLS[TAB.topics];
+  sh.getRange(1, 1, 1, cols.length).setValues([cols]);
+  sh.getRange(2, 1, rows.length, cols.length).setNumberFormat('@').setValues(rows);
+  PropertiesService.getScriptProperties().setProperty('TOPIC_CHOICES', 'wiki');
+  refreshDropdowns();
+  logChange_('', 'Menu', 'applied', '', 'topics', '', 'Wikipedia-based topics', rows.length + ' topics on the Topics tab; seed topics are the form checkboxes');
+  ss_().toast('Topics tab: ' + rows.length + ' Wikipedia-based topics. Form checkboxes are now the seed topics.');
+}
+
+/** Menu: back to the group-based topic checkboxes (the Topics tab is refilled from the tags in use). */
+function useGroupTopicsOnForms() {
+  PropertiesService.getScriptProperties().setProperty('TOPIC_CHOICES', 'groups');
+  var sh = ss_().getSheetByName(TAB.topics);
+  if (sh && sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).clearContent();
+  seedTopics_();
+  refreshDropdowns();
+  ss_().toast('Forms are back on the group-based topics.');
+}
+
+/** Menu: bring the existing forms up to date without rebuilding them (safe to run again). */
+function updateForms() {
+  var props = PropertiesService.getScriptProperties();
+  var run = function (key, fn) { var id = props.getProperty(key); if (id && formExists_(id)) fn(FormApp.openById(id)); };
+  run('FORM_ORG', upgradeOrgForm_);
+  run('FORM_FEEDBACK', upgradeFeedbackForm_);
+  run('FORM_EVENT', upgradeEventForm_);
+  run('FORM_PROJECT', upgradeProjectForm_);
+  orgNextSteps_();
+  ss_().toast('Forms updated.');
+}
+
+/** The questions each form should require, so filters like "Free food only" have answers to work with. */
+var REQUIRED_KEYS = {
+  FORM_EVENT: ['eventName', 'eventDate', 'online', 'freeFood', 'who'],
+  FORM_PROJECT: ['projectName', 'online', 'freeFood', 'who', 'helpWanted'],
+};
+
+/**
+ * Menu: mark the key questions required on the event and project forms. Edit links are pre-filled with the
+ * current answers, so point-people only have to answer the ones still blank. Location can't be required
+ * (online events have none); an in-person event saved without one keeps its "needs info" note instead.
+ */
+function requireKeyQuestions() {
+  var props = PropertiesService.getScriptProperties();
+  var done = [];
+  Object.keys(REQUIRED_KEYS).forEach(function (prop) {
+    var id = props.getProperty(prop);
+    if (!id) return;
+    var form = FormApp.openById(id);
+    var titles = REQUIRED_KEYS[prop].map(function (k) { return Q[k]; });
+    form.getItems().forEach(function (it) {
+      if (titles.indexOf(it.getTitle()) === -1) return;
+      var typed = asTypedItem_(it);
+      if (typed && typed.setRequired) { typed.setRequired(true); done.push(it.getTitle()); }
+    });
+  });
+  ss_().toast(done.length ? 'Required now: ' + uniq_(done).join('; ') : 'No matching questions found.');
+}
+
+/** A form item as its own type (only typed items have setRequired). */
+function asTypedItem_(it) {
+  var T = FormApp.ItemType;
+  switch (it.getType()) {
+    case T.TEXT: return it.asTextItem();
+    case T.PARAGRAPH_TEXT: return it.asParagraphTextItem();
+    case T.MULTIPLE_CHOICE: return it.asMultipleChoiceItem();
+    case T.CHECKBOX: return it.asCheckboxItem();
+    case T.LIST: return it.asListItem();
+    case T.DATE: return it.asDateItem();
+    case T.TIME: return it.asTimeItem();
+    default: return null;
+  }
+}
+
+/** Pure: which rows need a new pin, and where. `geo(place, hint)` returns [lat, lng] or null. */
+function fixPins_(t, geo) {
+  var out = [];
+  [['events', TAB.events, 'event'], ['projects', TAB.projects, 'project']].forEach(function (k) {
+    (t[k[0]] || []).forEach(function (r) {
+      if (!r.id || isTrue_(r.online) || !str_(r.location)) return;
+      var lat = Number(r.lat), lng = Number(r.lng);
+      var hint = placeHint_({}, r, t);
+      var place = cleanPlace_(r.location);
+      var townless = hint && !/,/.test(place) && !/\b\d{5}\b/.test(place);
+      var bad = !(str_(r.lat) && str_(r.lng) && inMass_(lat, lng));
+      if (!bad && !townless) return;
+      var ll = geo(str_(r.location), hint);
+      // A town-less location (e.g. "George Sherman Hall, 2nd floor") is moved only if the host's town puts it
+      // somewhere clearly different (about 2 km or more).
+      if (ll && (bad || Math.abs(ll[0] - lat) + Math.abs(ll[1] - lng) > 0.02)) out.push({ tab: k[1], type: k[2], row: r._row, id: r.id, name: str_(r.name), lat: ll[0], lng: ll[1] });
+    });
+  });
+  return out;
 }
 
 /**
@@ -536,6 +709,7 @@ function buildForms(dataLoaded) {
   });
 
   refreshDropdowns();
+  orgNextSteps_();
   writeLinks_();
   SpreadsheetApp.getUi().alert(
     (dataLoaded === true ? 'Loaded the current map data into the tabs.\n\n' : '') +
@@ -591,6 +765,28 @@ function renameResponseSheet_(ss, form, name) {
       return;
     }
   }
+}
+
+/**
+ * After the organization form, point people straight to the event, project and action forms (a Google Form can't
+ * branch into another form, so the thank-you page links to them).
+ */
+function orgNextSteps_() {
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('FORM_ORG');
+  if (!id) return;
+  var url = function (k) { var f = props.getProperty(k); try { return f ? FormApp.openById(f).getPublishedUrl() : ''; } catch (e) { return ''; } };
+  FormApp.openById(id).setConfirmationMessage(orgConfirmation_(url('FORM_PROJECT'), url('FORM_EVENT'), url('FORM_ACTION')));
+}
+/** Pure: the organization form's thank-you text with links to the other forms. */
+function orgConfirmation_(projectUrl, eventUrl, actionUrl) {
+  var lines = ['Thank you! If you are a point-person for this organization, your changes are on their way to the map. Otherwise the map team will review them.'];
+  var next = [];
+  if (projectUrl) next.push('• Add a project: ' + projectUrl);
+  if (eventUrl) next.push('• Add an event: ' + eventUrl);
+  if (actionUrl) next.push('• Add an action or volunteer opportunity: ' + actionUrl);
+  if (next.length) lines.push('', 'Next, add what your organization is working on (pick your organization at the top of each form):', next.join('\n'));
+  return lines.join('\n');
 }
 
 function header_(form, text) {
@@ -688,6 +884,10 @@ function addOrgType_(form) {
     .setChoiceValues(ORG_TYPES.filter(function (t) { return t[1] !== 'other'; }).map(function (t) { return t[0]; }))
     .showOtherOption(true);
 }
+/** The parts of the site, as the tabs and panels are named on it now. */
+var FEEDBACK_AREAS = ['Map (strategy map)', 'Geographic map', 'Voting districts', 'Organizations list', 'Events list',
+  'Projects list', 'Actions list', 'Topics page (Streams or Command room)', "A group's details panel", 'Loading screen',
+  'Large print or low-power mode', 'On a phone or tablet', 'The forms', 'General'];
 var FEEDBACK_TYPES = ["Something's broken", 'Info on the map is wrong or missing', 'Idea or feature request', 'Question'];
 
 /** Who the core team contacts about this org. Private: stored on the Editors tab, never on the map.
@@ -756,7 +956,7 @@ function upgradeOrgForm_(form) {
   form.getItems().forEach(function (it) {
     var title = it.getTitle();
     if (oldTitles.indexOf(title) !== -1 || title === Q.orgRemote || title === Q.youth) form.deleteItem(it);
-    else if (title === Q.orgDesc) it.setHelpText(ORG_HELP.desc);
+    else if (title === Q.orgDesc || title === Q.orgDescOld) it.setTitle(Q.orgDesc).setHelpText(ORG_HELP.desc);
     else if (title === Q.orgHq) it.setHelpText(ORG_HELP.hq);
   });
 }
@@ -916,6 +1116,7 @@ function upgradeFeedbackForm_(form) {
     if (title === Q.fbType && it.getType() === FormApp.ItemType.MULTIPLE_CHOICE) {
       it.asMultipleChoiceItem().setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
     }
+    if (title === Q.fbArea && it.getType() === FormApp.ItemType.CHECKBOX) it.asCheckboxItem().setChoiceValues(FEEDBACK_AREAS);
     if (title === Q.fbEmail) form.deleteItem(it); // the signed-in email replaces it
     if (title === Q.fbName) nameItem = it;
     if (title === Q.fbPhone) hasPhone = true;
@@ -933,9 +1134,7 @@ function buildFeedbackForm_(form) {
   form.setDescription(FEEDBACK_DESC);
   form.setConfirmationMessage('Thank you — we read every one.');
   form.addMultipleChoiceItem().setTitle(Q.fbType).setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
-  form.addCheckboxItem().setTitle(Q.fbArea).setChoiceValues([
-    'Network map', 'Geographic map', 'Organizations list', 'Events list', 'Projects list', 'Suggested connections',
-    'The forms', 'General']);
+  form.addCheckboxItem().setTitle(Q.fbArea).setChoiceValues(FEEDBACK_AREAS);
   form.addParagraphTextItem().setTitle(Q.fbMessage).setRequired(true);
   form.addTextItem().setTitle(Q.fbName);
   form.addTextItem().setTitle(Q.fbPhone);
@@ -957,12 +1156,7 @@ function refreshDropdowns() {
   var projectLabels = labelsOf('project', t.projects.filter(visible).sort(byName_));
   var actionLabels = labelsOf('action', t.actions.filter(visible).sort(byName_));
 
-  var tags = uniq_(BASE_TAGS.concat(
-    flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); })),
-    flat_(t.orgs.map(function (r) { return list_(r.topic_tags); })),
-    flat_(t.events.map(function (r) { return list_(r.topic_tags); })),
-    flat_(t.projects.map(function (r) { return list_(r.topic_tags); }))
-  )).sort().map(humanize_);
+  var tags = tagChoices_(t, props.getProperty('TOPIC_CHOICES'));
   var skills = uniq_(BASE_SKILLS.concat(
     flat_(t.projects.map(function (r) { return list_(r.skills_needed); })),
     flat_(t.actions.map(function (r) { return list_(r.skills_needed); }))
@@ -1099,7 +1293,11 @@ function topicCandidates_(t) {
     seen[id] = true;
     out.push({ id: id, names: [humanize_(id) === name ? name : name].concat(list_(aliases)) });
   };
-  (t.topics || []).forEach(function (r) { if (str_(r.name)) add(str_(r.name), String(r.aliases || '').split(/[,;|]/)); });
+  // Aliases are separated by " | " (Wikipedia-based list; names can contain commas) or, in older rows, by , or ;
+  (t.topics || []).forEach(function (r) {
+    var al = String(r.aliases || '');
+    if (str_(r.name)) add(str_(r.name), al.indexOf('|') !== -1 ? al.split(/\s*\|\s*/) : al.split(/[,;]/));
+  });
   BASE_TAGS.forEach(function (x) { add(humanize_(x), []); });
   var used = flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); }).concat(
     t.orgs.map(function (r) { return list_(r.topic_tags); }),
@@ -1114,8 +1312,20 @@ function resolveTopics_(text, t) {
   var parts = String(text === undefined || text === null ? '' : text).split(/[,;\n]+/).map(function (x) { return x.trim(); }).filter(Boolean);
   if (!parts.length) return out;
   var cands = topicCandidates_(t);
+  var exact = {};
+  cands.forEach(function (c) { c.names.forEach(function (n) { var k = normText_(n); if (k && !(k in exact)) exact[k] = c.id; }); });
   parts.forEach(function (typed) {
-    var m = matchTyped_(typed, cands);
+    var k = normText_(typed);
+    if (exact[k]) { out.slugs.push(exact[k]); return; }
+    // The full list has thousands of names: compare only those sharing a word or of similar length (typos).
+    var words = k.split(' ').filter(function (w) { return w.length >= 4; });
+    var near = cands.filter(function (c) {
+      return c.names.some(function (n) {
+        var nk = normText_(n);
+        return Math.abs(nk.length - k.length) <= 3 || words.some(function (w) { return nk.indexOf(w) !== -1; });
+      });
+    });
+    var m = matchTyped_(typed, near);
     if (m.id) out.slugs.push(m.id); else out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
   });
   return out;
@@ -1172,6 +1382,7 @@ function processSubmission_(kind, a, email, approver) {
     queueForReview_(kind, a, email, { label: miss.typed, id: '' }, 'UNMATCHED ORG — "' + miss.typed + '" is not on the list' + (miss.closest ? ' (closest: ' + miss.closest + ')' : ''));
     return;
   }
+  if (kind === 'org' && a[COALITION_EDIT]) return saveCoalitionSubmission_(a, email, approver, t);
   var target = describeTarget_(kind, a, t);
   var access = approver ? { ok: true } : authorize_(email, kind, a, target, t);
   if (!access.ok) {
@@ -1184,6 +1395,31 @@ function processSubmission_(kind, a, email, approver) {
   // An approved new org: its submitter becomes that org's point-person.
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
   if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
+  refreshDropdowns();
+}
+
+/** The org form used for a coalition: its point people (Editors → coalition_ids) or admins may update it. */
+function saveCoalitionSubmission_(a, email, approver, t) {
+  var cid = a[COALITION_EDIT];
+  var label = LABEL_INDEX_.byId.coalition[cid];
+  var target = { kind: 'coalition', isNew: false, id: cid, label: label };
+  if (!approver) {
+    var perms = email ? permissionsFor_(email, t.editors) : null;
+    var ok = perms && (perms.admin || perms.all || perms.coalitions[cid]);
+    if (!ok) {
+      queueForReview_('org', a, email, target, email ? 'UNAUTHORIZED — ' + email + ' does not manage the coalition ' + cid : 'NO EMAIL — form did not record a signed-in email');
+      return;
+    }
+  }
+  var patch = {};
+  put_(patch, 'name', a[Q.orgName]);
+  put_(patch, 'abbrev', a[Q.orgAbbrev]);
+  put_(patch, 'description', a[Q.orgDesc] || a[Q.orgDescOld]);
+  put_(patch, 'website', a[Q.website]);
+  put_(patch, 'geographic_scope', a[Q.orgTown]);
+  if (a[Q.logo]) put_(patch, 'logo', driveImage_(String(a[Q.logo]).trim()));
+  var result = upsert_(TAB.coalitions, 'coalition', label, NEW_ORG, patch);
+  logChange_(email, FORM_NAMES.org, result.action, approver ? 'approved by ' + approver : 'coalition', 'coalition', result.id, result.name, result.changes);
   refreshDropdowns();
 }
 
@@ -1202,12 +1438,24 @@ function normalizeTyped_(kind, a, approver) {
   var id = idFromLabel_(typed, 'org');
   if (id && LABEL_INDEX_.byId.org[id]) { a[field] = LABEL_INDEX_.byId.org[id]; return null; }
   var closest = MISSES_.length > before ? MISSES_[MISSES_.length - 1].closest : '';
+  // A coalition typed where an organization was asked (e.g. "CCCC"): the coalition is the owner / the record edited.
+  var cid = idFromLabel_(typed, 'coalition');
+  if (cid && LABEL_INDEX_.byId.coalition[cid]) {
+    MISSES_.splice(before); // not a miss after all
+    if (kind === 'org') { a[COALITION_EDIT] = cid; return null; }
+    a[Q.coalition] = LABEL_INDEX_.byId.coalition[cid];
+    a[field] = NONE;
+    return null;
+  }
   if (approver && kind === 'org') {
     a[field] = NEW_ORG; if (!str_(a[Q.orgName])) a[Q.orgName] = typed; // approving = "yes, it is a new organization"
     return null;
   }
   return { field: field, typed: typed, closest: closest };
 }
+
+/** Set on an org-form answer set when the "organization" typed is a coalition: the coalition's own row is edited. */
+var COALITION_EDIT = '__coalition_id';
 
 var FORM_NAMES = { org: 'Update your organization', event: 'Add or edit an event', project: 'Add or edit a project', action: 'Add or edit an action or volunteer opportunity', feedback: 'Send feedback' };
 
@@ -1315,6 +1563,7 @@ function savePointPerson_(orgId, a) {
 }
 
 function queueForReview_(kind, a, email, target, reason) {
+  if (RECHECK_) { RECHECK_.queued = reason; return; } // re-checking a held submission: don't queue it twice
   var sheet = ss_().getSheetByName(TAB.review);
   var summary = Object.keys(a).filter(function (k) {
     var v = a[k]; return v !== '' && v !== null && !(Array.isArray(v) && !v.length);
@@ -1337,8 +1586,42 @@ function queueForReview_(kind, a, email, target, reason) {
 }
 
 /** Installable onEdit trigger: ticking "approve" on Needs Review applies the change. */
+/** Set while held submissions are re-checked (see recheckWaiting_). @type {{ queued?: string } | null} */
+var RECHECK_ = null;
+
+/**
+ * Someone was added to (or changed on) the Editors tab: every submission still "waiting" is checked again, and
+ * the ones that are now allowed are applied — no need to approve them one by one.
+ */
+function recheckWaiting_() {
+  var sheet = ss_().getSheetByName(TAB.review);
+  var table = readTable_(sheet);
+  var applied = 0;
+  table.rows.forEach(function (r) {
+    if (String(r.status) !== 'waiting' || !str_(r.payload)) return;
+    var p;
+    try { p = JSON.parse(r.payload); } catch (err) { return; }
+    RECHECK_ = { queued: '' };
+    try {
+      processSubmission_(p.kind, p.answers, p.email, null);
+    } finally {
+      var still = RECHECK_.queued;
+      RECHECK_ = null;
+      if (still) writeFields_(sheet, table.headers, r._row, { reason: still });
+      else { writeFields_(sheet, table.headers, r._row, { status: 'applied (editor added)', reviewed_at: nowIso_() }); applied++; }
+    }
+  });
+  if (applied) SpreadsheetApp.getActive().toast(applied + ' held submission' + (applied === 1 ? ' was' : 's were') + ' applied now that the editor is listed.');
+}
+
 function onReviewEdit(e) {
   var sheet = e.range.getSheet();
+  if (sheet.getName() === TAB.editors) {
+    var lock0 = LockService.getScriptLock();
+    lock0.waitLock(30000);
+    try { recheckWaiting_(); } finally { lock0.releaseLock(); }
+    return;
+  }
   if (sheet.getName() !== TAB.review || e.range.getNumColumns() !== 1) return;
   var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
   if (e.range.getColumn() !== headers.indexOf('approve') + 1 || e.range.getValue() !== true) return;
@@ -1396,7 +1679,7 @@ function saveOrg_(a, t) {
   var types = asArray_(a[Q.orgType]).map(function (l) { return lookup_(ORG_TYPES, l); }).filter(Boolean);
   if (types.length) put_(patch, 'type', types.filter(function (t, i) { return types.indexOf(t) === i; }).join(', '));
   put_(patch, 'geographic_focus', a[Q.orgTown]);
-  put_(patch, 'description', a[Q.orgDesc]);
+  put_(patch, 'description', a[Q.orgDesc] || a[Q.orgDescOld]);
   if (asArray_(a[Q.orgCoalitions]).length) {
     patch.coalition_ids = asArray_(a[Q.orgCoalitions]).map(function (l) { return idFromLabel_(l, 'coalition'); }).filter(Boolean).join(', ');
   }
@@ -1526,7 +1809,7 @@ function saveEvent_(a, t) {
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
   var existing = a[Q.whichEvent] === NEW_EVENT ? null : findById_(t.events, idFromLabel_(a[Q.whichEvent], 'event'));
-  locationPatch_(patch, a, existing);
+  locationPatch_(patch, a, existing, t);
   var date = a[Q.eventDate], time = a[Q.eventTime];
   if (date || time) {
     var old = existing ? String(existing.date) : '';
@@ -1540,6 +1823,9 @@ function saveEvent_(a, t) {
     if (day) patch.end = day + 'T' + endTime + ':00';
   }
   if (!isRemove_(a)) { patch.needs_info = 'FALSE'; patch.verified = 'TRUE'; } // a point person just reviewed it
+  // An in-person event with no location can't be placed or found: keep the "needs info" note on it.
+  var inPerson = patch.online ? !isTrue_(patch.online) : !(existing && isTrue_(existing.online));
+  if (!isRemove_(a) && inPerson && !patch.location && !(existing && str_(existing.location))) patch.needs_info = 'TRUE';
   addMissingColumns_(ss_().getSheetByName(TAB.events), COLS[TAB.events]);
   return upsert_(TAB.events, 'event', a[Q.whichEvent], NEW_EVENT, patch);
 }
@@ -1559,7 +1845,7 @@ function saveProject_(a, t) {
   put_(patch, 'public_contact', a[Q.publicContact]);
   if (isRemove_(a)) patch.hidden = 'TRUE';
   var existing = a[Q.whichProject] === NEW_PROJECT ? null : findById_(t.projects, idFromLabel_(a[Q.whichProject], 'project'));
-  locationPatch_(patch, a, existing);
+  locationPatch_(patch, a, existing, t);
   if (!isRemove_(a)) { patch.needs_info = 'FALSE'; patch.verified = 'TRUE'; } // a point person just reviewed it
   addMissingColumns_(ss_().getSheetByName(TAB.projects), COLS[TAB.projects]);
   return upsert_(TAB.projects, 'project', a[Q.whichProject], NEW_PROJECT, patch);
@@ -1590,7 +1876,7 @@ function ownerPatch_(patch, a) {
 }
 
 /** Location text + online flag; geocode new/changed in-person locations for the map pin. */
-function locationPatch_(patch, a, existing) {
+function locationPatch_(patch, a, existing, t) {
   put_(patch, 'location', a[Q.location]);
   if (a[Q.online]) patch.online = a[Q.online] === 'Yes' ? 'TRUE' : 'FALSE';
   var online = patch.online ? isTrue_(patch.online) : existing ? isTrue_(existing.online) : false;
@@ -1598,7 +1884,7 @@ function locationPatch_(patch, a, existing) {
   var changed = patch.location && (!existing || str_(existing.location) !== patch.location);
   var becameInPerson = patch.online === 'FALSE' && existing && isTrue_(existing.online);
   if (!online && loc && (changed || becameInPerson || (existing && !str_(existing.lat)))) {
-    var ll = geocode_(loc);
+    var ll = geocode_(loc, placeHint_(patch, existing, t));
     if (ll) { patch.lat = ll[0]; patch.lng = ll[1]; }
   }
 }
@@ -1951,17 +2237,62 @@ function findRow_(sheet, text) {
   return 0;
 }
 
-function geocode_(place) {
-  try {
-    place = String(place).trim();
-    if (/^(statewide|national|new england|northeast|online|remote|zoom)$/i.test(place)) return null;
-    var q = /\b(MA|Massachusetts)\b/i.test(place) ? place : place + ', Massachusetts';
-    var res = Maps.newGeocoder().setRegion('us').geocode(q);
-    if (res.status === 'OK' && res.results.length) {
-      var loc = res.results[0].geometry.location;
-      return [Math.round(loc.lat * 1e6) / 1e6, Math.round(loc.lng * 1e6) / 1e6];
-    }
-  } catch (e) { /* fall through */ }
+var VAGUE_PLACE = /^(statewide|national|nationwide|new england|northeast|online|remote|zoom|virtual|massachusetts|ma)$/i;
+
+/** Drop the parts of a location a map can't use: "2nd floor", "Room 104", "Suite B", "basement", "lobby". */
+function cleanPlace_(place) {
+  return String(place || '')
+    .replace(/\b\d+(st|nd|rd|th)\s+(floor|fl\.?)\b/gi, '')
+    .replace(/\b(floor|fl\.?)\s*\d+\b/gi, '')
+    .replace(/\b(room|rm\.?|suite|ste\.?|unit|apt\.?)\s*#?\s*[\w-]+\b/gi, '')
+    .replace(/\b(basement|lobby|ground floor|upstairs|downstairs|main hall)\b/gi, '')
+    .replace(/\s*,\s*(,\s*)+/g, ', ')
+    .replace(/^[\s,]+|[\s,]+$/g, '')
+    .replace(/\s{2,}/g, ' ');
+}
+
+/** Rough box around Massachusetts; a pin outside it is a wrong match (e.g. a hall name found in another state). */
+function inMass_(lat, lng) {
+  return lat >= 41.18 && lat <= 42.89 && lng >= -73.51 && lng <= -69.85;
+}
+
+/** The town to add when an event or project location has none: its host org's HQ or town, else its coalition's area. */
+function placeHint_(patch, existing, t) {
+  if (!t) return '';
+  var orgId = patch.host_org_id || (existing ? str_(existing.host_org_id) : '');
+  var coId = patch.coalition_id || (existing ? str_(existing.coalition_id) : '');
+  var org = orgId && t.orgs ? findById_(t.orgs, orgId) : null;
+  var co = coId && t.coalitions ? findById_(t.coalitions, coId) : null;
+  var picks = [org && str_(org.hq_address), org && str_(org.geographic_focus), co && str_(co.geographic_scope)];
+  for (var i = 0; i < picks.length; i++) if (picks[i] && !VAGUE_PLACE.test(picks[i]) && !REMOTE_WORDS.test(picks[i])) return picks[i];
+  return '';
+}
+
+/** The queries to try, best first: a location with no town gets the hint's town added. */
+function geocodeQueries_(place, hint) {
+  place = cleanPlace_(place);
+  if (!place || VAGUE_PLACE.test(place)) return [];
+  var withMa = function (s) { return /\b(MA|Massachusetts)\b/i.test(s) ? s : s + ', Massachusetts'; };
+  var qs = [];
+  var hasTown = /,/.test(place) || /\b\d{5}\b/.test(place);
+  if (hint && !hasTown) qs.push(withMa(place + ', ' + hint));
+  qs.push(withMa(place));
+  if (hint && hasTown) qs.push(withMa(place + ', ' + hint));
+  return qs;
+}
+
+function geocode_(place, hint) {
+  var qs = geocodeQueries_(place, hint);
+  for (var i = 0; i < qs.length; i++) {
+    try {
+      var res = Maps.newGeocoder().setRegion('us').geocode(qs[i]);
+      if (res.status !== 'OK') continue;
+      for (var j = 0; j < res.results.length; j++) {
+        var loc = res.results[j].geometry.location;
+        if (inMass_(loc.lat, loc.lng)) return [Math.round(loc.lat * 1e6) / 1e6, Math.round(loc.lng * 1e6) / 1e6];
+      }
+    } catch (e) { /* try the next query */ }
+  }
   return null;
 }
 

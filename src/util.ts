@@ -1,3 +1,4 @@
+import { recurrenceLabel } from "./recurrence";
 import type { Coalition, Organization } from "./types";
 
 export function initials(name: string, maxChars = 3): string {
@@ -52,7 +53,7 @@ export function parseEventDate(iso: string): Date {
 }
 
 export function fmtEventTime(start: string, end?: string, recurrence?: string): string {
-  if (recurrence) return `${recurrence} · next ${hasTime(start) ? fmtDateTime(start) : fmtDate(`${start}T12:00:00`)}`;
+  if (recurrence) return `${recurrenceLabel(recurrence)} · next ${hasTime(start) ? fmtDateTime(start) : fmtDate(`${start}T12:00:00`)}`;
   if (!hasTime(start)) return `${fmtDate(`${start}T12:00:00`)} · time not posted`;
   if (!end) return fmtDateTime(start);
   const t = new Date(end).toLocaleString("en-US", { hour: "numeric", minute: "2-digit" });
@@ -81,6 +82,12 @@ export function orgRadius(_o: Organization): number {
 /** An org can have several types, stored comma-separated ("501c3, faith_org"). */
 export function typeList(t: string | undefined): string[] {
   return (t || "").split(",").map((x) => x.trim()).filter(Boolean);
+}
+
+/** The type label for display next to a name: "" when the type isn't known, so no "Unknown" shows. */
+export function shownType(t: string): string {
+  const l = typeLabel(t);
+  return /^unknown$/i.test(l) ? "" : l;
 }
 
 export function typeLabel(t: string): string {

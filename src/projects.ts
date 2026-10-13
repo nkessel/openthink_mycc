@@ -1,6 +1,6 @@
 import type { DataFile, Project, GraphNode } from "./types";
 import { allProjects, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
-import { itemButtons } from "./links";
+import { itemButtons, joinLine, wantsHelp } from "./links";
 import { showItemCard } from "./itemcard";
 import { isPast, showPast } from "./past";
 import { h, clear } from "./dom";
@@ -130,8 +130,20 @@ export function createProjectsView(
     const p = r.project;
     const hay = `${p.name} ${p.description} ${p.location || ""} ${(p.topic_tags || []).join(" ")} ${(p.skills_needed || []).join(" ")} ${r.owner.name} ${r.owner.abbrev}`;
     if (q && !termsMatch(q, hay)) return false;
-    return itemFilters.test({ hay, ...placeFor(p, r.owner.node as { lat?: number; lng?: number; remote?: boolean; kind?: string }), online: p.online, free_food: p.free_food, affiliated_only: p.affiliated_only, help_wanted: p.help_wanted });
+    return itemFilters.test(facts(r, hay));
   }
+  const ownerOf = (r: Row) => r.owner.node as unknown as { public_contact?: string; website?: string; name: string; lat?: number; lng?: number; remote?: boolean; kind?: string };
+  const facts = (r: Row, hay = "") => {
+    const p = r.project;
+    return { hay, ...placeFor(p, ownerOf(r)), online: p.online, free_food: p.free_food, affiliated_only: p.affiliated_only, help_wanted: wantsHelp(p) };
+  };
+  // how many projects each switch would show (among those not hidden as past)
+  const current = rows.filter((r) => !isPast("project", r.project));
+  itemFilters.setCounts({
+    freeFood: current.filter((r) => r.project.free_food).length,
+    affiliated: current.filter((r) => r.project.affiliated_only).length,
+    helpWanted: current.filter((r) => facts(r).help_wanted).length,
+  });
 
   function render() {
     clear(body);
@@ -139,7 +151,7 @@ export function createProjectsView(
     const filtered = rows.filter((r) => matches(r) && (showPast() || !isPast("project", r.project)));
     count.textContent = `${filtered.length} project${filtered.length === 1 ? "" : "s"}`;
     if (!filtered.length) {
-      body.appendChild(h("div", { class: "list-empty" }, "No projects match."));
+      body.appendChild(h("div", { class: "list-empty" }, itemFilters.emptyReason() || "No projects match."));
       return;
     }
     for (const r of filtered) {
@@ -162,6 +174,7 @@ export function createProjectsView(
         h("div", { class: "name" }, r.project.name),
         h("div", { class: "desc" }, r.project.description),
         meta,
+        r.project.status !== "completed" ? joinLine(r.project, ownerOf(r)) : null,
         itemButtons("project", r.project),
         staleNotice("project", r.owner.node, r.project.needs_info, r.project.verified, r.project),
       );

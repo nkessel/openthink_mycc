@@ -944,11 +944,15 @@ body {
 
 /* ---------- List views (Events / Projects) ---------- */
 .list-view {
-  display: grid;
-  grid-template-rows: auto 1fr;
+  /* a column: toolbars at their own height, the list fills the rest (a grid's "auto 1fr" gave the extra space to
+     the second toolbar on pages with three or more rows, so the search bar slid down as results shrank) */
+  display: flex;
+  flex-direction: column;
   height: 100%;
   background: var(--bg);
 }
+.list-view > * { flex: none; }
+.list-view > .list-body, .list-view > .topics-body { flex: 1 1 0; min-height: 0; height: auto; }
 .list-toolbar {
   display: flex;
   align-items: center;
@@ -2761,7 +2765,10 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
   background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); padding: 12px 14px; font-size: 12px;
 }
 .bt-fx.on { display: block; }
-.bt-fx-head { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.bt-fx-head { font-weight: 700; font-size: 13px; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; position: sticky; top: -12px; background: var(--bg-elev); padding: 6px 0 4px; z-index: 1; }
+.bt-fx-hide { appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 3px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+.bt-fx-hide:hover { border-color: var(--accent); }
+.bt-fx-note { font-size: 11.5px; color: var(--text-faint); margin-bottom: 6px; line-height: 1.4; }
 .bt-fx-group { margin: 10px 0 4px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
 .bt-fx-row { display: grid; grid-template-columns: 1fr 110px 38px; align-items: center; gap: 8px; color: var(--text-dim); margin: 3px 0; }
 .bt-fx-row input { width: 100%; accent-color: #22d3ee; }
@@ -2829,3 +2836,88 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .bt-deselect { display: none; position: absolute; top: 34px; left: 50%; transform: translateX(-50%); z-index: 5; appearance: none; border: 1px solid var(--border); background: var(--bg-elev-2); color: var(--text); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 12.5px; cursor: pointer; box-shadow: var(--shadow); }
 .bt-deselect.on { display: block; }
 .bt-deselect:hover { border-color: var(--accent); }
+
+/* ---------- Topic list choice (Advanced display settings) ---------- */
+.topic-list-control .ctrl-select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-size: 13px;
+}
+
+/* Long dates ("Second Monday of each month, 6:00-7:30 PM · next Oct 12") and places wrap inside their pill
+   instead of running past the card. */
+.pill { max-width: 100%; }
+.pill.deadline, .pill.kind { white-space: normal; line-height: 1.35; overflow-wrap: anywhere; }
+.meta-row { flex-wrap: wrap; min-width: 0; }
+.check-count { color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.join-line { margin-top: 8px; font-size: 12px; color: var(--text-dim); line-height: 1.45; overflow-wrap: anywhere; }
+.join-line strong { color: var(--text); font-weight: 600; }
+.join-line.none { color: var(--text-faint); font-style: italic; }
+.contact-links a { color: #7dd3fc; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Leaflet's panes use z-indexes in the hundreds; keep them inside the geographic view so they can never paint over
+   the details pane (which flashed behind the map while zooming out). */
+.geo-view, .geo-map { isolation: isolate; }
+
+/* Details pane: title on top, then About / Activity; the summary leads the About tab. */
+.drawer .head.compact { padding-bottom: 12px; }
+.drawer .head.compact .locate-row { margin-top: 10px; }
+.drawer .about-summary { margin: -4px 0 14px; }
+.drawer .about-summary > .desc:first-child { margin-top: 0; }
+
+/* An opened org's coalitions: scaled by graph.ts (--ls) so they never dwarf the group you opened. */
+.node-coalition.linked > * { transform: scale(var(--ls, 1.5)); }
+/* Members of an opened group fade in one after another at their place around it. */
+.node-coalition.arriving, .node-org.arriving { animation: node-arrive 0.45s ease-out backwards; animation-delay: var(--arrive-delay, 0ms); }
+@keyframes node-arrive { from { opacity: 0; } }
+.drawer .topic-row .topic-count { color: var(--text-faint); font-weight: 500; }
+.drawer .topic-row .topic-items { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
+.drawer .topics-tab-note { margin: 0 0 10px; }
+
+/* ---------- Phones: nothing important hidden behind menus, legends or the + button ---------- */
+.panel-fold { display: none; }
+@media (max-width: 720px) {
+  /* "+" moves to the corner and gets smaller, so it no longer sits on cards and labels */
+  .fab-wrap, .drawer.open ~ .fab-wrap { left: auto; right: 12px; bottom: 12px; transform: none; align-items: flex-end; }
+  .fab { width: 46px; height: 46px; font-size: 26px; }
+  /* panels that cover the map or the list fold behind one button, closed until opened */
+  .panel-fold {
+    display: inline-flex; align-items: center; gap: 6px; appearance: none; cursor: pointer;
+    border: 1px solid var(--border); background: var(--bg-elev); color: var(--text); border-radius: 999px;
+    padding: 7px 14px; font: inherit; font-size: 13px; font-weight: 600; box-shadow: var(--shadow);
+  }
+  .panel-fold[aria-expanded="true"] { border-color: var(--accent); }
+  .foldable.folded > :not(.panel-fold):not(.fold-keep) { display: none !important; }
+  .geo-panel.foldable.folded { background: transparent; box-shadow: none; }
+  .item-filters.foldable.folded { padding-top: 6px; padding-bottom: 6px; }
+  .topics-panel.foldable.folded { max-height: none; }
+}
+
+/* ---------- Large print (src/display.ts): bigger text, fewer things on screen ---------- */
+.lp-btn {
+  margin-left: auto; appearance: none; cursor: pointer; font: inherit; font-weight: 700; font-size: 15px; line-height: 1;
+  color: var(--text-dim); background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 9px;
+}
+.lp-btn:hover { color: var(--text); border-color: var(--accent); }
+.lp-btn[aria-pressed="true"] { color: #04202a; background: #7dd3fc; border-color: #7dd3fc; }
+.large-print .topbar .tab, .large-print .tab-menu-btn { font-size: 17px; }
+.large-print .topbar .tab[data-tab="topics"] { display: none; }
+.large-print .drawer, .large-print .list-view > *, .large-print .sidebar, .large-print .detail-card, .large-print .geo-panel,
+.large-print .item-pop, .large-print .focus-bar { zoom: 1.22; }
+.large-print .drawer { width: calc(var(--drawer-w) / 1.22); }
+.large-print .sats, .large-print .sat-tethers, .large-print .map-legend, .large-print .focus-note, .large-print .boot-hint { display: none !important; }
+.large-print .node-name { font-size: 15px; font-weight: 600; }
+/* ---------- Low-power mode: no decorative animation ---------- */
+.low-power *, .low-power *::before, .low-power *::after { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
+.low-power .fab { box-shadow: var(--shadow); }
+
+/* Voting districts (Geographic → Boundaries) */
+.geo-bounds .geo-sub { margin-top: 12px; }
+.geo-bounds .geo-layer .swatch { display: inline-block; flex: none; }
+.geo-tip-kind { color: #94a3b8; font-size: 11px; }
+.leaflet-popup-content .geo-tip-kind { color: #64748b; }

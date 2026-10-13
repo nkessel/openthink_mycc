@@ -330,6 +330,12 @@ export function createGraph(
   function centerForceStrength(): number {
     return settings.centerForce * 0.1;
   }
+  /** Groups with no connections drift to the edge; they get a firmer pull so they stay near the main cluster. */
+  const degree = new Map<string, number>();
+  function centerStrengthFor(n: GraphNode): number {
+    const base = centerForceStrength();
+    return (degree.get(n.id) ?? 0) === 0 ? Math.max(base * 4, 0.05) : base;
+  }
   function linkForceStrength(): number {
     return 0.1 + settings.linkForce * 0.9;
   }
@@ -385,8 +391,14 @@ export function createGraph(
     .radius((n) => nodeRadiusOf(n) + 18) // replaced by collideRadius() once the item helpers exist
     .iterations(2);
 
-  const xForce = d3.forceX<GraphNode>(0).strength(centerForceStrength());
-  const yForce = d3.forceY<GraphNode>(0).strength(centerForceStrength());
+  for (const l of allLinks) {
+    const sid = typeof l.source === "string" ? l.source : l.source.id;
+    const tid = typeof l.target === "string" ? l.target : l.target.id;
+    degree.set(sid, (degree.get(sid) ?? 0) + 1);
+    degree.set(tid, (degree.get(tid) ?? 0) + 1);
+  }
+  const xForce = d3.forceX<GraphNode>(0).strength(centerStrengthFor);
+  const yForce = d3.forceY<GraphNode>(0).strength(centerStrengthFor);
 
   const sim = d3
     .forceSimulation<GraphNode>(allNodes)
@@ -398,15 +410,14 @@ export function createGraph(
     .alphaDecay(0.02);
 
   // Re-center on resize
-  function center() {
+  function center(animate = false) {
     const { w, h } = dimensions();
-    svg.attr("viewBox", `${-w / 2} ${-h / 2} ${w} ${h}`);
+    const vb = `${-w / 2} ${-h / 2} ${w} ${h}`;
+    if (animate && svg.attr("viewBox")) svg.transition("vb").duration(260).ease(d3.easeCubicOut).attr("viewBox", vb);
+    else svg.attr("viewBox", vb);
   }
   center();
-  window.addEventListener("resize", () => {
-    center();
-    sim.alpha(0.3).restart();
-  });
+  window.addEventListener("resize", () => center(true));
 
   // ----- Drag behavior on nodes -----
   // While someone drags a group (and briefly after), the dots of the groups that move get their trailing physics.
@@ -777,6 +788,13 @@ export function createGraph(
     sim.alpha(Math.max(sim.alpha(), alpha)).restart();
   }
 
+  /** Where the i-th of n items sits around its group: spread evenly, leaving a gap straight below the group,
+   *  where its name is, so an item and its label never sit on top of the group's name. */
+  const NAME_GAP = (70 * Math.PI) / 180;
+  function satAngle(i: number, n: number): number {
+    return Math.PI / 2 + NAME_GAP / 2 + ((i + 0.5) * (2 * Math.PI - NAME_GAP)) / n;
+  }
+
   function drawSats(n: GraphNode, level: 0 | 1) {
     const sel = d3.select<SVGGElement, GraphNode>(nodeSel.filter((d) => d.id === n.id).node() as SVGGElement);
     satSims.get(n.id)?.stop();
@@ -797,7 +815,7 @@ export function createGraph(
       g.style("pointer-events", "none");
       const dots = { els: [] as SVGCircleElement[], angles: [] as number[], rr, sim: null };
       shown.forEach((b, i) => {
-        const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
+        const a = satAngle(i, shown.length);
         const c = g.append("circle").attr("class", `sat sat-${b.kind}${isRoleB(b) ? " sat-role" : ""}`)
           .attr("transform", `translate(${Math.cos(a) * rr},${Math.sin(a) * rr})`).attr("r", SAT_DOT_R);
         dots.els.push(c.node()!);
@@ -812,7 +830,7 @@ export function createGraph(
     const els: SVGGElement[] = [];
     const angles: number[] = [];
     shown.forEach((b, i) => {
-      const a = (2 * Math.PI * i) / shown.length - Math.PI / 2;
+      const a = satAngle(i, shown.length);
       const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}${isRoleB(b) ? " b-role" : ""}`).style("cursor", "pointer");
       els.push(bg.node()!);
       angles.push(a);
@@ -1111,7 +1129,7 @@ export function createGraph(
       if (!orgVisible.get(tid)) return "none";
       return null;
     });
-    sim.alpha(0.3).restart();
+    sim.alpha(Math.max(sim.alpha(), 0.08)).restart();
   }
 
 
@@ -1134,7 +1152,7 @@ export function createGraph(
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   let focusId: string | null = null;
   // The opened group is drawn as a big planet (CSS scale(var(--fs)) on .focused) with its items as moons around it.
-  const FOCUS_PLANET_R = 64; // the opened group's radius on the map
+  const FOCUS_PLANET_R = 78; // the opened group's radius on the map (always the biggest thing in view)
   const LABEL_REACH = 150; // how far a moon's name reaches beyond it
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let focusSim: d3.Simulation<any, undefined> | null = null;
@@ -1450,8 +1468,11 @@ export function createGraph(
         if (o && (n.kind === "org" || o.kind === "org")) pinnedMembers.push(o);
       }
       if (pinnedMembers.length) {
-        // as drawn: an opened org's coalitions are scaled 1.5×, its partner groups 0.75× (styles.css .linked)
-        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? (o.kind === "coalition" ? 1.5 : 0.75) : 1);
+        // as drawn: an opened org's coalitions are scaled up to 1.5× but never past ~70% of the opened org
+        // (a big coalition used to crowd out the group you opened), its partner groups 0.75× (styles.css .linked)
+        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5, (0.7 * nodeR) / nodeRadiusOf(o)) : 0.75);
+        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? linkScale(o) : 1);
+        nodeSel.filter((d) => n.kind === "org" && d.kind === "coalition").style("--ls", (d) => String(Math.max(0.5, linkScale(d))));
         pinnedMembers.sort((a, b) => drawnR(b) - drawnR(a));
         const maxR = Math.max(...pinnedMembers.map((o) => drawnR(o)));
         const spacing = 2 * maxR + 12; // between neighbours along a row
@@ -1483,6 +1504,21 @@ export function createGraph(
           row++;
         }
         clearR = Math.max(memberRX, memberRY) + 60;
+        // Members go straight to their place and fade in one after another, instead of flying across the map.
+        const fx = n.x ?? 0, fy = n.y ?? 0;
+        pinnedMembers.forEach((o) => {
+          const home = memberHome.get(o)!;
+          o.x = fx + home.ox;
+          o.y = fy + home.oy;
+          o.vx = 0;
+          o.vy = 0;
+        });
+        const order = new Map(pinnedMembers.map((o, i) => [o.id, i]));
+        nodeSel.filter((d) => order.has(d.id))
+          .classed("arriving", true)
+          .style("--arrive-delay", (d) => `${Math.min(700, (order.get(d.id) ?? 0) * 18)}ms`)
+          .attr("transform", (d) => `translate(${d.x},${d.y})`);
+        setTimeout(() => nodeSel.classed("arriving", false), 1300);
       }
     }
 
@@ -1590,7 +1626,7 @@ export function createGraph(
     } : null);
 
     // Push every other group well away so the bubbles have clear space (and nothing sits behind them).
-    sim.force("focusPush", () => {
+    sim.force("focusPush", (alpha: number) => {
       const f = nodeById.get(id);
       if (!f) return;
       for (const o of allNodes) {
@@ -1600,8 +1636,10 @@ export function createGraph(
         const d = Math.hypot(dx, dy) || 1;
         const min = clearR + itemExtent(o);
         if (d < min) {
-          o.vx = (o.vx ?? 0) + (dx / d) * (min - d) * 0.25;
-          o.vy = (o.vy ?? 0) + (dy / d) * (min - d) * 0.25;
+          // eased by alpha so the others drift out of the way instead of jumping
+          const k = 0.12 + 0.13 * Math.min(1, alpha / 0.5);
+          o.vx = (o.vx ?? 0) + (dx / d) * (min - d) * k;
+          o.vy = (o.vy ?? 0) + (dy / d) * (min - d) * k;
         }
       }
     });
@@ -1629,7 +1667,7 @@ export function createGraph(
     focusBar.appendChild(classicBtn);
     if (!count("thought")) {
       focusBar.appendChild(h("div", { class: "focus-note" },
-        "No public thinking shared yet. Point people can add it with the + button; nothing appears here until the group approves it."));
+        "Public thinking (what this group is discussing, decisions it made, open questions) will show here once it shares some. Point people can add it with the + button."));
     }
     focusBar.appendChild(h("span", { class: "focus-more" }, "Details ›"));
     focusBar.classList.add("tappable");
@@ -1651,7 +1689,7 @@ export function createGraph(
     const shift = panel / 2;
     const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
     svg.transition().duration(600).call(zoom.transform, t);
-    sim.alpha(0.7).restart();
+    sim.alpha(0.45).restart();
   }
 
   function exitFocus(fit = true) {
@@ -1742,8 +1780,8 @@ export function createGraph(
         chargeForce.strength(chargeStrengthFor);
       }
       if (partial.centerForce !== undefined) {
-        xForce.strength(centerForceStrength());
-        yForce.strength(centerForceStrength());
+        xForce.strength(centerStrengthFor);
+        yForce.strength(centerStrengthFor);
       }
       if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined || partial.alwaysShow !== undefined) {
         if (partial.alwaysShow !== undefined) {

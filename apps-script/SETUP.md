@@ -70,7 +70,27 @@ To move an item from a coalition to an org only, clear its `coalition_id` cell i
 
 - Review **Needs Review** when the alert email arrives; tick **approve** or leave it (set `status` to `rejected` for your own records).
 - Add point-people on **Editors**. Then run **MA Climate Coalition Map → Refresh form dropdowns** if you edited orgs/events/projects by hand.
+- When someone is added to **Editors**, anything of theirs waiting in Needs Review is re-checked and saved automatically.
+- A pin in the wrong town? Event and project locations without a town (e.g. "George Sherman Hall, 2nd floor") are now placed using the host org's town, and matches outside Massachusetts are ignored. To fix pins saved before this change, run **MA Climate Coalition Map → Re-check event and project pins**.
+- To stop key questions being skipped, run **MA Climate Coalition Map → Make key questions required** once (event: name, date, online?, free food, who can come; project: name, online?, free food, who can come, help wanted). Location stays optional because online events have none; an in-person event saved without one keeps its "needs info" note.
+- New organizations from anyone who isn't an admin wait in **Needs Review**. Admins' new orgs are saved straight away.
 - The 1–4 scores (`ej_focus`, `grassroots`, `policy_expertise`, `in_building`) and `coalition_weights` are core-team columns; no form changes them.
+
+## Updating the forms
+
+Run **MA Climate Coalition Map → Update the forms** after pasting a new version of the script. It is safe to run again. It:
+- renames the organization form's "Short description" to **Mission statement and description**. New organizations then show on the Topics page under the topics they tick.
+- brings the feedback form's "Which part of the map" choices up to date (Topics page, voting districts, details panel, phone, and so on).
+- adds links on the organization form's thank-you page to the project, event and action forms. A Google Form can't branch into another form, so this is how someone goes on from their organization to its projects.
+
+## Topics on the forms (Wikipedia-based or group-based)
+
+Run **MA Climate Coalition Map → Use Wikipedia-based topics on the forms (Turibius)** once (after the update is merged, so the script can fetch `research/topics/wiki/topics-merged.csv` from GitHub). It:
+- fills the **Topics** tab with Turibius's list: the 13 seed topics plus every topic at lift ≥ 8 (about 2,800), each with its aliases, Wikidata id and seed;
+- makes the seed topics (plus "Youth serving") the checkboxes on the organization, event and project forms;
+- matches whatever people type in **More topics** against every topic name and alias (exact first, then close spellings). Anything that matches nothing still lands on **Unmatched Input** for the team.
+
+The map's Topics page picks up these tags straight away, under the right seed topic, even before the research files are rebuilt. To switch back, run **Go back to group-based topics on the forms**.
 
 ## Limits worth knowing
 

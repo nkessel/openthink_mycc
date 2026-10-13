@@ -1,3 +1,4 @@
+import { recurrenceLabel } from "./recurrence";
 import type {
   Coalition,
   Organization,
@@ -7,8 +8,8 @@ import type {
   GraphNode,
   DataFile,
 } from "./types";
-import { initials, relTime, fmtEventTime, typeLabel } from "./util";
-import { itemButtons } from "./links";
+import { initials, relTime, fmtEventTime, shownType } from "./util";
+import { contactLinks, itemButtons, joinLine } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
@@ -17,8 +18,12 @@ import { orgProjects, orgEvents, orgActions } from "./owners";
 import { isPastAction, isPastEvent, isPastProject } from "./past";
 import { typeIcon } from "./icons";
 import { suggestionsFor } from "./suggestions";
+import { topicsUrl, topicListInfo, onTopicListChange, topicList } from "./topiclist";
+import { withLiveTags } from "./topiclive";
+import { currentMap } from "./maps";
+import type { TopicsFile as FullTopics } from "./topics";
 
-type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about";
+type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about" | "topics";
 /** The kinds of item in the Activity tab, each with its own filter pill. */
 type ActKind = "event" | "project" | "action" | "volunteer";
 const ACT_KINDS: { k: ActKind; label: string }[] = [
@@ -38,6 +43,8 @@ export interface Drawer {
   openItem(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): void;
   /** True while it shows one item rather than its group. */
   showingItem(): boolean;
+  /** Redraw what's showing (e.g. after switching pages). */
+  refresh(): void;
 }
 
 export type ItemKind = "event" | "project" | "action";
@@ -48,6 +55,8 @@ export interface DrawerCallbacks {
   /** "Locate on strategy map / geographic map": the only buttons in the pane that move a map. */
   onLocate?(where: "map" | "geo", node: GraphNode, item?: { kind: ItemKind; item: CoalitionEvent | Project | Action }): void;
   canLocateGeo?(node: GraphNode, item?: CoalitionEvent | Project | Action): boolean;
+  /** Which page is showing, so the pane doesn't offer to locate the group on the map you're already on. */
+  currentView?(): string;
 }
 
 export function createDrawer(
@@ -62,6 +71,7 @@ export function createDrawer(
   let activeTab: DrawerTab = "about";
   let actFilter = new Set<ActKind>(); // empty = everything
   let currentItem: { kind: ItemKind; item: CoalitionEvent | Project | Action } | null = null;
+  let itemFromGroup = false;
   const orgsById = new Map(data.organizations.map((o) => [o.id, o]));
   const coalitionsById = new Map(data.coalitions.map((c) => [c.id, c]));
 
@@ -74,9 +84,11 @@ export function createDrawer(
       x.addEventListener("click", () => cb.onLocate!(where, node, item));
       row.appendChild(x);
     };
-    b("Locate on strategy map", "map");
-    if (cb.canLocateGeo?.(node, item?.item) ?? true) b("Locate on geographic map", "geo");
-    return row;
+    // no button for the map you're already looking at
+    const here = cb.currentView?.();
+    if (here !== "map") b("Locate on strategy map", "map");
+    if (here !== "geo" && (cb.canLocateGeo?.(node, item?.item) ?? true)) b("Locate on geographic map", "geo");
+    return row.childElementCount ? row : null;
   }
 
   function renderHead(node: GraphNode): HTMLElement {
@@ -128,7 +140,7 @@ export function createDrawer(
       const badge = o.logo
         ? h("div", { class: "badge logo" }, h("img", { src: o.logo, alt: "" }))
         : h("div", { class: "badge", style: "background:#3a3a4a;color:#e5e7eb" }, initials(o.name));
-      const sub = [o.abbrev, typeLabel(o.type), o.geographic_focus].filter(Boolean).join(" · ");
+      const sub = [o.abbrev, shownType(o.type), o.geographic_focus].filter(Boolean).join(" · ");
       head.appendChild(
         h("div", { class: "title-row" }, badge, h("div", {}, h("h2", {}, o.name), h("div", { class: "sub" }, sub))),
       );
@@ -188,6 +200,7 @@ export function createDrawer(
     const tabList: { id: DrawerTab; label: string }[] = [
       { id: "about", label: "About" },
       { id: "activity", label: `Activity (${total})` },
+      { id: "topics", label: "Topics" },
     ];
     // older links to a single kind open Activity filtered to that kind
     if (activeTab === "projects" || activeTab === "events" || activeTab === "actions") {
@@ -215,6 +228,10 @@ export function createDrawer(
 
   function renderBody(node: GraphNode): HTMLElement {
     const body = h("div", { class: "body" });
+    if (activeTab === "topics") {
+      renderTopicsTab(body, node);
+      return body;
+    }
     if (node.kind === "coalition") {
       const c = node as Coalition;
       if (activeTab === "about") {
@@ -488,11 +505,11 @@ export function createDrawer(
     };
     const score = (v?: number) => (v === undefined ? undefined : `${v} / 4`);
     const p = org.profile || {};
-    row("Type", typeLabel(org.type));
+    row("Type", shownType(org.type));
     row("Geographic focus", org.geographic_focus);
     row("Description", org.description);
     row("Website", org.website ? h("a", { class: "org-website", href: org.website, target: "_blank", rel: "noopener noreferrer" }, org.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
-    row("Contact", org.public_contact);
+    row("Contact", org.public_contact ? contactLinks(org.public_contact) : undefined);
     row("Active membership", p.membership_size);
     row("EJ / frontline focus", score(p.ej_focus));
     row("Grassroots power", score(p.grassroots));
@@ -517,9 +534,17 @@ export function createDrawer(
   type TopicsFile = { parents: { id: string; label: string; children: { id: string; label: string }[] }[]; records: { id: string; topics: string[]; bills: string[] }[] };
   let topicsData: TopicsFile | null = null;
   let topicsLoading: Promise<void> | null = null;
+  onTopicListChange(() => {
+    topicsData = null;
+    topicsLoading = null;
+  });
   function loadTopics(): Promise<void> {
     if (topicsData || topicsLoading) return topicsLoading ?? Promise.resolve();
-    topicsLoading = fetch(`${import.meta.env.BASE_URL}topics.json`).then((r) => (r.ok ? r.json() : null)).then((j) => { topicsData = j; }).catch(() => {});
+    topicsLoading = fetch(topicsUrl())
+      .then((r) => (r.ok ? (r.json() as Promise<FullTopics>) : null))
+      .then((j) => (j ? withLiveTags(j, data, currentMap.combine ? [...currentMap.combine] : [currentMap.id], topicList() === "wiki") : null))
+      .then((j) => { topicsData = j; })
+      .catch(() => {});
     return topicsLoading;
   }
   function topicLabels(itemId: string): string[] {
@@ -529,6 +554,42 @@ export function createDrawer(
     const label = new Map<string, string>();
     for (const p of topicsData.parents) for (const c of p.children) label.set(c.id, c.label);
     return rec.topics.filter((t) => t !== "broad").map((t) => label.get(t) || t);
+  }
+
+  /** The group's topics (from the topic list chosen in settings): each topic, and the group's items on it. */
+  function renderTopicsTab(body: HTMLElement, node: GraphNode): void {
+    const fill = () => {
+      clear(body);
+      if (!topicsData) { body.appendChild(h("div", { class: "empty" }, "Couldn't load the topics.")); return; }
+      const recs = topicsData.records.filter((r) => (r as unknown as { host: string }).host === node.id);
+      const parentOf = new Map<string, { label: string; child: string }>();
+      for (const p of topicsData.parents) for (const c of p.children) parentOf.set(c.id, { label: p.label, child: c.label });
+      const byTopic = new Map<string, typeof recs>();
+      for (const r of recs) for (const t of r.topics) (byTopic.get(t) ?? byTopic.set(t, []).get(t)!).push(r);
+      body.appendChild(h("div", { class: "ctrl-hint topics-tab-note" }, `${topicListInfo().label} topics, from this group's events, projects, actions and mission. Change the list in Map settings → Advanced display settings.`));
+      if (!byTopic.size) { body.appendChild(h("div", { class: "empty" }, "No topics found for this group yet.")); return; }
+      const sorted = [...byTopic].sort((a, b) => b[1].length - a[1].length);
+      for (const [t, rs] of sorted) {
+        const info = parentOf.get(t);
+        const box = h("div", { class: "item topic-row" },
+          h("div", { class: "name" }, info?.child ?? t, h("span", { class: "topic-count" }, ` · ${rs.length}`)),
+          info ? h("div", { class: "sub" }, info.label) : null);
+        const list = h("div", { class: "topic-items" });
+        for (const r of rs) {
+          const rr = r as unknown as { id: string; kind: string; name: string };
+          const id = rr.id.slice(rr.id.indexOf(":") + 1);
+          const found = rr.kind === "event" ? (node.kind === "coalition" ? node.events : orgEvents(data, node)).find((x) => x.id === id)
+            : rr.kind === "project" ? (node.kind === "coalition" ? node.projects : orgProjects(data, node)).find((x) => x.id === id)
+            : rr.kind === "action" ? (node.kind === "coalition" ? node.actions || [] : orgActions(data, node)).find((x) => x.id === id) : undefined;
+          if (found) list.appendChild(openName(rr.kind as ItemKind, found, node));
+          else list.appendChild(h("div", { class: "sub" }, rr.kind.endsWith("mission") ? "Mission statement" : rr.name));
+        }
+        box.appendChild(list);
+        body.appendChild(box);
+      }
+    };
+    if (topicsData) fill();
+    else { body.appendChild(h("div", { class: "empty" }, "Loading topics…")); loadTopics().then(() => { if (activeTab === "topics") fill(); }); }
   }
 
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -570,8 +631,11 @@ export function createDrawer(
   function renderItem(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): void {
     const back = h("button", { class: "item-back", type: "button" }, `← ${owner.name}`);
     back.addEventListener("click", () => { currentItem = null; rerender(); });
-    const closeBtn = h("button", { class: "close", type: "button", "aria-label": "Close" }, "×");
-    closeBtn.addEventListener("click", () => api.close());
+    const closeBtn = h("button", { class: "close", type: "button", "aria-label": itemFromGroup ? `Back to ${owner.name}` : "Close" }, "×");
+    closeBtn.addEventListener("click", () => {
+      if (itemFromGroup) { currentItem = null; rerender(); }
+      else api.close();
+    });
     const e = item as CoalitionEvent, p = item as Project, a = item as Action;
     const kindLabel = kind === "event" ? (e.recurrence ? "Event · repeats" : "Event")
       : kind === "project" ? `Project · ${p.status || "active"}`
@@ -592,7 +656,7 @@ export function createDrawer(
     };
     if (kind === "event") {
       row("When", fmtEventTime(e.date, e.end, e.recurrence));
-      if (e.recurrence) row("Repeats", e.recurrence);
+      if (e.recurrence) row("Repeats", recurrenceLabel(e.recurrence));
     }
     const loc = kind === "event" ? e.location : kind === "project" ? p.location : "";
     if (loc) {
@@ -610,7 +674,8 @@ export function createDrawer(
     if (btns) body.appendChild(btns);
     if (kind === "event") { const cal = calendarLinks(e, owner); if (cal) body.appendChild(cal); }
     const contact = (item as { public_contact?: string }).public_contact;
-    if (contact) row("Contact", contact);
+    if (kind !== "event" && !(kind === "project" && p.status === "completed")) body.appendChild(joinLine(item as { public_contact?: string; link?: string }, owner as unknown as { public_contact?: string; website?: string; name: string }));
+    else if (contact) row("Contact", contactLinks(contact));
 
     const ownerLogo = (owner as { logo?: string }).logo;
     const hostRow = h("div", { class: "item clickable host-row" },
@@ -655,12 +720,23 @@ export function createDrawer(
     if (!currentNode) return;
     clear(el);
     if (currentItem) { renderItem(currentItem.kind, currentItem.item, currentNode); return; }
-    const head = renderHead(currentNode);
+    // Title (and the locate buttons) on top, then the About / Activity picker; the summary (description, tags,
+    // counts, edit link) opens the About tab, so Activity gets the pane's full height.
+    const full = renderHead(currentNode);
+    const head = h("div", { class: "head compact" });
+    const summary = h("div", { class: "about-summary" });
+    for (const child of [...full.childNodes]) {
+      const c = child as HTMLElement;
+      if (c.classList?.contains("close") || c.classList?.contains("title-row")) head.appendChild(c);
+      else summary.appendChild(c);
+    }
     const loc = locateRow(currentNode);
     if (loc) head.appendChild(loc);
     el.appendChild(head);
     el.appendChild(renderTabs(currentNode));
-    el.appendChild(renderBody(currentNode));
+    const body = renderBody(currentNode);
+    if (activeTab === "about" && summary.childNodes.length) body.prepend(summary);
+    el.appendChild(body);
   }
 
   const api: Drawer = {
@@ -690,7 +766,12 @@ export function createDrawer(
     showingItem() {
       return el.classList.contains("open") && !!currentItem;
     },
+    refresh() {
+      if (el.classList.contains("open")) rerender();
+    },
     openItem(kind, item, owner) {
+      // opened from this group's own details: closing the item goes back to the group
+      itemFromGroup = el.classList.contains("open") && !currentItem && currentNode?.id === owner.id;
       currentNode = owner;
       currentItem = { kind, item };
       activeTab = "activity";

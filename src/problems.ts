@@ -99,6 +99,21 @@ export const PROBLEMS: Record<string, string> = {
   "movements/indigenous": "Erasure of Indigenous peoples",
   "movements/wellbeing": "Unmet health & social needs",
   "broad/broad": "The climate crisis (in general)",
+
+  // Wikipedia-based topic list (src/topiclist.ts): the 13 seed topics; their sub-topics use their own names.
+  wiki_Q8434: "Too little climate education",
+  wiki_Q1341244: "Unaffordable, insecure energy",
+  wiki_Q3427027: "Gray, flood-prone, heat-trapping infrastructure",
+  wiki_Q125928: "The climate crisis",
+  wiki_Q1916831: "Threatened oceans & coasts",
+  wiki_Q18466271: "Vanishing habitats & species",
+  wiki_Q178512: "Car dependence & thin transit",
+  wiki_Q18919: "Wasted food & a throwaway culture",
+  wiki_Q131123: "Polluted air",
+  wiki_Q1479527: "Pollution dumped on frontline communities",
+  wiki_Q1291678: "Climate harm falling hardest on those least responsible",
+  wiki_Q1281406: "Unmet community needs",
+  wiki_Q2068307: "An extractive, fossil-fueled economy",
 };
 
 export const VISIONS: Record<string, string> = {
@@ -120,6 +135,21 @@ export const VISIONS: Record<string, string> = {
   democracy: "People-powered democracy",
   movements: "Care, peace & belonging",
   broad: "A livable planet",
+
+  // Wikipedia-based topic list: the 13 seed topics.
+  wiki_Q8434: "A climate-literate public",
+  wiki_Q1341244: "Affordable clean energy for every home",
+  wiki_Q3427027: "Green, resilient infrastructure",
+  wiki_Q125928: "A stable climate & net-zero emissions",
+  wiki_Q1916831: "Healthy oceans & coasts",
+  wiki_Q18466271: "Thriving, protected ecosystems",
+  wiki_Q178512: "Frequent, affordable transit",
+  wiki_Q18919: "Zero-waste, nourishing food systems",
+  wiki_Q131123: "Clean air for everyone",
+  wiki_Q1479527: "Environmental justice for all",
+  wiki_Q1291678: "A just transition",
+  wiki_Q1281406: "Neighbors showing up for each other",
+  wiki_Q2068307: "A Green New Deal & good green jobs",
 };
 
 /** Strategies that confront a problem directly (the rest build something new). */
