@@ -16,7 +16,28 @@ export interface Rule {
   onlyMonth?: number;
 }
 
-export function parseRecurrence(text: string): Rule | null {
+/**
+ * `anchor` (the stored date, when known) fills in "Monthly" with no weekday order: "Monthly; next meeting
+ * Monday, Oct 5" means the first Monday, because Oct 5 is the first Monday of its month.
+ */
+export function parseRecurrence(text: string, anchor?: Date): Rule | null {
+  const rule = parseText(text);
+  if (rule || !anchor || isNaN(anchor.getTime())) return rule;
+  const t = text.toLowerCase();
+  if (!/\bmonthly\b|\beach month\b|\bevery month\b/.test(t)) return null;
+  const nth = Math.floor((anchor.getDate() - 1) / 7) + 1;
+  return { weekday: anchor.getDay(), kind: "nth", nth: nth > 4 ? -1 : nth, skipMonths: [] };
+}
+
+/** The recurrence text as shown: drops a stale "next meeting Oct 5" or "(listed Oct 2, 9, 16)", since the next date is shown anyway. */
+export function recurrenceLabel(text: string): string {
+  return text
+    .replace(/\s*\(listed [^)]*\)/i, "")
+    .replace(/[;,]?\s*next (meeting|session|one)\b.*$/i, "")
+    .trim();
+}
+
+function parseText(text: string): Rule | null {
   const t = text.toLowerCase();
   if (/^(every day|daily)\b/.test(t)) return { weekday: -1, kind: "daily", skipMonths: [] };
   if (/\bnext\b.*\b(mon|tue|wed|thu|fri|sat|sun)/.test(t) && !/\b(first|second|third|fourth|last|1st|2nd|3rd|4th)\b/.test(t)) return null;
@@ -64,11 +85,11 @@ export function rollRecurringForward(events: { date: string; sheet_date?: string
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   for (const e of events) {
     if (!e.recurrence) continue;
-    const rule = parseRecurrence(e.recurrence);
-    if (!rule) continue;
     const m = /^(\d{4})-(\d{2})-(\d{2})(T.*)?$/.exec(e.date);
     if (!m) continue;
     const anchor = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    const rule = parseRecurrence(e.recurrence, anchor);
+    if (!rule) continue;
     if (anchor >= today) continue;
     for (let i = 0; i < 400; i++) {
       const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);

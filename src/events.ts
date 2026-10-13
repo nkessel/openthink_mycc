@@ -187,7 +187,7 @@ export function createEventsView(
     const from = rangeFrom ? new Date(rangeFrom) : null;
     const to = rangeTo ? new Date(rangeTo) : null;
     const start = parseEventDate(r.event.date);
-    const rule = r.event.recurrence ? parseRecurrence(r.event.recurrence) : null;
+    const rule = r.event.recurrence ? parseRecurrence(r.event.recurrence, start) : null;
     const ok = (t: Date) => (!from || t >= from) && (!to || t <= to);
     if (!rule) return ok(start);
     // Repeating: look at each day in the range (capped at a year) and compare the time of day.
@@ -228,7 +228,7 @@ export function createEventsView(
     const add = (k: string, r: Row) => (byDay.get(k) || byDay.set(k, []).get(k)!).push(r);
     for (const r of visible) {
       const anchor = parseEventDate(r.event.date);
-      const rule = r.event.recurrence ? parseRecurrence(r.event.recurrence) : null;
+      const rule = r.event.recurrence ? parseRecurrence(r.event.recurrence, anchor) : null;
       if (!rule) { add(dayKey(anchor), r); continue; }
       for (let i = 0; i < 42; i++) {
         const d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);

@@ -1,3 +1,4 @@
+import { recurrenceLabel } from "./recurrence";
 import type {
   Coalition,
   Organization,
@@ -648,7 +649,7 @@ export function createDrawer(
     };
     if (kind === "event") {
       row("When", fmtEventTime(e.date, e.end, e.recurrence));
-      if (e.recurrence) row("Repeats", e.recurrence);
+      if (e.recurrence) row("Repeats", recurrenceLabel(e.recurrence));
     }
     const loc = kind === "event" ? e.location : kind === "project" ? p.location : "";
     if (loc) {
