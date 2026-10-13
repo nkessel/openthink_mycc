@@ -76,6 +76,13 @@ To move an item from a coalition to an org only, clear its `coalition_id` cell i
 - New organizations from anyone who isn't an admin wait in **Needs Review**. Admins' new orgs are saved straight away.
 - The 1–4 scores (`ej_focus`, `grassroots`, `policy_expertise`, `in_building`) and `coalition_weights` are core-team columns; no form changes them.
 
+## Updating the forms
+
+Run **MA Climate Coalition Map → Update the forms** after pasting a new version of the script. It is safe to run again. It:
+- renames the organization form's "Short description" to **Mission statement and description**. New organizations then show on the Topics page under the topics they tick.
+- brings the feedback form's "Which part of the map" choices up to date (Topics page, voting districts, details panel, phone, and so on).
+- adds links on the organization form's thank-you page to the project, event and action forms. A Google Form can't branch into another form, so this is how someone goes on from their organization to its projects.
+
 ## Topics on the forms (Wikipedia-based or group-based)
 
 Run **MA Climate Coalition Map → Use Wikipedia-based topics on the forms (Turibius)** once (after the update is merged, so the script can fetch `research/topics/wiki/topics-merged.csv` from GitHub). It:

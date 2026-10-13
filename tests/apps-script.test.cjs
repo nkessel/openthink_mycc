@@ -545,3 +545,12 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.deepEqual(r.missed.map((m) => m.typed), ["basket weaving"]);
   console.log("Wikipedia-based topics on the forms OK");
 }
+{
+  const msg = G("orgConfirmation_")("https://p", "https://e", "");
+  assert.match(msg, /Add a project: https:\/\/p/);
+  assert.match(msg, /Add an event: https:\/\/e/);
+  assert.ok(!/action/.test(msg.split("Next")[1]), "no link for a missing form");
+  assert.equal(Q.orgDesc, "Mission statement and description");
+  assert.ok(G("FEEDBACK_AREAS").includes("Topics page (Streams or Command room)"));
+  console.log("org form next steps, mission statement title, feedback areas OK");
+}

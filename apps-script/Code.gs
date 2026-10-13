@@ -58,7 +58,7 @@ var REMOTE_YES = "We're remote / have no public location — don't show a pin"; 
 /** Typed into the HQ question instead of an address: no public location, no pin. */
 var REMOTE_WORDS = /^\s*(remote|none|no public location|n\/?a)\s*\.?\s*$/i;
 var ORG_HELP = {
-  desc: 'What your organization does, who you serve, your current campaigns, and what you could use help with. Write as much as you like: the map shows all of it, and more detail helps it suggest organizations doing similar work.',
+  desc: 'Start with your mission statement, then what your organization does, who you serve, your current campaigns, and what you could use help with. Write as much as you like: the map shows all of it, the Topics page reads it to place your group under the topics you work on, and more detail helps it suggest organizations doing similar work.',
   hq: 'A street address or just a town. Places your pin on the geographic map. If you have no public location, type "remote" and no pin is shown.',
 };
 
@@ -101,7 +101,8 @@ var Q = {
   pointName: 'Point person — name',
   pointEmail: 'Point person — email',
   pointPhone: 'Point person — phone (optional)',
-  orgDesc: 'Short description',
+  orgDesc: 'Mission statement and description',
+  orgDescOld: 'Short description', // title before Oct 2026; held submissions may still use it
   orgCoalitions: 'Coalitions you belong to',
   youth: 'Is your organization youth-serving?', // older forms; now the "Youth serving" topic tag
   membership: 'About how many active members do you have?',
@@ -233,6 +234,7 @@ function onOpen() {
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
     .addItem('Use Wikipedia-based topics on the forms (Turibius)', 'useWikiTopicsOnForms')
     .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
+    .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
     .addToUi();
@@ -327,6 +329,18 @@ function useGroupTopicsOnForms() {
   seedTopics_();
   refreshDropdowns();
   ss_().toast('Forms are back on the group-based topics.');
+}
+
+/** Menu: bring the existing forms up to date without rebuilding them (safe to run again). */
+function updateForms() {
+  var props = PropertiesService.getScriptProperties();
+  var run = function (key, fn) { var id = props.getProperty(key); if (id && formExists_(id)) fn(FormApp.openById(id)); };
+  run('FORM_ORG', upgradeOrgForm_);
+  run('FORM_FEEDBACK', upgradeFeedbackForm_);
+  run('FORM_EVENT', upgradeEventForm_);
+  run('FORM_PROJECT', upgradeProjectForm_);
+  orgNextSteps_();
+  ss_().toast('Forms updated.');
 }
 
 /** The questions each form should require, so filters like "Free food only" have answers to work with. */
@@ -695,6 +709,7 @@ function buildForms(dataLoaded) {
   });
 
   refreshDropdowns();
+  orgNextSteps_();
   writeLinks_();
   SpreadsheetApp.getUi().alert(
     (dataLoaded === true ? 'Loaded the current map data into the tabs.\n\n' : '') +
@@ -750,6 +765,28 @@ function renameResponseSheet_(ss, form, name) {
       return;
     }
   }
+}
+
+/**
+ * After the organization form, point people straight to the event, project and action forms (a Google Form can't
+ * branch into another form, so the thank-you page links to them).
+ */
+function orgNextSteps_() {
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('FORM_ORG');
+  if (!id) return;
+  var url = function (k) { var f = props.getProperty(k); try { return f ? FormApp.openById(f).getPublishedUrl() : ''; } catch (e) { return ''; } };
+  FormApp.openById(id).setConfirmationMessage(orgConfirmation_(url('FORM_PROJECT'), url('FORM_EVENT'), url('FORM_ACTION')));
+}
+/** Pure: the organization form's thank-you text with links to the other forms. */
+function orgConfirmation_(projectUrl, eventUrl, actionUrl) {
+  var lines = ['Thank you! If you are a point-person for this organization, your changes are on their way to the map. Otherwise the map team will review them.'];
+  var next = [];
+  if (projectUrl) next.push('• Add a project: ' + projectUrl);
+  if (eventUrl) next.push('• Add an event: ' + eventUrl);
+  if (actionUrl) next.push('• Add an action or volunteer opportunity: ' + actionUrl);
+  if (next.length) lines.push('', 'Next, add what your organization is working on (pick your organization at the top of each form):', next.join('\n'));
+  return lines.join('\n');
 }
 
 function header_(form, text) {
@@ -847,6 +884,10 @@ function addOrgType_(form) {
     .setChoiceValues(ORG_TYPES.filter(function (t) { return t[1] !== 'other'; }).map(function (t) { return t[0]; }))
     .showOtherOption(true);
 }
+/** The parts of the site, as the tabs and panels are named on it now. */
+var FEEDBACK_AREAS = ['Map (strategy map)', 'Geographic map', 'Voting districts', 'Organizations list', 'Events list',
+  'Projects list', 'Actions list', 'Topics page (Streams or Command room)', "A group's details panel", 'Loading screen',
+  'Large print or low-power mode', 'On a phone or tablet', 'The forms', 'General'];
 var FEEDBACK_TYPES = ["Something's broken", 'Info on the map is wrong or missing', 'Idea or feature request', 'Question'];
 
 /** Who the core team contacts about this org. Private: stored on the Editors tab, never on the map.
@@ -915,7 +956,7 @@ function upgradeOrgForm_(form) {
   form.getItems().forEach(function (it) {
     var title = it.getTitle();
     if (oldTitles.indexOf(title) !== -1 || title === Q.orgRemote || title === Q.youth) form.deleteItem(it);
-    else if (title === Q.orgDesc) it.setHelpText(ORG_HELP.desc);
+    else if (title === Q.orgDesc || title === Q.orgDescOld) it.setTitle(Q.orgDesc).setHelpText(ORG_HELP.desc);
     else if (title === Q.orgHq) it.setHelpText(ORG_HELP.hq);
   });
 }
@@ -1075,6 +1116,7 @@ function upgradeFeedbackForm_(form) {
     if (title === Q.fbType && it.getType() === FormApp.ItemType.MULTIPLE_CHOICE) {
       it.asMultipleChoiceItem().setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
     }
+    if (title === Q.fbArea && it.getType() === FormApp.ItemType.CHECKBOX) it.asCheckboxItem().setChoiceValues(FEEDBACK_AREAS);
     if (title === Q.fbEmail) form.deleteItem(it); // the signed-in email replaces it
     if (title === Q.fbName) nameItem = it;
     if (title === Q.fbPhone) hasPhone = true;
@@ -1092,9 +1134,7 @@ function buildFeedbackForm_(form) {
   form.setDescription(FEEDBACK_DESC);
   form.setConfirmationMessage('Thank you — we read every one.');
   form.addMultipleChoiceItem().setTitle(Q.fbType).setChoiceValues(FEEDBACK_TYPES).showOtherOption(true);
-  form.addCheckboxItem().setTitle(Q.fbArea).setChoiceValues([
-    'Network map', 'Geographic map', 'Organizations list', 'Events list', 'Projects list', 'Suggested connections',
-    'The forms', 'General']);
+  form.addCheckboxItem().setTitle(Q.fbArea).setChoiceValues(FEEDBACK_AREAS);
   form.addParagraphTextItem().setTitle(Q.fbMessage).setRequired(true);
   form.addTextItem().setTitle(Q.fbName);
   form.addTextItem().setTitle(Q.fbPhone);
@@ -1374,7 +1414,7 @@ function saveCoalitionSubmission_(a, email, approver, t) {
   var patch = {};
   put_(patch, 'name', a[Q.orgName]);
   put_(patch, 'abbrev', a[Q.orgAbbrev]);
-  put_(patch, 'description', a[Q.orgDesc]);
+  put_(patch, 'description', a[Q.orgDesc] || a[Q.orgDescOld]);
   put_(patch, 'website', a[Q.website]);
   put_(patch, 'geographic_scope', a[Q.orgTown]);
   if (a[Q.logo]) put_(patch, 'logo', driveImage_(String(a[Q.logo]).trim()));
@@ -1639,7 +1679,7 @@ function saveOrg_(a, t) {
   var types = asArray_(a[Q.orgType]).map(function (l) { return lookup_(ORG_TYPES, l); }).filter(Boolean);
   if (types.length) put_(patch, 'type', types.filter(function (t, i) { return types.indexOf(t) === i; }).join(', '));
   put_(patch, 'geographic_focus', a[Q.orgTown]);
-  put_(patch, 'description', a[Q.orgDesc]);
+  put_(patch, 'description', a[Q.orgDesc] || a[Q.orgDescOld]);
   if (asArray_(a[Q.orgCoalitions]).length) {
     patch.coalition_ids = asArray_(a[Q.orgCoalitions]).map(function (l) { return idFromLabel_(l, 'coalition'); }).filter(Boolean).join(', ');
   }
