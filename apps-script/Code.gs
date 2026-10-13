@@ -1005,8 +1005,13 @@ function upgradeOrgForm_(form) {
     items = form.getItems();
   }
   var hasGrid = items.some(function (it) { return it.getTitle() === Q.worksWithGrid; });
+  var hasText = items.some(function (it) { return it.getTitle() === Q.worksWithText; });
   var oldTitles = FREQUENCIES.map(function (f) { return Q.worksWith(f[0]); });
-  if (!hasGrid) {
+  if (hasText) {
+    // Typed answers replaced the long one-row-per-organization grid: make sure it's gone (it used to come back here).
+    items.filter(function (it) { return it.getTitle() === Q.worksWithGrid && it.getType() !== FormApp.ItemType.PARAGRAPH_TEXT && it.getType() !== FormApp.ItemType.TEXT; })
+      .forEach(function (it) { form.deleteItem(it); });
+  } else if (!hasGrid) {
     var page = items.filter(function (it) { return it.getTitle() === WORKS_WITH_PAGE; })[0];
     var grid = addWorksWithGrid_(form);
     if (page) form.moveItem(grid.getIndex(), page.getIndex() + 1);

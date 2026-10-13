@@ -570,3 +570,17 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(out.skipped.length, 1);
   console.log("reviewed connections import OK");
 }
+{
+  // The org form update keeps the typed "works with" box and removes the old grid (it used to add it back).
+  const T = { TEXT: "TEXT", PARAGRAPH_TEXT: "P", CHECKBOX: "CB", GRID: "GRID", PAGE_BREAK: "PB" };
+  let items = [
+    { t: Q.orgType, ty: T.CHECKBOX }, { t: Q.worksWithGrid, ty: T.GRID }, { t: Q.worksWithText, ty: T.PARAGRAPH_TEXT },
+  ].map((x, i) => ({ getTitle: () => x.t, getType: () => x.ty, getIndex: () => i, setHelpText() { return this; }, setTitle() { return this; } }));
+  const deleted = [];
+  const form = { getItems: () => items, deleteItem: (it) => { deleted.push(it.getTitle()); items = items.filter((x) => x !== it); }, moveItem() {} };
+  ctx.FormApp = { ItemType: T };
+  vm.runInContext("placePointPerson_ = function () {}", ctx);
+  G("upgradeOrgForm_")(form);
+  assert.deepEqual(deleted, [Q.worksWithGrid]);
+  console.log("org form: old works-with grid removed OK");
+}
