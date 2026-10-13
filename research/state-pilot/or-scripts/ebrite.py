@@ -17,9 +17,10 @@ def page(u):
             e=it.get("item",{})
             if e.get("startDate"): res.append(e)
     return res
-urls=[f"https://www.eventbrite.com/d/or--{c}/{t}/" for c in cities for t in terms]
-with cf.ThreadPoolExecutor(6) as ex:
-    for evs in ex.map(page,urls):
-        for e in evs: out[e["url"]]=e
-json.dump(out,open("ebrite_list.json","w"),indent=1)
-print(len(out))
+if __name__=="__main__":
+  urls=[f"https://www.eventbrite.com/d/or--{c}/{t}/" for c in cities for t in terms]
+  with cf.ThreadPoolExecutor(6) as ex:
+      for evs in ex.map(page,urls):
+          for e in evs: out[e["url"]]=e
+  json.dump(out,open("ebrite_list.json","w"),indent=1)
+  print(len(out))
