@@ -522,3 +522,26 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.deepEqual(req.map((r) => r[0]).sort(), [Q.eventDate, Q.eventName, Q.freeFood, Q.helpWanted].sort(), "location and link stay optional");
   console.log("menu: key questions required OK");
 }
+
+// 10. Wikipedia-based topics on the forms: Topics tab rows, seed checkboxes, typed topics matched by name or alias.
+{
+  const rows = [
+    ["hop_distance", "topic", "aliases", "qid", "seeds", "lift_lcb_max"],
+    ["1", "Heat pump", "Heat pumps | Air-source heat pump", "Q1", "Q125928", "12"],
+    ["0", "Climate change", "Global warming | Climate crisis", "Q125928", "", ""],
+    ["1", "Zivildienst", "", "Q2", "Q125928", "3"],
+    ["0", "Climate justice", "", "Q1291678", "", ""],
+    ["1", "Washington, D.C.", "DC | District of Columbia", "Q61", "Q1291678,Q125928", "9"],
+  ];
+  const out = J(G("wikiTopicRows_")(rows, 8));
+  assert.deepEqual(out.map((r) => r[0]), ["Climate change", "Climate justice", "Heat pump", "Washington, D.C."], "seeds first, low lift dropped");
+  assert.equal(out[2][2], "Under Climate change · Wikidata Q1");
+  assert.equal(out[3][4], "Climate justice", "first seed listed");
+  const t = { topics: out.map((r) => ({ name: r[0], aliases: r[1], notes: r[2] })), coalitions: [], orgs: [], events: [], projects: [] };
+  assert.deepEqual(J(G("tagChoices_")(t, "wiki")), ["Climate change", "Climate justice", "Youth serving"]);
+  assert.ok(J(G("tagChoices_")(t, "groups")).includes("Clean energy"), "group-based choices unchanged");
+  const r = J(G("resolveTopics_")("global warming, heat pumps, District of Columbia, heat pumpp, basket weaving", t));
+  assert.deepEqual(r.slugs, ["climate_change", "heat_pump", "washington_d_c", "heat_pump"]);
+  assert.deepEqual(r.missed.map((m) => m.typed), ["basket weaving"]);
+  console.log("Wikipedia-based topics on the forms OK");
+}

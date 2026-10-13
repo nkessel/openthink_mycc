@@ -356,6 +356,7 @@ async function main() {
       if (f) showItemCard(topicsView.el, f.kind, f.item, f.owner, () => openGroup(f.owner.node.id), at);
     },
     onGroupClick: (id) => openGroup(id),
+    data: () => data,
   });
   function openGroup(id: string): boolean {
     const c = data.coalitions.find((x) => x.id === id);

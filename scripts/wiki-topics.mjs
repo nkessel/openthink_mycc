@@ -119,6 +119,17 @@ const result = {
 };
 writeFileSync("public/topics-wiki.json", JSON.stringify(result) + "\n");
 
+// ---- catalog for tags typed or ticked on the forms ----
+// The sheet's forms save topics as slugs of their names (apps-script slug_). The Topics page reads this to place a
+// live item's tag that no research record uses yet: slug → [qid, name, seed qid].
+const slug = (s) => s.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+const catalog = {};
+for (const t of [...topics].sort((a, b) => rank(b) - rank(a))) {
+  const k = slug(t.topic);
+  if (k && !catalog[k]) catalog[k] = [t.qid, t.topic, t.hop_distance === "0" ? t.qid : t.seeds.split(",")[0]];
+}
+writeFileSync("public/topics-wiki-catalog.json", JSON.stringify(catalog) + "\n");
+
 // ---- coverage report: what the group-based list holds that this one loses ----
 const tagged = out.filter((r) => r.topics.length).length;
 const groupTagged = groupBased.records.filter((r) => r.topics.length).length;

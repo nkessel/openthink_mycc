@@ -18,7 +18,10 @@ import { orgProjects, orgEvents, orgActions } from "./owners";
 import { isPastAction, isPastEvent, isPastProject } from "./past";
 import { typeIcon } from "./icons";
 import { suggestionsFor } from "./suggestions";
-import { topicsUrl, topicListInfo, onTopicListChange } from "./topiclist";
+import { topicsUrl, topicListInfo, onTopicListChange, topicList } from "./topiclist";
+import { withLiveTags } from "./topiclive";
+import { currentMap } from "./maps";
+import type { TopicsFile as FullTopics } from "./topics";
 
 type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about" | "topics";
 /** The kinds of item in the Activity tab, each with its own filter pill. */
@@ -537,7 +540,11 @@ export function createDrawer(
   });
   function loadTopics(): Promise<void> {
     if (topicsData || topicsLoading) return topicsLoading ?? Promise.resolve();
-    topicsLoading = fetch(topicsUrl()).then((r) => (r.ok ? r.json() : null)).then((j) => { topicsData = j; }).catch(() => {});
+    topicsLoading = fetch(topicsUrl())
+      .then((r) => (r.ok ? (r.json() as Promise<FullTopics>) : null))
+      .then((j) => (j ? withLiveTags(j, data, currentMap.combine ? [...currentMap.combine] : [currentMap.id], topicList() === "wiki") : null))
+      .then((j) => { topicsData = j; })
+      .catch(() => {});
     return topicsLoading;
   }
   function topicLabels(itemId: string): string[] {

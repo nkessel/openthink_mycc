@@ -1,6 +1,6 @@
 # Wikipedia-based topics: coverage and what is lost
 
-Generated 2026-10-12 by scripts/wiki-topics.mjs (lift ≥ 8: 2803 topics incl. the 13 seeds).
+Generated 2026-10-13 by scripts/wiki-topics.mjs (lift ≥ 8: 2803 topics incl. the 13 seeds).
 
 - Items with a topic: **374 of 618 (61%)** — group-based list: 550 (89%).
 - Topic phrases matched: 314 exactly, 280 by a topic name inside a longer phrase; 568 not matched.

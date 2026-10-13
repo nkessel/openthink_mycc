@@ -76,6 +76,15 @@ To move an item from a coalition to an org only, clear its `coalition_id` cell i
 - New organizations from anyone who isn't an admin wait in **Needs Review**. Admins' new orgs are saved straight away.
 - The 1–4 scores (`ej_focus`, `grassroots`, `policy_expertise`, `in_building`) and `coalition_weights` are core-team columns; no form changes them.
 
+## Topics on the forms (Wikipedia-based or group-based)
+
+Run **MA Climate Coalition Map → Use Wikipedia-based topics on the forms (Turibius)** once (after the update is merged, so the script can fetch `research/topics/wiki/topics-merged.csv` from GitHub). It:
+- fills the **Topics** tab with Turibius's list: the 13 seed topics plus every topic at lift ≥ 8 (about 2,800), each with its aliases, Wikidata id and seed;
+- makes the seed topics (plus "Youth serving") the checkboxes on the organization, event and project forms;
+- matches whatever people type in **More topics** against every topic name and alias (exact first, then close spellings). Anything that matches nothing still lands on **Unmatched Input** for the team.
+
+The map's Topics page picks up these tags straight away, under the right seed topic, even before the research files are rebuilt. To switch back, run **Go back to group-based topics on the forms**.
+
 ## Limits worth knowing
 
 - Point-people need a Google account to sign in (they can make one for any email address).

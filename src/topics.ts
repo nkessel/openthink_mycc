@@ -8,7 +8,9 @@ import { currentMap, MAPS, type MapId } from "./maps";
 import { createCommandRoom } from "./commandroom";
 import { createBattle } from "./battle";
 import { feedbackBid } from "./feedback";
-import { topicsUrl, topicListInfo, onTopicListChange } from "./topiclist";
+import { topicsUrl, topicListInfo, onTopicListChange, topicList } from "./topiclist";
+import { withLiveTags } from "./topiclive";
+import type { DataFile } from "./types";
 
 export interface TopicRecord {
   id: string;
@@ -45,6 +47,8 @@ export interface TopicsCallbacks {
   hasItem?(recordId: string): boolean;
   /** Show the item's detail card, the same one the Events page uses. */
   openItem?(recordId: string, at?: { x: number; y: number }): void;
+  /** The map data, so topics groups add through the forms show up before the research files are rebuilt. */
+  data?(): DataFile;
 }
 
 interface Weights {
@@ -248,6 +252,10 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
       .then((r) => {
         if (!r.ok) throw new Error(`${url.split("/").pop()}: ${r.status}`);
         return r.json() as Promise<TopicsFile>;
+      })
+      .then((f) => {
+        const mapIds: string[] = currentMap.combine ? [...currentMap.combine] : [currentMap.id];
+        return cb.data ? withLiveTags(f, cb.data(), mapIds, topicList() === "wiki") : f;
       })
       .then((f) => {
         if (url !== topicsUrl()) return; // the list was switched while this one loaded

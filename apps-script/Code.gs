@@ -190,7 +190,7 @@ var COLS = {
     'description', 'link', 'needs_info', 'verified'],
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
   // The master topic list (any length). People type topics on the forms; typed text is matched against name + aliases.
-  'Topics': ['name', 'aliases', 'notes'],
+  'Topics': ['name', 'aliases', 'notes', 'qid', 'seed'],
   // Typed organization or topic names that matched nothing. Add the right alias on Topics (or fix the org) and mark it resolved.
   'Unmatched Input': ['logged_at', 'email', 'form', 'what', 'field', 'typed', 'closest_match', 'status', 'resolution'],
   'Needs Review': ['submitted_at', 'email', 'form', 'record_type', 'record', 'reason', 'summary', 'approve', 'status',
@@ -231,6 +231,8 @@ function onOpen() {
     .addItem('Switch forms to typed answers (orgs + topics)', 'typeAnswersOnForms')
     .addItem('Show form + data links', 'showLinks')
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
+    .addItem('Use Wikipedia-based topics on the forms (Turibius)', 'useWikiTopicsOnForms')
+    .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
     .addToUi();
@@ -253,6 +255,78 @@ function fixPinsOutsideMa() {
     logChange_('', 'Menu', 'applied', '', f.type, f.id, f.name, 'pin moved to ' + f.lat + ', ' + f.lng + ' (re-checked with the host org town)');
   });
   ss.toast(fixed.length ? 'Moved ' + fixed.length + ' pin(s). See Change Log.' : 'No pins needed fixing.');
+}
+
+// ---------------------------------------------------------------- topic lists on the forms
+var WIKI_TOPICS_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/research/topics/wiki/topics-merged.csv';
+var WIKI_MIN_LIFT = 8; // same cutoff as the map's Topics page (public/topics-wiki.json)
+var ALIAS_CELL_MAX = 45000; // a sheet cell holds 50,000 characters
+
+/**
+ * Pure: rows of topics-merged.csv (header hop_distance,topic,aliases,qid,seeds,lift_lcb_max) → Topics tab rows
+ * [name, aliases, notes, qid, seed]: the seed topics plus every topic at or above the lift cutoff. Seeds first.
+ */
+function wikiTopicRows_(rows, minLift) {
+  var head = rows[0].map(function (h) { return String(h).trim(); });
+  var col = function (n) { return head.indexOf(n); };
+  var H = col('hop_distance'), T = col('topic'), A = col('aliases'), Qd = col('qid'), S = col('seeds'), L = col('lift_lcb_max');
+  var body = rows.slice(1).filter(function (r) { return r[T]; });
+  var seedName = {};
+  body.forEach(function (r) { if (String(r[H]) === '0') seedName[r[Qd]] = r[T]; });
+  return body
+    .filter(function (r) { return String(r[H]) === '0' || Number(r[L]) >= minLift; })
+    .sort(function (a, b) { return (String(a[H]) === '0' ? 0 : 1) - (String(b[H]) === '0' ? 0 : 1); })
+    .map(function (r) {
+      var seed = String(r[H]) === '0' ? r[Qd] : String(r[S]).split(',')[0];
+      var al = String(r[A] || '');
+      if (al.length > ALIAS_CELL_MAX) al = al.slice(0, al.lastIndexOf(' | ', ALIAS_CELL_MAX));
+      var note = String(r[H]) === '0' ? 'Seed topic' : 'Under ' + (seedName[seed] || seed);
+      return [r[T], al, note + ' · Wikidata ' + r[Qd], r[Qd], seedName[seed] || ''];
+    });
+}
+
+/** The form's topic checkboxes: the seed topics (Wikipedia-based) or every tag in use (group-based). */
+function tagChoices_(t, mode) {
+  if (mode === 'wiki') {
+    var seeds = (t.topics || []).filter(function (r) { return /^Seed topic/.test(str_(r.notes)); }).map(function (r) { return str_(r.name); });
+    // "Youth serving" stays: it also sets an organization's youth_serving flag.
+    if (seeds.length) return seeds.concat(['Youth serving']);
+  }
+  return uniq_(BASE_TAGS.concat(
+    flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); })),
+    flat_(t.orgs.map(function (r) { return list_(r.topic_tags); })),
+    flat_(t.events.map(function (r) { return list_(r.topic_tags); })),
+    flat_(t.projects.map(function (r) { return list_(r.topic_tags); }))
+  )).sort().map(humanize_);
+}
+
+/**
+ * Menu: Turibius's Wikipedia-based topics on the forms. Fills the Topics tab with his list (seeds + topics at
+ * lift ≥ 8, with aliases), makes the 13 seed topics the forms' checkboxes, and matches the "More topics" box
+ * against all of them (names and aliases). Anything typed that matches nothing goes to Unmatched Input as before.
+ */
+function useWikiTopicsOnForms() {
+  var csv = UrlFetchApp.fetch(WIKI_TOPICS_URL).getContentText();
+  var rows = wikiTopicRows_(Utilities.parseCsv(csv), WIKI_MIN_LIFT);
+  var sh = ss_().getSheetByName(TAB.topics) || ss_().insertSheet(TAB.topics);
+  sh.clearContents();
+  var cols = COLS[TAB.topics];
+  sh.getRange(1, 1, 1, cols.length).setValues([cols]);
+  sh.getRange(2, 1, rows.length, cols.length).setNumberFormat('@').setValues(rows);
+  PropertiesService.getScriptProperties().setProperty('TOPIC_CHOICES', 'wiki');
+  refreshDropdowns();
+  logChange_('', 'Menu', 'applied', '', 'topics', '', 'Wikipedia-based topics', rows.length + ' topics on the Topics tab; seed topics are the form checkboxes');
+  ss_().toast('Topics tab: ' + rows.length + ' Wikipedia-based topics. Form checkboxes are now the seed topics.');
+}
+
+/** Menu: back to the group-based topic checkboxes (the Topics tab is refilled from the tags in use). */
+function useGroupTopicsOnForms() {
+  PropertiesService.getScriptProperties().setProperty('TOPIC_CHOICES', 'groups');
+  var sh = ss_().getSheetByName(TAB.topics);
+  if (sh && sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).clearContent();
+  seedTopics_();
+  refreshDropdowns();
+  ss_().toast('Forms are back on the group-based topics.');
 }
 
 /** The questions each form should require, so filters like "Free food only" have answers to work with. */
@@ -1042,12 +1116,7 @@ function refreshDropdowns() {
   var projectLabels = labelsOf('project', t.projects.filter(visible).sort(byName_));
   var actionLabels = labelsOf('action', t.actions.filter(visible).sort(byName_));
 
-  var tags = uniq_(BASE_TAGS.concat(
-    flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); })),
-    flat_(t.orgs.map(function (r) { return list_(r.topic_tags); })),
-    flat_(t.events.map(function (r) { return list_(r.topic_tags); })),
-    flat_(t.projects.map(function (r) { return list_(r.topic_tags); }))
-  )).sort().map(humanize_);
+  var tags = tagChoices_(t, props.getProperty('TOPIC_CHOICES'));
   var skills = uniq_(BASE_SKILLS.concat(
     flat_(t.projects.map(function (r) { return list_(r.skills_needed); })),
     flat_(t.actions.map(function (r) { return list_(r.skills_needed); }))
@@ -1184,7 +1253,11 @@ function topicCandidates_(t) {
     seen[id] = true;
     out.push({ id: id, names: [humanize_(id) === name ? name : name].concat(list_(aliases)) });
   };
-  (t.topics || []).forEach(function (r) { if (str_(r.name)) add(str_(r.name), String(r.aliases || '').split(/[,;|]/)); });
+  // Aliases are separated by " | " (Wikipedia-based list; names can contain commas) or, in older rows, by , or ;
+  (t.topics || []).forEach(function (r) {
+    var al = String(r.aliases || '');
+    if (str_(r.name)) add(str_(r.name), al.indexOf('|') !== -1 ? al.split(/\s*\|\s*/) : al.split(/[,;]/));
+  });
   BASE_TAGS.forEach(function (x) { add(humanize_(x), []); });
   var used = flat_(t.coalitions.map(function (c) { return list_(c.focus_tags); }).concat(
     t.orgs.map(function (r) { return list_(r.topic_tags); }),
@@ -1199,8 +1272,20 @@ function resolveTopics_(text, t) {
   var parts = String(text === undefined || text === null ? '' : text).split(/[,;\n]+/).map(function (x) { return x.trim(); }).filter(Boolean);
   if (!parts.length) return out;
   var cands = topicCandidates_(t);
+  var exact = {};
+  cands.forEach(function (c) { c.names.forEach(function (n) { var k = normText_(n); if (k && !(k in exact)) exact[k] = c.id; }); });
   parts.forEach(function (typed) {
-    var m = matchTyped_(typed, cands);
+    var k = normText_(typed);
+    if (exact[k]) { out.slugs.push(exact[k]); return; }
+    // The full list has thousands of names: compare only those sharing a word or of similar length (typos).
+    var words = k.split(' ').filter(function (w) { return w.length >= 4; });
+    var near = cands.filter(function (c) {
+      return c.names.some(function (n) {
+        var nk = normText_(n);
+        return Math.abs(nk.length - k.length) <= 3 || words.some(function (w) { return nk.indexOf(w) !== -1; });
+      });
+    });
+    var m = matchTyped_(typed, near);
     if (m.id) out.slugs.push(m.id); else out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
   });
   return out;
