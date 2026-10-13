@@ -900,5 +900,229 @@
    186,
    186
   ]
+ },
+ "or_ghcc": {
+  "from": "own site (round 2)",
+  "url": "https://static.wixstatic.com/media/998edb_e1d3ddfe5b574e2a86662e113ab62278%7Emv2.png/v1/fit/w_2500,h_1330,al_c/998edb_e1d3ddfe5b574e2a86662e113ab62278%7Emv2.png",
+  "size": [
+   500,
+   305
+  ]
+ },
+ "or_nca": {
+  "from": "own site (round 2)",
+  "url": "https://neighborsforcleanair.org/wp-content/uploads/sb-instagram-feed-images/neighborsforcleanair.webp",
+  "size": [
+   150,
+   150
+  ]
+ },
+ "or_orca": {
+  "from": "own site (round 2)",
+  "url": "https://oregoncoastalliance.org/wp-content/uploads/2019/12/cropped-ORCA-logo-color-192x192.jpg",
+  "size": [
+   192,
+   192
+  ]
+ },
+ "or_waterwatch": {
+  "from": "own site (round 2)",
+  "url": "https://waterwatch.org/wp-content/uploads/2018/11/cropped-Blue-web-large@2x-192x192.png",
+  "size": [
+   192,
+   192
+  ]
+ },
+ "or_twc": {
+  "from": "own site (round 2)",
+  "url": "https://images.squarespace-cdn.com/content/v1/63e2f25875c2701211136896/5a72206f-d0f8-49b6-9809-5c0126acc967/favicon.ico",
+  "size": [
+   64,
+   64
+  ]
+ },
+ "or_wsc": {
+  "from": "own site (round 2)",
+  "url": "https://wildsalmoncenter.org/wp-content/uploads/2026/04/WSC-flavicon-dk-blue-reverse-48x48-1.png",
+  "size": [
+   48,
+   48
+  ]
+ },
+ "or_rncs": {
+  "from": "own site (round 2)",
+  "url": "https://reednatureandclimate.com/wp-content/uploads/2026/06/cropped-small-1-192x192.png",
+  "size": [
+   192,
+   192
+  ]
+ },
+ "or_pnw_climate_week": {
+  "from": "own site (round 2)",
+  "url": "https://pnw.climate-week.org/_next/image?url=https%3A%2F%2Fclimatebaseuserstorage.s3-us-west-1.amazonaws.com%2Fclimateweekform%2Fd62d855b-f952-48b3-a5fd-3059e58cb854-PNW%20ClimateWeek%20Logo%20Vert%20LG.png&w=128&q=75",
+  "size": [
+   128,
+   44
+  ]
+ },
+ "or_zfp": {
+  "from": "own site (round 2)",
+  "url": "https://images.squarespace-cdn.com/content/v1/651f2e026fdd0102b2a44e86/7517a47d-7b4e-4402-bcc0-0972f33a6cf2/favicon.ico?format=100w",
+  "size": [
+   100,
+   100
+  ]
+ },
+ "or_orcan": {
+  "from": "own site (round 2)",
+  "url": "https://static.wixstatic.com/media/b83ad3_e0f8b37593274008a3a665518e638085~mv2.png/v1/crop/x_205,y_22,w_393,h_121/fill/w_172,h_53,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/OrCAN%20Logo%20Horizontal%20with%20tagline%20medium.png",
+  "size": [
+   172,
+   53
+  ]
+ },
+ "or_rogue_climate": {
+  "from": "own site (round 2)",
+  "url": "https://i0.wp.com/rogueclimate.org/wp-content/uploads/2020/10/cropped-RC-Favicon-1.png?fit=192%2C192&ssl=1",
+  "size": [
+   192,
+   192
+  ]
+ },
+ "or_ccl_portland": {
+  "from": "own site (round 2)",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCCL-114.png",
+  "size": [
+   114,
+   114
+  ]
+ },
+ "or_350pdx": {
+  "from": "own site (round 2)",
+  "url": "https://350pdx.org/wp-content/uploads/2021/02/cropped-android-chrome-512x512-1-192x192.png",
+  "size": [
+   192,
+   192
+  ]
+ },
+ "or_fot": {
+  "from": "own site (round 2)",
+  "url": "https://friendsoftrees.org/wp-content/uploads/2022/10/Friends-Of-Trees-Logo.png",
+  "size": [
+   200,
+   120
+  ]
+ },
+ "or_sage": {
+  "from": "own site (round 2)",
+  "url": "https://wearesage.org/wp-content/uploads/2023/06/SAGEfavicon-150x150.png",
+  "size": [
+   150,
+   150
+  ]
+ },
+ "or_oregon_aflcio": {
+  "from": "own site (round 2)",
+  "url": "http://static1.squarespace.com/static/69a624c97e318e22b1f23d00/t/69fba73508cb216bdf2700b3/1778100021636/Email+Signature.png?format=1500w",
+  "size": [
+   500,
+   125
+  ]
+ },
+ "or_ibew48": {
+  "from": "own site (round 2)",
+  "url": "https://www.ibew48.com/wp-content/uploads/2025/06/IBEW_favicon-150x150.png",
+  "size": [
+   150,
+   150
+  ]
+ },
+ "or_ccc": {
+  "from": "own site (round 2)",
+  "url": "https://images.squarespace-cdn.com/content/v1/5501f6d4e4b0ee23fb3097ff/1426192928810-26DAFD044DSH8SWDG7TD/favicon.ico?format=100w",
+  "size": [
+   100,
+   98
+  ]
+ },
+ "or_columbia_riverkeeper": {
+  "from": "own site (round 2)",
+  "url": "https://www.columbiariverkeeper.org/wp-content/uploads/2026/05/cropped-CR_Logo_square-192x192.jpg",
+  "size": [
+   192,
+   192
+  ]
+ },
+ "or_ccl_corvallis": {
+  "from": "own site (round 2)",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCCL-114.png",
+  "size": [
+   114,
+   114
+  ]
+ },
+ "or_ccl_eugene": {
+  "from": "own site (round 2)",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCCL-114.png",
+  "size": [
+   114,
+   114
+  ]
+ },
+ "or_ccl_salem": {
+  "from": "own site (round 2)",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCCL-114.png",
+  "size": [
+   114,
+   114
+  ]
+ },
+ "or_ccl_southern_oregon": {
+  "from": "own site (round 2)",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCCL-114.png",
+  "size": [
+   114,
+   114
+  ]
+ },
+ "or_ccl_uo": {
+  "from": "own site (round 2)",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCCL-114.png",
+  "size": [
+   114,
+   114
+  ]
+ },
+ "or_bef": {
+  "from": "own site (round 2)",
+  "url": "https://www.b-e-f.org/wp-content/themes/twentytwenty-child-minimize/images/bef-logo-3COLOR-RGB-small_copy.png",
+  "size": [
+   159,
+   159
+  ]
+ },
+ "or_jcwc": {
+  "from": "own site (round 2)",
+  "url": "https://www.jcwc.org/wp-content/uploads/2023/08/favicon1-jcwc2REV-e1693267629475-300x300.jpg",
+  "size": [
+   300,
+   300
+  ]
+ },
+ "or_solve": {
+  "from": "own site (round 2)",
+  "url": "https://static.wixstatic.com/media/75a2d3_09aed347ef5e40d9b9bb3554ca56be13%7Emv2.jpg/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/75a2d3_09aed347ef5e40d9b9bb3554ca56be13%7Emv2.jpg",
+  "size": [
+   192,
+   192
+  ]
+ },
+ "or_solc": {
+  "from": "own site (round 2)",
+  "url": "https://images.squarespace-cdn.com/content/v1/565cf1d6e4b0df45d8c1bb69/1458340263871-9N78ZHSZIZ7EAG8KDUS1/favicon.ico?format=100w",
+  "size": [
+   100,
+   100
+  ]
  }
 }

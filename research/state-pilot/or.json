@@ -65,9 +65,10 @@
    "projects": [],
    "events": [],
    "actions": [],
-   "last_activity": "2025-02-25",
+   "last_activity": "2026-09-16",
    "sources": [
-    "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722"
+    "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
+    "https://www.olcv.org/trump-recklessly-rolls-back-climate-protections-drazan-will-follow-suit/"
    ]
   },
   {
@@ -404,6 +405,18 @@
      "sources": [
       "https://www.zerocoalitionoregon.org/"
      ]
+    },
+    {
+     "id": "or_zero_p_zero_energy_buildings_in_oregon",
+     "name": "Zero energy buildings in Oregon",
+     "description": "Showcase of zero energy homes and commercial buildings around the state.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.zerocoalitionoregon.org/projects",
+     "verified": true,
+     "sources": [
+      "https://www.zerocoalitionoregon.org/projects"
+     ]
     }
    ],
    "events": [
@@ -425,15 +438,19 @@
      "id": "or_zero_e_december_sustainable_building_monthly_ho",
      "name": "December Sustainable Building Monthly: holiday party",
      "date": "2026-12-08T17:00:00",
-     "location": "In person (venue on the event page)",
+     "location": "PAE, 151 SW 1st Ave, Suite 300, Portland",
      "description": "End-of-year gathering of Sustainable Building Monthly, ASHRAE Oregon and partners.",
      "link": "https://orclimatehub.org/event/december-sustainable-building-monthly/",
      "online": false,
      "verified": true,
      "sources": [
-      "https://orclimatehub.org/event/december-sustainable-building-monthly/"
+      "https://orclimatehub.org/event/december-sustainable-building-monthly/",
+      "https://www.eventbrite.com/e/december-sustainable-building-monthly-tickets-1976925787247"
      ],
-     "end": "2026-12-08T19:00:00"
+     "end": "2026-12-08T19:00:00",
+     "lat": 45.537,
+     "lng": -122.65,
+     "rsvp_link": "https://www.eventbrite.com/e/december-sustainable-building-monthly-tickets-1976925787247"
     }
    ],
    "actions": [
@@ -451,11 +468,12 @@
      ]
     }
    ],
-   "last_activity": "",
+   "last_activity": "2026-10-05",
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
     "https://www.zerocoalitionoregon.org/",
-    "https://orclimatehub.org/organization/zero-coalition/"
+    "https://orclimatehub.org/organization/zero-coalition/",
+    "https://www.zerocoalitionoregon.org/sitemap.xml"
    ],
    "logo": "logos/or_zero.png"
   },
@@ -745,10 +763,12 @@
    ],
    "events": [],
    "actions": [],
-   "last_activity": "",
+   "last_activity": "2025-03-10",
    "sources": [
     "https://give.communityin.org/profiles/oregon-just-transition-alliance",
-    "https://www.beyondtoxics.org/partners/"
+    "https://www.beyondtoxics.org/partners/",
+    "https://www.ojta.org/blog/ojta-summer-member-tours",
+    "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/148462"
    ],
    "logo": "logos/or_ojta.png"
   },
@@ -793,11 +813,26 @@
     }
    ],
    "events": [],
-   "actions": [],
-   "last_activity": "",
+   "actions": [
+    {
+     "id": "or_energize_bend_a_get_involved_with_energize_bend",
+     "kind": "role",
+     "name": "Get involved with Energize Bend",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join the coalition's outreach for building electrification in Bend.",
+     "link": "https://energizebend.org/get-involved",
+     "verified": true,
+     "sources": [
+      "https://energizebend.org/get-involved"
+     ]
+    }
+   ],
+   "last_activity": "2026-08-11",
    "sources": [
     "https://energizebend.org/",
-    "https://www.zerocoalitionoregon.org/zerocoalitionmembership"
+    "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+    "https://energizebend.org/sitemap.xml"
    ],
    "logo": "logos/or_energize_bend.png"
   }
@@ -816,7 +851,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-12",
    "website": "https://friends.org",
    "topic_tags": [
     "land use",
@@ -834,7 +869,8 @@
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/1000-friends-of-oregon/",
-    "https://friends.org/"
+    "https://friends.org/",
+    "https://friends.org/sitemap.xml"
    ],
    "logo": "logos/or_1000_friends.png"
   },
@@ -850,7 +886,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "website": "https://www.aorr.org",
    "topic_tags": [
     "recycling",
@@ -881,7 +917,7 @@
    ],
    "lat": 44.0568,
    "lng": -123.119,
-   "last_activity": "",
+   "last_activity": "2025-11-10",
    "website": "https://www.beyondtoxics.org",
    "topic_tags": [
     "environmental justice",
@@ -928,6 +964,114 @@
      "sources": [
       "https://www.beyondtoxics.org/work/climate-justice/building-a-fossil-free-future/"
      ]
+    },
+    {
+     "id": "or_beyond_toxics_p_data_center_moratorium_eugene",
+     "name": "Data center moratorium (Eugene)",
+     "description": "Pushes for a pause on siting and building data centers in Eugene until sustainability and equity come first.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/climate-justice/data-centers",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/climate-justice/data-centers"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_west_eugene_community_health",
+     "name": "West Eugene Community Health",
+     "description": "Works with West Eugene neighbors living next to polluting industry on health impacts and cleaner air.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/environmental-justice/west-eugene-community-health",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/environmental-justice/west-eugene-community-health"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_justice_for_trainsong",
+     "name": "Justice for Trainsong",
+     "description": "Raises Trainsong neighbors' concerns about a planned industrial project in their neighborhood.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/environmental-justice/west-eugene-community-health",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/environmental-justice/west-eugene-community-health"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_statewide_pesticide_policy",
+     "name": "Statewide pesticide policy",
+     "description": "Advocacy to cut farmworker and consumer exposure to risky agricultural chemicals.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/pesticides-and-communities/statewide-pesticide-policy",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/pesticides-and-communities/statewide-pesticide-policy"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_golden_gardens",
+     "name": "Golden Gardens",
+     "description": "Campaign to protect Golden Gardens Park, a rare natural area in Bethel threatened by a proposed sports complex.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/regenerative-ecosystems/golden-gardens",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/regenerative-ecosystems/golden-gardens"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_resilient_forestry",
+     "name": "Resilient Forestry",
+     "description": "Links forest protection to climate mitigation and presses for reform of forestry practices.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/regenerative-ecosystems/resilient-forestry",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/regenerative-ecosystems/resilient-forestry"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_non_toxic_oregon",
+     "name": "Non Toxic Oregon",
+     "description": "Works to protect people, pets and wildlife from toxic pesticides.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/regenerative-ecosystems/non-toxic-oregon",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/regenerative-ecosystems/non-toxic-oregon"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_clean_air_advocacy",
+     "name": "Clean air advocacy",
+     "description": "Two decades of work for health-based air quality rules with equity benchmarks, including wildfire smoke.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/air-quality",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/air-quality"
+     ]
+    },
+    {
+     "id": "or_beyond_toxics_p_resilience_markets",
+     "name": "Resilience Markets",
+     "description": "Community markets in West Eugene that share local food and resources.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.beyondtoxics.org/work/resilience-markets",
+     "verified": true,
+     "sources": [
+      "https://www.beyondtoxics.org/work/resilience-markets"
+     ]
     }
    ],
    "events": [
@@ -969,7 +1113,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://www.beyondtoxics.org/work/climate-justice/building-a-fossil-free-future/",
     "https://orclimatehub.org/organization/beyond-toxics/",
-    "https://www.beyondtoxics.org/"
+    "https://www.beyondtoxics.org/",
+    "https://www.beyondtoxics.org/blog/2025/11/welcome-to-our-new-director-of-development-tony-arnell/"
    ],
    "logo": "logos/or_beyond_toxics.png"
   },
@@ -986,7 +1131,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "website": "https://birdallianceoregon.org",
    "topic_tags": [
     "wildlife",
@@ -1027,7 +1172,44 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_cascadia_wildlands_p_climate_program",
+     "name": "Climate program",
+     "description": "Defends carbon-rich forests and opposes new fossil fuel projects in the Cascadia region.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://cascwild.org/programs/climate",
+     "verified": true,
+     "sources": [
+      "https://cascwild.org/programs/climate"
+     ]
+    },
+    {
+     "id": "or_cascadia_wildlands_p_forests_and_watersheds",
+     "name": "Forests and watersheds",
+     "description": "Protects older forests and the streams that depend on them, in the field and in court.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://cascwild.org/programs/forests-and-watersheds",
+     "verified": true,
+     "sources": [
+      "https://cascwild.org/programs/forests-and-watersheds"
+     ]
+    },
+    {
+     "id": "or_cascadia_wildlands_p_wildlife",
+     "name": "Wildlife",
+     "description": "Works to protect and recover wolves and other native wildlife.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://cascwild.org/programs/wildlife",
+     "verified": true,
+     "sources": [
+      "https://cascwild.org/programs/wildlife"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_cascadia_wildlands_e_monthly_wildcat_meeting",
@@ -1044,7 +1226,34 @@
      "end": "2026-10-14T19:30:00"
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_cascadia_wildlands_a_take_action_for_cascadia_s_forests_and_w",
+     "kind": "task",
+     "name": "Take action for Cascadia's forests and wildlife",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current petitions and comment campaigns.",
+     "link": "https://cascwild.org/get-involved/take-action",
+     "verified": true,
+     "sources": [
+      "https://cascwild.org/get-involved/take-action"
+     ]
+    },
+    {
+     "id": "or_cascadia_wildlands_a_volunteer_with_cascadia_wildlands",
+     "kind": "role",
+     "name": "Volunteer with Cascadia Wildlands",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Help at events, in the office and with the WildCAT activist team.",
+     "link": "https://cascwild.org/get-involved/volunteer",
+     "verified": true,
+     "sources": [
+      "https://cascwild.org/get-involved/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://www.beyondtoxics.org/work/climate-justice/building-a-fossil-free-future/",
@@ -1064,7 +1273,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "website": "https://www.biologicaldiversity.org",
    "topic_tags": [
     "endangered species",
@@ -1096,7 +1305,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-09-30",
    "website": "https://www.centerforfoodsafety.org",
    "topic_tags": [
     "food",
@@ -1112,7 +1321,8 @@
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://centerforfoodsafety.org/",
-    "https://centerforfoodsafety.org/contact-us"
+    "https://centerforfoodsafety.org/contact-us",
+    "https://centerforfoodsafety.org/press-release/endangered-species-act-protection-for-monarch-butterfly-delayed-until-2030/"
    ],
    "logo": "logos/or_cfs.png"
   },
@@ -1129,7 +1339,7 @@
    ],
    "lat": 44.0567,
    "lng": -121.308,
-   "last_activity": "2026-10-05",
+   "last_activity": "2026-10-08",
    "website": "https://www.centraloregonlandwatch.org",
    "topic_tags": [
     "land use",
@@ -1140,7 +1350,20 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_landwatch_p_land_use_and_wildfire_resilience",
+     "name": "Land use and wildfire resilience",
+     "description": "Planning advocacy for walkable towns, protected rural lands and wildfire-ready communities in Central Oregon.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.centraloregonlandwatch.org/priorities",
+     "verified": true,
+     "sources": [
+      "https://www.centraloregonlandwatch.org/priorities"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_landwatch_e_arctic_to_deschutes",
@@ -1191,12 +1414,27 @@
      "lng": -121.308
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_landwatch_a_speak_up_on_central_oregon_land_use",
+     "kind": "task",
+     "name": "Speak up on Central Oregon land use",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current comment opportunities and hearings on land use, water and wildlife.",
+     "link": "https://www.centraloregonlandwatch.org/take-action",
+     "verified": true,
+     "sources": [
+      "https://www.centraloregonlandwatch.org/take-action"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/central-oregon-landwatch/",
-    "https://www.centraloregonlandwatch.org/"
+    "https://www.centraloregonlandwatch.org/",
+    "https://www.centraloregonlandwatch.org/sitemap.xml"
    ],
    "logo": "logos/or_landwatch.png"
   },
@@ -1213,7 +1451,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "2026-09-30",
+   "last_activity": "2026-10-09",
    "website": "https://www.climatesolutions.org",
    "topic_tags": [
     "clean energy",
@@ -1228,7 +1466,8 @@
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
-    "https://www.climatesolutions.org/"
+    "https://www.climatesolutions.org/",
+    "https://www.climatesolutions.org/employment/washington-transportation-policy-manager-0"
    ],
    "remote": true,
    "logo": "logos/or_climate_solutions.png"
@@ -1286,7 +1525,20 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_dra_p_colder_cleaner_lower_deschutes",
+     "name": "Colder, cleaner lower Deschutes",
+     "description": "Water-quality research and advocacy for the lower Deschutes River.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.deschutesriveralliance.org/our-work",
+     "verified": true,
+     "sources": [
+      "https://www.deschutesriveralliance.org/our-work"
+     ]
+    }
+   ],
    "events": [],
    "actions": [],
    "sources": [
@@ -1307,7 +1559,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "topic_tags": [
     "engineering",
     "climate"
@@ -1337,7 +1589,7 @@
    ],
    "lat": 44.0567,
    "lng": -121.308,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "website": "https://envirocenter.org",
    "topic_tags": [
     "clean energy",
@@ -1370,7 +1622,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "website": "https://environmentamerica.org/oregon",
    "topic_tags": [
     "clean energy",
@@ -1401,7 +1653,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "2026-10-05",
+   "last_activity": "2026-10-13",
    "website": "https://www.foodandwaterwatch.org",
    "topic_tags": [
     "water",
@@ -1417,7 +1669,8 @@
    "actions": [],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://www.foodandwaterwatch.org/"
+    "https://www.foodandwaterwatch.org/",
+    "https://www.foodandwaterwatch.org/press/2026/10/13/185-groups-slam-permitting-reforms-sweetheart-deal-for-data-centers/"
    ],
    "remote": true
   },
@@ -1433,7 +1686,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "topic_tags": [
     "public lands",
     "conservation"
@@ -1471,7 +1724,68 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_gorge_friends_p_friends_of_the_columbia_gorge_land_trust",
+     "name": "Friends of the Columbia Gorge Land Trust",
+     "description": "Buys and protects land in the Columbia River Gorge.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://gorgefriends.org/what-we-do/protect-conserve/land-acquisition-trust",
+     "verified": true,
+     "sources": [
+      "https://gorgefriends.org/what-we-do/protect-conserve/land-acquisition-trust"
+     ]
+    },
+    {
+     "id": "or_gorge_friends_p_gorge_towns_to_trails",
+     "name": "Gorge Towns to Trails",
+     "description": "Building a trail network that connects Gorge towns to trails and to each other.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://gorgefriends.org/what-we-do/protect-conserve/gorge-towns-to-trails-project",
+     "verified": true,
+     "sources": [
+      "https://gorgefriends.org/what-we-do/protect-conserve/gorge-towns-to-trails-project"
+     ]
+    },
+    {
+     "id": "or_gorge_friends_p_gorge_accessibility_project",
+     "name": "Gorge Accessibility Project",
+     "description": "Making Gorge trails and outings more accessible to people of all abilities.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://gorgefriends.org/what-we-do/gorge-accessibility-project",
+     "verified": true,
+     "sources": [
+      "https://gorgefriends.org/what-we-do/gorge-accessibility-project"
+     ]
+    },
+    {
+     "id": "or_gorge_friends_p_enforcing_protection_laws",
+     "name": "Enforcing protection laws",
+     "description": "Legal and land-use review to uphold the Columbia River Gorge National Scenic Area protections.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://gorgefriends.org/what-we-do/protect-conserve/legal-land-use-review",
+     "verified": true,
+     "sources": [
+      "https://gorgefriends.org/what-we-do/protect-conserve/legal-land-use-review"
+     ]
+    },
+    {
+     "id": "or_gorge_friends_p_advocacy_and_policy_campaigns",
+     "name": "Advocacy and policy campaigns",
+     "description": "Campaigns against harmful development and fossil fuel projects in the Gorge.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://gorgefriends.org/what-we-do/protect-conserve/advocacy-campaigns",
+     "verified": true,
+     "sources": [
+      "https://gorgefriends.org/what-we-do/protect-conserve/advocacy-campaigns"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_gorge_friends_e_october_gorge_morning_walk",
@@ -1518,7 +1832,34 @@
      "rsvp_link": "https://www.mobilize.us/gorgefriends/event/1042928/"
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_gorge_friends_a_volunteer_stewardship_in_the_gorge",
+     "kind": "role",
+     "name": "Volunteer stewardship in the Gorge",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join planting, invasive-weed removal and trail stewardship days.",
+     "link": "https://gorgefriends.org/what-we-do/outdoor-engagement/volunteer-stewardship",
+     "verified": true,
+     "sources": [
+      "https://gorgefriends.org/what-we-do/outdoor-engagement/volunteer-stewardship"
+     ]
+    },
+    {
+     "id": "or_gorge_friends_a_take_action_for_the_gorge",
+     "kind": "task",
+     "name": "Take action for the Gorge",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current letters and comment opportunities.",
+     "link": "https://gorgefriends.org/get-involved/action",
+     "verified": true,
+     "sources": [
+      "https://gorgefriends.org/get-involved/action"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://gorgefriends.org/",
@@ -1602,7 +1943,7 @@
    ],
    "lat": 45.4258,
    "lng": -117.2788,
-   "last_activity": "",
+   "last_activity": "2026-10-12",
    "website": "https://hellscanyon.org",
    "topic_tags": [
     "public lands",
@@ -1614,11 +1955,27 @@
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_ghcc_a_volunteer_with_greater_hells_canyon_coun",
+     "kind": "role",
+     "name": "Volunteer with Greater Hells Canyon Council",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Sign up for volunteer trips, including work on the Blue Mountains Trail.",
+     "link": "https://www.hellscanyon.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://www.hellscanyon.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://www.hellscanyon.org/"
-   ]
+    "https://www.hellscanyon.org/",
+    "https://hellscanyon.org/sitemap.xml"
+   ],
+   "logo": "logos/or_ghcc.png"
   },
   {
    "id": "or_lwvor",
@@ -1632,7 +1989,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-10-09",
    "website": "https://www.lwvor.org",
    "topic_tags": [
     "democracy",
@@ -1647,7 +2004,8 @@
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://www.lwvor.org/",
-    "https://www.lwvor.org/contact"
+    "https://www.lwvor.org/contact",
+    "https://www.lwvor.org/sitemap.xml"
    ],
    "logo": "logos/or_lwvor.png"
   },
@@ -1663,7 +2021,7 @@
    ],
    "lat": 45.3413,
    "lng": -122.5923,
-   "last_activity": "",
+   "last_activity": "2026-10-13",
    "website": "https://nativefishsociety.org",
    "topic_tags": [
     "fish",
@@ -1672,12 +2030,101 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_nfs_p_river_steward_program",
+     "name": "River Steward Program",
+     "description": "Volunteer River Stewards advocate for wild fish on their home rivers across the Northwest.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://nativefishsociety.org/get-involved/volunteer/river-steward-program",
+     "verified": true,
+     "sources": [
+      "https://nativefishsociety.org/get-involved/volunteer/river-steward-program"
+     ]
+    },
+    {
+     "id": "or_nfs_p_rewild_the_willamette",
+     "name": "Rewild the Willamette",
+     "description": "Campaign to recover the Willamette's most imperiled wild fish.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://nativefishsociety.org/campaigns/rewild-the-willamette-2023",
+     "verified": true,
+     "sources": [
+      "https://nativefishsociety.org/campaigns/rewild-the-willamette-2023"
+     ]
+    },
+    {
+     "id": "or_nfs_p_protect_oregon_coast_springers",
+     "name": "Protect Oregon Coast springers",
+     "description": "Campaign for spring Chinook salmon on Oregon coast rivers.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://nativefishsociety.org/campaigns/protect-oregon-coast-springers-1",
+     "verified": true,
+     "sources": [
+      "https://nativefishsociety.org/campaigns/protect-oregon-coast-springers-1"
+     ]
+    },
+    {
+     "id": "or_nfs_p_an_all_wild_north_umpqua",
+     "name": "An all-wild North Umpqua",
+     "description": "Campaign to revive wild steelhead and salmon on the North Umpqua River.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://nativefishsociety.org/campaigns/reviving-wild-abundance-an-all-wild-nu-river",
+     "verified": true,
+     "sources": [
+      "https://nativefishsociety.org/campaigns/reviving-wild-abundance-an-all-wild-nu-river"
+     ]
+    },
+    {
+     "id": "or_nfs_p_wild_fish_for_all_scholarship",
+     "name": "Wild Fish for All Scholarship",
+     "description": "Academic scholarship for BIPOC students in fisheries conservation.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://nativefishsociety.org/get-involved/wild-fish-for-all-scholarship",
+     "verified": true,
+     "sources": [
+      "https://nativefishsociety.org/get-involved/wild-fish-for-all-scholarship"
+     ]
+    }
+   ],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_nfs_a_become_a_native_fish_fellow",
+     "kind": "role",
+     "name": "Become a Native Fish Fellow",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Fellowship for activists and leaders taking action for wild fish.",
+     "link": "https://nativefishsociety.org/get-involved/volunteer/fellowship-program",
+     "verified": true,
+     "sources": [
+      "https://nativefishsociety.org/get-involved/volunteer/fellowship-program"
+     ]
+    },
+    {
+     "id": "or_nfs_a_take_action_for_wild_fish",
+     "kind": "task",
+     "name": "Take action for wild fish",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current conservation campaigns and comment opportunities.",
+     "link": "https://nativefishsociety.org/get-involved/take-action",
+     "verified": true,
+     "sources": [
+      "https://nativefishsociety.org/get-involved/take-action"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://nativefishsociety.org/"
+    "https://nativefishsociety.org/",
+    "https://nativefishsociety.org/sitemap.xml"
    ]
   },
   {
@@ -1693,7 +2140,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-08-26",
    "website": "https://www.neighborsforcleanair.org",
    "topic_tags": [
     "air quality",
@@ -1710,8 +2157,10 @@
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/neighbors-for-clean-air/",
-    "https://neighborsforcleanair.org/"
-   ]
+    "https://neighborsforcleanair.org/",
+    "https://www.neighborsforcleanair.org/sitemap.xml"
+   ],
+   "logo": "logos/or_nca.png"
   },
   {
    "id": "or_oceana",
@@ -1725,7 +2174,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-07",
    "website": "https://oceana.org",
    "topic_tags": [
     "ocean",
@@ -1740,7 +2189,8 @@
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://oceana.org/",
-    "https://oceana.org/contact"
+    "https://oceana.org/contact",
+    "https://oceana.org/blog/when-fish-become-feed-the-unsavory-story-behind-farmed-fish/"
    ],
    "logo": "logos/or_oceana.png"
   },
@@ -1756,7 +2206,7 @@
    ],
    "lat": 46.1874,
    "lng": -123.8151,
-   "last_activity": "",
+   "last_activity": "2026-03-13",
    "website": "https://oregoncoastalliance.org",
    "topic_tags": [
     "coast",
@@ -1771,8 +2221,10 @@
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://oregoncoastalliance.org/",
-    "https://oregoncoastalliance.org/contact"
-   ]
+    "https://oregoncoastalliance.org/contact",
+    "https://oregoncoastalliance.org/ugb-transfer-and-beach-access-problems-in-gearhart/"
+   ],
+   "logo": "logos/or_orca.png"
   },
   {
    "id": "or_oec",
@@ -1787,7 +2239,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-02",
    "website": "https://oeconline.org",
    "topic_tags": [
     "climate policy",
@@ -1798,14 +2250,42 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_oec_p_legislative_agenda",
+     "name": "Legislative agenda",
+     "description": "Policy work at the Oregon Legislature on climate, clean energy, water and toxics.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oeconline.org/our-work/policy",
+     "verified": true,
+     "sources": [
+      "https://oeconline.org/our-work/policy"
+     ]
+    }
+   ],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_oec_a_volunteer_with_oec",
+     "kind": "role",
+     "name": "Volunteer with OEC",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Community engagement and volunteer opportunities.",
+     "link": "https://oeconline.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://oeconline.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/oregon-environmental-council-oec/",
-    "https://oeconline.org/"
+    "https://oeconline.org/",
+    "https://oeconline.org/2025-26-impact-report-turning-the-tide/"
    ],
    "logo": "logos/or_oec.png"
   },
@@ -1832,11 +2312,26 @@
     "democracy"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "hub": true
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_olcv_a_take_action_with_olcv",
+     "kind": "task",
+     "name": "Take action with OLCV",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current petitions and calls to Oregon lawmakers.",
+     "link": "https://www.olcv.org/take-action",
+     "verified": true,
+     "sources": [
+      "https://www.olcv.org/take-action"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://orclimatehub.org/archive/organizations/",
@@ -1859,7 +2354,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "topic_tags": [
     "land",
     "water"
@@ -1887,7 +2382,7 @@
    ],
    "lat": 44.0567,
    "lng": -121.308,
-   "last_activity": "",
+   "last_activity": "2026-10-02",
    "website": "https://onda.org",
    "topic_tags": [
     "public lands",
@@ -1897,12 +2392,128 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
-   "events": [],
-   "actions": [],
+   "projects": [
+    {
+     "id": "or_onda_p_high_desert_stewardship_trips",
+     "name": "High desert stewardship trips",
+     "description": "Volunteer trips that restore streams, improve trails and protect public lands in Oregon's high desert.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://onda.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://onda.org/volunteer"
+     ]
+    }
+   ],
+   "events": [
+    {
+     "id": "or_onda_e_high_desert_hootenanny_bend",
+     "name": "High Desert Hootenanny: Bend",
+     "date": "2026-12-03T17:00:00",
+     "location": "Aspen Hall, 18920 NW Shevlin Park Rd, Bend",
+     "description": "Join Oregon Natural Desert Association’s annual celebration of desert conservation! Commemorate a year of achievements and conservation successes at our High Desert Hootenanny in Bend. Hear highlights from this year’s […",
+     "link": "https://onda.org/event/high-desert-hootenanny-bend/",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://onda.org/event/high-desert-hootenanny-bend/"
+     ],
+     "end": "2026-12-03T19:00:00",
+     "lat": 44.0567,
+     "lng": -121.308
+    },
+    {
+     "id": "or_onda_e_high_desert_hootenanny_portland",
+     "name": "High Desert Hootenanny (Portland)",
+     "date": "2026-11-19T17:00:00",
+     "location": "KEEN Garage, 515 NW 13th Ave, Portland, OR",
+     "description": "Join Oregon Natural Desert Association for our annual celebration of desert conservation! Commemorate a year of conservation achievements and hard work accomplished at our High Desert Hootenanny in Portland. Hear […]",
+     "link": "https://onda.org/event/hootenanny-portland-2026/",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://onda.org/event/hootenanny-portland-2026/"
+     ],
+     "end": "2026-11-19T19:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_onda_e_deschutes_canyon_habitat_restoration_2",
+     "name": "Deschutes Canyon Habitat Restoration #2",
+     "date": "2026-11-06T10:00:00",
+     "location": "Deschutes Canyon Area, Terrebonne, OR",
+     "description": "Located west of Terrebonne, Oregon, the Middle Deschutes Wild and Scenic River flows through a deep, rugged canyon that remains remarkably untouched despite close proximity to development. Salmon and steelhead […]",
+     "link": "https://onda.org/event/deschutes-canyon-habitat-restoration-1-2/",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://onda.org/event/deschutes-canyon-habitat-restoration-1-2/"
+     ],
+     "end": "2026-11-06T16:00:00"
+    },
+    {
+     "id": "or_onda_e_deschutes_canyon_habitat_restoration_1",
+     "name": "Deschutes Canyon Habitat Restoration #1",
+     "date": "2026-10-23T10:00:00",
+     "location": "Deschutes Canyon Area, Terrebonne, OR",
+     "description": "Located west of Terrebonne, Oregon, the Middle Deschutes Wild and Scenic River flows through a deep, rugged canyon that remains remarkably untouched despite close proximity to development. Salmon and steelhead […]",
+     "link": "https://onda.org/event/deschutes-canyon-habitat-restoration-1/",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://onda.org/event/deschutes-canyon-habitat-restoration-1/"
+     ],
+     "end": "2026-10-23T16:00:00"
+    },
+    {
+     "id": "or_onda_e_robinson_creek_instream_restoration",
+     "name": "Robinson Creek Instream Restoration",
+     "date": "2026-10-16T18:00:00",
+     "location": "Pine Creek Conservation Area, 39067 OR-218, Fossil, OR",
+     "description": "Robinson Creek, flows through a rugged canyon in Pine Creek Conservation Area to connect high-elevation ponderosa pine forests with the rolling grasslands of the conservation area, serving as a critical […]",
+     "link": "https://onda.org/event/robinson-creek-instream-restoration/",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://onda.org/event/robinson-creek-instream-restoration/"
+     ],
+     "end": "2026-10-19T08:00:00"
+    }
+   ],
+   "actions": [
+    {
+     "id": "or_onda_a_volunteer_in_the_high_desert",
+     "kind": "role",
+     "name": "Volunteer in the high desert",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Restore streams, fix trails or help from home.",
+     "link": "https://onda.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://onda.org/volunteer"
+     ]
+    },
+    {
+     "id": "or_onda_a_advocate_for_oregon_s_high_desert",
+     "kind": "task",
+     "name": "Advocate for Oregon's high desert",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current actions to protect high desert lands and wildlife.",
+     "link": "https://onda.org/take-action",
+     "verified": true,
+     "sources": [
+      "https://onda.org/take-action"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://onda.org/"
+    "https://onda.org/",
+    "https://onda.org/beavers-hype-or-hero-of-the-high-desert/"
    ]
   },
   {
@@ -1918,7 +2529,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-09",
    "website": "https://www.oregonpsr.org",
    "topic_tags": [
     "health",
@@ -1933,7 +2544,8 @@
    "actions": [],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://energizebend.org/"
+    "https://energizebend.org/",
+    "https://www.oregonpsr.org/sitemap.xml"
    ]
   },
   {
@@ -1949,7 +2561,7 @@
    ],
    "lat": 46.0317,
    "lng": -123.9185,
-   "last_activity": "2026-09-23",
+   "last_activity": "2026-10-13",
    "website": "https://oregonshores.org",
    "topic_tags": [
     "coast",
@@ -1959,13 +2571,77 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_oregon_shores_p_coastwatch",
+     "name": "CoastWatch",
+     "description": "Volunteers adopt a mile of Oregon coastline and report on its condition.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
+     "verified": true,
+     "sources": [
+      "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/"
+     ]
+    },
+    {
+     "id": "or_oregon_shores_p_campaign_for_oregon_s_estuaries",
+     "name": "Campaign for Oregon's Estuaries",
+     "description": "Protecting and restoring the coast's estuaries.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
+     "verified": true,
+     "sources": [
+      "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/"
+     ]
+    },
+    {
+     "id": "or_oregon_shores_p_coastal_resilience",
+     "name": "Coastal resilience",
+     "description": "Helping coastal communities and habitats adapt to sea-level rise and climate change.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
+     "verified": true,
+     "sources": [
+      "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/"
+     ]
+    },
+    {
+     "id": "or_oregon_shores_p_oregon_beaches_forever",
+     "name": "Oregon Beaches Forever",
+     "description": "Defending public access to and protection of Oregon's beaches.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
+     "verified": true,
+     "sources": [
+      "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/"
+     ]
+    }
+   ],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_oregon_shores_a_volunteer_on_the_coast",
+     "kind": "role",
+     "name": "Volunteer on the coast",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "CoastWatch and other coastal volunteer roles.",
+     "link": "https://oregonshores.org/programs-campaigns/volunteer",
+     "verified": true,
+     "sources": [
+      "https://oregonshores.org/programs-campaigns/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
-    "https://oregonshores.org/"
+    "https://oregonshores.org/",
+    "https://oregonshores.org/sitemap.xml"
    ],
    "logo": "logos/or_oregon_shores.png"
   },
@@ -1981,7 +2657,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-07",
    "website": "https://oregonwild.org",
    "topic_tags": [
     "forests",
@@ -1992,12 +2668,89 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_oregon_wild_p_standing_up_for_the_blue_mountains",
+     "name": "Standing up for the Blue Mountains",
+     "description": "Engaging in the Blue Mountains forest plan revision, which will shape the region for decades.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonwild.org/our-work/defending-forests-public-lands/standing-up-for-oregons-blue-mountains",
+     "verified": true,
+     "sources": [
+      "https://oregonwild.org/our-work/defending-forests-public-lands/standing-up-for-oregons-blue-mountains"
+     ]
+    },
+    {
+     "id": "or_oregon_wild_p_defending_roadless_wildlands",
+     "name": "Defending roadless wildlands",
+     "description": "Protecting Oregon's roadless national forest lands.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonwild.org/our-work/defending-the-wild/defending-roadless-wildlands",
+     "verified": true,
+     "sources": [
+      "https://oregonwild.org/our-work/defending-the-wild/defending-roadless-wildlands"
+     ]
+    },
+    {
+     "id": "or_oregon_wild_p_defending_forests_and_public_lands",
+     "name": "Defending forests and public lands",
+     "description": "Campaigns for old-growth forests and public lands across Oregon.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonwild.org/our-work/defending-forests-public-lands",
+     "verified": true,
+     "sources": [
+      "https://oregonwild.org/our-work/defending-forests-public-lands"
+     ]
+    },
+    {
+     "id": "or_oregon_wild_p_helping_wildlife_thrive",
+     "name": "Helping wildlife thrive",
+     "description": "Work to protect wolves, salmon and other Oregon wildlife.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregonwild.org/our-work/helping-wildlife-thrive",
+     "verified": true,
+     "sources": [
+      "https://oregonwild.org/our-work/helping-wildlife-thrive"
+     ]
+    }
+   ],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_oregon_wild_a_protect_oregon_s_old_growth_forests",
+     "kind": "task",
+     "name": "Protect Oregon's old-growth forests",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Ask Oregon's congressional delegation to protect old-growth forests.",
+     "link": "https://oregonwild.org/action/tell-oregons-delegation-protect-our-old-growth-forests",
+     "verified": true,
+     "sources": [
+      "https://oregonwild.org/action/tell-oregons-delegation-protect-our-old-growth-forests"
+     ]
+    },
+    {
+     "id": "or_oregon_wild_a_volunteer_with_oregon_wild",
+     "kind": "role",
+     "name": "Volunteer with Oregon Wild",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Volunteer roles at events, outings and the office.",
+     "link": "https://oregonwild.org/get-involved/volunteer",
+     "verified": true,
+     "sources": [
+      "https://oregonwild.org/get-involved/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://oregonwild.org/"
+    "https://oregonwild.org/",
+    "https://oregonwild.org/one-million-comments-in-favor-of-roadless-wildlands/"
    ]
   },
   {
@@ -2012,7 +2765,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-08-31",
    "website": "https://renewablenw.org",
    "topic_tags": [
     "renewable energy",
@@ -2027,7 +2780,8 @@
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://renewablenw.org/",
-    "https://renewablenw.org/contact"
+    "https://renewablenw.org/contact",
+    "https://renewablenw.org/bess-toolkit-local-leaders-guide"
    ],
    "logo": "logos/or_rnw.png"
   },
@@ -2055,7 +2809,21 @@
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_rogue_riverkeeper_a_volunteer_with_rogue_riverkeeper",
+     "kind": "role",
+     "name": "Volunteer with Rogue Riverkeeper",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Help monitor water quality and protect the Rogue River.",
+     "link": "https://www.rogueriverkeeper.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://www.rogueriverkeeper.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://www.rogueriverkeeper.org/"
@@ -2076,7 +2844,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "website": "https://www.sierraclub.org/oregon",
    "topic_tags": [
     "climate",
@@ -2109,7 +2877,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-04-01",
    "website": "https://www.thestreettrust.org",
    "topic_tags": [
     "transportation",
@@ -2120,12 +2888,64 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_street_trust_p_legislation_and_campaigns",
+     "name": "Legislation and campaigns",
+     "description": "Policy campaigns for safer streets and more investment in walking, biking and transit.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.thestreettrust.org/policy/campaigns",
+     "verified": true,
+     "sources": [
+      "https://www.thestreettrust.org/policy/campaigns"
+     ]
+    },
+    {
+     "id": "or_street_trust_p_webike_portland",
+     "name": "WeBike Portland",
+     "description": "Program that helps women, trans and gender non-conforming people get comfortable riding bikes.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.thestreettrust.org/programs/webike",
+     "verified": true,
+     "sources": [
+      "https://www.thestreettrust.org/programs/webike"
+     ]
+    },
+    {
+     "id": "or_street_trust_p_commuter_clinics",
+     "name": "Commuter clinics",
+     "description": "Workshops at workplaces and in communities on biking, walking and transit.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.thestreettrust.org/programs/clinics",
+     "verified": true,
+     "sources": [
+      "https://www.thestreettrust.org/programs/clinics"
+     ]
+    }
+   ],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_street_trust_a_volunteer_with_the_street_trust",
+     "kind": "role",
+     "name": "Volunteer with The Street Trust",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Help with events, clinics and advocacy.",
+     "link": "https://www.thestreettrust.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://www.thestreettrust.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://www.thestreettrust.org/"
+    "https://www.thestreettrust.org/",
+    "https://www.thestreettrust.org/2025/04/01/while-were-waiting-for-the-transportation-package/"
    ],
    "logo": "logos/or_street_trust.png"
   },
@@ -2142,7 +2962,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-08-18",
    "website": "https://oregon.surfrider.org",
    "topic_tags": [
     "ocean",
@@ -2152,13 +2972,41 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_surfrider_p_oregon_coast_programs",
+     "name": "Oregon coast programs",
+     "description": "Water quality testing, beach cleanups and plastic reduction along the Oregon coast.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://oregon.surfrider.org/programs",
+     "verified": true,
+     "sources": [
+      "https://oregon.surfrider.org/programs"
+     ]
+    }
+   ],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_surfrider_a_get_involved_with_surfrider_oregon",
+     "kind": "role",
+     "name": "Get involved with Surfrider Oregon",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join a local chapter's cleanups, testing or advocacy.",
+     "link": "https://oregon.surfrider.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://oregon.surfrider.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
-    "https://oregon.surfrider.org/"
+    "https://oregon.surfrider.org/",
+    "https://oregon.surfrider.org/sitemap.xml"
    ],
    "remote": true,
    "logo": "logos/or_surfrider.png"
@@ -2175,7 +3023,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-02-25",
    "topic_tags": [
     "fish",
     "rivers"
@@ -2204,7 +3052,7 @@
    ],
    "lat": 45.3769,
    "lng": -122.7747,
-   "last_activity": "",
+   "last_activity": "2025-12-08",
    "website": "https://tualatinriverkeepers.org",
    "topic_tags": [
     "water",
@@ -2216,7 +3064,34 @@
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_trk_a_volunteer_with_tualatin_riverkeepers",
+     "kind": "role",
+     "name": "Volunteer with Tualatin Riverkeepers",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Plantings, paddles, river cleanups and committee work.",
+     "link": "https://tualatinriverkeepers.org/get-involved/volunteer",
+     "verified": true,
+     "sources": [
+      "https://tualatinriverkeepers.org/get-involved/volunteer"
+     ]
+    },
+    {
+     "id": "or_trk_a_take_action_for_the_tualatin_river",
+     "kind": "task",
+     "name": "Take action for the Tualatin River",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current advocacy alerts for the watershed.",
+     "link": "https://tualatinriverkeepers.org/advocacy/take-action",
+     "verified": true,
+     "sources": [
+      "https://tualatinriverkeepers.org/advocacy/take-action"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
     "https://orclimatehub.org/archive/organizations/",
@@ -2237,7 +3112,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-09-23",
    "website": "https://waterwatch.org",
    "topic_tags": [
     "water",
@@ -2252,8 +3127,10 @@
    "actions": [],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://waterwatch.org/"
-   ]
+    "https://waterwatch.org/",
+    "https://waterwatch.org/press-release-environmental-quality-commission-upholds-fines-over-botched-2023-winchester-dam-repair/"
+   ],
+   "logo": "logos/or_waterwatch.png"
   },
   {
    "id": "or_twc",
@@ -2267,7 +3144,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-09-21",
    "website": "https://wetlandsconservancy.org",
    "topic_tags": [
     "wetlands",
@@ -2281,8 +3158,10 @@
    "actions": [],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://www.wetlandsconservancy.org/"
-   ]
+    "https://www.wetlandsconservancy.org/",
+    "https://wetlandsconservancy.org/sitemap.xml"
+   ],
+   "logo": "logos/or_twc.png"
   },
   {
    "id": "or_wsc",
@@ -2296,7 +3175,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-07",
    "website": "https://wildsalmoncenter.org",
    "topic_tags": [
     "salmon",
@@ -2306,7 +3185,20 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_wsc_p_wild_salmon_projects",
+     "name": "Wild salmon projects",
+     "description": "Projects protecting wild salmon rivers from California to Alaska, including Oregon's coast.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://wildsalmoncenter.org/projects",
+     "verified": true,
+     "sources": [
+      "https://wildsalmoncenter.org/projects"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_wsc_e_omsi_reel_science_running_wild",
@@ -2342,11 +3234,27 @@
      "lng": -123.8151
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_wsc_a_take_action_for_wild_salmon",
+     "kind": "task",
+     "name": "Take action for wild salmon",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current actions to protect salmon rivers.",
+     "link": "https://wildsalmoncenter.org/take-action",
+     "verified": true,
+     "sources": [
+      "https://wildsalmoncenter.org/take-action"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://wildsalmoncenter.org/"
-   ]
+    "https://wildsalmoncenter.org/",
+    "https://wildsalmoncenter.org/2026/10/07/on-the-siuslaw-a-former-ranch-transforms-for-salmon/"
+   ],
+   "logo": "logos/or_wsc.png"
   },
   {
    "id": "or_willamette_riverkeeper",
@@ -2360,7 +3268,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-07",
    "website": "https://willamette-riverkeeper.org",
    "topic_tags": [
     "water",
@@ -2371,10 +3279,25 @@
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_willamette_riverkeeper_a_volunteer_with_willamette_riverkeeper",
+     "kind": "role",
+     "name": "Volunteer with Willamette Riverkeeper",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Help with river cleanups, restoration and paddle trips.",
+     "link": "https://willametteriverkeeper.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://willametteriverkeeper.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
-    "https://willametteriverkeeper.org/"
+    "https://willametteriverkeeper.org/",
+    "https://willamette-riverkeeper.org/sitemap.xml"
    ],
    "logo": "logos/or_willamette_riverkeeper.png"
   },
@@ -2390,7 +3313,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-02",
    "website": "https://www.pacificforest.org",
    "topic_tags": [
     "forests",
@@ -2407,7 +3330,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/pacific-forest-trust/",
     "https://www.pacificforest.org/",
-    "https://www.pacificforest.org/about"
+    "https://www.pacificforest.org/about",
+    "https://www.pacificforest.org/forest-flash-sept-2026/"
    ],
    "logo": "logos/or_pft.png"
   },
@@ -2423,7 +3347,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-02",
    "website": "https://www.reednatureandclimate.com",
    "topic_tags": [
     "climate resilience",
@@ -2438,8 +3362,10 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/reed-nature-and-climate-solutions-llc-rncs/",
-    "https://reednatureandclimate.com/"
-   ]
+    "https://reednatureandclimate.com/",
+    "https://reednatureandclimate.com/bringing-climate-resilience-into-conservation-management/"
+   ],
+   "logo": "logos/or_rncs.png"
   },
   {
    "id": "or_oece",
@@ -2453,14 +3379,15 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-07-30",
    "website": "https://www.oregonclimateed.org",
    "topic_tags": [
     "climate education",
     "schools"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
@@ -2485,7 +3412,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-10-01",
    "website": "https://app.hazadapt.com",
    "topic_tags": [
     "climate resilience",
@@ -2525,9 +3452,23 @@
     "jobs"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_nyc_p_youth_conservation_crews",
+     "name": "Youth conservation crews",
+     "description": "Paid crews where young people gain job skills while doing conservation work.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.nwyouthcorps.org/programs",
+     "verified": true,
+     "sources": [
+      "https://www.nwyouthcorps.org/programs"
+     ]
+    }
+   ],
    "events": [],
    "actions": [],
    "sources": [
@@ -2549,7 +3490,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-07-01",
    "topic_tags": [
     "sustainable living",
     "education"
@@ -2578,7 +3519,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-07-23",
    "website": "https://pnw.climate-week.org",
    "topic_tags": [
     "events",
@@ -2594,7 +3535,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/pnw-climate-week/",
     "https://pnw.climate-week.org/"
-   ]
+   ],
+   "logo": "logos/or_pnw_climate_week.png"
   },
   {
    "id": "or_eca_oregon",
@@ -2608,7 +3550,7 @@
    ],
    "lat": 43.9916,
    "lng": -124.1065,
-   "last_activity": "",
+   "last_activity": "2026-07-23",
    "topic_tags": [
     "elders",
     "climate resilience"
@@ -2636,7 +3578,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-02-26",
    "topic_tags": [
     "health",
     "Latine community"
@@ -2664,7 +3606,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-04-23",
    "topic_tags": [
     "gardening",
     "community"
@@ -2692,7 +3634,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-03-11",
    "topic_tags": [
     "faith",
     "education"
@@ -2720,7 +3662,7 @@
    ],
    "lat": 45.5608,
    "lng": -123.9113,
-   "last_activity": "",
+   "last_activity": "2026-10-02",
    "website": "https://tbnep.org",
    "topic_tags": [
     "watersheds",
@@ -2730,13 +3672,77 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_tep_p_native_plant_nursery",
+     "name": "Native plant nursery",
+     "description": "Grows native plants for river, stream and habitat restoration on the coast.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.tbnep.org/programs/habitat-restoration/native-plant-nursery",
+     "verified": true,
+     "sources": [
+      "https://www.tbnep.org/programs/habitat-restoration/native-plant-nursery"
+     ]
+    },
+    {
+     "id": "or_tep_p_backyard_planting_program",
+     "name": "Backyard Planting Program",
+     "description": "Free help for landowners to remove invasive brush and plant natives.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.tbnep.org/programs/habitat-restoration/backyard-planting-program",
+     "verified": true,
+     "sources": [
+      "https://www.tbnep.org/programs/habitat-restoration/backyard-planting-program"
+     ]
+    },
+    {
+     "id": "or_tep_p_water_quality_monitoring",
+     "name": "Water quality monitoring",
+     "description": "Monitoring water quality in Tillamook County's rivers and bays.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.tbnep.org/programs/water-quality",
+     "verified": true,
+     "sources": [
+      "https://www.tbnep.org/programs/water-quality"
+     ]
+    },
+    {
+     "id": "or_tep_p_children_s_clean_water_festival",
+     "name": "Children's Clean Water Festival",
+     "description": "Annual festival for Tillamook County students, running since 2002.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.tbnep.org/programs/community-education-engagement/childrens-clean-water-festival",
+     "verified": true,
+     "sources": [
+      "https://www.tbnep.org/programs/community-education-engagement/childrens-clean-water-festival"
+     ]
+    }
+   ],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_tep_a_volunteer_with_tillamook_estuaries_partn",
+     "kind": "role",
+     "name": "Volunteer with Tillamook Estuaries Partnership",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Help grow native plants, restore streams and monitor water quality.",
+     "link": "https://www.tbnep.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://www.tbnep.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/tillamook-estuaries-partnership-tep/",
-    "https://www.tbnep.org/"
+    "https://www.tbnep.org/",
+    "https://www.tbnep.org/news/photo-contest-winners-and-honorable-mentions-national-estuaries-week/"
    ]
   },
   {
@@ -2752,7 +3758,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-12",
    "website": "https://www.verdenw.org",
    "topic_tags": [
     "environmental justice",
@@ -2833,7 +3839,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://www.apano.org/blog-posts/sign-the-protect-pcef-pledge",
     "https://orclimatehub.org/organization/verde/",
-    "https://www.verdenw.org/"
+    "https://www.verdenw.org/",
+    "https://www.verdenw.org/sitemap.xml"
    ],
    "logo": "logos/or_verde.png"
   },
@@ -2850,7 +3857,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-12-15",
    "website": "https://orbizclimate.org",
    "topic_tags": [
     "business",
@@ -2913,7 +3920,7 @@
    ],
    "lat": 44.0568,
    "lng": -123.119,
-   "last_activity": "",
+   "last_activity": "2026-10-10",
    "website": "https://www.350eugene.org",
    "topic_tags": [
     "climate justice",
@@ -2957,7 +3964,8 @@
     "https://www.beyondtoxics.org/work/climate-justice/building-a-fossil-free-future/",
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
     "https://orclimatehub.org/organization/350-eugene/",
-    "https://www.350eugene.org/"
+    "https://www.350eugene.org/",
+    "https://www.350eugene.org/sitemap.xml"
    ],
    "logo": "logos/or_350_eugene.png"
   },
@@ -2973,7 +3981,7 @@
    ],
    "lat": 44.0568,
    "lng": -123.119,
-   "last_activity": "",
+   "last_activity": "2025-12-08",
    "topic_tags": [
     "elders",
     "climate",
@@ -3002,7 +4010,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-08",
    "website": "https://www.confluencecenter.org",
    "topic_tags": [
     "environmental equity",
@@ -3018,7 +4026,8 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/confluence-environmental-center-cec/",
-    "https://www.confluencecenter.org/"
+    "https://www.confluencecenter.org/",
+    "https://www.confluencecenter.org/sitemap.xml"
    ],
    "logo": "logos/or_confluence.png"
   },
@@ -3035,7 +4044,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-10-13",
    "website": "https://www.electrifyoregon.org",
    "topic_tags": [
     "electrification",
@@ -3065,7 +4074,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
     "https://orclimatehub.org/organization/electrify-oregon/",
-    "https://www.electrifyoregon.org/"
+    "https://www.electrifyoregon.org/",
+    "https://www.electrifyoregon.org/blog/community-solar-makes-solar-power-more-accessible-4lk65"
    ],
    "remote": true,
    "logo": "logos/or_electrify_oregon.png"
@@ -3082,22 +4092,38 @@
    ],
    "lat": 45.4229,
    "lng": -122.7844,
-   "last_activity": "",
+   "last_activity": "2026-08-31",
    "website": "https://www.futureclimatecollective.com",
    "topic_tags": [
     "youth",
     "climate education"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_fcc_a_mentor_youth_climate_leaders",
+     "kind": "role",
+     "name": "Mentor youth climate leaders",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Professionals can volunteer expertise to mentor teens working on climate projects.",
+     "link": "https://futureclimatecollective.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://futureclimatecollective.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/future-climate-collective/",
-    "https://futureclimatecollective.org/"
+    "https://futureclimatecollective.org/",
+    "https://www.futureclimatecollective.com/sitemap.xml"
    ]
   },
   {
@@ -3112,14 +4138,15 @@
    ],
    "lat": 43.3811,
    "lng": -124.2326,
-   "last_activity": "",
+   "last_activity": "2026-06-23",
    "website": "https://www.aya1.org",
    "topic_tags": [
     "youth",
     "jobs"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
@@ -3141,7 +4168,7 @@
    ],
    "lat": 45.5268,
    "lng": -122.9354,
-   "last_activity": "",
+   "last_activity": "2025-12-04",
    "topic_tags": [
     "climate"
    ],
@@ -3168,13 +4195,15 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-08",
    "topic_tags": [
     "youth",
     "climate justice"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true,
+    "school_club": true
    },
    "projects": [],
    "events": [],
@@ -3228,7 +4257,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-08-12",
    "website": "https://www.zerofoodprint.org",
    "topic_tags": [
     "food",
@@ -3243,9 +4272,11 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/zero-foodprint-zfp/",
-    "https://www.zerofoodprint.org/"
+    "https://www.zerofoodprint.org/",
+    "https://www.zerofoodprint.org/blog/best-dirty-martinis"
    ],
-   "remote": true
+   "remote": true,
+   "logo": "logos/or_zfp.png"
   },
   {
    "id": "or_kso",
@@ -3259,7 +4290,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-09-14",
    "topic_tags": [
     "climate justice",
     "international solidarity"
@@ -3287,7 +4318,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-10-09",
    "website": "https://www.oregonclimateag.org",
    "topic_tags": [
     "agriculture",
@@ -3320,9 +4351,11 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/oregon-climate-and-agriculture-network-orcan/",
-    "https://www.oregonclimateag.org/"
+    "https://www.oregonclimateag.org/",
+    "https://www.oregonclimateag.org/sitemap.xml"
    ],
-   "remote": true
+   "remote": true,
+   "logo": "logos/or_orcan.png"
   },
   {
    "id": "or_depave",
@@ -3336,7 +4369,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-15",
    "website": "https://www.depave.org",
    "topic_tags": [
     "urban greening",
@@ -3366,7 +4399,7 @@
    ],
    "lat": 42.2748,
    "lng": -122.8153,
-   "last_activity": "2025-11-12",
+   "last_activity": "2026-01-30",
    "website": "https://rogueclimate.org",
    "topic_tags": [
     "climate justice",
@@ -3376,7 +4409,68 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_rogue_climate_p_youth_leadership_rcat_and_internship",
+     "name": "Youth leadership (RCAT and internship)",
+     "description": "Rogue Climate Action Team and paid internships for young people in Southern Oregon.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://rogueclimate.org/our-work/youth-leadership",
+     "verified": true,
+     "sources": [
+      "https://rogueclimate.org/our-work/youth-leadership"
+     ]
+    },
+    {
+     "id": "or_rogue_climate_p_energy_justice",
+     "name": "Energy justice",
+     "description": "Helps low-income and rural households get efficient, clean and affordable energy.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://rogueclimate.org/our-work/energy-justice",
+     "verified": true,
+     "sources": [
+      "https://rogueclimate.org/our-work/energy-justice"
+     ]
+    },
+    {
+     "id": "or_rogue_climate_p_resilience_hubs",
+     "name": "Resilience hubs",
+     "description": "Community resilience hubs in Southern Oregon.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://rogueclimate.org/our-work/resilience-hubs",
+     "verified": true,
+     "sources": [
+      "https://rogueclimate.org/our-work/resilience-hubs"
+     ]
+    },
+    {
+     "id": "or_rogue_climate_p_thriving_coos_bay",
+     "name": "Thriving Coos Bay",
+     "description": "Community-led vision for the Coos Bay area.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://rogueclimate.org/our-work/pcip",
+     "verified": true,
+     "sources": [
+      "https://rogueclimate.org/our-work/pcip"
+     ]
+    },
+    {
+     "id": "or_rogue_climate_p_stopping_jordan_cove_lng",
+     "name": "Stopping Jordan Cove LNG",
+     "description": "Years-long campaign that helped defeat the Jordan Cove LNG export terminal and pipeline.",
+     "status": "completed",
+     "skills_needed": [],
+     "link": "https://rogueclimate.org/our-work/fossil-fuels/jordan-cove-lng",
+     "verified": true,
+     "sources": [
+      "https://rogueclimate.org/our-work/fossil-fuels/jordan-cove-lng"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_rogue_climate_e_first_time_youth_voter_training_hybrid",
@@ -3466,12 +4560,41 @@
      "end": "2026-10-26T17:00:00"
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_rogue_climate_a_volunteer_with_rogue_climate",
+     "kind": "role",
+     "name": "Volunteer with Rogue Climate",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join a volunteer team in the Rogue Valley or on the South Coast.",
+     "link": "https://rogueclimate.org/stay-connected/volunteer",
+     "verified": true,
+     "sources": [
+      "https://rogueclimate.org/stay-connected/volunteer"
+     ]
+    },
+    {
+     "id": "or_rogue_climate_a_take_action_with_rogue_climate",
+     "kind": "task",
+     "name": "Take action with Rogue Climate",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current climate and energy actions.",
+     "link": "https://rogueclimate.org/take-action",
+     "verified": true,
+     "sources": [
+      "https://rogueclimate.org/take-action"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/rogue-climate/",
-    "https://rogueclimate.org/"
-   ]
+    "https://rogueclimate.org/",
+    "https://rogueclimate.org/mppwalkout/"
+   ],
+   "logo": "logos/or_rogue_climate.png"
   },
   {
    "id": "or_emo",
@@ -3485,7 +4608,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-09-21",
    "website": "https://emoregon.org",
    "topic_tags": [
     "faith",
@@ -3495,13 +4618,27 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_emo_p_oregon_interfaith_power_light",
+     "name": "Oregon Interfaith Power & Light",
+     "description": "EMO program engaging congregations in climate advocacy, energy savings and community resilience.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://emoregon.org/creation-justice/oregon-interfaith-power-light/",
+     "verified": true,
+     "sources": [
+      "https://emoregon.org/creation-justice/oregon-interfaith-power-light/"
+     ]
+    }
+   ],
    "events": [],
    "actions": [],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/ecumenical-ministries-of-oregon-emo/",
-    "https://emoregon.org/"
+    "https://emoregon.org/",
+    "https://emoregon.org/pro-democracy-narrative/"
    ],
    "logo": "logos/or_emo.png"
   },
@@ -3517,7 +4654,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-05",
    "topic_tags": [
     "urban farming",
     "food"
@@ -3545,7 +4682,7 @@
    ],
    "lat": 43.2236,
    "lng": -123.352,
-   "last_activity": "",
+   "last_activity": "2025-07-30",
    "website": "http://www.douglascountyglobalwarmingcoalition.com",
    "topic_tags": [
     "climate education"
@@ -3575,7 +4712,7 @@
    ],
    "lat": 44.0567,
    "lng": -121.308,
-   "last_activity": "",
+   "last_activity": "2026-09-28",
    "website": "https://350deschutes.org",
    "topic_tags": [
     "climate education",
@@ -3610,7 +4747,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-15",
    "website": "https://newbuildings.org",
    "topic_tags": [
     "buildings",
@@ -3641,7 +4778,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-09-25",
    "website": "https://www.oregon.gov/highered",
    "topic_tags": [
     "workforce",
@@ -3672,7 +4809,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-08",
    "website": "https://www.sunrisepdx.org",
    "topic_tags": [
     "youth",
@@ -3680,7 +4817,8 @@
     "Green New Deal"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
@@ -3688,7 +4826,8 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/sunrise-pdx/",
-    "https://www.sunrisepdx.org/"
+    "https://www.sunrisepdx.org/",
+    "https://www.sunrisepdx.org/sitemap.xml"
    ],
    "logo": "logos/or_sunrise_pdx.png"
   },
@@ -3704,7 +4843,7 @@
    ],
    "lat": 42.336,
    "lng": -122.8518,
-   "last_activity": "",
+   "last_activity": "2025-10-03",
    "website": "https://southernoregonpachamama.org",
    "topic_tags": [
     "climate education"
@@ -3719,7 +4858,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/southern-oregon-pachamama-alliance-spoa/",
     "https://southernoregonpachamama.org/",
-    "https://southernoregonpachamama.org/oregon"
+    "https://southernoregonpachamama.org/oregon",
+    "https://southernoregonpachamama.org/2025/05/06/singing-activists-are-a-light-for-peace-justice-the-earth/"
    ],
    "logo": "logos/or_sopa.png"
   },
@@ -3735,7 +4875,7 @@
    ],
    "lat": 45.6755,
    "lng": -118.8195,
-   "last_activity": "",
+   "last_activity": "2025-12-05",
    "topic_tags": [
     "climate science",
     "education"
@@ -3763,7 +4903,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-05",
    "topic_tags": [
     "direct action"
    ],
@@ -3791,7 +4931,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-07",
    "website": "https://www.communityenergyproject.org",
    "topic_tags": [
     "energy efficiency",
@@ -3813,9 +4953,54 @@
      "sources": [
       "https://www.communityenergyproject.org/"
      ]
+    },
+    {
+     "id": "or_cep_p_energy_equity_advocacy",
+     "name": "Energy equity advocacy",
+     "description": "Advocacy for energy equity, healthy homes and fair access to heating and cooling.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.communityenergyproject.org/advocacy",
+     "verified": true,
+     "sources": [
+      "https://www.communityenergyproject.org/advocacy"
+     ]
     }
    ],
-   "events": [],
+   "events": [
+    {
+     "id": "or_cep_e_in_person_english_lead_poisoning_prevent",
+     "name": "IN PERSON English Lead Poisoning Prevention and Mold Workshop",
+     "date": "2026-11-09T17:30:00",
+     "location": "Community Energy Project Conference Room, 2705 East Burnside Street, Suite 114, Portland, OR 97214, Portland, OR",
+     "description": "This workshop provides information on household lead poisoning and mold risks and how to prevent exposure and safely clean affected areas.",
+     "link": "https://www.eventbrite.com/e/in-person-english-lead-poisoning-prevention-and-mold-workshop-tickets-2002592830063",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/in-person-english-lead-poisoning-prevention-and-mold-workshop-tickets-2002592830063"
+     ],
+     "end": "2026-11-09T18:30:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_cep_e_community_solar_weatherization_workshop_",
+     "name": "Community Solar & Weatherization Workshop - Reach CDC",
+     "date": "2026-10-28T17:00:00",
+     "location": "Allen Fremont Plaza Apartments, 221 Northeast Fremont Street, Portland, OR 97212, Portland, OR",
+     "description": "Learn about the Pacific Power bill savings program & energy conservation with the Oregon Community Solar and Weatherization workshop,",
+     "link": "https://www.eventbrite.com/e/community-solar-weatherization-workshop-reach-cdc-tickets-2002243945540",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/community-solar-weatherization-workshop-reach-cdc-tickets-2002243945540"
+     ],
+     "end": "2026-10-28T18:30:00",
+     "lat": 45.537,
+     "lng": -122.65
+    }
+   ],
    "actions": [
     {
      "id": "or_cep_a_volunteer_with_cep",
@@ -3835,7 +5020,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
     "https://orclimatehub.org/organization/community-energy-project-cep/",
-    "https://www.communityenergyproject.org/"
+    "https://www.communityenergyproject.org/",
+    "https://www.communityenergyproject.org/blog/partner-highlight-multnomah-county-wic"
    ],
    "logo": "logos/or_cep.png"
   },
@@ -3851,7 +5037,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-15",
    "topic_tags": [
     "climate policy",
     "lobbying"
@@ -3864,8 +5050,11 @@
    "actions": [],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
-    "https://orclimatehub.org/organization/portland-citizens-climate-lobby-portland-ccl/"
-   ]
+    "https://orclimatehub.org/organization/portland-citizens-climate-lobby-portland-ccl/",
+    "https://citizensclimatelobby.org/chapters/"
+   ],
+   "website": "https://citizensclimatelobby.org/chapters/OR_Portland/",
+   "logo": "logos/or_ccl_portland.png"
   },
   {
    "id": "or_cascadia_stack",
@@ -3879,7 +5068,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-08-02",
    "website": "https://www.cascadiastack.org",
    "topic_tags": [
     "climate emotions",
@@ -3894,7 +5083,8 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/cascadia-stack/",
-    "https://cascadiastack.org/"
+    "https://cascadiastack.org/",
+    "https://www.cascadiastack.org/sitemap.xml"
    ],
    "logo": "logos/or_cascadia_stack.png"
   },
@@ -3910,7 +5100,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-12-04",
    "topic_tags": [
     "education",
     "resilience"
@@ -3939,7 +5129,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-09-14",
    "website": "https://350pdx.org",
    "topic_tags": [
     "climate justice",
@@ -3950,7 +5140,80 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_350pdx_p_energy_justice_team",
+     "name": "Energy Justice Team",
+     "description": "Volunteer team working on fair, clean energy in Portland.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://350pdx.org/campaigns/energy-justice-team",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/campaigns/energy-justice-team"
+     ]
+    },
+    {
+     "id": "or_350pdx_p_forest_defense_team",
+     "name": "Forest Defense Team",
+     "description": "Volunteer team defending Oregon's forests as a climate solution, including Forest Park.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://350pdx.org/campaigns/forest-defense",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/campaigns/forest-defense"
+     ]
+    },
+    {
+     "id": "or_350pdx_p_milwaukie_advocates_for_climate",
+     "name": "Milwaukie Advocates for Climate",
+     "description": "Neighborhood climate team in Milwaukie.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://350pdx.org/campaigns/milwaukie-team",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/campaigns/milwaukie-team"
+     ]
+    },
+    {
+     "id": "or_350pdx_p_sw_neighborhood_team",
+     "name": "SW Neighborhood Team",
+     "description": "Neighborhood climate team in Southwest Portland.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://350pdx.org/campaigns/sw-neighborhood-team",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/campaigns/sw-neighborhood-team"
+     ]
+    },
+    {
+     "id": "or_350pdx_p_2026_climate_justice_voter_guide",
+     "name": "2026 Climate Justice Voter Guide",
+     "description": "Guide to candidates and measures on the 2026 ballot from a climate justice view.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://350pdx.org/2026-climate-justice-voter-guide/",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/2026-climate-justice-voter-guide/"
+     ]
+    },
+    {
+     "id": "or_350pdx_p_2026_climate_justice_platform",
+     "name": "2026 Climate Justice Platform",
+     "description": "Policy platform setting out 350PDX's climate justice priorities for 2026.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://350pdx.org/2026-climate-justice-platform/",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/2026-climate-justice-platform/"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_350pdx_e_defend_forest_park_rally_and_watch_party",
@@ -4102,13 +5365,42 @@
      "lng": -122.65
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_350pdx_a_volunteer_with_350pdx",
+     "kind": "role",
+     "name": "Volunteer with 350PDX",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join a team or help with events and outreach.",
+     "link": "https://350pdx.org/get-involved/volunteer-now",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/get-involved/volunteer-now"
+     ]
+    },
+    {
+     "id": "or_350pdx_a_take_action_with_350pdx",
+     "kind": "task",
+     "name": "Take action with 350PDX",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Current climate justice actions.",
+     "link": "https://350pdx.org/action",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/action"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://www.apano.org/blog-posts/sign-the-protect-pcef-pledge",
     "https://orclimatehub.org/organization/350pdx/",
-    "https://350pdx.org/"
-   ]
+    "https://350pdx.org/",
+    "https://350pdx.org/2026-september-newsletter/"
+   ],
+   "logo": "logos/or_350pdx.png"
   },
   {
    "id": "or_fot",
@@ -4122,7 +5414,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-08-26",
    "website": "https://friendsoftrees.org",
    "topic_tags": [
     "trees",
@@ -4133,11 +5425,27 @@
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_fot_a_plant_trees_with_friends_of_trees",
+     "kind": "role",
+     "name": "Plant trees with Friends of Trees",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Volunteer as a tree planter, crew leader, driver or caller; groups welcome.",
+     "link": "https://friendsoftrees.org/volunteer",
+     "verified": true,
+     "sources": [
+      "https://friendsoftrees.org/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
-    "https://orclimatehub.org/organization/friends-of-trees-fot/"
-   ]
+    "https://orclimatehub.org/organization/friends-of-trees-fot/",
+    "https://friendsoftrees.org/blog/youth-pruning-2026/"
+   ],
+   "logo": "logos/or_fot.png"
   },
   {
    "id": "or_elakha",
@@ -4152,7 +5460,7 @@
    ],
    "lat": 44.7218,
    "lng": -123.9187,
-   "last_activity": "",
+   "last_activity": "2026-09-17",
    "website": "https://www.elakhaalliance.org",
    "topic_tags": [
     "sea otters",
@@ -4162,7 +5470,20 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_elakha_p_sea_otter_recovery_in_oregon",
+     "name": "Sea otter recovery in Oregon",
+     "description": "Building support and a plan to return sea otters to the Oregon coast, with tribal and conservation partners.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.elakhaalliance.org/get-involved/invite-us-to-speak",
+     "verified": true,
+     "sources": [
+      "https://www.elakhaalliance.org/get-involved/invite-us-to-speak"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_elakha_e_2026_elakha_alliance_science_symposium_v",
@@ -4197,12 +5518,27 @@
      "lng": -124.1014
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_elakha_a_volunteer_for_sea_otters",
+     "kind": "role",
+     "name": "Volunteer for sea otters",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Register as a prospective Elakha Alliance volunteer.",
+     "link": "https://www.elakhaalliance.org/get-involved/volunteer",
+     "verified": true,
+     "sources": [
+      "https://www.elakhaalliance.org/get-involved/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
     "https://orclimatehub.org/organization/elakha-alliance/",
-    "https://www.elakhaalliance.org/"
+    "https://www.elakhaalliance.org/",
+    "https://www.elakhaalliance.org/new-partnership-paves-the-way-for-reintroducing-sea-otters-to-oregon/"
    ],
    "logo": "logos/or_elakha.png"
   },
@@ -4219,7 +5555,7 @@
    ],
    "lat": 45.4136,
    "lng": -122.7,
-   "last_activity": "",
+   "last_activity": "2026-09-22",
    "website": "https://losn.org",
    "topic_tags": [
     "sustainability",
@@ -4229,7 +5565,92 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_losn_p_electrify_lo",
+     "name": "Electrify LO",
+     "description": "Helping Lake Oswego households switch to efficient electric appliances.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://losn.org/project/electrify-lo-project",
+     "verified": true,
+     "sources": [
+      "https://losn.org/project/electrify-lo-project"
+     ]
+    },
+    {
+     "id": "or_losn_p_sustainable_landscaping",
+     "name": "Sustainable landscaping",
+     "description": "Campaign for healthy yard care and a move away from gas-powered landscaping equipment.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://losn.org/project/sustainable-landscaping",
+     "verified": true,
+     "sources": [
+      "https://losn.org/project/sustainable-landscaping"
+     ]
+    },
+    {
+     "id": "or_losn_p_community_solar",
+     "name": "Community solar",
+     "description": "Helping residents join community solar.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://losn.org/project/community-solar",
+     "verified": true,
+     "sources": [
+      "https://losn.org/project/community-solar"
+     ]
+    },
+    {
+     "id": "or_losn_p_multifamily_ev_charging",
+     "name": "Multifamily EV charging",
+     "description": "Bringing EV charging to apartments and condominiums.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://losn.org/project/multifamily-ev-charging-project",
+     "verified": true,
+     "sources": [
+      "https://losn.org/project/multifamily-ev-charging-project"
+     ]
+    },
+    {
+     "id": "or_losn_p_lake_oswego_climate_action_plan",
+     "name": "Lake Oswego climate action plan",
+     "description": "Team working toward a city climate action plan consistent with state and Metro goals.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://losn.org/project/climate-change",
+     "verified": true,
+     "sources": [
+      "https://losn.org/project/climate-change"
+     ]
+    },
+    {
+     "id": "or_losn_p_schools_sustainability_team",
+     "name": "Schools sustainability team",
+     "description": "Works with Lake Oswego schools on sustainable facilities and curriculum.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://losn.org/project/education",
+     "verified": true,
+     "sources": [
+      "https://losn.org/project/education"
+     ]
+    },
+    {
+     "id": "or_losn_p_the_lake_oswego_story_project",
+     "name": "The Lake Oswego Story Project",
+     "description": "Writing project with the library imagining local responses to climate change.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://losn.org/project/the-lake-oswego-story-project",
+     "verified": true,
+     "sources": [
+      "https://losn.org/project/the-lake-oswego-story-project"
+     ]
+    }
+   ],
    "events": [
     {
      "id": "or_losn_e_2026_lake_oswego_city_council_candidate_",
@@ -4301,7 +5722,8 @@
     "https://orclimatehub.org/archive/organizations/",
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
     "https://orclimatehub.org/organization/lake-oswego-sustainability-network-losn/",
-    "https://losn.org/"
+    "https://losn.org/",
+    "https://losn.org/2026-lo-city-council-candidates-responses-to-losn-questions/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=2026-lo-city-council-candidates-responses-to-losn-questions"
    ],
    "logo": "logos/or_losn.png"
   },
@@ -4317,7 +5739,7 @@
    ],
    "lat": 42.1922,
    "lng": -122.6983,
-   "last_activity": "",
+   "last_activity": "2025-07-30",
    "website": "https://socan.eco",
    "topic_tags": [
     "climate education",
@@ -4346,14 +5768,15 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-09-08",
    "website": "https://oregonclimateeducation.org",
    "topic_tags": [
     "climate education",
     "schools"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
@@ -4361,7 +5784,8 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/oregon-climate-education-hub/",
-    "https://oregonclimateeducation.org/"
+    "https://oregonclimateeducation.org/",
+    "https://subjecttoclimate.org/blog/ny-high-school-lesson-plans-solving-local-problems"
    ],
    "remote": true
   },
@@ -4377,7 +5801,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-07",
    "website": "https://www.wearesage.org",
    "topic_tags": [
     "elders",
@@ -4424,12 +5848,28 @@
      "lng": -122.65
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_sage_a_find_a_volunteer_match_with_sage",
+     "kind": "role",
+     "name": "Find a volunteer match with SAGE",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Talk with SAGE to match your interests with a nonprofit volunteer role.",
+     "link": "https://wearesage.org/get-involved/get-started-talk-to-us",
+     "verified": true,
+     "sources": [
+      "https://wearesage.org/get-involved/get-started-talk-to-us"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/senior-advocates-for-generational-equity-sage/",
-    "https://wearesage.org/"
-   ]
+    "https://wearesage.org/",
+    "https://wearesage.org/volunteering-with-sage/"
+   ],
+   "logo": "logos/or_sage.png"
   },
   {
    "id": "or_solar_oregon",
@@ -4444,7 +5884,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-06-04",
    "website": "https://solaroregon.org",
    "topic_tags": [
     "solar",
@@ -4533,7 +5973,21 @@
      "rsvp_link": "https://www.eventbrite.com/e/green-energy-series-42-optimizing-your-thermostat-settings-tickets-2003216918729?aff=oddtdtcreator"
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_solar_oregon_a_volunteer_with_solar_oregon",
+     "kind": "role",
+     "name": "Volunteer with Solar Oregon",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Help with workshops, events and outreach.",
+     "link": "https://solaroregon.org/get-involved/become-a-volunteer",
+     "verified": true,
+     "sources": [
+      "https://solaroregon.org/get-involved/become-a-volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
@@ -4599,7 +6053,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-12-08",
    "website": "https://www.partnersforsustainableschools.org",
    "topic_tags": [
     "schools",
@@ -4607,7 +6061,8 @@
     "youth"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
@@ -4630,7 +6085,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-08-10",
    "website": "https://justcrossing.org",
    "topic_tags": [
     "transportation",
@@ -4645,7 +6100,8 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/just-crossing-alliance/",
-    "https://justcrossing.org/"
+    "https://justcrossing.org/",
+    "https://justcrossing.org/2026/08/10/the-alliance-is-taking-a-pause/"
    ],
    "logo": "logos/or_jca.png"
   },
@@ -4661,7 +6117,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2025-07-30",
    "topic_tags": [
     "climate emotions",
     "community"
@@ -4690,7 +6146,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2025-08-23",
    "website": "https://thirdact.org/oregon/",
    "topic_tags": [
     "elders",
@@ -4723,7 +6179,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-09-21",
    "website": "https://makingearthcool.com",
    "topic_tags": [
     "education",
@@ -4739,7 +6195,8 @@
    "sources": [
     "https://orclimatehub.org/archive/organizations/",
     "https://orclimatehub.org/organization/making-earth-cool/",
-    "https://www.makingearthcool.com/"
+    "https://www.makingearthcool.com/",
+    "https://makingearthcool.com/sitemap.xml"
    ],
    "remote": true
   },
@@ -4846,7 +6303,7 @@
    ],
    "lat": 45.4448,
    "lng": -122.6208,
-   "last_activity": "",
+   "last_activity": "2026-10-09",
    "website": "https://www.milwaukieoregon.gov",
    "topic_tags": [
     "local government"
@@ -4859,7 +6316,8 @@
    "actions": [],
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
-    "https://www.milwaukieoregon.gov/"
+    "https://www.milwaukieoregon.gov/",
+    "https://www.milwaukieoregon.gov/sitemap.xml"
    ],
    "logo": "logos/or_milwaukie.png"
   },
@@ -4903,7 +6361,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-09-17",
    "website": "https://electrifynow.net",
    "topic_tags": [
     "electrification"
@@ -4916,7 +6374,8 @@
    "actions": [],
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
-    "https://electrifynow.net/"
+    "https://electrifynow.net/",
+    "https://electrifynow.net/sitemap.xml"
    ],
    "remote": true,
    "logo": "logos/or_electrify_now.png"
@@ -4933,7 +6392,7 @@
    ],
    "lat": 44.0567,
    "lng": -121.308,
-   "last_activity": "",
+   "last_activity": "2026-10-09",
    "website": "https://rootedhomes.org",
    "topic_tags": [
     "affordable housing"
@@ -4947,7 +6406,8 @@
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
     "https://www.rootedhomes.org/",
-    "https://www.rootedhomes.org/contact-us"
+    "https://www.rootedhomes.org/contact-us",
+    "https://rootedhomes.org/sitemap.xml"
    ],
    "logo": "logos/or_rooted_homes.png"
   },
@@ -4992,7 +6452,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-10-02",
    "website": "https://www.orssia.org",
    "topic_tags": [
     "solar",
@@ -5007,7 +6467,8 @@
    "actions": [],
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
-    "https://www.orssia.org/"
+    "https://www.orssia.org/",
+    "https://www.orssia.org/sitemap.xml"
    ],
    "logo": "logos/or_ossia.png"
   },
@@ -5266,7 +6727,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-09-21",
    "website": "https://www.elevatenp.org",
    "topic_tags": [
     "energy"
@@ -5279,7 +6740,8 @@
    "actions": [],
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
-    "https://www.elevatenp.org/"
+    "https://www.elevatenp.org/",
+    "https://www.elevatenp.org/workforce/ceja-incubator-south-launches-inaugural-advisory-board-session/"
    ],
    "remote": true,
    "logo": "logos/or_elevate.png"
@@ -5305,7 +6767,20 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_gei_p_clean_energy_policy_recommendations",
+     "name": "Clean energy policy recommendations",
+     "description": "Legal and policy recommendations for a fair transition to a carbon-free grid.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://law.lclark.edu/centers/green_energy_institute/projects",
+     "verified": true,
+     "sources": [
+      "https://law.lclark.edu/centers/green_energy_institute/projects"
+     ]
+    }
+   ],
    "events": [],
    "actions": [],
    "sources": [
@@ -5326,7 +6801,7 @@
    ],
    "lat": 42.1922,
    "lng": -122.6983,
-   "last_activity": "",
+   "last_activity": "2026-10-13",
    "website": "https://www.ashland.or.us",
    "topic_tags": [
     "local government"
@@ -5338,7 +6813,8 @@
    "events": [],
    "actions": [],
    "sources": [
-    "https://www.zerocoalitionoregon.org/zerocoalitionmembership"
+    "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+    "https://www.ashland.or.us/sitemap.xml"
    ],
    "logo": "logos/or_ashland.png"
   },
@@ -5354,7 +6830,7 @@
    ],
    "lat": 44.0567,
    "lng": -121.308,
-   "last_activity": "",
+   "last_activity": "2026-10-09",
    "website": "https://www.bendoregon.gov",
    "topic_tags": [
     "local government",
@@ -5385,7 +6861,8 @@
    ],
    "actions": [],
    "sources": [
-    "https://www.zerocoalitionoregon.org/zerocoalitionmembership"
+    "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
+    "https://bendoregon.gov/news/weekly-road-report-for-the-week-of-october-12-18/"
    ],
    "logo": "logos/or_bend.png"
   },
@@ -5458,7 +6935,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-07-04",
    "website": "https://www.afrovillagepdx.org",
    "topic_tags": [
     "equity",
@@ -5467,12 +6944,26 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_afro_village_p_afrovillage_programs",
+     "name": "AfroVillage programs",
+     "description": "Programs including AfroFuturism events and community WiFi.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.afrovillagepdx.org/programs",
+     "verified": true,
+     "sources": [
+      "https://www.afrovillagepdx.org/programs"
+     ]
+    }
+   ],
    "events": [],
    "actions": [],
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
-    "https://www.afrovillagepdx.org/"
+    "https://www.afrovillagepdx.org/",
+    "https://www.afrovillagepdx.org/sitemap.xml"
    ],
    "logo": "logos/or_afro_village.png"
   },
@@ -5488,7 +6979,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "",
+   "last_activity": "2026-07-27",
    "website": "https://oregontradeswomen.org",
    "topic_tags": [
     "trades",
@@ -5503,7 +6994,8 @@
    "actions": [],
    "sources": [
     "https://www.zerocoalitionoregon.org/zerocoalitionmembership",
-    "https://oregontradeswomen.org/"
+    "https://oregontradeswomen.org/",
+    "https://oregontradeswomen.org/oregon-tradeswomen-announces-workforce-reduction-following-loss-of-funding/"
    ],
    "logo": "logos/or_oti.png"
   },
@@ -5611,7 +7103,9 @@
     "climate justice"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true,
+    "school_club": true
    },
    "projects": [],
    "events": [],
@@ -5674,7 +7168,8 @@
    "sources": [
     "https://nwlaborpress.org/2026/02/new-union-coalition-will-make-a-push-for-climate-jobs/",
     "https://www.oregonlabor.org/"
-   ]
+   ],
+   "logo": "logos/or_oregon_aflcio.png"
   },
   {
    "id": "or_building_trades",
@@ -5688,7 +7183,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "topic_tags": [
     "labor",
     "construction"
@@ -5731,7 +7226,8 @@
    "sources": [
     "https://nwlaborpress.org/2026/02/new-union-coalition-will-make-a-push-for-climate-jobs/",
     "https://www.ibew48.com/"
-   ]
+   ],
+   "logo": "logos/or_ibew48.png"
   },
   {
    "id": "or_ibew125",
@@ -5745,7 +7241,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "website": "https://ibew125.com",
    "topic_tags": [
     "labor",
@@ -5774,7 +7270,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "topic_tags": [
     "labor",
     "electricians"
@@ -5802,7 +7298,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "website": "https://iuoe701.org",
    "topic_tags": [
     "labor",
@@ -5831,7 +7327,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "topic_tags": [
     "labor",
     "construction"
@@ -5859,7 +7355,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "topic_tags": [
     "labor",
     "construction"
@@ -5887,7 +7383,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "topic_tags": [
     "labor"
    ],
@@ -5914,7 +7410,7 @@
    ],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-02-20",
    "topic_tags": [
     "labor",
     "HVAC"
@@ -5942,7 +7438,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "2026-02-03",
+   "last_activity": "2026-10-09",
    "website": "https://www.apano.org",
    "topic_tags": [
     "community organizing",
@@ -5954,10 +7450,25 @@
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_apano_a_volunteer_with_apano",
+     "kind": "role",
+     "name": "Volunteer with APANO",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Support organizing, events and community programs.",
+     "link": "https://www.apano.org/get-involved/volunteer",
+     "verified": true,
+     "sources": [
+      "https://www.apano.org/get-involved/volunteer"
+     ]
+    }
+   ],
    "sources": [
     "https://www.apano.org/blog-posts/sign-the-protect-pcef-pledge",
-    "https://www.apano.org/"
+    "https://www.apano.org/",
+    "https://www.apano.org/sitemap.xml"
    ],
    "logo": "logos/or_apano.png"
   },
@@ -5973,7 +7484,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "2026-10-01",
+   "last_activity": "2026-10-08",
    "website": "https://nayapdx.org",
    "topic_tags": [
     "Native community",
@@ -5988,7 +7499,8 @@
    "actions": [],
    "sources": [
     "https://www.apano.org/blog-posts/sign-the-protect-pcef-pledge",
-    "https://nayapdx.org/"
+    "https://nayapdx.org/",
+    "https://nayapdx.org/sitemap.xml"
    ],
    "logo": "logos/or_naya.png"
   },
@@ -6030,7 +7542,7 @@
    ],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "2026-07-13",
+   "last_activity": "2026-09-09",
    "website": "https://www.coalitioncommunitiescolor.org",
    "topic_tags": [
     "racial justice",
@@ -6045,8 +7557,10 @@
    "actions": [],
    "sources": [
     "https://www.apano.org/blog-posts/sign-the-protect-pcef-pledge",
-    "https://www.coalitioncommunitiescolor.org/"
-   ]
+    "https://www.coalitioncommunitiescolor.org/",
+    "https://www.coalitioncommunitiescolor.org/sitemap.xml"
+   ],
+   "logo": "logos/or_ccc.png"
   },
   {
    "id": "or_tnc",
@@ -6120,7 +7634,7 @@
    ],
    "lat": 44.5699,
    "lng": -123.2783,
-   "last_activity": "",
+   "last_activity": "2026-03-02",
    "website": "https://coastrange.org",
    "topic_tags": [
     "forests",
@@ -6135,7 +7649,8 @@
    "sources": [
     "https://oregonshores.org/programs-campaigns/the-oregon-ocean-alliance/",
     "https://coastrange.org/",
-    "https://coastrange.org/contact"
+    "https://coastrange.org/contact",
+    "https://coastrange.org/facing-disaster/"
    ],
    "logo": "logos/or_cra.png"
   },
@@ -6164,37 +7679,145 @@
     {
      "id": "or_columbia_riverkeeper_p_no_underwater_power_line",
      "name": "No Underwater Power Line",
-     "description": "Campaign against a proposed high-voltage line under the Columbia River that would likely power data centers.",
+     "description": "Campaign to stop a proposed transmission cable under the Columbia River from The Dalles to Portland.",
      "status": "active",
      "skills_needed": [],
-     "link": "https://www.columbiariverkeeper.org/campaigns/zenith-oil-by-rail/",
+     "link": "https://www.columbiariverkeeper.org/campaigns/no-underwater-power-line",
      "verified": true,
      "sources": [
-      "https://www.columbiariverkeeper.org/campaigns/zenith-oil-by-rail/"
+      "https://www.columbiariverkeeper.org/campaigns/no-underwater-power-line"
      ]
     },
     {
      "id": "or_columbia_riverkeeper_p_stand_up_to_data_centers",
      "name": "Stand Up to Data Centers",
-     "description": "Columbia Riverkeeper campaign on data centers in the Columbia River region.",
+     "description": "Campaign on the water and energy demands of data center expansion along the Columbia.",
      "status": "active",
      "skills_needed": [],
-     "link": "https://www.columbiariverkeeper.org/campaigns/zenith-oil-by-rail/",
+     "link": "https://www.columbiariverkeeper.org/campaigns/data-center-expansion",
      "verified": true,
      "sources": [
-      "https://www.columbiariverkeeper.org/campaigns/zenith-oil-by-rail/"
+      "https://www.columbiariverkeeper.org/campaigns/data-center-expansion"
      ]
     },
     {
      "id": "or_columbia_riverkeeper_p_next_energy_refinery",
      "name": "NEXT Energy Refinery",
-     "description": "Columbia Riverkeeper campaign against the proposed NEXT Energy refinery.",
+     "description": "Opposes a proposed diesel refinery that would be one of Oregon's largest greenhouse gas emitters.",
      "status": "active",
      "skills_needed": [],
-     "link": "https://www.columbiariverkeeper.org/campaigns/zenith-oil-by-rail/",
+     "link": "https://www.columbiariverkeeper.org/campaigns/nxt-energy-refinery",
      "verified": true,
      "sources": [
-      "https://www.columbiariverkeeper.org/campaigns/zenith-oil-by-rail/"
+      "https://www.columbiariverkeeper.org/campaigns/nxt-energy-refinery"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_protect_pushpum",
+     "name": "Protect Pushpum",
+     "description": "Supports tribal opposition to the Goldendale pumped storage project at Pushpum (Rock Creek).",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/protect-pushpum-goldendale-pumped-storage",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/protect-pushpum-goldendale-pumped-storage"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_cold_water_for_salmon",
+     "name": "Cold Water for Salmon",
+     "description": "Uses the Clean Water Act to push the Army Corps to cut heat pollution from dams.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/restore-cold-water",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/restore-cold-water"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_snake_river_dam_removal",
+     "name": "Snake River dam removal",
+     "description": "Campaign to restore salmon by removing the four Lower Snake River dams.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/snake-river-dam-removal",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/snake-river-dam-removal"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_small_modular_nuclear_reactors",
+     "name": "Small modular nuclear reactors",
+     "description": "Questions claims that small modular reactors are a climate solution.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/small-modular-nuclear-reactors",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/small-modular-nuclear-reactors"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_williams_pipe_dreams",
+     "name": "Williams' pipe dreams",
+     "description": "Opposes new gas pipeline expansions in the region.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/williams-pipeline",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/williams-pipeline"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_bonneville_dam_cleanup",
+     "name": "Bonneville Dam cleanup",
+     "description": "Pushing for cleanup of toxic pollution at Bonneville Dam.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/bonneville-dam-cleanup",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/bonneville-dam-cleanup"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_swim_guide",
+     "name": "Swim Guide",
+     "description": "Water quality monitoring so people know where it is safe to swim in the Columbia.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/water-quality-monitoring",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/water-quality-monitoring"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_columbia_gorge_youth_education",
+     "name": "Columbia Gorge youth education",
+     "description": "Students and families restore a former industrial site as an outdoor classroom.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/columbia-gorge-youth-education",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/columbia-gorge-youth-education"
+     ]
+    },
+    {
+     "id": "or_columbia_riverkeeper_p_harmful_algal_blooms",
+     "name": "Harmful algal blooms",
+     "description": "Tracking and raising awareness of toxic algal blooms in the Columbia.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.columbiariverkeeper.org/campaigns/harmful-algal-blooms",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/harmful-algal-blooms"
      ]
     }
    ],
@@ -6243,10 +7866,25 @@
      ]
     }
    ],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_columbia_riverkeeper_a_sign_the_snake_river_petition",
+     "kind": "task",
+     "name": "Sign the Snake River petition",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Petition to restore salmon by removing the Lower Snake River dams.",
+     "link": "https://www.columbiariverkeeper.org/campaigns/snake-river-dam-removal",
+     "verified": true,
+     "sources": [
+      "https://www.columbiariverkeeper.org/campaigns/snake-river-dam-removal"
+     ]
+    }
+   ],
    "sources": [
     "https://www.columbiariverkeeper.org/"
-   ]
+   ],
+   "logo": "logos/or_columbia_riverkeeper.png"
   },
   {
    "id": "or_opal",
@@ -6267,7 +7905,20 @@
    "profile": {
     "geo_precision": "approx"
    },
-   "projects": [],
+   "projects": [
+    {
+     "id": "or_opal_p_youth_environmental_justice_alliance_yej",
+     "name": "Youth Environmental Justice Alliance (YEJA)",
+     "description": "Leadership program training low-income youth and youth of color in political education and environmental justice organizing.",
+     "status": "active",
+     "skills_needed": [],
+     "link": "https://www.opalpdx.org/yeja/",
+     "verified": true,
+     "sources": [
+      "https://350pdx.org/youth/"
+     ]
+    }
+   ],
    "events": [],
    "actions": [],
    "sources": [
@@ -6328,7 +7979,7 @@
    "coalition_ids": [],
    "lat": 45.537,
    "lng": -122.65,
-   "last_activity": "2026-06-04",
+   "last_activity": "2026-09-01",
    "website": "https://www.uniteoregon.org",
    "topic_tags": [
     "immigrant rights",
@@ -6341,7 +7992,8 @@
    "events": [],
    "actions": [],
    "sources": [
-    "https://www.uniteoregon.org/"
+    "https://www.uniteoregon.org/",
+    "https://www.uniteoregon.org/sitemap.xml"
    ],
    "logo": "logos/or_unite_oregon.png"
   },
@@ -6355,7 +8007,7 @@
    "coalition_ids": [],
    "lat": 44.9239,
    "lng": -123.023,
-   "last_activity": "",
+   "last_activity": "2026-09-28",
    "website": "https://nextuporegon.org",
    "topic_tags": [
     "youth",
@@ -6363,7 +8015,8 @@
     "democracy"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
@@ -6396,7 +8049,8 @@
     }
    ],
    "sources": [
-    "https://nextuporegon.org/"
+    "https://nextuporegon.org/",
+    "https://nextuporegon.org/sitemap.xml"
    ],
    "remote": true
   },
@@ -6410,20 +8064,36 @@
    "coalition_ids": [],
    "lat": 44.0568,
    "lng": -123.119,
-   "last_activity": "",
+   "last_activity": "2026-10-05",
    "website": "https://www.ourchildrenstrust.org",
    "topic_tags": [
     "youth",
     "climate litigation"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
-   "actions": [],
+   "actions": [
+    {
+     "id": "or_our_childrens_trust_a_support_youth_climate_cases",
+     "kind": "task",
+     "name": "Support youth climate cases",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join the community backing young people's climate lawsuits.",
+     "link": "https://www.ourchildrenstrust.org/act",
+     "verified": true,
+     "sources": [
+      "https://www.ourchildrenstrust.org/act"
+     ]
+    }
+   ],
    "sources": [
-    "https://www.ourchildrenstrust.org/"
+    "https://www.ourchildrenstrust.org/",
+    "https://www.ourchildrenstrust.org/blog/big-oil-has-fundamentally-altered-how-i-experience-everyday-life"
    ],
    "logo": "logos/or_our_childrens_trust.png"
   },
@@ -6477,7 +8147,24 @@
     "geo_precision": "approx"
    },
    "projects": [],
-   "events": [],
+   "events": [
+    {
+     "id": "or_ccl_bend_e_climate_pizza_party_get_the_vote_out",
+     "name": "Climate Pizza Party - Get The Vote Out!",
+     "date": "2026-10-13T17:30:00",
+     "location": "Olde Towne Pizza, 118 Northwest Greenwood Avenue, Bend, OR 97703, Bend, OR",
+     "description": "Join us for pizza, good vibes, and getting environmentalists out to vote!",
+     "link": "https://www.eventbrite.com/e/climate-pizza-party-get-the-vote-out-tickets-2002471861242",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/climate-pizza-party-get-the-vote-out-tickets-2002471861242"
+     ],
+     "end": "2026-10-13T19:30:00",
+     "lat": 44.0567,
+     "lng": -121.308
+    }
+   ],
    "actions": [],
    "sources": [
     "https://energizebend.org/"
@@ -6502,7 +8189,8 @@
     "climate"
    ],
    "profile": {
-    "geo_precision": "approx"
+    "geo_precision": "approx",
+    "youth_serving": true
    },
    "projects": [],
    "events": [],
@@ -6511,6 +8199,614 @@
     "https://energizebend.org/"
    ],
    "logo": "logos/or_dycc.png"
+  },
+  {
+   "id": "or_ccl_corvallis",
+   "name": "Citizens' Climate Lobby Corvallis",
+   "abbrev": "CCL Corvallis",
+   "type": "informal_group",
+   "geographic_focus": "Corvallis",
+   "description": "Local chapter of Citizens' Climate Lobby, building political will for national climate policy (Corvallis).",
+   "coalition_ids": [],
+   "lat": 44.5699,
+   "lng": -123.2783,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/OR_Corvallis/",
+   "topic_tags": [
+    "climate policy",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/",
+    "https://citizensclimatelobby.org/chapters/OR_Corvallis/"
+   ],
+   "logo": "logos/or_ccl_corvallis.png"
+  },
+  {
+   "id": "or_ccl_eugene",
+   "name": "Citizens' Climate Lobby Eugene-Springfield",
+   "abbrev": "CCL Eugene-Springfield",
+   "type": "informal_group",
+   "geographic_focus": "Eugene-Springfield",
+   "description": "Local chapter of Citizens' Climate Lobby, building political will for national climate policy (Eugene-Springfield).",
+   "coalition_ids": [],
+   "lat": 44.0568,
+   "lng": -123.119,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/OR_Eugene-Springfield/",
+   "topic_tags": [
+    "climate policy",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/",
+    "https://citizensclimatelobby.org/chapters/OR_Eugene-Springfield/"
+   ],
+   "logo": "logos/or_ccl_eugene.png"
+  },
+  {
+   "id": "or_ccl_salem",
+   "name": "Citizens' Climate Lobby Salem-Keizer",
+   "abbrev": "CCL Salem-Keizer",
+   "type": "informal_group",
+   "geographic_focus": "Salem-Keizer",
+   "description": "Local chapter of Citizens' Climate Lobby, building political will for national climate policy (Salem-Keizer).",
+   "coalition_ids": [],
+   "lat": 44.9239,
+   "lng": -123.023,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/OR_Salem-Keizer/",
+   "topic_tags": [
+    "climate policy",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/",
+    "https://citizensclimatelobby.org/chapters/OR_Salem-Keizer/"
+   ],
+   "logo": "logos/or_ccl_salem.png"
+  },
+  {
+   "id": "or_ccl_southern_oregon",
+   "name": "Citizens' Climate Lobby Southern Oregon",
+   "abbrev": "CCL Southern Oregon",
+   "type": "informal_group",
+   "geographic_focus": "Southern Oregon",
+   "description": "Local chapter of Citizens' Climate Lobby, building political will for national climate policy (Southern Oregon).",
+   "coalition_ids": [],
+   "lat": 42.336,
+   "lng": -122.8518,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/OR_Southern_Oregon/",
+   "topic_tags": [
+    "climate policy",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/",
+    "https://citizensclimatelobby.org/chapters/OR_Southern_Oregon/"
+   ],
+   "logo": "logos/or_ccl_southern_oregon.png"
+  },
+  {
+   "id": "or_ccl_uo",
+   "name": "Citizens' Climate Lobby University of Oregon",
+   "abbrev": "CCL University of Oregon",
+   "type": "campus_group",
+   "geographic_focus": "University of Oregon",
+   "description": "Local chapter of Citizens' Climate Lobby, building political will for national climate policy (University of Oregon).",
+   "coalition_ids": [],
+   "lat": 44.0568,
+   "lng": -123.119,
+   "last_activity": "",
+   "website": "https://citizensclimatelobby.org/chapters/OR_University_of_Oregon/",
+   "topic_tags": [
+    "climate policy",
+    "lobbying"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "youth_serving": true,
+    "school_club": true
+   },
+   "projects": [],
+   "events": [],
+   "actions": [],
+   "sources": [
+    "https://citizensclimatelobby.org/chapters/",
+    "https://citizensclimatelobby.org/chapters/OR_University_of_Oregon/"
+   ],
+   "logo": "logos/or_ccl_uo.png"
+  },
+  {
+   "id": "or_bef",
+   "name": "Bonneville Environmental Foundation",
+   "abbrev": "BEF",
+   "type": "501c3",
+   "geographic_focus": "Regional",
+   "description": "Portland nonprofit working on freshwater restoration and credible climate solutions; it runs community solar workshops for Portland residents.",
+   "coalition_ids": [],
+   "lat": 45.537,
+   "lng": -122.65,
+   "last_activity": "",
+   "website": "https://www.b-e-f.org",
+   "topic_tags": [
+    "clean energy",
+    "community solar",
+    "water"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "or_bef_e_community_solar_workshop",
+     "name": "Community Solar Workshop",
+     "date": "2026-10-29T17:00:00",
+     "location": "IRCO Pacific Islander & Asian Family Center, 8040 Northeast Sandy Boulevard, Portland, OR 97213, Portland, OR",
+     "description": "Join us to learn how Community Solar can support our Portland clean energy goals, save you money, and score a free energy saving kit!",
+     "link": "https://www.eventbrite.com/e/community-solar-workshop-tickets-2002825365583",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/community-solar-workshop-tickets-2002825365583"
+     ],
+     "end": "2026-10-29T18:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_bef_e_community_solar_workshop_english_vietnam",
+     "name": "Community Solar Workshop (English / Vietnamese Translation)",
+     "date": "2026-10-21T18:00:00",
+     "location": "IRCO Pacific Islander & Asian Family Center, 8040 Northeast Sandy Boulevard, Portland, OR 97213, Portland, OR",
+     "description": "Join us to learn how Community Solar can support our Portland clean energy goals, save you money, and score a free energy saving kit!",
+     "link": "https://www.eventbrite.com/e/community-solar-workshop-english-vietnamese-translation-tickets-2002822721675",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/community-solar-workshop-english-vietnamese-translation-tickets-2002822721675"
+     ],
+     "end": "2026-10-21T19:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_bef_e_community_solar_workshop_english_cantone",
+     "name": "Community Solar Workshop (English / Cantonese Translation)",
+     "date": "2026-10-27T17:00:00",
+     "location": "IRCO Pacific Islander & Asian Family Center, 8040 Northeast Sandy Boulevard, Portland, OR 97213, Portland, OR",
+     "description": "Join us to learn how Community Solar can support our Portland clean energy goals, save you money, and score a free energy saving kit!",
+     "link": "https://www.eventbrite.com/e/community-solar-workshop-english-cantonese-translation-tickets-2002824206115",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/community-solar-workshop-english-cantonese-translation-tickets-2002824206115"
+     ],
+     "end": "2026-10-27T18:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.b-e-f.org/",
+    "https://www.eventbrite.com/e/community-solar-workshop-tickets-2002825365583",
+    "https://www.eventbrite.com/e/community-solar-workshop-english-vietnamese-translation-tickets-2002822721675"
+   ],
+   "logo": "logos/or_bef.png"
+  },
+  {
+   "id": "or_jcwc",
+   "name": "Johnson Creek Watershed Council",
+   "abbrev": "JCWC",
+   "type": "501c3",
+   "geographic_focus": "Johnson Creek watershed",
+   "description": "Promotes restoration and stewardship of the Johnson Creek watershed through science and community engagement.",
+   "coalition_ids": [],
+   "lat": 45.537,
+   "lng": -122.65,
+   "last_activity": "",
+   "website": "https://www.jcwc.org",
+   "topic_tags": [
+    "watersheds",
+    "restoration",
+    "science"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "or_jcwc_e_11th_annual_johnson_creek_science_sympos",
+     "name": "11th Annual Johnson Creek Science Symposium",
+     "date": "2026-10-20T13:00:00",
+     "location": "Reed College Performing Arts Building, 3203 Southeast Woodstock Boulevard, Room 320, Portland, OR 97202, Portland, OR",
+     "description": "Join us at Reed College to learn the latest in research, restoration, policy and monitoring in the Johnson Creek Watershed .",
+     "link": "https://www.eventbrite.com/e/11th-annual-johnson-creek-science-symposium-tickets-1999296828634",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/11th-annual-johnson-creek-science-symposium-tickets-1999296828634"
+     ],
+     "end": "2026-10-20T17:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.jcwc.org/",
+    "https://www.eventbrite.com/e/11th-annual-johnson-creek-science-symposium-tickets-1999296828634"
+   ],
+   "logo": "logos/or_jcwc.png"
+  },
+  {
+   "id": "or_solve",
+   "name": "SOLVE",
+   "abbrev": "SOLVE",
+   "type": "501c3",
+   "geographic_focus": "Oregon and SW Washington",
+   "description": "Brings thousands of volunteers together in Oregon and Southwest Washington to clean up and restore the environment.",
+   "coalition_ids": [],
+   "lat": 45.537,
+   "lng": -122.65,
+   "last_activity": "",
+   "website": "https://www.solve.org",
+   "topic_tags": [
+    "cleanups",
+    "restoration",
+    "volunteering"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "or_solve_e_hillsboro_community_cleanup_recycling_ev",
+     "name": "Hillsboro Community Cleanup & Recycling Event",
+     "date": "2026-10-22T13:00:00",
+     "location": "7355 NE Imbrie Dr, 7355 Northeast Imbrie Drive, Hillsboro, OR 97124, Hillsboro, OR",
+     "description": "Hosted by SOLVE in partnership w/ the Oregon Beverage Recycling Cooperative, this is your chance to help create a cleaner, greener Hillsboro",
+     "link": "https://www.eventbrite.com/e/hillsboro-community-cleanup-recycling-event-tickets-1982735707876",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/hillsboro-community-cleanup-recycling-event-tickets-1982735707876"
+     ],
+     "end": "2026-10-22T15:00:00",
+     "lat": 45.5268,
+     "lng": -122.9354
+    },
+    {
+     "id": "or_solve_e_springfield_community_cleanup_recycling_",
+     "name": "Springfield Community Cleanup & Recycling Event",
+     "date": "2026-12-17T13:00:00",
+     "location": "2289 Olympic St, 2289 Olympic Street, Springfield, OR 97477, Springfield, OR",
+     "description": "Hosted by SOLVE in partnership w/ Oregon Beverage Recycling Cooperative, this is your chance to help create a cleaner, greener Springfield.",
+     "link": "https://www.eventbrite.com/e/springfield-community-cleanup-recycling-event-tickets-1982736205364",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/springfield-community-cleanup-recycling-event-tickets-1982736205364"
+     ],
+     "end": "2026-12-17T15:00:00",
+     "lat": 44.0537,
+     "lng": -122.9809
+    },
+    {
+     "id": "or_solve_e_newport_community_cleanup_recycling_even",
+     "name": "Newport Community Cleanup & Recycling Event",
+     "date": "2026-11-19T13:00:00",
+     "location": "158 E Olive St, 158 East Olive Street, Newport, OR 97365, Newport, OR",
+     "description": "Hosted by SOLVE in partnership w/ Oregon Beverage Recycling Cooperative, this is your chance to help create a cleaner, greener Newport.",
+     "link": "https://www.eventbrite.com/e/newport-community-cleanup-recycling-event-tickets-1982736007773",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/newport-community-cleanup-recycling-event-tickets-1982736007773"
+     ],
+     "end": "2026-11-19T15:00:00",
+     "lat": 44.6214,
+     "lng": -124.0438
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.solve.org/",
+    "https://www.eventbrite.com/e/hillsboro-community-cleanup-recycling-event-tickets-1982735707876",
+    "https://www.eventbrite.com/e/springfield-community-cleanup-recycling-event-tickets-1982736205364"
+   ],
+   "logo": "logos/or_solve.png"
+  },
+  {
+   "id": "or_solc",
+   "name": "Southern Oregon Land Conservancy",
+   "abbrev": "SOLC",
+   "type": "501c3",
+   "geographic_focus": "Southern Oregon",
+   "description": "Land trust protecting natural areas in Southern Oregon, with open-land days and volunteer work parties.",
+   "coalition_ids": [],
+   "lat": 42.1922,
+   "lng": -122.6983,
+   "last_activity": "",
+   "website": "https://www.landconserve.org",
+   "topic_tags": [
+    "land conservation",
+    "stewardship"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "or_solc_e_history_natural_history_of_the_bluff",
+     "name": "History & Natural History of the Bluff",
+     "date": "2026-10-17T09:30:00",
+     "location": "CVS Pharmacy: Carpool to Harry & Marilyn Fisher Preserve at Pompadour Bluff, 2341 Ashland Street, Ashland, OR 97520, Ashland, OR",
+     "description": "Why is Pompadour Bluff such a prominent feature in our valley? We’ll learn about the history, geography, and natural history of the bluff!",
+     "link": "https://www.eventbrite.com/e/history-natural-history-of-the-bluff-registration-1996826864906",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/history-natural-history-of-the-bluff-registration-1996826864906"
+     ],
+     "end": "2026-10-17T12:00:00",
+     "lat": 42.1922,
+     "lng": -122.6983
+    },
+    {
+     "id": "or_solc_e_weekend_work_party_at_whetstone_savanna_",
+     "name": "Weekend Work Party at Whetstone Savanna Preserve!",
+     "date": "2026-11-07T09:00:00",
+     "location": "Whetstone Savanna Preserve, 1022 Newland Road, Central Point, OR 97502, Central Point, OR",
+     "description": "We’re working with our friends at The Nature Conservancy and Oregon Department of Transportation to replace existing fences with new ones.",
+     "link": "https://www.eventbrite.com/e/weekend-work-party-at-whetstone-savanna-preserve-registration-2000502462718",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/weekend-work-party-at-whetstone-savanna-preserve-registration-2000502462718"
+     ],
+     "end": "2026-11-07T12:00:00",
+     "lat": 42.3765,
+     "lng": -122.9105
+    },
+    {
+     "id": "or_solc_e_open_lands_day_at_the_rogue_river_preser",
+     "name": "Open Lands Day at the Rogue River Preserve",
+     "date": "2026-10-24T10:00:00",
+     "location": "Rogue River Preserve, 646 Rogue River Dr, Eagle Point, OR 97524, Eagle Point, OR",
+     "description": "Explore, discover, and enjoy. Join us for an autumn visit to the incredible Rogue River Preserve!",
+     "link": "https://www.eventbrite.com/e/open-lands-day-at-the-rogue-river-preserve-registration-2000521490631",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/open-lands-day-at-the-rogue-river-preserve-registration-2000521490631"
+     ],
+     "end": "2026-10-24T15:00:00",
+     "lat": 42.4677,
+     "lng": -122.8016
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.landconserve.org/",
+    "https://www.eventbrite.com/e/history-natural-history-of-the-bluff-registration-1996826864906",
+    "https://www.eventbrite.com/e/weekend-work-party-at-whetstone-savanna-preserve-registration-2000502462718"
+   ],
+   "logo": "logos/or_solc.png"
+  },
+  {
+   "id": "or_emswcd",
+   "name": "East Multnomah Soil & Water Conservation District",
+   "abbrev": "EMSWCD",
+   "type": "government",
+   "geographic_focus": "East Multnomah County",
+   "description": "Local conservation district in east Multnomah County; runs climate resilience workshops and free tree giveaways for residents.",
+   "coalition_ids": [],
+   "lat": 45.537,
+   "lng": -122.65,
+   "last_activity": "",
+   "website": "https://emswcd.org",
+   "topic_tags": [
+    "climate resilience",
+    "soil",
+    "water",
+    "urban trees"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "or_emswcd_e_climate_resilience_workshop_free_trees",
+     "name": "Climate Resilience Workshop (+ Free Trees)",
+     "date": "2026-11-14T10:00:00",
+     "location": "Leach Botanical Garden, 6704 Southeast 122nd Avenue, Portland, OR 97236, Portland, OR",
+     "description": "Learn how climate change is impacting our soil & water resources and pre-register for a free tree to pick up at the event!",
+     "link": "https://www.eventbrite.com/e/climate-resilience-workshop-free-trees-tickets-2002974562836",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/climate-resilience-workshop-free-trees-tickets-2002974562836"
+     ],
+     "end": "2026-11-14T12:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_emswcd_e_climate_resilience_in_your_yard_beyond",
+     "name": "Climate Resilience: In Your Yard & Beyond",
+     "date": "2026-11-24T18:00:00",
+     "location": "Level Beer, 5211 Northeast 148th Avenue, Portland, OR 97230, Portland, OR",
+     "description": "Learn how climate change is impacting soil & water resources, and what that means for local plants, wildlife, and people.",
+     "link": "https://www.eventbrite.com/e/climate-resilience-in-your-yard-beyond-tickets-2001635549812",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/climate-resilience-in-your-yard-beyond-tickets-2001635549812"
+     ],
+     "end": "2026-11-24T19:30:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_emswcd_e_successful_vending_at_farmers_markets",
+     "name": "Successful Vending at Farmers Markets",
+     "date": "2026-11-12T10:00:00",
+     "location": "East Multnomah Soil and Water Conservation District, 2511 N Williams, Portland, OR 97216-3417, Portland, OR",
+     "description": "Learn how to maximize the time and energy you put into vending at market with pro advice from Nicki Passarella of Storybook Farm.",
+     "link": "https://www.eventbrite.com/e/successful-vending-at-farmers-markets-tickets-2003224415151",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/successful-vending-at-farmers-markets-tickets-2003224415151"
+     ],
+     "end": "2026-11-12T12:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_emswcd_e_a_year_with_mason_bees_harvesting_washin",
+     "name": "A Year with Mason Bees: Harvesting, Washing, and Storing",
+     "date": "2026-11-22T12:30:00",
+     "location": "Parkrose Community United Church of Christ, 12505 NE Halsey St, Portland, OR 97230, Portland, OR",
+     "description": "Join us to learn how to harvest, wash, and store mason bee cocoons at the end of the nesting season.",
+     "link": "https://www.eventbrite.com/e/a-year-with-mason-bees-harvesting-washing-and-storing-tickets-2002104754215",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/a-year-with-mason-bees-harvesting-washing-and-storing-tickets-2002104754215"
+     ],
+     "end": "2026-11-22T14:30:00",
+     "lat": 45.537,
+     "lng": -122.65
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.eventbrite.com/e/climate-resilience-workshop-free-trees-tickets-2002974562836",
+    "https://www.eventbrite.com/e/climate-resilience-in-your-yard-beyond-tickets-2001635549812"
+   ]
+  },
+  {
+   "id": "or_ecotrust",
+   "name": "Ecotrust",
+   "abbrev": "Ecotrust",
+   "type": "501c3",
+   "geographic_focus": "Regional",
+   "description": "Portland-based nonprofit working on food, farming and natural resources; hosts gatherings for farmers.",
+   "coalition_ids": [],
+   "lat": 45.537,
+   "lng": -122.65,
+   "last_activity": "",
+   "website": "https://ecotrust.org",
+   "topic_tags": [
+    "food systems",
+    "farmers",
+    "climate"
+   ],
+   "profile": {
+    "geo_precision": "approx"
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "or_ecotrust_e_connect_reflect_a_fall_farmers_gathering",
+     "name": "Connect & Reflect: A Fall Farmers' Gathering",
+     "date": "2026-10-22T17:30:00",
+     "location": "Black Food Sovereignty Coalition, 1526 Southeast Elliott Avenue, Portland, OR 97214, Portland, OR",
+     "description": "A gathering for all growers, market gardeners, farmers, and food producers engaged or interested in regenerative practices.",
+     "link": "https://www.eventbrite.com/e/connect-reflect-a-fall-farmers-gathering-tickets-1997873555586",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/connect-reflect-a-fall-farmers-gathering-tickets-1997873555586"
+     ],
+     "end": "2026-10-22T20:30:00",
+     "lat": 45.537,
+     "lng": -122.65
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://www.eventbrite.com/e/connect-reflect-a-fall-farmers-gathering-tickets-1997873555586"
+   ]
+  },
+  {
+   "id": "or_pycc",
+   "name": "Portland Youth Climate Council",
+   "abbrev": "PYCC",
+   "type": "youth_org",
+   "geographic_focus": "Portland",
+   "coalition_ids": [],
+   "description": "Youth-run group of Portland Public Schools students pushing for climate justice in the school curriculum and stronger city tree rules.",
+   "lat": 45.537,
+   "lng": -122.65,
+   "last_activity": "",
+   "website": "https://pdxclimatecouncil.wixsite.com/youth",
+   "topic_tags": [
+    "youth",
+    "climate education",
+    "trees"
+   ],
+   "profile": {
+    "geo_precision": "approx",
+    "youth_serving": true
+   },
+   "projects": [],
+   "events": [
+    {
+     "id": "or_pycc_e_weekly_meeting",
+     "name": "Portland Youth Climate Council weekly meeting",
+     "date": "2026-10-19T19:00:00",
+     "end": "2026-10-19T20:30:00",
+     "recurrence": "Every Monday, 7:00-8:30 PM",
+     "location": "Portland City Hall, 1221 SW 4th Ave, Portland",
+     "description": "Weekly meeting of the student-run council; new members welcome.",
+     "link": "https://350pdx.org/youth/",
+     "online": false,
+     "verified": false,
+     "sources": [
+      "https://350pdx.org/youth/"
+     ],
+     "lat": 45.537,
+     "lng": -122.65
+    }
+   ],
+   "actions": [],
+   "sources": [
+    "https://350pdx.org/youth/"
+   ]
   }
  ],
  "edges": [

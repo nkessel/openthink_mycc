@@ -112,11 +112,14 @@ async function main() {
   const bridges = data.organizations.filter((o) => (o.coalition_ids?.length || 0) > 1).length;
   const facts: string[] = [];
   if (bridges) facts.push(`Finding groups that work across coalitions (${bridges}/${bridges})`);
-  // "Connecting N groups across N towns": each placed group goes to its nearest town centre (Massachusetts towns list)
-  if (currentMap.id === "ma") {
+  // "Connecting N groups across N towns": each placed group goes to its nearest town centre (the map's states' town lists)
+  if (currentMap.geo.length) {
     try {
-      const res = await fetch(`${import.meta.env.BASE_URL}geo/ma-town-centroids.json`);
-      const centres = Object.entries((await res.json()) as Record<string, [number, number]>);
+      const lists = await Promise.all(currentMap.geo.map(async (p) => {
+        const res = await fetch(`${import.meta.env.BASE_URL}geo/${p}-town-centroids.json`);
+        return Object.entries((await res.json()) as Record<string, [number, number]>).map(([n, at]) => [`${p}:${n}`, at] as [string, [number, number]]);
+      }));
+      const centres = lists.flat();
       const towns = new Set<string>();
       let placed = 0;
       for (const o of data.organizations) {
