@@ -2,6 +2,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Coalition, DataFile, GraphNode, Organization } from "./types";
 import { currentMap } from "./maps";
+import { STATE_GEO, type DistrictDef } from "./geodata";
 import { h, makeFoldable } from "./dom";
 import { initials, shownType, hasTime, parseEventDate } from "./util";
 import { allEvents, allProjects, type Owner } from "./owners";
@@ -32,19 +33,15 @@ const MA_BOUNDS: L.LatLngBoundsExpression = [
   [42.95, -69.85],
 ];
 
-/** The point the data uses when it only knows "Massachusetts" (statewide, national, or no address yet). */
-// Voting district outlines (public/geo/ma-*.geojson, from MassGIS; rebuilt by scripts/fetch-districts.sh).
+// Voting district outlines per state (public/geo/<state>-*.geojson; see geodata.ts for sources).
 // Representatives' names change between elections, so a district links to an official "find your …" page instead.
-type District = { id: string; label: string; kind: string; color: string; weight: number; dash?: string; minZoom?: number; link: string; linkText: string };
-const FIND_LEGISLATOR = "https://malegislature.gov/Search/FindMyLegislator";
-const DISTRICTS: District[] = [
-  { id: "congress", label: "US Congress (9)", kind: "US Congressional district", color: "#f59e0b", weight: 2.5, link: "https://www.house.gov/representatives/find-your-representative", linkText: "Find your US Representative" },
-  { id: "senate", label: "State Senate (40)", kind: "State Senate district", color: "#a78bfa", weight: 2, link: FIND_LEGISLATOR, linkText: "Find your State Senator" },
-  { id: "house", label: "State House (160)", kind: "State House district", color: "#34d399", weight: 1.5, dash: "6 4", link: FIND_LEGISLATOR, linkText: "Find your State Representative" },
-  { id: "wards", label: "City wards (285)", kind: "City ward", color: "#f472b6", weight: 1.2, dash: "2 4", link: "https://www.sec.state.ma.us/WhereDoIVoteMA/", linkText: "Where do I vote?" },
-  { id: "precincts", label: "Voting precincts (2,256)", kind: "Voting precinct", color: "#94a3b8", weight: 0.8, dash: "1 3", minZoom: 12, link: "https://www.sec.state.ma.us/WhereDoIVoteMA/", linkText: "Where do I vote?" },
-];
+type District = DistrictDef & { file: string };
+const MULTI_STATE = currentMap.geo.length > 1;
+const DISTRICTS: District[] = currentMap.geo.flatMap((p) => STATE_GEO[p].districts.map((d) => ({
+  ...d, id: `${p}-${d.id}`, file: `${p}-${d.id}`, label: MULTI_STATE ? `${STATE_GEO[p].code} · ${d.label}` : d.label,
+})));
 
+/** The point the data uses when it only knows "Massachusetts" (statewide, national, or no address yet). */
 const atFallback = (lat: number, lng: number) => Math.abs(lat - 42.3601) < 1e-4 && Math.abs(lng + 71.0589) < 1e-4;
 /** A real place for this group: not remote, and not the fallback point (unless the group really is in Boston). */
 export function orgPlaced(o: Organization): boolean {
@@ -59,7 +56,7 @@ export function coalitionPlaced(c: Coalition): boolean {
 export function createGeographicView(data: DataFile, cb: GeoCallbacks): GeographicView {
   /** Massachusetts opens on the state; other maps open on wherever their groups are. */
   function startBounds(): L.LatLngBoundsExpression {
-    if (currentMap.id === "ma") return MA_BOUNDS;
+    if (currentMap.geo.length === 1 && currentMap.geo[0] === "ma" && !currentMap.combine) return MA_BOUNDS;
     const pts = [...data.coalitions, ...data.organizations]
       .filter((n) => !(n as { remote?: boolean }).remote && Number.isFinite(n.lat) && Number.isFinite(n.lng) && (n.lat !== 0 || n.lng !== 0))
       .map((n) => [n.lat, n.lng] as [number, number]);
@@ -145,9 +142,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   }
   const precinctNote = h("div", { class: "geo-note", hidden: "" }, "Precincts show when you zoom in to street level.");
   boundsBox.appendChild(precinctNote);
-  boundsBox.appendChild(h("div", { class: "geo-note" }, "District lines: MassGIS (State House and Senate 2021, US Congress 2022–, wards and precincts 2022). Click a district to find who represents it."));
-  // The town/county outlines are Massachusetts-only for now.
-  if (currentMap.id === "ma" || currentMap.id === "us") panel.insertBefore(boundsBox, nearBtn);
+  boundsBox.appendChild(h("div", { class: "geo-note" }, `District lines: ${currentMap.geo.map((p) => (MULTI_STATE ? `${STATE_GEO[p].code}: ` : "") + STATE_GEO[p].credit).join("; ")}. Click a district to find who represents it.`));
+  // Town/county outlines exist only for states with bundled geography (geodata.ts).
+  if (currentMap.geo.length) panel.insertBefore(boundsBox, nearBtn);
 
   const inViewBtn = h("button", { class: "geo-near", type: "button" }, "Show list of events in view");
   panel.insertBefore(inViewBtn, nearBtn);
@@ -183,10 +180,13 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     if (kind === "none") return;
     let json = boundaryCache.get(kind);
     if (!json) {
-      try {
-        json = await (await fetch(`${import.meta.env.BASE_URL}geo/ma-${kind}.geojson`)).json();
-        boundaryCache.set(kind, json);
-      } catch (_) { return; }
+      // One file per state; merged into one layer.
+      const parts = await Promise.all(currentMap.geo.map((p) =>
+        fetch(`${import.meta.env.BASE_URL}geo/${p}-${kind}.geojson`).then((r) => r.json() as Promise<GeoJSON.FeatureCollection>).catch(() => null)));
+      const features = parts.flatMap((part) => part?.features ?? []);
+      if (!features.length) return;
+      json = { type: "FeatureCollection", features } as GeoJSON.FeatureCollection;
+      boundaryCache.set(kind, json);
     }
     if (seq !== boundarySeq) return; // a newer choice replaced this one
     const base: L.PathOptions = { color: "#94a3b8", weight: kind === "towns" ? 0.8 : 1.5, opacity: 0.7, fillColor: "#38bdf8", fillOpacity: 0.02 };
@@ -220,7 +220,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     if (!layer) {
       let json: unknown;
       try {
-        json = await (await fetch(`${import.meta.env.BASE_URL}geo/ma-${d.id}.geojson`)).json();
+        json = await (await fetch(`${import.meta.env.BASE_URL}geo/${d.file}.geojson`)).json();
       } catch (_) { return; }
       const style: L.PathOptions = { color: d.color, weight: d.weight, opacity: 0.85, dashArray: d.dash, fillColor: d.color, fillOpacity: 0.01 };
       layer = L.geoJSON(json as GeoJSON.GeoJsonObject, {
@@ -257,7 +257,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     syncPrecinctNote();
   }
   function syncPrecinctNote() {
-    precinctNote.hidden = !(districtOn.has("precincts") && (!map || map.getZoom() < PRECINCT_ZOOM));
+    precinctNote.hidden = !(districtOn.has("ma-precincts") && (!map || map.getZoom() < PRECINCT_ZOOM));
   }
 
   // "Show list of events in view": upcoming events whose address is in view (or, zoomed out to town level, whose

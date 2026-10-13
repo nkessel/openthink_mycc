@@ -1,6 +1,7 @@
 // Shared filters for the Events and Projects pages: merged comma-separated search, zip code + miles,
 // online/remote, "in view on the geographic map", free food, public vs affiliated-only, help wanted.
 import { currentMap } from "./maps";
+import { STATE_GEO, stateNamedIn } from "./geodata";
 import { h, makeFoldable } from "./dom";
 
 export interface Facts {
@@ -44,30 +45,35 @@ export function inMapView(f: { lat?: number; lng?: number; approx?: boolean; onl
   return f.lat >= b.south && f.lat <= b.north && f.lng >= b.west && f.lng <= b.east;
 }
 
-// ---- Zip codes (Massachusetts only, bundled) ----
+// ---- Zip codes (bundled for the map's states: geo/<state>-zips.json) ----
 let zips: Record<string, [number, number]> | null = null;
 let zipsLoading: Promise<void> | null = null;
+/** One bundled JSON file per state of this map, merged; a missing file counts as empty. */
+function loadPerState<T>(file: string): Promise<{ state: string; data: T }[]> {
+  return Promise.all(currentMap.geo.map((p) =>
+    fetch(`${import.meta.env.BASE_URL}geo/${p}-${file}`)
+      .then((r) => r.json() as Promise<T>)
+      .then((data) => ({ state: STATE_GEO[p].code, data }))
+      .catch(() => ({ state: STATE_GEO[p].code, data: {} as T }))));
+}
 function loadZips(): Promise<void> {
   if (zips) return Promise.resolve();
-  zipsLoading ||= fetch(`${import.meta.env.BASE_URL}geo/ma-zips.json`)
-    .then((r) => r.json())
-    .then((j) => { zips = j; })
-    .catch(() => { zips = {}; });
+  zipsLoading ||= loadPerState<Record<string, [number, number]>>("zips.json")
+    .then((all) => { zips = Object.assign({}, ...all.map((a) => a.data)); });
   return zipsLoading;
 }
 // ---- Approximate places for items that have no coordinates ----
 // Most researched events/projects only have a street address or town in `location`. For zip-code and
 // "in view" filtering, place them at the town named in that text, or else at their organization's headquarters.
-let towns: { name: string; re: RegExp; at: [number, number] }[] | null = null;
+let towns: { name: string; state: string; re: RegExp; at: [number, number] }[] | null = null;
 let townsLoading: Promise<void> | null = null;
 export function loadTowns(): Promise<void> {
   if (towns) return Promise.resolve();
-  townsLoading ||= fetch(`${import.meta.env.BASE_URL}geo/ma-town-centroids.json`)
-    .then((r) => r.json() as Promise<Record<string, [number, number]>>)
-    .then((j) => {
-      towns = Object.entries(j)
-        .sort((a, b) => b[0].length - a[0].length) // "North Adams" before "Adams"
-        .map(([name, at]) => ({ name, at, re: new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i") }));
+  townsLoading ||= loadPerState<Record<string, [number, number]>>("town-centroids.json")
+    .then((all) => {
+      towns = all.flatMap(({ state, data }) => Object.entries(data).map(([name, at]) => ({ name, state, at })))
+        .sort((a, b) => b.name.length - a.name.length) // "North Adams" before "Adams"
+        .map((t) => ({ ...t, re: new RegExp(`\\b${t.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i") }));
     })
     .catch(() => { towns = []; });
   return townsLoading;
@@ -77,9 +83,15 @@ export function placeFor(item: { lat?: number; lng?: number; online?: boolean; l
   if (item.online) return {};
   if (item.lat !== undefined && item.lng !== undefined) return { lat: item.lat, lng: item.lng };
   const loc = item.location || "";
-  // The town list is Massachusetts': don't put "Milton, VT" in Milton, MA.
-  const otherState = /,\s*(?!MA\b|Mass\b|Massachusetts\b)(?:[A-Z]{2}|Vermont|New Hampshire|New York|Connecticut|Rhode Island|Maine)\b/.test(loc);
-  const hit = loc && towns && !otherState ? towns.find((t) => t.re.test(loc)) : undefined;
+  // Only towns of the state the location names (don't put "Milton, VT" in Milton, MA); when it names none and two
+  // states share the name (Salem, Springfield, Portland…), take the one nearest the host group.
+  const named = loc ? stateNamedIn(loc) : null;
+  const hits = loc && towns ? towns.filter((t) => (!named || t.state === named) && t.re.test(loc)) : [];
+  const longest = hits.length ? hits[0].name.length : 0;
+  const tied = hits.filter((t) => t.name.length === longest);
+  const near = owner && Number.isFinite(owner.lat) && Number.isFinite(owner.lng)
+    ? (t: { at: [number, number] }) => (t.at[0] - owner.lat!) ** 2 + (t.at[1] - owner.lng!) ** 2 : () => 0;
+  const hit = tied.sort((a, b) => near(a) - near(b))[0];
   if (hit) return { lat: hit.at[0], lng: hit.at[1], approx: true };
   if (owner && owner.kind === "org" && !owner.remote && Number.isFinite(owner.lat) && Number.isFinite(owner.lng)) return { lat: owner.lat, lng: owner.lng, approx: true };
   return {};
@@ -123,8 +135,8 @@ export function createItemFilters(opts: FilterOpts, onChange: () => void): ItemF
   const mileIn = h("input", { type: "range", min: "1", max: "100", step: "1", value: String(state.radius), class: "slider miles-in", "aria-label": "Miles from zip code" }) as HTMLInputElement;
   const zipNote = h("span", { class: "zip-note" }, "");
   const zipWrap = h("div", { class: "filter-group zip-group" }, zipIn, mileIn, mileLbl, zipNote);
-  // Zip-code centres are Massachusetts-only for now.
-  if (!currentMap.maGeo) zipWrap.style.display = "none";
+  // Zip-code centres are bundled only for some states (geodata.ts).
+  if (!currentMap.geo.length) zipWrap.style.display = "none";
   zipIn.addEventListener("input", async () => {
     state.zip = zipIn.value.replace(/\D/g, "").slice(0, 5);
     zipIn.value = state.zip;
@@ -134,7 +146,7 @@ export function createItemFilters(opts: FilterOpts, onChange: () => void): ItemF
       await loadZips();
       const c = zips?.[state.zip];
       if (c) center = c;
-      else zipNote.textContent = "not a Massachusetts zip";
+      else zipNote.textContent = `not ${/^[AEIOU]/.test(STATE_GEO[currentMap.geo[0]].name) ? "an" : "a"} ${currentMap.geo.map((p) => STATE_GEO[p].name).join(" or ")} zip`;
     }
     onChange();
   });

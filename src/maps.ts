@@ -3,7 +3,7 @@
 // Picked with ?map=<id> in the URL (so a link opens the right map); the plain link is always Massachusetts.
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
 
-export type MapId = "ma" | "vt" | "us";
+export type MapId = "ma" | "vt" | "or" | "us";
 
 export interface MapDef {
   id: MapId;
@@ -19,8 +19,12 @@ export interface MapDef {
   combine?: MapId[];
   /** True when there are forms + a sheet behind it; otherwise "edit" links go to the feedback form. */
   editable: boolean;
-  /** Town outlines, zip codes and town names exist for this map (geo/ma-*.json). */
-  maGeo: boolean;
+  /** States whose bundled geography this map uses (town/county outlines, zips, town names, districts): see geodata.ts. */
+  geo: string[];
+  /** Time zone of the map's events (calendar links). Combined maps use each group's own map (see timeZoneFor). */
+  timeZone: string;
+  /** Prefix of this map's group ids ("vt_"), so a combined map can tell which state a group came from. Massachusetts ids have none. */
+  idPrefix?: string;
 }
 
 const base = import.meta.env.BASE_URL;
@@ -33,7 +37,8 @@ export const MAPS: Record<MapId, MapDef> = {
     fullTitle: "MA Climate Coalition Map",
     sources: [LIVE_DATA_URL, SNAPSHOT_URL].filter(Boolean),
     editable: true,
-    maGeo: true,
+    geo: ["ma"],
+    timeZone: "America/New_York",
   },
   vt: {
     id: "vt",
@@ -42,7 +47,20 @@ export const MAPS: Record<MapId, MapDef> = {
     fullTitle: "Vermont Climate Coalition Map",
     sources: [`${base}maps/vt.json`],
     editable: false,
-    maGeo: false,
+    geo: [],
+    timeZone: "America/New_York",
+    idPrefix: "vt_",
+  },
+  or: {
+    id: "or",
+    name: "Oregon",
+    title: "OR Climate Map",
+    fullTitle: "Oregon Climate Coalition Map",
+    sources: [`${base}maps/or.json`],
+    editable: false,
+    geo: ["or"],
+    timeZone: "America/Los_Angeles",
+    idPrefix: "or_",
   },
   us: {
     id: "us",
@@ -50,9 +68,10 @@ export const MAPS: Record<MapId, MapDef> = {
     title: "US Climate Map",
     fullTitle: "US Climate Coalition Map (states mapped so far)",
     sources: [],
-    combine: ["ma", "vt"],
+    combine: ["ma", "vt", "or"],
     editable: false,
-    maGeo: true,
+    geo: ["ma", "or"],
+    timeZone: "America/New_York",
   },
 };
 
@@ -72,4 +91,14 @@ export function switchMap(id: MapId): void {
   else url.searchParams.set("map", id);
   url.hash = "";
   location.href = url.toString();
+}
+
+/** Time zone for a group's events: its own map's, found by id prefix on a combined map. */
+export function timeZoneFor(groupId: string): string {
+  if (!currentMap.combine) return currentMap.timeZone;
+  for (const id of currentMap.combine) {
+    const m = MAPS[id];
+    if (m.idPrefix && groupId.startsWith(m.idPrefix)) return m.timeZone;
+  }
+  return MAPS.ma.timeZone;
 }

@@ -20,7 +20,7 @@ import { typeIcon } from "./icons";
 import { suggestionsFor } from "./suggestions";
 import { topicsUrl, topicListInfo, onTopicListChange, topicList } from "./topiclist";
 import { withLiveTags } from "./topiclive";
-import { currentMap } from "./maps";
+import { currentMap, timeZoneFor } from "./maps";
 import type { TopicsFile as FullTopics } from "./topics";
 
 type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about" | "topics";
@@ -601,23 +601,24 @@ export function createDrawer(
     const end = e.end && !isNaN(new Date(e.end).getTime()) ? new Date(e.end) : new Date(start.getTime() + 60 * 60 * 1000);
     return { start, end };
   }
-  /** "Add to Google Calendar" and an .ics file for Apple / Outlook. Times are Massachusetts time. */
+  /** "Add to Google Calendar" and an .ics file for Apple / Outlook. Times are local to the host group's state. */
   function calendarLinks(e: CoalitionEvent, owner: GraphNode): HTMLElement | null {
     const t = eventTimes(e);
     if (!t) return null;
+    const tz = timeZoneFor(owner.id);
     const details = [e.description, e.link ? `More: ${e.link}` : "", `Hosted by ${owner.name}`].filter(Boolean).join("\n\n");
     const g = new URL("https://calendar.google.com/calendar/render");
     g.searchParams.set("action", "TEMPLATE");
     g.searchParams.set("text", e.name);
     g.searchParams.set("dates", `${stamp(t.start)}/${stamp(t.end)}`);
-    g.searchParams.set("ctz", "America/New_York");
+    g.searchParams.set("ctz", tz);
     g.searchParams.set("details", details);
     if (e.location) g.searchParams.set("location", e.location);
     const esc = (v: string) => v.replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
     const ics = [
       "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//MA Climate Coalition Map//EN", "BEGIN:VEVENT",
       `UID:${e.id}@openthink-map`, `DTSTAMP:${stamp(new Date())}`,
-      `DTSTART;TZID=America/New_York:${stamp(t.start)}`, `DTEND;TZID=America/New_York:${stamp(t.end)}`,
+      `DTSTART;TZID=${tz}:${stamp(t.start)}`, `DTEND;TZID=${tz}:${stamp(t.end)}`,
       `SUMMARY:${esc(e.name)}`, e.location ? `LOCATION:${esc(e.location)}` : "", `DESCRIPTION:${esc(details)}`,
       e.link ? `URL:${e.link}` : "", "END:VEVENT", "END:VCALENDAR",
     ].filter(Boolean).join("\r\n");
