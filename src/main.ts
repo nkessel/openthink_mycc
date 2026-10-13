@@ -249,7 +249,8 @@ async function main() {
   bootProgress(0.9);
 
   // The key to the map sits on the map itself.
-  createMapLegend(graphContainer, sectorsOn);
+  const linkBox = graphApi.orgLinkToggle().querySelector("input");
+  createMapLegend(graphContainer, sectorsOn, linkBox ? { box: linkBox, count: (data.org_links || []).length } : undefined);
 
   // Controls panel — mounts inside the sidebar
   const controls = createControls(sidebar.controlsContainer(), {

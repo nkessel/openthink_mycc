@@ -142,7 +142,11 @@ export function createSidebar(
 }
 
 /** The key to the network map, shown on the map itself (bottom-left); click its title to fold it. */
-export function createMapLegend(parent: HTMLElement, sectors: { label: string; color: string }[] = []): HTMLElement {
+export function createMapLegend(
+  parent: HTMLElement,
+  sectors: { label: string; color: string }[] = [],
+  orgLinks?: { box: HTMLInputElement; count: number },
+): HTMLElement {
   // Open on wide screens; folded on phones, where it would cover a third of the map.
   const startOpen = !window.matchMedia("(max-width: 720px)").matches;
   const legend = h("div", { class: startOpen ? "map-legend open" : "map-legend" });
@@ -159,6 +163,7 @@ export function createMapLegend(parent: HTMLElement, sectors: { label: string; c
       row(h("span", { class: "swatch", style: "width:18px;height:18px" }), "Coalition (size = member groups)"),
       row(h("span", { class: "swatch", style: "width:9px;height:9px" }), "Organization"),
       row(h("span", { class: "line" }), "Member of a coalition"),
+      ...(orgLinks && orgLinks.count ? [orgLinkRow(orgLinks.box, orgLinks.count)] : []),
       h("div", { class: "map-legend-sub" }, "Dots around each group"),
       row(h("span", { class: "kdot k-event" }), "Event"),
       row(h("span", { class: "kdot k-project" }), "Project"),
@@ -170,6 +175,24 @@ export function createMapLegend(parent: HTMLElement, sectors: { label: string; c
   );
   parent.appendChild(legend);
   return legend;
+}
+
+/** "Works with (n)" in the legend, with a Hide/Show button that drives the same switch as Map settings → Advanced. */
+function orgLinkRow(box: HTMLInputElement, count: number): HTMLElement {
+  const btn = h("button", { type: "button", class: "legend-hide" }) as HTMLButtonElement;
+  const sync = () => {
+    btn.textContent = box.checked ? "Hide" : "Show";
+    btn.setAttribute("aria-pressed", String(!box.checked));
+    row.classList.toggle("off", !box.checked);
+  };
+  btn.addEventListener("click", () => {
+    box.checked = !box.checked;
+    box.dispatchEvent(new Event("change"));
+  });
+  box.addEventListener("change", sync);
+  const row = h("div", { class: "row" }, h("span", { class: "line org" }), h("span", {}, `Groups that work together (${count})`), btn);
+  sync();
+  return row;
 }
 
 /** A dialog with the same text as the loading screen's land acknowledgement and dedication (copied from index.html once at startup). */

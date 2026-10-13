@@ -234,6 +234,7 @@ function onOpen() {
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
     .addItem('Use Wikipedia-based topics on the forms (Turibius)', 'useWikiTopicsOnForms')
     .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
+    .addItem('Add connections from the Organization Info Form (reviewed list on GitHub)', 'importReviewedConnections')
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
@@ -329,6 +330,65 @@ function useGroupTopicsOnForms() {
   seedTopics_();
   refreshDropdowns();
   ss_().toast('Forms are back on the group-based topics.');
+}
+
+// ---------------------------------------------------------------- reviewed connections (e.g. Aissata's Organization Info Form)
+var CONNECTIONS_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/research/connections/org-info-form-2026-10.csv';
+
+/**
+ * Pure: rows of a reviewed connections CSV (from_org,to_org,frequency,kind,said) → what to add.
+ * kind "org": a Connections row unless that pair is already there (either direction).
+ * kind "coalition": the coalition id added to the org's coalition_ids if missing.
+ */
+function connectionsToAdd_(rows, t) {
+  var head = rows[0].map(function (h) { return String(h).trim(); });
+  var c = function (n) { return head.indexOf(n); };
+  var orgIds = {}; t.orgs.forEach(function (o) { orgIds[str_(o.id)] = o; });
+  var coIds = {}; t.coalitions.forEach(function (x) { coIds[str_(x.id)] = true; });
+  var have = {};
+  (t.connections || []).forEach(function (r) { var a = str_(r.from_org), b = str_(r.to_org); have[a < b ? a + '|' + b : b + '|' + a] = true; });
+  var out = { links: [], memberships: [], skipped: [] };
+  rows.slice(1).forEach(function (r) {
+    var a = str_(r[c('from_org')]), b = str_(r[c('to_org')]), kind = str_(r[c('kind')]) || 'org';
+    if (!a || !b) return;
+    if (kind === 'coalition') {
+      if (!orgIds[a] || !coIds[b]) { out.skipped.push(a + ' → ' + b + ' (not found)'); return; }
+      if (list_(orgIds[a].coalition_ids).indexOf(b) === -1) out.memberships.push({ org: a, coalition: b });
+      return;
+    }
+    if (!orgIds[a] || !orgIds[b]) { out.skipped.push(a + ' → ' + b + ' (not found)'); return; }
+    var key = a < b ? a + '|' + b : b + '|' + a;
+    if (have[key]) return;
+    have[key] = true;
+    var f = str_(r[c('frequency')]) || 'few_per_year';
+    out.links.push({ from_org: a, to_org: b, frequency: freqWeight_(f) ? f : 'few_per_year' });
+  });
+  return out;
+}
+
+/** Menu: add the reviewed connections from GitHub to the Connections tab (and any coalition memberships). Safe to run again. */
+function importReviewedConnections() {
+  var rows = Utilities.parseCsv(UrlFetchApp.fetch(CONNECTIONS_URL).getContentText());
+  var t = readAll_();
+  var add = connectionsToAdd_(rows, t);
+  var ss = ss_();
+  var sheet = ss.getSheetByName(TAB.connections);
+  var now = nowIso_();
+  add.links.forEach(function (l) {
+    appendObject_(sheet, { from_org: l.from_org, to_org: l.to_org, frequency: l.frequency, updated_at: now, reported_by: 'Organization Info Form' });
+  });
+  if (add.memberships.length) {
+    var orgSheet = ss.getSheetByName(TAB.orgs);
+    var headers = orgSheet.getRange(1, 1, 1, orgSheet.getLastColumn()).getValues()[0].map(function (h) { return String(h).trim(); });
+    var col = headers.indexOf('coalition_ids') + 1;
+    add.memberships.forEach(function (m) {
+      var o = findById_(t.orgs, m.org);
+      orgSheet.getRange(o._row, col).setValue(list_(o.coalition_ids).concat([m.coalition]).join(', '));
+    });
+  }
+  logChange_('', 'Menu', 'applied', '', 'connections', '', 'Organization Info Form',
+    add.links.length + ' connection(s) added; ' + add.memberships.length + ' coalition membership(s) added' + (add.skipped.length ? '; skipped: ' + add.skipped.join(', ') : ''));
+  ss.toast(add.links.length + ' connection(s) and ' + add.memberships.length + ' coalition membership(s) added. See Change Log.');
 }
 
 /** Menu: bring the existing forms up to date without rebuilding them (safe to run again). */

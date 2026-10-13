@@ -685,3 +685,8 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Topics page + details pane read live topic tags from the map data (src/topiclive.ts), so form-added topics and new orgs show without rebuilding research files; tags naming any of Turibius's topics go under their seed (public/topics-wiki-catalog.json).
 - Forms: "Short description" → "Mission statement and description" (old title still read); feedback form areas match the site's current pages; org form thank-you page links to the project/event/action forms (Forms can't branch between forms). Menu "Update the forms" applies these.
 - Left for people: domain, beta testers.
+
+2026-10-13 (Claude, Organization Info Form connections)
+- Read Aissata's "Organization Info Form (Responses)" (10 replies). All 10 orgs are already on the map. Matched the groups each named to map orgs by hand: research/connections/org-info-form-2026-10.csv (34 org-to-org links, frequency unknown → "a few times a year"; BEAT's "we consult with" → "yearly"; BostonCAN → MYCC membership). Names not on the map (MassEnergize, Trustees, AMC, T4MA, Dayenu, …) left out. Cooler Communities left out: they asked to talk first about which connections to publicize. No contact emails or names copied (they're point-person contacts, not public).
+- Apps Script menu "Add connections from the Organization Info Form" adds these to the Connections tab (skips pairs already there, either direction) and the membership; logged in Change Log. Test added.
+- Map legend: "Groups that work together (n)" row with Hide/Show, driving the same switch as Advanced settings.

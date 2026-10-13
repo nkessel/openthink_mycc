@@ -2921,3 +2921,8 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .geo-bounds .geo-layer .swatch { display: inline-block; flex: none; }
 .geo-tip-kind { color: #94a3b8; font-size: 11px; }
 .leaflet-popup-content .geo-tip-kind { color: #64748b; }
+
+/* Legend: hide/show the org-to-org connections */
+.map-legend .legend-hide { margin-left: auto; background: none; border: 1px solid rgba(255,255,255,0.25); color: inherit; border-radius: 999px; font-size: 11px; padding: 1px 8px; cursor: pointer; }
+.map-legend .row.off > span:not(.line) { opacity: 0.55; }
+.map-legend .row.off .line.org { opacity: 0.3; }

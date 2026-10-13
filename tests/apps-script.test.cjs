@@ -554,3 +554,14 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.ok(G("FEEDBACK_AREAS").includes("Topics page (Streams or Command room)"));
   console.log("org form next steps, mission statement title, feedback areas OK");
 }
+{
+  const rows = [["from_org","to_org","frequency","kind","said"],
+    ["a","b","few_per_year","org","x"], ["b","a","weekly","org","dup reversed"], ["a","c","","org","y"], ["a","zz","","org","missing"],
+    ["a","mpf","","coalition","member"], ["b","mpf","","coalition","already"]];
+  const t = { orgs: [{ id: "a", coalition_ids: "" }, { id: "b", coalition_ids: "mpf" }, { id: "c" }], coalitions: [{ id: "mpf" }], connections: [{ from_org: "c", to_org: "a" }] };
+  const out = J(G("connectionsToAdd_")(rows, t));
+  assert.deepEqual(out.links, [{ from_org: "a", to_org: "b", frequency: "few_per_year" }], "reversed duplicate and existing pair skipped");
+  assert.deepEqual(out.memberships, [{ org: "a", coalition: "mpf" }]);
+  assert.equal(out.skipped.length, 1);
+  console.log("reviewed connections import OK");
+}
