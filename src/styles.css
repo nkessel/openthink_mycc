@@ -40,6 +40,8 @@ body {
 #app {
   display: grid;
   grid-template-rows: var(--topbar-h) 1fr;
+  /* one column exactly as wide as the screen: a wide child (the top bar on a small phone) can't stretch the page */
+  grid-template-columns: minmax(0, 1fr);
   height: 100vh;
   width: 100vw;
 }
@@ -2957,3 +2959,99 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .topics-sizes[open] > summary { margin-bottom: 4px; }
 .topics-sizes .topics-slider { margin: 10px 0 4px; }
 .topics-sizes .topics-slider .ctrl-hint { margin-top: 2px; }
+
+/* ===================== Mobile pass (Oct 13) ===================== */
+/* Nothing may push the page sideways on a phone. */
+html, body { overflow-x: clip; max-width: 100%; }
+@media (max-width: 480px) {
+  /* Top bar on narrow phones: the title gives way first; the large-print button keeps its words on two short lines;
+     the page menu shows its current page without pushing past the edge. */
+  .topbar { gap: 6px; }
+  /* The page name matters more than the title here: the title wraps onto two short lines instead of cutting the page name. */
+  .topbar .brand { flex: 0 1 auto; min-width: 0; max-width: 92px; white-space: normal; font-size: 13px; line-height: 1.1; margin-right: auto; }
+  .lp-btn { flex: none; margin-left: 0; padding: 4px 8px; gap: 5px; min-height: 40px; }
+  .lp-btn .lp-word { font-size: 11px; line-height: 1.1; white-space: normal; max-width: 5.2em; text-align: left; }
+  .tab-menu-btn { flex: 0 0 auto; min-width: 0; max-width: none; min-height: 40px; padding: 6px 10px; }
+  .topbar { min-width: 0; }
+  .tab-menu-btn > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+}
+@media (max-width: 900px) {
+  /* A group is open: its bar takes the top of the map, so the search row steps aside instead of showing underneath. */
+  .graph-wrap.focusing .graph-overlay, .graph-wrap.focusing .reset-map-btn { visibility: hidden; }
+  :has(> .graph-area .graph-wrap.focusing) > .sidebar-show,
+  .map-view:has(.graph-wrap.focusing) .sidebar-show { visibility: hidden; }
+}
+@media (max-width: 720px) {
+  /* Topics on a phone: the feedback note shrinks to one line and the view options fold, so the picture gets the screen. */
+  .topics-view .list-toolbar .feedback-bid, .topics-wrap .list-toolbar .feedback-bid { font-size: 12px; padding: 4px 10px; }
+  .list-toolbar .feedback-bid .fb-lead { display: none; }
+  .list-toolbar .count { font-size: 11px; }
+  .cr-bar.foldable.folded > :not(.panel-fold) { display: none !important; }
+  .cr-bar.foldable { flex-wrap: wrap; }
+  .topics-body { grid-template-rows: auto minmax(72vh, 1fr) auto; }
+  /* The picture first: the record count and the long feedback banner give way (feedback stays in the + menu). */
+  .topics-view > .list-toolbar { padding-top: 8px; padding-bottom: 8px; row-gap: 6px; }
+  .topics-view > .list-toolbar .count, .topics-view > .list-toolbar .feedback-bid { display: none; }
+  .topics-panel { padding: 8px 12px; }
+  .topics-panel.foldable.folded { padding: 6px 12px; }
+  .topics-panel .panel-fold, .cr-bar .panel-fold { margin: 0; padding: 6px 12px; font-size: 13px; }
+  .cr-bar.foldable.folded { padding: 6px 12px; }
+}
+
+/* Touch screens: controls big enough to hit with a thumb (WCAG 2.5.8 asks for 24px; we aim for 36–44px). */
+@media (pointer: coarse) {
+  .chip, .cr-seg button, .panel-fold, .reset-map-btn, .sidebar-hide, .sidebar-show, .focus-back, .map-legend-head,
+  .edit-btn, .btn-site, .section-head, .coalitions-block .actions button, .drawer-tab, .geo-near, .lp-btn { min-height: 40px; }
+  .stale-notice .edit-btn { display: inline-flex; align-items: center; padding: 8px 14px; font-size: 13px; }
+  .map-legend .legend-hide { min-height: 32px; padding: 4px 12px; }
+  .land-link { min-height: 40px; display: inline-flex; align-items: center; }
+  .cr-info { min-height: 36px; display: inline-flex; align-items: center; }
+  .switch { position: relative; }
+  .switch::after { content: ""; position: absolute; inset: -11px -4px; } /* a 44px-tall tap area around the small switch */
+  .leaflet-touch .leaflet-bar a { width: 40px; height: 40px; line-height: 40px; }
+  .geo-more { min-width: 32px; min-height: 32px; }
+  input[type="checkbox"] { width: 20px; height: 20px; }
+}
+/* Phones: room at the bottom of every scrolling page so the round + button never covers the last row. */
+@media (max-width: 720px) {
+  .list-view, .sidebar, .drawer .body, .topics-panel { padding-bottom: 96px; }
+  .fab-menu { max-height: calc(100vh - 160px); overflow-y: auto; }
+}
+@media (pointer: coarse) {
+  /* Search boxes, dropdowns and small buttons the audit found under ~36px on a phone */
+  input[type="search"], .search, .search-box input, select { min-height: 40px; }
+  .drawer .close, .drawer-close, .item-card .close { min-width: 40px; min-height: 40px; font-size: 22px; }
+  .locate-btn, .edit-link { min-height: 36px; display: inline-flex; align-items: center; }
+  .edit-link { padding: 4px 0; }
+  .leaflet-touch .leaflet-bar a.leaflet-control-zoom-in, .leaflet-touch .leaflet-bar a.leaflet-control-zoom-out { width: 40px; height: 40px; line-height: 40px; }
+  .cal-nav .chip, .calendar .chip { min-width: 40px; }
+  .geo-more { min-width: 36px; min-height: 36px; }
+}
+@media (max-width: 720px) {
+  /* An opened group on a phone: a two-line bar (name; back · counts · details) so the group itself stays in view.
+     "Don't zoom in on click" lives in Map settings there. */
+  .focus-bar .focus-classic, .focus-back-more { display: none; }
+}
+@media (pointer: coarse) {
+  .stale-notice.verified .edit-btn, .stale-notice .edit-btn.copy-btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; font-size: 13px; margin-top: 6px; }
+  .cr-zoom button { min-width: 40px; min-height: 40px; }
+}
+@media (max-width: 420px) {
+  /* Calendar month bar: the title shrinks so "Today" stays on screen */
+  .cal-nav { gap: 6px; }
+  .cal-nav .cal-title { flex: 1 1 auto; min-width: 0; font-size: 14px; text-align: center; }
+  .cal-nav .chip { padding: 5px 10px; }
+}
+/* Tablets and small laptops (721–1150px): every tab and the large-print button fit on one row */
+@media (min-width: 721px) and (max-width: 1150px) {
+  .topbar { gap: 4px; }
+  .topbar .brand { font-size: 15px; margin-right: 6px; }
+  .tab { padding: 0 8px; font-size: 14px; }
+  .lp-btn .lp-word { font-size: 11px; line-height: 1.1; white-space: normal; max-width: 5.2em; text-align: left; }
+  .lp-btn { flex: none; padding: 4px 8px; }
+  /* the hint sat on top of the search box: the search box already says what to do */
+  .graph-wrap > .hint { display: none; }
+  /* + goes to the corner so it never sits on the legend */
+  .fab-wrap, .drawer.open ~ .fab-wrap { left: auto; right: 16px; bottom: 16px; transform: none; align-items: flex-end; }
+}
+@media (max-width: 720px) { .graph-wrap > .hint { display: none; } }

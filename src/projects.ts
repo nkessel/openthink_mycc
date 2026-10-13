@@ -3,6 +3,7 @@ import { allProjects, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./
 import { itemButtons, joinLine, wantsHelp } from "./links";
 import { showItemCard } from "./itemcard";
 import { isPast, showPast } from "./past";
+import { makeFoldable } from "./dom";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { createItemFilters, placeFor, termsMatch } from "./itemfilters";
@@ -48,7 +49,7 @@ export function createProjectsView(
   const search = h("input", {
     class: "search",
     type: "search",
-    placeholder: "Search topics, names, places… (separate with commas)",
+    placeholder: "Search topics, names, places…",
   }) as HTMLInputElement;
   search.addEventListener("input", () => {
     q = search.value.trim().toLowerCase();
@@ -112,6 +113,8 @@ export function createProjectsView(
   }
   skillBar.appendChild(skillChips);
   wrap.appendChild(skillBar);
+  // On a phone the 20+ skill chips fold behind one button, like the other filters, so the projects come first.
+  makeFoldable(skillBar, "skills");
 
   // ---- Body ----
   const body = h("div", { class: "list-body" });

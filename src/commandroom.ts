@@ -8,7 +8,7 @@
 // drawn on canvas, slow speeds, low opacity, additive glow, and static flows for prefers-reduced-motion.
 import * as d3 from "d3";
 import { animAuto, animSimple, onAnimChange, reportFrame, setAnim, type AnimChoice } from "./perf";
-import { h, clear } from "./dom";
+import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { SOLUTION_ICONS } from "./topicIcons";
 
@@ -286,6 +286,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   animSeg.g.appendChild(animNote);
   bar.append(layoutSeg.g, styleSeg.g, splitSeg.g, animSeg.g);
   el.appendChild(bar);
+  // On a phone the view options fold away, so the picture gets the screen.
+  makeFoldable(bar, "view options");
 
   const viewport = h("div", { class: "cr-viewport" });
   const canvas = document.createElement("canvas");

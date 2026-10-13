@@ -8,7 +8,7 @@
 // few seconds), drawn on canvas with additive glow; prefers-reduced-motion shows a still picture.
 import * as d3 from "d3";
 import { animAuto, animSimple, onAnimChange, reportFrame, setAnim, type AnimChoice } from "./perf";
-import { h, clear } from "./dom";
+import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { PROBLEMS, VISIONS, SUB_SOLUTIONS, FIGHT_STRATEGIES } from "./problems";
 import { PROBLEM_ICONS, SOLUTION_ICONS } from "./topicIcons";
@@ -484,6 +484,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   bar.appendChild(fxBtn);
   bar.appendChild(infoBtn);
   el.appendChild(bar);
+  // On a phone the view options fold away, so the picture gets the screen.
+  makeFoldable(bar, "view options");
   el.dataset.show = showing;
 
   const viewport = h("div", { class: "cr-viewport" });
