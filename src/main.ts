@@ -19,6 +19,7 @@ import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
+import { setPrefillData } from "./prefill";
 import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
 
 captureLandText(); // before the loading screen goes away
@@ -428,6 +429,7 @@ async function main() {
 
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
   setFormLabelData(data.organizations);
+  setPrefillData(data);
   setItemLabelData([...data.coalitions, ...data.organizations]);
   // Sector groups aren't in the Google Sheet yet, so the forms aren't pre-filled with them.
   createFab(content, () => {

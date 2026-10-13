@@ -1250,7 +1250,7 @@ export function createGraph(
       const btns = itemButtons(b.kind, it as { rsvp_link?: string; link?: string });
       if (btns) focusCard.appendChild(btns);
     }
-    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified));
+    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified, b.item as never));
     focusCard.style.visibility = "hidden";
     focusCard.style.display = "block";
     placeCard(anchor);

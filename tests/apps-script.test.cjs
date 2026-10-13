@@ -150,7 +150,12 @@ assert.equal(data().organizations.find((o) => o.id === "andover_climate_lobby").
 assert.match(review().at(-1).reason, /^UNAUTHORIZED/);
 assert.match(log().at(-1).flag, /^UNAUTHORIZED/);
 assert.equal(log().at(-1).status, "needs review");
-assert.equal(mail.length, 1); assert.match(mail[0].to, /ab130@wellesley\.edu/);
+const adminMail = mail.filter((m) => /ab130@wellesley\.edu/.test(m.to));
+assert.equal(adminMail.length, 1, "one alert to the admins");
+// submitters hear back: "on the map" for the applied edits, "waiting for the map team" for the held one
+const toBls = mail.filter((m) => m.to === "point@bls.org");
+assert.match(toBls.at(-1).body, /waiting for the map team/);
+assert.ok(toBls.some((m) => /is on the map/.test(m.subject)), "applied edit confirmed");
 
 // stranger / no email
 submit("fe", "", { [Q.whichEvent]: NEW_EVENT, [Q.eventName]: "Anon event", [Q.hostOrg]: BLS });

@@ -2926,3 +2926,6 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .map-legend .legend-hide { margin-left: auto; background: none; border: 1px solid rgba(255,255,255,0.25); color: inherit; border-radius: 999px; font-size: 11px; padding: 1px 8px; cursor: pointer; }
 .map-legend .row.off > span:not(.line) { opacity: 0.55; }
 .map-legend .row.off .line.org { opacity: 0.3; }
+/* "Copy as a new event": a quieter second button next to "Edit this event" */
+.stale-notice .edit-btn.copy-btn { background: transparent; color: inherit; border-color: rgba(255,255,255,0.3); margin-left: 6px; }
+.stale-notice .edit-btn.copy-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }

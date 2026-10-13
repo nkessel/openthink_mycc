@@ -1452,6 +1452,8 @@ function processSubmission_(kind, a, email, approver) {
   var result = kind === 'org' ? saveOrg_(a, t) : kind === 'event' ? saveEvent_(a, t) : kind === 'action' ? saveAction_(a, t) : saveProject_(a, t);
   var flag = approver ? 'approved by ' + approver : '';
   logChange_(email, FORM_NAMES[kind], result.action, flag, result.type, result.id, result.name, result.changes);
+  // held earlier and now applied (approved, or re-checked once the editor was listed) vs. applied straight away
+  notifySubmitter_(email, submitterMessage_(approver || RECHECK_ ? 'approved' : 'live', kind, result.name));
   // An approved new org: its submitter becomes that org's point-person.
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
   if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
@@ -1624,6 +1626,7 @@ function savePointPerson_(orgId, a) {
 
 function queueForReview_(kind, a, email, target, reason) {
   if (RECHECK_) { RECHECK_.queued = reason; return; } // re-checking a held submission: don't queue it twice
+  notifySubmitter_(email, submitterMessage_('held', kind, target && (target.label || target.id)));
   var sheet = ss_().getSheetByName(TAB.review);
   var summary = Object.keys(a).filter(function (k) {
     var v = a[k]; return v !== '' && v !== null && !(Array.isArray(v) && !v.length);
@@ -1646,6 +1649,28 @@ function queueForReview_(kind, a, email, target, reason) {
 }
 
 /** Installable onEdit trigger: ticking "approve" on Needs Review applies the change. */
+// ---------------------------------------------------------------- telling the submitter what happened
+/** Pure: the short email a submitter gets. status: live | held | approved. */
+function submitterMessage_(status, kind, name) {
+  var what = { org: 'organization', event: 'event', project: 'project', action: 'action' }[kind] || 'submission';
+  var it = name ? '"' + name + '"' : 'your ' + what;
+  var subject = status === 'held' ? 'MA Climate Coalition Map: we received your ' + what : 'MA Climate Coalition Map: ' + it + ' is on the map';
+  var body = status === 'live'
+    ? 'Thanks! Your changes to ' + it + ' are saved. They show on the map within a few minutes (reload the page to see them).'
+    : status === 'approved'
+      ? 'Thanks for your patience. The map team approved your changes to ' + it + ', and they now show on the map.'
+      : 'Thanks! Your changes to ' + it + ' are waiting for the map team to check them, because this email isn\'t yet listed as a point person for that group. You\'ll get another email when they go live.';
+  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— MA Climate Coalition Map' };
+}
+/** Sends the message unless turned off (Script property NOTIFY_SUBMITTERS = off). Never fails a submission. */
+function notifySubmitter_(email, msg) {
+  if (!email || !msg) return;
+  try {
+    if (PropertiesService.getScriptProperties().getProperty('NOTIFY_SUBMITTERS') === 'off') return;
+    MailApp.sendEmail(email, msg.subject, msg.body);
+  } catch (e) { /* quota or bad address: the change itself is already saved */ }
+}
+
 /** Set while held submissions are re-checked (see recheckWaiting_). @type {{ queued?: string } | null} */
 var RECHECK_ = null;
 
