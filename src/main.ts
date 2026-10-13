@@ -19,6 +19,7 @@ import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
+import { setPrefillData } from "./prefill";
 import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
 
 captureLandText(); // before the loading screen goes away
@@ -249,7 +250,8 @@ async function main() {
   bootProgress(0.9);
 
   // The key to the map sits on the map itself.
-  createMapLegend(graphContainer, sectorsOn);
+  const linkBox = graphApi.orgLinkToggle().querySelector("input");
+  createMapLegend(graphContainer, sectorsOn, linkBox ? { box: linkBox, count: (data.org_links || []).length } : undefined);
 
   // Controls panel — mounts inside the sidebar
   const controls = createControls(sidebar.controlsContainer(), {
@@ -427,6 +429,7 @@ async function main() {
 
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
   setFormLabelData(data.organizations);
+  setPrefillData(data);
   setItemLabelData([...data.coalitions, ...data.organizations]);
   // Sector groups aren't in the Google Sheet yet, so the forms aren't pre-filled with them.
   createFab(content, () => {

@@ -234,6 +234,7 @@ function onOpen() {
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
     .addItem('Use Wikipedia-based topics on the forms (Turibius)', 'useWikiTopicsOnForms')
     .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
+    .addItem('Add connections from the Organization Info Form (reviewed list on GitHub)', 'importReviewedConnections')
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
@@ -329,6 +330,65 @@ function useGroupTopicsOnForms() {
   seedTopics_();
   refreshDropdowns();
   ss_().toast('Forms are back on the group-based topics.');
+}
+
+// ---------------------------------------------------------------- reviewed connections (e.g. Aissata's Organization Info Form)
+var CONNECTIONS_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/research/connections/org-info-form-2026-10.csv';
+
+/**
+ * Pure: rows of a reviewed connections CSV (from_org,to_org,frequency,kind,said) → what to add.
+ * kind "org": a Connections row unless that pair is already there (either direction).
+ * kind "coalition": the coalition id added to the org's coalition_ids if missing.
+ */
+function connectionsToAdd_(rows, t) {
+  var head = rows[0].map(function (h) { return String(h).trim(); });
+  var c = function (n) { return head.indexOf(n); };
+  var orgIds = {}; t.orgs.forEach(function (o) { orgIds[str_(o.id)] = o; });
+  var coIds = {}; t.coalitions.forEach(function (x) { coIds[str_(x.id)] = true; });
+  var have = {};
+  (t.connections || []).forEach(function (r) { var a = str_(r.from_org), b = str_(r.to_org); have[a < b ? a + '|' + b : b + '|' + a] = true; });
+  var out = { links: [], memberships: [], skipped: [] };
+  rows.slice(1).forEach(function (r) {
+    var a = str_(r[c('from_org')]), b = str_(r[c('to_org')]), kind = str_(r[c('kind')]) || 'org';
+    if (!a || !b) return;
+    if (kind === 'coalition') {
+      if (!orgIds[a] || !coIds[b]) { out.skipped.push(a + ' → ' + b + ' (not found)'); return; }
+      if (list_(orgIds[a].coalition_ids).indexOf(b) === -1) out.memberships.push({ org: a, coalition: b });
+      return;
+    }
+    if (!orgIds[a] || !orgIds[b]) { out.skipped.push(a + ' → ' + b + ' (not found)'); return; }
+    var key = a < b ? a + '|' + b : b + '|' + a;
+    if (have[key]) return;
+    have[key] = true;
+    var f = str_(r[c('frequency')]) || 'few_per_year';
+    out.links.push({ from_org: a, to_org: b, frequency: freqWeight_(f) ? f : 'few_per_year' });
+  });
+  return out;
+}
+
+/** Menu: add the reviewed connections from GitHub to the Connections tab (and any coalition memberships). Safe to run again. */
+function importReviewedConnections() {
+  var rows = Utilities.parseCsv(UrlFetchApp.fetch(CONNECTIONS_URL).getContentText());
+  var t = readAll_();
+  var add = connectionsToAdd_(rows, t);
+  var ss = ss_();
+  var sheet = ss.getSheetByName(TAB.connections);
+  var now = nowIso_();
+  add.links.forEach(function (l) {
+    appendObject_(sheet, { from_org: l.from_org, to_org: l.to_org, frequency: l.frequency, updated_at: now, reported_by: 'Organization Info Form' });
+  });
+  if (add.memberships.length) {
+    var orgSheet = ss.getSheetByName(TAB.orgs);
+    var headers = orgSheet.getRange(1, 1, 1, orgSheet.getLastColumn()).getValues()[0].map(function (h) { return String(h).trim(); });
+    var col = headers.indexOf('coalition_ids') + 1;
+    add.memberships.forEach(function (m) {
+      var o = findById_(t.orgs, m.org);
+      orgSheet.getRange(o._row, col).setValue(list_(o.coalition_ids).concat([m.coalition]).join(', '));
+    });
+  }
+  logChange_('', 'Menu', 'applied', '', 'connections', '', 'Organization Info Form',
+    add.links.length + ' connection(s) added; ' + add.memberships.length + ' coalition membership(s) added' + (add.skipped.length ? '; skipped: ' + add.skipped.join(', ') : ''));
+  ss.toast(add.links.length + ' connection(s) and ' + add.memberships.length + ' coalition membership(s) added. See Change Log.');
 }
 
 /** Menu: bring the existing forms up to date without rebuilding them (safe to run again). */
@@ -1392,6 +1452,8 @@ function processSubmission_(kind, a, email, approver) {
   var result = kind === 'org' ? saveOrg_(a, t) : kind === 'event' ? saveEvent_(a, t) : kind === 'action' ? saveAction_(a, t) : saveProject_(a, t);
   var flag = approver ? 'approved by ' + approver : '';
   logChange_(email, FORM_NAMES[kind], result.action, flag, result.type, result.id, result.name, result.changes);
+  // held earlier and now applied (approved, or re-checked once the editor was listed) vs. applied straight away
+  notifySubmitter_(email, submitterMessage_(approver || RECHECK_ ? 'approved' : 'live', kind, result.name));
   // An approved new org: its submitter becomes that org's point-person.
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
   if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
@@ -1564,6 +1626,7 @@ function savePointPerson_(orgId, a) {
 
 function queueForReview_(kind, a, email, target, reason) {
   if (RECHECK_) { RECHECK_.queued = reason; return; } // re-checking a held submission: don't queue it twice
+  notifySubmitter_(email, submitterMessage_('held', kind, target && (target.label || target.id)));
   var sheet = ss_().getSheetByName(TAB.review);
   var summary = Object.keys(a).filter(function (k) {
     var v = a[k]; return v !== '' && v !== null && !(Array.isArray(v) && !v.length);
@@ -1586,6 +1649,28 @@ function queueForReview_(kind, a, email, target, reason) {
 }
 
 /** Installable onEdit trigger: ticking "approve" on Needs Review applies the change. */
+// ---------------------------------------------------------------- telling the submitter what happened
+/** Pure: the short email a submitter gets. status: live | held | approved. */
+function submitterMessage_(status, kind, name) {
+  var what = { org: 'organization', event: 'event', project: 'project', action: 'action' }[kind] || 'submission';
+  var it = name ? '"' + name + '"' : 'your ' + what;
+  var subject = status === 'held' ? 'MA Climate Coalition Map: we received your ' + what : 'MA Climate Coalition Map: ' + it + ' is on the map';
+  var body = status === 'live'
+    ? 'Thanks! Your changes to ' + it + ' are saved. They show on the map within a few minutes (reload the page to see them).'
+    : status === 'approved'
+      ? 'Thanks for your patience. The map team approved your changes to ' + it + ', and they now show on the map.'
+      : 'Thanks! Your changes to ' + it + ' are waiting for the map team to check them, because this email isn\'t yet listed as a point person for that group. You\'ll get another email when they go live.';
+  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— MA Climate Coalition Map' };
+}
+/** Sends the message unless turned off (Script property NOTIFY_SUBMITTERS = off). Never fails a submission. */
+function notifySubmitter_(email, msg) {
+  if (!email || !msg) return;
+  try {
+    if (PropertiesService.getScriptProperties().getProperty('NOTIFY_SUBMITTERS') === 'off') return;
+    MailApp.sendEmail(email, msg.subject, msg.body);
+  } catch (e) { /* quota or bad address: the change itself is already saved */ }
+}
+
 /** Set while held submissions are re-checked (see recheckWaiting_). @type {{ queued?: string } | null} */
 var RECHECK_ = null;
 

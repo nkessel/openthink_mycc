@@ -1,0 +1,499 @@
+{
+ "org": {
+  "Which organization is this about?": {
+   "entry": "entry.2091260114",
+   "type": 0
+  },
+  "Organization name": {
+   "entry": "entry.1205004722",
+   "type": 0
+  },
+  "Short name or abbreviation": {
+   "entry": "entry.321133683",
+   "type": 0
+  },
+  "Point person — name": {
+   "entry": "entry.1587951501",
+   "type": 0
+  },
+  "Point person — email": {
+   "entry": "entry.1619633528",
+   "type": 0
+  },
+  "Point person — phone (optional)": {
+   "entry": "entry.1866502035",
+   "type": 0
+  },
+  "Type of organization": {
+   "entry": "entry.429232408",
+   "type": 4,
+   "choices": [
+    "Nonprofit — 501(c)(3)",
+    "Nonprofit — 501(c)(4)",
+    "Volunteer group",
+    "Youth organization",
+    "School club",
+    "College / university group",
+    "Faith community",
+    "Professional association",
+    "Union",
+    "Media",
+    "Government / regional body"
+   ]
+  },
+  "Mission statement and description": {
+   "entry": "entry.1389423045",
+   "type": 1
+  },
+  "Town or region you focus on": {
+   "entry": "entry.912328718",
+   "type": 0
+  },
+  "Headquarters address or town (for the map pin)": {
+   "entry": "entry.1796538308",
+   "type": 0
+  },
+  "Coalitions you belong to": {
+   "entry": "entry.542464594",
+   "type": 4,
+   "choices": [
+    "Mass Power Forward (MPF)",
+    "Massachusetts Youth Climate Coalition (MYCC)",
+    "Environmental Justice Legislative Table (EJLT)",
+    "Cross Campus Climate Coalition (CCCC)",
+    "Springfield Climate Justice Coalition (SCJC)",
+    "Green Justice Coalition (GJC)",
+    "Climate Resilient Schools Coalition (CRS)",
+    "HERO Coalition (HERO)"
+   ]
+  },
+  "Climate topic tags": {
+   "entry": "entry.2110050328",
+   "type": 4,
+   "choices": [
+    "Education",
+    "Energy poverty",
+    "Green infrastructure",
+    "Climate change",
+    "Marine conservation",
+    "Biodiversity loss",
+    "Public transport",
+    "Food loss and waste",
+    "Air pollution",
+    "Environmental justice",
+    "Climate justice",
+    "Community service",
+    "Green New Deal",
+    "Youth serving"
+   ]
+  },
+  "More topics (type as many as you like, separated by commas)": {
+   "entry": "entry.335058176",
+   "type": 1
+  },
+  "About how many active members do you have?": {
+   "entry": "entry.439606962",
+   "type": 2,
+   "choices": [
+    "Under 10",
+    "10+",
+    "25+",
+    "50+",
+    "100+"
+   ]
+  },
+  "Website": {
+   "entry": "entry.95923849",
+   "type": 0
+  },
+  "Logo image link": {
+   "entry": "entry.849746203",
+   "type": 0
+  },
+  "Public contact information": {
+   "entry": "entry.2113722518",
+   "type": 0
+  },
+  "Organizations you work with (one per line, how often is optional)": {
+   "entry": "entry.2019441903",
+   "type": 1
+  }
+ },
+ "event": {
+  "Which event is this about?": {
+   "entry": "entry.1447795421",
+   "type": 3,
+   "choices": [
+    "➕ Add a new event"
+   ]
+  },
+  "Organization": {
+   "entry": "entry.1522248916",
+   "type": 0
+  },
+  "Coalition": {
+   "entry": "entry.1780232957",
+   "type": 3,
+   "choices": [
+    "— None —",
+    "Mass Power Forward (MPF)",
+    "Massachusetts Youth Climate Coalition (MYCC)",
+    "Environmental Justice Legislative Table (EJLT)",
+    "Cross Campus Climate Coalition (CCCC)",
+    "Springfield Climate Justice Coalition (SCJC)",
+    "Green Justice Coalition (GJC)",
+    "Climate Resilient Schools Coalition (CRS)",
+    "HERO Coalition (HERO)"
+   ]
+  },
+  "Event name": {
+   "entry": "entry.297150190",
+   "type": 0
+  },
+  "Event description": {
+   "entry": "entry.765539457",
+   "type": 1
+  },
+  "Date": {
+   "entry": "entry.1759411728",
+   "type": 9
+  },
+  "Start time": {
+   "entry": "entry.1075605696",
+   "type": 10
+  },
+  "End time": {
+   "entry": "entry.1307925716",
+   "type": 10
+  },
+  "Does it repeat? (leave blank for a one-time event)": {
+   "entry": "entry.1000810286",
+   "type": 0
+  },
+  "Location": {
+   "entry": "entry.1449715944",
+   "type": 0
+  },
+  "Is this online or remote?": {
+   "entry": "entry.1947467088",
+   "type": 2,
+   "choices": [
+    "Yes",
+    "No"
+   ]
+  },
+  "Climate topic tags": {
+   "entry": "entry.1065086133",
+   "type": 4,
+   "choices": [
+    "Education",
+    "Energy poverty",
+    "Green infrastructure",
+    "Climate change",
+    "Marine conservation",
+    "Biodiversity loss",
+    "Public transport",
+    "Food loss and waste",
+    "Air pollution",
+    "Environmental justice",
+    "Climate justice",
+    "Community service",
+    "Green New Deal",
+    "Youth serving"
+   ]
+  },
+  "More topics (type as many as you like, separated by commas)": {
+   "entry": "entry.210391475",
+   "type": 1
+  },
+  "Is free food provided?": {
+   "entry": "entry.1021574622",
+   "type": 2,
+   "choices": [
+    "Yes",
+    "No"
+   ]
+  },
+  "Who can come / take part?": {
+   "entry": "entry.668922907",
+   "type": 2,
+   "choices": [
+    "Open to the public",
+    "Affiliated members only"
+   ]
+  },
+  "Link (website, RSVP, or info page)": {
+   "entry": "entry.1824436629",
+   "type": 0
+  },
+  "Public contact information": {
+   "entry": "entry.378243554",
+   "type": 0
+  },
+  "Remove from the map?": {
+   "entry": "entry.243708649",
+   "type": 4,
+   "choices": [
+    "Yes, take it off the map"
+   ]
+  }
+ },
+ "project": {
+  "Which project is this about?": {
+   "entry": "entry.378180696",
+   "type": 3,
+   "choices": [
+    "➕ Add a new project"
+   ]
+  },
+  "Organization": {
+   "entry": "entry.760992681",
+   "type": 0
+  },
+  "Coalition": {
+   "entry": "entry.13985344",
+   "type": 3,
+   "choices": [
+    "— None —",
+    "Mass Power Forward (MPF)",
+    "Massachusetts Youth Climate Coalition (MYCC)",
+    "Environmental Justice Legislative Table (EJLT)",
+    "Cross Campus Climate Coalition (CCCC)",
+    "Springfield Climate Justice Coalition (SCJC)",
+    "Green Justice Coalition (GJC)",
+    "Climate Resilient Schools Coalition (CRS)",
+    "HERO Coalition (HERO)"
+   ]
+  },
+  "Project name": {
+   "entry": "entry.1019205361",
+   "type": 0
+  },
+  "Project description": {
+   "entry": "entry.971647522",
+   "type": 1
+  },
+  "Status": {
+   "entry": "entry.954368582",
+   "type": 2,
+   "choices": [
+    "Active",
+    "Planning",
+    "Completed"
+   ]
+  },
+  "Skills or help needed": {
+   "entry": "entry.1411673105",
+   "type": 4,
+   "choices": [
+    "Advocacy",
+    "Coalition organizing",
+    "Communications",
+    "Community organizing",
+    "Data analysis",
+    "Data entry",
+    "Data visualization",
+    "Ecology",
+    "Event logistics",
+    "Facilitation",
+    "Farm labor",
+    "Fundraising",
+    "Gardening",
+    "Graphic design",
+    "Legal",
+    "Outreach",
+    "Photography",
+    "Policy research",
+    "Portuguese",
+    "Public speaking",
+    "Research",
+    "Social media",
+    "Spanish",
+    "Translation",
+    "Video editing",
+    "Web development",
+    "Writing"
+   ]
+  },
+  "Location": {
+   "entry": "entry.1850492781",
+   "type": 0
+  },
+  "Is this online or remote?": {
+   "entry": "entry.1836710252",
+   "type": 2,
+   "choices": [
+    "Yes",
+    "No"
+   ]
+  },
+  "Climate topic tags": {
+   "entry": "entry.792480718",
+   "type": 4,
+   "choices": [
+    "Education",
+    "Energy poverty",
+    "Green infrastructure",
+    "Climate change",
+    "Marine conservation",
+    "Biodiversity loss",
+    "Public transport",
+    "Food loss and waste",
+    "Air pollution",
+    "Environmental justice",
+    "Climate justice",
+    "Community service",
+    "Green New Deal",
+    "Youth serving"
+   ]
+  },
+  "More topics (type as many as you like, separated by commas)": {
+   "entry": "entry.524854205",
+   "type": 1
+  },
+  "Is free food provided?": {
+   "entry": "entry.544142110",
+   "type": 2,
+   "choices": [
+    "Yes",
+    "No"
+   ]
+  },
+  "Who can come / take part?": {
+   "entry": "entry.1285720858",
+   "type": 2,
+   "choices": [
+    "Open to the public",
+    "Affiliated members only"
+   ]
+  },
+  "Are you looking for help with this?": {
+   "entry": "entry.363753106",
+   "type": 2,
+   "choices": [
+    "Yes",
+    "No"
+   ]
+  },
+  "Link (website, RSVP, or info page)": {
+   "entry": "entry.1070178603",
+   "type": 0
+  },
+  "Public contact information": {
+   "entry": "entry.648678993",
+   "type": 0
+  },
+  "Remove from the map?": {
+   "entry": "entry.671235783",
+   "type": 4,
+   "choices": [
+    "Yes, take it off the map"
+   ]
+  }
+ },
+ "action": {
+  "Which action or volunteer opportunity is this about?": {
+   "entry": "entry.1959573726",
+   "type": 3,
+   "choices": [
+    "➕ Add a new action or volunteer opportunity"
+   ]
+  },
+  "Organization": {
+   "entry": "entry.656847794",
+   "type": 0
+  },
+  "Coalition": {
+   "entry": "entry.711840281",
+   "type": 3,
+   "choices": [
+    "— None —",
+    "Mass Power Forward (MPF)",
+    "Massachusetts Youth Climate Coalition (MYCC)",
+    "Environmental Justice Legislative Table (EJLT)",
+    "Cross Campus Climate Coalition (CCCC)",
+    "Springfield Climate Justice Coalition (SCJC)",
+    "Green Justice Coalition (GJC)",
+    "Climate Resilient Schools Coalition (CRS)",
+    "HERO Coalition (HERO)"
+   ]
+  },
+  "Action or opportunity name": {
+   "entry": "entry.675857300",
+   "type": 0
+  },
+  "What people can do": {
+   "entry": "entry.1118940903",
+   "type": 1
+  },
+  "Type": {
+   "entry": "entry.669755248",
+   "type": 2,
+   "choices": [
+    "Take action (sign, call, comment, show up)",
+    "Volunteer role or opportunity"
+   ]
+  },
+  "Urgency": {
+   "entry": "entry.1708947013",
+   "type": 2,
+   "choices": [
+    "Low",
+    "Medium",
+    "High"
+   ]
+  },
+  "Deadline (leave blank if none)": {
+   "entry": "entry.866206717",
+   "type": 9
+  },
+  "Skills or help needed": {
+   "entry": "entry.123741793",
+   "type": 4,
+   "choices": [
+    "Advocacy",
+    "Coalition organizing",
+    "Communications",
+    "Community organizing",
+    "Data analysis",
+    "Data entry",
+    "Data visualization",
+    "Ecology",
+    "Event logistics",
+    "Facilitation",
+    "Farm labor",
+    "Fundraising",
+    "Gardening",
+    "Graphic design",
+    "Legal",
+    "Outreach",
+    "Photography",
+    "Policy research",
+    "Portuguese",
+    "Public speaking",
+    "Research",
+    "Social media",
+    "Spanish",
+    "Translation",
+    "Video editing",
+    "Web development",
+    "Writing"
+   ]
+  },
+  "Link (website, RSVP, or info page)": {
+   "entry": "entry.736776789",
+   "type": 0
+  },
+  "Public contact information": {
+   "entry": "entry.751531469",
+   "type": 0
+  },
+  "Remove from the map?": {
+   "entry": "entry.27212373",
+   "type": 4,
+   "choices": [
+    "Yes, take it off the map"
+   ]
+  }
+ }
+}

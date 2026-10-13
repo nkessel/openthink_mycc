@@ -4,13 +4,18 @@ import type { Coalition, GraphNode, Organization } from "./types";
 import { FORMS, type FormLink } from "./forms.config";
 import { h } from "./dom";
 import { currentMap } from "./maps";
+import { liveEntry, prefill } from "./prefill";
+import type { Action, CoalitionEvent, Project } from "./types";
 
 export type FormKind = keyof typeof FORMS;
 
 // Must match the dropdown labels built by buildLabelIndex_ in apps-script/Code.gs:
 // plain names, with " [id]" added only when two orgs share a name.
 let sharedOrgNames = new Set<string>();
+const hostOrgs = new Map<string, Organization>();
 export function setFormLabelData(orgs: Organization[]): void {
+  hostOrgs.clear();
+  for (const o of orgs) hostOrgs.set(o.id, o);
   const seen = new Set<string>();
   sharedOrgNames = new Set();
   for (const o of orgs) (seen.has(o.name) ? sharedOrgNames : seen).add(o.name);
@@ -48,22 +53,38 @@ export function itemLabel(kind: "event" | "project" | "action", it: Item): strin
 }
 export const coalitionLabel = (c: Coalition) => (c.abbrev ? `${c.name} (${c.abbrev})` : c.name);
 
-/** Form URL, pre-filled for the given org/coalition when possible. null = forms not set up. */
-export function formUrl(kind: FormKind, context: GraphNode | null = null, item: Item | null = null): string | null {
+/**
+ * Form URL with everything the map knows already filled in (src/prefill.ts), so people only change what's
+ * different. `copy` turns an existing event into a new one (same details, new date). null = forms not set up.
+ */
+export function formUrl(
+  kind: FormKind,
+  context: GraphNode | null = null,
+  item: (Item & Partial<CoalitionEvent & Project & Action>) | null = null,
+  opts: { copy?: boolean } = {},
+): string | null {
   // Only Massachusetts has its own forms + sheet; elsewhere every suggestion goes to the feedback form.
   if (!currentMap.editable) return FORMS.feedback.url || null;
   // Sector layers (src/sectors.ts) aren't in the sheet yet, so there's nothing to edit through a form.
   if (kind !== "feedback" && (context as { sector?: string } | null)?.sector) return null;
   const f: FormLink = FORMS[kind];
   if (!f.url) return null;
-  const params = new URLSearchParams();
+  // The live forms' own question ids (forms.fields.json) win over the older ones saved in forms.config.ts.
+  const which = { org: "Which organization is this about?", event: "Which event is this about?", project: "Which project is this about?", action: "Which action or volunteer opportunity is this about?" } as const;
+  const orgEntry = (kind === "org" ? liveEntry("org", which.org) ?? f.orgEntry : liveEntry(kind, "Organization") ?? f.hostOrgEntry);
+  const coalitionEntry = liveEntry(kind, "Coalition") ?? f.coalitionEntry;
+  const itemEntry = kind !== "org" && kind !== "feedback" ? liveEntry(kind, which[kind]) ?? f.itemEntry : undefined;
+  let params = new URLSearchParams();
+  if (kind !== "feedback") params = prefill(kind, f.url, context, item as CoalitionEvent | Project | Action | null, !!opts.copy) ?? params;
   if (context?.kind === "org") {
-    const entry = kind === "org" ? f.orgEntry : f.hostOrgEntry;
-    if (entry) params.set(entry, orgLabel(context));
-  } else if (context?.kind === "coalition" && f.coalitionEntry) {
-    params.set(f.coalitionEntry, coalitionLabel(context));
+    if (orgEntry) params.set(orgEntry, orgLabel(context));
+  } else if (context?.kind === "coalition") {
+    if (coalitionEntry) params.set(coalitionEntry, coalitionLabel(context));
+    // a coalition's item hosted by one of its member orgs: fill that in too
+    const host = item?.host_org_id ? hostOrgs.get(item.host_org_id) : null;
+    if (host && orgEntry && kind !== "org") params.set(orgEntry, orgLabel(host));
   }
-  if (item && f.itemEntry && (kind === "event" || kind === "project" || kind === "action")) params.set(f.itemEntry, itemLabel(kind, item));
+  if (item && itemEntry && !opts.copy && (kind === "event" || kind === "project" || kind === "action")) params.set(itemEntry, itemLabel(kind, item));
   if (![...params.keys()].length) return f.url;
   params.set("usp", "pp_url");
   return `${f.url}${f.url.includes("?") ? "&" : "?"}${params.toString()}`;

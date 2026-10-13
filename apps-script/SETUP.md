@@ -83,6 +83,11 @@ Run **MA Climate Coalition Map → Update the forms** after pasting a new versio
 - brings the feedback form's "Which part of the map" choices up to date (Topics page, voting districts, details panel, phone, and so on).
 - adds links on the organization form's thank-you page to the project, event and action forms. A Google Form can't branch into another form, so this is how someone goes on from their organization to its projects.
 
+## Edit links and emails to submitters
+
+- Every **Edit** button on the map opens the right form with everything already filled in. People only change what's different, and blank answers still keep the current value. **Copy as a new event** fills in an existing event as a new one, leaving the date blank. If you add, rename or remove questions on a form, run `node scripts/form-fields.mjs` in the repo so the site knows the new question ids.
+- Whoever submits a form gets a short email. It says either that the change is on the map, or that it's waiting for the map team (and a second one when it goes live). To turn these off, add the Script property `NOTIFY_SUBMITTERS` = `off`.
+
 ## Topics on the forms (Wikipedia-based or group-based)
 
 Run **MA Climate Coalition Map → Use Wikipedia-based topics on the forms (Turibius)** once (after the update is merged, so the script can fetch `research/topics/wiki/topics-merged.csv` from GitHub). It:
