@@ -697,3 +697,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 2026-10-13 (Claude, finishing)
 - Merged PR #55 (Nathan: "do everything you can yourself"), pasted the new script into the sheet and ran "Add connections from the Organization Info Form".
 - Fix: the org form's old one-row-per-org "works with" grid kept coming back because "Update the forms" re-added it whenever it was missing. Now it's removed when the typed box exists. Test added.
+- Merged PR #57, pasted the script, ran "Update the forms": the org form now has only the typed "works with" box. Live data: 35 org-to-org links, BostonCAN in MYCC. Running doc: struck "add group responses" (both lines). Live site (Vercel) has the legend Hide/Show and the "Copy as a new event" button.
