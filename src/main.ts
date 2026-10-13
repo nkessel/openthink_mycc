@@ -1,5 +1,4 @@
 import "./styles.css";
-import { topicListControl } from "./topiclist";
 import { displayControls, initDisplay, largePrint, onDisplayChange } from "./display";
 
 initDisplay();
@@ -267,10 +266,8 @@ async function main() {
     onGroupsChange: (rules) => graphApi!.setGroups(rules),
     onAnimate: () => graphApi!.kickSimulation(),
   });
-  // The org-to-org connections toggle lives with the other advanced display options.
-  controls.advancedContainer().appendChild(graphApi.orgLinkToggle());
-  // Which topic list the Topics page uses (Wikipedia-based by default; group-based kept for comparison).
-  controls.advancedContainer().appendChild(topicListControl());
+  // The org-to-org connections switch sits right under the coalitions list.
+  sidebar.linksContainer().appendChild(graphApi.orgLinkToggle());
   // Large print and low-power mode (also: the "Aa" button in the top bar for large print).
   controls.advancedContainer().appendChild(displayControls());
   // Large print leaves out the Topics page; if it was showing, go back to the map.

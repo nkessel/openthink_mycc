@@ -1710,6 +1710,8 @@ body {
 .sidebar .filters-block {
   margin: 12px 0 4px;
 }
+.sidebar .links-block { margin: 2px 0 6px; }
+.sidebar .links-block .org-link-toggle,
 .sidebar .filters-block .org-link-toggle {
   display: flex;
   align-self: auto;
@@ -2753,11 +2755,11 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .bt-items .bt-item.k-mission circle { stroke-width: 1.3px; }
 .bt-items .bt-item:hover circle, .bt-items .bt-item.sel circle { stroke: #fff; stroke-width: 1.6px; }
 .bt-item-lbl { fill: #e5e7eb; font-size: 11px; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
-.bt-head-ring { display: none; position: absolute; left: 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; pointer-events: none; z-index: 1; white-space: nowrap; }
-.bt-head-ring.top { top: 10px; color: #86efac; }
-.bt-head-ring.top::before { content: "▲ "; }
-.bt-head-ring.bot { bottom: 54px; color: #fda4af; }
-.bt-head-ring.bot::before { content: "▼ "; }
+.bt-head-ring { display: none; position: absolute; top: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; pointer-events: none; z-index: 1; white-space: nowrap; }
+.bt-head-ring.left { left: 16px; color: #fda4af; }
+.bt-head-ring.left::before { content: "◀ "; }
+.bt-head-ring.right { right: 16px; color: #86efac; }
+.bt-head-ring.right::after { content: " ▶"; }
 .bt[data-layout="circle"] .bt-heads { display: none; }
 .bt[data-layout="circle"][data-show="both"] .bt-head-ring { display: block; }
 .bt-fx {
@@ -2904,6 +2906,10 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
   color: var(--text-dim); background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 9px;
 }
 .lp-btn:hover { color: var(--text); border-color: var(--accent); }
+.lp-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; }
+.lp-btn .lp-aa { font-size: 15px; }
+.lp-btn .lp-word { font-size: 13px; font-weight: 600; white-space: nowrap; }
+@media (max-width: 420px) { .lp-btn .lp-word { font-size: 12px; } }
 .lp-btn[aria-pressed="true"] { color: #04202a; background: #7dd3fc; border-color: #7dd3fc; }
 .large-print .topbar .tab, .large-print .tab-menu-btn { font-size: 17px; }
 .large-print .topbar .tab[data-tab="topics"] { display: none; }
@@ -2911,7 +2917,20 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .large-print .item-pop, .large-print .focus-bar { zoom: 1.22; }
 .large-print .drawer { width: calc(var(--drawer-w) / 1.22); }
 .large-print .sats, .large-print .sat-tethers, .large-print .map-legend, .large-print .focus-note, .large-print .boot-hint { display: none !important; }
-.large-print .node-name { font-size: 15px; font-weight: 600; }
+/* Large print: group names in their own layer above the map (graph.ts cullNames): 18px (coalitions 21px), bold
+   white on a near-black pill (contrast ~18:1), never covered by bubbles. */
+.lp-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 3; display: none; }
+.large-print .lp-labels { display: block; }
+.lp-name {
+  position: absolute; left: 0; top: 0; max-width: 15em; text-align: center; white-space: normal;
+  font-size: 18px; line-height: 1.2; font-weight: 700; color: #fff;
+  background: rgba(8, 10, 16, 0.88); border-radius: 6px; padding: 1px 6px; will-change: transform;
+}
+.lp-name.co { font-size: 21px; }
+@media (max-width: 720px) { .lp-name { max-width: 11em; } }
+.lp-name.off { display: none; }
+.large-print .node-name { display: none; }
+
 /* ---------- Low-power mode: no decorative animation ---------- */
 .low-power *, .low-power *::before, .low-power *::after { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
 .low-power .fab { box-shadow: var(--shadow); }
@@ -2929,3 +2948,12 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 /* "Copy as a new event": a quieter second button next to "Edit this event" */
 .stale-notice .edit-btn.copy-btn { background: transparent; color: inherit; border-color: rgba(255,255,255,0.3); margin-left: 6px; }
 .stale-notice .edit-btn.copy-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+
+/* Topics page settings: topic list first, then "What counts more" (folded) */
+.topics-section { margin: 10px 0 14px; }
+.topics-listseg { display: flex; margin: 6px 0 4px; }
+.topics-listseg button { flex: 1; }
+.topics-sizes > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); padding: 6px 0; list-style: revert; }
+.topics-sizes[open] > summary { margin-bottom: 4px; }
+.topics-sizes .topics-slider { margin: 10px 0 4px; }
+.topics-sizes .topics-slider .ctrl-hint { margin-top: 2px; }

@@ -95,7 +95,7 @@ export function displayControls(): HTMLElement {
   return box;
 }
 
-/** The "Aa" button in the top bar: large print on or off in one tap. */
+/** The "Aa Large print" button in the top bar: large print on or off in one tap. */
 export function largePrintButton(): HTMLElement {
   const b = document.createElement("button");
   b.type = "button";
@@ -103,7 +103,7 @@ export function largePrintButton(): HTMLElement {
   const sync = () => {
     b.setAttribute("aria-pressed", String(largePrint()));
     b.title = largePrint() ? "Large print is on — tap for the full map" : "Large print: bigger text, fewer things on screen";
-    b.textContent = "Aa";
+    b.innerHTML = `<span class="lp-aa" aria-hidden="true">Aa</span><span class="lp-word">${largePrint() ? "Large print: on" : "Large print"}</span>`;
   };
   sync();
   onDisplayChange(sync);

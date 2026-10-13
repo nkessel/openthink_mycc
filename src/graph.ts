@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { largePrint, onDisplayChange } from "./display";
 import type {
   DataFile,
   GraphNode,
@@ -233,8 +234,8 @@ export function createGraph(
   toggle.appendChild(
     document.createTextNode(
       orgLinkCount
-        ? ` Org-to-org connections (${orgLinkCount}) — thicker = more often`
-        : " Org-to-org connections (none reported yet)",
+        ? ` Show groups that work together (${orgLinkCount}) — thicker line = more often`
+        : " Groups that work together (none reported yet)",
     ),
   );
 
@@ -271,7 +272,7 @@ export function createGraph(
       tooltip.hide();
       if (event.sourceEvent) focusCard.style.display = "none";
     })
-    .on("end", () => { queueDetail(); ensureInView(); });
+    .on("end", () => { queueDetail(); ensureInView(); if (largePrint()) scheduleNameCull(); });
 
   let currentZoomScale = 1;
   let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
@@ -281,6 +282,11 @@ export function createGraph(
     // The threshold slider value 0..1 maps to a zoom scale 0.2..2.5.
     // Below that scale, node-name labels fade out.
     if (!settings.showText) {
+      nodeLayer.selectAll<SVGTextElement, GraphNode>("text.node-name").style("opacity", 0);
+      return;
+    }
+    if (largePrint()) {
+      // Large print draws the names in their own layer above the map (cullNames).
       nodeLayer.selectAll<SVGTextElement, GraphNode>("text.node-name").style("opacity", 0);
       return;
     }
@@ -780,8 +786,66 @@ export function createGraph(
     nodeLayer.classed("item-names", k >= LABEL_ON_K);
     // Past 100% zoom, group names grow only gently (k^0.35) while planets grow with the zoom.
     nodeLayer.style("--ns", String(k > 1 ? k ** 0.35 / k : 1));
+    // Large print: every group name is 18px on screen (coalitions 21px) at any zoom: CSS sizes are in map units,
+    // so divide by the zoom.
+    nodeLayer.style("--lpo", String(1 / k));
     svg.classed("zoomed-in", k > 1);
+    if (largePrint()) scheduleNameCull();
   }
+
+  // ----- Large print: names in a layer above every bubble -----
+  // SVG names sit inside each group's node, so later bubbles cover them, and they scale with the zoom. In large print
+  // the names are drawn instead as plain text above the whole map: 18px (coalitions 21px), bold, white on a dark
+  // pill, never covered. Where two would overlap, the bigger group (coalitions first) keeps its name and the other
+  // waits until you zoom in. The opened group and its partners always show theirs.
+  const lpLayer = h("div", { class: "lp-labels", "aria-hidden": "true" });
+  wrap.appendChild(lpLayer);
+  const lpSpans = new Map<string, { el: HTMLElement; w: number; h: number }>();
+  let cullTimer = 0;
+  let lpTick = 0;
+  function scheduleNameCull() {
+    if (cullTimer) return;
+    cullTimer = window.requestAnimationFrame(() => { cullTimer = 0; cullNames(); });
+  }
+  function cullNames() {
+    if (!largePrint() || !settings.showText) { lpLayer.style.display = "none"; return; }
+    lpLayer.style.display = "";
+    const base = wrap.getBoundingClientRect();
+    const items: { d: GraphNode; x: number; y: number; pri: number }[] = [];
+    nodeSel.each(function (d) {
+      const g = this as SVGGElement;
+      if (g.style.display === "none" || g.classList.contains("faded") || g.classList.contains("partner-many")) return;
+      const ring = g.querySelector("circle.ring") as SVGCircleElement | null;
+      if (!ring) return;
+      const b = ring.getBoundingClientRect();
+      if (!b.width || b.bottom < base.top - 40 || b.top > base.bottom || b.right < base.left || b.left > base.right) return;
+      const focused = g.classList.contains("selected") || g.classList.contains("focused") || g.classList.contains("member-ring");
+      items.push({ d, x: b.left + b.width / 2 - base.left, y: b.bottom - base.top + 3, pri: (focused ? 1e6 : 0) + (d.kind === "coalition" ? 1e5 : 0) + nodeRadiusOf(d) });
+    });
+    items.sort((a, b) => b.pri - a.pri);
+    const placed: { l: number; t: number; r: number; b: number }[] = [];
+    const used = new Set<string>();
+    for (const it of items) {
+      let sp = lpSpans.get(it.d.id);
+      if (!sp) {
+        const el = h("span", { class: `lp-name ${it.d.kind === "coalition" ? "co" : ""}` }, it.d.name);
+        lpLayer.appendChild(el);
+        sp = { el, w: el.offsetWidth, h: el.offsetHeight };
+        lpSpans.set(it.d.id, sp);
+      }
+      // kept fully on screen (a name near the edge slides in rather than being cut off)
+      const left = Math.max(4, Math.min(base.width - sp.w - 4, it.x - sp.w / 2));
+      const box = { l: left, t: it.y, r: left + sp.w, b: it.y + sp.h };
+      const hit = placed.some((q) => box.l < q.r + 2 && box.r > q.l - 2 && box.t < q.b + 2 && box.b > q.t - 2);
+      if (hit && it.pri < 1e6) continue;
+      placed.push(box);
+      used.add(it.d.id);
+      sp.el.style.transform = `translate(${Math.round(box.l)}px, ${Math.round(box.t)}px)`;
+    }
+    for (const [id, sp] of lpSpans) sp.el.classList.toggle("off", !used.has(id));
+  }
+  onDisplayChange(() => { applyTextFade(); applyItemScale(); cullNames(); });
+  window.addEventListener("resize", () => { if (largePrint()) scheduleNameCull(); });
   function refreshSpacing(alpha = 0.5) {
     satCountCache.clear();
     collideForce.radius(collideRadius);
@@ -1019,6 +1083,7 @@ export function createGraph(
 
   // ----- Tick -----
   sim.on("tick", () => {
+    if (largePrint() && ++lpTick % 3 === 0) scheduleNameCull();
     linkSel
       .attr("x1", (l) => (l.source as GraphNode).x ?? 0)
       .attr("y1", (l) => (l.source as GraphNode).y ?? 0)
@@ -1038,6 +1103,7 @@ export function createGraph(
   // Auto-fit once the simulation has settled enough
   let didInitialFit = false;
   sim.on("end", () => {
+    if (largePrint()) scheduleNameCull();
     if (didInitialFit) return;
     didInitialFit = true;
     fitToView(false);
@@ -1112,7 +1178,8 @@ export function createGraph(
     for (const o of orgNodes) {
       orgVisible.set(
         o.id,
-        !o.coalition_ids.length || o.coalition_ids.some((c) => visibleCoalitions.has(c)),
+        // social-justice groups (sector layers) show while their layer is on, even with its coalition bubble hidden
+        !o.coalition_ids.length || o.coalition_ids.some((c) => visibleCoalitions.has(c)) || !!o.sector,
       );
     }
     nodeSel.style("display", (n) => {

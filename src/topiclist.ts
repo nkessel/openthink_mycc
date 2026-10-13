@@ -1,7 +1,7 @@
 // Which topic list the Topics page (and item cards) use:
 //  - "wiki":   Wikipedia-based topics (Turibius Rozario's list, 13 seed topics) — the default
 //  - "groups": group-based topics, built from how the groups describe their own work
-// Chosen in Map settings → Advanced display settings → Topic list; remembered in this browser.
+// Chosen in the Topics page's Topic settings; remembered in this browser.
 // A link can force one with ?topics=wiki or ?topics=groups.
 
 export type TopicList = "wiki" | "groups";
