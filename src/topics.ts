@@ -8,7 +8,7 @@ import { currentMap, MAPS, type MapId } from "./maps";
 import { createCommandRoom } from "./commandroom";
 import { createBattle } from "./battle";
 import { feedbackBid } from "./feedback";
-import { topicsUrl, topicListInfo, onTopicListChange, topicList } from "./topiclist";
+import { topicsUrl, topicListInfo, onTopicListChange, topicList, setTopicList, TOPIC_LISTS } from "./topiclist";
 import { withLiveTags } from "./topiclive";
 import type { DataFile } from "./types";
 
@@ -162,14 +162,42 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   }
   for (const b of viewBtns) b.classList.toggle("on", b.dataset.v === view);
 
-  // ---- Sliders ----
-  panel.appendChild(h("div", { class: "topics-panel-head" }, "Stream size"));
-  panel.appendChild(h("div", { class: "ctrl-hint" }, "Each stream is the weighted count of a group's events, projects, actions and mission statements on that topic."));
+  // ---- Settings panel: which topic list, then how much each kind of activity counts ----
+  panel.appendChild(h("div", { class: "topics-panel-head" }, "Topic settings"));
+
+  // 1. Topic list (was in Map settings → Advanced): two buttons, with what each list is.
+  const listBox = h("div", { class: "control topics-section" });
+  listBox.appendChild(h("div", { class: "ctrl-label" }, "Topic list"));
+  const listSeg = h("div", { class: "cr-seg topics-listseg", role: "group", "aria-label": "Topic list" });
+  const listHint = h("div", { class: "ctrl-hint" }, "");
+  const listBtns = TOPIC_LISTS.map((l) => {
+    const b = h("button", { type: "button", "data-l": l.id }, l.label) as HTMLButtonElement;
+    b.addEventListener("click", () => setTopicList(l.id));
+    listSeg.appendChild(b);
+    return b;
+  });
+  const syncList = () => {
+    for (const b of listBtns) {
+      const on = b.dataset.l === topicList();
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", String(on));
+    }
+    listHint.textContent = topicListInfo().hint;
+  };
+  syncList();
+  onTopicListChange(syncList);
+  listBox.append(listSeg, listHint);
+  panel.appendChild(listBox);
+
+  // 2. Stream size: folded by default, since most people never need it.
+  const sizes = h("details", { class: "topics-section topics-sizes" }) as HTMLDetailsElement;
+  sizes.appendChild(h("summary", {}, "What counts more"));
+  sizes.appendChild(h("div", { class: "ctrl-hint" }, "How big each stream and topic is: a weighted count of each group's events, projects, actions and mission statements on that topic."));
   const inputs = new Map<keyof Weights, HTMLInputElement>();
   for (const s of SLIDERS) {
     const box = h("div", { class: "control topics-slider" });
-    box.appendChild(h("label", { class: "ctrl-label", for: `ts-${s.key}` }, s.label));
-    const input = h("input", { id: `ts-${s.key}`, type: "range", min: "0", max: "1", step: "0.01", value: String(weights[s.key]), class: "slider", "data-key": s.key }) as HTMLInputElement;
+    box.appendChild(h("label", { class: "ctrl-label", for: `ts-${s.key}`, title: s.hint }, s.label));
+    const input = h("input", { id: `ts-${s.key}`, type: "range", min: "0", max: "1", step: "0.01", value: String(weights[s.key]), class: "slider", "data-key": s.key, "aria-describedby": `ts-${s.key}-hint` }) as HTMLInputElement;
     input.addEventListener("input", () => {
       weights[s.key] = parseFloat(input.value);
       try {
@@ -182,11 +210,10 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     });
     inputs.set(s.key, input);
     box.appendChild(input);
-    box.appendChild(h("div", { class: "topics-scale" }, h("span", {}, "Not important"), h("span", {}, "Important")));
-    box.appendChild(h("div", { class: "ctrl-hint" }, s.hint));
-    panel.appendChild(box);
+    box.appendChild(h("div", { class: "ctrl-hint", id: `ts-${s.key}-hint` }, s.hint));
+    sizes.appendChild(box);
   }
-  const reset = h("button", { class: "reset-btn", type: "button" }, "Reset sliders");
+  const reset = h("button", { class: "reset-btn", type: "button" }, "Reset to the site's settings");
   reset.addEventListener("click", () => {
     Object.assign(weights, DEFAULTS);
     for (const [k, el] of inputs) el.value = String(weights[k]);
@@ -198,8 +225,9 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     room?.update();
     battle?.update();
   });
-  panel.appendChild(reset);
-  makeFoldable(panel, "stream size sliders");
+  sizes.appendChild(reset);
+  panel.appendChild(sizes);
+  makeFoldable(panel, "topic settings");
 
   // ---- Weighting ----
   const today = Date.now();
@@ -217,7 +245,7 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     const recs = f.records.filter((r) => mapIds.includes(r.map));
     const tagged = recs.filter((r) => r.topics.length || r.bills.length).length;
     count.textContent = `${topicListInfo().label} topics · ${tagged} of ${recs.length} records tagged · ${mapIds.map((m) => MAPS[m as MapId]?.name ?? m).join(" + ")}`;
-    count.title = `${topicListInfo().hint} Change it in Map settings → Advanced display settings → Topic list.`;
+    count.title = `${topicListInfo().hint} Change it under Topic settings on the left.`;
     // one colour per main topic (in list order, among those with records on this map)
     const present = f.parents.filter((p) => recs.some((r) => r.topics.some((t) => p.children.some((c) => c.id === t)))).map((p) => p.id);
     const hue = new Map(present.map((id, i) => [id, d3.hsl((i * 360) / present.length + 200, 0.55, 0.6).formatHex()]));

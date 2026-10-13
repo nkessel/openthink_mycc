@@ -499,9 +499,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   const zOut = h("button", { type: "button", "aria-label": "Zoom out", title: "Zoom out" }, "−") as HTMLButtonElement;
   const zReset = h("button", { type: "button", "aria-label": "Reset view", title: "Reset view" }, "⟲") as HTMLButtonElement;
   zoomBox.append(zIn, zOut, zReset);
-  // circle layout: solutions round the top, problems round the bottom, each named on its side
-  const headTop = h("div", { class: "bt-head-ring top" }, "Solutions we are nurturing");
-  const headBot = h("div", { class: "bt-head-ring bot" }, "Problems we are solving");
+  // circle layout: problems round the left half, solutions round the right (the same sides as the columns)
+  const headTop = h("div", { class: "bt-head-ring left" }, "Problems we are solving");
+  const headBot = h("div", { class: "bt-head-ring right" }, "Solutions we are nurturing");
   // A clear way out of a selection (clicking empty space or pressing Esc works too)
   const deselBtn = h("button", { type: "button", class: "bt-deselect", title: "Show everything again (or click empty space, or press Esc)" }, "✕ Clear selection") as HTMLButtonElement;
   deselBtn.addEventListener("click", (ev) => {
@@ -615,22 +615,26 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     }
     const total = u || 1;
     const yOf = (unit: number) => top + (unit / total) * (bot - top);
-    // circle: solutions around the top half and problems around the bottom (or one kind all the way round),
+    // circle: problems around the left half and solutions around the right (or one kind all the way round),
     // in the same order as the columns, top to bottom; the groups sit inside the ring
     const circle = layout === "circle";
     const full = showing !== "both";
     const M = 0.14;
-    const span = full ? 2 * Math.PI : Math.PI - 2 * M;
+    // a wider gap at the bottom of the ring, where the site's + button sits, so no name ends up under it
+    const MB = 0.42;
+    const sideSpan = Math.PI - M - MB;
+    const span = full ? 2 * Math.PI : sideSpan;
     if (circle) {
       ccx = W / 2;
       // room above and below the ring for the names (and the site's + button at the bottom)
-      ccy = (top + bot) / 2 - 6;
-      R = Math.max(110, Math.min(W / 2 - (small ? 80 : 200), (bot - top) / 2 - (full ? 8 : 52)));
+      ccy = (top + bot) / 2 - 16;
+      R = Math.max(110, Math.min(W / 2 - (small ? 80 : 200), (bot - top) / 2 - (full ? 8 : 46)));
     }
-    // both shown: solutions round the top (left to right), problems round the bottom (left to right)
+    // both shown: problems down the left half (top to bottom), solutions down the right half (top to bottom).
+    // Angles: -π/2 is the top, 0 the right, π/2 the bottom.
     const angle = (kind: Target["kind"], unit: number) =>
       full ? -Math.PI / 2 + (2 * Math.PI * unit) / total
-        : kind === "prob" ? Math.PI - M - (unit / total) * span : -Math.PI + M + (unit / total) * span;
+        : kind === "prob" ? -Math.PI / 2 - M - (unit / total) * sideSpan : -Math.PI / 2 + M + (unit / total) * sideSpan;
     const extent = circle ? span * R : bot - top; // length of the line the targets sit along
     const placeSide = (mains: Target[], x: number): Target[] => {
       const vis: Target[] = [];
@@ -1819,7 +1823,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         g.strokeStyle = e.kind === "hit" ? "#fda4af" : "#fde68a";
         g.lineWidth = 1.5;
         g.beginPath();
-        g.arc(cx0, cy0, rs + 4 + age * 10, 0, Math.PI * 2);
+        // a hit closes inward from the problem's surface; a feed spreads outward from the solution
+        g.arc(cx0, cy0, e.kind === "hit" ? Math.max(1, rs * (1 - 0.65 * age)) : rs + 4 + age * 10, 0, Math.PI * 2);
         g.stroke();
         continue;
       }
@@ -1841,15 +1846,22 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           g.globalAlpha = Math.min(1, 0.9 * FX.spark * (1 - sp));
           g.drawImage(sprite("#ffe4e6"), ex - 7, ey - 7, 14, 14);
         }
-        // 1b. the problem shrinks back: a dim ring closes in on it (light radiating inward, the opposite of a solution)
-        {
-          const ia = Math.min(1, age * 1.3);
+        // 1b. the hit radiates inward: rings start on the problem's surface, swell a touch with the impact, then
+        // close in towards its centre and fade (the opposite of a solution's outward glow)
+        for (let ring = 0; ring < 2; ring++) {
+          const p = age * 1.05 - ring * 0.14;
+          if (p <= 0 || p >= 1) continue;
+          const SWELL = 0.18; // share of the time spent swelling outward first
+          const ease = (x: number) => x * x * (3 - 2 * x);
+          const rad = p < SWELL
+            ? rs * (1 + 0.07 * ease(p / SWELL))
+            : rs * (1.07 - 0.75 * ease((p - SWELL) / (1 - SWELL)));
           g.globalCompositeOperation = "source-over";
-          g.globalAlpha = 0.55 * (1 - ia);
-          g.strokeStyle = "#7f1d1d";
-          g.lineWidth = 2 * (1 - ia) + 0.6;
+          g.globalAlpha = (ring ? 0.4 : 0.6) * (p < SWELL ? 1 : 1 - ease((p - SWELL) / (1 - SWELL)) * 0.9);
+          g.strokeStyle = ring ? "#991b1b" : "#7f1d1d";
+          g.lineWidth = (ring ? 1.4 : 2.2) * (1 - 0.5 * p) + 0.4;
           g.beginPath();
-          g.arc(cx0, cy0, rs + 22 * (1 - ia) + 1, 0, Math.PI * 2);
+          g.arc(cx0, cy0, Math.max(1, rad), 0, Math.PI * 2);
           g.stroke();
           g.globalCompositeOperation = "lighter";
         }
@@ -2090,8 +2102,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   clear(legend);
   legend.append(
-    h("div", {}, "Problems the groups are solving (left, or the bottom of the circle), reached by dashed paths. When a comet strikes, the problem is knocked back, grey bits break off it as it is worn down, and light breaks in."),
-    h("div", {}, "Solutions they are nurturing (right, or the top of the circle), reached by solid rainbow rivers. When a seed lands, the solution lights up and grows: shoots branch out in every direction."),
+    h("div", {}, "Problems the groups are solving (on the left), reached by dashed paths. When a comet strikes, the problem is knocked back, grey bits break off it as it is worn down, and light breaks in."),
+    h("div", {}, "Solutions they are nurturing (on the right), reached by solid rainbow rivers. When a seed lands, the solution lights up and grows: shoots branch out in every direction."),
     h("div", {}, "Centre: the groups, with their logos. Groups that mostly confront problems lean left; groups that mostly build solutions lean right. Showing only problems or only solutions puts the groups on the opposite side."),
     h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are hit (or fed) more often, about 1–3 times every few seconds."),
     h("div", {}, "Each item's weight (the sliders) is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
