@@ -345,7 +345,16 @@ export function createGraph(
   function linkForceStrength(): number {
     return 0.1 + settings.linkForce * 0.9;
   }
+  let focusId: string | null = null;
+  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, gathered on an outer ring while it is in focus
   function linkStrengthFor(l: GraphLink): number {
+    // A group is open and its coalitions/partners are held around it: their other links would drag every one of
+    // their members across the map toward the new spot (what looked like bubbles twitching), so those links rest.
+    if (focusId && pinnedMembers.length) {
+      const s = typeof l.source === "string" ? l.source : l.source.id;
+      const t = typeof l.target === "string" ? l.target : l.target.id;
+      if (s !== focusId && t !== focusId && pinnedMembers.some((o) => o.id === s || o.id === t)) return 0;
+    }
     if (l.kind === "org") return showOrgLinks ? linkForceStrength() * 0.25 * (l.weight ?? 1) : 0;
     return linkForceStrength();
   }
@@ -444,8 +453,8 @@ export function createGraph(
     .on("end", (event, d) => {
       if (!event.active) sim.alphaTarget(0);
       dotsLiveUntil = performance.now() + 1500;
-      // A zoomed-in node stays where you put it until you leave the zoomed-in view.
-      if (d.id === focusId) return;
+      // A zoomed-in node (and the groups held around it) stays where you put it until you leave the zoomed-in view.
+      if (d.id === focusId || pinnedMembers.includes(d)) return;
       d.fx = null;
       d.fy = null;
     });
@@ -1217,13 +1226,12 @@ export function createGraph(
   const BUBBLE_R = 22;
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
-  let focusId: string | null = null;
   // The opened group is drawn as a big planet (CSS scale(var(--fs)) on .focused) with its items as moons around it.
   const FOCUS_PLANET_R = 78; // the opened group's radius on the map (always the biggest thing in view)
   const LABEL_REACH = 150; // how far a moon's name reaches beyond it
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let focusSim: d3.Simulation<any, undefined> | null = null;
-  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, gathered on an outer ring while it is in focus
+  let focusSettleTimer = 0;
   // Where each member belongs, relative to the coalition: a spring pulls it there (it isn't pinned), so members
   // jostle, make room for each other and follow the coalition when you drag it.
   const memberHome = new Map<GraphNode, { ox: number; oy: number }>();
@@ -1579,6 +1587,10 @@ export function createGraph(
           o.y = fy + home.oy;
           o.vx = 0;
           o.vy = 0;
+          // Held at their place: left to the forces they rocked back and forth for seconds (the "twitch").
+          // They can still be dragged; where they're dropped they stay until the group is closed.
+          o.fx = o.x;
+          o.fy = o.y;
         });
         const order = new Map(pinnedMembers.map((o, i) => [o.id, i]));
         nodeSel.filter((d) => order.has(d.id))
@@ -1589,6 +1601,12 @@ export function createGraph(
       }
     }
 
+    linkForce.strength(linkStrengthFor);
+    // While a group is open, the groups being moved out of the way settle without bouncing, and then hold still
+    // (the open group is what you're looking at; nothing behind it should keep drifting).
+    sim.velocityDecay(0.6);
+    clearTimeout(focusSettleTimer);
+    focusSettleTimer = window.setTimeout(() => { if (focusId === id) sim.alphaTarget(0).alpha(Math.min(sim.alpha(), 0.004)); }, 1800);
     focusSim?.stop();
     focusSim = null;
     lastPos.delete(id);
@@ -1703,10 +1721,13 @@ export function createGraph(
         const d = Math.hypot(dx, dy) || 1;
         const min = clearR + itemExtent(o);
         if (d < min) {
-          // eased by alpha so the others drift out of the way instead of jumping
-          const k = 0.12 + 0.13 * Math.min(1, alpha / 0.5);
-          o.vx = (o.vx ?? 0) + (dx / d) * (min - d) * k;
-          o.vy = (o.vy ?? 0) + (dy / d) * (min - d) * k;
+          // Glide straight out to the edge of the clear space (a share of the gap each tick) instead of being
+          // shoved with speed: shoves bounced off neighbours and rocked back and forth for seconds.
+          const step = (min - d) * (0.18 + 0.12 * Math.min(1, alpha / 0.5));
+          o.x = (o.x ?? 0) + (dx / d) * step;
+          o.y = (o.y ?? 0) + (dy / d) * step;
+          o.vx = (o.vx ?? 0) * 0.3;
+          o.vy = (o.vy ?? 0) * 0.3;
         }
       }
     });
@@ -1746,17 +1767,33 @@ export function createGraph(
     wrap.classList.add("focusing");
     focusCard.style.display = "none";
 
-    // Zoom so the ring fills the view (nudged left when the details panel covers the right side).
-    const { w, h: vh } = dimensions();
-    // The details pane slides over the map; it never decides where the map looks (Nathan, 2026-10-05).
-    const panel = 0;
-    const scale = Math.max(
-      0.35,
-      Math.min(2.2, (w - panel) / (2 * Math.max(ringR + BUBBLE_R + LABEL_REACH + 20, memberRX + 40)), vh / (2 * Math.max(ringR + BUBBLE_R + 50, memberRY + 110))),
-    );
-    const shift = panel / 2;
-    const t = d3.zoomIdentity.translate(-cx * scale - shift, -cy * scale).scale(scale);
-    svg.transition().duration(600).call(zoom.transform, t);
+    // Zoom so the planet, its moons and its satellites all fit in the part of the map you can actually see:
+    // below the group's bar and (when the details panel is open over the map) left of it. It used to fill the whole
+    // map width, so satellites and moon names sat under the panel and the top satellite under the bar.
+    const outer = Math.max(ringR + BUBBLE_R + LABEL_REACH + 20, memberRX + 70);
+    const outerY = Math.max(ringR + BUBBLE_R + 50, memberRY + 90);
+    const frame = () => {
+      const wr = wrap.getBoundingClientRect();
+      const { w, h: vh } = dimensions();
+      const bar = focusBar.getBoundingClientRect();
+      const pane = wrap.ownerDocument.querySelector(".drawer.open") as HTMLElement | null;
+      // the panel may still be sliding in, so use its width, not where it is right now
+      const paneW = pane && pane.offsetWidth < wr.width - 200 ? pane.offsetWidth : 0;
+      const left = wr.left + 8;
+      const right = wr.right - paneW - 8;
+      const top = bar.height ? Math.max(wr.top, bar.bottom) + 8 : wr.top + 8;
+      const bottom = wr.bottom - 8;
+      // screen px → viewBox units (the svg's viewBox is the wrap's size, so they match 1:1)
+      const sx = w / wr.width, sy = vh / wr.height;
+      const availW = (right - left) * sx, availH = (bottom - top) * sy;
+      const scale = Math.max(0.3, Math.min(2.2, availW / (2 * outer), availH / (2 * outerY)));
+      const vcx = ((left + right) / 2 - (wr.left + wr.width / 2)) * sx;
+      const vcy = ((top + bottom) / 2 - (wr.top + wr.height / 2)) * sy;
+      const t = d3.zoomIdentity.translate(vcx - cx * scale, vcy - cy * scale).scale(scale);
+      svg.transition().duration(600).call(zoom.transform, t);
+    };
+    // after this click has opened (or not) the details panel
+    requestAnimationFrame(() => requestAnimationFrame(frame));
     sim.alpha(0.45).restart();
   }
 
@@ -1775,7 +1812,9 @@ export function createGraph(
     nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("linked", false).classed("focused", false);
     sim.force("focusPush", null);
     sim.force("memberPull", null);
+    sim.velocityDecay(0.4);
     memberHome.clear();
+    linkForce.strength(linkStrengthFor);
     // Bubbles fold back into the group, then disappear.
     if (fit) {
       const nn = n;
