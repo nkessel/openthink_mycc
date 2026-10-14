@@ -1,6 +1,7 @@
 // Organizations: a searchable, filterable list of every org, plus a "Suggested connections"
 // mode that lists pairs of similar orgs that aren't connected yet (the "holes").
 import type { DataFile, GraphNode, Organization } from "./types";
+import { shownType } from "./util";
 import { h, clear } from "./dom";
 import { initials, typeLabel, typeList } from "./util";
 import { termsMatch } from "./itemfilters";
@@ -38,7 +39,7 @@ export function createOrgsView(data: DataFile, cb: OrgsCallbacks): OrgsView {
   toolbar.appendChild(h("h2", {}, "Organizations"));
   const count = h("span", { class: "count" }, "");
   toolbar.appendChild(count);
-  const search = h("input", { class: "search", type: "search", placeholder: "Search names, towns, topics… (separate with commas)" }) as HTMLInputElement;
+  const search = h("input", { class: "search", type: "search", placeholder: "Search names, towns, topics…", title: "Separate several searches with commas" }) as HTMLInputElement;
   search.addEventListener("input", () => { q = search.value.trim().toLowerCase(); render(); });
   toolbar.appendChild(search);
 
@@ -109,7 +110,7 @@ export function createOrgsView(data: DataFile, cb: OrgsCallbacks): OrgsView {
       const card = h(
         "div",
         { class: "list-card" },
-        h("div", { class: "head" }, badge(o), h("div", { class: "coalition-name" }, [typeLabel(o.type), o.geographic_focus].filter(Boolean).join(" · "))),
+        h("div", { class: "head" }, badge(o), h("div", { class: "coalition-name" }, [shownType(o.type), o.geographic_focus].filter(Boolean).join(" · "))),
         h("div", { class: "name" }, o.name),
         o.description ? h("div", { class: "desc" }, o.description) : null,
         meta,

@@ -79,7 +79,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   const panel = h("div", { class: "geo-panel" });
   wrap.appendChild(panel);
   const geoSearch = createNodeSearch(everythingForSearch(data), (_id, item) => goTo(item), {
-    placeholder: "Search a place, organization, coalition, event…",
+    placeholder: "Search places, groups, events…",
     extra: findPlaces,
   });
   panel.appendChild(geoSearch);

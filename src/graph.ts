@@ -1715,7 +1715,7 @@ export function createGraph(
     while (focusBar.firstChild) focusBar.removeChild(focusBar.firstChild);
     const count = (k: BubbleKind | "volunteer") => k === "volunteer" ? allBubbles.filter(isRoleB).length
       : allBubbles.filter((b) => b.kind === k && !isRoleB(b)).length;
-    const back = h("button", { class: "focus-back", type: "button" }, "← Back to network");
+    const back = h("button", { class: "focus-back", type: "button", "aria-label": "Back to the whole network" }, "← Back", h("span", { class: "focus-back-more" }, " to network"));
     back.addEventListener("click", () => exitFocus());
     focusBar.appendChild(back);
     focusBar.appendChild(h("strong", { class: "focus-title" }, n.name));
@@ -1729,7 +1729,7 @@ export function createGraph(
       stat("volunteer", "Volunteer roles"),
     );
     focusBar.appendChild(legend);
-    const classicBtn = h("button", { class: "focus-back", type: "button", title: "From now on, clicking a group only opens its details panel (turn back on in Map settings)" }, "Don't zoom in on click");
+    const classicBtn = h("button", { class: "focus-back focus-classic", type: "button", title: "From now on, clicking a group only opens its details panel (turn back on in Map settings)" }, "Don't zoom in on click");
     classicBtn.addEventListener("click", () => setViewMode(false));
     focusBar.appendChild(classicBtn);
     if (!count("thought")) {
@@ -1743,6 +1743,7 @@ export function createGraph(
       cb.onOpenDetails?.(n);
     };
     focusBar.style.display = "flex";
+    wrap.classList.add("focusing");
     focusCard.style.display = "none";
 
     // Zoom so the ring fills the view (nudged left when the details panel covers the right side).
@@ -1790,6 +1791,7 @@ export function createGraph(
     nodeSel.classed("faded", false).classed("partner", false).classed("partner-many", false);
     linkSel.classed("faded", false);
     focusBar.style.display = "none";
+    wrap.classList.remove("focusing");
     focusCard.style.display = "none";
     // back to the view from before the group was opened (or the whole network)
     if (fit) setTimeout(() => {

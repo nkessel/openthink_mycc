@@ -55,7 +55,7 @@ export function createEventsView(
   const search = h("input", {
     class: "search",
     type: "search",
-    placeholder: "Search topics, names, places… (separate with commas)",
+    placeholder: "Search topics, names, places…",
   }) as HTMLInputElement;
   search.addEventListener("input", () => {
     q = search.value.trim().toLowerCase();
