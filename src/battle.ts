@@ -186,7 +186,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   })();
   let showing: Show = saved.show ?? "both";
   let split: Split = saved.split ?? "strategy";
-  let layout: BLayout = saved.layout === "circle" ? "circle" : "columns";
+  // Narrow phones start in the circle: three columns are too cramped there. A layout someone picked is kept.
+  const narrow = window.matchMedia("(max-width: 600px)").matches;
+  let layout: BLayout = saved.layout === "circle" || saved.layout === "columns" ? saved.layout : narrow ? "circle" : "columns";
   const save = () => {
     try {
       localStorage.setItem(STORE, JSON.stringify({ show: showing, split, layout }));
