@@ -1,7 +1,7 @@
 # Setup: sheet, forms, and website (about 20 minutes, once)
 
 **How it fits together**
-- **Google Sheet ("MA Climate Coalition Map data")** — the source of truth for the map. Only the core team can open it.
+- **Google Sheet ("MA Climate Organization Map data")** — the source of truth for the map. Only the core team can open it.
 - **Five Google Forms** — how point-people update their own org and add events/projects. They sign in with Google; the script checks their email against the **Editors** tab before changing anything.
 - **Website (GitHub Pages)** — a static site that reads the sheet's public data live, with a nightly backup copy in the repo.
 
@@ -24,13 +24,13 @@ Every question is optional except "which one is this about?". Blank answers neve
 
 ## 1. Add the script to the sheet
 
-1. Open the [**MA Climate Coalition Map data**](https://docs.google.com/spreadsheets/d/187YVEn7wmtyso30Q453uWzSPcXLVQN2I-8UN86swT7E/edit) Google Sheet (shared with the core team).
+1. Open the [**MA Climate Organization Map data**](https://docs.google.com/spreadsheets/d/187YVEn7wmtyso30Q453uWzSPcXLVQN2I-8UN86swT7E/edit) Google Sheet (shared with the core team).
 2. **Extensions → Apps Script**. Delete what's in `Code.gs`, paste in all of [`Code.gs`](Code.gs), click **Save**.
-3. Close that tab and reload the sheet. A **MA Climate Coalition Map** menu appears.
+3. Close that tab and reload the sheet. A **MA Climate Organization Map** menu appears.
 
 ## 2. Build everything
 
-1. **MA Climate Coalition Map → Set up sheet + forms (run once)**.
+1. **MA Climate Organization Map → Set up sheet + forms (run once)**.
 2. Approve the permission prompt (it creates forms, edits this sheet, sends review alerts, and looks up addresses for map pins). If Google says the app is unverified: **Advanced → Go to project** — it's your own script.
 3. When it finishes: the tabs are filled from `development_branch`, the four forms exist and are shared with the core team, and their links are on **Start Here**.
 
@@ -69,16 +69,16 @@ To move an item from a coalition to an org only, clear its `coalition_id` cell i
 ## Day to day
 
 - Review **Needs Review** when the alert email arrives; tick **approve** or leave it (set `status` to `rejected` for your own records).
-- Add point-people on **Editors**. Then run **MA Climate Coalition Map → Refresh form dropdowns** if you edited orgs/events/projects by hand.
+- Add point-people on **Editors**. Then run **MA Climate Organization Map → Refresh form dropdowns** if you edited orgs/events/projects by hand.
 - When someone is added to **Editors**, anything of theirs waiting in Needs Review is re-checked and saved automatically.
-- A pin in the wrong town? Event and project locations without a town (e.g. "George Sherman Hall, 2nd floor") are now placed using the host org's town, and matches outside Massachusetts are ignored. To fix pins saved before this change, run **MA Climate Coalition Map → Re-check event and project pins**.
-- To stop key questions being skipped, run **MA Climate Coalition Map → Make key questions required** once (event: name, date, online?, free food, who can come; project: name, online?, free food, who can come, help wanted). Location stays optional because online events have none; an in-person event saved without one keeps its "needs info" note.
+- A pin in the wrong town? Event and project locations without a town (e.g. "George Sherman Hall, 2nd floor") are now placed using the host org's town, and matches outside Massachusetts are ignored. To fix pins saved before this change, run **MA Climate Organization Map → Re-check event and project pins**.
+- To stop key questions being skipped, run **MA Climate Organization Map → Make key questions required** once (event: name, date, online?, free food, who can come; project: name, online?, free food, who can come, help wanted). Location stays optional because online events have none; an in-person event saved without one keeps its "needs info" note.
 - New organizations from anyone who isn't an admin wait in **Needs Review**. Admins' new orgs are saved straight away.
 - The 1–4 scores (`ej_focus`, `grassroots`, `policy_expertise`, `in_building`) and `coalition_weights` are core-team columns; no form changes them.
 
 ## Updating the forms
 
-Run **MA Climate Coalition Map → Update the forms** after pasting a new version of the script. It is safe to run again. It:
+Run **MA Climate Organization Map → Update the forms** after pasting a new version of the script. It is safe to run again. It:
 - renames the organization form's "Short description" to **Mission statement and description**. New organizations then show on the Topics page under the topics they tick.
 - brings the feedback form's "Which part of the map" choices up to date (Topics page, voting districts, details panel, phone, and so on).
 - adds links on the organization form's thank-you page to the project, event and action forms. A Google Form can't branch into another form, so this is how someone goes on from their organization to its projects.
@@ -90,7 +90,7 @@ Run **MA Climate Coalition Map → Update the forms** after pasting a new versio
 
 ## Topics on the forms (Wikipedia-based or group-based)
 
-Run **MA Climate Coalition Map → Use Wikipedia-based topics on the forms (Turibius)** once (after the update is merged, so the script can fetch `research/topics/wiki/topics-merged.csv` from GitHub). It:
+Run **MA Climate Organization Map → Use Wikipedia-based topics on the forms (Turibius)** once (after the update is merged, so the script can fetch `research/topics/wiki/topics-merged.csv` from GitHub). It:
 - fills the **Topics** tab with Turibius's list: the 13 seed topics plus every topic at lift ≥ 8 (about 2,800), each with its aliases, Wikidata id and seed;
 - makes the seed topics (plus "Youth serving") the checkboxes on the organization, event and project forms;
 - matches whatever people type in **More topics** against every topic name and alias (exact first, then close spellings). Anything that matches nothing still lands on **Unmatched Input** for the team.
@@ -110,7 +110,7 @@ Use this when the repo has new events/projects/actions (from `node scripts/apply
 
 1. **Update the script.** Extensions → Apps Script → replace `Code.gs` with the repo's, **Save**. Then **Deploy → Manage deployments → ✏️ → Version: New version → Deploy**.
 2. **Replace the data tabs.** For each of **Projects**, **Events** and **Actions**: open the tab, **File → Import → Upload** the matching CSV, choose **Replace current sheet**. (This wipes the old placeholders. New columns such as `recurrence`, `needs_info`, `host_org_id`, `description` and `link` come in with the CSV.) Edits people already made through the forms live in these tabs, so export first if you need them.
-3. **Build the new form.** Reload the sheet, then **MA Climate Coalition Map → Set up sheet + forms**. It skips the forms that exist, adds the missing "action" form and the event form's repeat question, and refreshes every dropdown from the tabs.
+3. **Build the new form.** Reload the sheet, then **MA Climate Organization Map → Set up sheet + forms**. It skips the forms that exist, adds the missing "action" form and the event form's repeat question, and refreshes every dropdown from the tabs.
 4. **Connect the site.** On **Start Here**, copy the JSON in the row "For the site: paste into src/forms.config.ts" and send it over (or paste it over `FORMS` in `src/forms.config.ts`). The `action` entry makes the "Update this action" link on the site open the new form.
 
 Anything a point person edits through a form clears that item's "needs more information" notice.

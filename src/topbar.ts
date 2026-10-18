@@ -19,7 +19,7 @@ export function createTopbar(
   parent.appendChild(bar);
 
   // Short name so it fits on one line, even on phones; the full name is the tooltip / page title.
-  const brand = h("a", { class: "brand", href: "./", title: `${currentMap.fullTitle} — click: back to the map · right-click: switch map` }, currentMap.title);
+  const brand = h("a", { class: "brand", href: "./", title: `${currentMap.fullTitle} — click: back to the map · right-click: switch map` }, h("span", { class: "brand-long" }, currentMap.title), h("span", { class: "brand-short" }, currentMap.short || currentMap.title));
   brand.addEventListener("click", (e) => {
     e.preventDefault();
     cb.onHome?.();

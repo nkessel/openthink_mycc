@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { largePrint, onDisplayChange } from "./display";
+import { largePrint, onDisplayChange, lowPower, weakDevice } from "./display";
 import type {
   DataFile,
   GraphNode,
@@ -353,7 +353,8 @@ export function createGraph(
     if (focusId && pinnedMembers.length) {
       const s = typeof l.source === "string" ? l.source : l.source.id;
       const t = typeof l.target === "string" ? l.target : l.target.id;
-      if (s !== focusId && t !== focusId && pinnedMembers.some((o) => o.id === s || o.id === t)) return 0;
+      // (their link to the open group rests too: its length fought the satellite's spring to its place)
+      if (pinnedMembers.some((o) => o.id === s || o.id === t)) return 0;
     }
     if (l.kind === "org") return showOrgLinks ? linkForceStrength() * 0.25 * (l.weight ?? 1) : 0;
     return linkForceStrength();
@@ -422,7 +423,36 @@ export function createGraph(
     .force("collide", collideForce)
     .force("x", xForce)
     .force("y", yForce)
-    .alphaDecay(0.02);
+    .alphaDecay(0.02)
+    .alphaMin(0.004); // stop a little sooner once the motion is too small to see
+
+  // Calm mode (10/15 meeting: "cap bubble movement based on the device"): on low-power mode, a weak device, or when
+  // the first seconds run below ~25 frames a second, the map settles about three times sooner, does less collision
+  // work per step, and the see-through blur behind panels (repainted every frame the map moves) is turned off.
+  let calm = false;
+  function setCalm(on: boolean) {
+    if (calm === on) return;
+    calm = on;
+    document.documentElement.classList.toggle("calm-map", on);
+    sim.alphaDecay(on ? 0.06 : 0.02).velocityDecay(on ? 0.5 : 0.4);
+    collideForce.iterations(on ? 1 : 2);
+  }
+  setCalm(lowPower() || weakDevice());
+  onDisplayChange(() => setCalm(lowPower() || weakDevice() || calmBySpeed));
+  let calmBySpeed = false;
+  {
+    const gaps: number[] = [];
+    let last = performance.now();
+    const start = last;
+    const watch = (t: number) => {
+      gaps.push(t - last);
+      last = t;
+      if (t - start < 3000) { requestAnimationFrame(watch); return; }
+      gaps.sort((a, b) => a - b);
+      if (gaps[Math.floor(gaps.length / 2)] > 40) { calmBySpeed = true; setCalm(true); }
+    };
+    requestAnimationFrame(watch);
+  }
 
   // Re-center on resize
   function center(animate = false) {
@@ -453,8 +483,8 @@ export function createGraph(
     .on("end", (event, d) => {
       if (!event.active) sim.alphaTarget(0);
       dotsLiveUntil = performance.now() + 1500;
-      // A zoomed-in node (and the groups held around it) stays where you put it until you leave the zoomed-in view.
-      if (d.id === focusId || pinnedMembers.includes(d)) return;
+      // A zoomed-in node stays where you put it until you leave the zoomed-in view (its satellites spring back home).
+      if (d.id === focusId) return;
       d.fx = null;
       d.fy = null;
     });
@@ -1550,8 +1580,11 @@ export function createGraph(
         nodeSel.filter((d) => n.kind === "org" && d.kind === "coalition").style("--ls", (d) => String(Math.max(0.5, linkScale(d))));
         pinnedMembers.sort((a, b) => drawnR(b) - drawnR(a));
         const maxR = Math.max(...pinnedMembers.map((o) => drawnR(o)));
-        const spacing = 2 * maxR + 12; // between neighbours along a row
-        const rowGap = 2 * maxR + 20; // between rows (room for a name under each)
+        // Spacing matches the collision size, so neighbours on a row never shove each other while their springs
+        // pull them back (that tug-of-war made a crowded ring rock).
+        const maxC = Math.max(maxR, ...pinnedMembers.map((o) => collideRadius(o)));
+        const spacing = 2 * maxC + 6; // between neighbours along a row
+        const rowGap = 2 * maxC + 20; // between rows (room for a name under each)
         // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
         let rx = (bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR + 10 : 0); // big coalitions sit fully outside the moons' names
         let ry = rx;
@@ -1587,10 +1620,6 @@ export function createGraph(
           o.y = fy + home.oy;
           o.vx = 0;
           o.vy = 0;
-          // Held at their place: left to the forces they rocked back and forth for seconds (the "twitch").
-          // They can still be dragged; where they're dropped they stay until the group is closed.
-          o.fx = o.x;
-          o.fy = o.y;
         });
         const order = new Map(pinnedMembers.map((o, i) => [o.id, i]));
         nodeSel.filter((d) => order.has(d.id))
@@ -1602,6 +1631,15 @@ export function createGraph(
     }
 
     linkForce.strength(linkStrengthFor);
+    // Satellites keep their spacing by collision only. The map-wide repulsion fought their springs and made a
+    // crowded ring (MPF's 104 members) rock back and forth, so while a group is open it skips them.
+    if (memberHome.size) {
+      const focusCharge = d3.forceManyBody<GraphNode>().strength(chargeStrengthFor).distanceMax(900);
+      const wrapped = Object.assign((a: number) => focusCharge(a), {
+        initialize: (nodes: GraphNode[]) => focusCharge.initialize(nodes.filter((o) => !memberHome.has(o)), Math.random),
+      });
+      sim.force("charge", wrapped as unknown as d3.Force<GraphNode, undefined>);
+    }
     // While a group is open, the groups being moved out of the way settle without bouncing, and then hold still
     // (the open group is what you're looking at; nothing behind it should keep drifting).
     sim.velocityDecay(0.6);
@@ -1685,32 +1723,44 @@ export function createGraph(
       return s !== id && t !== id;
     });
 
-    // Members spring toward their place around the coalition (wherever the coalition is now).
+    // Satellites stay alive: each is on a soft spring to its place around the open group (wherever the group is
+    // now), so they jostle, make way when one is dragged and drift back. The spring and the extra damping while a
+    // group is open (velocityDecay 0.6) are set so they ease in without overshooting — no rocking back and forth.
     sim.force("memberPull", memberHome.size ? (alpha: number) => {
       const f = nodeById.get(id);
       if (!f) return;
-      const k = Math.max(0.06, alpha * 0.5);
+      const k = 0.035 + 0.05 * Math.min(1, alpha / 0.4);
       for (const [o, h] of memberHome) {
         if (o.fx != null) continue; // being dragged
         o.vx = (o.vx ?? 0) + ((f.x ?? 0) + h.ox - (o.x ?? 0)) * k;
         o.vy = (o.vy ?? 0) + ((f.y ?? 0) + h.oy - (o.y ?? 0)) * k;
-        // Keep-out oval around the items: anything inside is pushed back out along its own direction.
+        // Keep-out oval around the moons and their names: anything inside eases back out along its own direction
+        // (a soft edge: the old hard reset to the boundary made satellites flick).
         const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
         const { rx, ry } = memberKeepOut;
         const e = rx && ry ? Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2) : 2;
         if (e < 1) {
-          // a hard edge: put it back on the boundary and drop any inward speed
-          const k2 = 1 / Math.max(e, 0.05);
-          o.x = (f.x ?? 0) + dx * k2;
-          o.y = (f.y ?? 0) + dy * k2;
           const len = Math.hypot(dx, dy) || 1;
-          const inward = ((o.vx ?? 0) * dx + (o.vy ?? 0) * dy) / len;
-          if (inward < 0) { o.vx = (o.vx ?? 0) - (inward * dx) / len; o.vy = (o.vy ?? 0) - (inward * dy) / len; }
+          const gap = (1 / Math.max(e, 0.05) - 1) * len; // distance to the edge
+          o.vx = (o.vx ?? 0) * 0.5 + (dx / len) * gap * 0.25;
+          o.vy = (o.vy ?? 0) * 0.5 + (dy / len) * gap * 0.25;
         }
       }
     } : null);
 
     // Push every other group well away so the bubbles have clear space (and nothing sits behind them).
+    // Groups that sit where the satellites and moons go step straight out to the edge of the clear space (they
+    // are faded behind the open group). Gliding out, they ploughed through the satellite rows and set them rocking.
+    {
+      const f = n;
+      for (const o of allNodes) {
+        if (o === f || memberHome.has(o)) continue;
+        const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
+        const d = Math.hypot(dx, dy) || 1;
+        const min = clearR + itemExtent(o);
+        if (d < min) { o.x = (f.x ?? 0) + (dx / d) * min; o.y = (f.y ?? 0) + (dy / d) * min; o.vx = 0; o.vy = 0; }
+      }
+    }
     sim.force("focusPush", (alpha: number) => {
       const f = nodeById.get(id);
       if (!f) return;
@@ -1813,6 +1863,7 @@ export function createGraph(
     sim.force("focusPush", null);
     sim.force("memberPull", null);
     sim.velocityDecay(0.4);
+    sim.force("charge", chargeForce);
     memberHome.clear();
     linkForce.strength(linkStrengthFor);
     // Bubbles fold back into the group, then disappear.

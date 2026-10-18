@@ -3088,3 +3088,33 @@ html, body { overflow-x: clip; max-width: 100%; }
   .cr-bar.foldable.folded { padding: 4px 12px; }
   .geo-panel.foldable.folded { background: transparent; box-shadow: none; }
 }
+/* Map name: full on wide screens, the short name (MACOM) where the top bar is tight */
+.brand .brand-short { display: none; }
+@media (max-width: 1150px) {
+  .brand .brand-long { display: none; }
+  .brand .brand-short { display: inline; }
+}
+/* Calm map (slow devices, low-power mode): no see-through blur behind panels, no pulsing + button */
+.calm-map *, .low-power * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.calm-map .fab, .low-power .fab { animation: none !important; }
+/* "The map has new updates" note (live sheet newer than the copy shown) */
+.update-note { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 1000; display: flex; align-items: center; gap: 10px;
+  background: var(--bg-elev); color: var(--text); border: 1px solid var(--accent); border-radius: 999px; padding: 6px 8px 6px 16px; box-shadow: var(--shadow); font-size: 14px; }
+.update-note-btn { appearance: none; border: none; background: var(--accent); color: #0f172a; font: inherit; font-weight: 600; border-radius: 999px; padding: 6px 14px; min-height: 36px; cursor: pointer; }
+.update-note-x { appearance: none; border: none; background: none; color: var(--text-dim); font-size: 20px; min-width: 36px; min-height: 36px; cursor: pointer; }
+@media (max-width: 720px) { .update-note { bottom: 72px; max-width: calc(100vw - 24px); } }
+/* On-map form (+ menu): fill in here, then the Google Form opens with the answers */
+.qf-shade { position: fixed; inset: 0; z-index: 2000; background: rgba(5, 8, 15, 0.6); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.qf { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 14px; width: min(560px, 100%); max-height: calc(100vh - 32px); display: flex; flex-direction: column; box-shadow: var(--shadow); }
+.qf-head { padding: 14px 18px 6px; } .qf-head h2 { margin: 0; font-size: 18px; }
+.qf-body { overflow-y: auto; padding: 6px 18px; display: flex; flex-direction: column; gap: 12px; }
+.qf-row { display: flex; flex-direction: column; gap: 4px; }
+.qf-label { font-size: 13px; color: var(--text-dim); }
+.qf input[type=text], .qf input[type=date], .qf input[type=time], .qf textarea, .qf select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; min-height: 40px; }
+.qf-checks { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.qf-check { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; min-height: 32px; }
+.qf-note { font-size: 12px; color: var(--text-dim); margin: 8px 18px 0; }
+.qf-foot { display: flex; align-items: center; gap: 10px; padding: 12px 18px 16px; flex-wrap: wrap; }
+.qf-go { margin-left: auto; appearance: none; border: none; border-radius: 999px; background: var(--accent); color: #0f172a; font: inherit; font-weight: 700; padding: 10px 18px; min-height: 44px; cursor: pointer; }
+.qf-cancel { appearance: none; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 999px; font: inherit; padding: 8px 14px; min-height: 40px; cursor: pointer; }
+.qf-direct { font-size: 13px; color: var(--text-dim); }
