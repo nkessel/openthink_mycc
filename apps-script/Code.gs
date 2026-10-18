@@ -1,9 +1,9 @@
 /**
- * MA Climate Coalition Map — forms + spreadsheet backend
+ * MA Climate Organization Map — forms + spreadsheet backend
  * ---------------------------------------
- * Paste this whole file into the MA Climate Coalition Map data Google Sheet:
+ * Paste this whole file into the MA Climate Organization Map data Google Sheet:
  *   Extensions → Apps Script → replace Code.gs → Save.
- * Then reload the sheet and run  MA Climate Coalition Map → Set up sheet + forms  once.
+ * Then reload the sheet and run  MA Climate Organization Map → Set up sheet + forms  once.
  *
  * What it does
  *  - Loads the current map data from GitHub into the tabs (only if they're empty).
@@ -169,7 +169,7 @@ var BASE_SKILLS = ['data entry', 'event logistics', 'facilitation', 'fundraising
   'legal', 'outreach', 'photography', 'public speaking', 'research', 'social media', 'spanish',
   'portuguese', 'translation', 'video editing', 'writing'];
 
-/** Org profile fields from the MA Climate Coalition Map (org.profile in data.json). Admin-only: no form edits them. */
+/** Org profile fields from the MA Climate Organization Map (org.profile in data.json). Admin-only: no form edits them. */
 var PROFILE_BOOL = ['youth_serving', 'school_club', 'hub', 'inactive', 'paid_staff'];
 var PROFILE_NUM = ['ej_focus', 'grassroots', 'policy_expertise', 'in_building'];
 var PROFILE_STR = ['membership_size', 'c3_tier', 'c4_tier', 'geo_precision'];
@@ -201,9 +201,9 @@ var COLS = {
 };
 
 var START_TEXT = [
-  ['MA Climate Coalition Map data', ''],
+  ['MA Climate Organization Map data', ''],
   ['', ''],
-  ['This spreadsheet is the source of truth for the MA Climate Coalition Map. The forms write into it; the site reads from it.', ''],
+  ['This spreadsheet is the source of truth for the MA Climate Organization Map. The forms write into it; the site reads from it.', ''],
   ['', ''],
   ['Tabs', ''],
   ['Coalitions / Organizations / Projects / Events / Actions', 'The map data. Safe to edit by hand. Lists are comma-separated ids or tags.'],
@@ -225,7 +225,7 @@ var START_TEXT = [
 // ---------------------------------------------------------------- menu
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('MA Climate Coalition Map')
+    .createMenu('MA Climate Organization Map')
     .addItem('Set up sheet + forms (run once)', 'setUp')
     .addItem('Replace projects, events and actions from the repo', 'replaceActivityFromRepo')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
@@ -395,6 +395,10 @@ function importReviewedConnections() {
 function updateForms() {
   var props = PropertiesService.getScriptProperties();
   var run = function (key, fn) { var id = props.getProperty(key); if (id && formExists_(id)) fn(FormApp.openById(id)); };
+  // forms keep their titles in step with the map's name (MA Climate Organization Map, 10/15 meeting)
+  var titles = { FORM_ORG: 'Update your organization', FORM_EVENT: 'Add or edit an event', FORM_PROJECT: 'Add or edit a project',
+    FORM_ACTION: 'Add or edit an action or volunteer opportunity', FORM_FEEDBACK: 'Send feedback' };
+  Object.keys(titles).forEach(function (k) { run(k, function (f) { var t = 'MA Climate Organization Map — ' + titles[k]; if (f.getTitle() !== t) f.setTitle(t); }); });
   run('FORM_ORG', upgradeOrgForm_);
   run('FORM_FEEDBACK', upgradeFeedbackForm_);
   run('FORM_EVENT', upgradeEventForm_);
@@ -738,11 +742,11 @@ function buildForms(dataLoaded) {
   var built = [];
 
   var specs = [
-    { key: 'FORM_ORG', title: 'MA Climate Coalition Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
-    { key: 'FORM_EVENT', title: 'MA Climate Coalition Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
-    { key: 'FORM_PROJECT', title: 'MA Climate Coalition Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
-    { key: 'FORM_ACTION', title: 'MA Climate Coalition Map — Add or edit an action or volunteer opportunity', build: buildActionForm_, tab: 'Responses: Actions', signIn: true },
-    { key: 'FORM_FEEDBACK', title: 'MA Climate Coalition Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
+    { key: 'FORM_ORG', title: 'MA Climate Organization Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
+    { key: 'FORM_EVENT', title: 'MA Climate Organization Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
+    { key: 'FORM_PROJECT', title: 'MA Climate Organization Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
+    { key: 'FORM_ACTION', title: 'MA Climate Organization Map — Add or edit an action or volunteer opportunity', build: buildActionForm_, tab: 'Responses: Actions', signIn: true },
+    { key: 'FORM_FEEDBACK', title: 'MA Climate Organization Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
   ];
 
   specs.forEach(function (s) {
@@ -906,7 +910,7 @@ function addOwner_(form, what) {
 
 function buildOrgForm_(form) {
   header_(form,
-    'Use this form to add your organization to the MA Climate Coalition Map, or to fill in and correct what we already have.\n\n' +
+    'Use this form to add your organization to the MA Climate Organization Map, or to fill in and correct what we already have.\n\n' +
     OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE + '\n\n' + SIGNIN_NOTE);
   addWhichOrgText_(form);
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
@@ -1192,7 +1196,7 @@ function upgradeFeedbackForm_(form) {
     if (after) form.moveItem(phone.getIndex(), after.getIndex() + 1);
   }
 }
-var FEEDBACK_DESC = 'Tell us what is working, what is broken, or what you wish the MA Climate Coalition Map did. ' +
+var FEEDBACK_DESC = 'Tell us what is working, what is broken, or what you wish the MA Climate Organization Map did. ' +
   "You'll be asked to sign in with Google so we can follow up; only your feedback is required.";
 
 function buildFeedbackForm_(form) {
@@ -1646,7 +1650,7 @@ function queueForReview_(kind, a, email, target, reason) {
   logChange_(email, FORM_NAMES[kind], 'needs review', reason, kind, target.id, target.label, summary);
   if (ALERT_ADMINS) {
     try {
-      MailApp.sendEmail(ADMIN_EMAILS.join(','), 'MA Climate Coalition Map: submission needs review (' + reason.split(' — ')[0] + ')',
+      MailApp.sendEmail(ADMIN_EMAILS.join(','), 'MA Climate Organization Map: submission needs review (' + reason.split(' — ')[0] + ')',
         'From: ' + (email || 'unknown') + '\nForm: ' + FORM_NAMES[kind] + '\nAbout: ' + target.label +
         '\nWhy: ' + reason + '\n\n' + summary + '\n\nReview it on the "Needs Review" tab: ' + ss_().getUrl());
     } catch (err) { /* email quota; the Change Log still has it */ }
@@ -1659,13 +1663,13 @@ function queueForReview_(kind, a, email, target, reason) {
 function submitterMessage_(status, kind, name) {
   var what = { org: 'organization', event: 'event', project: 'project', action: 'action' }[kind] || 'submission';
   var it = name ? '"' + name + '"' : 'your ' + what;
-  var subject = status === 'held' ? 'MA Climate Coalition Map: we received your ' + what : 'MA Climate Coalition Map: ' + it + ' is on the map';
+  var subject = status === 'held' ? 'MA Climate Organization Map: we received your ' + what : 'MA Climate Organization Map: ' + it + ' is on the map';
   var body = status === 'live'
     ? 'Thanks! Your changes to ' + it + ' are saved. They show on the map within a few minutes (reload the page to see them).'
     : status === 'approved'
       ? 'Thanks for your patience. The map team approved your changes to ' + it + ', and they now show on the map.'
       : 'Thanks! Your changes to ' + it + ' are waiting for the map team to check them, because this email isn\'t yet listed as a point person for that group. You\'ll get another email when they go live.';
-  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— MA Climate Coalition Map' };
+  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— MA Climate Organization Map' };
 }
 /** Sends the message unless turned off (Script property NOTIFY_SUBMITTERS = off). Never fails a submission. */
 function notifySubmitter_(email, msg) {

@@ -19,6 +19,7 @@ import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
+import { setQuickFormData } from "./quickform";
 import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
 
 captureLandText(); // before the loading screen goes away
@@ -55,7 +56,7 @@ function hideBoot() {
   }
   // Otherwise let the last loading lines finish (they speed up now); the bar fills as they do, then the map opens.
   const open = () => (bootWin.bootHeld ? (bootWin.bootRelease = go) : go());
-  if (bootWin.bootAfterLines) bootWin.bootAfterLines(open, 4500);
+  if (bootWin.bootAfterLines) bootWin.bootAfterLines(open, 1800);
   else setTimeout(open, 250);
 }
 
@@ -430,6 +431,7 @@ async function main() {
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
   setFormLabelData(data.organizations);
   setPrefillData(data);
+  setQuickFormData(data);
   setItemLabelData([...data.coalitions, ...data.organizations]);
   // Sector groups aren't in the Google Sheet yet, so the forms aren't pre-filled with them.
   createFab(content, () => {
@@ -451,6 +453,21 @@ async function main() {
 }
 
 /** Live data from the Google Sheet when configured, else the committed snapshot. */
+let lastErrBg: unknown = null;
+/** A quiet note when the live sheet has something newer than what is shown (from the saved copy or the snapshot). */
+function showUpdateNote() {
+  if (document.querySelector(".update-note")) return;
+  const btn = h("button", { type: "button", class: "update-note-btn" }, "Show them");
+  btn.addEventListener("click", () => {
+    try { sessionStorage.setItem("openthink.quickboot", "1"); } catch { /* ignore */ }
+    location.reload();
+  });
+  const close = h("button", { type: "button", class: "update-note-x", "aria-label": "Dismiss" }, "\u00d7");
+  const note = h("div", { class: "update-note", role: "status" }, h("span", {}, "The map has new updates."), btn, close);
+  close.addEventListener("click", () => note.remove());
+  document.body.appendChild(note);
+}
+
 async function loadData(map: MapDef = currentMap): Promise<DataFile> {
   if (map.combine) {
     // USA view: every state we have, side by side (a state that fails to load is skipped).
@@ -467,19 +484,51 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       org_links: got.flatMap((d) => d.org_links || []),
     };
   }
-  const get = async (url: string, ms: number) => {
+  const get = async (url: string, ms: number, quiet = false) => {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), ms);
     try {
       const res = await fetch(url, { signal: ctrl.signal });
       if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
-      const d = JSON.parse(await readWithProgress(res)) as DataFile;
+      const d = JSON.parse(quiet ? await res.text() : await readWithProgress(res)) as DataFile;
       if (!Array.isArray(d.coalitions) || !Array.isArray(d.organizations)) throw new Error("bad data");
       return d;
     } finally {
       clearTimeout(timer);
     }
   };
+  // Faster start (the live sheet takes ~4 s to answer): show the copy saved on this device (or, on a first visit
+  // where the sheet is slow, the nightly snapshot) right away, fetch the live sheet in the background, and offer
+  // a one-tap refresh if it has anything newer.
+  const liveUrl = map.sources.find((u) => /script\.google/.test(u));
+  if (liveUrl) {
+    const key = `openthink.data.v1.${map.id}`;
+    const strip = (d: DataFile) => JSON.stringify({ ...d, generated_at: "" });
+    let cached: DataFile | null = null;
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        const c = JSON.parse(raw) as { at: number; data: DataFile };
+        if (Date.now() - c.at < 7 * 86400000 && Array.isArray(c.data?.organizations)) cached = c.data;
+      }
+    } catch { /* private mode or a full store: no saved copy */ }
+    const live = get(liveUrl, 20000, !!cached).then((d) => {
+      try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), data: d })); } catch { /* full */ }
+      return d;
+    });
+    let first: DataFile | null = cached;
+    if (!first) {
+      const quick = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), 2500))]).catch(() => null);
+      if (quick) return quick;
+      for (const u of map.sources.filter((x) => x !== liveUrl)) {
+        try { first = await get(u, 8000); break; } catch (err) { lastErrBg = err; }
+      }
+      if (!first) return live; // nothing else to show: wait for the sheet after all
+    }
+    const shownKey = strip(first);
+    live.then((d) => { if (strip(d) !== shownKey) showUpdateNote(); }).catch(() => { /* offline: keep what is shown */ });
+    return first;
+  }
   let lastErr: unknown = null;
   for (let i = 0; i < map.sources.length; i++) {
     const last = i === map.sources.length - 1;

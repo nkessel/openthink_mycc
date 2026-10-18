@@ -5,6 +5,7 @@ import { FORMS, type FormLink } from "./forms.config";
 import { h } from "./dom";
 import { currentMap } from "./maps";
 import { liveEntry, prefill } from "./prefill";
+import { openQuickForm } from "./quickform";
 import type { Action, CoalitionEvent, Project } from "./types";
 
 export type FormKind = keyof typeof FORMS;
@@ -115,7 +116,15 @@ export function createFab(parent: HTMLElement, getContext: () => GraphNode | nul
       : h("div", { class: "fab-item disabled", role: "menuitem", "aria-disabled": "true" });
     el.appendChild(h("span", { class: "fab-item-label" }, label));
     el.appendChild(h("span", { class: "fab-item-hint" }, url ? hint : "Form not connected yet"));
-    el.addEventListener("click", () => setOpen(false));
+    el.addEventListener("click", (e) => {
+      setOpen(false);
+      // Adding an event/project/action, or updating the open organization: fill it in here first, then the
+      // Google Form opens with the answers in. (Ctrl/⌘-click still opens the plain form.)
+      const ctx = getContext();
+      const quick = kind === "event" || kind === "project" || kind === "action" || (kind === "org" && ctx?.kind === "org");
+      const me = e as MouseEvent;
+      if (url && quick && !me.metaKey && !me.ctrlKey && !me.shiftKey && openQuickForm(kind as "org" | "event" | "project" | "action", ctx)) e.preventDefault();
+    });
     return el;
   }
 

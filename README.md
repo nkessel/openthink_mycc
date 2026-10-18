@@ -1,8 +1,8 @@
-# MA Climate Coalition Map
+# MA Climate Organization Map
 
 A force-directed network map of Massachusetts climate coalitions and their member organizations. Coalitions are sized by member count; edges denote membership. Members in multiple coalitions naturally land between hubs.
 
-Org list, org data, and logos come from the [MA Climate Coalition Map](https://github.com/aissatabarry/ma-climate-coalition-map). Coalition projects, events, and actions are still placeholder data.
+Org list, org data, and logos come from the [MA Climate Organization Map](https://github.com/aissatabarry/ma-climate-coalition-map). Coalition projects, events, and actions are still placeholder data.
 
 > **Working with an LLM on this repo?** Read and follow [**LLM_GUIDELINES.md**](LLM_GUIDELINES.md) — the team's shared rules (branching on `development_branch`, PRs only, response tags, logging).
 
@@ -35,7 +35,7 @@ Output goes to `dist/`. Deploys cleanly to Vercel (Vite auto-detected — no con
 
 ## Data
 
-Data lives in `public/data.json`. Organizations (and `public/logos/`) are imported from the MA Climate Coalition Map:
+Data lives in `public/data.json`. Organizations (and `public/logos/`) are imported from the MA Climate Organization Map:
 
 ```bash
 node scripts/import-orgs.mjs            # fetches the latest from GitHub

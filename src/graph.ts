@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { largePrint, onDisplayChange } from "./display";
+import { largePrint, onDisplayChange, lowPower, weakDevice } from "./display";
 import type {
   DataFile,
   GraphNode,
@@ -423,7 +423,36 @@ export function createGraph(
     .force("collide", collideForce)
     .force("x", xForce)
     .force("y", yForce)
-    .alphaDecay(0.02);
+    .alphaDecay(0.02)
+    .alphaMin(0.004); // stop a little sooner once the motion is too small to see
+
+  // Calm mode (10/15 meeting: "cap bubble movement based on the device"): on low-power mode, a weak device, or when
+  // the first seconds run below ~25 frames a second, the map settles about three times sooner, does less collision
+  // work per step, and the see-through blur behind panels (repainted every frame the map moves) is turned off.
+  let calm = false;
+  function setCalm(on: boolean) {
+    if (calm === on) return;
+    calm = on;
+    document.documentElement.classList.toggle("calm-map", on);
+    sim.alphaDecay(on ? 0.06 : 0.02).velocityDecay(on ? 0.5 : 0.4);
+    collideForce.iterations(on ? 1 : 2);
+  }
+  setCalm(lowPower() || weakDevice());
+  onDisplayChange(() => setCalm(lowPower() || weakDevice() || calmBySpeed));
+  let calmBySpeed = false;
+  {
+    const gaps: number[] = [];
+    let last = performance.now();
+    const start = last;
+    const watch = (t: number) => {
+      gaps.push(t - last);
+      last = t;
+      if (t - start < 3000) { requestAnimationFrame(watch); return; }
+      gaps.sort((a, b) => a - b);
+      if (gaps[Math.floor(gaps.length / 2)] > 40) { calmBySpeed = true; setCalm(true); }
+    };
+    requestAnimationFrame(watch);
+  }
 
   // Re-center on resize
   function center(animate = false) {

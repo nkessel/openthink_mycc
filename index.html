@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MA Climate Coalition Map</title>
+    <title>MA Climate Organization Map (MACOM)</title>
     <style>
       #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:14px;overflow:auto;padding:24px 0;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
       #boot.done{opacity:0;pointer-events:none}
@@ -56,7 +56,7 @@
   </head>
   <body>
     <div id="boot" role="status" aria-live="polite">
-      <div class="boot-title">Climate Coalition Map</div>
+      <div class="boot-title">MA Climate Organization Map (MACOM)</div>
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
       <div class="boot-msg">Gathering the movement&hellip;</div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
@@ -130,6 +130,8 @@
         window.bootDone = function () {
           if (finished) return;
           finished = true;
+          // The map is ready: skip to the last waiting line instead of playing every one (that added ~5 s).
+          if (queue.length > 1) { var cut = queue.length - 1; queue.splice(0, cut); if (phase === "build") shownB += cut; }
           var ms = performance.now() - t0;
           try { localStorage.setItem(KEY, String(Math.round(expected * 0.4 + ms * 0.6))); } catch (e) {}
         };
@@ -235,7 +237,7 @@
         // Only the newest three wait their turn, so the screen never falls far behind what is happening.
         var queue = [], timer = null, shownAt = performance.now(), dwell = 900; // the opening line moves on quickly
         // once the map is ready, the lines still waiting go by quickly instead of keeping everyone waiting
-        var dwellFor = function (t) { return finished ? 480 : Math.min(1600, 750 + 16 * t.length); };
+        var dwellFor = function (t) { return finished ? 320 : Math.min(1600, 750 + 16 * t.length); };
         // "Loading volunteer opportunities (25/25)" shows its count running up from 1
         function countUp(text) {
           var m = /^(.*\()(\d+)\/(\d+)(\).*)$/.exec(text);
