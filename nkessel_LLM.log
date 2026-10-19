@@ -746,3 +746,9 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Site: src/eventcheck.ts drops listed events and any event without a web link, on every load (live, cached, snapshot). public/data.json updated the same way.
 - Sheet: new menu "Apply the event check" hides the same rows (hidden=TRUE, logged) and applies the fixes; the event form's Link question becomes required via "Make key questions required". Test added.
 - Nathan: Topics lines "thinner like they used to be". Simple animation (auto-on for slower frames) drew the canvas at 1x, which made every line soft and thick on retina screens; it now keeps up to 1.5x. Stream widths ~30% thinner in Streams and Command room.
+
+## 2026-10-18 — Each page loads separately, preloaded when quiet
+- Nathan: "load each page separately, and pre-load them if there's a moment of no interaction". Geographic (Leaflet), Events, Organizations, Projects, Actions and Topics are now their own downloads (src/lazypage.ts, dynamic import). Startup script 529 kB → 211 kB.
+- 3–4 s after the map opens, whenever nobody has touched the page for 2 s and the browser is idle, the next page is fetched and set up, one at a time (geo, events, orgs, projects, actions, topics). Low-power devices only download the code; Save-Data skips preloading.
+- "Locate on geographic map" checks moved to src/placed.ts so the details pane works before Leaflet loads.
+- Tested in Chromium: every tab opens (≤0.3 s after preload, ~0.2 s from a cold click), preload finished ~10 s after load with no errors.

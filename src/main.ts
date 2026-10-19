@@ -8,18 +8,14 @@ import { createSidebar } from "./sidebar";
 import { createGraph } from "./graph";
 import { createTooltip } from "./tooltip";
 import { createDrawer } from "./drawer";
-import { createGeographicView } from "./geographic";
-import { createEventsView } from "./events";
-import { createProjectsView } from "./projects";
-import { createActionsView } from "./actions";
-import { createTopicsView } from "./topics";
 import { findItem, showItemCard, setCardActions } from "./itemcard";
-import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkEvents } from "./eventcheck";
+import { lazyPage, preloadWhenQuiet } from "./lazypage";
+import { geoCanLocate } from "./placed";
 import { setQuickFormData } from "./quickform";
 import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
 
@@ -223,7 +219,7 @@ async function main() {
       if (where === "map") locateOnMap(node, it);
       else locateOnGeo(node, it);
     },
-    canLocateGeo: (node, item) => geoView.canLocate(node, item as { lat?: number; lng?: number } | undefined),
+    canLocateGeo: (node, item) => geoCanLocate(node, item as { lat?: number; lng?: number } | undefined),
     currentView: () => activeTab,
   });
 
@@ -277,22 +273,6 @@ async function main() {
   // "Social justice": one switch per sector layer, closed by default, just above Advanced display settings.
   createSectorSection(sidebar.controlsContainer(), currentMap.id);
 
-  // ----- Geographic view -----
-  const geoView = createGeographicView(data, {
-    onNodeClick: (node) => {
-      drawerApi!.open(node);
-    },
-    onItemClick: (_kind, id, at) => {
-      const f = findItem(data, id);
-      if (f) showItemCard(geoView.el, f.kind, f.item, f.owner, () => locateOnMap(f.owner.node), at);
-    },
-    onLocateMap: (node) => locateOnMap(node),
-  });
-  geoView.el.style.display = "none";
-  geoView.el.style.height = "100%";
-  geoView.el.style.position = "absolute";
-  geoView.el.style.inset = "0";
-  content.appendChild(geoView.el);
   // The drawer is mounted inside the map view's graphContainer; we want
   // it to overlay other views too — re-parent it to content so it appears
   // above all views.
@@ -301,67 +281,49 @@ async function main() {
     if (drawerEl) content.appendChild(drawerEl);
   }
 
-  // ----- Events view -----
-  const eventsView = createEventsView(data, {
-    onCoalitionClick: (node) => {
-      openDetails(node);
-    },
+  // ----- The other pages: each loads the first time it's opened (or earlier, while nobody is using the page) -----
+  const geoPage = lazyPage(content, "the geographic map", () => import("./geographic"), (m) => {
+    const v = m.createGeographicView(data, {
+      onNodeClick: (node) => {
+        drawerApi!.open(node);
+      },
+      onItemClick: (_kind, id, at) => {
+        const f = findItem(data, id);
+        if (f) showItemCard(v.el, f.kind, f.item, f.owner, () => locateOnMap(f.owner.node), at);
+      },
+      onLocateMap: (node) => locateOnMap(node),
+    });
+    return v;
   });
-  eventsView.el.style.display = "none";
-  eventsView.el.style.height = "100%";
-  eventsView.el.style.position = "absolute";
-  eventsView.el.style.inset = "0";
-  content.appendChild(eventsView.el);
-
-  // ----- Organizations view -----
-  const orgsView = createOrgsView(data, {
-    onOrgClick: (node) => {
-      drawerApi!.open(node);
-      graphApi!.setSelectedNode(node);
-    },
+  const eventsPage = lazyPage(content, "events", () => import("./events"), (m) =>
+    m.createEventsView(data, { onCoalitionClick: (node) => openDetails(node) }));
+  const orgsPage = lazyPage(content, "organizations", () => import("./orgs"), (m) =>
+    m.createOrgsView(data, {
+      onOrgClick: (node) => {
+        drawerApi!.open(node);
+        graphApi!.setSelectedNode(node);
+      },
+    }));
+  const projectsPage = lazyPage(content, "projects", () => import("./projects"), (m) =>
+    m.createProjectsView(data, { onCoalitionClick: (node) => openDetails(node) }));
+  const actionsPage = lazyPage(content, "actions", () => import("./actions"), (m) =>
+    m.createActionsView(data, { onCoalitionClick: (node) => openDetails(node) }));
+  // Topics: streams of energy into topics; also loads public/topics*.json the first time it's shown.
+  const topicsPage = lazyPage(content, "topics", () => import("./topics"), (m) => {
+    const v = m.createTopicsView({
+      hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
+      logoOf: (id) => (data.coalitions.find((c) => c.id === id) ?? data.organizations.find((o) => o.id === id))?.logo || undefined,
+      hasItem: (rid) => !!findItem(data, rid.slice(rid.indexOf(":") + 1)),
+      openItem: (rid, at) => {
+        const f = findItem(data, rid.slice(rid.indexOf(":") + 1));
+        if (f) showItemCard(v.el, f.kind, f.item, f.owner, () => openGroup(f.owner.node.id), at);
+      },
+      onGroupClick: (id) => openGroup(id),
+      data: () => data,
+    });
+    return v;
   });
-  orgsView.el.style.display = "none";
-  orgsView.el.style.height = "100%";
-  orgsView.el.style.position = "absolute";
-  orgsView.el.style.inset = "0";
-  content.appendChild(orgsView.el);
-
-  // ----- Projects view -----
-  const projectsView = createProjectsView(data, {
-    onCoalitionClick: (node) => {
-      openDetails(node);
-    },
-  });
-  projectsView.el.style.display = "none";
-  projectsView.el.style.height = "100%";
-  projectsView.el.style.position = "absolute";
-  projectsView.el.style.inset = "0";
-  content.appendChild(projectsView.el);
-
-  // ----- Actions & volunteer opportunities view -----
-  const actionsView = createActionsView(data, {
-    onCoalitionClick: (node) => {
-      openDetails(node);
-    },
-  });
-  actionsView.el.style.display = "none";
-  actionsView.el.style.height = "100%";
-  actionsView.el.style.position = "absolute";
-  actionsView.el.style.inset = "0";
-  content.appendChild(actionsView.el);
-
-  // ----- Topics view (streams of energy into topics; loads public/topics.json the first time it opens) -----
-  const topicsView = createTopicsView({
-    hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
-    logoOf: (id) => (data.coalitions.find((c) => c.id === id) ?? data.organizations.find((o) => o.id === id))?.logo || undefined,
-    hasItem: (rid) => !!findItem(data, rid.slice(rid.indexOf(":") + 1)),
-    openItem: (rid, at) => {
-      const f = findItem(data, rid.slice(rid.indexOf(":") + 1));
-      if (f) showItemCard(topicsView.el, f.kind, f.item, f.owner, () => openGroup(f.owner.node.id), at);
-    },
-    onGroupClick: (id) => openGroup(id),
-    data: () => data,
-  });
+  const pages = { geo: geoPage, events: eventsPage, orgs: orgsPage, projects: projectsPage, actions: actionsPage, topics: topicsPage } as const;
   function openGroup(id: string): boolean {
     const c = data.coalitions.find((x) => x.id === id);
     const o = data.organizations.find((x) => x.id === id);
@@ -370,11 +332,6 @@ async function main() {
     openDetails(node);
     return true;
   }
-  topicsView.el.style.display = "none";
-  topicsView.el.style.height = "100%";
-  topicsView.el.style.position = "absolute";
-  topicsView.el.style.inset = "0";
-  content.appendChild(topicsView.el);
 
   /** A group's full details in the pane, over whatever page you're on. Nothing moves. */
   function openDetails(node: GraphNode) {
@@ -395,7 +352,7 @@ async function main() {
   function locateOnGeo(node: GraphNode, it?: { kind: "event" | "project" | "action"; item: CoalitionEvent | Project | Action }) {
     setTab("geo");
     const pt = it?.item as { lat?: number; lng?: number } | undefined;
-    geoView.locate(node, it ? { kind: it.kind, id: it.item.id, lat: pt?.lat, lng: pt?.lng } : undefined);
+    void geoPage.get().then((v) => v.locate(node, it ? { kind: it.kind, id: it.item.id, lat: pt?.lat, lng: pt?.lng } : undefined));
     if (it) drawerApi!.openItem(it.kind, it.item, node);
     else drawerApi!.open(node);
   }
@@ -403,22 +360,18 @@ async function main() {
     details: (kind, item, owner) => drawerApi!.openItem(kind, item, owner.node),
     locateMap: (kind, item, owner) => locateOnMap(owner.node, { kind, item }),
     locateGeo: (kind, item, owner) => locateOnGeo(owner.node, { kind, item }),
-    hasGeo: (_kind, item, owner) => geoView.canLocate(owner.node, item as { lat?: number; lng?: number }),
+    hasGeo: (_kind, item, owner) => geoCanLocate(owner.node, item as { lat?: number; lng?: number }),
   });
 
   function setTab(tab: TopTab) {
     activeTab = tab;
     topbar.setActive(tab);
     mapView.style.display = tab === "map" ? "grid" : "none";
-    geoView.el.style.display = tab === "geo" ? "block" : "none";
-    eventsView.el.style.display = tab === "events" ? "flex" : "none";
-    orgsView.el.style.display = tab === "orgs" ? "flex" : "none";
-    projectsView.el.style.display = tab === "projects" ? "flex" : "none";
-    actionsView.el.style.display = tab === "actions" ? "flex" : "none";
-    topicsView.el.style.display = tab === "topics" ? "flex" : "none";
-    if (tab === "topics") topicsView.show();
+    for (const [id, p] of Object.entries(pages)) p.holder.style.display = tab === id ? "block" : "none";
+    if (tab === "topics") void topicsPage.get().then((v) => { if (activeTab === "topics") v.show(); });
+    if (tab === "geo") void geoPage.get().then((v) => { if (activeTab === "geo") v.invalidate(); });
+    if (tab !== "map" && tab in pages) void pages[tab as keyof typeof pages].get();
     drawerApi?.refresh(); // its "Locate on …" buttons depend on the page
-    if (tab === "geo") geoView.invalidate();
     if (tab === "map") setTimeout(() => graphApi?.ensureInView(), 150);
     if (tab !== "map") {
       tooltip.hide();
@@ -442,6 +395,8 @@ async function main() {
 
   // Give the logos a moment so the map doesn't open on empty circles (they keep loading after that anyway).
   await Promise.race([logosReady, new Promise((r) => setTimeout(r, 1500))]);
+  // Once the map is up and nobody is using the page for a moment, fetch the other pages in the background.
+  preloadWhenQuiet([geoPage, eventsPage, orgsPage, projectsPage, actionsPage, topicsPage], 4000);
 
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {
