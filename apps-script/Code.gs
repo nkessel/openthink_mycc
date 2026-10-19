@@ -252,8 +252,27 @@ var SOURCE_CHECK_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc
  */
 function applySourceCheck() {
   var check = JSON.parse(UrlFetchApp.fetch(SOURCE_CHECK_URL).getContentText());
+  var coalitionIds = {};
+  readTable_(ss_().getSheetByName(TAB.coalitions)).rows.forEach(function (r) { coalitionIds[str_(r.id)] = true; });
+  var adds = sourceCheckAdds_(check, coalitionIds);
   var n = 0;
-  [[TAB.events, 'event'], [TAB.projects, 'project'], [TAB.actions, 'action']].forEach(function (t) {
+  // group fields the check corrected (e.g. a website)
+  [[TAB.coalitions, 'coalition'], [TAB.orgs, 'org']].forEach(function (t) {
+    var sheet = ss_().getSheetByName(t[0]);
+    if (!sheet) return;
+    var table = readTable_(sheet);
+    table.rows.forEach(function (r) {
+      var want = (check.groups || {})[str_(r.id)];
+      if (!want) return;
+      var updates = {};
+      Object.keys(want).forEach(function (k) { if (str_(r[k]) !== want[k]) updates[k] = want[k]; });
+      if (!Object.keys(updates).length) return;
+      writeFields_(sheet, table.headers, r._row, updates);
+      logChange_('', 'Menu', 'updated', '', t[1], str_(r.id), str_(r.name), Object.keys(updates).map(function (k) { return k + ': ' + (str_(r[k]) || '∅') + ' → ' + updates[k]; }).join('\n'));
+      n++;
+    });
+  });
+  [[TAB.events, 'event', 'events'], [TAB.projects, 'project', 'projects'], [TAB.actions, 'action', 'actions']].forEach(function (t) {
     var sheet = ss_().getSheetByName(t[0]);
     if (!sheet) return;
     addMissingColumns_(sheet, COLS[t[0]]);
@@ -263,8 +282,40 @@ function applySourceCheck() {
       logChange_('', 'Menu', u.updates.hidden ? 'removed' : 'updated', '', t[1], str_(u.row.id), str_(u.row.name), u.why);
       n++;
     });
+    var have = {};
+    table.rows.forEach(function (r) { have[str_(r.id)] = true; });
+    adds[t[2]].forEach(function (row) {
+      if (have[row.id]) return;
+      appendObject_(sheet, row);
+      logChange_('', 'Menu', 'added', '', t[1], row.id, row.name, 'added from the source check: ' + row.link);
+      n++;
+    });
   });
   ss_().toast(n ? 'Changed ' + n + ' item(s). See Change Log.' : 'Everything already passes the check.');
+}
+
+/**
+ * Sheet rows for the checked items the source check adds ({events, projects, actions}); their values also go into
+ * check.fix, so a row the sheet already has with that id takes the checked wording and link.
+ */
+function sourceCheckAdds_(check, coalitionIds) {
+  var out = { events: [], projects: [], actions: [] };
+  check.fix = check.fix || {};
+  var cell = function (v) { return v === null || v === undefined ? '' : Array.isArray(v) ? v.join(', ') : v === true ? 'TRUE' : v === false ? 'FALSE' : String(v); };
+  Object.keys(check.add || {}).forEach(function (gid) {
+    Object.keys(out).forEach(function (kind) {
+      ((check.add[gid] || {})[kind] || []).forEach(function (item) {
+        var row = {};
+        Object.keys(item).forEach(function (k) { row[k] = cell(item[k]); });
+        if (coalitionIds[gid]) row.coalition_id = gid; else row.host_org_id = gid;
+        out[kind].push(row);
+        var fix = {};
+        Object.keys(row).forEach(function (k) { if (k !== 'id') fix[k] = row[k]; });
+        check.fix[item.id] = Object.assign(fix, check.fix[item.id] || {});
+      });
+    });
+  });
+  return out;
 }
 
 /** The changes the source check makes to one tab's rows: [{row, updates, why}] (fixes first, then hiding). */

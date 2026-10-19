@@ -257,13 +257,41 @@
             "community_organizing"
           ],
           "link": "https://docs.google.com/forms/d/e/1FAIpQLSeTJ2u2Df3Dgs7DRfkQPbfqXXh29ZWPgB1dJ23M0076vgMoPQ/viewform"
+        },
+        {
+          "id": "mycc_p_advocacy_day",
+          "name": "Advocacy Day preparation: meet your state legislators",
+          "status": "planning",
+          "description": "MYCC holds a yearly youth Advocacy Day at the Massachusetts State House; sign-ups are posted on MYCC's Linktree. Before the next one, member groups are asked to meet their local state legislators and start building relationships.",
+          "skills_needed": [
+            "public speaking",
+            "policy research"
+          ],
+          "topic_tags": [
+            "climate_policy",
+            "youth"
+          ],
+          "link": "https://linktr.ee/mayouthclimatecoalition"
         }
       ],
       "events": [],
-      "actions": [],
+      "actions": [
+        {
+          "id": "mycc_a_join",
+          "kind": "role",
+          "name": "Join MYCC: member interest form",
+          "description": "Youth-led groups in Massachusetts (generally ages 14–22) and their adult staff can join MYCC at three levels: Member (name a point person and bring members to at least one big event: Lobby Day, Rally or Summit), Steering Committee (a Member that also helps lead, meeting every other Tuesday), or Supporter (endorse key documents; good for adult-led groups). Individuals can fill it out too, and it isn't a binding commitment.",
+          "skills_needed": [
+            "coalition organizing"
+          ],
+          "link": "https://forms.gle/2Gsf55bHNGC6gLY68",
+          "verified": true,
+          "deadline": null
+        }
+      ],
       "last_activity": "2026-05-14T19:42:02.320Z",
       "logo": "logos/coalition_mycc.png",
-      "website": "https://ourclimate.us/state-campaigns/"
+      "website": "https://linktr.ee/mayouthclimatecoalition"
     },
     {
       "id": "ejlt",

@@ -758,3 +758,10 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Nathan: "make sure all the other items (projects etc) are verified… on a web page not just email". Checked all 224 projects and actions (curl, then a real browser for blocked/JS pages, then web search for sites that block bots). 201 pass, 4 fixed, 19 off the map (list and reasons: research/verification/projects-actions-2026-10-18.csv). Email-only MYCC items (rep refresh, Advocacy Day prep) are off.
 - MYCC × CCCC project: real (MYCC check-in email 9/16) and now verified on a web page, the MYCC x CCCC sign-up form, which names the collaboration; its link and wording now match the form.
 - The check (src/source-check.json, src/sourcecheck.ts) now covers events, projects and actions; any item without a web link is left off. Sheet menu renamed "Apply the source check" and covers all three tabs.
+
+## 2026-10-18 — MYCC: ways to get involved
+- Nathan: "include advocacy day prep and anything MYCC has that would be helpful for ppl to know to engage" (and earlier: only things on a web page, not just email).
+- Found MYCC's public Linktree (linktr.ee/mayouthclimatecoalition): Advocacy Day RSVP (2026 form, now closed), Policy Principles, Purpose Statement, Member Interest Form.
+- Added: "Join MYCC: member interest form" (action; the form's own description of Member / Steering Committee / Supporter levels) and Advocacy Day prep (project, linked to the Linktree, which names Advocacy Day; the meet-your-legislators ask comes from the 9/16 email). MYCC's website on the map now points to the Linktree instead of Our Climate's general page.
+- Still off (no web page): the every-other-Sunday full-coalition call and the vote-caster refresh (email and private docs only).
+- source-check.json gained `add` (checked items not yet in the sheet) and `groups` (group field fixes); the sheet menu "Apply the source check" adds/updates those rows too. Test added.

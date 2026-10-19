@@ -41,7 +41,6 @@
   "massachusetts_climate_action_p6",
   "masscosh_tlaw_climate_change_e1",
   "mycc_e_call_1004",
-  "mycc_p_advocacy_day",
   "mycc_p_rep_refresh",
   "pr_cross_campus_mixer",
   "pr_some_other_project_to_see_if_this_ema",
@@ -68,6 +67,46 @@
   },
   "masscosh_tlaw_climate_change_a1": {
    "link": "https://www.masscosh.org/events/calendar/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure"
+  }
+ },
+ "add": {
+  "mycc": {
+   "projects": [
+    {
+     "id": "mycc_p_advocacy_day",
+     "name": "Advocacy Day preparation: meet your state legislators",
+     "status": "planning",
+     "description": "MYCC holds a yearly youth Advocacy Day at the Massachusetts State House; sign-ups are posted on MYCC's Linktree. Before the next one, member groups are asked to meet their local state legislators and start building relationships.",
+     "skills_needed": [
+      "public speaking",
+      "policy research"
+     ],
+     "topic_tags": [
+      "climate_policy",
+      "youth"
+     ],
+     "link": "https://linktr.ee/mayouthclimatecoalition"
+    }
+   ],
+   "actions": [
+    {
+     "id": "mycc_a_join",
+     "kind": "role",
+     "name": "Join MYCC: member interest form",
+     "description": "Youth-led groups in Massachusetts (generally ages 14–22) and their adult staff can join MYCC at three levels: Member (name a point person and bring members to at least one big event: Lobby Day, Rally or Summit), Steering Committee (a Member that also helps lead, meeting every other Tuesday), or Supporter (endorse key documents; good for adult-led groups). Individuals can fill it out too, and it isn't a binding commitment.",
+     "skills_needed": [
+      "coalition organizing"
+     ],
+     "deadline": null,
+     "link": "https://forms.gle/2Gsf55bHNGC6gLY68",
+     "verified": true
+    }
+   ]
+  }
+ },
+ "groups": {
+  "mycc": {
+   "website": "https://linktr.ee/mayouthclimatecoalition"
   }
  }
 }
