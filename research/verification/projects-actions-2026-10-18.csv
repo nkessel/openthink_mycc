@@ -16,7 +16,7 @@ massachusetts_climate_action_p5,project,massachusetts_climate_action_network,Cli
 massachusetts_climate_action_p6,project,massachusetts_climate_action_network,Net Zero for All Campaign,https://www.massclimateaction.org/net_zero,removed,site blocks automated checks; page not confirmed (open the link to restore)
 massachusetts_climate_action_a1,action,massachusetts_climate_action_network,Volunteer with MCAN,https://www.massclimateaction.org/volunteer_with_mcan,removed,site blocks automated checks; page not confirmed (open the link to restore)
 mycc_p_rep_refresh,project,mycc,2026–27 member representative (vote caster) refresh,,removed,"only in the MYCC check-in email (9/16), no web page"
-mycc_p_advocacy_day,project,mycc,Annual Advocacy Day preparation,,removed,"only in the MYCC check-in email (9/16), no web page"
+mycc_p_advocacy_day,project,mycc,Annual Advocacy Day preparation,https://linktr.ee/mayouthclimatecoalition,verified (fixed),MYCC's public Linktree names its yearly Advocacy Day; the meet-your-legislators ask is from the MYCC check-in email (9/16)
 vineyard_power_cooperative_a1,action,vineyard_power_cooperative,Energy Transition Intern (Martha's Vineyard Regional High School students),https://www.vineyardpower.org/employment,removed,job page gone (404)
 350ma_p1,project,350ma,Make Polluters Pay - Massachusetts Climate Superfund,https://actionnetwork.org/campaigns/make-polluters-pay,verified,page names it
 350ma_a1,action,350ma,Petition: pass the Make Polluters Pay bill,https://actionnetwork.org/petitions/support-the-make-polluters-pay-bill-in-massachusetts,verified,page names it
@@ -223,3 +223,4 @@ wendell_state_forest_allianc_a1,action,wendell_state_forest_alliance,Support for
 xr_boston_p1,project,xr_boston,No New Fossil Fuel Infrastructure in Massachusetts,https://xrboston.org/action/no-gas-in-mass-rally/,verified,page names it
 youth_climate_action_now_p1,project,youth_climate_action_now,Youth Climate Action Now,https://sites.google.com/view/ycanupcomingevents/home,verified,page names it
 youth_climate_action_now_a1,action,youth_climate_action_now,Join Youth Climate Action Now,https://sites.google.com/view/ycanupcomingevents/join-our-team,verified,page names it
+mycc_a_join,action,mycc,Join MYCC: member interest form,https://forms.gle/2Gsf55bHNGC6gLY68,added (verified),MYCC's public member interest form (linked from its Linktree); wording from the form

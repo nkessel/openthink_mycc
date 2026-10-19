@@ -602,3 +602,15 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.deepEqual(ups.map((u) => [u.row.id, u.updates]), [["a", { hidden: "TRUE" }], ["b", { hidden: "TRUE" }], ["c", { link: "https://new.org/c" }], ["f", { link: "https://form.org/f" }]]);
   console.log("menu: source check OK");
 }
+{
+  // Source check additions: rows for the group (coalition_id or host_org_id), and the same values as fixes.
+  const check = { add: { mycc: { projects: [{ id: "p1", name: "Prep", skills_needed: ["a", "b"], link: "https://x.org" }], actions: [{ id: "a1", name: "Join", deadline: null, verified: true, link: "https://f.org" }] }, org1: { events: [{ id: "e1", name: "E", link: "https://e.org" }] } } };
+  const adds = G("sourceCheckAdds_")(check, { mycc: true });
+  assert.deepEqual(J(adds.projects), [{ id: "p1", name: "Prep", skills_needed: "a, b", link: "https://x.org", coalition_id: "mycc" }]);
+  assert.deepEqual(J(adds.actions), [{ id: "a1", name: "Join", deadline: "", verified: "TRUE", link: "https://f.org", coalition_id: "mycc" }]);
+  assert.equal(adds.events[0].host_org_id, "org1");
+  assert.equal(check.fix.p1.link, "https://x.org");
+  const ups = G("eventCheckUpdates_")([{ id: "p1", name: "Old wording", link: "", _row: 2 }], check);
+  assert.deepEqual(J(ups.map((u) => u.updates)), [{ name: "Prep", skills_needed: "a, b", link: "https://x.org", coalition_id: "mycc" }]);
+  console.log("menu: source check additions OK");
+}
