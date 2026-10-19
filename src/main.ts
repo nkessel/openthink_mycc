@@ -13,7 +13,7 @@ import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
-import { checkEvents } from "./eventcheck";
+import { checkSources } from "./sourcecheck";
 import { lazyPage, preloadWhenQuiet } from "./lazypage";
 import { geoCanLocate } from "./placed";
 import { setQuickFormData } from "./quickform";
@@ -448,7 +448,7 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
       const d = JSON.parse(quiet ? await res.text() : await readWithProgress(res)) as DataFile;
       if (!Array.isArray(d.coalitions) || !Array.isArray(d.organizations)) throw new Error("bad data");
-      return checkEvents(d);
+      return checkSources(d);
     } finally {
       clearTimeout(timer);
     }
@@ -465,7 +465,7 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       const raw = localStorage.getItem(key);
       if (raw) {
         const c = JSON.parse(raw) as { at: number; data: DataFile };
-        if (Date.now() - c.at < 7 * 86400000 && Array.isArray(c.data?.organizations)) cached = checkEvents(c.data);
+        if (Date.now() - c.at < 7 * 86400000 && Array.isArray(c.data?.organizations)) cached = checkSources(c.data);
       }
     } catch { /* private mode or a full store: no saved copy */ }
     const live = get(liveUrl, 20000, !!cached).then((d) => {

@@ -5,6 +5,7 @@ import { currentMap } from "./maps";
 import { STATE_GEO, type DistrictDef } from "./geodata";
 import { h, makeFoldable } from "./dom";
 import { atFallback, coalitionPlaced, orgPlaced } from "./placed";
+import { smoothWheelZoom } from "./smoothzoom";
 export { coalitionPlaced, orgPlaced } from "./placed";
 import { initials, shownType, hasTime, parseEventDate } from "./util";
 import { allEvents, allProjects, type Owner } from "./owners";
@@ -493,8 +494,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
 
   function ensureMap() {
     if (map) return map;
-    // finer zoom steps and a gentler wheel, so zooming glides instead of jumping a whole level
-    map = L.map(mapEl, { zoomControl: true, attributionControl: true, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 110, wheelDebounceTime: 25 });
+    // Any zoom level (no snapping), half-level buttons, and a wheel/trackpad that glides (smoothzoom.ts).
+    map = L.map(mapEl, { zoomControl: true, attributionControl: true, zoomSnap: 0, zoomDelta: 0.5, scrollWheelZoom: false });
+    smoothWheelZoom(map);
     mapEl.appendChild(backBtn);
     (mapEl as unknown as { __map?: L.Map }).__map = map; // for automated checks
     map.fitBounds(startBounds(), { padding: [20, 20] });

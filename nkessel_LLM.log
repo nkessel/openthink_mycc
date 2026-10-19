@@ -752,3 +752,9 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - 3–4 s after the map opens, whenever nobody has touched the page for 2 s and the browser is idle, the next page is fetched and set up, one at a time (geo, events, orgs, projects, actions, topics). Low-power devices only download the code; Save-Data skips preloading.
 - "Locate on geographic map" checks moved to src/placed.ts so the details pane works before Leaflet loads.
 - Tested in Chromium: every tab opens (≤0.3 s after preload, ~0.2 s from a cold click), preload finished ~10 s after load with no errors.
+
+## 2026-10-18 — Smooth geographic zoom; projects and actions verified too
+- Nathan: "make the geo map zoom in and out more smoothly and not in jumps". src/smoothzoom.ts replaces Leaflet's wheel zoom: every wheel/trackpad event moves a target zoom and each frame glides toward it, keeping the spot under the pointer fixed (measured drift < 0.001°); zoomend fires once at the end so pins and clusters update as before. Any zoom level is allowed (zoomSnap 0).
+- Nathan: "make sure all the other items (projects etc) are verified… on a web page not just email". Checked all 224 projects and actions (curl, then a real browser for blocked/JS pages, then web search for sites that block bots). 201 pass, 4 fixed, 19 off the map (list and reasons: research/verification/projects-actions-2026-10-18.csv). Email-only MYCC items (rep refresh, Advocacy Day prep) are off.
+- MYCC × CCCC project: real (MYCC check-in email 9/16) and now verified on a web page, the MYCC x CCCC sign-up form, which names the collaboration; its link and wording now match the form.
+- The check (src/source-check.json, src/sourcecheck.ts) now covers events, projects and actions; any item without a web link is left off. Sheet menu renamed "Apply the source check" and covers all three tabs.

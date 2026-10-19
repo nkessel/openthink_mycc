@@ -596,8 +596,9 @@ console.log("second round trip (org-owned items, locations, links) OK");
     { id: "c", name: "Moved", link: "https://old.org/c", _row: 4 },
     { id: "d", name: "Fine", link: "", rsvp_link: "https://rsvp.org/d", _row: 5 },
     { id: "e", name: "Already hidden", link: "", hidden: "TRUE", _row: 6 },
+    { id: "f", name: "Gets its page from the check", link: "", _row: 7 },
   ];
-  const ups = G("eventCheckUpdates_")(rows, { checked: "2026-10-18", remove: ["a"], fix: { c: { link: "https://new.org/c" }, d: { rsvp_link: "https://rsvp.org/d" } } });
-  assert.deepEqual(ups.map((u) => [u.row.id, u.updates]), [["a", { hidden: "TRUE" }], ["b", { hidden: "TRUE" }], ["c", { link: "https://new.org/c" }]]);
-  console.log("menu: event check OK");
+  const ups = G("eventCheckUpdates_")(rows, { checked: "2026-10-18", remove: ["a"], fix: { c: { link: "https://new.org/c" }, d: { rsvp_link: "https://rsvp.org/d" }, f: { link: "https://form.org/f" } } });
+  assert.deepEqual(ups.map((u) => [u.row.id, u.updates]), [["a", { hidden: "TRUE" }], ["b", { hidden: "TRUE" }], ["c", { link: "https://new.org/c" }], ["f", { link: "https://form.org/f" }]]);
+  console.log("menu: source check OK");
 }
