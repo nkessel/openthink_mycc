@@ -768,3 +768,9 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 
 ## 2026-10-19 — Loading-screen acknowledgement
 - Nathan: smaller text, and name MA for the first place names. Text 19 → 17 px (phones 16 → 15 px); "Natick, Wellesley, and Boston, Massachusetts". The details-pane copy reads the same paragraph, so it updates too.
+
+## 2026-10-19 — Satellites glitching on phones (big groups)
+- Nathan (screenshot: ORCAH on the Oregon map, phone): satellites glitching. Reproduced on an iPhone-sized screen: ORCAH's 63 satellites reversed direction ~50–125 times in the first 2.5 s (MA's earlier fix had been tuned on smaller groups).
+- Measured each force's push on the satellites: the pull toward the map's middle, collisions with the open group itself (its collision circle reached the first row) and collisions with the faded groups pushed to the edge all fought the satellites' springs.
+- Fix (src/graph.ts): while a group is open, satellites skip the centering pull and collide only with each other (own force); the open group takes no part in collisions. Result: 0 reversals and no drift on open (ORCAH, MPF 104, MYCC 45; phone and desktop; 1× and 4× slowed CPU).
+- Dragging a satellite still nudges its neighbours; on release it now glides all the way home (it used to stop halfway when the map's motion died out): slightly firmer spring, and the map keeps moving until every satellite is back. Also: leaving a group restores calm mode's damping instead of resetting it.
