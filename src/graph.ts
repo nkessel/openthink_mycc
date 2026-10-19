@@ -339,8 +339,7 @@ export function createGraph(
   /** Groups with no connections drift to the edge; they get a firmer pull so they stay near the main cluster. */
   const degree = new Map<string, number>();
   function centerStrengthFor(n: GraphNode): number {
-    // An open group's satellites answer only to their springs: the pull toward the middle of the map fought
-    // them and made big rings (ORCAH's 63 members) wobble, worst on phones.
+    // An open group's satellites get a smooth version of this pull in memberPull instead (see there).
     if (focusId && pinnedMembers.includes(n)) return 0;
     const base = centerForceStrength();
     return (degree.get(n.id) ?? 0) === 0 ? Math.max(base * 4, 0.05) : base;
@@ -1638,19 +1637,15 @@ export function createGraph(
     linkForce.strength(linkStrengthFor);
     xForce.strength(centerStrengthFor);
     yForce.strength(centerStrengthFor);
-    // Collisions while a group is open: satellites only jostle each other, and the open group takes no part.
-    // Its collision circle (sized for its own items) reached the first satellite row, and the faded groups pushed
-    // out to the edge kept bumping the outer row inward; both shoved satellites against their springs, and a big
-    // ring (ORCAH's 63 members) wobbled, worst on phones. focusPush keeps the background clear on its own.
+    // While a group is open, its satellites feel every force through the smooth versions in memberPull (below),
+    // not d3's: d3's collision corrects overlaps in one hard step and its repulsion is approximate, and against a
+    // satellite's spring both made big rings (ORCAH's 63 members) twitch, worst on phones. The open group (held
+    // still) and the satellites leave d3's collision; the background keeps it among itself.
     {
       const open = n;
       sim.force("collide", Object.assign((a: number) => collideForce(a), {
         initialize: (nodes: GraphNode[]) => collideForce.initialize(nodes.filter((o) => o !== open && !memberHome.has(o)), Math.random),
       }) as unknown as d3.Force<GraphNode, undefined>);
-      const satCollide = d3.forceCollide<GraphNode>().radius(collideRadius).iterations(calm ? 1 : 2);
-      sim.force("satCollide", memberHome.size ? Object.assign((a: number) => satCollide(a), {
-        initialize: (nodes: GraphNode[]) => satCollide.initialize(nodes.filter((o) => memberHome.has(o)), Math.random),
-      }) as unknown as d3.Force<GraphNode, undefined> : null);
     }
     // Satellites keep their spacing by collision only. The map-wide repulsion fought their springs and made a
     // crowded ring (MPF's 104 members) rock back and forth, so while a group is open it skips them.
@@ -1665,7 +1660,9 @@ export function createGraph(
     // (the open group is what you're looking at; nothing behind it should keep drifting).
     sim.velocityDecay(0.6);
     clearTimeout(focusSettleTimer);
-    focusSettleTimer = window.setTimeout(() => { if (focusId === id) sim.alphaTarget(0).alpha(Math.min(sim.alpha(), 0.004)); }, 1800);
+    // (With satellites it only winds down to a slow glide, so they finish easing to their places instead of
+    // freezing mid-way when the motion is cut.)
+    focusSettleTimer = window.setTimeout(() => { if (focusId === id) sim.alphaTarget(0).alpha(Math.min(sim.alpha(), memberHome.size ? 0.012 : 0.004)); }, 1800);
     focusSim?.stop();
     focusSim = null;
     lastPos.delete(id);
@@ -1747,6 +1744,22 @@ export function createGraph(
     // Satellites stay alive: each is on a soft spring to its place around the open group (wherever the group is
     // now), so they jostle, make way when one is dragged and drift back. The spring and the extra damping while a
     // group is open (velocityDecay 0.6) are set so they ease in without overshooting — no rocking back and forth.
+    // Every force still acts on the satellites, as smooth versions tuned so a ring eases into place and never
+    // twitches: each push grows gradually with closeness (no hard corrections), uses exact distances (no
+    // approximations that jump from tick to tick), and is gentler than the spring, so the spring always wins
+    // smoothly. Together with the extra damping while a group is open (velocityDecay 0.6) nothing overshoots.
+    //  - spring to its place around the open group
+    //  - pull toward the middle of the map (a tenth of the usual)
+    //  - repulsion from nearby groups (7% of the usual, exact, within 360 map units)
+    //  - soft collisions with the open group, the faded groups and each other
+    // Like d3's own forces, the pushes fade as the map settles, so every satellite ends exactly at its place.
+    const SAT_CENTER = 0.1, SAT_REPEL = 0.07, SAT_REPEL_RANGE = 360, SAT_SOFT = 0.12;
+    const radius = new Map<GraphNode, number>();
+    const rOf = (o: GraphNode) => {
+      let r = radius.get(o);
+      if (r === undefined) radius.set(o, (r = o === n ? nodeR + 10 : collideRadius(o)));
+      return r;
+    };
     sim.force("memberPull", memberHome.size ? (alpha: number) => {
       const f = nodeById.get(id);
       if (!f) return;
@@ -1754,10 +1767,34 @@ export function createGraph(
       let away = 0; // furthest any satellite is from its place
       for (const [o, h] of memberHome) {
         if (o.fx != null) continue; // being dragged
-        const ex = (f.x ?? 0) + h.ox - (o.x ?? 0), ey = (f.y ?? 0) + h.oy - (o.y ?? 0);
+        const ox = o.x ?? 0, oy = o.y ?? 0;
+        const ex = (f.x ?? 0) + h.ox - ox, ey = (f.y ?? 0) + h.oy - oy;
         away = Math.max(away, Math.abs(ex), Math.abs(ey));
-        o.vx = (o.vx ?? 0) + ex * k;
-        o.vy = (o.vy ?? 0) + ey * k;
+        let ax = ex * k, ay = ey * k;
+        const cs = centerForceStrength() * SAT_CENTER * alpha;
+        ax -= ox * cs;
+        ay -= oy * cs;
+        const ro = rOf(o);
+        for (const q of allNodes) {
+          if (q === o) continue;
+          const dx = ox - (q.x ?? 0), dy = oy - (q.y ?? 0);
+          if (Math.abs(dx) > SAT_REPEL_RANGE || Math.abs(dy) > SAT_REPEL_RANGE) continue;
+          const d2 = dx * dx + dy * dy;
+          const d = Math.sqrt(d2) || 1;
+          const touch = ro + rOf(q);
+          // repulsion, softened inside touching distance so it never spikes
+          const rep = (-chargeStrengthFor(q) * SAT_REPEL * alpha) / Math.max(d2, touch * touch);
+          ax += dx * rep;
+          ay += dy * rep;
+          if (d < touch) {
+            // soft collision: a share of the overlap per tick (a satellite pair splits it)
+            const push = ((touch - d) / d) * SAT_SOFT * (memberHome.has(q) ? 0.5 : 1);
+            ax += dx * push;
+            ay += dy * push;
+          }
+        }
+        o.vx = (o.vx ?? 0) + ax;
+        o.vy = (o.vy ?? 0) + ay;
         // Keep-out oval around the moons and their names: anything inside eases back out along its own direction
         // (a soft edge: the old hard reset to the boundary made satellites flick).
         const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
@@ -1770,7 +1807,7 @@ export function createGraph(
           o.vy = (o.vy ?? 0) * 0.5 + (dy / len) * gap * 0.25;
         }
       }
-      // Don't let the map stop while a satellite is still on its way home (it used to freeze halfway back).
+      // Don't let the map stop while a satellite is still on its way home (one let go used to freeze halfway back).
       if (away > 1.5 && sim.alpha() < 0.012) sim.alpha(0.012);
     } : null);
 
@@ -1891,7 +1928,6 @@ export function createGraph(
     sim.velocityDecay(calm ? 0.5 : 0.4);
     sim.force("charge", chargeForce);
     sim.force("collide", collideForce);
-    sim.force("satCollide", null);
     memberHome.clear();
     linkForce.strength(linkStrengthFor);
     xForce.strength(centerStrengthFor);
