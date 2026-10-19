@@ -339,6 +339,9 @@ export function createGraph(
   /** Groups with no connections drift to the edge; they get a firmer pull so they stay near the main cluster. */
   const degree = new Map<string, number>();
   function centerStrengthFor(n: GraphNode): number {
+    // An open group's satellites answer only to their springs: the pull toward the middle of the map fought
+    // them and made big rings (ORCAH's 63 members) wobble, worst on phones.
+    if (focusId && pinnedMembers.includes(n)) return 0;
     const base = centerForceStrength();
     return (degree.get(n.id) ?? 0) === 0 ? Math.max(base * 4, 0.05) : base;
   }
@@ -482,6 +485,8 @@ export function createGraph(
     })
     .on("end", (event, d) => {
       if (!event.active) sim.alphaTarget(0);
+      // A satellite let go glides all the way back to its place (the motion used to die out halfway there).
+      if (focusId && memberHome.has(d)) sim.alpha(Math.max(sim.alpha(), 0.7)).restart();
       dotsLiveUntil = performance.now() + 1500;
       // A zoomed-in node stays where you put it until you leave the zoomed-in view (its satellites spring back home).
       if (d.id === focusId) return;
@@ -1631,6 +1636,22 @@ export function createGraph(
     }
 
     linkForce.strength(linkStrengthFor);
+    xForce.strength(centerStrengthFor);
+    yForce.strength(centerStrengthFor);
+    // Collisions while a group is open: satellites only jostle each other, and the open group takes no part.
+    // Its collision circle (sized for its own items) reached the first satellite row, and the faded groups pushed
+    // out to the edge kept bumping the outer row inward; both shoved satellites against their springs, and a big
+    // ring (ORCAH's 63 members) wobbled, worst on phones. focusPush keeps the background clear on its own.
+    {
+      const open = n;
+      sim.force("collide", Object.assign((a: number) => collideForce(a), {
+        initialize: (nodes: GraphNode[]) => collideForce.initialize(nodes.filter((o) => o !== open && !memberHome.has(o)), Math.random),
+      }) as unknown as d3.Force<GraphNode, undefined>);
+      const satCollide = d3.forceCollide<GraphNode>().radius(collideRadius).iterations(calm ? 1 : 2);
+      sim.force("satCollide", memberHome.size ? Object.assign((a: number) => satCollide(a), {
+        initialize: (nodes: GraphNode[]) => satCollide.initialize(nodes.filter((o) => memberHome.has(o)), Math.random),
+      }) as unknown as d3.Force<GraphNode, undefined> : null);
+    }
     // Satellites keep their spacing by collision only. The map-wide repulsion fought their springs and made a
     // crowded ring (MPF's 104 members) rock back and forth, so while a group is open it skips them.
     if (memberHome.size) {
@@ -1729,11 +1750,14 @@ export function createGraph(
     sim.force("memberPull", memberHome.size ? (alpha: number) => {
       const f = nodeById.get(id);
       if (!f) return;
-      const k = 0.035 + 0.05 * Math.min(1, alpha / 0.4);
+      const k = 0.05 + 0.04 * Math.min(1, alpha / 0.4);
+      let away = 0; // furthest any satellite is from its place
       for (const [o, h] of memberHome) {
         if (o.fx != null) continue; // being dragged
-        o.vx = (o.vx ?? 0) + ((f.x ?? 0) + h.ox - (o.x ?? 0)) * k;
-        o.vy = (o.vy ?? 0) + ((f.y ?? 0) + h.oy - (o.y ?? 0)) * k;
+        const ex = (f.x ?? 0) + h.ox - (o.x ?? 0), ey = (f.y ?? 0) + h.oy - (o.y ?? 0);
+        away = Math.max(away, Math.abs(ex), Math.abs(ey));
+        o.vx = (o.vx ?? 0) + ex * k;
+        o.vy = (o.vy ?? 0) + ey * k;
         // Keep-out oval around the moons and their names: anything inside eases back out along its own direction
         // (a soft edge: the old hard reset to the boundary made satellites flick).
         const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
@@ -1746,6 +1770,8 @@ export function createGraph(
           o.vy = (o.vy ?? 0) * 0.5 + (dy / len) * gap * 0.25;
         }
       }
+      // Don't let the map stop while a satellite is still on its way home (it used to freeze halfway back).
+      if (away > 1.5 && sim.alpha() < 0.012) sim.alpha(0.012);
     } : null);
 
     // Push every other group well away so the bubbles have clear space (and nothing sits behind them).
@@ -1862,10 +1888,14 @@ export function createGraph(
     nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("linked", false).classed("focused", false);
     sim.force("focusPush", null);
     sim.force("memberPull", null);
-    sim.velocityDecay(0.4);
+    sim.velocityDecay(calm ? 0.5 : 0.4);
     sim.force("charge", chargeForce);
+    sim.force("collide", collideForce);
+    sim.force("satCollide", null);
     memberHome.clear();
     linkForce.strength(linkStrengthFor);
+    xForce.strength(centerStrengthFor);
+    yForce.strength(centerStrengthFor);
     // Bubbles fold back into the group, then disappear.
     if (fit) {
       const nn = n;
