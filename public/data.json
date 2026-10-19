@@ -285,21 +285,7 @@
           ]
         }
       ],
-      "events": [
-        {
-          "id": "mycc_e_call_1004",
-          "name": "MYCC full-coalition call",
-          "date": "2026-10-04T20:00:00",
-          "end": "2026-10-04T21:00:00",
-          "location": "Zoom",
-          "online": true,
-          "topic_tags": [
-            "youth",
-            "community_organizing"
-          ],
-          "description": "Full-coalition call, every other Sunday 8–9 pm. Open to member organizations, returning members and prospective members. Agenda and Zoom link come from MYCC."
-        }
-      ],
+      "events": [],
       "actions": [],
       "last_activity": "2026-05-14T19:42:02.320Z",
       "logo": "logos/coalition_mycc.png",
@@ -1089,21 +1075,10 @@
       ],
       "events": [
         {
-          "name": "OSHA 10: Training (construction), Oct 8-9",
-          "date": "2026-10-08T10:00:00",
-          "location": "MassCOSH Office, 42 Charles St Suite D, Dorchester, MA",
-          "link": "https://masscosh.org/events/event-listings/osha-10-training-october-8th-and-9th",
-          "end": "2026-10-09T16:00",
-          "description": "10-hour OSHA construction safety course.",
-          "id": "masscosh_tlaw_climate_change_e1",
-          "verified": true,
-          "host_org_id": "masscosh_tlaw_climate_change_and_environmental_justice_team"
-        },
-        {
           "name": "Celebrating the Movement: 50 Years of MassCOSH",
           "date": "2026-10-23T17:00:00",
           "location": "Edward M. Kennedy Institute for the U.S. Senate, 210 Morrissey Blvd, Boston, MA",
-          "link": "https://masscosh.org/events/event-listings/masscosh-celebrating-the-movement-50th-year",
+          "link": "https://masscosh.org/events/calendar/masscosh-celebrating-the-movement-50th-year",
           "end": "2026-10-23T21:30",
           "description": "50th anniversary celebration honoring leaders in the labor health and safety movement; tickets via Zeffy.",
           "id": "masscosh_tlaw_climate_change_e2",
@@ -1203,17 +1178,6 @@
           "end": "2026-10-10T14:00",
           "description": "Free tree giveaway.",
           "id": "tree_boston_e5",
-          "verified": true,
-          "host_org_id": "tree_boston"
-        },
-        {
-          "name": "Climb for the Canopy",
-          "date": "2026-10-23T07:00:00",
-          "location": "Harvard Stadium, 79 N Harvard St, Allston, MA",
-          "link": "https://treeboston.org/events/event/climb4thecanopy/",
-          "end": "2026-10-23T09:00",
-          "description": "Stadium-climb fundraiser; Tree Boston is first nonprofit partner for the Reach Green Stadium Challenge.",
-          "id": "tree_boston_e7",
           "verified": true,
           "host_org_id": "tree_boston"
         },
@@ -2188,22 +2152,6 @@
       ],
       "events": [
         {
-          "id": "can_e_fall_gathering",
-          "name": "Fall Gathering: Nurturing biodiversity in a time of ecological chaos",
-          "date": "2026-09-29T17:30:00",
-          "end": "2026-09-29T19:30:00",
-          "location": "Arcadia Wildlife Sanctuary, Easthampton",
-          "description": "Potluck and connection at 5:30 pm; interactive program 6–7:30 pm with Owen Wormser and Matt Verson, hosted by the Miyawaki Forest Group. RSVP appreciated.",
-          "topic_tags": [
-            "biodiversity",
-            "community_organizing"
-          ],
-          "lat": 42.2668,
-          "lng": -72.669,
-          "link": "https://climateactionnowma.org",
-          "host_org_id": "climate_action_now_western_ma"
-        },
-        {
           "id": "ev_can_1",
           "name": "Sierra Club Forest Protection Team Monthly Meeting",
           "date": "2026-10-08T19:00:00",
@@ -2458,116 +2406,6 @@
       "description": "",
       "events": [
         {
-          "name": "Golden Hour by Canoe",
-          "date": "2026-10-01T16:00:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103551-golden-hour-by-canoe",
-          "end": "2026-10-01T18:30",
-          "description": "Naturalist-guided canoe trip (adults).",
-          "id": "mass_audubon_wma_e1",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Get Ready for Winter: Backyard Birds & Feeders",
-          "date": "2026-10-03T09:00:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103606-get-ready-for-winter-backyard-birds-feeders",
-          "end": "2026-10-03T12:00",
-          "description": "Adult program.",
-          "id": "mass_audubon_wma_e2",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "The Secret Lives of Bats",
-          "date": "2026-10-03T10:30:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103605-the-secret-lives-of-bats",
-          "end": "2026-10-03T12:00",
-          "description": "Family program.",
-          "id": "mass_audubon_wma_e3",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Ecological Management Walk at Laughing Brook",
-          "date": "2026-10-03T13:30:00",
-          "location": "Laughing Brook Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/104235-ecological-management-walk-at-laughing-brook",
-          "end": "2026-10-03T15:30",
-          "description": "Adult walk.",
-          "id": "mass_audubon_wma_e4",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Learn to Bird: Fall Migration",
-          "date": "2026-10-04T09:00:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103553-learn-to-bird-fall-migration",
-          "end": "2026-10-04T11:00",
-          "description": "Beginner birding walk.",
-          "id": "mass_audubon_wma_e5",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Hawk Migration Watch at Blueberry Hill",
-          "date": "2026-10-04T10:00:00",
-          "location": "Blueberry Hill, Granville",
-          "link": "https://www.massaudubon.org/programs/arcadia/102878-hawk-migration-watch-at-blueberry-hill",
-          "end": "2026-10-04T12:00",
-          "description": "Guided hawk watch.",
-          "id": "mass_audubon_wma_e6",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Trees Without Leaves: A Fall Tree ID Walk",
-          "date": "2026-10-07T09:00:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103607-trees-without-leaves-a-fall-tree-id-walk",
-          "end": "2026-10-07T12:00",
-          "description": "Adult tree ID walk.",
-          "id": "mass_audubon_wma_e7",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "First Child in the Woods: Caregiver & Young Child Walk",
-          "date": "2026-10-09T10:00:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103608-first-child-in-the-woods-caregiver-young-child-walk",
-          "end": "2026-10-09T11:00",
-          "description": "Family walk.",
-          "id": "mass_audubon_wma_e9",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Tiny Trekkers: Toddler Nature Time",
-          "date": "2026-10-09T10:00:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103548-tiny-trekkers-toddler-nature-time",
-          "end": "2026-10-09T11:30",
-          "description": "Toddler program.",
-          "id": "mass_audubon_wma_e10",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Fall Colors by Canoe",
-          "date": "2026-10-10T08:30:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103554-fall-colors-by-canoe",
-          "end": "2026-10-10T11:00",
-          "description": "Canoe trip (adults).",
-          "id": "mass_audubon_wma_e11",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
           "name": "A Nature Year at Pleasant Valley: Fall Series",
           "link": "https://www.massaudubon.org/programs/pleasant-valley/98865-a-nature-year-at-pleasant-valley-fall-series",
           "description": "Three-session adult natural-history series at Pleasant Valley Wildlife Sanctuary: Beavers in the Berkshires (Oct 17), Waterfowl and Wetlands (Nov 21, at Canoe Meadows in Pittsfield), Time Traveling with Trees (Dec 19). Registration required.",
@@ -2623,17 +2461,6 @@
           "end": "2026-10-02T09:30:00",
           "recurrence": "Fridays, 8:30-9:30 AM (listed Oct 2, 9, 16)",
           "id": "mass_audubon_wellfleet_bay_w_e1",
-          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
-        },
-        {
-          "name": "Tunes & Tales on the Trails",
-          "date": "2026-10-03T13:00:00",
-          "location": "Wellfleet Bay Wildlife Sanctuary, South Wellfleet, MA",
-          "link": "https://www.massaudubon.org/programs/wellfleet-bay/103688-tunes-tales-on-the-trails",
-          "end": "2026-10-03T16:00",
-          "description": "Adults & families, ages 0-17.",
-          "id": "mass_audubon_wellfleet_bay_w_e2",
-          "verified": true,
           "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         },
         {
@@ -3891,7 +3718,7 @@
       "events": [
         {
           "name": "Stop Data Centers: Power-Building Committee (Food & Water Action meeting)",
-          "date": "2026-10-07T20:00:00",
+          "date": "2026-10-21T20:00:00",
           "location": "National / location not stated (8:00pm Eastern)",
           "link": "https://www.foodandwaterwatch.org/events/",
           "description": "Listed as Featured Event; Meeting hosted by Food & Water Action.",
@@ -4457,16 +4284,6 @@
           "description": "Inaugural convening on bringing swimming beaches back to the Lower Charles.",
           "id": "charles_river_watershed_asso_e2",
           "verified": true,
-          "host_org_id": "charles_river_watershed_association"
-        },
-        {
-          "name": "Run of the Charles Paddle Race",
-          "link": "https://www.crwa.org/rotc",
-          "description": "Annual kayak, canoe, and paddleboard race on the Charles River with 3-, 6-, 9-, and 14-mile relay courses, followed by the Finish Line RiverFest in Herter Park.",
-          "date": "2027-04-25",
-          "location": "Charles River, Boston/Cambridge area (Herter Park finish)",
-          "recurrence": "Annually, last Sunday of April",
-          "id": "charles_river_watershed_asso_e3",
           "host_org_id": "charles_river_watershed_association"
         }
       ],
@@ -5556,96 +5373,6 @@
           "id": "mass_audubon_p1",
           "host_org_id": "mass_audubon",
           "skills_needed": []
-        }
-      ],
-      "events": [
-        {
-          "name": "Wednesday Morning Birding",
-          "date": "2026-09-30T09:30:00",
-          "location": "Newburyport and vicinity, MA",
-          "link": "https://www.massaudubon.org/programs/joppa-flats/103220-wednesday-morning-birding",
-          "end": "2026-09-30T12:30",
-          "description": "Joppa Flats program, fee applies.",
-          "id": "mass_audubon_e1",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Felix Neck Nature Stroll",
-          "date": "2026-09-30T10:00:00",
-          "location": "Felix Neck Wildlife Sanctuary, Edgartown, MA",
-          "link": "https://www.massaudubon.org/programs/felix-neck/102608-felix-neck-nature-stroll",
-          "end": "2026-09-30T11:30",
-          "description": "Fee applies.",
-          "id": "mass_audubon_e2",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Thursday Morning Bird Walk",
-          "date": "2026-10-01T07:30:00",
-          "location": "Drumlin Farm, Lincoln, MA",
-          "link": "https://www.massaudubon.org/programs/drumlin-farm/104176-thursday-morning-bird-walk",
-          "end": "2026-10-01T09:30",
-          "description": "Fee applies.",
-          "id": "mass_audubon_e3",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Drumlin Farm",
-          "date": "2026-10-03T13:00:00",
-          "location": "Drumlin Farm Wildlife Sanctuary, Lincoln, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-03T15:30",
-          "description": "Volunteer text banking for Question 6 (Nature for All Fund); training and food provided.",
-          "id": "mass_audubon_e4",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Belmont",
-          "date": "2026-10-04T13:00:00",
-          "location": "Habitat Education Center, Belmont, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-04T15:30",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e6",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Arcadia",
-          "date": "2026-10-10T12:00:00",
-          "location": "Arcadia Wildlife Sanctuary, Easthampton, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-10T14:30",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e8",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Long Pasture",
-          "date": "2026-10-10T13:30:00",
-          "location": "Long Pasture Wildlife Sanctuary, Barnstable, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-10T15:30",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e10",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Ipswich River",
-          "date": "2026-10-11T12:30:00",
-          "location": "Ipswich River Wildlife Sanctuary, Topsfield, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-11T15:00",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e11",
-          "verified": true,
-          "host_org_id": "mass_audubon"
         }
       ],
       "actions": [
@@ -7367,25 +7094,6 @@
         }
       ],
       "events": [
-        {
-          "name": "CCL Boston tabling at Open Streets Allston",
-          "link": "https://community.citizensclimate.org/groups/events/1153",
-          "description": "CCL Boston chapter tables at the Open Streets Allston event; volunteers can sign up for slots.",
-          "date": "2026-10-04T10:30:00",
-          "location": "Allston, Boston, MA",
-          "id": "citizens_climate_lobby_e1",
-          "host_org_id": "citizens_climate_lobby"
-        },
-        {
-          "name": "Tabling at Open Streets Roslindale",
-          "date": "2026-10-18T10:30:00",
-          "location": "Roslindale, Boston",
-          "link": "https://community.citizensclimate.org/groups/events/1153",
-          "description": "Tabling event.",
-          "id": "citizens_climate_lobby_e2",
-          "verified": true,
-          "host_org_id": "citizens_climate_lobby"
-        },
         {
           "name": "CCL Boston monthly chapter meeting",
           "link": "https://community.citizensclimate.org/groups/events/1153",

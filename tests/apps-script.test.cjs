@@ -59,6 +59,10 @@ vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/Code.gs"), "utf8"),
 const G = (name) => vm.runInContext(name, ctx);
 const Q = G("Q"), COLS = G("COLS");
 const orig = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data.json"), "utf8"));
+// A coalition event for the edit tests below (the real MYCC call left the map in the Oct 18 event check: no page).
+const myccCo = orig.coalitions.find((c) => c.id === "mycc");
+if (!myccCo.events.some((e) => e.id === "mycc_e_call_1004")) myccCo.events.push({ id: "mycc_e_call_1004", name: "MYCC full-coalition call",
+  date: "2026-10-04T20:00:00", end: "2026-10-04T21:00:00", location: "Zoom", online: true, link: "https://example.org/mycc-call" });
 
 // ---- seed the fake workbook the same way setUp() does
 const seeded = ctx.sheetRowsFromData_(orig);
@@ -524,7 +528,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   ctx.FormApp = { ItemType: T, openById: (id) => (id === "e" ? ev : pr) };
   Object.assign(props, { FORM_EVENT: "e", FORM_PROJECT: "p" });
   G("requireKeyQuestions")();
-  assert.deepEqual(req.map((r) => r[0]).sort(), [Q.eventDate, Q.eventName, Q.freeFood, Q.helpWanted].sort(), "location and link stay optional");
+  assert.deepEqual(req.map((r) => r[0]).sort(), [Q.eventDate, Q.eventName, Q.freeFood, Q.helpWanted].sort(), "location stays optional; link is required on the event form only");
   console.log("menu: key questions required OK");
 }
 
@@ -583,4 +587,17 @@ console.log("second round trip (org-owned items, locations, links) OK");
   G("upgradeOrgForm_")(form);
   assert.deepEqual(deleted, [Q.worksWithGrid]);
   console.log("org form: old works-with grid removed OK");
+}
+{
+  // Event check (Oct 18): listed events and events with no page are hidden; moved links and dates are fixed.
+  const rows = [
+    { id: "a", name: "Gone", link: "https://x.org/a", _row: 2 },
+    { id: "b", name: "No page", link: "somelink", _row: 3 },
+    { id: "c", name: "Moved", link: "https://old.org/c", _row: 4 },
+    { id: "d", name: "Fine", link: "", rsvp_link: "https://rsvp.org/d", _row: 5 },
+    { id: "e", name: "Already hidden", link: "", hidden: "TRUE", _row: 6 },
+  ];
+  const ups = G("eventCheckUpdates_")(rows, { checked: "2026-10-18", remove: ["a"], fix: { c: { link: "https://new.org/c" }, d: { rsvp_link: "https://rsvp.org/d" } } });
+  assert.deepEqual(ups.map((u) => [u.row.id, u.updates]), [["a", { hidden: "TRUE" }], ["b", { hidden: "TRUE" }], ["c", { link: "https://new.org/c" }]]);
+  console.log("menu: event check OK");
 }
