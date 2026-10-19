@@ -765,3 +765,6 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Added: "Join MYCC: member interest form" (action; the form's own description of Member / Steering Committee / Supporter levels) and Advocacy Day prep (project, linked to the Linktree, which names Advocacy Day; the meet-your-legislators ask comes from the 9/16 email). MYCC's website on the map now points to the Linktree instead of Our Climate's general page.
 - Still off (no web page): the every-other-Sunday full-coalition call and the vote-caster refresh (email and private docs only).
 - source-check.json gained `add` (checked items not yet in the sheet) and `groups` (group field fixes); the sheet menu "Apply the source check" adds/updates those rows too. Test added.
+
+## 2026-10-19 — Loading-screen acknowledgement
+- Nathan: smaller text, and name MA for the first place names. Text 19 → 17 px (phones 16 → 15 px); "Natick, Wellesley, and Boston, Massachusetts". The details-pane copy reads the same paragraph, so it updates too.
