@@ -238,7 +238,49 @@ function onOpen() {
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
+    .addItem('Apply the event check (hide events with no page that names them)', 'applyEventCheck')
     .addToUi();
+}
+
+var EVENT_CHECK_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/src/event-check.json';
+
+/**
+ * Only verified events on the map (Oct 18): hides every event whose page is gone or never named it (the list in
+ * src/event-check.json, from research/events/verification-2026-10-18.csv) and every event with no web link,
+ * and applies the corrected links and dates. Hidden rows stay in the sheet; each change is in Change Log.
+ */
+function applyEventCheck() {
+  var check = JSON.parse(UrlFetchApp.fetch(EVENT_CHECK_URL).getContentText());
+  var sheet = ss_().getSheetByName(TAB.events);
+  addMissingColumns_(sheet, COLS[TAB.events]);
+  var table = readTable_(sheet);
+  var n = 0;
+  eventCheckUpdates_(table.rows, check).forEach(function (u) {
+    writeFields_(sheet, table.headers, u.row._row, u.updates);
+    logChange_('', 'Menu', u.updates.hidden ? 'removed' : 'updated', '', 'event', str_(u.row.id), str_(u.row.name), u.why);
+    n++;
+  });
+  ss_().toast(n ? 'Changed ' + n + ' event(s). See Change Log.' : 'Every event already passes the check.');
+}
+
+/** The changes the event check makes: [{row, updates, why}]. */
+function eventCheckUpdates_(rows, check) {
+  var remove = {};
+  (check.remove || []).forEach(function (id) { remove[id] = true; });
+  var page = function (u) { return /^https?:\/\/\S+\.\S+/.test(str_(u)); };
+  var out = [];
+  rows.forEach(function (r) {
+    var id = str_(r.id);
+    if (!id || isTrue_(r.hidden)) return;
+    if (remove[id]) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: its page is gone or does not name this event (event check, ' + check.checked + ')' });
+    if (!page(r.link) && !page(r.rsvp_link)) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: no web page for this event' });
+    var fix = (check.fix || {})[id];
+    if (!fix) return;
+    var updates = {};
+    Object.keys(fix).forEach(function (k) { if (str_(r[k]) !== fix[k]) updates[k] = fix[k]; });
+    if (Object.keys(updates).length) out.push({ row: r, updates: updates, why: Object.keys(updates).map(function (k) { return k + ': ' + (str_(r[k]) || '∅') + ' → ' + updates[k]; }).join('\n') });
+  });
+  return out;
 }
 
 /**
@@ -409,7 +451,7 @@ function updateForms() {
 
 /** The questions each form should require, so filters like "Free food only" have answers to work with. */
 var REQUIRED_KEYS = {
-  FORM_EVENT: ['eventName', 'eventDate', 'online', 'freeFood', 'who'],
+  FORM_EVENT: ['eventName', 'eventDate', 'online', 'freeFood', 'who', 'link'], // every event needs a public page (Oct 18)
   FORM_PROJECT: ['projectName', 'online', 'freeFood', 'who', 'helpWanted'],
 };
 

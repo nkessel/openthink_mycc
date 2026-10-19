@@ -364,7 +364,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     const r = viewport.getBoundingClientRect();
     W = Math.max(320, r.width);
     H = Math.max(300, r.height);
-    dpr = simple ? 1 : Math.min(2, window.devicePixelRatio || 1);
+    dpr = Math.min(simple ? 1.5 : 2, window.devicePixelRatio || 1);
     for (const c of [canvas, base]) {
       c.width = Math.round(W * dpr);
       c.height = Math.round(H * dpr);
@@ -1199,7 +1199,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         const c = d3.color(pColor(s.prob))!;
         c.opacity = (s === hover ? 0.75 : (0.035 + 0.16 * k) * a) * (reduced ? 1.6 : 1);
         g.strokeStyle = c.formatRgb();
-        g.lineWidth = (s === hover ? 2.2 : 0.5 + 1.6 * k) / tr.k;
+        g.lineWidth = (s === hover ? 1.8 : 0.4 + 1.1 * k) / tr.k;
         line(s, 0, s.pts.length / 2 - 1);
       }
     } else {
@@ -1209,7 +1209,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         if (a <= 0) continue;
         const k = selOrg ? Math.max(0.55, Math.sqrt(s.value / vmax)) : Math.sqrt(s.value / vmax);
         g.strokeStyle = s === hover ? "rgba(186,230,253,0.85)" : `rgba(96,165,250,${(0.08 + 0.3 * k) * a})`;
-        g.lineWidth = (s === hover ? 2.6 : 0.5 + 2.4 * k) / tr.k;
+        g.lineWidth = (s === hover ? 2.1 : 0.4 + 1.6 * k) / tr.k;
         line(s, 0, s.riverAt);
       }
       // rivers: one per topic, as wide as the water reaching it

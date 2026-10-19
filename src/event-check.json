@@ -1,0 +1,40 @@
+{
+ "checked": "2026-10-18",
+ "remove": [
+  "can_e_fall_gathering",
+  "charles_river_watershed_asso_e3",
+  "citizens_climate_lobby_e1",
+  "citizens_climate_lobby_e2",
+  "ev_chill_out_at_the_park",
+  "mass_audubon_e1",
+  "mass_audubon_e10",
+  "mass_audubon_e11",
+  "mass_audubon_e2",
+  "mass_audubon_e3",
+  "mass_audubon_e4",
+  "mass_audubon_e6",
+  "mass_audubon_e8",
+  "mass_audubon_wellfleet_bay_w_e2",
+  "mass_audubon_wma_e1",
+  "mass_audubon_wma_e10",
+  "mass_audubon_wma_e11",
+  "mass_audubon_wma_e2",
+  "mass_audubon_wma_e3",
+  "mass_audubon_wma_e4",
+  "mass_audubon_wma_e5",
+  "mass_audubon_wma_e6",
+  "mass_audubon_wma_e7",
+  "mass_audubon_wma_e9",
+  "masscosh_tlaw_climate_change_e1",
+  "mycc_e_call_1004",
+  "tree_boston_e7"
+ ],
+ "fix": {
+  "masscosh_tlaw_climate_change_e2": {
+   "link": "https://masscosh.org/events/calendar/masscosh-celebrating-the-movement-50th-year"
+  },
+  "food_and_water_watch_e1": {
+   "date": "2026-10-21T20:00:00"
+  }
+ }
+}

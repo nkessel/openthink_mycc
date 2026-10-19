@@ -576,7 +576,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const r = viewport.getBoundingClientRect();
     W = Math.max(320, r.width);
     H = Math.max(300, r.height);
-    dpr = simple ? 1 : Math.min(2, window.devicePixelRatio || 1);
+    dpr = Math.min(simple ? 1.5 : 2, window.devicePixelRatio || 1); // simple keeps a sharp canvas: dpr 1 made every line look thick and soft
     for (const c of [canvas, base]) {
       c.width = Math.round(W * dpr);
       c.height = Math.round(H * dpr);
@@ -1627,7 +1627,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         for (let i = 0; i <= 5; i++) gr.addColorStop(i / 5, `hsla(${(h0 + i * 60) % 360},85%,65%,${op})`);
         g.strokeStyle = gr;
       }
-      g.lineWidth = (lit ? 0.9 + 0.7 * k : 0.5 + 1.1 * k) * lw * (s.kind === "feed" ? 1.2 : 1);
+      g.lineWidth = (lit ? 0.7 + 0.5 * k : 0.35 + 0.75 * k) * lw * (s.kind === "feed" ? 1.1 : 1);
       g.beginPath();
       g.moveTo(s.pts[0], s.pts[1]);
       for (let i = 2; i < s.pts.length; i += 2) g.lineTo(s.pts[i], s.pts[i + 1]);
@@ -1636,7 +1636,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         // a soft glow under a lit path
         g.setLineDash([]);
         g.globalAlpha = 0.12 * FX.lit;
-        g.lineWidth = (2.5 + 1.5 * k) * lw;
+        g.lineWidth = (2 + 1.2 * k) * lw;
         g.stroke();
         g.globalAlpha = 1;
       }
