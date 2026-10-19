@@ -1,0 +1,225 @@
+item_id,kind,host,name,link,result,note
+cape_downwinders_p1,project,cape_downwinders,Opposing the Pilgrim wastewater release,https://www.capedownwinders.net/take-action,removed,take-action page does not mention the wastewater release
+pr_cross_campus_mixer,project,cccc,Cross Campus Mixer,,removed,form submission with no web page
+pr_some_other_project_to_see_if_this_ema,project,cccc,Some other project to see if this email gets blocked,,removed,test submission
+clean_water_action_p3,project,clean_water_action,Protecting Massachusetts Families from Lead,https://cleanwater.org/states/massachusetts,removed,MA page does not mention lead
+clean_water_action_a2,action,clean_water_action,Tell EPA: Stop Rolling Back Protections for Our Water,https://act.cleanwater.org/page/200503/action/1,removed,campaign page says it is closed
+climate_action_brookline_p1,project,climate_action_brookline,Micromobility Advocacy,https://climateactionbrookline.org/events/,removed,"page lists one micromobility talk, not an ongoing project"
+can_p_create,project,climate_action_now_western_ma,CREATE farmer mutual aid,https://climateactionnowma.org,removed,not found on CAN's site (site down 10/18; homepage did not name it)
+can_p_miyawaki,project,climate_action_now_western_ma,Miyawaki mini-forest group,https://climateactionnowma.org,removed,not found on CAN's site (site down 10/18; homepage did not name it)
+mass_audubon_a2,action,mass_audubon,Text-bank voters for Yes on 6,https://www.massaudubon.org/take-action/advocate/vote-yes-on-6,removed,Yes on 6 page does not mention text-banking
+mass_divest_coalition_p1,project,mass_divest_coalition,Fossil fuel divestment of MA public pension funds,https://massdivest.org/,removed,massdivest.org did not load and no other page found
+massachusetts_climate_action_p2,project,massachusetts_climate_action_network,Fighting for Better Buildings,https://www.massclimateaction.org/fighting_for_better_buildings,removed,site blocks automated checks; page not confirmed (open the link to restore)
+massachusetts_climate_action_p3,project,massachusetts_climate_action_network,Embodied Carbon Act,https://www.massclimateaction.org/embodied_carbon_act,removed,site blocks automated checks; page not confirmed (open the link to restore)
+massachusetts_climate_action_p4,project,massachusetts_climate_action_network,Local Decarbonizers Program,https://www.massclimateaction.org/stage_a_local_decarbonizers_program,removed,site blocks automated checks; page not confirmed (open the link to restore)
+massachusetts_climate_action_p5,project,massachusetts_climate_action_network,Climate Goals Tracker,https://www.massclimateaction.org/climate_goals_tracker,removed,site blocks automated checks; page not confirmed (open the link to restore)
+massachusetts_climate_action_p6,project,massachusetts_climate_action_network,Net Zero for All Campaign,https://www.massclimateaction.org/net_zero,removed,site blocks automated checks; page not confirmed (open the link to restore)
+massachusetts_climate_action_a1,action,massachusetts_climate_action_network,Volunteer with MCAN,https://www.massclimateaction.org/volunteer_with_mcan,removed,site blocks automated checks; page not confirmed (open the link to restore)
+mycc_p_rep_refresh,project,mycc,2026–27 member representative (vote caster) refresh,,removed,"only in the MYCC check-in email (9/16), no web page"
+mycc_p_advocacy_day,project,mycc,Annual Advocacy Day preparation,,removed,"only in the MYCC check-in email (9/16), no web page"
+vineyard_power_cooperative_a1,action,vineyard_power_cooperative,Energy Transition Intern (Martha's Vineyard Regional High School students),https://www.vineyardpower.org/employment,removed,job page gone (404)
+350ma_p1,project,350ma,Make Polluters Pay - Massachusetts Climate Superfund,https://actionnetwork.org/campaigns/make-polluters-pay,verified,page names it
+350ma_a1,action,350ma,Petition: pass the Make Polluters Pay bill,https://actionnetwork.org/petitions/support-the-make-polluters-pay-bill-in-massachusetts,verified,page names it
+350ma_a2,action,350ma,Write your legislators: 350 Mass priority bills,https://actionnetwork.org/letters/write-your-legislators-350-mass-priority-bills,verified,page names it
+350ma_central_mass_p1,project,350ma_central_mass,350 Central Mass priorities,https://www.350centralmass.org/,verified,page names it
+350ma_central_mass_a1,action,350ma_central_mass,Join 350 Central Mass,https://www.350centralmass.org/get-involved,verified,page names it
+acadia_center_p1,project,acadia_center,Acadia Center Massachusetts Climate and Energy Policy Work,https://acadiacenter.org/work/massachusetts/,verified,page names it
+acadia_center_a1,action,acadia_center,Contact your state legislators about climate policy,https://acadiacenter.org/get-involved/take-action/,verified,page names it
+act_on_mass_p1,project,act_on_mass,Every District Accountable Pledge,https://actonmass.org/pledge/,verified,page names it
+act_on_mass_p2,project,act_on_mass,Good Government Agenda,https://actonmass.org/good-government-agenda/,verified,page names it
+act_on_mass_p3,project,act_on_mass,2026 State Legislator Endorsements,https://actonmass.org/2026-state-legislator-endorsements/,verified,page names it
+act_on_mass_p4,project,act_on_mass,"Priority Bills Tracking, including Climate Change Superfund",https://actonmass.org/priority-bills/,verified,page names it
+act_on_mass_a1,action,act_on_mass,Ask Your Legislator to Sign the Every District Accountable Pledge,https://actonmass.org/pledge/,verified,page names it
+aft_mass_p1,project,aft_mass,Educator pay legislation campaign (AFT Massachusetts),https://ma.aft.org/take-action,verified,page names it
+aft_mass_a1,action,aft_mass,Email legislators to support educator pay legislation,https://ma.aft.org/take-action,verified,page names it
+belmont_high_school_climate__p1,project,belmont_high_school_climate_club,Belmont High School lunchtime composting,https://belmontvoice.org/in-belmont-students-lead-the-composting-charge/,verified,page names it
+belmont_hill_sustainability__p1,project,belmont_hill_sustainability_club,Upper School Sustainability Group (Belmont Hill),https://www.belmonthill.org/academics/sustainability-at-belmont-hill/environmental-courses-groups-and-trips,verified,page names it
+belmont_hill_sustainability__p2,project,belmont_hill_sustainability_club,Middle School Green Team and Green Cup Challenge (Belmont Hill),https://www.belmonthill.org/academics/sustainability-at-belmont-hill/environmental-courses-groups-and-trips,verified,page names it
+boston_catholic_climate_move_p1,project,boston_catholic_climate_movement,Boston Catholic Climate Movement,https://bostoncatholicclimate.org/home/,verified,page names it
+boston_climate_action_networ_p1,project,boston_climate_action_network,Boston Public Schools campaign,https://bostonclimateaction.org/programs-and-campaigns-2/boston-public-schools/,verified,page names it
+boston_climate_action_networ_p2,project,boston_climate_action_network,Housing Justice is Climate Justice campaign,https://bostonclimateaction.org/programs-and-campaigns-2/housing-justice-is-climate-justice/,verified,page names it
+boston_climate_action_networ_p3,project,boston_climate_action_network,"Green Buildings, Not Greenhouse Gases (BERDO)",https://bostonclimateaction.org/programs-and-campaigns-2/buildings/,verified,page names it
+boston_climate_action_networ_p4,project,boston_climate_action_network,Stop Energy Scams,https://bostonclimateaction.org/stop-energy-scams/,verified,page names it
+boston_climate_action_networ_a1,action,boston_climate_action_network,Volunteer with BCAN,https://bostonclimateaction.org/volunteer/,verified,page names it
+boston_latin_school_youthcan_p1,project,boston_latin_school_youthcan,Annual BLS Trash Dash,https://www.bostonlatinschoolyouthcan.org/events.html,verified,page names it
+boston_latin_school_youthcan_p2,project,boston_latin_school_youthcan,Annual Climate & Sustainability Youth Summit,https://www.bostonlatinschoolyouthcan.org/events.html,verified,page names it
+boston_latin_school_youthcan_p3,project,boston_latin_school_youthcan,Education for Sustainability campaign,https://www.bostonlatinschoolyouthcan.org/about.html,verified,page names it
+boston_student_advisory_coun_p1,project,boston_student_advisory_council,Boston Student Advisory Council,https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac,verified,page names it
+cero_cooperative_p1,project,cero_cooperative,CERO composting and organic waste collection,https://www.cero.coop/,verified,page names it
+charles_river_watershed_asso_p1,project,charles_river_watershed_association,Cut the Crap: Sewage-Free Charles Campaign,https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings,verified,page names it
+charles_river_watershed_asso_p2,project,charles_river_watershed_association,Meet Your Watershed Event Series,https://www.crwa.org/events,verified,page names it
+charles_river_watershed_asso_a1,action,charles_river_watershed_association,Become a Volunteer Monthly Monitor,https://www.crwa.org/vmm,verified,page names it
+charles_river_watershed_asso_a2,action,charles_river_watershed_association,Volunteer for Invasive Plant Removals,https://www.crwa.org/invasive-species/volunteer,verified,page names it
+charles_river_watershed_asso_a3,action,charles_river_watershed_association,Become a Cyanobacteria Visual Monitor,https://www.crwa.org/cyano-monitoring,verified,page names it
+charles_river_watershed_asso_a4,action,charles_river_watershed_association,Volunteer as a Biological Monitor,https://www.crwa.org/volunteer,verified,page names it
+charles_river_watershed_asso_a5,action,charles_river_watershed_association,Volunteer Photographer for CRWA,https://www.crwa.org/volunteer,verified,page names it
+charles_river_watershed_asso_a6,action,charles_river_watershed_association,Submit a Public Comment on the CSO Plan,https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings,verified,page names it
+chinese_progressive_associat_p1,project,chinese_progressive_association,Green Justice (Environmental Justice),https://cpaboston.org/programs/green-justice-environmental-justice/,verified,page names it
+chinese_progressive_associat_a1,action,chinese_progressive_association,Volunteer or Become a Member of CPA,https://cpaboston.org/support/get-involved/,verified,page names it
+citizens_awareness_network_p1,project,citizens_awareness_network,No Deal to Repeal: Save Chapter 503,https://nukebusters.org,verified,page names it
+citizens_awareness_network_a1,action,citizens_awareness_network,Write and call the conference committee to save Chapter 503,https://actionnetwork.org/letters/stop-the-repeal-save-chapter-503-no-secret-deal-to-repeal-the-voter-approved-guardrails-on-nuclear-power-in-ma,verified,page names it
+citizens_climate_lobby_p1,project,citizens_climate_lobby,CCL Boston chapter,https://community.citizensclimate.org/groups/home/1153,verified,page names it
+clean_water_action_p1,project,clean_water_action,Protecting Health from Toxic Chemicals in Massachusetts,https://cleanwater.org/states/massachusetts,verified,page names it
+clean_water_action_p2,project,clean_water_action,Clean Energy and Climate Justice in Massachusetts,https://cleanwater.org/states/massachusetts,verified,page names it
+clean_water_action_p4,project,clean_water_action,Clean Water Voter: 2026 Massachusetts Endorsements,https://cleanwater.org/states/massachusetts,verified,page names it
+clean_water_action_p5,project,clean_water_action,Youth Action Collaborative (YAC),https://www.cleanwater.org/2026/08/11/youth-action-collaborative-building-next-generation-environmental-leaders,verified,page names it
+clean_water_action_p6,project,clean_water_action,Zero Waste in MA,https://cleanwater.org/states/massachusetts,verified,page names it
+clean_water_action_a1,action,clean_water_action,Comment on the 2028-2030 Mass Save Three-Year Plan,https://cleanwater.org/2026/09/08/calling-all-ratepayers-mass-save-wants-your-opinion-their-next-three-year-plan,verified,page names it
+climate_action_brookline_p2,project,climate_action_brookline,Brookline Climate Action and Resiliency Plan,https://climateactionbrookline.org/events/,verified,page names it
+can_p_no_clearcut,project,climate_action_now_western_ma,No Clearcut for Profit (Eversource tree clearing),http://noclearcutforprofit.org,verified,page names it
+climate_action_now_western_m_p1,project,climate_action_now_western_ma,A Climate Justice Plan for Springfield,https://climateactionnowma.org/our-campaigns/a-climate-justice-plan-for-springfield/,verified,page names it
+climate_action_now_western_m_p2,project,climate_action_now_western_ma,Mutual Aid,https://climateactionnowma.org/mutual-aid/,verified,page names it
+climate_xchange_p1,project,climate_xchange,State Climate Policy Network (SCPN),https://climate-xchange.org/network,verified,page names it
+climate_xchange_p2,project,climate_xchange,State Climate Policy Dashboard,https://climate-xchange.org/dashboard,verified,page names it
+co_op_power_inc_p1,project,co_op_power_inc,Community subscription solar,https://www.cooppower.coop/,verified,page names it
+co_op_power_inc_p2,project,co_op_power_inc,Home heating fuel buying group,https://www.cooppower.coop/,verified,page names it
+co_op_power_inc_p3,project,co_op_power_inc,Rays the Valley,https://www.cooppower.coop/rays-the-valley,verified,page names it
+co_op_power_inc_p4,project,co_op_power_inc,Community Energy Co-ops,https://www.cooppower.coop/boston-metro-east,verified,page names it
+coalition_for_social_justice_a1,action,coalition_for_social_justice,Volunteer with Coalition for Social Justice,https://coalitionforsocialjustice.org/get-involved/,verified,page names it
+community_action_works_p1,project,community_action_works,Community Action Works organizing support and training,https://communityactionworks.org/,verified,page names it
+community_action_works_a1,action,community_action_works,Community Organizer (New England),https://communityactionworks.org/careers/,verified,page names it
+community_action_works_a2,action,community_action_works,Deputy Director,https://communityactionworks.org/careers/,verified,page names it
+community_labor_united_p1,project,community_labor_united,Green Justice Coalition,https://massclu.org/green-justice-coalition/,verified,page names it
+community_labor_united_a1,action,community_labor_united,Join the Green Justice Coalition,https://massclu.org/take-action/,verified,page names it
+conservation_law_foundation_p1,project,conservation_law_foundation,CLF campaigns,https://www.clf.org/our-campaigns/,verified,page names it
+conservation_law_foundation_a1,action,conservation_law_foundation,Tell your state representatives to invest in climate-ready infrastructure,https://act.clf.org/page/64768/action/1,verified,page names it
+conservation_law_foundation_a2,action,conservation_law_foundation,Pledge to protect Boston Harbor and the public waterfront,https://act.clf.org/page/16017/petition/1,verified,page names it
+conservation_law_foundation_a3,action,conservation_law_foundation,Ask legislators to ban single-use plastic,https://act.clf.org/page/24499/action/1,verified,page names it
+conservation_law_foundation_a4,action,conservation_law_foundation,Write Congress to save North Atlantic right whales,https://act.clf.org/page/48574/action/1,verified,page names it
+conservation_law_foundation_a5,action,conservation_law_foundation,Report toxic blue-green algae sightings,https://act.clf.org/page/68915/petition/1,verified,page names it
+conservation_law_foundation_a6,action,conservation_law_foundation,Add your name to support CLF's litigation against polluters,https://act.clf.org/page/66611/data/1,verified,page names it
+cooler_communities_p1,project,cooler_communities,Cooler Communities K-12 Climate Education,https://hgcf.org/hgcf-programs/cooler-communities/,verified,page names it
+elders_climate_action_mass_p1,project,elders_climate_action_mass,ECA Mass legislative advocacy and monthly chapter meetings,https://ecamass.org/eca-mass-teams/,verified,page names it
+environment_massachusetts_p1,project,environment_massachusetts,100% Renewable Campaign,https://environmentamerica.org/massachusetts/campaigns/100-renewable/,verified,page names it
+environment_massachusetts_p2,project,environment_massachusetts,Go Solar Campaign,https://environmentamerica.org/massachusetts/center/campaigns/go-solar/,verified,page names it
+environmental_league_of_ma_p1,project,environmental_league_of_ma,Solutions 2030 (ELM),https://elmaction.org/solutions-2030/,verified,page names it
+environmental_league_of_ma_p2,project,environmental_league_of_ma,Green Budget (ELM),https://www.environmentalleague.org/environmental-budget/,verified,page names it
+environmental_league_of_ma_p3,project,environmental_league_of_ma,2025-2026 legislative priorities (ELM),https://www.environmentalleague.org/legislative-priorities/,verified,page names it
+fccpr_climate_crisis_task_fo_p1,project,fccpr_climate_crisis_task_force,Mass Power Forward legislative agenda support,https://fccpr.us/task-force/climate-crisis-task-force/,verified,page names it
+first_parish_in_concord_envi_p1,project,first_parish_in_concord_environmental_team,Green Sanctuary / Environmental Action Team,https://firstparish.org/wp/justice/a-green-sanctuary/,verified,page names it
+food_and_water_watch_p1,project,food_and_water_watch,Stop AI Data Centers,https://www.foodandwaterwatch.org/data-centers/,verified,page names it
+fore_river_residents_against_p1,project,fore_river_residents_against_the_compressor_station,Stop the Weymouth Compressor Station,https://www.nocompressor.com/,verified,page names it
+fore_river_residents_against_p2,project,fore_river_residents_against_the_compressor_station,West Waterfront Trail connection to King's Cove Park,https://www.nocompressor.com/news/2026/7/7/take-action-tell-the-mayor-we-want-our-trail,verified,page names it
+fore_river_residents_against_p3,project,fore_river_residents_against_the_compressor_station,FRRACS monthly community meeting,https://www.nocompressor.com/calendar,verified,page names it
+fore_river_residents_against_a1,action,fore_river_residents_against_the_compressor_station,Tell the Mayor we want the West Waterfront Trail finished,https://www.nocompressor.com/news/2026/7/7/take-action-tell-the-mayor-we-want-our-trail,verified,page names it
+fore_river_residents_against_a2,action,fore_river_residents_against_the_compressor_station,Apply for a free Braintree community air sensor,https://www.nocompressor.com/news/2026/7/7/air-monitor-community-grant-program,verified,page names it
+franklin_county_and_north_qu_p1,project,franklin_county_and_north_quabbin_community_health_improveme,Community Health Improvement Plan (CHIP) Network,https://frcog.org/,verified,page names it
+greater_boston_physicians_fo_p1,project,greater_boston_physicians_for_social_responsibility,Nuclear power and weapons public health advocacy,https://gbpsr.org/,verified,page names it
+green_cambridge_p1,project,green_cambridge,Canopy Crew,https://www.greencambridge.org/joincanopycrew,verified,page names it
+green_cambridge_p2,project,green_cambridge,Restore Corps,https://www.greencambridge.org/restorecorps,verified,page names it
+green_cambridge_p3,project,green_cambridge,Alewife Brook Reservation Stewardship,https://www.greencambridge.org/alewife-get-involved,verified,page names it
+green_cambridge_a1,action,green_cambridge,Join the Alewife Brook Reservation volunteer interest list,https://www.greencambridge.org/volunteer,verified,page names it
+green_cambridge_a2,action,green_cambridge,Apply to Canopy Crew,https://www.greencambridge.org/joincanopycrew,verified,page names it
+green_energy_consumers_allia_p1,project,green_energy_consumers_alliance,Shave the Peak,https://www.greenenergyconsumers.org/shavepeak,verified,page names it
+green_energy_consumers_allia_p2,project,green_energy_consumers_alliance,Heat pump program,https://www.greenenergyconsumers.org/getadviceheatpumps,verified,page names it
+green_energy_consumers_allia_p3,project,green_energy_consumers_alliance,"Green Powered, Solar and Drive Green programs",https://www.greenenergyconsumers.org/programs,verified,page names it
+green_energy_consumers_allia_a1,action,green_energy_consumers_alliance,Become an EV Ambassador,https://www.greenenergyconsumers.org/drivegreen/takeaction/evambassador,verified,page names it
+green_energy_consumers_allia_a2,action,green_energy_consumers_alliance,Sign up for Shave the Peak alerts,https://www.greenenergyconsumers.org/shavepeak,verified,page names it
+greenroots_eco_p1,project,greenroots_eco,Food Justice and Urban Agriculture (GreenRoots),https://greenrootsej.org/our-work/food-justice,verified,page names it
+jewish_alliance_for_law_and__p1,project,jewish_alliance_for_law_and_social_action,Climate Change Action Team,https://www.jalsa.org/take-action,verified,page names it
+jewish_alliance_for_law_and__a1,action,jewish_alliance_for_law_and_social_action,Join a JALSA Issue Action Team,https://www.jalsa.org/take-action,verified,page names it
+jewish_climate_action_networ_p1,project,jewish_climate_action_network,JCAN-MA Webinar Series and Climate Programming,https://jewishclimate.org/events/,verified,page names it
+jewish_climate_action_networ_p2,project,jewish_climate_action_network,MA Carbon Goals Tracker and Home-Energy Tools,https://jewishclimate.org/,verified,page names it
+jewish_climate_action_networ_a1,action,jewish_climate_action_network,Phone bank for climate voters (Chutzpah 2026),https://jewishclimate.org/event/chutzpah-2026-phone-calls-for-our-democracy/,verified,page names it
+league_of_women_voters_of_ma_p1,project,league_of_women_voters_of_massachusetts,2026 Ballot Question Voter Guide,https://lwvma.org/ballot-questions-2026/,verified,page names it
+longmeadow_pipeline_awarenes_p1,project,longmeadow_pipeline_awareness_group,Longmeadow Pipeline Awareness Group,https://www.facebook.com/LongmeadowPipelineAwarenessGroup/,verified,page names it
+lorax_at_milton_academy_p1,project,lorax_at_milton_academy,Milton Academy Student-Led Sustainability Initiatives,https://www.milton.edu/about/sustainability,verified,page names it
+mass_audubon_p1,project,mass_audubon,Vote Yes on Question 6 (Nature for All Fund),https://www.massaudubon.org/take-action/advocate/vote-yes-on-6,verified,page names it
+mass_audubon_a1,action,mass_audubon,"Pledge, volunteer or request a lawn sign for Yes on 6",https://www.massaudubon.org/take-action/advocate/vote-yes-on-6,verified,page names it
+mass_audubon_a3,action,mass_audubon,Volunteer with Mass Audubon,https://www.massaudubon.org/get-involved/volunteer,verified,page names it
+mass_audubon_wellfleet_bay_w_p1,project,mass_audubon_wellfleet_bay_wildlife_sanctuary,Community Science at Wellfleet Bay,https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay/programs-activities,verified,page names it
+mass_audubon_wellfleet_bay_w_a1,action,mass_audubon_wellfleet_bay_wildlife_sanctuary,Volunteer with Mass Audubon,https://www.massaudubon.org/take-action/volunteer,verified,page names it
+massachusetts_climate_action_p1,project,massachusetts_climate_action_network,Zero Carbon Renovation Fund,https://www.massclimateaction.org/the_zero_carbon_renovation_fund,verified,site blocks automated checks; page confirmed through web search
+massachusetts_interfaith_pow_p1,project,massachusetts_interfaith_power_and_light,Trees of Life (Lawrence),https://www.massipl.org/initiatives/trees-of-life-lawrence,verified,page names it
+massachusetts_interfaith_pow_p2,project,massachusetts_interfaith_power_and_light,"Energy Audits, Solar and Weatherization for Houses of Worship",https://www.massipl.org/all-initiatives,verified,page names it
+massachusetts_interfaith_pow_p3,project,massachusetts_interfaith_power_and_light,Faith Action Networks,https://www.massipl.org/initiatives/faith-action-networks,verified,page names it
+massachusetts_interfaith_pow_p4,project,massachusetts_interfaith_power_and_light,Youth Ambassadors (Lawrence),https://www.massipl.org/initiatives/youth-ambassadors-lawrence,verified,page names it
+massachusetts_interfaith_pow_a1,action,massachusetts_interfaith_power_and_light,"Volunteer to plant trees at Hope Takes Root (Oct 3, Lawrence)",https://www.massipl.org/event/hope-takes-root,verified,page names it
+massachusetts_interfaith_pow_a2,action,massachusetts_interfaith_power_and_light,Part-Time Clean Energy Intern (Fall 2026),https://www.massipl.org/open-positions,verified,page names it
+massachusetts_jobs_with_just_p1,project,massachusetts_jobs_with_justice,CARE Initiative (Community Aligned Response Essentials),https://www.massjwj.net/care,verified,page names it
+masscosh_tlaw_climate_change_p1,project,masscosh_tlaw_climate_change_and_environmental_justice_team,Teens Lead at Work,https://masscosh.org/program-initiatives/teens-lead-at-work,verified,page names it
+masscosh_tlaw_climate_change_p2,project,masscosh_tlaw_climate_change_and_environmental_justice_team,Immigrant Worker Center,https://masscosh.org/programs,verified,page names it
+masscosh_tlaw_climate_change_p3,project,masscosh_tlaw_climate_change_and_environmental_justice_team,East Boston Cambria Hotel asbestos campaign,https://www.masscosh.org/events/calendar/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure,verified (fixed),link moved; updated
+masscosh_tlaw_climate_change_a1,action,masscosh_tlaw_climate_change_and_environmental_justice_team,Sign the Cambria Hotel asbestos petition,https://www.masscosh.org/events/calendar/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure,verified (fixed),link moved; updated (page has Sign Petition)
+mount_grace_land_conservatio_p1,project,mount_grace_land_conservation_trust,Massachusetts Dynamic Forest Restoration Initiative,https://www.mountgrace.org/conservation/forest-restoration,verified,page names it
+mount_grace_land_conservatio_a1,action,mount_grace_land_conservation_trust,Sign Up for Mount Grace Volunteer Opportunities,https://www.mountgrace.org/get-involved/sign-up-to-volunteer,verified,page names it
+mpf_p_dashboard,project,mpf,Utility Influence Dashboard,https://www.amherstindy.org/2026/09/28/mass-power-forward-to-debut-dashboard-with-press-conference-on-statehouse-steps/,verified,page names it
+mycc_p_map,project,mycc,MA Climate Coalition Map,https://nkessel.github.io/openthink_mycc/,verified (fixed),link set to this map
+mycc_p_cccc_collab,project,mycc,MYCC × Cross Campus Climate Coalition collaboration matching,https://docs.google.com/forms/d/e/1FAIpQLSeTJ2u2Df3Dgs7DRfkQPbfqXXh29ZWPgB1dJ23M0076vgMoPQ/viewform,verified (fixed),"link set to the MYCC x CCCC sign-up form, which describes it; wording matched to the form"
+neighbor_to_neighbor_massach_p1,project,neighbor_to_neighbor_massachusetts,Dwight Street Garden,https://n2nma.org/campaigns/dwight-street-garden/,verified,page names it
+neighbor_to_neighbor_massach_p2,project,neighbor_to_neighbor_massachusetts,Housing for All campaign,https://n2nma.org/campaigns/housing-for-all/,verified,page names it
+neighbor_to_neighbor_massach_a1,action,neighbor_to_neighbor_massachusetts,Letter campaign: support the Clean Slate Act,https://n2nma.org/take-action/,verified,page names it
+neighbor_to_neighbor_massach_a2,action,neighbor_to_neighbor_massachusetts,Become a Neighbor to Neighbor member,https://n2nma.org/take-action/,verified,page names it
+neighbor_to_neighbor_massach_a3,action,neighbor_to_neighbor_massachusetts,Sign up to be a LUCE verifier,https://n2nma.org/take-action/,verified,page names it
+no_fracked_gas_in_mass_p1,project,no_fracked_gas_in_mass,Pipeline and energy updates at BEAT (formerly No Fracked Gas in Mass),https://nofrackedgasinmass.com/,verified,page names it
+no_fracked_gas_in_mass_a1,action,no_fracked_gas_in_mass,Sign up for The BEAT News gas and energy alerts,https://nofrackedgasinmass.com/,verified,page names it
+north_american_indian_center_p1,project,north_american_indian_center_of_boston,NAICOB community programming,https://naicob.org/,verified,page names it
+north_american_indian_center_a1,action,north_american_indian_center_of_boston,Volunteer with NAICOB,https://naicob.org/volunteer,verified,page names it
+northeast_climate_justice_re_p1,project,northeast_climate_justice_research_collaborative,Northeast Climate Justice Research Collaborative,https://www.umb.edu/ssl/collaborative,verified,page names it
+northeast_climate_justice_re_p2,project,northeast_climate_justice_research_collaborative,Climate Adaptation Forum,https://climateadaptationforum.org/events/,verified,page names it
+northeast_climate_justice_re_a1,action,northeast_climate_justice_research_collaborative,Join the Northeast Climate Justice Research Collaborative,https://www.umb.edu/ssl/collaborative,verified,page names it
+northfield_mount_hermon_ecol_p1,project,northfield_mount_hermon_ecoleaders,NMH Ecoleaders,https://www.nmhschool.org/purpose/sustainability,verified,page names it
+october_engineering_llc_p1,project,october_engineering_llc,Pro Bono Residential Electrification Consulting,https://octoberengineering.com/,verified,page names it
+partnership_for_policy_integ_p1,project,partnership_for_policy_integrity,Massachusetts Biomass Policy Work,https://www.pfpi.net/massachusetts-policy/,verified,page names it
+passive_house_massachusetts_p1,project,passive_house_massachusetts,Passive House Massachusetts Training and Resources,https://phmass.org/,verified,page names it
+pilgrim_coalition_p1,project,pilgrim_coalition,Pilgrim Coalition Pilgrim Nuclear advocacy,https://grassrootsfund.org/groups/pilgrim-coalition,verified,page names it
+pilgrim_watch_p1,project,pilgrim_watch,Pilgrim decommissioning oversight,https://www.pilgrimwatch.org/,verified,page names it
+pioneer_valley_asthma_coalit_p1,project,pioneer_valley_asthma_coalition,Healthy Air Network,https://www.publichealthwm.org/pioneer-valley-asthma-coalition,verified,page names it
+pioneer_valley_asthma_coalit_p2,project,pioneer_valley_asthma_coalition,Healthy Homes,https://www.publichealthwm.org/pioneer-valley-asthma-coalition,verified,page names it
+pioneer_valley_asthma_coalit_p3,project,pioneer_valley_asthma_coalition,Healthy Schools (HEAL project),https://www.publichealthwm.org/pioneer-valley-asthma-coalition,verified,page names it
+quincy_climate_action_networ_p1,project,quincy_climate_action_network,Quincy CAN current issues,https://quincycan.org/current-issues/,verified,page names it
+resonant_energy_p1,project,resonant_energy,Solar for affordable housing and nonprofits (Resonant Energy),https://resonant.energy/,verified,page names it
+restore_the_north_woods_p1,project,restore_the_north_woods,Save Massachusetts Forests,https://www.restore.org/savemassforests,verified,page names it
+restore_the_north_woods_a1,action,restore_the_north_woods,Save Mass Forests action pages,https://www.savemassforests.com/,verified,page names it
+salem_alliance_for_the_envir_p1,project,salem_alliance_for_the_environment,Heat Resiliency Pilot in The Point (El Punto),https://salemsafe.org/heat-resiliency-calor-extremo/,verified,page names it
+salem_alliance_for_the_envir_p2,project,salem_alliance_for_the_environment,Salem Air Quality Monitoring,https://salemsafe.org/air-quality/,verified,page names it
+salem_alliance_for_the_envir_p3,project,salem_alliance_for_the_environment,Public Power in Salem,https://salemsafe.org/public-power/,verified,page names it
+salem_alliance_for_the_envir_p4,project,salem_alliance_for_the_environment,Offshore Wind Advocacy,https://salemsafe.org/campaigns/wind-power/,verified,page names it
+salem_alliance_for_the_envir_p5,project,salem_alliance_for_the_environment,Natural Gas Leaks in Salem,https://salemsafe.org/campaigns/gas-leaks/,verified,page names it
+sc_p_watersheds,project,sierra_club,"Protect the Quabbin, Ware and Wachusett watershed forests",https://www.sierraclub.org/massachusetts/protect-quabbin-wachusett-and-ware-watersheds,verified,page names it
+sierra_club_a1,action,sierra_club,"Sign petition to protect Quabbin, Ware and Wachusett watershed forests",https://www.savemassforests.com/,verified,page names it
+slingshot_p1,project,slingshot,Alliance for Health and Environment (Saugus),https://www.slingshot.org/communitygroups,verified,page names it
+slingshot_p2,project,slingshot,Springfield Climate Justice Coalition,https://www.slingshot.org/communitygroups,verified,page names it
+solstice_initiative_a1,action,solstice_initiative,Enroll in community solar with Solstice,https://solstice.us/,verified,page names it
+south_coast_neighbors_united_p1,project,south_coast_neighbors_united,South Coast Neighbors United,https://actionnetwork.org/groups/south-coast-neighbors-united,verified,page names it
+sunrise_boston_p1,project,sunrise_boston,ICE Out For Good,https://www.sunrisemovement.org/campaign/ice-out/,verified,page names it
+sunrise_boston_p2,project,sunrise_boston,Green New Deal for Communities,https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/,verified,page names it
+sunwealth_p1,project,sunwealth,Community Solar and Storage Investment,https://sunwealth.com/,verified,page names it
+sustainable_business_network_p1,project,sustainable_business_network_of_massachusetts,Sustainable Business of the Year Awards,https://www.sbnmass.org/sbnawards,verified,page names it
+sustainable_milton_p1,project,sustainable_milton,100% Green Electricity (Milton CEA),https://www.sustainablemilton.org/initiatives/green-your-electricity,verified,page names it
+sustainable_milton_p2,project,sustainable_milton,Curbside and communal composting (Milton),https://www.sustainablemilton.org/initiatives/curbside-composting,verified,page names it
+sustainable_milton_p3,project,sustainable_milton,Sustainable Milton strategic goals 2026-27,https://www.sustainablemilton.org/initiatives/we-need-your-help,verified,page names it
+sustainable_milton_p4,project,sustainable_milton,Milton Climate Action hub,https://www.sustainablemilton.org/initiatives/milton-climate-action,verified,page names it
+sustainable_milton_a1,action,sustainable_milton,Volunteer with Sustainable Milton,https://www.sustainablemilton.org/initiatives/we-need-your-help,verified,page names it
+sustainable_milton_a2,action,sustainable_milton,Enroll in Milton 100% Green electricity,https://miltoncea.com/enroll-or-change-your-product/,verified,page names it
+sustainable_sharon_coalition_p1,project,sustainable_sharon_coalition,Sustainable Sharon Coalition Initiatives,https://www.sustainablesharon.org/initiatives,verified,page names it
+sustainable_sharon_coalition_p2,project,sustainable_sharon_coalition,Solarize Sharon campaign,https://www.sustainablesharon.org/blog/ssc-community-meeting-sharons-energy,verified,page names it
+sustainable_sharon_coalition_a1,action,sustainable_sharon_coalition,Join an SSC interest group or volunteer position,https://www.sustainablesharon.org/about/interest-groups,verified,page names it
+sustainable_sudbury_p1,project,sustainable_sudbury,plugIN home electrification service,https://www.sustainablesudbury.org/actions,verified,page names it
+sustainable_sudbury_p2,project,sustainable_sudbury,Sudbury sustainability initiatives,https://www.sustainablesudbury.org/actions,verified,page names it
+sustainable_sudbury_a1,action,sustainable_sudbury,Apply: Youth Climate Solutions Challenge (high school teams),https://www.massenergize.org/programs/youth-climate-solutions-challenge/,verified,page names it
+the_climate_reality_project__p1,project,the_climate_reality_project_boston_metro_chapter,Home electrification outreach,https://www.climaterealityboston.org/,verified,page names it
+the_climate_reality_project__p2,project,the_climate_reality_project_boston_metro_chapter,Least Developed Countries Fund state legislation,https://www.climaterealityboston.org/,verified,page names it
+the_climate_reality_project__p3,project,the_climate_reality_project_boston_metro_chapter,Climate curricula for K-12 teachers,https://www.climaterealityboston.org/,verified,page names it
+the_climate_reality_project__p4,project,the_climate_reality_project_boston_metro_chapter,Speakers Bureau,https://www.climaterealityboston.org/,verified,page names it
+the_climate_reality_project__a1,action,the_climate_reality_project_boston_metro_chapter,Sign the petition to stop private jet expansion at Hanscom Field,https://spje.org/,verified,page names it
+the_climate_reality_project__a2,action,the_climate_reality_project_boston_metro_chapter,Send letters on Massachusetts forest bills (Trees as a Public Good),https://www.climaterealityboston.org/actions,verified,page names it
+the_climate_reality_project__a3,action,the_climate_reality_project_boston_metro_chapter,Join a Climate Changemakers Hour of Action,https://www.climatechangemakers.org/events,verified,page names it
+the_climate_reality_project__a4,action,the_climate_reality_project_boston_metro_chapter,Join the Climate Reality Boston Metro chapter,https://www.climaterealityboston.org/,verified,page names it
+tree_boston_p1,project,tree_boston,NeighborWoods Tree Plantings,https://treeboston.org/get-involved/neighborwoods/,verified,page names it
+tree_boston_p2,project,tree_boston,Boston Tree Giveaways,https://treeboston.org/get-involved/tree-giveaway-program/,verified,page names it
+tree_boston_p3,project,tree_boston,Teen Urban Tree Corps,https://treeboston.org/get-involved/tutc/,verified,page names it
+tree_boston_a1,action,tree_boston,Volunteer with Tree Boston,https://treeboston.org/get-involved/voluntreers-program/,verified,page names it
+undauntedk12_p1,project,undauntedk12,UndauntedK12 in Massachusetts,https://www.undauntedk12.org/massachusetts,verified,page names it
+undauntedk12_p2,project,undauntedk12,Energy Tax Credits for Schools Hub,https://www.undauntedk12.org,verified,page names it
+undauntedk12_p3,project,undauntedk12,Modern HVAC Campaign,https://www.undauntedk12.org,verified,page names it
+unitarian_universalist_mass__p1,project,unitarian_universalist_mass_action,Climate & Environmental Justice Campaign,https://www.uumassaction.org/climate-and-environemntal-justice,verified,page names it
+unitarian_universalist_mass__a1,action,unitarian_universalist_mass_action,Contact Your Senator on the Massachusetts Senate Energy Bill,https://www.uumassaction.org/take-action,verified,page names it
+unitarian_universalist_mass__a2,action,unitarian_universalist_mass_action,Stop Private Jet Expansion at Hanscom Field,https://www.uumassaction.org/take-action,verified,page names it
+vineyard_power_cooperative_p1,project,vineyard_power_cooperative,Energy Transition Program,https://www.vineyardpower.org/initiatives,verified,page names it
+vineyard_power_cooperative_a2,action,vineyard_power_cooperative,Sign up for a no-cost home energy assessment,https://www.vineyardpower.org/initiatives,verified,page names it
+wendell_state_forest_allianc_p1,project,wendell_state_forest_alliance,H.953 Act Relative to Forest Protection,https://malegislature.gov/Bills/194/H953,verified,legislature site down for maintenance; bill confirmed on LegiScan/PolicyRisk
+wendell_state_forest_allianc_a1,action,wendell_state_forest_alliance,Support forest protection legislation,https://www.wendellforest.org/take-action,verified,page names it
+xr_boston_p1,project,xr_boston,No New Fossil Fuel Infrastructure in Massachusetts,https://xrboston.org/action/no-gas-in-mass-rally/,verified,page names it
+youth_climate_action_now_p1,project,youth_climate_action_now,Youth Climate Action Now,https://sites.google.com/view/ycanupcomingevents/home,verified,page names it
+youth_climate_action_now_a1,action,youth_climate_action_now,Join Youth Climate Action Now,https://sites.google.com/view/ycanupcomingevents/join-our-team,verified,page names it

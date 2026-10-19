@@ -238,32 +238,36 @@ function onOpen() {
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
-    .addItem('Apply the event check (hide events with no page that names them)', 'applyEventCheck')
+    .addItem('Apply the source check (hide events, projects and actions with no page that names them)', 'applySourceCheck')
     .addToUi();
 }
 
-var EVENT_CHECK_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/src/event-check.json';
+var SOURCE_CHECK_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/src/source-check.json';
 
 /**
- * Only verified events on the map (Oct 18): hides every event whose page is gone or never named it (the list in
- * src/event-check.json, from research/events/verification-2026-10-18.csv) and every event with no web link,
- * and applies the corrected links and dates. Hidden rows stay in the sheet; each change is in Change Log.
+ * Only verified items on the map (Oct 18): on the Events, Projects and Actions tabs, applies the corrected links,
+ * dates and names from src/source-check.json (research/verification/*.csv), then hides every item whose page is
+ * gone, never named it, or exists only in an email, and every item with no web link. Hidden rows stay in the
+ * sheet; each change is in Change Log.
  */
-function applyEventCheck() {
-  var check = JSON.parse(UrlFetchApp.fetch(EVENT_CHECK_URL).getContentText());
-  var sheet = ss_().getSheetByName(TAB.events);
-  addMissingColumns_(sheet, COLS[TAB.events]);
-  var table = readTable_(sheet);
+function applySourceCheck() {
+  var check = JSON.parse(UrlFetchApp.fetch(SOURCE_CHECK_URL).getContentText());
   var n = 0;
-  eventCheckUpdates_(table.rows, check).forEach(function (u) {
-    writeFields_(sheet, table.headers, u.row._row, u.updates);
-    logChange_('', 'Menu', u.updates.hidden ? 'removed' : 'updated', '', 'event', str_(u.row.id), str_(u.row.name), u.why);
-    n++;
+  [[TAB.events, 'event'], [TAB.projects, 'project'], [TAB.actions, 'action']].forEach(function (t) {
+    var sheet = ss_().getSheetByName(t[0]);
+    if (!sheet) return;
+    addMissingColumns_(sheet, COLS[t[0]]);
+    var table = readTable_(sheet);
+    eventCheckUpdates_(table.rows, check).forEach(function (u) {
+      writeFields_(sheet, table.headers, u.row._row, u.updates);
+      logChange_('', 'Menu', u.updates.hidden ? 'removed' : 'updated', '', t[1], str_(u.row.id), str_(u.row.name), u.why);
+      n++;
+    });
   });
-  ss_().toast(n ? 'Changed ' + n + ' event(s). See Change Log.' : 'Every event already passes the check.');
+  ss_().toast(n ? 'Changed ' + n + ' item(s). See Change Log.' : 'Everything already passes the check.');
 }
 
-/** The changes the event check makes: [{row, updates, why}]. */
+/** The changes the source check makes to one tab's rows: [{row, updates, why}] (fixes first, then hiding). */
 function eventCheckUpdates_(rows, check) {
   var remove = {};
   (check.remove || []).forEach(function (id) { remove[id] = true; });
@@ -272,12 +276,12 @@ function eventCheckUpdates_(rows, check) {
   rows.forEach(function (r) {
     var id = str_(r.id);
     if (!id || isTrue_(r.hidden)) return;
-    if (remove[id]) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: its page is gone or does not name this event (event check, ' + check.checked + ')' });
-    if (!page(r.link) && !page(r.rsvp_link)) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: no web page for this event' });
-    var fix = (check.fix || {})[id];
-    if (!fix) return;
+    if (remove[id]) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: its page is gone, does not name it, or it is only in an email (source check, ' + check.checked + ')' });
+    var fix = (check.fix || {})[id] || {};
     var updates = {};
     Object.keys(fix).forEach(function (k) { if (str_(r[k]) !== fix[k]) updates[k] = fix[k]; });
+    var link = 'link' in updates ? updates.link : r.link;
+    if (!page(link) && !page(r.rsvp_link)) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: no web page for it' });
     if (Object.keys(updates).length) out.push({ row: r, updates: updates, why: Object.keys(updates).map(function (k) { return k + ': ' + (str_(r[k]) || '∅') + ' → ' + updates[k]; }).join('\n') });
   });
   return out;

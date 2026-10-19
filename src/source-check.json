@@ -1,0 +1,73 @@
+{
+ "checked": "2026-10-18",
+ "remove": [
+  "can_e_fall_gathering",
+  "can_p_create",
+  "can_p_miyawaki",
+  "cape_downwinders_p1",
+  "charles_river_watershed_asso_e3",
+  "citizens_climate_lobby_e1",
+  "citizens_climate_lobby_e2",
+  "clean_water_action_a2",
+  "clean_water_action_p3",
+  "climate_action_brookline_p1",
+  "ev_chill_out_at_the_park",
+  "mass_audubon_a2",
+  "mass_audubon_e1",
+  "mass_audubon_e10",
+  "mass_audubon_e11",
+  "mass_audubon_e2",
+  "mass_audubon_e3",
+  "mass_audubon_e4",
+  "mass_audubon_e6",
+  "mass_audubon_e8",
+  "mass_audubon_wellfleet_bay_w_e2",
+  "mass_audubon_wma_e1",
+  "mass_audubon_wma_e10",
+  "mass_audubon_wma_e11",
+  "mass_audubon_wma_e2",
+  "mass_audubon_wma_e3",
+  "mass_audubon_wma_e4",
+  "mass_audubon_wma_e5",
+  "mass_audubon_wma_e6",
+  "mass_audubon_wma_e7",
+  "mass_audubon_wma_e9",
+  "mass_divest_coalition_p1",
+  "massachusetts_climate_action_a1",
+  "massachusetts_climate_action_p2",
+  "massachusetts_climate_action_p3",
+  "massachusetts_climate_action_p4",
+  "massachusetts_climate_action_p5",
+  "massachusetts_climate_action_p6",
+  "masscosh_tlaw_climate_change_e1",
+  "mycc_e_call_1004",
+  "mycc_p_advocacy_day",
+  "mycc_p_rep_refresh",
+  "pr_cross_campus_mixer",
+  "pr_some_other_project_to_see_if_this_ema",
+  "tree_boston_e7",
+  "vineyard_power_cooperative_a1"
+ ],
+ "fix": {
+  "masscosh_tlaw_climate_change_e2": {
+   "link": "https://masscosh.org/events/calendar/masscosh-celebrating-the-movement-50th-year"
+  },
+  "food_and_water_watch_e1": {
+   "date": "2026-10-21T20:00:00"
+  },
+  "mycc_p_map": {
+   "link": "https://nkessel.github.io/openthink_mycc/"
+  },
+  "mycc_p_cccc_collab": {
+   "name": "MYCC × Cross Campus Climate Coalition collaboration",
+   "description": "MYCC and the Cross Campus Climate Coalition (CCCC) are collaborating this year to strengthen member organizations, learn from each other and build collective power for local politics. Interested organizations sign up through the form.",
+   "link": "https://docs.google.com/forms/d/e/1FAIpQLSeTJ2u2Df3Dgs7DRfkQPbfqXXh29ZWPgB1dJ23M0076vgMoPQ/viewform"
+  },
+  "masscosh_tlaw_climate_change_p3": {
+   "link": "https://www.masscosh.org/events/calendar/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure"
+  },
+  "masscosh_tlaw_climate_change_a1": {
+   "link": "https://www.masscosh.org/events/calendar/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure"
+  }
+ }
+}
