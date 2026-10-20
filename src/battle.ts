@@ -200,8 +200,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   // ---------- Data ----------
   const recs = ctx.file.records.filter((r) => ctx.mapIds.includes(r.map) && (r.topics.length || r.bills.length));
-  const c2p = new Map<string, string>();
-  for (const p of ctx.file.parents) for (const c of p.children) c2p.set(c.id, p.id);
+  // A topic can sit under several main topics (Turibius, Oct 19: it shows how one issue reaches other sectors).
+  const c2p = new Map<string, string[]>();
+  for (const p of ctx.file.parents) for (const c of p.children) c2p.set(c.id, [...(c2p.get(c.id) ?? []), p.id]);
   const childLabel = new Map<string, string>();
   for (const p of ctx.file.parents) for (const c of p.children) childLabel.set(`${p.id}/${c.id}`, c.label);
   const targets = new Map<string, Target>();
@@ -227,9 +228,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const topics = new Set(r.topics);
     if (r.bills.length && c2p.has(BILLS)) topics.add(BILLS);
     const hit = new Set<Target>();
-    for (const t of topics) {
-      const pid = c2p.get(t);
-      if (!pid) continue;
+    for (const t of topics) for (const pid of c2p.get(t) ?? []) {
       const key = `${pid}/${t}`;
       const pm = getT(`p:${pid}`, "prob", pid, PROBLEMS[pid] ?? pid, 0, null);
       const vm = getT(`v:${pid}`, "vis", pid, VISIONS[pid] ?? pid, 0, null);

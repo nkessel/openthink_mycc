@@ -234,6 +234,7 @@ function onOpen() {
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
     .addItem('Use Wikipedia-based topics on the forms (Turibius)', 'useWikiTopicsOnForms')
     .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
+    .addItem('Add reviewed aliases from Unmatched Input (monthly topic review)', 'addReviewedAliases')
     .addItem('Add connections from the Organization Info Form (reviewed list on GitHub)', 'importReviewedConnections')
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
@@ -377,11 +378,13 @@ function wikiTopicRows_(rows, minLift) {
     .filter(function (r) { return String(r[H]) === '0' || Number(r[L]) >= minLift; })
     .sort(function (a, b) { return (String(a[H]) === '0' ? 0 : 1) - (String(b[H]) === '0' ? 0 : 1); })
     .map(function (r) {
-      var seed = String(r[H]) === '0' ? r[Qd] : String(r[S]).split(',')[0];
+      // A topic sits under every seed it was reached from (Turibius, Oct 19: it shows one issue reaching others).
+      var seeds = String(r[H]) === '0' ? [r[Qd]] : String(r[S]).split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      var names = seeds.map(function (q) { return seedName[q] || q; });
       var al = String(r[A] || '');
       if (al.length > ALIAS_CELL_MAX) al = al.slice(0, al.lastIndexOf(' | ', ALIAS_CELL_MAX));
-      var note = String(r[H]) === '0' ? 'Seed topic' : 'Under ' + (seedName[seed] || seed);
-      return [r[T], al, note + ' · Wikidata ' + r[Qd], r[Qd], seedName[seed] || ''];
+      var note = String(r[H]) === '0' ? 'Seed topic' : 'Under ' + names.join(', ');
+      return [r[T], al, note + ' · Wikidata ' + r[Qd], r[Qd], names.join(' | ')];
     });
 }
 
@@ -1473,8 +1476,9 @@ function topicCandidates_(t) {
   return out;
 }
 /** Typed topics → { slugs: [matched], missed: [{typed, closest}] }. */
-function resolveTopics_(text, t) {
-  var out = { slugs: [], missed: [] };
+function resolveTopics_(text, t, search) {
+  search = search || wikiSearchTitles_;
+  var out = { slugs: [], missed: [], searched: [] };
   var parts = String(text === undefined || text === null ? '' : text).split(/[,;\n]+/).map(function (x) { return x.trim(); }).filter(Boolean);
   if (!parts.length) return out;
   var cands = topicCandidates_(t);
@@ -1492,17 +1496,78 @@ function resolveTopics_(text, t) {
       });
     });
     var m = matchTyped_(typed, near);
-    if (m.id) out.slugs.push(m.id); else out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
+    if (m.id) { out.slugs.push(m.id); return; }
+    // Closest match by meaning (Turibius, Oct 19): ask Wikipedia's own search, which knows redirects and related
+    // wording ("climate superfund" → Polluter pays principle), and take its best result that is on our list.
+    var titles = [];
+    try { titles = search(typed) || []; } catch (e) { titles = []; }
+    for (var i = 0; i < titles.length; i++) {
+      var id = exact[normText_(titles[i])];
+      if (id) { out.slugs.push(id); out.searched.push({ typed: typed, topic: titles[i] }); return; }
+    }
+    out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
   });
   return out;
 }
 
+/** Wikipedia's top 5 article titles for a phrase (cached for 6 hours). Empty when Wikipedia can't be reached. */
+function wikiSearchTitles_(q) {
+  var key = 'wsrch:' + normText_(q).slice(0, 200);
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get(key);
+  if (hit) return JSON.parse(hit);
+  var res = UrlFetchApp.fetch('https://en.wikipedia.org/w/api.php?action=query&list=search&srlimit=5&format=json&srsearch=' + encodeURIComponent(q),
+    { muteHttpExceptions: true, headers: { 'User-Agent': 'MA Climate Organization Map (https://github.com/nkessel/openthink_mycc)' } });
+  if (res.getResponseCode() !== 200) return [];
+  var titles = (JSON.parse(res.getContentText()).query || { search: [] }).search.map(function (x) { return x.title; });
+  cache.put(key, JSON.stringify(titles), 21600);
+  return titles;
+}
+
 /** Append a row to the Unmatched Input tab so the team can review what people typed. */
-function logUnmatched_(email, kind, what, field, typed, closest) {
+function logUnmatched_(email, kind, what, field, typed, closest, status, resolution) {
   var sheet = ss_().getSheetByName(TAB.unmatched);
   if (!sheet) return;
   appendObject_(sheet, { logged_at: nowIso_(), email: email || '', form: FORM_NAMES[kind] || kind, what: what, field: field,
-    typed: typed, closest_match: closest || '', status: 'new', resolution: '' });
+    typed: typed, closest_match: closest || '', status: status || 'new', resolution: resolution || '' });
+}
+
+/**
+ * Menu: the monthly alias review (Turibius, Oct 19). On Unmatched Input, put a topic's exact name from the Topics
+ * tab in "resolution" for any typed topic, and run this: the typed words become an alias of that topic, so the
+ * forms match them from then on, and the row's status becomes "alias added".
+ */
+function addReviewedAliases() {
+  var ss = ss_();
+  var un = ss.getSheetByName(TAB.unmatched), tp = ss.getSheetByName(TAB.topics);
+  var ut = readTable_(un), tt = readTable_(tp);
+  var res = reviewedAliases_(ut.rows, tt.rows);
+  res.topicUpdates.forEach(function (u) { writeFields_(tp, tt.headers, u.row._row, { aliases: u.aliases }); });
+  res.done.forEach(function (r) { writeFields_(un, ut.headers, r._row, { status: 'alias added' }); });
+  ss.toast(res.done.length ? 'Added ' + res.done.length + ' alias(es).' + (res.unknown.length ? ' Not on the Topics tab: ' + res.unknown.join('; ') : '') :
+    'Nothing to add: put a topic name from the Topics tab in "resolution" on Unmatched Input first.');
+}
+
+/** Pure: Unmatched Input rows with a topic name in "resolution" → alias additions for the Topics tab. */
+function reviewedAliases_(unRows, topicRows) {
+  var byName = {};
+  topicRows.forEach(function (r) { if (str_(r.name)) byName[normText_(r.name)] = r; });
+  var adds = {}, done = [], unknown = [];
+  unRows.forEach(function (r) {
+    var st = str_(r.status).toLowerCase();
+    if (str_(r.what) !== 'topic' || !str_(r.resolution) || st === 'alias added' || st === 'auto-matched') return;
+    var t = byName[normText_(str_(r.resolution).replace(/^Wikipedia search → /, ''))];
+    if (!t) { unknown.push(str_(r.resolution)); return; }
+    (adds[t.name] = adds[t.name] || { row: t, words: [] }).words.push(str_(r.typed));
+    done.push(r);
+  });
+  var topicUpdates = Object.keys(adds).map(function (k) {
+    var a = adds[k], cur = String(a.row.aliases || '').split(/\s*\|\s*/).filter(Boolean);
+    var have = {}; cur.concat([a.row.name]).forEach(function (x) { have[normText_(x)] = true; });
+    a.words.forEach(function (w) { if (!have[normText_(w)]) { cur.push(w); have[normText_(w)] = true; } });
+    return { row: a.row, aliases: cur.join(' | ') };
+  });
+  return { topicUpdates: topicUpdates, done: done, unknown: uniq_(unknown) };
 }
 
 // ---------------------------------------------------------------- submissions
@@ -2506,6 +2571,8 @@ function putTags_(patch, v, typed) {
     var r = resolveTopics_(typed, readAll_());
     arr = arr.concat(r.slugs);
     r.missed.forEach(function (m) { logUnmatched_(CUR_.email, CUR_.kind, 'topic', Q.moreTopics, m.typed, m.closest); });
+    // Matched through Wikipedia's search: saved, and listed for the team to check (status "auto-matched").
+    r.searched.forEach(function (m) { logUnmatched_(CUR_.email, CUR_.kind, 'topic', Q.moreTopics, m.typed, m.topic, 'auto-matched', 'Wikipedia search → ' + m.topic); });
   }
   if (arr.length) patch.topic_tags = uniq_(arr).join(', ');
 }

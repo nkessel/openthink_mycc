@@ -14,7 +14,7 @@ export function slug(s: string): string {
   return s.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
 }
 
-type Catalog = Record<string, [string, string, string]>;
+type Catalog = Record<string, string[]>; // [qid, name, seed qid, …more seed qids]
 let catalog: Promise<Catalog | null> | null = null;
 function loadCatalog(): Promise<Catalog | null> {
   catalog ??= fetch(`${import.meta.env.BASE_URL}topics-wiki-catalog.json`)
@@ -67,10 +67,10 @@ export async function withLiveTags(f: TopicsFile, data: DataFile, mapIds: string
     if (known) return known;
     const hit = cat?.[s];
     if (!hit) return null;
-    const [qid, name, seed] = hit;
-    const parent = parents.find((p) => p.id === `wiki_${seed}`);
-    if (!parent) return null;
-    parent.children.push({ id: qid, label: qid === seed ? `${name} (general)` : name });
+    const [qid, name, ...seedIds] = hit;
+    const under = parents.filter((p) => seedIds.some((s) => p.id === `wiki_${s}`));
+    if (!under.length) return null;
+    for (const parent of under) parent.children.push({ id: qid, label: seedIds.includes(qid) ? `${name} (general)` : name });
     byTag.set(s, qid);
     return qid;
   };

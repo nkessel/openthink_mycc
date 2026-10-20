@@ -545,13 +545,31 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const out = J(G("wikiTopicRows_")(rows, 8));
   assert.deepEqual(out.map((r) => r[0]), ["Climate change", "Climate justice", "Heat pump", "Washington, D.C."], "seeds first, low lift dropped");
   assert.equal(out[2][2], "Under Climate change · Wikidata Q1");
-  assert.equal(out[3][4], "Climate justice", "first seed listed");
+  assert.equal(out[3][4], "Climate justice | Climate change", "every seed listed");
+  assert.equal(out[3][2], "Under Climate justice, Climate change · Wikidata Q61");
   const t = { topics: out.map((r) => ({ name: r[0], aliases: r[1], notes: r[2] })), coalitions: [], orgs: [], events: [], projects: [] };
   assert.deepEqual(J(G("tagChoices_")(t, "wiki")), ["Climate change", "Climate justice", "Youth serving"]);
   assert.ok(J(G("tagChoices_")(t, "groups")).includes("Clean energy"), "group-based choices unchanged");
-  const r = J(G("resolveTopics_")("global warming, heat pumps, District of Columbia, heat pumpp, basket weaving", t));
+  const noSearch = () => [];
+  const r = J(G("resolveTopics_")("global warming, heat pumps, District of Columbia, heat pumpp, basket weaving", t, noSearch));
   assert.deepEqual(r.slugs, ["climate_change", "heat_pump", "washington_d_c", "heat_pump"]);
   assert.deepEqual(r.missed.map((m) => m.typed), ["basket weaving"]);
+  // closest match by meaning: Wikipedia's search results, first one on the list wins
+  const search = (q) => (q === "carbon tax on polluters" ? ["Carbon tax", "Climate justice", "Heat pump"] : q === "basket weaving" ? ["Basket weaving"] : []);
+  const r2 = J(G("resolveTopics_")("carbon tax on polluters, basket weaving", t, search));
+  assert.deepEqual(r2.slugs, ["climate_justice"]);
+  assert.deepEqual(r2.searched, [{ typed: "carbon tax on polluters", topic: "Climate justice" }]);
+  assert.deepEqual(r2.missed.map((m) => m.typed), ["basket weaving"]);
+  // monthly review: a topic name in "resolution" becomes an alias
+  const un = [{ what: "topic", typed: "warming of the planet", resolution: "Climate change", status: "new", _row: 2 },
+    { what: "topic", typed: "global warming", resolution: "Climate change", status: "new", _row: 3 },
+    { what: "topic", typed: "x", resolution: "Not a topic", status: "new", _row: 4 },
+    { what: "topic", typed: "y", resolution: "", status: "new", _row: 5 },
+    { what: "organization", typed: "z", resolution: "Climate change", status: "new", _row: 6 }];
+  const ra = G("reviewedAliases_")(un, t.topics);
+  assert.deepEqual(ra.topicUpdates.map((u) => [u.row.name, u.aliases]), [["Climate change", "Global warming | Climate crisis | warming of the planet"]]);
+  assert.deepEqual(ra.done.map((r) => r._row), [2, 3]);
+  assert.deepEqual(J(ra.unknown), ["Not a topic"]);
   console.log("Wikipedia-based topics on the forms OK");
 }
 {
