@@ -134,8 +134,9 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
 
   // ---------- Data: main topics → sub-topics → bills ----------
   const recs = ctx.file.records.filter((r) => ctx.mapIds.includes(r.map) && (r.topics.length || r.bills.length));
-  const c2p = new Map<string, string>();
-  for (const p of ctx.file.parents) for (const c of p.children) c2p.set(c.id, p.id);
+  // A topic can sit under several main topics (Turibius, Oct 19: it shows how one issue reaches other sectors).
+  const c2p = new Map<string, string[]>();
+  for (const p of ctx.file.parents) for (const c of p.children) c2p.set(c.id, [...(c2p.get(c.id) ?? []), p.id]);
   const childLabel = new Map<string, string>();
   for (const p of ctx.file.parents) for (const c of p.children) childLabel.set(`${p.id}/${c.id}`, c.id === BILLS ? "Named bills" : c.label);
   const billName = new Map(ctx.file.bills.map((b) => [b.id, b.name]));
@@ -163,9 +164,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     const topics = new Set(r.topics);
     if (r.bills.length && c2p.has(BILLS)) topics.add(BILLS); // a record naming a bill belongs under "Named bills"
     const fed = new Set<Problem>();
-    for (const t of topics) {
-      const pid = c2p.get(t);
-      if (!pid) continue;
+    for (const t of topics) for (const pid of c2p.get(t) ?? []) {
       const pp = getProb(`p:${pid}`, ctx.file.parents.find((x) => x.id === pid)!.label, pid, 0, null);
       const cp = getProb(`c:${pid}/${t}`, childLabel.get(`${pid}/${t}`) ?? t, pid, 1, pp);
       fed.add(pp);
