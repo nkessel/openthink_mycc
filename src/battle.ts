@@ -7,7 +7,7 @@
 // Calm by design: comets and seeds are launched at a slow, steady rate (each problem is hit about 1–3 times every
 // few seconds), drawn on canvas with additive glow; prefers-reduced-motion shows a still picture.
 import * as d3 from "d3";
-import { animAuto, animSimple, onAnimChange, reportFrame, setAnim, type AnimChoice } from "./perf";
+import { reportFrame } from "./perf";
 import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { PROBLEMS, VISIONS, SUB_SOLUTIONS, FIGHT_STRATEGIES } from "./problems";
@@ -94,7 +94,7 @@ interface Fx {
 const BROAD = "broad";
 const BILLS = "bills";
 const STORE = "openthink.topics.battle.v2";
-const SPLIT_K = 1.7;
+const SPLIT_K = 2.6; // zoom where the main problem or solution nearest the middle splits (further in than before, Oct 23)
 const KIND_LABEL: Record<TopicRecord["kind"], string> = {
   event: "Event",
   project: "Project",
@@ -354,34 +354,13 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     relayout(true);
   }).g);
   el.dataset.layout = layout;
-  let splitAll = false;
+  // No "Split all" any more (Oct 23): zooming in splits only the main problem or solution nearest the middle of the
+  // view, and clicking one splits just that one.
+  const zoomOpen = new Set<string>();
   let zoomSplit = false;
-  const splitSeg = seg("Detail", [["main", "Main"], ["split", "Split all"]], () => (splitAll || zoomSplit ? "split" : "main"), (v) => {
-    splitAll = v === "split";
-    relayout(true);
-  });
-  bar.appendChild(splitSeg.g);
-  // Full or simple animation (switches to simple by itself when the browser can't keep up)
-  let simple = animSimple();
-  const animSeg = seg("Animation", [["full", "Full"], ["simple", "Simple"]], () => (simple ? "simple" : "full"), (v) => setAnim(v as AnimChoice));
-  bar.appendChild(animSeg.g);
-  const animNote = h("span", { class: "cr-anim-note" }, "auto");
-  animNote.title = "Switched to simple animation because this browser was drawing slowly. Pick Full to switch back.";
-  animSeg.g.appendChild(animNote);
-  const syncAnim = () => {
-    simple = animSimple();
-    animSeg.sync();
-    animNote.style.display = animAuto() ? "" : "none";
-    el.classList.toggle("simple", simple);
-  };
-  syncAnim();
-  onAnimChange(() => {
-    syncAnim();
-    if (!shown) return;
-    measure();
-    baseDirty = true;
-    kick();
-  });
+  // One animation, always the light one (the Full / Simple switch was taken out, Oct 23).
+  const simple = true;
+  el.classList.add("simple");
   // Effects: detailed sliders for the hits and nourishment, saved as this browser's default
   const fx0 = (() => {
     try {
@@ -566,7 +545,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   (window as unknown as { __battle: typeof stats }).__battle = stats;
 
   const liveKids = (t: Target) => t.kids.filter((k) => k.base > 0);
-  const isOpen = (t: Target) => liveKids(t).length > 1 && (expanded.has(t.id) || zoomSplit || splitAll);
+  const isOpen = (t: Target) => liveKids(t).length > 1 && (expanded.has(t.id) || zoomOpen.has(t.id));
   const showKind = (k: Stream["kind"]) => showing === "both" || (k === "fight" ? showing === "problems" : showing === "solutions");
   const sideShown = (t: Target) => showKind(t.kind === "prob" ? "fight" : "feed");
 
@@ -1963,6 +1942,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   function frame(now: number) {
     raf = 0;
     if (!shown || !el.isConnected || el.offsetParent === null) return;
+    if (last && now - last < 31) {
+      raf = requestAnimationFrame(frame); // at most ~30 frames a second: half the work, looks the same (Oct 23)
+      return;
+    }
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
     if (last) {
       stats.intervalMs = stats.intervalMs ? stats.intervalMs * 0.95 + (now - last) * 0.05 : now - last;
@@ -2028,24 +2011,47 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const want = tr.k >= SPLIT_K ? true : tr.k < SPLIT_K - 0.25 ? false : zoomSplit;
     if (want !== zoomSplit) {
       zoomSplit = want;
-      splitSeg.sync();
-      relayout(true);
+      if (updateZoomOpen()) relayout(true);
     }
     kick();
   }).on("end", () => {
+    if (zoomSplit && updateZoomOpen()) relayout(true); // panned onto another one: that one splits instead
     paintSvg();
     declutterItems();
     baseDirty = true;
     kick();
   });
   svg.call(zoom).on("dblclick.zoom", null);
+  /** Where a problem or solution is on screen: itself, or the middle of its finer ones while it is split. */
+  function screenPos(t: Target): [number, number] | null {
+    if (t.visible && Number.isFinite(t.x)) return [tr.applyX(t.x), tr.applyY(t.y)];
+    let sx = 0, sy = 0, n = 0;
+    for (const k of t.kids) { const q = screenPos(k); if (q) { sx += q[0]; sy += q[1]; n++; } }
+    return n ? [sx / n, sy / n] : null;
+  }
+  /** Which main problem or solution the zoom splits: the one nearest the middle (sticky unless another is clearly nearer). True when it changed. */
+  function updateZoomOpen(): boolean {
+    let next = "";
+    if (zoomSplit) {
+      const dist = (t: Target) => { const q = screenPos(t); return q ? Math.hypot(q[0] - W / 2, q[1] - H / 2) : Infinity; };
+      const cands = [...mainProbs, ...mainVis].filter((t) => liveKids(t).length > 1);
+      let best: Target | undefined;
+      for (const t of cands) if (!best || dist(t) < dist(best)) best = t;
+      const cur = cands.find((t) => zoomOpen.has(t.id));
+      if (cur && best && best !== cur && dist(best) > dist(cur) * 0.75) best = cur;
+      next = best?.id ?? "";
+    }
+    if ((next ? zoomOpen.has(next) && zoomOpen.size === 1 : zoomOpen.size === 0)) return false;
+    zoomOpen.clear();
+    if (next) zoomOpen.add(next);
+    return true;
+  }
   const zoomBy = (f: number) => (reduced ? svg : svg.transition().duration(450)).call(zoom.scaleBy as never, f);
   zIn.addEventListener("click", () => zoomBy(1.6));
   zOut.addEventListener("click", () => zoomBy(1 / 1.6));
   zReset.addEventListener("click", () => {
     expanded.clear();
-    splitAll = false;
-    splitSeg.sync();
+    zoomOpen.clear();
     if (tr.k === 1 && tr.x === 0 && tr.y === 0) relayout(true);
     else (reduced ? svg : svg.transition().duration(600)).call(zoom.transform as never, d3.zoomIdentity);
   });
@@ -2111,7 +2117,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are hit (or fed) more often, about 1–3 times every few seconds."),
     h("div", {}, "Each item's weight (the sliders) is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
     h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. The Modify Visual Effects button tunes the animation."),
-    h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or use Detail → Split all. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),
+    h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or zoom in on it. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),
   );
 
   let first = true;

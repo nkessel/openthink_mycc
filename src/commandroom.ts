@@ -1,13 +1,14 @@
 // Topics page: where the groups' energy flows.
 // Organizations send streams of energy to the topics their projects, events and actions work on.
-// Two layouts (organizations in the middle / on the left) and two styles ("Comets + shields" / "Watershed").
+// Two layouts (organizations in the middle / on the left). One style ("Comets + shields"; the Watershed style was taken out Oct 23).
 // Stream size uses the Topics page's slider weights; each topic glows (or greens) with how much energy reaches it.
-// Zooming goes deeper: main topics → sub-topics → individual bills, and the items (projects, events, actions,
-// mission statements) that make up each stream appear as dots along it.
+// Zooming in splits the main topic nearest the middle into sub-topics, then its nearest sub-topic into bills. The items
+// (projects, events, actions, mission statements) behind the streams show as dots around their own group's bubble,
+// for the group or topic you hover or pick.
 // Calm by design: one stream per organization → main topic until you zoom or click, a fixed particle budget
 // drawn on canvas, slow speeds, low opacity, additive glow, and static flows for prefers-reduced-motion.
 import * as d3 from "d3";
-import { animAuto, animSimple, onAnimChange, reportFrame, setAnim, type AnimChoice } from "./perf";
+import { reportFrame } from "./perf";
 import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { SOLUTION_ICONS } from "./topicIcons";
@@ -78,7 +79,8 @@ interface Item {
   key: string;
   s: Stream;
   r: TopicRecord;
-  f: number; // where along the stream
+  a: number; // angle around its group's bubble
+  ring: number; // 0 = first ring around the bubble, 1 = the next one out
 }
 interface Ripple {
   prob: Problem;
@@ -89,8 +91,11 @@ interface Ripple {
 const BROAD = "broad";
 const BILLS = "bills";
 const STORE = "openthink.topics.commandroom.v1";
-const SPLIT_K = 1.7; // zoom where main topics split into sub-topics
-const DEEP_K = 2.8; // zoom where bills split and items appear
+// Zoom further before topics split (Nathan, Oct 23), and then only the main topic you zoomed into splits.
+const SPLIT_K = 2.6; // zoom where the main topic nearest the middle splits into sub-topics
+const DEEP_K = 4.2; // zoom where its sub-topic nearest the middle splits into bills
+/** Frames are drawn at most this often (~30 a second): the particles move slowly, so it looks the same. */
+const FRAME_MS = 31;
 const KIND_LABEL: Record<TopicRecord["kind"], string> = {
   event: "Event",
   project: "Project",
@@ -122,7 +127,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     }
   })();
   let layout: Layout = saved.layout === "sides" ? "sides" : "center";
-  let style: Style = saved.style === "watershed" ? "watershed" : "comets";
+  // One style now: the Watershed style was taken out (Oct 23).
+  const style = "comets" as Style; // (the watershed drawing code below is no longer reached)
   const save = () => {
     try {
       localStorage.setItem(STORE, JSON.stringify({ layout, style }));
@@ -263,27 +269,14 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     resetZoom();
     relayout(true);
   });
-  const styleSeg = seg("Style", [["comets", "Comets + shields"], ["watershed", "Watershed"]], () => style, (v) => {
-    style = v as Style;
-    save();
-    el.dataset.style = style;
-    legendText();
-    relayout(false);
-  });
-  let splitAll = false;
-  let zoomLevel = 0; // 0: main topics, 1: sub-topics, 2: bills + items
-  const splitSeg = seg("Topics", [["parents", "Main topics"], ["split", "Split all"]], () => (splitAll || zoomLevel >= 1 ? "split" : "parents"), (v) => {
-    splitAll = v === "split";
-    if (!splitAll && zoomLevel > 0) resetZoom();
-    relayout(true);
-  });
-  // Full or simple animation (switches to simple by itself when the browser can't keep up)
-  let simple = animSimple();
-  const animSeg = seg("Animation", [["full", "Full"], ["simple", "Simple"]], () => (simple ? "simple" : "full"), (v) => setAnim(v as AnimChoice));
-  const animNote = h("span", { class: "cr-anim-note" }, "auto");
-  animNote.title = "Switched to simple animation because this browser was drawing slowly. Pick Full to switch back.";
-  animSeg.g.appendChild(animNote);
-  bar.append(layoutSeg.g, styleSeg.g, splitSeg.g, animSeg.g);
+  // No "Split all" any more: zooming splits the main topic you zoom into, and clicking a topic splits just that one.
+  let zoomLevel = 0; // 0: main topics, 1: one main topic split, 2: and one of its sub-topics split into bills
+  /** The topics split by the zoom: the main topic nearest the middle of the view, then its nearest sub-topic. */
+  const zoomOpen = new Set<string>();
+  // One animation, always the light one (the Full / Simple switch was taken out, Oct 23): fewer, plainer particles,
+  // drawn at ~30 frames a second at most.
+  const simple = true;
+  bar.append(layoutSeg.g);
   el.appendChild(bar);
   // On a phone the view options fold away, so the picture gets the screen.
   makeFoldable(bar, "view options");
@@ -356,7 +349,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
 
   /** Does this topic show its finer topics instead of itself? */
   const isOpen = (p: Problem) =>
-    p.kids.filter((k) => k.base > 0).length > 1 && (expanded.has(p.id) || zoomLevel > p.level || (splitAll && p.level === 0));
+    p.kids.filter((k) => k.base > 0).length > 1 && (expanded.has(p.id) || zoomOpen.has(p.id));
 
   // ---------- Layout ----------
   function measure() {
@@ -619,16 +612,34 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     stats.particles = used;
   }
 
-  /** The items that make up the streams: shown when zoomed in deep, or for the selected group, topic or item. */
+  /**
+   * The items behind the streams (events, projects, actions, missions) sit in a ring around their own group's bubble,
+   * and only for the group or topic you hover or pick: by the group or not at all (Nathan, Oct 23).
+   */
   function computeItems() {
-    const show = zoomLevel >= 2 || !!selOrg || !!selProb || !!selItem || !!hoverP || !!hoverO;
+    const show = !!selOrg || !!selProb || !!selItem || !!hoverP || !!hoverO;
     items = [];
     if (!show) return;
+    const byOrg = new Map<Org, { s: Stream; r: TopicRecord }[]>();
     for (const s of visStreams) {
       if (s.value <= 0 || shownAlpha(s) < 0.2) continue;
-      const list = s.recs.filter((r) => (recWeight.get(r.id) ?? 0) > 0).sort((a, b) => (recWeight.get(b.id) ?? 0) - (recWeight.get(a.id) ?? 0));
-      // the items sit just outside their group, each on the path it feeds: they read as the group's own work
-      list.forEach((r, i) => items.push({ key: `${s.org.key}|${s.prob.id}|${r.id}`, s, r, f: 0.07 + (0.16 * (i + 0.5)) / list.length }));
+      for (const r of s.recs) {
+        if ((recWeight.get(r.id) ?? 0) <= 0) continue;
+        (byOrg.get(s.org) ?? byOrg.set(s.org, []).get(s.org)!).push({ s, r });
+      }
+    }
+    const PER_RING = 18;
+    for (const [o, list] of byOrg) {
+      const seen = new Set<string>();
+      const uniq = list.filter((x) => !seen.has(x.r.id) && seen.add(x.r.id))
+        .sort((a, b) => (recWeight.get(b.r.id) ?? 0) - (recWeight.get(a.r.id) ?? 0))
+        .slice(0, PER_RING * 2);
+      uniq.forEach((x, i) => {
+        const ring = i < PER_RING ? 0 : 1;
+        const n = ring === 0 ? Math.min(uniq.length, PER_RING) : uniq.length - PER_RING;
+        const j = ring === 0 ? i : i - PER_RING;
+        items.push({ key: `${o.key}|${x.r.id}`, s: x.s, r: x.r, a: -Math.PI / 2 + (2 * Math.PI * (j + (ring ? 0.5 : 0))) / n, ring });
+      });
     }
   }
 
@@ -896,16 +907,16 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       .style("stroke-width", `${3 / s}px`);
   }
 
-  const IP: [number, number] = [0, 0];
   function placeSvg() {
     const s = orgScale();
     gProbs.selectAll<SVGGElement, Problem>("g.cr-prob").attr("transform", (p) => `translate(${tr.applyX(p.x)},${tr.applyY(p.y)})`);
     gOrgs.selectAll<SVGGElement, Org>("g.cr-org").attr("transform", (o) => `translate(${tr.applyX(o.x)},${tr.applyY(o.y)}) scale(${s})`);
     gGroups.selectAll<SVGTextElement, unknown>("text").style("font-size", `${10 / tr.k}px`).style("stroke-width", `${3 / tr.k}px`);
     gItems.selectAll<SVGCircleElement, Item>("circle").each(function (d) {
-      at(d.s, d.f, IP);
-      this.setAttribute("cx", String(tr.applyX(IP[0])));
-      this.setAttribute("cy", String(tr.applyY(IP[1])));
+      const o = d.s.org;
+      const rad = o.r * s + 7 + d.ring * 8; // screen pixels: a ring just outside the bubble
+      this.setAttribute("cx", String(tr.applyX(o.x) + Math.cos(d.a) * rad));
+      this.setAttribute("cy", String(tr.applyY(o.y) + Math.sin(d.a) * rad));
     });
   }
 
@@ -1293,6 +1304,10 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function frame(now: number) {
     raf = 0;
     if (!shown || !el.isConnected || el.offsetParent === null) return;
+    if (last && now - last < FRAME_MS) {
+      raf = requestAnimationFrame(frame); // too soon: skip this frame
+      return;
+    }
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
     if (last) {
       stats.intervalMs = stats.intervalMs ? stats.intervalMs * 0.95 + (now - last) * 0.05 : now - last;
@@ -1352,8 +1367,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   }
 
   // ---------- Zoom: main topics → sub-topics → bills and items ----------
-  const DEPTH = ["Main topics", "Sub-topics", "Bills and items"];
-  const zoom = d3.zoom<SVGSVGElement, unknown>().scaleExtent([0.7, 6]).on("zoom", (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+  const DEPTH = ["Main topics", "Sub-topics", "Bills"];
+  const zoom = d3.zoom<SVGSVGElement, unknown>().scaleExtent([0.7, 8]).on("zoom", (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
     tr = ev.transform;
     zg.attr("transform", tr.toString());
     placeSvg();
@@ -1369,15 +1384,56 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     if (want !== zoomLevel) {
       zoomLevel = want;
       depthLbl.textContent = DEPTH[zoomLevel];
-      splitSeg.sync();
-      relayout(true);
+      if (updateZoomOpen()) relayout(true);
     }
     kick();
   }).on("end", () => {
+    // panned or zoomed onto another main topic: that one splits instead
+    if (zoomLevel > 0 && updateZoomOpen()) relayout(true);
     paintSvg();
     baseDirty = true;
     kick();
   });
+  /** Where a topic is on screen: itself, or the middle of its finer topics while it is split. */
+  function screenPos(p: Problem): [number, number] | null {
+    if (p.visible && Number.isFinite(p.x)) return [tr.applyX(p.x), tr.applyY(p.y)];
+    const pts = p.kids.map(screenPos).filter((q): q is [number, number] => !!q);
+    if (!pts.length) return null;
+    let sx = 0, sy = 0;
+    for (const q of pts) { sx += q[0]; sy += q[1]; }
+    return [sx / pts.length, sy / pts.length];
+  }
+  /** The splittable topic nearest the middle of the view (keeps the current one unless another is clearly nearer). */
+  function nearest(cands: Problem[], current: Problem | undefined): Problem | undefined {
+    const mx = W / 2, my = H / 2;
+    const dist = (p: Problem) => { const q = screenPos(p); return q ? Math.hypot(q[0] - mx, q[1] - my) : Infinity; };
+    let best: Problem | undefined;
+    for (const p of cands) if (!best || dist(p) < dist(best)) best = p;
+    if (current && best && best !== current && dist(best) > dist(current) * 0.75) return current;
+    return best;
+  }
+  /** Recompute which topics the zoom splits. True when that changed. */
+  function updateZoomOpen(): boolean {
+    const splittable = (p: Problem) => p.kids.filter((k) => k.base > 0).length > 1;
+    const curRoot = parents.find((p) => zoomOpen.has(p.id));
+    const next = new Set<string>();
+    if (zoomLevel >= 1) {
+      const root = nearest(parents.filter(splittable), curRoot);
+      if (root) {
+        next.add(root.id);
+        if (zoomLevel >= 2) {
+          const curKid = root.kids.find((k) => zoomOpen.has(k.id));
+          const kid = nearest(root.kids.filter(splittable), curKid);
+          if (kid) next.add(kid.id);
+        }
+      }
+    }
+    const same = next.size === zoomOpen.size && [...next].every((id) => zoomOpen.has(id));
+    if (same) return false;
+    zoomOpen.clear();
+    for (const id of next) zoomOpen.add(id);
+    return true;
+  }
   svg.call(zoom).on("dblclick.zoom", null);
   function resetZoom() {
     if (tr.k === 1 && tr.x === 0 && tr.y === 0) return;
@@ -1388,8 +1444,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   zOut.addEventListener("click", () => zoomBy(1 / 1.6));
   zReset.addEventListener("click", () => {
     expanded.clear();
-    splitAll = false;
-    splitSeg.sync();
+    zoomOpen.clear();
     if (tr.k === 1 && tr.x === 0 && tr.y === 0) relayout(true);
     else (reduced ? svg : svg.transition().duration(600)).call(zoom.transform as never, d3.zoomIdentity);
   });
@@ -1451,9 +1506,10 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function legendText() {
     clear(legend);
     legend.append(
-      h("div", {}, style === "comets" ? "Each comet stream: one group → one topic, sized by its weighted activity (the sliders on the left)." : "Rivulets from each group join into one river per topic, sized by weighted activity (the sliders on the left)."),
-      h("div", {}, style === "comets" ? "A topic's shield glows brighter the more energy reaches it." : "A topic's delta turns greener and wetter the more energy reaches it; quiet ones stay dry."),
-      h("div", {}, "Zoom in (scroll, or the + button) to split main topics into sub-topics, then into individual bills, with each project, event, action and mission statement as a dot on its stream: pink events, green projects, yellow actions, hollow missions."),
+      h("div", {}, "Each comet stream: one group → one topic, sized by its weighted activity (the sliders on the left)."),
+      h("div", {}, "A topic's shield glows brighter the more energy reaches it."),
+      h("div", {}, "Zoom in (scroll, or the + button) on a main topic to split it into sub-topics, then zoom in more to split a sub-topic into bills. Click a topic to split just that one."),
+      h("div", {}, "Hover or click a group (or a topic) to see its projects, events, actions and mission statements as dots around the group: pink events, green projects, yellow actions, hollow missions."),
       h("div", {}, "Uses everything we have: all projects, events, actions and mission statements at once. Topics with repeating events pulse gently."),
       h("div", { class: "cr-legend-hint" }, "Hover a stream or dot · click a group, topic or dot · drag to pan · double-click the background to reset the zoom"),
     );
@@ -1471,21 +1527,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     legendText();
   }
   let first = true;
-  const syncAnim = () => {
-    simple = animSimple();
-    animSeg.sync();
-    animNote.style.display = animAuto() ? "" : "none";
-    el.classList.toggle("simple", simple);
-  };
-  syncAnim();
-  onAnimChange(() => {
-    syncAnim();
-    if (!shown) return;
-    measure();
-    allocate();
-    baseDirty = true;
-    kick();
-  });
+  el.classList.add("simple");
 
   new ResizeObserver(() => {
     if (!shown || el.offsetParent === null) return;

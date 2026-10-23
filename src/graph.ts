@@ -68,6 +68,8 @@ export interface GraphSettings {
   showAllEvents: boolean;
   showAllProjects: boolean;
   showAllActions: boolean;
+  /** Volunteer roles (actions with kind "role"), shown or hidden on their own. */
+  showAllVolunteer: boolean;
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
@@ -89,6 +91,7 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   showAllEvents: true,
   showAllProjects: true,
   showAllActions: true,
+  showAllVolunteer: true,
 };
 
 export interface Graph {
@@ -516,6 +519,23 @@ export function createGraph(
   nodeSel.filter((d) => !!d.sector).style("--sector", (d) => sectorById(d.sector)?.color ?? "#a16207");
 
   // Append shapes + labels per node.
+  // Logos load after the map is on screen (Oct 23 meeting: "load org images after loading the map"): the bubbles
+  // show their initials first, then the logos fill in a few at a time while the browser is idle.
+  const logoQueue: [SVGImageElement, string][] = [];
+  let logoTimer = 0;
+  function queueLogo(img: SVGImageElement, url: string) {
+    logoQueue.push([img, url]);
+    if (!logoTimer) logoTimer = window.setTimeout(loadLogos, 1200);
+  }
+  function loadLogos() {
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+    const step = () => {
+      for (const [img, url] of logoQueue.splice(0, 24)) img.setAttribute("href", url);
+      if (logoQueue.length) { if (idle) idle(step, { timeout: 500 }); else setTimeout(step, 60); }
+      else logoTimer = 0;
+    };
+    step();
+  }
   // Structure per node: <circle.halo> (groups), <circle.ring> (main), <text.node-label>, <text.node-name>.
   nodeSel.each(function (this: SVGGElement, d) {
     const sel = d3.select(this);
@@ -531,31 +551,30 @@ export function createGraph(
         .append("circle")
         .attr("class", "ring")
         .attr("r", r)
-        .attr("fill", d.logo ? "#f8fafc" : d.color);
-      // style() (not attr) so it beats the stylesheet's white ring
-      if (d.logo) ring.style("stroke", d.color).style("stroke-width", "5px").style("stroke-opacity", "1");
+        .attr("fill", d.color); // white with a coloured rim once its logo has loaded (logos load after the map shows)
       const cLabel = sel
         .append("text")
         .attr("class", "node-label")
         .attr("font-size", Math.min(r * 0.55, 22))
         .text(d.abbrev || initials(d.name));
       if (d.logo) {
-        // Logo inside the coalition's colored ring; the abbreviation returns if the image fails.
-        cLabel.style("display", "none");
+        // Logo inside the coalition's colored ring, loaded after the map is up; the abbreviation shows until then
+        // (and stays if the image fails).
         const s = r * LOGO_SCALE * 0.82; // inside the colored ring
-        sel
+        const img = sel
           .append("image")
           .attr("class", "node-logo")
-          .attr("href", d.logo)
           .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s)
           .attr("preserveAspectRatio", "xMidYMid meet")
           .style("clip-path", "circle(50%)")
           .attr("pointer-events", "none")
-          .on("error", function () {
-            d3.select(this).remove();
-            cLabel.style("display", null);
-            ring.attr("fill", d.color).style("stroke", null).style("stroke-width", null).style("stroke-opacity", null);
-          });
+          .on("load", () => {
+            cLabel.style("display", "none");
+            // style() (not attr) so it beats the stylesheet's white ring
+            ring.attr("fill", "#f8fafc").style("stroke", d.color).style("stroke-width", "5px").style("stroke-opacity", "1");
+          })
+          .on("error", function () { d3.select(this).remove(); });
+        queueLogo(img.node()!, d.logo);
       }
       sel
         .append("text")
@@ -569,30 +588,28 @@ export function createGraph(
         .append("circle")
         .attr("class", "ring")
         .attr("r", r)
-        .attr("fill", d.logo ? "#f8fafc" : "#2a2a36");
-      if (d.logo) sel.select("circle.ring").style("stroke", "none"); // no white border around logos
+        .attr("fill", "#2a2a36"); // white, without the border, once its logo has loaded
       const label = sel
         .append("text")
         .attr("class", "node-label")
         .attr("font-size", ORG_LABEL_FONT_SIZE)
         .text(initials(d.name, 3));
       if (d.logo) {
-        // Logo inside the circle; the initials come back if the image fails to load.
-        label.style("display", "none");
+        // Logo inside the circle, loaded after the map is up; the initials show until then (and stay if it fails).
         const s = r * LOGO_SCALE;
-        sel
+        const img = sel
           .append("image")
           .attr("class", "node-logo")
-          .attr("href", d.logo)
           .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s)
           .attr("preserveAspectRatio", "xMidYMid meet")
           .style("clip-path", "circle(50%)")
           .attr("pointer-events", "none")
-          .on("error", function () {
-            d3.select(this).remove();
-            label.style("display", null);
-            sel.select("circle.ring").attr("fill", "#2a2a36").style("stroke", null);
-          });
+          .on("load", () => {
+            label.style("display", "none");
+            sel.select("circle.ring").attr("fill", "#f8fafc").style("stroke", "none"); // no white border around logos
+          })
+          .on("error", function () { d3.select(this).remove(); });
+        queueLogo(img.node()!, d.logo);
       }
       sel
         .append("text")
@@ -611,9 +628,12 @@ export function createGraph(
   const SAT_BUB_R = 11; // an icon's radius on screen (px) at full size
   const SAT_SPACING = 8.5; // world units between neighbouring items on the orbit
   const SAT_MAX_WORLD_R = 3.6; // an icon never takes more room than this (world units), so neighbours never overlap
-  const DETAIL_ON_K = 1.9; // zoom at which dots become icons
-  const DETAIL_OFF_K = 1.6; // and back (a gap so it doesn't flicker)
-  const LABEL_ON_K = 2.8; // zoom at which item names appear
+  // Phones wait until you're zoomed far in before drawing icons (each icon is several SVG elements, and a phone
+  // fills its screen with many groups at moderate zoom), so the map stays light there.
+  const PHONE = window.matchMedia("(max-width: 720px)").matches;
+  const DETAIL_ON_K = PHONE ? 4.2 : 1.9; // zoom at which dots become icons
+  const DETAIL_OFF_K = PHONE ? 3.6 : 1.6; // and back (a gap so it doesn't flicker)
+  const LABEL_ON_K = PHONE ? 5.5 : 2.8; // zoom at which item names appear
   let satsReady = false;
   let satMode: 0 | 1 = 0;
   const satLevel = new Map<string, 0 | 1>();
@@ -641,8 +661,8 @@ export function createGraph(
     const want = new Set<BubbleKind>();
     if (settings.showAllProjects) want.add("project");
     if (settings.showAllEvents) want.add("event");
-    if (settings.showAllActions) want.add("action");
-    return bubblesFor(n).filter((b) => want.has(b.kind));
+    if (settings.showAllActions || settings.showAllVolunteer) want.add("action");
+    return bubblesFor(n).filter((b) => want.has(b.kind) && kindShown(b));
   }
   /** Take items round-robin across kinds so a "+n" never hides a whole kind. */
   function spread(items: Bubble[], cap: number): Bubble[] {
@@ -1415,6 +1435,16 @@ export function createGraph(
   /** Volunteer roles are actions with kind "role"; they get their own colour and icon. */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isRoleB(b: any): boolean { return b.kind === "action" && (b.item as Action).kind === "role"; }
+  /** Map settings / legend: actions and volunteer roles are switched on and off separately. */
+  function kindVisible(b: Bubble): boolean {
+    if (b.kind === "event") return settings.showAllEvents;
+    if (b.kind === "project") return settings.showAllProjects;
+    return b.kind === "action" ? kindShown(b) : true;
+  }
+  function kindShown(b: Bubble): boolean {
+    if (b.kind !== "action") return true;
+    return isRoleB(b) ? settings.showAllVolunteer : settings.showAllActions;
+  }
 
   // Icons drawn inside the bubbles, centred on (0,0): a calendar, a seedling, a person with a raised hand, a checkmark.
   function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind | "volunteer", date?: string) {
@@ -1544,7 +1574,8 @@ export function createGraph(
     n.fy = cy;
 
     const allBubbles = bubblesFor(n);
-    const bubbles = settings.showBubbles ? allBubbles : [];
+    // Kinds switched off in Map settings or the legend stay hidden here too (the details pane still lists them).
+    const bubbles = settings.showBubbles ? allBubbles.filter(kindVisible) : [];
     // The opened group shows a little larger (CSS scales it; the ring makes room for it).
     const fs = Math.max(1.35, Math.min(4, FOCUS_PLANET_R / nodeRadiusOf(n)));
     nodeSel.classed("focused", (d) => d.id === id).filter((d) => d.id === id).style("--fs", String(fs));
@@ -2008,13 +2039,15 @@ export function createGraph(
         xForce.strength(centerStrengthFor);
         yForce.strength(centerStrengthFor);
       }
-      if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined || partial.alwaysShow !== undefined) {
+      if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined || partial.showAllVolunteer !== undefined || partial.alwaysShow !== undefined) {
         if (partial.alwaysShow !== undefined) {
           try { localStorage.setItem("openthink.previews", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
           syncViewSwitch();
         }
         refreshSats();
         refreshSpacing();
+        // An open group redraws its moons with the new kinds.
+        if (focusId && partial.alwaysShow === undefined) { const f = focusId; exitFocus(false); enterFocus(f); }
       }
       if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
         collideForce.radius(collideRadius);

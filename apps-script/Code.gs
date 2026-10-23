@@ -240,7 +240,43 @@ function onOpen() {
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
     .addItem('Apply the source check (hide events, projects and actions with no page that names them)', 'applySourceCheck')
+    .addItem('Link the social justice spreadsheet', 'linkSocialJusticeSheet')
     .addToUi();
+}
+
+// ---------------------------------------------------------------- social justice spreadsheet
+/**
+ * The social justice groups (Palestinian rights, immigrant rights, …) are kept out of this sheet so it stays about
+ * climate (Oct 23 meeting). They live in their own spreadsheet, shared only with the people who manage them, with
+ * the same tabs and columns as this one (Coalitions = one row per sector, Organizations, Events, Projects,
+ * Actions, Connections). The web app serves it at ?feed=social-justice; the map only asks for it when someone
+ * switches a social justice layer on, so it adds nothing to the main map's loading.
+ */
+var SJ_PROP = 'SJ_SHEET_ID';
+function linkSocialJusticeSheet() {
+  var ui = SpreadsheetApp.getUi();
+  var cur = PropertiesService.getScriptProperties().getProperty(SJ_PROP);
+  var res = ui.prompt('Social justice spreadsheet', 'Paste the social justice spreadsheet\'s link (or its ID).' +
+    (cur ? '\n\nNow linked: https://docs.google.com/spreadsheets/d/' + cur : ''), ui.ButtonSet.OK_CANCEL);
+  if (res.getSelectedButton() !== ui.Button.OK) return;
+  var id = sheetIdFrom_(res.getResponseText());
+  if (!id) { ui.alert('That doesn\'t look like a Google Sheets link.'); return; }
+  var t = readAllFrom_(SpreadsheetApp.openById(id)); // fails here (not later, on the map) if this account can't open it
+  PropertiesService.getScriptProperties().setProperty(SJ_PROP, id);
+  logChange_('', 'Menu', 'applied', '', 'social justice', id, 'Social justice spreadsheet linked', t.coalitions.length + ' sectors, ' + t.orgs.length + ' groups');
+  ui.alert('Linked: ' + t.coalitions.length + ' sectors and ' + t.orgs.length + ' groups. The map reads it the next time someone switches a social justice layer on.');
+}
+/** Pure: a spreadsheet link or bare ID → the ID ('' when it isn't one). */
+function sheetIdFrom_(text) {
+  var s = String(text || '').trim();
+  var m = /\/spreadsheets\/d\/([\w-]{20,})/.exec(s);
+  if (m) return m[1];
+  return /^[\w-]{20,}$/.test(s) ? s : '';
+}
+function socialJusticeData_() {
+  var id = PropertiesService.getScriptProperties().getProperty(SJ_PROP);
+  if (!id) return { generated_at: nowIso_(), coalitions: [], organizations: [], edges: [], org_links: [], unlinked: true };
+  return buildDataFile_(readAllFrom_(SpreadsheetApp.openById(id)), nowIso_());
 }
 
 var SOURCE_CHECK_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/src/source-check.json';
@@ -1475,10 +1511,13 @@ function topicCandidates_(t) {
   used.forEach(function (x) { add(humanize_(x), []); });
   return out;
 }
-/** Typed topics → { slugs: [matched], missed: [{typed, closest}] }. */
-function resolveTopics_(text, t, search) {
-  search = search || wikiSearchTitles_;
-  var out = { slugs: [], missed: [], searched: [] };
+/**
+ * Typed topics → { slugs: [matched], missed: [{typed, closest}] }. Matched only against Turibius's list on the
+ * Topics tab (names + aliases) and the tags in use: no Wikipedia lookups (Nathan, Oct 23: the related topics are
+ * already in his spreadsheet). Anything else goes to Unmatched Input with the closest names for the monthly review.
+ */
+function resolveTopics_(text, t) {
+  var out = { slugs: [], missed: [] };
   var parts = String(text === undefined || text === null ? '' : text).split(/[,;\n]+/).map(function (x) { return x.trim(); }).filter(Boolean);
   if (!parts.length) return out;
   var cands = topicCandidates_(t);
@@ -1497,31 +1536,9 @@ function resolveTopics_(text, t, search) {
     });
     var m = matchTyped_(typed, near);
     if (m.id) { out.slugs.push(m.id); return; }
-    // Closest match by meaning (Turibius, Oct 19): ask Wikipedia's own search, which knows redirects and related
-    // wording ("climate superfund" → Polluter pays principle), and take its best result that is on our list.
-    var titles = [];
-    try { titles = search(typed) || []; } catch (e) { titles = []; }
-    for (var i = 0; i < titles.length; i++) {
-      var id = exact[normText_(titles[i])];
-      if (id) { out.slugs.push(id); out.searched.push({ typed: typed, topic: titles[i] }); return; }
-    }
     out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
   });
   return out;
-}
-
-/** Wikipedia's top 5 article titles for a phrase (cached for 6 hours). Empty when Wikipedia can't be reached. */
-function wikiSearchTitles_(q) {
-  var key = 'wsrch:' + normText_(q).slice(0, 200);
-  var cache = CacheService.getScriptCache();
-  var hit = cache.get(key);
-  if (hit) return JSON.parse(hit);
-  var res = UrlFetchApp.fetch('https://en.wikipedia.org/w/api.php?action=query&list=search&srlimit=5&format=json&srsearch=' + encodeURIComponent(q),
-    { muteHttpExceptions: true, headers: { 'User-Agent': 'MA Climate Organization Map (https://github.com/nkessel/openthink_mycc)' } });
-  if (res.getResponseCode() !== 200) return [];
-  var titles = (JSON.parse(res.getContentText()).query || { search: [] }).search.map(function (x) { return x.title; });
-  cache.put(key, JSON.stringify(titles), 21600);
-  return titles;
 }
 
 /** Append a row to the Unmatched Input tab so the team can review what people typed. */
@@ -1615,6 +1632,12 @@ function processSubmission_(kind, a, email, approver) {
   }
   if (kind === 'org' && a[COALITION_EDIT]) return saveCoalitionSubmission_(a, email, approver, t);
   var target = describeTarget_(kind, a, t);
+  // A new organization always needs a verified (Google sign-in) email, even when an admin approves it.
+  if (kind === 'org' && target.isNew && !email) {
+    if (approver) return { ok: false, reason: 'New organizations need a verified email: this submission has none. Ask them to send the form again, signed in with Google.' };
+    queueForReview_(kind, a, email, target, 'NO EMAIL — a new organization needs a verified email');
+    return;
+  }
   var access = approver ? { ok: true } : authorize_(email, kind, a, target, t);
   if (!access.ok) {
     queueForReview_(kind, a, email, target, access.reason);
@@ -1627,7 +1650,7 @@ function processSubmission_(kind, a, email, approver) {
   notifySubmitter_(email, submitterMessage_(approver || RECHECK_ ? 'approved' : 'live', kind, result.name));
   // An approved new org: its submitter becomes that org's point-person.
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
-  if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
+  if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a, email);
   refreshDropdowns();
 }
 
@@ -1752,6 +1775,7 @@ function permissionsFor_(email, editors) {
   if (ADMIN_EMAILS.map(function (x) { return x.toLowerCase(); }).indexOf(email) !== -1) { p.known = p.admin = true; }
   (editors || []).forEach(function (r) {
     if (String(r.email || '').trim().toLowerCase() !== email) return;
+    if (isPending_(r)) return; // email not confirmed yet
     p.known = true;
     if (/^admin$/i.test(str_(r.role))) p.admin = true;
     list_(r.org_ids).forEach(function (id) { if (id === '*') p.all = true; p.orgs[id] = true; });
@@ -1772,8 +1796,13 @@ function addEditorOrg_(email, orgId) {
   }
 }
 
-/** Point-person answers → an Editors row for that email with this org added (name/phone kept up to date). */
-function savePointPerson_(orgId, a) {
+/**
+ * Point-person answers → an Editors row for that email with this org added (name/phone kept up to date).
+ * The email has to be verified before it can edit anything (Nathan, Oct 23): when it is the submitter's own
+ * signed-in email, Google already verified it; any other address is saved as "pending" and sent a link to
+ * confirm (doGet ?verify=…). Pending rows grant nothing until the link is opened.
+ */
+function savePointPerson_(orgId, a, submitter) {
   var email = String(a[Q.pointEmail] || '').trim().toLowerCase();
   if (!email || email.indexOf('@') === -1) return;
   var name = String(a[Q.pointName] || '').trim();
@@ -1781,6 +1810,7 @@ function savePointPerson_(orgId, a) {
   var sheet = ss_().getSheetByName(TAB.editors);
   var table = readTable_(sheet);
   var row = table.rows.filter(function (r) { return String(r.email).toLowerCase() === email; })[0];
+  var verified = email === String(submitter || '').trim().toLowerCase() || (row && !isPending_(row));
   var note = phone ? 'phone: ' + phone : '';
   if (row) {
     var up = { org_ids: uniq_(list_(row.org_ids).concat([orgId])).join(', ') };
@@ -1789,10 +1819,54 @@ function savePointPerson_(orgId, a) {
       var rest = str_(row.notes).split(/;\s*/).filter(function (x) { return x && x.indexOf('phone: ') !== 0; });
       up.notes = [note].concat(rest).join('; ');
     }
+    if (isPending_(row) && verified) up.role = 'editor';
     writeFields_(sheet, table.headers, row._row, up);
   } else {
-    appendObject_(sheet, { email: email, role: 'editor', org_ids: orgId, name: name, notes: note ? note + '; point person from the org form' : 'point person from the org form' });
+    appendObject_(sheet, { email: email, role: verified ? 'editor' : PENDING_ROLE, org_ids: orgId, name: name,
+      notes: [note, verified ? 'point person from the org form' : 'point person from the org form; waiting for them to confirm their email'].filter(Boolean).join('; ') });
   }
+  if (!verified) sendVerification_(email, orgId, name);
+}
+
+/** Editors rows waiting for their email to be confirmed: listed, but allowed nothing. */
+var PENDING_ROLE = 'pending';
+function isPending_(r) { return /^pending/i.test(str_(r.role)); }
+
+/** Email a point person a one-time link that confirms the address (doGet ?verify=token). */
+function sendVerification_(email, orgId, name) {
+  var token = '';
+  for (var i = 0; i < 4; i++) token += Math.floor(Math.random() * 0x100000000).toString(16);
+  PropertiesService.getScriptProperties().setProperty('VERIFY_' + token, JSON.stringify({ email: email, org: orgId, at: nowIso_() }));
+  var url = '';
+  try { url = ScriptApp.getService().getUrl(); } catch (e) { /* not deployed as a web app (tests) */ }
+  url = (url || PropertiesService.getScriptProperties().getProperty('WEB_APP_URL') || '') + '?verify=' + token;
+  var label = (LABEL_INDEX_ && LABEL_INDEX_.byId.org[orgId]) || orgId;
+  logChange_('', FORM_NAMES.org, 'verification sent', 'PENDING', 'editor', orgId, label, 'point person ' + email + ' asked to confirm their email');
+  try {
+    MailApp.sendEmail(email, 'MA Climate Organization Map: please confirm your email',
+      'Hi' + (name ? ' ' + name : '') + ',\n\nSomeone named you as the point person for ' + label + ' on the MA Climate Organization Map. ' +
+      'Open this link to confirm your email, so you can keep the organization\'s information up to date:\n\n' + url +
+      '\n\nIf this wasn\'t you, ignore this email: nothing changes until the link is opened.');
+  } catch (e) { /* quota: the Change Log and Editors tab still show the pending row */ }
+}
+
+/** The confirmation link: the pending Editors row becomes an editor. Returns a short message for the page. */
+function confirmVerification_(token) {
+  var props = PropertiesService.getScriptProperties();
+  var raw = token && /^[0-9a-f]{8,64}$/.test(token) ? props.getProperty('VERIFY_' + token) : null;
+  if (!raw) return 'This link has expired or was already used. If you still need access, ask the core team.';
+  var v = JSON.parse(raw);
+  var sheet = ss_().getSheetByName(TAB.editors);
+  var table = readTable_(sheet);
+  var row = table.rows.filter(function (r) { return String(r.email).toLowerCase() === v.email; })[0];
+  if (row && isPending_(row)) {
+    var rest = str_(row.notes).split(/;\s*/).filter(function (x) { return x && x.indexOf('waiting for them to confirm') === -1; });
+    writeFields_(sheet, table.headers, row._row, { role: 'editor', notes: rest.concat(['email confirmed ' + nowIso_().slice(0, 10)]).join('; ') });
+  }
+  props.deleteProperty('VERIFY_' + token);
+  logChange_(v.email, 'Email confirmation', 'confirmed', '', 'editor', v.org, v.org, 'point person confirmed their email');
+  try { recheckWaiting_(); } catch (e) { /* held submissions are re-checked on the next Editors edit */ }
+  return 'Thanks, your email is confirmed. You can now update ' + v.org + ' through the forms on the map.';
 }
 
 function queueForReview_(kind, a, email, target, reason) {
@@ -2229,8 +2303,14 @@ function logChange_(email, form, status, flag, type, id, name, changes) {
 
 // ---------------------------------------------------------------- data.json endpoint
 /** Deploy → New deployment → Web app (Execute as: me, Who has access: Anyone). */
-function doGet() {
-  var data = buildDataFile_(readAll_(), nowIso_());
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  if (p.verify) {
+    return HtmlService.createHtmlOutput('<p style="font:16px system-ui;max-width:520px;margin:48px auto">' +
+      confirmVerification_(String(p.verify)).replace(/[<>&]/g, '') + '</p>').setTitle('MA Climate Organization Map');
+  }
+  // The social justice groups live in their own spreadsheet and are only fetched when someone switches them on.
+  var data = p.feed === 'social-justice' ? socialJusticeData_() : buildDataFile_(readAll_(), nowIso_());
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -2358,7 +2438,11 @@ function ss_() {
 }
 
 function readAll_() {
-  var ss = ss_();
+  return readAllFrom_(ss_());
+}
+
+/** Every public tab of a spreadsheet laid out like this one (also the social justice spreadsheet). */
+function readAllFrom_(ss) {
   var r = function (name) { var sh = ss.getSheetByName(name); return sh ? readTable_(sh).rows : []; };
   return {
     coalitions: r(TAB.coalitions), orgs: r(TAB.orgs), connections: r(TAB.connections), projects: r(TAB.projects),
@@ -2571,8 +2655,6 @@ function putTags_(patch, v, typed) {
     var r = resolveTopics_(typed, readAll_());
     arr = arr.concat(r.slugs);
     r.missed.forEach(function (m) { logUnmatched_(CUR_.email, CUR_.kind, 'topic', Q.moreTopics, m.typed, m.closest); });
-    // Matched through Wikipedia's search: saved, and listed for the team to check (status "auto-matched").
-    r.searched.forEach(function (m) { logUnmatched_(CUR_.email, CUR_.kind, 'topic', Q.moreTopics, m.typed, m.topic, 'auto-matched', 'Wikipedia search → ' + m.topic); });
   }
   if (arr.length) patch.topic_tags = uniq_(arr).join(', ');
 }

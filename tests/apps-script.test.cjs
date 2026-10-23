@@ -48,7 +48,7 @@ const mail = [];
 const ctx = {
   console, Math, Date, JSON, String, Number, Array, Object, RegExp, isNaN,
   SpreadsheetApp: { getActiveSpreadsheet: () => ssObj, openById: () => ssObj, getActive: () => ssObj },
-  PropertiesService: { getScriptProperties: () => ({ getProperty: (k) => props[k] || null, setProperty: (k, v) => (props[k] = v) }) },
+  PropertiesService: { getScriptProperties: () => ({ getProperty: (k) => props[k] || null, setProperty: (k, v) => (props[k] = v), deleteProperty: (k) => delete props[k] }) },
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   Session: { getScriptTimeZone: () => "America/New_York", getActiveUser: () => ({ getEmail: () => "" }) },
   MailApp: { sendEmail: (to, subject, body) => mail.push({ to, subject, body }) },
@@ -188,6 +188,17 @@ book["Needs Review"][r2 - 1][approveCol - 1] = true;
 ctx.onReviewEdit({ range: sheet("Needs Review").getRange(r2, approveCol), user: { getEmail: () => "point@bls.org" } });
 assert.ok(!data().organizations.find((o) => o.name === "Sneaky Org"));
 
+// a new org with no verified email: held, and an admin can't approve it either
+submit("fo", "", { [Q.whichOrg]: NEW_ORG, [Q.orgName]: "Unverified Org" });
+assert.match(review().at(-1).reason, /^NO EMAIL — a new organization needs a verified email/);
+{
+  const r3 = book["Needs Review"].length;
+  book["Needs Review"][r3 - 1][approveCol - 1] = true;
+  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(r3, approveCol), user: { getEmail: () => "ab130@wellesley.edu" } });
+  assert.ok(!data().organizations.find((o) => o.name === "Unverified Org"), "not added without a verified email");
+  assert.equal(book["Needs Review"][r3 - 1][approveCol - 1], false, "approve box unticked");
+}
+
 // the approved submitter can now add an org-owned, in-person event with a location
 submit("fe", "new@natick.org", {
   [Q.whichEvent]: NEW_EVENT, [Q.hostOrg]: "Natick Climate Circle [natick_climate_circle]", [Q.eventName]: "Song Circle for the Planet",
@@ -248,7 +259,7 @@ assert.equal(book["Feedback"].length, 2);
 assert.equal(log().at(-1).record_type, "feedback");
 
 // every submission is in the Change Log
-const submissions = 20;
+const submissions = 21; // incl. the new org held for having no verified email
 assert.equal(log().length, submissions, `expected one Change Log row per submission (+ approval), got ${log().length}`);
 // the grid version of "who you work with": one row per org, strongest ticked column wins, blank rows = no contact
 submit("fo", "point@bls.org", {
@@ -278,8 +289,20 @@ submit("fo", "point@bls.org", { [Q.whichOrg]: BLS, [Q.pointName]: "Rae Lin", [Q.
   assert.ok(ed && String(ed.org_ids).includes("boston_latin_school_youthcan"));
   assert.equal(ed.name, "Rae Lin"); assert.match(String(ed.notes), /phone: 617-555-0100/);
   assert.ok(!JSON.stringify(data()).includes("617-555-0100"), "point-person phone never published");
+  // a typed email someone else entered must be confirmed first: pending, allowed nothing, sent a link
+  assert.equal(ed.role, "pending");
+  const link = mail.filter((m) => m.to === "rae@bls.org" && /confirm your email/.test(m.subject)).pop();
+  assert.ok(link, "verification email sent");
+  const token = /\?verify=([0-9a-f]+)/.exec(link.body)[1];
   submit("fo", "rae@bls.org", { [Q.whichOrg]: BLS, [Q.orgDesc]: "Edited by the new point person" });
-  assert.equal(data().organizations.find((o) => o.id === "boston_latin_school_youthcan").description, "Edited by the new point person");
+  assert.notEqual(data().organizations.find((o) => o.id === "boston_latin_school_youthcan").description, "Edited by the new point person", "pending editor held");
+  assert.match(G("confirmVerification_")(token), /confirmed/);
+  assert.equal(ctx.readAll_().editors.find((r) => r.email === "rae@bls.org").role, "editor");
+  assert.equal(data().organizations.find((o) => o.id === "boston_latin_school_youthcan").description, "Edited by the new point person", "held edit applied once confirmed");
+  assert.match(G("confirmVerification_")(token), /expired|already used/, "one-time link");
+  // the submitter's own signed-in email is already verified by Google
+  submit("fo", "point@bls.org", { [Q.whichOrg]: BLS, [Q.pointEmail]: "point@bls.org" });
+  assert.equal(ctx.readAll_().editors.find((r) => r.email === "point@bls.org").role, "editor");
 }
 
 // after an org renames itself, the new plain name picks the same row
@@ -550,16 +573,14 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const t = { topics: out.map((r) => ({ name: r[0], aliases: r[1], notes: r[2] })), coalitions: [], orgs: [], events: [], projects: [] };
   assert.deepEqual(J(G("tagChoices_")(t, "wiki")), ["Climate change", "Climate justice", "Youth serving"]);
   assert.ok(J(G("tagChoices_")(t, "groups")).includes("Clean energy"), "group-based choices unchanged");
-  const noSearch = () => [];
-  const r = J(G("resolveTopics_")("global warming, heat pumps, District of Columbia, heat pumpp, basket weaving", t, noSearch));
+  const r = J(G("resolveTopics_")("global warming, heat pumps, District of Columbia, heat pumpp, basket weaving", t));
   assert.deepEqual(r.slugs, ["climate_change", "heat_pump", "washington_d_c", "heat_pump"]);
   assert.deepEqual(r.missed.map((m) => m.typed), ["basket weaving"]);
-  // closest match by meaning: Wikipedia's search results, first one on the list wins
-  const search = (q) => (q === "carbon tax on polluters" ? ["Carbon tax", "Climate justice", "Heat pump"] : q === "basket weaving" ? ["Basket weaving"] : []);
-  const r2 = J(G("resolveTopics_")("carbon tax on polluters, basket weaving", t, search));
-  assert.deepEqual(r2.slugs, ["climate_justice"]);
-  assert.deepEqual(r2.searched, [{ typed: "carbon tax on polluters", topic: "Climate justice" }]);
-  assert.deepEqual(r2.missed.map((m) => m.typed), ["basket weaving"]);
+  // no Wikipedia lookups: wording that isn't on the list (or its aliases) goes to review
+  const r2 = J(G("resolveTopics_")("carbon tax on polluters", t));
+  assert.deepEqual(r2.slugs, []);
+  assert.deepEqual(r2.missed.map((m) => m.typed), ["carbon tax on polluters"]);
+  assert.equal(G("typeof wikiSearchTitles_"), "undefined", "Wikipedia search removed");
   // monthly review: a topic name in "resolution" becomes an alias
   const un = [{ what: "topic", typed: "warming of the planet", resolution: "Climate change", status: "new", _row: 2 },
     { what: "topic", typed: "global warming", resolution: "Climate change", status: "new", _row: 3 },
@@ -631,4 +652,16 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const ups = G("eventCheckUpdates_")([{ id: "p1", name: "Old wording", link: "", _row: 2 }], check);
   assert.deepEqual(J(ups.map((u) => u.updates)), [{ name: "Prep", skills_needed: "a, b", link: "https://x.org", coalition_id: "mycc" }]);
   console.log("menu: source check additions OK");
+}
+{
+  // Social justice spreadsheet (Oct 23): its own feed, nothing when it isn't linked yet.
+  assert.equal(G("sheetIdFrom_")("https://docs.google.com/spreadsheets/d/1AbC_defGHIjklMNOpqrSTUvwxYZ0123456789/edit#gid=0"), "1AbC_defGHIjklMNOpqrSTUvwxYZ0123456789");
+  assert.equal(G("sheetIdFrom_")("not a link"), "");
+  delete props.SJ_SHEET_ID;
+  assert.equal(G("socialJusticeData_")().unlinked, true);
+  props.SJ_SHEET_ID = "sj-sheet"; // the fake opens the same workbook: same tabs, same shape
+  const sj = G("socialJusticeData_")();
+  assert.ok(Array.isArray(sj.coalitions) && Array.isArray(sj.organizations) && Array.isArray(sj.edges));
+  delete props.SJ_SHEET_ID;
+  console.log("social justice feed OK");
 }

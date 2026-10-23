@@ -20,6 +20,7 @@ Every question is optional except "which one is this about?". Blank answers neve
 - **Admins** (edit everything, approve reviews, get alerts): `nathandkessel@gmail.com`, `ab130@wellesley.edu`, `turibius@bu.edu` — set in `ADMIN_EMAILS` at the top of `Code.gs` and listed on the **Editors** tab.
 - **Point-people**: add a row on the **Editors** tab — their email, and the `org_ids` and/or `coalition_ids` they manage (comma-separated ids from the Organizations/Coalitions tabs). One person can manage several.
 - **Anything not allowed** (unknown email, someone else's org, a new org) goes to **Needs Review** instead of the map, is flagged in **Change Log** (highlighted yellow for unauthorized attempts), and emails the admins. Tick **approve** to apply it. When a new org is approved, the person who proposed it becomes its point-person automatically.
+- **Email verification** (Oct 23): a new organization always needs a verified (Google sign-in) email; one sent without it is held, and can't be approved either. A point person typed on the organization form becomes an editor straight away only when it's the submitter's own signed-in email. Any other address is added to **Editors** as `pending` (allowed nothing) and emailed a one-time link; opening it makes them an editor and applies anything of theirs that was waiting. The link uses the web app's address, so redeploy a **New version** after updating the script.
 - **Change Log** has one row per submission: time, email, form, status (added / updated / removed / needs review / approved…), flag, and every field's old → new value — enough to undo anything by hand.
 
 ## 1. Add the script to the sheet
@@ -93,9 +94,17 @@ Run **MA Climate Organization Map → Update the forms** after pasting a new ver
 Run **MA Climate Organization Map → Use Wikipedia-based topics on the forms (Turibius)** once (after the update is merged, so the script can fetch `research/topics/wiki/topics-merged.csv` from GitHub). It:
 - fills the **Topics** tab with Turibius's list: the 13 seed topics plus every topic at lift ≥ 8 (about 2,800), each with its aliases, Wikidata id and seed;
 - makes the seed topics (plus "Youth serving") the checkboxes on the organization, event and project forms;
-- matches whatever people type in **More topics** against every topic name and alias (exact first, then close spellings). Anything that matches nothing still lands on **Unmatched Input** for the team.
+- matches whatever people type in **More topics** against every topic name and alias (exact first, then close spellings). There are no Wikipedia lookups: the related wording is already in Turibius's aliases. Anything that matches nothing lands on **Unmatched Input** for the monthly review (**Add reviewed aliases from Unmatched Input**).
 
 The map's Topics page picks up these tags straight away, under the right seed topic, even before the research files are rebuilt. To switch back, run **Go back to group-based topics on the forms**.
+
+## Social justice groups (their own spreadsheet)
+
+The social justice layers (Palestinian rights, immigrant rights, Jewish spiritual life, movement skills & culture) are kept out of this sheet so it stays about climate. They live in **MA Climate Organization Map: social justice groups** (in Nathan's Drive), with the same tabs and columns as this sheet; share it only with the people who manage those groups.
+
+1. After pasting the new `Code.gs` and deploying a new version, run **MA Climate Organization Map → Link the social justice spreadsheet** and paste that sheet's link.
+2. The web app then serves it at `<web app URL>?feed=social-justice`. The map only asks for it when someone switches a social justice layer on, and the **Social justice** settings only show for people who open the map with the secret link (`…/openthink_mycc/?sj`; `?sj=off` hides them again). Until it's linked, the map uses the copies in `public/sectors/`.
+3. The nightly snapshot backs it up into `public/sectors/` too.
 
 ## Limits worth knowing
 
