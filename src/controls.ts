@@ -25,6 +25,12 @@ export interface ControlsCallbacks {
   onAnimate(): void;
 }
 
+type KindKey = "showAllEvents" | "showAllProjects" | "showAllActions" | "showAllVolunteer";
+/** The four kinds of items around each group, in Map settings and the legend. */
+export const KIND_ROWS: [string, KindKey][] = [
+  ["Events", "showAllEvents"], ["Projects", "showAllProjects"], ["Actions", "showAllActions"], ["Volunteer roles", "showAllVolunteer"],
+];
+
 // v5: tighter default spacing — bumping the key lets everyone get the new defaults once.
 const STORAGE_KEY = "openthink.controls.v6";
 
@@ -195,32 +201,44 @@ export function createControls(
   let previewsOn = true; // the dots around every group (shown by default)
   try { previewsOn = localStorage.getItem("openthink.previews") !== "0"; } catch (_) { /* ignore */ }
 
-  const hideRow = makeToggle("Hide events, actions, and projects", !previewsOn, (v) => {
-    window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: !v } }));
+  // "Show …" (not "Hide …"): on = every group's events, projects, actions and volunteer roles sit around it.
+  const showRow = makeToggle("Show events, projects, actions, and volunteer roles", previewsOn, (v) => {
+    window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: v } }));
   });
-  hideRow.classList.add("show-text-row");
-  const hideSwitch = hideRow.querySelector<HTMLElement>(".switch")!;
-  parent.appendChild(hideRow);
-  // One switch for past items everywhere (they are always in each group's details pane, under "Past")
+  showRow.classList.add("show-text-row");
+  const showSwitch = showRow.querySelector<HTMLElement>(".switch")!;
+  parent.appendChild(showRow);
+  // Past items: only offered while the items are shown (each group's details always list them under "Past").
   const pastRow = makeToggle("Show past events, projects and actions", showPast(), (v) => setShowPast(v));
-  pastRow.classList.add("show-text-row");
+  pastRow.classList.add("show-text-row", "sub-row");
   pastRow.title = "Finished projects, events that have happened and actions whose deadline has passed. Each group's details always list them under Past.";
   parent.appendChild(pastRow);
 
   const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
 
-  // 2. Which kinds to preview (only while previews are on).
+  // 2. Which kinds to show (the legend's Show / Hide buttons drive the same switches).
   const kindBox = h("div", { class: "kind-toggles" });
   kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which to show around each group:"));
-  for (const [label, key] of [["Events", "showAllEvents"], ["Projects", "showAllProjects"], ["Actions & volunteer roles", "showAllActions"]] as const) {
-    kindBox.appendChild(
-      makeToggle(label, state.settings[key], (v) => {
-        state.settings[key] = v;
-        cb.onSettingsChange({ [key]: v });
-        saveState(state);
-      }),
-    );
+  const kindSwitches = new Map<KindKey, HTMLElement>();
+  for (const [label, key] of KIND_ROWS) {
+    const row = makeToggle(label, state.settings[key], (v) => setKind(key, v));
+    kindSwitches.set(key, row.querySelector<HTMLElement>(".switch")!);
+    kindBox.appendChild(row);
   }
+  function setKind(key: KindKey, on: boolean) {
+    state.settings[key] = on;
+    cb.onSettingsChange({ [key]: on });
+    saveState(state);
+    kindSwitches.get(key)?.classList.toggle("on", on);
+    window.dispatchEvent(new CustomEvent("openthink:kindmode", { detail: { key, on } }));
+  }
+  // The legend asks to show or hide a kind; showing one also brings the items back if they were all off.
+  window.addEventListener("openthink:setkind", (e) => {
+    const d = (e as CustomEvent).detail as { key: KindKey; on: boolean };
+    if (!d || !kindSwitches.has(d.key)) return;
+    setKind(d.key, d.on);
+    if (d.on && !previewsOn) window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: true } }));
+  });
   sizeBody.appendChild(kindBox);
 
   // 3. Clicking a group: zoom in and spread its events, projects & actions around it, or just open its details.
@@ -233,11 +251,14 @@ export function createControls(
 
   function syncItems() {
     masterSwitch.classList.toggle("on", itemsOn);
-    hideSwitch.classList.toggle("on", !previewsOn);
+    showSwitch.classList.toggle("on", previewsOn);
+    pastRow.hidden = !previewsOn;
     kindBox.classList.toggle("disabled", !previewsOn);
     kindBox.querySelectorAll("button").forEach((i) => ((i as HTMLButtonElement).disabled = !previewsOn));
+    window.dispatchEvent(new CustomEvent("openthink:previewsshown", { detail: { on: previewsOn } }));
   }
   syncItems();
+  for (const [, key] of KIND_ROWS) window.dispatchEvent(new CustomEvent("openthink:kindmode", { detail: { key, on: state.settings[key] } }));
   window.addEventListener("openthink:viewmode", (e) => {
     itemsOn = !!(e as CustomEvent).detail?.bubbles;
     syncItems();
@@ -286,7 +307,7 @@ export function createControls(
   advBody.appendChild(advExtras);
   const subHead = (t: string) => h("div", { class: "adv-subhead" }, t);
 
-  // ---- Forces ----
+  // ---- Forces: the general ones stay in Advanced ----
   const forcesBody = h("div", { class: "adv-group" });
   advBody.appendChild(subHead("Forces"));
   advBody.appendChild(forcesBody);
@@ -304,27 +325,31 @@ export function createControls(
       saveState(state);
     }, { hint: "How hard organizations push each other away. Lower = organizations sit closer together." }),
   );
-  forcesBody.appendChild(
+
+  // ---- Coalition forces: their own section, right under "Events, projects & actions" ----
+  const { section: coalSection, body: coalBody } = makeSection("Coalition forces", false);
+  coalBody.appendChild(
     makeSlider("Push coalitions apart", state.settings.coalitionRepel, (v) => {
       state.settings.coalitionRepel = v;
       cb.onSettingsChange({ coalitionRepel: v });
       saveState(state);
     }, { hint: "How hard coalitions push away from each other and everything else. Higher = coalitions spread further apart." }),
   );
-  forcesBody.appendChild(
+  coalBody.appendChild(
     makeSlider("Pull to their coalition", state.settings.linkForce, (v) => {
       state.settings.linkForce = v;
       cb.onSettingsChange({ linkForce: v });
       saveState(state);
     }, { hint: "How strongly each organization is pulled toward the coalitions it belongs to. Higher = tighter clusters." }),
   );
-  forcesBody.appendChild(
+  coalBody.appendChild(
     makeSlider("Distance from their coalition", state.settings.linkDistance, (v) => {
       state.settings.linkDistance = v;
       cb.onSettingsChange({ linkDistance: v });
       saveState(state);
     }, { hint: "How far members like to sit from their coalition. Lower = members gather closer around it." }),
   );
+  parent.insertBefore(coalSection, sizeSection.nextSibling);
 
   // ---- Group types ----
   const { section: groupsSection, body: groupsBody } = makeSection("Group Types");
