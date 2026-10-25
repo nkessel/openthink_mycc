@@ -7,7 +7,8 @@
 // Calm by design: comets and seeds are launched at a slow, steady rate (each problem is hit about 1–3 times every
 // few seconds), drawn on canvas with additive glow; prefers-reduced-motion shows a still picture.
 import * as d3 from "d3";
-import { reportFrame, fxBudget, onFxChange } from "./perf";
+import { reportFrame, fxBudget, onFxChange, stillPicture } from "./perf";
+import { onDisplayChange } from "./display";
 import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { PROBLEMS, VISIONS, SUB_SOLUTIONS, FIGHT_STRATEGIES } from "./problems";
@@ -116,7 +117,7 @@ export const FX_DEFAULTS = {
   hitRate: 0.5, // how often problems are hit (× the usual 1–3 hits every few seconds)
   cometSpeed: 120, // px per second
   knock: 34, // how far a hit knocks a problem back
-  flinch: 0.55, // how much a problem shrinks for a moment when hit
+  flinch: 0.8, // how much a problem shrinks when hit (it regrows slowly)
   spark: 0.8, // the flash where a comet strikes
   chunks: 6, // grey bits that break off a problem with each hit
   chunkSize: 1.6,
@@ -196,7 +197,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       /* ignore */
     }
   };
-  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  // Still picture (no moving comets or seeds) with Reduce motion on, or the system's reduced-motion setting.
+  let reduced = stillPicture();
 
   // ---------- Data ----------
   const recs = ctx.file.records.filter((r) => ctx.mapIds.includes(r.map) && (r.topics.length || r.bills.length));
@@ -362,7 +364,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   let fxb = fxBudget();
   let simple = !fxb.extras;
   el.classList.toggle("simple", simple);
-  onFxChange(() => {
+  onDisplayChange(() => onFxRefresh());
+  onFxChange(() => onFxRefresh());
+  function onFxRefresh() {
+    reduced = stillPicture();
     fxb = fxBudget();
     simple = !fxb.extras;
     el.classList.toggle("simple", simple);
@@ -370,7 +375,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     measure();
     baseDirty = true;
     kick();
-  });
+  }
   // Effects: detailed sliders for the hits and nourishment, saved as this browser's default
   const fx0 = (() => {
     try {
@@ -1350,7 +1355,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   /** Where a target is drawn now: its place, plus any knock-back, with its pulse/shrink as a scale. */
   function nodeTransform(t: Target): string {
-    const sc = nodeScale() * (t.kind === "prob" ? 1 - 0.22 * FX.flinch * t.pulse : 1 + 0.3 * FX.grow * t.pulse);
+    // a hit shrinks a problem sharply; it regrows slowly and softly (the eased curve flattens out at the end)
+    const shrink = t.pulse * t.pulse * (3 - 2 * t.pulse);
+    const sc = nodeScale() * (t.kind === "prob" ? 1 - 0.42 * FX.flinch * shrink : 1 + 0.3 * FX.grow * t.pulse);
     return `translate(${t.kx.toFixed(2)},${t.ky.toFixed(2)}) scale(${sc.toFixed(3)})`;
   }
   function placeSvg(withItems = true) {
@@ -1684,7 +1691,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       // seeds drift a little slower than comets fly, so the nourishing side feels calmer
       shots.push({ s: pick, t0: now, dur: (pick.len / speed) * 1000 * (pick.kind === "fight" ? 1 : 1.45) });
     }
-    if (!simple && hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? FX.cometSpeed : FX.seedSpeed)) * 1000 });
+    // the path you point at keeps firing at every effects level (it's how you follow one group's work, Oct 24)
+    if (hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? FX.cometSpeed : FX.seedSpeed)) * 1000 * (hover.kind === "fight" ? 1 : 1.45) });
   }
 
   function arrive(sh: Shot, now: number) {
@@ -1722,12 +1730,57 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       t.vy += (-60 * t.ky - 9 * t.vy) * dt;
       t.kx += t.vx * dt;
       t.ky += t.vy * dt;
-      t.pulse = Math.max(0, t.pulse - dt * 1.4);
+      // problems regrow slowly after a hit (about 1.6 s); solutions settle back at the old pace
+      t.pulse = Math.max(0, t.pulse - dt * (t.kind === "prob" ? 0.62 : 1.4));
       t.light = Math.max(0, t.light - dt * 0.6);
       if (Math.abs(t.kx) < 0.05 && Math.abs(t.vx) < 0.05) t.kx = t.vx = 0;
       if (Math.abs(t.ky) < 0.05 && Math.abs(t.vy) < 0.05) t.ky = t.vy = 0;
     }
     return any;
+  }
+
+  /**
+   * A hit on a problem, drawn in screen space: a bright shockwave collapses from 1.9× the problem's radius to its
+   * centre (fast, then faster), `ripples` thinner rings follow it in from the surface one after another, and a
+   * small flash marks where everything meets. ms = time since the hit.
+   */
+  function drawImplosion(g: CanvasRenderingContext2D, cx: number, cy: number, rs: number, ms: number, ripples: number) {
+    const easeIn = (x: number) => x * x * x;
+    g.save();
+    g.globalCompositeOperation = "lighter";
+    g.lineCap = "round";
+    // the shockwave: 650 ms, from well outside the problem to its centre, thick and glowing, thinning as it closes
+    const sw = ms / 650;
+    if (sw < 1) {
+      const rad = Math.max(0.5, rs * 1.9 * (1 - easeIn(sw)));
+      for (const [w, col, al] of [[9, "rgba(248,113,113,1)", 0.22], [4.5, "rgba(252,165,165,1)", 0.5], [1.8, "rgba(255,241,242,1)", 0.9]] as [number, string, number][]) {
+        g.globalAlpha = al * (0.35 + 0.65 * sw);
+        g.strokeStyle = col;
+        g.lineWidth = w * (1 - 0.6 * sw);
+        g.beginPath();
+        g.arc(cx, cy, rad, 0, Math.PI * 2);
+        g.stroke();
+      }
+    }
+    // ripples: start on the surface 120 ms apart and run inward over 900 ms, fading as they go
+    for (let k = 0; k < ripples; k++) {
+      const p = (ms - 160 - k * 120) / 900;
+      if (p <= 0 || p >= 1) continue;
+      g.globalAlpha = 0.75 * (1 - p) * (1 - k * 0.18);
+      g.strokeStyle = k % 2 ? "#fecdd3" : "#fda4af";
+      g.lineWidth = 2.2 - k * 0.4;
+      g.beginPath();
+      g.arc(cx, cy, Math.max(0.5, rs * (1 - p * p)), 0, Math.PI * 2);
+      g.stroke();
+    }
+    // the flash at the centre when the shockwave arrives
+    const fl = (ms - 560) / 380;
+    if (fl > 0 && fl < 1) {
+      g.globalAlpha = 0.85 * (1 - fl);
+      const size = rs * (0.5 + 0.9 * fl);
+      g.drawImage(sprite("#ffe4e6"), cx - size, cy - size, size * 2, size * 2);
+    }
+    g.restore();
   }
 
   function drawFrame(now: number) {
@@ -1820,8 +1873,13 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const cx0 = X(t.x) + t.kx, cy0 = Y(t.y) + t.ky;
       const ex = cx0 + e.x, ey = cy0 + e.y;
       const rs = t.r * nodeScale();
+      if (simple && e.kind === "hit") {
+        // lighter levels: the same collapsing shockwave, with one ripple and no sparks or chunks
+        drawImplosion(g, cx0, cy0, rs, now - e.t0, 1);
+        continue;
+      }
       if (simple) {
-        // simple: one fading ring, no sparks or sprouts
+        // simple: one fading ring, no sprouts
         g.globalAlpha = 0.6 * (1 - age);
         g.strokeStyle = e.kind === "hit" ? "#fda4af" : "#fde68a";
         g.lineWidth = 1.5;
@@ -1849,25 +1907,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           g.globalAlpha = Math.min(1, 0.9 * FX.spark * (1 - sp));
           g.drawImage(sprite("#ffe4e6"), ex - 7, ey - 7, 14, 14);
         }
-        // 1b. the hit radiates inward: rings start on the problem's surface, swell a touch with the impact, then
-        // close in towards its centre and fade (the opposite of a solution's outward glow)
-        for (let ring = 0; ring < 2; ring++) {
-          const p = age * 1.05 - ring * 0.14;
-          if (p <= 0 || p >= 1) continue;
-          const SWELL = 0.18; // share of the time spent swelling outward first
-          const ease = (x: number) => x * x * (3 - 2 * x);
-          const rad = p < SWELL
-            ? rs * (1 + 0.07 * ease(p / SWELL))
-            : rs * (1.07 - 0.75 * ease((p - SWELL) / (1 - SWELL)));
-          g.globalCompositeOperation = "source-over";
-          g.globalAlpha = (ring ? 0.4 : 0.6) * (p < SWELL ? 1 : 1 - ease((p - SWELL) / (1 - SWELL)) * 0.9);
-          g.strokeStyle = ring ? "#991b1b" : "#7f1d1d";
-          g.lineWidth = (ring ? 1.4 : 2.2) * (1 - 0.5 * p) + 0.4;
-          g.beginPath();
-          g.arc(cx0, cy0, Math.max(1, rad), 0, Math.PI * 2);
-          g.stroke();
-          g.globalCompositeOperation = "lighter";
-        }
+        // 1b. the hit collapses inward (Oct 24): a shockwave rushes in from well outside the problem to its centre,
+        // ripples follow it in from the surface, and a flash where they meet.
+        drawImplosion(g, cx0, cy0, rs, ms, 3);
         // 2. bits of the problem itself break off its surface and drift away, as if it is being worn down
         const cl = Math.max(300, FX.chunkLife);
         if (ms < cl && FX.chunks > 0) {

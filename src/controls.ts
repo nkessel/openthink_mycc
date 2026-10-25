@@ -201,23 +201,24 @@ export function createControls(
   let previewsOn = true; // the dots around every group (shown by default)
   try { previewsOn = localStorage.getItem("openthink.previews") !== "0"; } catch (_) { /* ignore */ }
 
-  // ---- "Activity around each group": the switch for the dots around every group, which kinds, past ones, and what
-  // a click does. Sits above "Bubble sizes" (Oct 24). Every switch says what you'll see when it's on.
-  const { section: sizeSection, body: sizeBody } = makeSection("Activity around each group");
-  sizeBody.appendChild(h("div", { class: "ctrl-hint section-lead" }, "Each group's events, projects, actions and volunteer roles show as small dots circling its bubble. Zoom in to see them as icons and names."));
-  const showRow = makeToggle("Show the dots around each group", previewsOn, (v) => {
+  // "Show …" (not "Hide …"): on = every group's events, projects, actions and volunteer roles sit around it.
+  const showRow = makeToggle("Show events, projects, actions, and volunteer roles", previewsOn, (v) => {
     window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: v } }));
   });
+  showRow.classList.add("show-text-row");
   const showSwitch = showRow.querySelector<HTMLElement>(".switch")!;
-  sizeBody.appendChild(showRow);
+  parent.appendChild(showRow);
   // Past items: only offered while the items are shown (each group's details always list them under "Past").
-  const pastRow = makeToggle("Include past ones too", showPast(), (v) => setShowPast(v));
-  pastRow.classList.add("sub-row");
+  const pastRow = makeToggle("Show past events, projects and actions", showPast(), (v) => setShowPast(v));
+  pastRow.classList.add("show-text-row", "sub-row");
   pastRow.title = "Finished projects, events that have happened and actions whose deadline has passed. Each group's details always list them under Past.";
+  parent.appendChild(pastRow);
+
+  const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
 
   // 2. Which kinds to show (the legend's Show / Hide buttons drive the same switches).
   const kindBox = h("div", { class: "kind-toggles" });
-  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which kinds:"));
+  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which to show around each group:"));
   const kindSwitches = new Map<KindKey, HTMLElement>();
   for (const [label, key] of KIND_ROWS) {
     const row = makeToggle(label, state.settings[key], (v) => setKind(key, v));
@@ -239,7 +240,6 @@ export function createControls(
     if (d.on && !previewsOn) window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: true } }));
   });
   sizeBody.appendChild(kindBox);
-  sizeBody.appendChild(pastRow);
 
   // 3. Clicking a group: zoom in and spread its events, projects & actions around it, or just open its details.
   const masterRow = makeToggle("Zoom in on a group when you click it", itemsOn, (v) => {
@@ -247,7 +247,7 @@ export function createControls(
   });
   const masterSwitch = masterRow.querySelector<HTMLElement>(".switch")!;
   sizeBody.appendChild(masterRow);
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "On: the map zooms in and spreads the group's activity around it. Off: clicking a group only opens its details panel."));
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Off: clicking a group only opens its details panel."));
 
   function syncItems() {
     masterSwitch.classList.toggle("on", itemsOn);
@@ -270,23 +270,26 @@ export function createControls(
   parent.appendChild(sizeSection);
 
   // ---- Bubble sizes: everything that changes how big the circles are, in one place ----
+  // Clearer wording (Oct 24): every slider says what moving it does, and both ends are explained.
   const { section: bubbleSection, body: bubbleBody } = makeSection("Bubble sizes");
+  bubbleBody.appendChild(h("div", { class: "ctrl-hint section-lead" }, "Change how big the circles on the map are, and what makes one bigger than another."));
   bubbleBody.appendChild(
-    makeSlider("Overall size", state.settings.nodeSize, (v) => {
+    makeSlider("All bubbles", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;
       cb.onSettingsChange({ nodeSize: v });
       saveState(state);
-    }, { min: 0.4, max: 2.5, step: 0.05, hint: "Every group and organization bubble at once." }),
+    }, { min: 0.4, max: 2.5, step: 0.05, hint: "Smaller ← → bigger. Every coalition and organization at once." }),
   );
   bubbleBody.appendChild(
-    makeSlider("Coalitions: bigger with more member orgs", state.settings.weightConnections, (v) => {
+    makeSlider("Coalitions with more members", state.settings.weightConnections, (v) => {
       state.settings.weightConnections = v;
       cb.onSettingsChange({ weightConnections: v });
       saveState(state);
-    }, { hint: "All the way down makes every coalition the same size." }),
+    }, { hint: "Left: every coalition the same size. Right: coalitions with more member groups are bigger." }),
   );
   const sliderBox = h("div", { class: "weight-sliders" });
-  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Increase bubble size for groups with more events, actions and projects:"));
+  sliderBox.appendChild(h("div", { class: "ctrl-label weight-head" }, "Busier groups"));
+  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Left: doesn't change the size. Right: each one a group has makes its bubble bigger."));
   for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
     sliderBox.appendChild(
       makeSlider(label, state.settings[key], (v) => {
@@ -297,8 +300,8 @@ export function createControls(
     );
   }
   bubbleBody.appendChild(sliderBox);
-  // Bubble sizes sits below "Activity around each group" and "Coalition forces".
-  parent.appendChild(bubbleSection);
+  // Order (Oct 24): "Events, projects & actions", then Bubble sizes, then Coalition forces.
+  parent.insertBefore(bubbleSection, sizeSection.nextSibling);
 
   // ---- Advanced display settings (closed by default; added to the panel last) ----
   const { section: advSection, body: advBody } = makeSection("Advanced display settings", false);
@@ -326,7 +329,7 @@ export function createControls(
     }, { hint: "How hard organizations push each other away. Lower = organizations sit closer together." }),
   );
 
-  // ---- Coalition forces: their own section, right under "Events, projects & actions" ----
+  // ---- Coalition forces: their own section, right under Bubble sizes ----
   const { section: coalSection, body: coalBody } = makeSection("Coalition forces", false);
   coalBody.appendChild(
     makeSlider("Push coalitions apart", state.settings.coalitionRepel, (v) => {
@@ -349,7 +352,7 @@ export function createControls(
       saveState(state);
     }, { hint: "How far members like to sit from their coalition. Lower = members gather closer around it." }),
   );
-  parent.insertBefore(coalSection, sizeSection.nextSibling);
+  parent.insertBefore(coalSection, bubbleSection.nextSibling); // right under Bubble sizes
 
   // ---- Group types ----
   const { section: groupsSection, body: groupsBody } = makeSection("Group Types");

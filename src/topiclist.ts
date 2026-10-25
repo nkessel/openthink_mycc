@@ -1,6 +1,6 @@
 // Which topic list the Topics page (and item cards) use:
 //  - "wiki":   "Wikipedia topics" (Turibius Rozario's list, 13 main topics), the default
-//  - "groups": "In the groups' own words", built from how the groups describe their own work
+//  - "groups": "Topics named by groups", built from how the groups describe their own work
 // Chosen with the Topics switch on the Topics page's bar (each option has an ⓘ); remembered in this browser.
 // A link can force one with ?topics=wiki or ?topics=groups.
 
@@ -22,7 +22,7 @@ export const TOPIC_LISTS: { id: TopicList; label: string; hint: string; about: s
   },
   {
     id: "groups",
-    label: "In the groups' own words",
+    label: "Topics named by groups",
     hint: "Topics taken from how the groups describe their own events, projects and missions.",
     about: [
       "Built from the map itself: for every event, project, action and mission statement, the short topic phrases in its own description were picked out (only from the text, with a quote as evidence for each), then grouped by hand into 18 main topics and about 75 sub-topics, such as Buildings & home energy or Forests, land & nature. Bills a group names show under Climate policy & legislation.",

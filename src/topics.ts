@@ -171,24 +171,15 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   };
   syncList();
   onTopicListChange(syncList);
-  // Visual settings: the views' own options (layout, what to show, the Command room's effect sliders), folded away.
-  const visBtn = h("button", { type: "button", class: "cr-info topics-visbtn", "aria-expanded": "false" }, "⚙ Visual settings") as HTMLButtonElement;
-  visBtn.addEventListener("click", () => {
-    const on = !wrap.classList.contains("visual-open");
-    wrap.classList.toggle("visual-open", on);
-    visBtn.setAttribute("aria-expanded", String(on));
-    // phones fold each view's options away: opening Visual settings unfolds them too (one tap, not two)
-    if (on) for (const f of wrap.querySelectorAll<HTMLButtonElement>(".cr-bar.foldable.folded > .panel-fold")) f.click();
-  });
-  // Each view's Layout switch lives here, on the top bar (Oct 24), moved out of the view's own options row.
+  // Each view's own options (Layout; the Command room's Show and "Fine-tune effects") live here on the top bar too
+  // (Oct 24: no separate "Visual settings" button). Only the open view's options show.
   const layoutSlot = h("div", { class: "topics-layoutslot" });
   function adoptLayout(viewEl: HTMLElement, v: View) {
-    const box = viewEl.querySelector<HTMLElement>(".cr-layout");
-    if (!box) return;
-    box.dataset.view = v;
+    const box = h("div", { class: "topics-viewopts", "data-view": v });
+    for (const c of viewEl.querySelectorAll<HTMLElement>(".cr-bar > .cr-ctl, .cr-bar > .bt-fxbtn")) box.appendChild(c);
     layoutSlot.appendChild(box);
   }
-  topicBar.append(h("div", { class: "cr-ctl" }, h("span", { class: "cr-ctl-label" }, "Topics"), listSeg), layoutSlot, fxControl(), visBtn);
+  topicBar.append(h("div", { class: "cr-ctl" }, h("span", { class: "cr-ctl-label" }, "Topics"), listSeg), layoutSlot, fxControl());
   wrap.insertBefore(topicBar, body);
 
   // ---- Weighting ----
