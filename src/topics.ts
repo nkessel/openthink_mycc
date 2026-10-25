@@ -165,29 +165,24 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   // ---- Settings panel: which topic list, then how much each kind of activity counts ----
   panel.appendChild(h("div", { class: "topics-panel-head" }, "Topic settings"));
 
-  // 1. Topic list (was in Map settings → Advanced): two buttons, with what each list is.
-  const listBox = h("div", { class: "control topics-section" });
-  listBox.appendChild(h("div", { class: "ctrl-label" }, "Topic list"));
-  const listSeg = h("div", { class: "cr-seg topics-listseg", role: "group", "aria-label": "Topic list" });
+  // 1. Topic list: Wikipedia-based is the map's list; the group-based one is tucked away at the bottom of this panel
+  // (Nathan, Oct 24: make the group-based topics less prominent). Switching back is one click there.
+  const listBox = h("details", { class: "topics-section topics-listalt" }) as HTMLDetailsElement;
   const listHint = h("div", { class: "ctrl-hint" }, "");
-  const listBtns = TOPIC_LISTS.map((l) => {
-    const b = h("button", { type: "button", "data-l": l.id }, l.label) as HTMLButtonElement;
-    b.addEventListener("click", () => setTopicList(l.id));
-    listSeg.appendChild(b);
-    return b;
-  });
+  const altBtn = h("button", { type: "button", class: "topics-listalt-btn" }) as HTMLButtonElement;
+  altBtn.addEventListener("click", () => setTopicList(topicList() === "groups" ? "wiki" : "groups"));
   const syncList = () => {
-    for (const b of listBtns) {
-      const on = b.dataset.l === topicList();
-      b.classList.toggle("on", on);
-      b.setAttribute("aria-pressed", String(on));
-    }
-    listHint.textContent = topicListInfo().hint;
+    const groups = topicList() === "groups";
+    const other = TOPIC_LISTS.find((l) => l.id !== topicList())!;
+    altBtn.textContent = groups ? `Back to ${other.label.toLowerCase()} topics` : `Try ${other.label.toLowerCase()} topics instead`;
+    listHint.textContent = groups
+      ? `Showing ${topicListInfo().label.toLowerCase()} topics: ${topicListInfo().hint}`
+      : `Topics now: ${topicListInfo().hint} The other list is built from how the groups describe their own work.`;
+    if (groups) listBox.open = true; // keep the way back in view
   };
+  listBox.append(h("summary", {}, "Other topic list"), listHint, altBtn);
   syncList();
   onTopicListChange(syncList);
-  listBox.append(listSeg, listHint);
-  panel.appendChild(listBox);
 
   // 2. Stream size: folded by default, since most people never need it.
   const sizes = h("details", { class: "topics-section topics-sizes" }) as HTMLDetailsElement;
@@ -227,6 +222,7 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   });
   sizes.appendChild(reset);
   panel.appendChild(sizes);
+  panel.appendChild(listBox); // last, and folded: the group-based list is there for anyone who wants it
   makeFoldable(panel, "topic settings");
 
   // ---- Weighting ----

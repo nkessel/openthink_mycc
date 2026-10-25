@@ -2959,8 +2959,11 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 
 /* Topics page settings: topic list first, then "What counts more" (folded) */
 .topics-section { margin: 10px 0 14px; }
-.topics-listseg { display: flex; margin: 6px 0 4px; }
-.topics-listseg button { flex: 1; }
+.topics-listalt { margin-top: 10px; }
+.topics-listalt > summary { cursor: pointer; font-size: 12px; color: var(--text-dim); padding: 4px 0; list-style: revert; }
+.topics-listalt .ctrl-hint { margin: 4px 0 6px; }
+.topics-listalt-btn { appearance: none; background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--text-dim); border-radius: 999px; font: inherit; font-size: 12px; padding: 4px 10px; cursor: pointer; }
+.topics-listalt-btn:hover { color: var(--text); }
 .topics-sizes > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); padding: 6px 0; list-style: revert; }
 .topics-sizes[open] > summary { margin-bottom: 4px; }
 .topics-sizes .topics-slider { margin: 10px 0 4px; }
