@@ -1691,8 +1691,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       // seeds drift a little slower than comets fly, so the nourishing side feels calmer
       shots.push({ s: pick, t0: now, dur: (pick.len / speed) * 1000 * (pick.kind === "fight" ? 1 : 1.45) });
     }
-    // the path you point at keeps firing at every effects level (it's how you follow one group's work, Oct 24)
-    if (hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? FX.cometSpeed : FX.seedSpeed)) * 1000 * (hover.kind === "fight" ? 1 : 1.45) });
+    // the path you point at fires extra comets/seeds only on "More": it's the most expensive part (Oct 25)
+    if (!simple && hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? FX.cometSpeed : FX.seedSpeed)) * 1000 * (hover.kind === "fight" ? 1 : 1.45) });
   }
 
   function arrive(sh: Shot, now: number) {
