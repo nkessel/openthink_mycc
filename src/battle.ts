@@ -7,7 +7,7 @@
 // Calm by design: comets and seeds are launched at a slow, steady rate (each problem is hit about 1–3 times every
 // few seconds), drawn on canvas with additive glow; prefers-reduced-motion shows a still picture.
 import * as d3 from "d3";
-import { reportFrame } from "./perf";
+import { reportFrame, fxBudget, onFxChange } from "./perf";
 import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { PROBLEMS, VISIONS, SUB_SOLUTIONS, FIGHT_STRATEGIES } from "./problems";
@@ -185,7 +185,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     }
   })();
   let showing: Show = saved.show ?? "both";
-  let split: Split = saved.split ?? "strategy";
+  const split: Split = "strategy"; // always split by strategy (the Energy switch was taken out, Oct 24)
   // Narrow phones start in the circle: three columns are too cramped there. A layout someone picked is kept.
   const narrow = window.matchMedia("(max-width: 600px)").matches;
   let layout: BLayout = saved.layout === "circle" || saved.layout === "columns" ? saved.layout : narrow ? "circle" : "columns";
@@ -341,11 +341,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     fx = [];
     relayout(true);
   }).g);
-  bar.appendChild(seg("Energy", [["strategy", "Split by strategy"], ["both", "Every item both ways"]], () => split, (v) => {
-    split = v as Split;
-    compute(true);
-    relayout(true);
-  }).g);
+  // The "Energy" switch (split by strategy / every item both ways) was taken out to keep the page simple (Oct 24):
+  // energy is always split by strategy.
   bar.appendChild(seg("Layout", [["columns", "Columns"], ["circle", "Circle"]], () => layout, (v) => {
     layout = v as BLayout;
     el.dataset.layout = layout;
@@ -358,9 +355,20 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   // view, and clicking one splits just that one.
   const zoomOpen = new Set<string>();
   let zoomSplit = false;
-  // One animation, always the light one (the Full / Simple switch was taken out, Oct 23).
-  const simple = true;
-  el.classList.add("simple");
+  // How much to draw: the "Visual effects" control on the Topics bar (perf.ts). "More" brings back the sparks,
+  // sprouts and trails; "Less" also lowers the frame rate and the canvas sharpness.
+  let fxb = fxBudget();
+  let simple = !fxb.extras;
+  el.classList.toggle("simple", simple);
+  onFxChange(() => {
+    fxb = fxBudget();
+    simple = !fxb.extras;
+    el.classList.toggle("simple", simple);
+    if (!shown) return;
+    measure();
+    baseDirty = true;
+    kick();
+  });
   // Effects: detailed sliders for the hits and nourishment, saved as this browser's default
   const fx0 = (() => {
     try {
@@ -371,7 +379,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   })();
   const FX: FxParams = { ...fx0 };
   const fxPanel = h("div", { class: "bt-fx", role: "dialog", "aria-label": "Effect settings" });
-  const fxBtn = h("button", { type: "button", class: "cr-info", "aria-expanded": "false" }, "Modify Visual Effects") as HTMLButtonElement;
+  const fxBtn = h("button", { type: "button", class: "cr-info bt-fxbtn", "aria-expanded": "false" }, "Fine-tune effects") as HTMLButtonElement;
   const showFx = (on: boolean) => {
     fxPanel.classList.toggle("on", on);
     fxBtn.setAttribute("aria-expanded", String(on));
@@ -554,7 +562,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const r = viewport.getBoundingClientRect();
     W = Math.max(320, r.width);
     H = Math.max(300, r.height);
-    dpr = Math.min(simple ? 1.5 : 2, window.devicePixelRatio || 1); // simple keeps a sharp canvas: dpr 1 made every line look thick and soft
+    dpr = Math.min(fxb.dprMax, window.devicePixelRatio || 1); // simple keeps a sharp canvas: dpr 1 made every line look thick and soft
     for (const c of [canvas, base]) {
       c.width = Math.round(W * dpr);
       c.height = Math.round(H * dpr);
@@ -1942,8 +1950,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   function frame(now: number) {
     raf = 0;
     if (!shown || !el.isConnected || el.offsetParent === null) return;
-    if (last && now - last < 31) {
-      raf = requestAnimationFrame(frame); // at most ~30 frames a second: half the work, looks the same (Oct 23)
+    if (last && now - last < fxb.frameMs) {
+      raf = requestAnimationFrame(frame); // frame rate set by the Visual effects level
       return;
     }
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
@@ -2115,8 +2123,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     h("div", {}, "Solutions they are nurturing (on the right), reached by solid rainbow rivers. When a seed lands, the solution lights up and grows: shoots branch out in every direction."),
     h("div", {}, "Centre: the groups, with their logos. Groups that mostly confront problems lean left; groups that mostly build solutions lean right. Showing only problems or only solutions puts the groups on the opposite side."),
     h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are hit (or fed) more often, about 1–3 times every few seconds."),
-    h("div", {}, "Each item's weight (the sliders) is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
-    h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. The Modify Visual Effects button tunes the animation."),
+    h("div", {}, "Each item's weight is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
+    h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. Visual effects on the Topics bar sets how much moves; Visual settings → Fine-tune effects tunes the hits and nourishment."),
     h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or zoom in on it. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),
   );
 

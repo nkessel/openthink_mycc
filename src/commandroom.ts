@@ -8,7 +8,7 @@
 // Calm by design: one stream per organization → main topic until you zoom or click, a fixed particle budget
 // drawn on canvas, slow speeds, low opacity, additive glow, and static flows for prefers-reduced-motion.
 import * as d3 from "d3";
-import { reportFrame } from "./perf";
+import { reportFrame, fxBudget, onFxChange } from "./perf";
 import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { SOLUTION_ICONS } from "./topicIcons";
@@ -94,8 +94,6 @@ const STORE = "openthink.topics.commandroom.v1";
 // Zoom further before topics split (Nathan, Oct 23), and then only the main topic you zoomed into splits.
 const SPLIT_K = 2.6; // zoom where the main topic nearest the middle splits into sub-topics
 const DEEP_K = 4.2; // zoom where its sub-topic nearest the middle splits into bills
-/** Frames are drawn at most this often (~30 a second): the particles move slowly, so it looks the same. */
-const FRAME_MS = 31;
 const KIND_LABEL: Record<TopicRecord["kind"], string> = {
   event: "Event",
   project: "Project",
@@ -273,9 +271,9 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   let zoomLevel = 0; // 0: main topics, 1: one main topic split, 2: and one of its sub-topics split into bills
   /** The topics split by the zoom: the main topic nearest the middle of the view, then its nearest sub-topic. */
   const zoomOpen = new Set<string>();
-  // One animation, always the light one (the Full / Simple switch was taken out, Oct 23): fewer, plainer particles,
-  // drawn at ~30 frames a second at most.
-  const simple = true;
+  // How much to draw: the "Visual effects" control on the Topics bar (perf.ts) sets the particle budget, the frame
+  // rate, the canvas sharpness and whether topics with repeating events ripple.
+  let fx = fxBudget();
   bar.append(layoutSeg.g);
   el.appendChild(bar);
   // On a phone the view options fold away, so the picture gets the screen.
@@ -356,7 +354,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     const r = viewport.getBoundingClientRect();
     W = Math.max(320, r.width);
     H = Math.max(300, r.height);
-    dpr = Math.min(simple ? 1.5 : 2, window.devicePixelRatio || 1);
+    dpr = Math.min(fx.dprMax, window.devicePixelRatio || 1);
     for (const c of [canvas, base]) {
       c.width = Math.round(W * dpr);
       c.height = Math.round(H * dpr);
@@ -595,7 +593,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   }
 
   function allocate() {
-    const budget = Math.round(Math.min(style === "comets" ? 650 : 850, Math.max(240, (W * H) / 700)) * (simple ? 0.35 : 1)); // fixed particle budget
+    const budget = Math.round(Math.min(style === "comets" ? 650 : 850, Math.max(240, (W * H) / 700)) * fx.particles); // fixed particle budget
     visStreams = allStreams.filter((s) => s.prob.visible && s.base > 0);
     const vmax = d3.max(visStreams, (s) => s.value) || 1;
     const eff = visStreams.map((s) => (s.value > 0 ? s.value * Math.max(0.08, streamAlpha(s) * (hover ? 1 / 0.45 : 1)) : 0));
@@ -1304,7 +1302,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function frame(now: number) {
     raf = 0;
     if (!shown || !el.isConnected || el.offsetParent === null) return;
-    if (last && now - last < FRAME_MS) {
+    if (last && now - last < fx.frameMs) {
       raf = requestAnimationFrame(frame); // too soon: skip this frame
       return;
     }
@@ -1334,7 +1332,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
         const period = 7 + hash(p.id) * 4;
         const ph = Math.floor((clock + hash(p.id) * period) / period);
         if (pulsePhase.get(p.id) !== ph) {
-          if (pulsePhase.has(p.id) && !simple) ripples.push({ prob: p, t0: performance.now(), big: false });
+          if (pulsePhase.has(p.id) && fx.extras) ripples.push({ prob: p, t0: performance.now(), big: false });
           pulsePhase.set(p.id, ph);
         }
       }
@@ -1506,7 +1504,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function legendText() {
     clear(legend);
     legend.append(
-      h("div", {}, "Each comet stream: one group → one topic, sized by its weighted activity (the sliders on the left)."),
+      h("div", {}, "Each comet stream: one group → one topic, sized by how many of its events, projects, actions and mission statements are on that topic (projects count a little more; newer activity counts more)."),
       h("div", {}, "A topic's shield glows brighter the more energy reaches it."),
       h("div", {}, "Zoom in (scroll, or the + button) on a main topic to split it into sub-topics, then zoom in more to split a sub-topic into bills. Click a topic to split just that one."),
       h("div", {}, "Hover or click a group (or a topic) to see its projects, events, actions and mission statements as dots around the group: pink events, green projects, yellow actions, hollow missions."),
@@ -1527,7 +1525,16 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     legendText();
   }
   let first = true;
-  el.classList.add("simple");
+  el.classList.toggle("simple", !fx.extras);
+  onFxChange(() => {
+    fx = fxBudget();
+    el.classList.toggle("simple", !fx.extras);
+    if (!shown) return;
+    measure();
+    allocate();
+    baseDirty = true;
+    kick();
+  });
 
   new ResizeObserver(() => {
     if (!shown || el.offsetParent === null) return;

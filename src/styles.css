@@ -2959,11 +2959,30 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 
 /* Topics page settings: topic list first, then "What counts more" (folded) */
 .topics-section { margin: 10px 0 14px; }
-.topics-listalt { margin-top: 10px; }
-.topics-listalt > summary { cursor: pointer; font-size: 12px; color: var(--text-dim); padding: 4px 0; list-style: revert; }
-.topics-listalt .ctrl-hint { margin: 4px 0 6px; }
-.topics-listalt-btn { appearance: none; background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--text-dim); border-radius: 999px; font: inherit; font-size: 12px; padding: 4px 10px; cursor: pointer; }
-.topics-listalt-btn:hover { color: var(--text); }
+/* Topics bar (Oct 24): topic list switch with ⓘ buttons, visual effects, visual settings */
+.topics-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--border); background: var(--bg-elev); }
+.topics-bar .topics-visbtn { margin-left: auto; }
+.topics-listseg .topics-info { width: 20px; height: 20px; padding: 0; margin: 0 6px 0 -2px; border-radius: 50%; font-size: 11px; font-weight: 700; font-style: italic; font-family: Georgia, serif; line-height: 18px; text-align: center; border: 1px solid var(--border); color: var(--text-dim); }
+.topics-listseg .topics-info:last-child { margin-right: 2px; }
+.topics-listseg .topics-info[aria-expanded="true"] { color: var(--text); border-color: rgba(56, 189, 248, 0.6); }
+.topics-listinfo { display: none; position: relative; padding: 10px 40px 4px 14px; font-size: 13px; line-height: 1.5; border-bottom: 1px solid var(--border); background: var(--bg); color: var(--text); }
+.topics-listinfo.on { display: block; }
+.topics-listinfo h4 { margin: 0 0 4px; font-size: 13px; }
+.topics-listinfo p { margin: 0 0 8px; max-width: 780px; color: var(--text-dim); }
+.topics-listinfo-close { position: absolute; top: 6px; right: 10px; background: none; border: none; color: var(--text-dim); font-size: 18px; cursor: pointer; min-width: 32px; min-height: 32px; }
+/* the views' own options show only after "Visual settings" is clicked; "How to read" always shows */
+.topics-view:not(.visual-open) .cr-bar > :not(.cr-info), .topics-view:not(.visual-open) .cr-bar > .bt-fxbtn { display: none !important; }
+.topics-view:not(.visual-open) .cr-bar { justify-content: flex-end; padding-top: 4px; padding-bottom: 4px; }
+/* no settings panel on the left any more */
+.topics-body.no-panel { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 900px) {
+  .topics-body.no-panel { grid-template-rows: minmax(70vh, 1fr) auto; }
+}
+@media (max-width: 720px) {
+  .topics-bar { gap: 6px 10px; padding: 6px 10px; }
+  .topics-bar .topics-visbtn { margin-left: 0; }
+  .topics-listseg .topics-info { width: 28px; height: 28px; line-height: 26px; }
+}
 .topics-sizes > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); padding: 6px 0; list-style: revert; }
 .topics-sizes[open] > summary { margin-bottom: 4px; }
 .topics-sizes .topics-slider { margin: 10px 0 4px; }
