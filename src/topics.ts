@@ -185,6 +185,8 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     const on = !wrap.classList.contains("visual-open");
     wrap.classList.toggle("visual-open", on);
     visBtn.setAttribute("aria-expanded", String(on));
+    // phones fold each view's options away: opening Visual settings unfolds them too (one tap, not two)
+    if (on) for (const f of wrap.querySelectorAll<HTMLButtonElement>(".cr-bar.foldable.folded > .panel-fold")) f.click();
   });
   topicBar.append(h("div", { class: "cr-ctl" }, h("span", { class: "cr-ctl-label" }, "Topics"), listSeg), fxControl(), visBtn);
   wrap.insertBefore(topicBar, body);
