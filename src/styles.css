@@ -2923,7 +2923,7 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .a11y-wrap { position: relative; margin-left: auto; display: inline-flex; flex: none; }
 .a11y-wrap .lp-btn { margin-left: 0; }
 .a11y-btn.on { border-color: #7dd3fc; color: var(--text); }
-.a11y-panel { position: absolute; top: calc(100% + 8px); right: 0; z-index: 1200; width: 300px; max-width: calc(100vw - 24px); padding: 12px 14px 6px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5); font-size: 13px; }
+.a11y-panel { position: fixed; top: 56px; right: 12px; z-index: 1200; width: 300px; max-width: calc(100vw - 24px); padding: 12px 14px 6px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5); font-size: 13px; }
 .a11y-panel[hidden] { display: none; }
 .a11y-head { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
 .a11y-panel .control { margin-bottom: 8px; }
@@ -2970,7 +2970,6 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .topics-section { margin: 10px 0 14px; }
 /* Topics bar (Oct 24): topic list switch with ⓘ buttons, visual effects, visual settings */
 .topics-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--border); background: var(--bg-elev); }
-.topics-bar .topics-visbtn { margin-left: auto; }
 .topics-listseg .topics-info { width: 20px; height: 20px; padding: 0; margin: 0 6px 0 -2px; border-radius: 50%; font-size: 11px; font-weight: 700; font-style: italic; font-family: Georgia, serif; line-height: 18px; text-align: center; border: 1px solid var(--border); color: var(--text-dim); }
 .topics-listseg .topics-info:last-child { margin-right: 2px; }
 .topics-tipwrap { position: relative; display: inline-flex; }
@@ -2978,11 +2977,10 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .topics-tip strong { display: block; margin-bottom: 4px; font-size: 13px; }
 .topics-tip p { margin: 0 0 8px; color: var(--text-dim); }
 .topics-tipwrap:hover .topics-tip, .topics-tipwrap:focus-within .topics-tip, .topics-tipwrap.open .topics-tip { display: block; }
-.topics-layoutslot { display: inline-flex; }
+.topics-layoutslot { display: inline-flex; flex-wrap: wrap; gap: 8px 16px; }
 .topics-layoutslot > [hidden] { display: none !important; }
-/* the views' own options show only after "Visual settings" is clicked; "How to read" always shows */
-.topics-view:not(.visual-open) .cr-bar > :not(.cr-info), .topics-view:not(.visual-open) .cr-bar > .bt-fxbtn { display: none !important; }
-.topics-view:not(.visual-open) .cr-bar { justify-content: flex-end; padding-top: 4px; padding-bottom: 4px; }
+.topics-viewopts { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.topics-view .cr-bar { justify-content: flex-end; padding-top: 4px; padding-bottom: 4px; }
 /* no settings panel on the left any more */
 .topics-body.no-panel { grid-template-columns: minmax(0, 1fr); }
 @media (max-width: 900px) {
@@ -2990,7 +2988,6 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 }
 @media (max-width: 720px) {
   .topics-bar { gap: 6px 10px; padding: 6px 10px; }
-  .topics-bar .topics-visbtn { margin-left: 0; }
   .topics-listseg .topics-info { width: 28px; height: 28px; line-height: 26px; }
 }
 .topics-sizes > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); padding: 6px 0; list-style: revert; }
@@ -3159,3 +3156,4 @@ html, body { overflow-x: clip; max-width: 100%; }
 
 /* A page that is still downloading (first visit, slow connection) */
 .lazy-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--muted, #94a3b8); font-size: 15px; }
+.weight-sliders .weight-head { margin-top: 12px; }

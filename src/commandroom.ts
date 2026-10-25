@@ -8,7 +8,8 @@
 // Calm by design: one stream per organization → main topic until you zoom or click, a fixed particle budget
 // drawn on canvas, slow speeds, low opacity, additive glow, and static flows for prefers-reduced-motion.
 import * as d3 from "d3";
-import { reportFrame, fxBudget, onFxChange } from "./perf";
+import { reportFrame, fxBudget, onFxChange, stillPicture } from "./perf";
+import { onDisplayChange } from "./display";
 import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { SOLUTION_ICONS } from "./topicIcons";
@@ -134,7 +135,8 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       /* ignore */
     }
   };
-  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  // Still picture (no moving comets or seeds) with Reduce motion on, or the system's reduced-motion setting.
+  let reduced = stillPicture();
 
   // ---------- Data: main topics → sub-topics → bills ----------
   const recs = ctx.file.records.filter((r) => ctx.mapIds.includes(r.map) && (r.topics.length || r.bills.length));
@@ -1535,7 +1537,10 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   }
   let first = true;
   el.classList.toggle("simple", !fx.extras);
-  onFxChange(() => {
+  onDisplayChange(() => onFxRefresh());
+  onFxChange(() => onFxRefresh());
+  function onFxRefresh() {
+    reduced = stillPicture();
     fx = fxBudget();
     el.classList.toggle("simple", !fx.extras);
     if (!shown) return;
@@ -1543,7 +1548,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     allocate();
     baseDirty = true;
     kick();
-  });
+  }
 
   new ResizeObserver(() => {
     if (!shown || el.offsetParent === null) return;

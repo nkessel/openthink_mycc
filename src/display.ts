@@ -137,16 +137,26 @@ export function accessibilityButton(): HTMLElement {
     switchRow("Large print", "Bigger text and buttons, fewer things on screen, simpler pages.", largePrint, setLargePrint),
     switchRow("Reduce motion", weakDevice() ? "On by default for this device: less movement and animation, lighter pages." : "Less movement and animation, and lighter pages for older phones and tablets.", lowPower, (v) => setLowPower(v)),
   );
+  // The top bar scrolls sideways on small screens (overflow: auto), which clips anything popping out of it, so the
+  // panel lives on <body> and is placed under the button each time it opens (Oct 24 bug: it opened invisibly).
+  const place = () => {
+    const r = b.getBoundingClientRect();
+    panel.style.top = `${Math.round(r.bottom + 8)}px`;
+    panel.style.right = `${Math.max(12, Math.round(window.innerWidth - r.right))}px`;
+  };
   const set = (open: boolean) => {
+    if (open) place();
     panel.hidden = !open;
     b.setAttribute("aria-expanded", String(open));
   };
+  window.addEventListener("resize", () => { if (!panel.hidden) place(); });
   b.addEventListener("click", (e) => { e.stopPropagation(); set(b.getAttribute("aria-expanded") !== "true"); });
-  document.addEventListener("click", (e) => { if (!panel.hidden && !wrap.contains(e.target as Node)) set(false); });
+  document.addEventListener("click", (e) => { if (!panel.hidden && !wrap.contains(e.target as Node) && !panel.contains(e.target as Node)) set(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !panel.hidden) { set(false); b.focus(); } });
   const sync = () => b.classList.toggle("on", largePrint() || lowPower());
   sync();
   onDisplayChange(sync);
-  wrap.append(b, panel);
+  wrap.append(b);
+  document.body.appendChild(panel);
   return wrap;
 }
