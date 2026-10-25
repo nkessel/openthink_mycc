@@ -3,12 +3,13 @@
 // inside "Climate policy & legislation". Each stream's size is a weighted sum of a group's records for a topic,
 // and the sliders here set those weights. The topic list is a draft under team review.
 import * as d3 from "d3";
-import { h, makeFoldable } from "./dom";
+import { h, clear } from "./dom";
 import { currentMap, MAPS, type MapId } from "./maps";
 import { createCommandRoom } from "./commandroom";
 import { createBattle } from "./battle";
 import { feedbackBid } from "./feedback";
-import { topicsUrl, topicListInfo, onTopicListChange, topicList, setTopicList, TOPIC_LISTS } from "./topiclist";
+import { topicsUrl, topicListInfo, onTopicListChange, topicList, setTopicList, TOPIC_LISTS, type TopicList } from "./topiclist";
+import { fxControl } from "./perf";
 import { withLiveTags } from "./topiclive";
 import type { DataFile } from "./types";
 
@@ -63,29 +64,9 @@ interface Weights {
 }
 
 const DEFAULTS: Weights = { project: 0.6, event: 0.5, action: 0.5, recurring: 0.5, recency: 0.3, mission: 0.15, cap: 0.5, related: 0.4 };
-const SLIDERS: { key: keyof Weights; label: string; hint: string }[] = [
-  { key: "project", label: "Projects", hint: "How much each project counts." },
-  { key: "event", label: "Events", hint: "How much each event counts." },
-  { key: "action", label: "Actions", hint: "How much each action or volunteer role counts." },
-  { key: "recurring", label: "Recurring events", hint: "Events that repeat (weekly meetings, standing vigils). Middle = same as one-off events." },
-  { key: "recency", label: "Recency", hint: "How much newer activity counts over older. Lowest = age doesn't matter." },
-  { key: "mission", label: "Mission statements", hint: "A second layer: what groups say they work on, even with no current events." },
-  { key: "cap", label: "Cap per group", hint: "Limits how much one group can add to a topic. Lowest = no limit." },
-  { key: "related", label: "Related issues", hint: "Records about related issues (peace, housing, health…) or with no climate link." },
-];
-const STORE = "openthink.topics.v1";
 const VIEW_STORE = "openthink.topics.view.v2";
 type View = "streams" | "battle";
 
-function loadWeights(): Weights {
-  try {
-    const raw = localStorage.getItem(STORE);
-    if (raw) return { ...DEFAULTS, ...(JSON.parse(raw) as Partial<Weights>) };
-  } catch {
-    /* ignore */
-  }
-  return { ...DEFAULTS };
-}
 
 /** Age in days used by the recency slider (0 = current). */
 function ageDays(r: TopicRecord, today: number): number {
@@ -119,12 +100,14 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
 
   const body = h("div", { class: "topics-body" });
   wrap.appendChild(body);
-  const panel = h("div", { class: "topics-panel" });
+  // No settings panel on the left any more (Oct 24: "let's keep it simple and more lightweight"): the "What counts
+  // more" weights stay at the site's defaults, and the topic list, visual effects and visual settings live on the bar.
+  body.classList.add("no-panel");
   const stage = h("div", { class: "topics-stage" });
   const detail = h("div", { class: "topics-detail" });
-  body.append(panel, stage, detail);
+  body.append(stage, detail);
 
-  const weights = loadWeights();
+  const weights: Weights = { ...DEFAULTS };
   let file: TopicsFile | null = null;
   let loading: Promise<void> | null = null;
   let room: ReturnType<typeof createCommandRoom> | null = null;
@@ -162,68 +145,50 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   }
   for (const b of viewBtns) b.classList.toggle("on", b.dataset.v === view);
 
-  // ---- Settings panel: which topic list, then how much each kind of activity counts ----
-  panel.appendChild(h("div", { class: "topics-panel-head" }, "Topic settings"));
-
-  // 1. Topic list: Wikipedia-based is the map's list; the group-based one is tucked away at the bottom of this panel
-  // (Nathan, Oct 24: make the group-based topics less prominent). Switching back is one click there.
-  const listBox = h("details", { class: "topics-section topics-listalt" }) as HTMLDetailsElement;
-  const listHint = h("div", { class: "ctrl-hint" }, "");
-  const altBtn = h("button", { type: "button", class: "topics-listalt-btn" }) as HTMLButtonElement;
-  altBtn.addEventListener("click", () => setTopicList(topicList() === "groups" ? "wiki" : "groups"));
-  const syncList = () => {
-    const groups = topicList() === "groups";
-    const other = TOPIC_LISTS.find((l) => l.id !== topicList())!;
-    altBtn.textContent = groups ? `Back to ${other.label.toLowerCase()} topics` : `Try ${other.label.toLowerCase()} topics instead`;
-    listHint.textContent = groups
-      ? `Showing ${topicListInfo().label.toLowerCase()} topics: ${topicListInfo().hint}`
-      : `Topics now: ${topicListInfo().hint} The other list is built from how the groups describe their own work.`;
-    if (groups) listBox.open = true; // keep the way back in view
+  // ---- The bar: which topic list (each with an ⓘ that says what it is), visual effects, visual settings ----
+  const topicBar = h("div", { class: "topics-bar" });
+  const listSeg = h("div", { class: "cr-seg topics-listseg", role: "group", "aria-label": "Topic list" });
+  const listBtns: HTMLButtonElement[] = [];
+  const infoBox = h("div", { class: "topics-listinfo", role: "region", "aria-live": "polite" });
+  let infoFor: TopicList | null = null;
+  const showInfo = (id: TopicList | null) => {
+    infoFor = infoFor === id ? null : id;
+    clear(infoBox);
+    infoBox.classList.toggle("on", !!infoFor);
+    for (const b of listSeg.querySelectorAll<HTMLButtonElement>(".topics-info")) b.setAttribute("aria-expanded", String(b.dataset.l === infoFor));
+    if (!infoFor) return;
+    const l = TOPIC_LISTS.find((x) => x.id === infoFor)!;
+    const close = h("button", { type: "button", class: "topics-listinfo-close", "aria-label": "Close" }, "×");
+    close.addEventListener("click", () => showInfo(null));
+    infoBox.append(close, h("h4", {}, l.label), ...l.about.map((p) => h("p", {}, p)));
   };
-  listBox.append(h("summary", {}, "Other topic list"), listHint, altBtn);
+  for (const l of TOPIC_LISTS) {
+    const b = h("button", { type: "button", "data-l": l.id, title: l.hint }, l.label) as HTMLButtonElement;
+    b.addEventListener("click", () => setTopicList(l.id));
+    const info = h("button", { type: "button", class: "topics-info", "data-l": l.id, "aria-label": `What is "${l.label}"?`, "aria-expanded": "false", title: `What is "${l.label}"?` }, "i") as HTMLButtonElement;
+    info.addEventListener("click", (e) => { e.stopPropagation(); showInfo(l.id); });
+    listBtns.push(b);
+    listSeg.append(b, info);
+  }
+  const syncList = () => {
+    for (const b of listBtns) {
+      const on = b.dataset.l === topicList();
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", String(on));
+    }
+  };
   syncList();
   onTopicListChange(syncList);
-
-  // 2. Stream size: folded by default, since most people never need it.
-  const sizes = h("details", { class: "topics-section topics-sizes" }) as HTMLDetailsElement;
-  sizes.appendChild(h("summary", {}, "What counts more"));
-  sizes.appendChild(h("div", { class: "ctrl-hint" }, "How big each stream and topic is: a weighted count of each group's events, projects, actions and mission statements on that topic."));
-  const inputs = new Map<keyof Weights, HTMLInputElement>();
-  for (const s of SLIDERS) {
-    const box = h("div", { class: "control topics-slider" });
-    box.appendChild(h("label", { class: "ctrl-label", for: `ts-${s.key}`, title: s.hint }, s.label));
-    const input = h("input", { id: `ts-${s.key}`, type: "range", min: "0", max: "1", step: "0.01", value: String(weights[s.key]), class: "slider", "data-key": s.key, "aria-describedby": `ts-${s.key}-hint` }) as HTMLInputElement;
-    input.addEventListener("input", () => {
-      weights[s.key] = parseFloat(input.value);
-      try {
-        localStorage.setItem(STORE, JSON.stringify(weights));
-      } catch {
-        /* ignore */
-      }
-      room?.update();
-      battle?.update();
-    });
-    inputs.set(s.key, input);
-    box.appendChild(input);
-    box.appendChild(h("div", { class: "ctrl-hint", id: `ts-${s.key}-hint` }, s.hint));
-    sizes.appendChild(box);
-  }
-  const reset = h("button", { class: "reset-btn", type: "button" }, "Reset to the site's settings");
-  reset.addEventListener("click", () => {
-    Object.assign(weights, DEFAULTS);
-    for (const [k, el] of inputs) el.value = String(weights[k]);
-    try {
-      localStorage.removeItem(STORE);
-    } catch {
-      /* ignore */
-    }
-    room?.update();
-    battle?.update();
+  // Visual settings: the views' own options (layout, what to show, the Command room's effect sliders), folded away.
+  const visBtn = h("button", { type: "button", class: "cr-info topics-visbtn", "aria-expanded": "false" }, "⚙ Visual settings") as HTMLButtonElement;
+  visBtn.addEventListener("click", () => {
+    const on = !wrap.classList.contains("visual-open");
+    wrap.classList.toggle("visual-open", on);
+    visBtn.setAttribute("aria-expanded", String(on));
   });
-  sizes.appendChild(reset);
-  panel.appendChild(sizes);
-  panel.appendChild(listBox); // last, and folded: the group-based list is there for anyone who wants it
-  makeFoldable(panel, "topic settings");
+  topicBar.append(h("div", { class: "cr-ctl" }, h("span", { class: "cr-ctl-label" }, "Topics"), listSeg), fxControl(), visBtn);
+  wrap.insertBefore(topicBar, body);
+  wrap.insertBefore(infoBox, body);
 
   // ---- Weighting ----
   const today = Date.now();
@@ -240,8 +205,8 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     const mapIds: string[] = currentMap.combine ? [...currentMap.combine] : [currentMap.id];
     const recs = f.records.filter((r) => mapIds.includes(r.map));
     const tagged = recs.filter((r) => r.topics.length || r.bills.length).length;
-    count.textContent = `${topicListInfo().label} topics · ${tagged} of ${recs.length} records tagged · ${mapIds.map((m) => MAPS[m as MapId]?.name ?? m).join(" + ")}`;
-    count.title = `${topicListInfo().hint} Change it under Topic settings on the left.`;
+    count.textContent = `${topicListInfo().label} · ${tagged} of ${recs.length} records tagged · ${mapIds.map((m) => MAPS[m as MapId]?.name ?? m).join(" + ")}`;
+    count.title = `${topicListInfo().hint} Change it with the Topics switch above.`;
     // one colour per main topic (in list order, among those with records on this map)
     const present = f.parents.filter((p) => recs.some((r) => r.topics.some((t) => p.children.some((c) => c.id === t)))).map((p) => p.id);
     const hue = new Map(present.map((id, i) => [id, d3.hsl((i * 360) / present.length + 200, 0.55, 0.6).formatHex()]));
