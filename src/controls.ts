@@ -201,24 +201,23 @@ export function createControls(
   let previewsOn = true; // the dots around every group (shown by default)
   try { previewsOn = localStorage.getItem("openthink.previews") !== "0"; } catch (_) { /* ignore */ }
 
-  // "Show …" (not "Hide …"): on = every group's events, projects, actions and volunteer roles sit around it.
-  const showRow = makeToggle("Show events, projects, actions, and volunteer roles", previewsOn, (v) => {
+  // ---- "Activity around each group": the switch for the dots around every group, which kinds, past ones, and what
+  // a click does. Sits above "Bubble sizes" (Oct 24). Every switch says what you'll see when it's on.
+  const { section: sizeSection, body: sizeBody } = makeSection("Activity around each group");
+  sizeBody.appendChild(h("div", { class: "ctrl-hint section-lead" }, "Each group's events, projects, actions and volunteer roles show as small dots circling its bubble. Zoom in to see them as icons and names."));
+  const showRow = makeToggle("Show the dots around each group", previewsOn, (v) => {
     window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: v } }));
   });
-  showRow.classList.add("show-text-row");
   const showSwitch = showRow.querySelector<HTMLElement>(".switch")!;
-  parent.appendChild(showRow);
+  sizeBody.appendChild(showRow);
   // Past items: only offered while the items are shown (each group's details always list them under "Past").
-  const pastRow = makeToggle("Show past events, projects and actions", showPast(), (v) => setShowPast(v));
-  pastRow.classList.add("show-text-row", "sub-row");
+  const pastRow = makeToggle("Include past ones too", showPast(), (v) => setShowPast(v));
+  pastRow.classList.add("sub-row");
   pastRow.title = "Finished projects, events that have happened and actions whose deadline has passed. Each group's details always list them under Past.";
-  parent.appendChild(pastRow);
-
-  const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
 
   // 2. Which kinds to show (the legend's Show / Hide buttons drive the same switches).
   const kindBox = h("div", { class: "kind-toggles" });
-  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which to show around each group:"));
+  kindBox.appendChild(h("div", { class: "ctrl-hint sub" }, "Which kinds:"));
   const kindSwitches = new Map<KindKey, HTMLElement>();
   for (const [label, key] of KIND_ROWS) {
     const row = makeToggle(label, state.settings[key], (v) => setKind(key, v));
@@ -240,6 +239,7 @@ export function createControls(
     if (d.on && !previewsOn) window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: true } }));
   });
   sizeBody.appendChild(kindBox);
+  sizeBody.appendChild(pastRow);
 
   // 3. Clicking a group: zoom in and spread its events, projects & actions around it, or just open its details.
   const masterRow = makeToggle("Zoom in on a group when you click it", itemsOn, (v) => {
@@ -247,7 +247,7 @@ export function createControls(
   });
   const masterSwitch = masterRow.querySelector<HTMLElement>(".switch")!;
   sizeBody.appendChild(masterRow);
-  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "Off: clicking a group only opens its details panel."));
+  sizeBody.appendChild(h("div", { class: "ctrl-hint" }, "On: the map zooms in and spreads the group's activity around it. Off: clicking a group only opens its details panel."));
 
   function syncItems() {
     masterSwitch.classList.toggle("on", itemsOn);
@@ -297,8 +297,8 @@ export function createControls(
     );
   }
   bubbleBody.appendChild(sliderBox);
-  // Bubble sizes sits above "Events, projects & actions".
-  parent.insertBefore(bubbleSection, sizeSection);
+  // Bubble sizes sits below "Activity around each group" and "Coalition forces".
+  parent.appendChild(bubbleSection);
 
   // ---- Advanced display settings (closed by default; added to the panel last) ----
   const { section: advSection, body: advBody } = makeSection("Advanced display settings", false);

@@ -1,4 +1,4 @@
-import { largePrintButton } from "./display";
+import { accessibilityButton } from "./display";
 import { h } from "./dom";
 import { currentMap, MAPS, switchMap, type MapId } from "./maps";
 
@@ -119,7 +119,7 @@ export function createTopbar(
   switchItem.addEventListener("click", (e) => { e.stopPropagation(); setOpen(false); openMenu(); });
   nav.appendChild(switchItem);
   bar.appendChild(nav);
-  bar.appendChild(largePrintButton());
+  bar.appendChild(accessibilityButton());
   bar.appendChild(menuBtn);
 
   return {

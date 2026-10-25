@@ -274,6 +274,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   // How much to draw: the "Visual effects" control on the Topics bar (perf.ts) sets the particle budget, the frame
   // rate, the canvas sharpness and whether topics with repeating events ripple.
   let fx = fxBudget();
+  layoutSeg.g.classList.add("cr-layout"); // the Topics page moves it up to its own bar (topics.ts)
   bar.append(layoutSeg.g);
   el.appendChild(bar);
   // On a phone the view options fold away, so the picture gets the screen.
@@ -935,9 +936,17 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     for (let x: Problem | null = p.up; x; x = x.up) out.unshift(x.label);
     return out.join(" › ");
   };
+  // Plain counts instead of "energy" numbers (Oct 24: the energy figures were opaque): how many events, projects,
+  // actions and mission statements are behind a stream, topic or group.
+  function itemCount(f: (s: Stream) => boolean): number {
+    const ids = new Set<string>();
+    for (const st of allStreams) if (st.value > 0 && f(st)) for (const r of st.recs) ids.add(r.id);
+    return ids.size;
+  }
+  const itemsText = (n: number) => `${n} ${n === 1 ? "item" : "items"}`; // item = an event, project, action or mission statement
   function showTip(ev: MouseEvent, s: Stream) {
     clear(tip);
-    tip.append(h("div", { class: "cr-tip-title" }, `${s.org.name} → ${s.prob.label}`), h("div", { class: "cr-tip-meta" }, `energy ${s.value.toFixed(2)} · ${s.recs.length} item${s.recs.length === 1 ? "" : "s"}`));
+    tip.append(h("div", { class: "cr-tip-title" }, `${s.org.name} → ${s.prob.label}`), h("div", { class: "cr-tip-meta" }, itemsText(s.recs.length)));
     for (const r of topItems(s.recs, 3)) tip.appendChild(h("div", { class: "cr-tip-item" }, `${KIND_LABEL[r.kind]}: ${isMission(r) ? "mission statement" : r.name}`));
     placeTip(ev);
   }
@@ -948,7 +957,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     tip.append(
       h("div", { class: "cr-tip-meta" }, path(p) || "Main topic"),
       h("div", { class: "cr-tip-title" }, p.label),
-      h("div", { class: "cr-tip-meta" }, `energy ${p.energy.toFixed(1)} from ${n} group${n === 1 ? "" : "s"}`),
+      h("div", { class: "cr-tip-meta" }, `${itemsText(itemCount((st) => within(st.prob, p)))} from ${n} group${n === 1 ? "" : "s"}`),
       h("div", { class: "cr-tip-item" }, finer > 1 ? `Click to zoom into its ${finer} ${p.level === 1 ? "bills" : "topics"} and see who feeds it` : "Click to see who feeds it"),
     );
     placeTip(ev);
@@ -956,7 +965,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
   function showOrgTip(ev: MouseEvent, o: Org) {
     clear(tip);
     const n = allStreams.filter((s) => s.org === o && s.prob.level === 0 && s.value > 0).length;
-    tip.append(h("div", { class: "cr-tip-title" }, o.name), h("div", { class: "cr-tip-meta" }, `energy ${o.energy.toFixed(1)} into ${n} main topic${n === 1 ? "" : "s"}`), h("div", { class: "cr-tip-item" }, "Click to show only its streams and items"));
+    tip.append(h("div", { class: "cr-tip-title" }, o.name), h("div", { class: "cr-tip-meta" }, `${itemsText(itemCount((st) => st.org === o))} on ${n} main topic${n === 1 ? "" : "s"}`), h("div", { class: "cr-tip-item" }, "Click to show only its streams and items"));
     placeTip(ev);
   }
   function showItemTip(ev: MouseEvent, d: Item) {
@@ -1086,13 +1095,13 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       const p = selProb;
       const feeders = allStreams.filter((s) => s.prob === p && s.value > 0).sort((a, b) => b.value - a.value);
       d.append(h("div", { class: "topics-detail-parent" }, path(p) || "Topic"), h("h3", {}, p.label),
-        h("div", { class: "topics-detail-meta" }, `energy ${p.energy.toFixed(1)} from ${feeders.length} group${feeders.length === 1 ? "" : "s"}`));
+        h("div", { class: "topics-detail-meta" }, `${itemsText(itemCount((st) => within(st.prob, p)))} from ${feeders.length} group${feeders.length === 1 ? "" : "s"}`));
       const finer = p.kids.filter((k) => k.base > 0).sort((a, b) => b.energy - a.energy);
       if (finer.length > 1) {
         d.appendChild(h("div", { class: "cr-sub" }, p.level === 1 ? "Bills inside it" : "Topics inside it"));
         const box = h("div", { class: "cr-chips" });
         for (const k of finer) {
-          const b = h("button", { type: "button" }, `${k.label} · ${k.energy.toFixed(1)}`);
+          const b = h("button", { type: "button" }, `${k.label} · ${itemCount((st) => within(st.prob, k))}`);
           b.addEventListener("click", () => openProb(k));
           box.appendChild(b);
         }
@@ -1117,7 +1126,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       const o = selOrg;
       const mine = visStreams.filter((s) => s.org === o && s.value > 0).sort((a, b) => b.value - a.value);
       d.append(h("div", { class: "cr-detail-head" }, logoImg(o), h("div", {}, h("div", { class: "topics-detail-parent" }, "Group"), h("h3", {}, o.name))),
-        h("div", { class: "topics-detail-meta" }, `energy ${o.energy.toFixed(1)} into ${mine.length} topic${mine.length === 1 ? "" : "s"}`),
+        h("div", { class: "topics-detail-meta" }, `${itemsText(itemCount((st) => st.org === o))} on ${mine.length} topic${mine.length === 1 ? "" : "s"}`),
         mapButton(o.host, "See this group on the map ↗", "cr-mapbtn"));
       for (const s of mine) {
         d.appendChild(h("div", { class: "cr-sub" }, `→ ${s.prob.label} · ${s.value.toFixed(2)}`));
@@ -1505,7 +1514,7 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     clear(legend);
     legend.append(
       h("div", {}, "Each comet stream: one group → one topic, sized by how many of its events, projects, actions and mission statements are on that topic (projects count a little more; newer activity counts more)."),
-      h("div", {}, "A topic's shield glows brighter the more energy reaches it."),
+      h("div", {}, "A topic glows brighter the more activity reaches it."),
       h("div", {}, "Zoom in (scroll, or the + button) on a main topic to split it into sub-topics, then zoom in more to split a sub-topic into bills. Click a topic to split just that one."),
       h("div", {}, "Hover or click a group (or a topic) to see its projects, events, actions and mission statements as dots around the group: pink events, green projects, yellow actions, hollow missions."),
       h("div", {}, "Uses everything we have: all projects, events, actions and mission statements at once. Topics with repeating events pulse gently."),

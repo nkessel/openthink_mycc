@@ -149,26 +149,18 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
   const topicBar = h("div", { class: "topics-bar" });
   const listSeg = h("div", { class: "cr-seg topics-listseg", role: "group", "aria-label": "Topic list" });
   const listBtns: HTMLButtonElement[] = [];
-  const infoBox = h("div", { class: "topics-listinfo", role: "region", "aria-live": "polite" });
-  let infoFor: TopicList | null = null;
-  const showInfo = (id: TopicList | null) => {
-    infoFor = infoFor === id ? null : id;
-    clear(infoBox);
-    infoBox.classList.toggle("on", !!infoFor);
-    for (const b of listSeg.querySelectorAll<HTMLButtonElement>(".topics-info")) b.setAttribute("aria-expanded", String(b.dataset.l === infoFor));
-    if (!infoFor) return;
-    const l = TOPIC_LISTS.find((x) => x.id === infoFor)!;
-    const close = h("button", { type: "button", class: "topics-listinfo-close", "aria-label": "Close" }, "×");
-    close.addEventListener("click", () => showInfo(null));
-    infoBox.append(close, h("h4", {}, l.label), ...l.about.map((p) => h("p", {}, p)));
-  };
   for (const l of TOPIC_LISTS) {
     const b = h("button", { type: "button", "data-l": l.id, title: l.hint }, l.label) as HTMLButtonElement;
     b.addEventListener("click", () => setTopicList(l.id));
-    const info = h("button", { type: "button", class: "topics-info", "data-l": l.id, "aria-label": `What is "${l.label}"?`, "aria-expanded": "false", title: `What is "${l.label}"?` }, "i") as HTMLButtonElement;
-    info.addEventListener("click", (e) => { e.stopPropagation(); showInfo(l.id); });
+    // ⓘ: an info bubble on hover (or focus / tap on touch screens) saying how the list is made and what it's good for
+    const tipId = `topics-tip-${l.id}`;
+    const tip = h("div", { class: "topics-tip", role: "tooltip", id: tipId }, h("strong", {}, l.label), ...l.about.map((p) => h("p", {}, p)));
+    const info = h("button", { type: "button", class: "topics-info", "aria-label": `What is "${l.label}"?`, "aria-describedby": tipId }, "i") as HTMLButtonElement;
+    info.addEventListener("click", (e) => { e.stopPropagation(); wrapTip.classList.toggle("open"); });
+    const wrapTip = h("span", { class: "topics-tipwrap" }, info, tip);
+    info.addEventListener("blur", () => wrapTip.classList.remove("open"));
     listBtns.push(b);
-    listSeg.append(b, info);
+    listSeg.append(b, wrapTip);
   }
   const syncList = () => {
     for (const b of listBtns) {
@@ -188,9 +180,16 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     // phones fold each view's options away: opening Visual settings unfolds them too (one tap, not two)
     if (on) for (const f of wrap.querySelectorAll<HTMLButtonElement>(".cr-bar.foldable.folded > .panel-fold")) f.click();
   });
-  topicBar.append(h("div", { class: "cr-ctl" }, h("span", { class: "cr-ctl-label" }, "Topics"), listSeg), fxControl(), visBtn);
+  // Each view's Layout switch lives here, on the top bar (Oct 24), moved out of the view's own options row.
+  const layoutSlot = h("div", { class: "topics-layoutslot" });
+  function adoptLayout(viewEl: HTMLElement, v: View) {
+    const box = viewEl.querySelector<HTMLElement>(".cr-layout");
+    if (!box) return;
+    box.dataset.view = v;
+    layoutSlot.appendChild(box);
+  }
+  topicBar.append(h("div", { class: "cr-ctl" }, h("span", { class: "cr-ctl-label" }, "Topics"), listSeg), layoutSlot, fxControl(), visBtn);
   wrap.insertBefore(topicBar, body);
-  wrap.insertBefore(infoBox, body);
 
   // ---- Weighting ----
   const today = Date.now();
@@ -207,8 +206,8 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
     const mapIds: string[] = currentMap.combine ? [...currentMap.combine] : [currentMap.id];
     const recs = f.records.filter((r) => mapIds.includes(r.map));
     const tagged = recs.filter((r) => r.topics.length || r.bills.length).length;
-    count.textContent = `${topicListInfo().label} · ${tagged} of ${recs.length} records tagged · ${mapIds.map((m) => MAPS[m as MapId]?.name ?? m).join(" + ")}`;
-    count.title = `${topicListInfo().hint} Change it with the Topics switch above.`;
+    // No "301 of 464 records tagged" line any more (Oct 24): it was bookkeeping, not something visitors need.
+    count.textContent = "";
     // one colour per main topic (in list order, among those with records on this map)
     const present = f.parents.filter((p) => recs.some((r) => r.topics.some((t) => p.children.some((c) => c.id === t)))).map((p) => p.id);
     const hue = new Map(present.map((id, i) => [id, d3.hsl((i * 360) / present.length + 200, 0.55, 0.6).formatHex()]));
@@ -226,11 +225,14 @@ export function createTopicsView(cb: TopicsCallbacks): { el: HTMLElement; show()
       if (view === "streams" && !room) {
         room = createCommandRoom(ctx);
         stage.appendChild(room.el);
+        adoptLayout(room.el, "streams");
       }
       if (view === "battle" && !battle) {
         battle = createBattle(ctx);
         stage.appendChild(battle.el);
+        adoptLayout(battle.el, "battle");
       }
+      for (const c of layoutSlot.children) (c as HTMLElement).hidden = (c as HTMLElement).dataset.view !== view;
     };
     applyView();
   }

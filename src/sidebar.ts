@@ -176,44 +176,16 @@ export function createMapLegend(
       row(h("span", { class: "line" }), "Member of a coalition"),
       ...(orgLinks && orgLinks.count ? [orgLinkRow(orgLinks.box, orgLinks.count)] : []),
       h("div", { class: "map-legend-sub" }, "Dots around each group"),
-      kindRow("k-event", "Events", "showAllEvents"),
-      kindRow("k-project", "Projects", "showAllProjects"),
-      kindRow("k-action", "Actions", "showAllActions"),
-      kindRow("k-volunteer", "Volunteer roles", "showAllVolunteer"),
+      row(h("span", { class: "kdot k-event" }), "Event"),
+      row(h("span", { class: "kdot k-project" }), "Project"),
+      row(h("span", { class: "kdot k-action" }), "Action"),
+      row(h("span", { class: "kdot k-volunteer" }), "Volunteer role"),
       ...(sectors.length ? [h("div", { class: "map-legend-sub" }, "Social justice (switched on in Map settings)")] : []),
       ...sectors.map((s) => row(h("span", { class: "swatch sector-swatch", style: `--sector:${s.color}` }), s.label)),
     ),
   );
   parent.appendChild(legend);
   return legend;
-}
-
-/**
- * A kind of item in the legend with its own Show / Hide button, like "Groups that work together". It drives the
- * same switch as Map settings → "Events, projects & actions" (controls.ts listens for openthink:setkind).
- */
-function kindRow(dot: string, label: string, key: string): HTMLElement {
-  let on = true;
-  let shown = true; // all items off ("Show events, projects…" switched off) reads as hidden
-  const btn = h("button", { type: "button", class: "legend-hide" }) as HTMLButtonElement;
-  const row = h("div", { class: "row" }, h("span", { class: `kdot ${dot}` }), h("span", {}, label), btn);
-  const sync = () => {
-    const visible = on && shown;
-    btn.textContent = visible ? "Hide" : "Show";
-    btn.setAttribute("aria-pressed", String(!visible));
-    btn.setAttribute("aria-label", `${visible ? "Hide" : "Show"} ${label.toLowerCase()}`);
-    row.classList.toggle("off", !visible);
-  };
-  btn.addEventListener("click", () => {
-    window.dispatchEvent(new CustomEvent("openthink:setkind", { detail: { key, on: !(on && shown) } }));
-  });
-  window.addEventListener("openthink:kindmode", (e) => {
-    const d = (e as CustomEvent).detail as { key: string; on: boolean };
-    if (d?.key === key) { on = d.on; sync(); }
-  });
-  window.addEventListener("openthink:previewsshown", (e) => { shown = !!(e as CustomEvent).detail?.on; sync(); });
-  sync();
-  return row;
 }
 
 /** "Works with (n)" in the legend, with a Hide/Show button that drives the same switch as Map settings → Advanced. */

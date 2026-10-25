@@ -266,7 +266,7 @@ async function main() {
   });
   // The org-to-org connections switch sits right under the coalitions list.
   sidebar.linksContainer().appendChild(graphApi.orgLinkToggle());
-  // Large print and low-power mode (also: the "Aa" button in the top bar for large print).
+  // Large print and Reduce motion (also in the top bar's Accessibility button).
   controls.advancedContainer().appendChild(displayControls());
   // Large print leaves out the Topics page; if it was showing, go back to the map.
   onDisplayChange(() => { if (largePrint() && activeTab === "topics") setTab("map"); });
@@ -363,7 +363,25 @@ async function main() {
     hasGeo: (_kind, item, owner) => geoCanLocate(owner.node, item as { lat?: number; lng?: number }),
   });
 
-  function setTab(tab: TopTab) {
+  // The browser's Back button goes to the tab you were on before, instead of leaving the site (Oct 24): each tab
+  // change adds a history entry (#topics, #events…; the map has no hash), and Back/Forward switch tabs.
+  const TAB_IDS: TopTab[] = ["map", "geo", "orgs", "events", "projects", "actions", "topics"];
+  const tabFromHash = (): TopTab => {
+    const h = location.hash.replace(/^#/, "") as TopTab;
+    return TAB_IDS.includes(h) ? h : "map";
+  };
+  const urlFor = (tab: TopTab) => `${location.pathname}${location.search}${tab === "map" ? "" : `#${tab}`}`;
+  const startTab = tabFromHash(); // a link like …/#events opens that tab
+  try { history.replaceState({ tab: startTab }, "", urlFor(startTab)); } catch { /* ignore */ }
+  window.addEventListener("popstate", (e) => {
+    const t = ((e.state as { tab?: TopTab } | null)?.tab) ?? tabFromHash();
+    if (t !== activeTab) setTab(t, false);
+  });
+
+  function setTab(tab: TopTab, remember = true) {
+    if (remember && tab !== activeTab) {
+      try { history.pushState({ tab }, "", urlFor(tab)); } catch { /* ignore */ }
+    }
     activeTab = tab;
     topbar.setActive(tab);
     mapView.style.display = tab === "map" ? "grid" : "none";
@@ -395,6 +413,7 @@ async function main() {
 
   // Give the logos a moment so the map doesn't open on empty circles (they keep loading after that anyway).
   await Promise.race([logosReady, new Promise((r) => setTimeout(r, 1500))]);
+  if (startTab !== "map" && !(startTab === "topics" && largePrint())) setTab(startTab, false);
   // Once the map is up and nobody is using the page for a moment, fetch the other pages in the background.
   preloadWhenQuiet([geoPage, eventsPage, orgsPage, projectsPage, actionsPage, topicsPage], 4000);
 
