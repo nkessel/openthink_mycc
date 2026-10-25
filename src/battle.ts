@@ -343,13 +343,15 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   }).g);
   // The "Energy" switch (split by strategy / every item both ways) was taken out to keep the page simple (Oct 24):
   // energy is always split by strategy.
-  bar.appendChild(seg("Layout", [["columns", "Columns"], ["circle", "Circle"]], () => layout, (v) => {
+  const layoutBox = seg("Layout", [["columns", "Columns"], ["circle", "Circle"]], () => layout, (v) => {
     layout = v as BLayout;
     el.dataset.layout = layout;
     shots = [];
     fx = [];
     relayout(true);
-  }).g);
+  }).g;
+  layoutBox.classList.add("cr-layout"); // the Topics page moves it up to its own bar (topics.ts)
+  bar.appendChild(layoutBox);
   el.dataset.layout = layout;
   // No "Split all" any more (Oct 23): zooming in splits only the main problem or solution nearest the middle of the
   // view, and clicking one splits just that one.
@@ -1371,13 +1373,24 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     tip.style.top = `${Math.max(8, Math.min(H - th - 8, y + 14))}px`;
   }
   const topRecs = (list: TopicRecord[], n: number) => [...list].filter((r) => (recW.get(r.id) ?? 0) > 0).sort((a, b) => (recW.get(b.id) ?? 0) - (recW.get(a.id) ?? 0)).slice(0, n);
+  /** How many events, projects, actions and mission statements reach a problem or solution (counted once each). */
+  function itemsOn(t: Target): number {
+    const ids = new Set<string>();
+    for (const st of allStreams) {
+      if (st.value <= 0) continue;
+      let x: Target | null = st.t;
+      while (x && x !== t) x = x.up;
+      if (x) for (const r of st.recs) ids.add(r.id);
+    }
+    return ids.size;
+  }
   const verb = (t: Target) => (t.kind === "prob" ? "solving" : "nurturing");
   function showStreamTip(ev: MouseEvent, s: Stream) {
     clear(tip);
     tip.append(
       h("div", { class: "cr-tip-meta" }, s.kind === "fight" ? "solving a problem" : "nurturing a solution"),
       h("div", { class: "cr-tip-title" }, `${s.org.name} → ${s.t.label}`),
-      h("div", { class: "cr-tip-meta" }, `energy ${s.value.toFixed(2)} · ${s.recs.length} item${s.recs.length === 1 ? "" : "s"}`),
+      h("div", { class: "cr-tip-meta" }, `${s.recs.length} item${s.recs.length === 1 ? "" : "s"}`),
     );
     for (const r of topRecs(s.recs, 3)) tip.appendChild(h("div", { class: "cr-tip-item" }, `${KIND_LABEL[r.kind]}: ${isMission(r) ? "mission statement" : r.name}`));
     placeTip(ev);
@@ -1389,7 +1402,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     tip.append(
       h("div", { class: "cr-tip-meta" }, t.kind === "prob" ? (t.up ? `Problem · part of “${t.up.label}”` : "Problem") : t.up ? `Solution · part of “${t.up.label}”` : "Solution"),
       h("div", { class: "cr-tip-title" }, t.label),
-      h("div", { class: "cr-tip-meta" }, `${n} group${n === 1 ? "" : "s"} ${verb(t)} it · energy ${t.energy.toFixed(1)}`),
+      h("div", { class: "cr-tip-meta" }, `${n} group${n === 1 ? "" : "s"} ${verb(t)} it · ${itemsOn(t)} item${itemsOn(t) === 1 ? "" : "s"}`),
       h("div", { class: "cr-tip-item" }, finer > 1 && !isOpen(t) ? `Click to split it into ${finer} finer ${t.kind === "prob" ? "problems" : "solutions"}` : "Click to see who is on it"),
     );
     placeTip(ev);
@@ -1478,13 +1491,13 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const list = allStreams.filter((s) => s.t === t && s.value > 0).sort((a, b) => b.value - a.value);
       const kindName = t.kind === "prob" ? "Problem" : "Solution";
       d.append(h("div", { class: "topics-detail-parent" }, t.up ? `${kindName} · ${t.up.label}` : kindName), h("h3", {}, t.label),
-        h("div", { class: "topics-detail-meta" }, `${list.length} group${list.length === 1 ? "" : "s"} ${verb(t)} it · energy ${t.energy.toFixed(1)}`));
+        h("div", { class: "topics-detail-meta" }, `${list.length} group${list.length === 1 ? "" : "s"} ${verb(t)} it · ${itemsOn(t)} item${itemsOn(t) === 1 ? "" : "s"}`));
       const finer = liveKids(t).sort((a, b) => b.energy - a.energy);
       if (finer.length > 1) {
         d.appendChild(h("div", { class: "cr-sub" }, t.kind === "prob" ? "Finer problems inside it" : "Finer solutions inside it"));
         const box = h("div", { class: "cr-chips" });
         for (const k of finer) {
-          const b = h("button", { type: "button" }, `${k.label} · ${k.energy.toFixed(1)}`);
+          const b = h("button", { type: "button" }, `${k.label} · ${itemsOn(k)}`);
           b.addEventListener("click", () => {
             expanded.add(t.id);
             selT = k;
@@ -2122,7 +2135,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     h("div", {}, "Problems the groups are solving (on the left), reached by dashed paths. When a comet strikes, the problem is knocked back, grey bits break off it as it is worn down, and light breaks in."),
     h("div", {}, "Solutions they are nurturing (on the right), reached by solid rainbow rivers. When a seed lands, the solution lights up and grows: shoots branch out in every direction."),
     h("div", {}, "Centre: the groups, with their logos. Groups that mostly confront problems lean left; groups that mostly build solutions lean right. Showing only problems or only solutions puts the groups on the opposite side."),
-    h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are hit (or fed) more often, about 1–3 times every few seconds."),
+    h("div", {}, "Size: the more events, projects, actions and mission statements reach a problem or solution, the bigger it is and the more often it is hit (or fed)."),
     h("div", {}, "Each item's weight is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
     h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. Visual effects on the Topics bar sets how much moves; Visual settings → Fine-tune effects tunes the hits and nourishment."),
     h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or zoom in on it. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),

@@ -462,12 +462,17 @@ export function createGraph(
   // Re-center on resize
   function center(animate = false) {
     const { w, h } = dimensions();
+    // While another tab is showing, the map is hidden and measures 0 × 0. A 0 × 0 viewBox makes the whole map
+    // blank when you come back (Oct 24 bug: resize the window on the Topics tab, then open Map), so keep the last one.
+    if (w < 2 || h < 2) return;
     const vb = `${-w / 2} ${-h / 2} ${w} ${h}`;
     if (animate && svg.attr("viewBox")) svg.transition("vb").duration(260).ease(d3.easeCubicOut).attr("viewBox", vb);
     else svg.attr("viewBox", vb);
   }
   center();
   window.addEventListener("resize", () => center(true));
+  // ...and re-measure as soon as the map is visible (or resized) again.
+  new ResizeObserver(() => center(false)).observe(wrap);
 
   // ----- Drag behavior on nodes -----
   // While someone drags a group (and briefly after), the dots of the groups that move get their trailing physics.
