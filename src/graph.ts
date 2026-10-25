@@ -1286,7 +1286,7 @@ export function createGraph(
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   // The opened group is drawn as a big planet (CSS scale(var(--fs)) on .focused) with its items as moons around it.
-  const FOCUS_PLANET_R = 78; // the opened group's radius on the map (always the biggest thing in view)
+  const FOCUS_PLANET_R = 115; // the opened group's radius on the map (always the biggest thing in view; bigger since Oct 24)
   const LABEL_REACH = 150; // how far a moon's name reaches beyond it
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let focusSim: d3.Simulation<any, undefined> | null = null;
@@ -1582,7 +1582,7 @@ export function createGraph(
     // Kinds switched off in Map settings or the legend stay hidden here too (the details pane still lists them).
     const bubbles = settings.showBubbles ? allBubbles.filter(kindVisible) : [];
     // The opened group shows a little larger (CSS scales it; the ring makes room for it).
-    const fs = Math.max(1.35, Math.min(4, FOCUS_PLANET_R / nodeRadiusOf(n)));
+    const fs = Math.max(1.6, Math.min(6, FOCUS_PLANET_R / nodeRadiusOf(n)));
     nodeSel.classed("focused", (d) => d.id === id).filter((d) => d.id === id).style("--fs", String(fs));
     const nodeR = nodeRadiusOf(n) * fs;
     // Moons close around the planet: just enough room on the orbit for each moon, its name reads outward.
