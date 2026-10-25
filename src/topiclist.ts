@@ -5,7 +5,8 @@
 // A link can force one with ?topics=wiki or ?topics=groups.
 
 export type TopicList = "wiki" | "groups";
-const STORE = "openthink.topicList";
+// v2 (Oct 24): everyone starts on the Wikipedia-based list again; the group-based one is now tucked away.
+const STORE = "openthink.topicList.v2";
 
 export const TOPIC_LISTS: { id: TopicList; label: string; hint: string; file: string }[] = [
   { id: "wiki", label: "Wikipedia-based", hint: "Topics from Wikipedia, grouped under 13 seed topics (UN goals and MYCC priorities).", file: "topics-wiki.json" },
