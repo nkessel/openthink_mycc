@@ -70,6 +70,10 @@ export interface GraphSettings {
   showAllActions: boolean;
   /** Volunteer roles (actions with kind "role"), shown or hidden on their own. */
   showAllVolunteer: boolean;
+  /** Zoomed-in view (Map settings → Bubble size weighting → When you open a group): 1 = the site's default. */
+  focusSize: number; // how big the opened group is drawn
+  focusSpace: number; // room between the opened group's activity and its partner groups
+  focusRowGap: number; // spacing between the rows of partner groups
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
@@ -92,6 +96,9 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   showAllProjects: true,
   showAllActions: true,
   showAllVolunteer: true,
+  focusSize: 1,
+  focusSpace: 1,
+  focusRowGap: 1,
 };
 
 export interface Graph {
@@ -478,19 +485,35 @@ export function createGraph(
   // While someone drags a group (and briefly after), the dots of the groups that move get their trailing physics.
   // Not during the map's own settling, when every group drifts at once.
   let dotsLiveUntil = 0;
+  // While a node is being dragged (and for a moment after you let go), hover tooltips and click cards stay closed,
+  // so they don't pop up over everything the node passes (Oct 26).
+  let dragMoved = false;
+  let dragFrom: [number, number] = [0, 0];
+  let dragQuietUntil = 0;
+  const dragBlocked = () => dragMoved || performance.now() < dragQuietUntil;
   const drag = d3
     .drag<SVGGElement, GraphNode>()
     .on("start", (event, d) => {
+      dragMoved = false;
+      dragFrom = [event.x, event.y];
       if (!event.active) sim.alphaTarget(0.25).restart();
       d.fx = d.x ?? 0;
       d.fy = d.y ?? 0;
     })
     .on("drag", (event, d) => {
+      if (!dragMoved && Math.hypot(event.x - dragFrom[0], event.y - dragFrom[1]) > 3) {
+        dragMoved = true; // a real drag, not a click: close what's open and keep it closed until the drag ends
+        tooltip.hide();
+        clearHighlight();
+        focusCard.style.display = "none";
+      }
       d.fx = event.x;
       d.fy = event.y;
       dotsLiveUntil = performance.now() + 1500;
     })
     .on("end", (event, d) => {
+      if (dragMoved) dragQuietUntil = performance.now() + 300; // the click that ends a drag opens nothing
+      dragMoved = false;
       if (!event.active) sim.alphaTarget(0);
       // A satellite let go glides all the way back to its place (the motion used to die out halfway there).
       if (focusId && memberHome.has(d)) sim.alpha(Math.max(sim.alpha(), 0.7)).restart();
@@ -1087,10 +1110,12 @@ export function createGraph(
   nodeSel
     .call(drag)
     .on("mouseenter", function (event, d) {
+      if (dragBlocked()) return;
       tooltip.show(d, event.clientX, event.clientY);
       highlightConnected(d);
     })
     .on("mousemove", function (event) {
+      if (dragBlocked()) return;
       tooltip.move(event.clientX, event.clientY);
     })
     .on("mouseleave", function () {
@@ -1099,6 +1124,7 @@ export function createGraph(
     })
     .on("click", function (event, d) {
       event.stopPropagation();
+      if (dragBlocked()) return;
       if (focusId === d.id) {
         // Looking at one of its items (or the panel was closed): the first click brings back the group's details,
         if (cb.showsDetailsOf && !cb.showsDetailsOf(d)) {
@@ -1286,7 +1312,9 @@ export function createGraph(
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   // The opened group is drawn as a big planet (CSS scale(var(--fs)) on .focused) with its items as moons around it.
-  const FOCUS_PLANET_R = 115; // the opened group's radius on the map (always the biggest thing in view; bigger since Oct 24)
+  // the opened group's radius on the map at focusSize 1 (always the biggest thing in view): 78 until Oct 24, then 115,
+  // then 2.5× that (Oct 26: "at least 2–3× its current size")
+  const FOCUS_PLANET_R = 290;
   const LABEL_REACH = 150; // how far a moon's name reaches beyond it
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let focusSim: d3.Simulation<any, undefined> | null = null;
@@ -1350,6 +1378,7 @@ export function createGraph(
   }
 
   function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode) {
+    if (dragBlocked()) return;
     const owner = ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null);
     if (b.kind !== "thought" && owner && cb.onItemClick) {
       focusCard.style.display = "none";
@@ -1582,7 +1611,7 @@ export function createGraph(
     // Kinds switched off in Map settings or the legend stay hidden here too (the details pane still lists them).
     const bubbles = settings.showBubbles ? allBubbles.filter(kindVisible) : [];
     // The opened group shows a little larger (CSS scales it; the ring makes room for it).
-    const fs = Math.max(1.6, Math.min(6, FOCUS_PLANET_R / nodeRadiusOf(n)));
+    const fs = Math.max(2.5 * settings.focusSize, Math.min(16 * settings.focusSize, (FOCUS_PLANET_R * settings.focusSize) / nodeRadiusOf(n)));
     nodeSel.classed("focused", (d) => d.id === id).filter((d) => d.id === id).style("--fs", String(fs));
     const nodeR = nodeRadiusOf(n) * fs;
     // Moons close around the planet: just enough room on the orbit for each moon, its name reads outward.
@@ -1624,9 +1653,9 @@ export function createGraph(
         // pull them back (that tug-of-war made a crowded ring rock).
         const maxC = Math.max(maxR, ...pinnedMembers.map((o) => collideRadius(o)));
         const spacing = 2 * maxC + 6; // between neighbours along a row
-        const rowGap = 2 * maxC + 20; // between rows (room for a name under each)
+        const rowGap = (2 * maxC + 20) * settings.focusRowGap; // between rows (room for a name under each)
         // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
-        let rx = (bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR + 10 : 0); // big coalitions sit fully outside the moons' names
+        let rx = ((bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR + 10 : 0)) * settings.focusSpace; // big coalitions sit fully outside the moons' names
         let ry = rx;
         // Members may jostle, but never into the items and their labels.
         memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
@@ -2053,6 +2082,11 @@ export function createGraph(
         refreshSpacing();
         // An open group redraws its moons with the new kinds.
         if (focusId && partial.alwaysShow === undefined) { const f = focusId; exitFocus(false); enterFocus(f); }
+      }
+      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined) && focusId) {
+        const f = focusId;
+        exitFocus(false);
+        enterFocus(f);
       }
       if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
         collideForce.radius(collideRadius);

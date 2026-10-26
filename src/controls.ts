@@ -300,6 +300,24 @@ export function createControls(
     );
   }
   bubbleBody.appendChild(sliderBox);
+  // When you open a group (Oct 26): how big it is drawn, and how much room its activity and partners get.
+  const focusBox = h("div", { class: "weight-sliders" });
+  focusBox.appendChild(h("div", { class: "ctrl-label weight-head" }, "When you open a group"));
+  focusBox.appendChild(h("div", { class: "ctrl-hint" }, "The zoomed-in view after you click a group. Middle = the site's default."));
+  for (const [label, key, hint] of [
+    ["Opened group size", "focusSize", "Smaller ← → bigger: the group you clicked."],
+    ["Room around its activity", "focusSpace", "Closer ← → further: how far its partner groups sit from its events, projects and actions."],
+    ["Space between partner rows", "focusRowGap", "Tighter ← → looser: the rings of coalitions and partner groups around it."],
+  ] as const) {
+    focusBox.appendChild(
+      makeSlider(label, state.settings[key], (v) => {
+        state.settings[key] = v;
+        cb.onSettingsChange({ [key]: v });
+        saveState(state);
+      }, { min: 0.4, max: 1.6, step: 0.05, hint }),
+    );
+  }
+  bubbleBody.appendChild(focusBox);
   // Order (Oct 24): "Events, projects & actions", then Bubble size weighting, then Coalition forces.
   parent.insertBefore(bubbleSection, sizeSection.nextSibling);
 

@@ -822,3 +822,8 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Oct 24 night (Nathan): the group you click is drawn bigger when the map zooms in (planet radius 78 → 115 map units; at least 1.6× its usual size, up to 6×).
 - Oct 25 (Nathan): hover paths fire only on the "More" effects level again (they are the biggest compute cost).
 - Oct 25 (Nathan): "Bubble sizes" section renamed "Bubble size weighting".
+
+## 2026-10-26 — drag quiet, white logos, bigger opened group + sliders
+- Dragging a node (moved > 3 px): the hover tooltip, highlight and item card close and stay closed until 300 ms after you let go, so nothing pops up over the nodes it passes or on release.
+- Logos: scanned all 336 map logos for white/blank images on the white bubble. Three were white artwork on transparency: 350 Mass Cape Cod, Mass Interfaith Power & Light, Community Labor United. Recoloured their white to dark slate (#1e293b), keeping the shapes and edges. Others pass (SVGs checked too).
+- Opened group: 2.5× bigger than Oct 24 (planet radius 115 → 290; at least 2.5×, up to 16× its usual size). New sliders under Bubble size weighting → "When you open a group": Opened group size, Room around its activity, Space between partner rows (0.4–1.6, middle = default); changes redraw an open group straight away.
