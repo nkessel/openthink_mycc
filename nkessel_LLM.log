@@ -821,3 +821,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Command room hits: a glowing shockwave collapses from 1.9× the radius into the centre, ripples follow inward from the surface, and a flash where they meet; the problem shrinks sharply (up to ~34%) and regrows slowly with an eased curve (~1.6 s). Lighter levels keep the shockwave with one ripple.
 - Oct 24 night (Nathan): the group you click is drawn bigger when the map zooms in (planet radius 78 → 115 map units; at least 1.6× its usual size, up to 6×).
 - Oct 25 (Nathan): hover paths fire only on the "More" effects level again (they are the biggest compute cost).
+- Oct 25 (Nathan): "Bubble sizes" section renamed "Bubble size weighting".

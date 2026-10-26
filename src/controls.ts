@@ -271,7 +271,7 @@ export function createControls(
 
   // ---- Bubble sizes: everything that changes how big the circles are, in one place ----
   // Clearer wording (Oct 24): every slider says what moving it does, and both ends are explained.
-  const { section: bubbleSection, body: bubbleBody } = makeSection("Bubble sizes");
+  const { section: bubbleSection, body: bubbleBody } = makeSection("Bubble size weighting");
   bubbleBody.appendChild(h("div", { class: "ctrl-hint section-lead" }, "Change how big the circles on the map are, and what makes one bigger than another."));
   bubbleBody.appendChild(
     makeSlider("All bubbles", state.settings.nodeSize, (v) => {
@@ -300,7 +300,7 @@ export function createControls(
     );
   }
   bubbleBody.appendChild(sliderBox);
-  // Order (Oct 24): "Events, projects & actions", then Bubble sizes, then Coalition forces.
+  // Order (Oct 24): "Events, projects & actions", then Bubble size weighting, then Coalition forces.
   parent.insertBefore(bubbleSection, sizeSection.nextSibling);
 
   // ---- Advanced display settings (closed by default; added to the panel last) ----
@@ -329,7 +329,7 @@ export function createControls(
     }, { hint: "How hard organizations push each other away. Lower = organizations sit closer together." }),
   );
 
-  // ---- Coalition forces: their own section, right under Bubble sizes ----
+  // ---- Coalition forces: their own section, right under Bubble size weighting ----
   const { section: coalSection, body: coalBody } = makeSection("Coalition forces", false);
   coalBody.appendChild(
     makeSlider("Push coalitions apart", state.settings.coalitionRepel, (v) => {
@@ -352,7 +352,7 @@ export function createControls(
       saveState(state);
     }, { hint: "How far members like to sit from their coalition. Lower = members gather closer around it." }),
   );
-  parent.insertBefore(coalSection, bubbleSection.nextSibling); // right under Bubble sizes
+  parent.insertBefore(coalSection, bubbleSection.nextSibling); // right under Bubble size weighting
 
   // ---- Group types ----
   const { section: groupsSection, body: groupsBody } = makeSection("Group Types");
