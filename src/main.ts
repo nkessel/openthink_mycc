@@ -429,18 +429,17 @@ async function main() {
 
 /** Live data from the Google Sheet when configured, else the committed snapshot. */
 let lastErrBg: unknown = null;
-/** A quiet note when the live sheet has something newer than what is shown (from the saved copy or the snapshot). */
-function showUpdateNote() {
-  if (document.querySelector(".update-note")) return;
-  const btn = h("button", { type: "button", class: "update-note-btn" }, "Show them");
-  btn.addEventListener("click", () => {
-    try { sessionStorage.setItem("openthink.quickboot", "1"); } catch { /* ignore */ }
-    location.reload();
-  });
-  const close = h("button", { type: "button", class: "update-note-x", "aria-label": "Dismiss" }, "\u00d7");
-  const note = h("div", { class: "update-note", role: "status" }, h("span", {}, "The map has new updates."), btn, close);
-  close.addEventListener("click", () => note.remove());
-  document.body.appendChild(note);
+/**
+ * The live sheet had something newer than what is shown, but arrived after the map was up (Oct 27: no more "The map
+ * has new updates · Show them" note). If nobody has touched the page yet, reload quietly (the small quick-start card,
+ * from the copy just saved); otherwise the newer data is already saved and shows on the next visit or reload.
+ */
+let touched = false;
+for (const ev of ["pointerdown", "keydown", "wheel", "touchstart"]) window.addEventListener(ev, () => { touched = true; }, { once: true, capture: true, passive: true });
+function applyLateUpdate() {
+  if (touched || document.visibilityState !== "visible") return;
+  try { sessionStorage.setItem("openthink.quickboot", "1"); } catch { /* ignore */ }
+  location.reload();
 }
 
 async function loadData(map: MapDef = currentMap): Promise<DataFile> {
@@ -472,9 +471,9 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       clearTimeout(timer);
     }
   };
-  // Faster start (the live sheet takes ~4 s to answer): show the copy saved on this device (or, on a first visit
-  // where the sheet is slow, the nightly snapshot) right away, fetch the live sheet in the background, and offer
-  // a one-tap refresh if it has anything newer.
+  // Faster start (the live sheet takes ~4 s to answer): fetch the live sheet, and while the loading screen is up give
+  // it a few seconds. If it isn't back by then, show the copy saved on this device (or, on a first visit, the
+  // nightly snapshot), and bring in the newer data by itself when it arrives (applyLateUpdate).
   const liveUrl = map.sources.find((u) => /script\.google/.test(u));
   if (liveUrl) {
     const key = `openthink.data.v1.${map.id}`;
@@ -491,17 +490,18 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), data: d })); } catch { /* full */ }
       return d;
     });
+    // Wait a little for the live sheet even with a saved copy, so the newest data shows straight away most of the time.
+    const inTime = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), cached ? 3000 : 2500))]).catch(() => null);
+    if (inTime) return inTime;
     let first: DataFile | null = cached;
     if (!first) {
-      const quick = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), 2500))]).catch(() => null);
-      if (quick) return quick;
       for (const u of map.sources.filter((x) => x !== liveUrl)) {
         try { first = await get(u, 8000); break; } catch (err) { lastErrBg = err; }
       }
       if (!first) return live; // nothing else to show: wait for the sheet after all
     }
     const shownKey = strip(first);
-    live.then((d) => { if (strip(d) !== shownKey) showUpdateNote(); }).catch(() => { /* offline: keep what is shown */ });
+    live.then((d) => { if (strip(d) !== shownKey) applyLateUpdate(); }).catch(() => { /* offline: keep what is shown */ });
     return first;
   }
   let lastErr: unknown = null;
