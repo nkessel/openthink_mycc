@@ -2088,6 +2088,10 @@ export function createGraph(
         exitFocus(false);
         enterFocus(f);
       }
+      // "When you open a group" sliders: redraw an open group with the new size and spacing straight away
+      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined) && focusId) {
+        const f = focusId; exitFocus(false); enterFocus(f);
+      }
       if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
         collideForce.radius(collideRadius);
         applyVisualSettings();
