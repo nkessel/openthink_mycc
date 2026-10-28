@@ -856,3 +856,9 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Corrected one stance: AWS filed Neutral on HB 3546 in the House (3/6/2025) and Oppose in the Senate (4/30/2025); both now show.
 - Still blocked: ORESTAR (campaign contributions) shows a security block page to automated browsers; not worked around.
 - Checked: no personal names in the stored CSV; desktop + phone screenshots of the legislature and OEC details; build + Apps Script tests.
+
+## 2026-10-28 — Money layer look (Nathan: green flows for good groups, red for bad; red glowing halo; legislature not a circle)
+- Lobbying arrows are green from climate groups and red from opposing groups (political spending stays dashed). Arrowheads match.
+- Opposing groups have a glowing red halo (solid ring + drop-shadow glow) instead of the dashed sector ring; nodes now carry a sector-<id> class.
+- The Oregon Legislature is drawn as a gold capitol icon (its circle stays as an invisible click target). Legend updated with all of these.
+- Checked: desktop + phone screenshots, build, Apps Script tests.
