@@ -3162,15 +3162,24 @@ html, body { overflow-x: clip; max-width: 100%; }
 /* ---- Money & opposition layer (Map settings; src/money.ts) ---- */
 .money-flows { pointer-events: none; }
 .money-flow { fill: none; stroke-linecap: round; opacity: 0.55; pointer-events: stroke; transition: opacity 0.2s; }
-.money-flow.k-lobbying { stroke: #d97706; }
-.money-flow.k-lobbying.from-opp { stroke: #b45309; }
-.money-flow.k-political { stroke: #b91c1c; stroke-dasharray: 6 4; }
-.money-flow.k-grant { stroke: #15803d; }
+.money-flow.side-good { stroke: #22c55e; }
+.money-flow.side-bad { stroke: #ef4444; }
+.money-flow.k-political { stroke-dasharray: 6 4; }
 .money-flow:hover { opacity: 0.9; }
 .money-flow.faded { opacity: 0.06; }
-.money-head.k-lobbying { fill: #b45309; }
-.money-head.k-political { fill: #b91c1c; }
-.money-head.k-grant { fill: #15803d; }
+.money-head.side-good { fill: #22c55e; }
+.money-head.side-bad { fill: #ef4444; }
+/* Groups on the record against climate bills: a glowing red halo instead of the sector layers' dashed ring. */
+.node-org.sector-opposition .ring {
+  stroke: #ef4444 !important;
+  stroke-width: 2px !important;
+  stroke-dasharray: none;
+  filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.95)) drop-shadow(0 0 9px rgba(239, 68, 68, 0.65));
+}
+/* The legislature: a capitol icon; its circle stays as an invisible click target. */
+.node-org.sector-money-hub .ring { fill: transparent !important; stroke: none !important; stroke-opacity: 0 !important; }
+.node-org.sector-money-hub .capitol-icon path { fill: #e0b45c; stroke: rgba(0, 0, 0, 0.35); stroke-width: 1.5px; }
+.node-org.sector-money-hub.faded .capitol-icon { opacity: 0.25; }
 .money-details { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border, #e5e7eb); font-size: 13px; }
 .money-details .money-head { font-weight: 600; margin: 6px 0 4px; }
 .money-list { margin: 0 0 6px; padding-left: 18px; }
@@ -3179,8 +3188,12 @@ html, body { overflow-x: clip; max-width: 100%; }
 .money-note { color: var(--muted, #6b7280); font-size: 12px; }
 .money-section { margin-top: 8px; }
 .map-legend .line.money-line { height: 3px; border: 0; }
-.map-legend .line.money-line.k-lobbying { background: #d97706; }
-.map-legend .line.money-line.k-political { background: repeating-linear-gradient(90deg, #b91c1c 0 6px, transparent 6px 9px); }
+.map-legend .line.money-line.side-good { background: #22c55e; }
+.map-legend .line.money-line.side-bad { background: #ef4444; }
+.map-legend .line.money-line.k-political { background: repeating-linear-gradient(90deg, #ef4444 0 6px, transparent 6px 9px); }
+.map-legend .swatch.opp-halo { border: 2px solid #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.9); }
+.map-legend .capitol-mark { display: inline-block; width: 14px; height: 14px; flex: none; }
+.map-legend .capitol-mark path { fill: #e0b45c; }
 .money-list a { color: var(--accent, #38bdf8); }
 .money-quarters-wrap { margin: 4px 0 2px; max-width: 260px; }
 .money-quarters { width: 100%; height: auto; display: block; }

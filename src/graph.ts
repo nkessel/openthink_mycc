@@ -18,6 +18,13 @@ import { typeIcon, VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS } from "./icons";
 import { staleNotice } from "./notice";
 import { sectorById } from "./sectors";
 import { money as fmtMoney, moneyFlows } from "./money";
+
+/** A capitol building (dome, pediment, columns, steps) in a 100 × 100 box: the legislature in the money layer. */
+const CAPITOL_PATH =
+  "M48 4h4v12h-4z M27 40a23 23 0 0 1 46 0z M22 40h56v7H22z M10 56L50 47L90 56z" +
+  " M16 58h9v24h-9z M31 58h9v24h-9z M46 58h8v24h-8z M60 58h9v24h-9z M75 58h9v24h-9z M8 84h84v6H8z M4 92h92v5H4z";
+/** Scales the 100 × 100 capitol to a node of radius r (a little larger than the bubble it replaces). */
+const capitolTransform = (r: number) => { const k = (2.3 * r) / 100; return `translate(${-50 * k},${-54 * k}) scale(${k})`; };
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
@@ -545,7 +552,7 @@ export function createGraph(
     .enter()
     .append("g")
     .attr("class", (d) =>
-      (d.kind === "coalition" ? "node-coalition" : "node-org") + (d.sector ? " sector" : ""),
+      (d.kind === "coalition" ? "node-coalition" : "node-org") + (d.sector ? ` sector sector-${d.sector}` : ""),
     ) as NodeSel;
   // Sector layers get their own ring colour (see .sector in styles.css).
   nodeSel.filter((d) => !!d.sector).style("--sector", (d) => sectorById(d.sector)?.color ?? "#a16207");
@@ -626,6 +633,13 @@ export function createGraph(
         .attr("class", "node-label")
         .attr("font-size", ORG_LABEL_FONT_SIZE)
         .text(initials(d.name, 3));
+      if (d.sector === "money-hub") {
+        // The legislature (money & opposition layer) is drawn as a capitol building, not a bubble; the circle stays,
+        // invisible, as the click target.
+        label.style("display", "none");
+        sel.append("g").attr("class", "capitol-icon").attr("transform", capitolTransform(r))
+          .append("path").attr("d", CAPITOL_PATH);
+      }
       if (d.logo) {
         // Logo inside the circle, loaded after the map is up; the initials show until then (and stay if it fails).
         const s = r * LOGO_SCALE;
@@ -1076,6 +1090,7 @@ export function createGraph(
       const sel = d3.select(this);
       const r = nodeRadiusOf(d);
       sel.select<SVGCircleElement>("circle.ring").attr("r", r);
+      sel.select<SVGGElement>("g.capitol-icon").attr("transform", capitolTransform(r));
       const s = r * LOGO_SCALE * (d.kind === "coalition" ? 0.82 : 1);
       sel.select<SVGImageElement>("image.node-logo")
         .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s);
@@ -1191,15 +1206,16 @@ export function createGraph(
   const maxFlow = Math.max(1, ...flowData.map((f) => f.amount));
   if (flowData.length) {
     const defs = svg.select<SVGDefsElement>("defs").empty() ? svg.insert("defs", ":first-child") : svg.select<SVGDefsElement>("defs");
-    for (const k of ["lobbying", "political", "grant"])
+    for (const k of ["good", "bad"])
       defs.append("marker").attr("id", `money-arrow-${k}`).attr("viewBox", "0 0 10 10").attr("refX", 9).attr("refY", 5)
         .attr("markerWidth", 4).attr("markerHeight", 4).attr("orient", "auto-start-reverse")
-        .append("path").attr("d", "M0 0L10 5L0 10z").attr("class", `money-head k-${k}`);
+        .append("path").attr("d", "M0 0L10 5L0 10z").attr("class", `money-head side-${k}`);
   }
   const moneySel = moneyLayer.selectAll<SVGPathElement, FlowD>("path").data(flowData).enter().append("path")
-    .attr("class", (f) => `money-flow k-${f.kind}${f.from.sector === "opposition" ? " from-opp" : ""}`)
+    // Green from climate groups, red from groups on the record against climate bills (Oct 28).
+    .attr("class", (f) => `money-flow k-${f.kind} side-${f.from.sector === "opposition" ? "bad" : "good"}`)
     .attr("stroke-width", (f) => 1.2 + 9 * Math.sqrt(f.amount / maxFlow))
-    .attr("marker-end", (f) => `url(#money-arrow-${f.kind})`);
+    .attr("marker-end", (f) => `url(#money-arrow-${f.from.sector === "opposition" ? "bad" : "good"})`);
   moneySel.append("title").text((f) => f.label);
   /** A gentle curve from the edge of one group to the edge of the other. */
   const flowPath = (f: FlowD) => {

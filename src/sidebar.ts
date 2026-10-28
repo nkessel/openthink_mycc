@@ -150,6 +150,13 @@ export function createSidebar(
   };
 }
 
+/** The capitol icon used for the legislature in the money & opposition layer (same shape as in graph.ts). */
+function capitolMark(): HTMLElement {
+  const span = h("span", { class: "capitol-mark" });
+  span.innerHTML = '<svg viewBox="0 0 100 100" width="14" height="14"><path d="M48 4h4v12h-4z M27 40a23 23 0 0 1 46 0z M22 40h56v7H22z M10 56L50 47L90 56z M16 58h9v24h-9z M31 58h9v24h-9z M46 58h8v24h-8z M60 58h9v24h-9z M75 58h9v24h-9z M8 84h84v6H8z M4 92h92v5H4z"/></svg>';
+  return span;
+}
+
 /** The key to the network map, shown on the map itself (bottom-left); click its title to fold it. */
 export function createMapLegend(
   parent: HTMLElement,
@@ -185,9 +192,11 @@ export function createMapLegend(
       ...sectors.map((s) => row(h("span", { class: "swatch sector-swatch", style: `--sector:${s.color}` }), s.label)),
       ...(money ? [
         h("div", { class: "map-legend-sub" }, "Money & opposition (Map settings)"),
-        row(h("span", { class: "swatch sector-swatch", style: "--sector:#b91c1c;width:9px;height:9px" }), "Opposed climate bills on the record"),
-        row(h("span", { class: "line money-line k-lobbying" }), "Lobbying spending, 2021–2025 (thicker = more)"),
-        row(h("span", { class: "line money-line k-political" }), "Political spending"),
+        row(h("span", { class: "swatch opp-halo", style: "width:9px;height:9px" }), "Opposed climate bills on the record"),
+        row(capitolMark(), "Oregon Legislature"),
+        row(h("span", { class: "line money-line side-good" }), "Lobbying by climate groups (thicker = more)"),
+        row(h("span", { class: "line money-line side-bad" }), "Lobbying by opposing groups"),
+        row(h("span", { class: "line money-line k-political" }), "Political spending (opposing group)"),
       ] : []),
     ),
   );
