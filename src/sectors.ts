@@ -62,6 +62,26 @@ export const SECTORS: SectorDef[] = [
     color: "#be185d",
     maps: ["ma", "us"],
   },
+  // Not switchable here: the Money & opposition layer (src/money.ts) marks its groups with these for colour and
+  // labels. `maps: []` keeps them out of the Social justice settings.
+  {
+    id: "opposition",
+    label: "Opposed on the record",
+    toggleLabel: "",
+    path: "",
+    coalitionId: "",
+    color: "#b91c1c",
+    maps: [],
+  },
+  {
+    id: "money-hub",
+    label: "Where lobbying money goes",
+    toggleLabel: "",
+    path: "",
+    coalitionId: "",
+    color: "#a16207",
+    maps: [],
+  },
 ];
 
 const STORAGE_KEY = "openthink.sectors.v1";

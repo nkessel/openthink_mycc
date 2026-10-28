@@ -24,6 +24,7 @@ import { currentMap, MAPS, type MapDef } from "./maps";
 import { rollRecurringForward } from "./recurrence";
 import { parseEventDate } from "./util";
 import { attachSectors, createSectorSection } from "./sectors";
+import { attachMoney, createMoneySection } from "./money";
 
 // The splash in index.html shows a progress bar; these tell it how far along we really are.
 type BootWindow = Window & { bootPhase?: (p: "build") => void; bootProgress?: (p: number, label?: string) => void; bootDetail?: (text: string) => void; bootDone?: () => void; bootHeld?: boolean; bootRelease?: () => void; bootDetailPendingMs?: () => number; bootAfterLines?: (cb: () => void, maxMs: number) => void };
@@ -103,6 +104,7 @@ async function main() {
   await attachThoughts(data);
   // Sector layers (Map settings → Social justice) that this browser has switched on.
   const sectorsOn = await attachSectors(data, currentMap.id);
+  const moneyOnMap = await attachMoney(data, currentMap.id);
   // Recurring events carry one stored date; show their next occurrence.
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
   const groups = [...data.coalitions, ...data.organizations];
@@ -251,7 +253,7 @@ async function main() {
 
   // The key to the map sits on the map itself.
   const linkBox = graphApi.orgLinkToggle().querySelector("input");
-  createMapLegend(graphContainer, sectorsOn, linkBox ? { box: linkBox, count: (data.org_links || []).length } : undefined);
+  createMapLegend(graphContainer, sectorsOn, linkBox ? { box: linkBox, count: (data.org_links || []).length } : undefined, moneyOnMap);
 
   // Controls panel — mounts inside the sidebar
   const controls = createControls(sidebar.controlsContainer(), {
@@ -266,6 +268,8 @@ async function main() {
   });
   // The org-to-org connections switch sits right under the coalitions list.
   sidebar.linksContainer().appendChild(graphApi.orgLinkToggle());
+  // Money & opposition (maps with money data only), right under the connections switch.
+  createMoneySection(sidebar.linksContainer(), currentMap.id);
   // Large print and Reduce motion (also in the top bar's Accessibility button).
   controls.advancedContainer().appendChild(displayControls());
   // Large print leaves out the Topics page; if it was showing, go back to the map.

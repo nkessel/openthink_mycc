@@ -64,10 +64,10 @@ export function formUrl(
   item: (Item & Partial<CoalitionEvent & Project & Action>) | null = null,
   opts: { copy?: boolean } = {},
 ): string | null {
+  // Sector layers (src/sectors.ts) and the money & opposition layer aren't in the sheet, so there's nothing to edit.
+  if (kind !== "feedback" && (context as { sector?: string } | null)?.sector) return null;
   // Only Massachusetts has its own forms + sheet; elsewhere every suggestion goes to the feedback form.
   if (!currentMap.editable) return FORMS.feedback.url || null;
-  // Sector layers (src/sectors.ts) aren't in the sheet yet, so there's nothing to edit through a form.
-  if (kind !== "feedback" && (context as { sector?: string } | null)?.sector) return null;
   const f: FormLink = FORMS[kind];
   if (!f.url) return null;
   // The live forms' own question ids (forms.fields.json) win over the older ones saved in forms.config.ts.

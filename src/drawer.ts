@@ -14,6 +14,7 @@ import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
 import { sectorById } from "./sectors";
+import { moneyDetails } from "./money";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { isPastAction, isPastEvent, isPastProject } from "./past";
 import { typeIcon } from "./icons";
@@ -515,6 +516,8 @@ export function createDrawer(
     row("Grassroots power", score(p.grassroots));
     row("Policy writing", score(p.policy_expertise));
     row("“In the building”", score(p.in_building));
+    const md = moneyDetails(org.id, (id) => orgsById.get(id)?.name ?? (id.endsWith("_hub_legislature") ? "the Oregon Legislature" : id));
+    if (md) body.appendChild(md);
     if (!body.childNodes.length) body.appendChild(h("div", { class: "empty" }, "No details yet."));
   }
 

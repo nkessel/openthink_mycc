@@ -155,6 +155,7 @@ export function createMapLegend(
   parent: HTMLElement,
   sectors: { label: string; color: string }[] = [],
   orgLinks?: { box: HTMLInputElement; count: number },
+  money = false,
 ): HTMLElement {
   // Open on wide screens; folded on phones, where it would cover a third of the map.
   const startOpen = !window.matchMedia("(max-width: 720px)").matches;
@@ -182,6 +183,12 @@ export function createMapLegend(
       row(h("span", { class: "kdot k-volunteer" }), "Volunteer role"),
       ...(sectors.length ? [h("div", { class: "map-legend-sub" }, "Social justice (switched on in Map settings)")] : []),
       ...sectors.map((s) => row(h("span", { class: "swatch sector-swatch", style: `--sector:${s.color}` }), s.label)),
+      ...(money ? [
+        h("div", { class: "map-legend-sub" }, "Money & opposition (Map settings)"),
+        row(h("span", { class: "swatch sector-swatch", style: "--sector:#b91c1c;width:9px;height:9px" }), "Opposed climate bills on the record"),
+        row(h("span", { class: "line money-line k-lobbying" }), "Lobbying spending, 2021–2025 (thicker = more)"),
+        row(h("span", { class: "line money-line k-political" }), "Political spending"),
+      ] : []),
     ),
   );
   parent.appendChild(legend);

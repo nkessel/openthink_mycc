@@ -3157,3 +3157,27 @@ html, body { overflow-x: clip; max-width: 100%; }
 /* A page that is still downloading (first visit, slow connection) */
 .lazy-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--muted, #94a3b8); font-size: 15px; }
 .weight-sliders .weight-head { margin-top: 12px; }
+
+/* ---- Money & opposition layer (Map settings; src/money.ts) ---- */
+.money-flows { pointer-events: none; }
+.money-flow { fill: none; stroke-linecap: round; opacity: 0.55; pointer-events: stroke; transition: opacity 0.2s; }
+.money-flow.k-lobbying { stroke: #d97706; }
+.money-flow.k-lobbying.from-opp { stroke: #b45309; }
+.money-flow.k-political { stroke: #b91c1c; stroke-dasharray: 6 4; }
+.money-flow.k-grant { stroke: #15803d; }
+.money-flow:hover { opacity: 0.9; }
+.money-flow.faded { opacity: 0.06; }
+.money-head.k-lobbying { fill: #b45309; }
+.money-head.k-political { fill: #b91c1c; }
+.money-head.k-grant { fill: #15803d; }
+.money-details { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border, #e5e7eb); font-size: 13px; }
+.money-details .money-head { font-weight: 600; margin: 6px 0 4px; }
+.money-list { margin: 0 0 6px; padding-left: 18px; }
+.money-list li { margin: 3px 0; line-height: 1.4; }
+.money-date { color: var(--muted, #6b7280); font-variant-numeric: tabular-nums; }
+.money-note { color: var(--muted, #6b7280); font-size: 12px; }
+.money-section { margin-top: 8px; }
+.map-legend .line.money-line { height: 3px; border: 0; }
+.map-legend .line.money-line.k-lobbying { background: #d97706; }
+.map-legend .line.money-line.k-political { background: repeating-linear-gradient(90deg, #b91c1c 0 6px, transparent 6px 9px); }
+.money-list a { color: var(--accent, #38bdf8); }
