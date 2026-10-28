@@ -1,0 +1,754 @@
+{
+ "generated_at": "2026-10-28",
+ "map": "or",
+ "hub": {
+  "id": "or_hub_legislature",
+  "name": "Oregon Legislature",
+  "abbrev": "Legislature"
+ },
+ "opposition": [
+  {
+   "id": "or_opp_obi",
+   "name": "Oregon Business & Industry",
+   "abbrev": "OBI",
+   "type": "business association",
+   "description": "Statewide business trade association; the largest lobbying spender among Oregon climate-policy opponents.",
+   "website": "https://oregonbusinessindustry.com",
+   "lat": 44.9429,
+   "lng": -123.0351,
+   "stances": [
+    {
+     "what": "Testified against HB 2021 (100% clean electricity by 2040)",
+     "date": "2021-04-07",
+     "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24293"
+    },
+    {
+     "what": "Led a Court of Appeals petition against the Climate Protection Program",
+     "date": "2026-04-16",
+     "source": "https://www.opb.org/article/2026/04/16/oregon-climate-protection-program-lawsuit/"
+    }
+   ],
+   "geographic_focus": "Salem",
+   "lobbying": {
+    "years": {
+     "2021": 227020,
+     "2022": 174349,
+     "2023": 374205,
+     "2024": 365476,
+     "2025": 483014
+    },
+    "total": 1624064
+   }
+  },
+  {
+   "id": "or_opp_farm_bureau",
+   "name": "Oregon Farm Bureau",
+   "abbrev": "OFB",
+   "type": "agriculture association",
+   "description": "Statewide farm and ranch organization.",
+   "website": "https://oregonfb.org",
+   "lat": 44.9429,
+   "lng": -123.0351,
+   "stances": [
+    {
+     "what": "Testified against HB 2021 (filed as Oppose; raised concerns)",
+     "date": "2021-04-07",
+     "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23909"
+    },
+    {
+     "what": "Supported the gas utilities' court challenge to the Climate Protection Program",
+     "date": "2023-10-02",
+     "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/"
+    },
+    {
+     "what": "Testified in strong opposition to SB 1187 (Climate Superfund)",
+     "date": "2025-04-07",
+     "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193358"
+    }
+   ],
+   "geographic_focus": "Salem",
+   "lobbying": {
+    "years": {
+     "2021": 181310,
+     "2022": 132694,
+     "2023": 230375,
+     "2024": 46242,
+     "2025": 163655
+    },
+    "total": 754276
+   }
+  },
+  {
+   "id": "or_opp_awec",
+   "name": "Alliance of Western Energy Consumers",
+   "abbrev": "AWEC",
+   "type": "industrial energy users' association",
+   "description": "Represents large industrial energy users in Oregon, Washington and Idaho in utility rate and regulatory proceedings.",
+   "website": "https://awec.solutions",
+   "lat": 45.5152,
+   "lng": -122.6784,
+   "stances": [
+    {
+     "what": "Testified against HB 2021 (100% clean electricity by 2040)",
+     "date": "2021-04-07",
+     "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24286"
+    },
+    {
+     "what": "Testified against HB 3546 (POWER Act: large energy users pay their share), backed by climate groups",
+     "date": "2025-03-06",
+     "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146776"
+    },
+    {
+     "what": "Petitioner in the court challenge to the Climate Protection Program",
+     "date": "2026-04-16",
+     "source": "https://www.opb.org/article/2026/04/16/oregon-climate-protection-program-lawsuit/"
+    }
+   ],
+   "geographic_focus": "Portland",
+   "lobbying": {
+    "years": {
+     "2021": 57000,
+     "2022": 39900,
+     "2023": 57000,
+     "2024": 22800,
+     "2025": 57000
+    },
+    "total": 233700
+   }
+  },
+  {
+   "id": "or_opp_nfib",
+   "name": "NFIB Oregon",
+   "abbrev": "NFIB",
+   "type": "small business association",
+   "description": "Oregon chapter of the National Federation of Independent Business.",
+   "website": "https://www.nfib.com/oregon/",
+   "lat": 44.9429,
+   "lng": -123.0351,
+   "stances": [
+    {
+     "what": "Testified against HB 2021 (100% clean electricity by 2040)",
+     "date": "2021-04-07",
+     "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24282"
+    }
+   ],
+   "geographic_focus": "Salem",
+   "lobbying": null
+  },
+  {
+   "id": "or_opp_timber_unity",
+   "name": "Timber Unity",
+   "abbrev": "Timber Unity",
+   "type": "advocacy group (501c6) and PAC",
+   "description": "Rural, timber and trucking movement that organized large protests in Salem against cap-and-trade; runs the Timber Unity PAC, which raised over $177,000 from June 2019 to January 2020 (Capital Press).",
+   "website": "",
+   "remote": true,
+   "lat": 44.9429,
+   "lng": -123.0351,
+   "stances": [
+    {
+     "what": "Organized protests at the Capitol against the cap-and-trade bills (HB 2020, SB 1530)",
+     "date": "2020-01-21",
+     "source": "https://bakercityherald.com/?p=52697"
+    },
+    {
+     "what": "Testimony against HB 2021 filed on its behalf",
+     "date": "2021-04-07",
+     "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23870"
+    }
+   ],
+   "geographic_focus": "Statewide",
+   "lobbying": null
+  },
+  {
+   "id": "or_opp_cascade_policy",
+   "name": "Cascade Policy Institute",
+   "abbrev": "Cascade Policy",
+   "type": "think tank",
+   "description": "Free-market policy research group.",
+   "website": "https://cascadepolicy.org",
+   "lat": 45.5152,
+   "lng": -122.6784,
+   "stances": [
+    {
+     "what": "Testified against HB 3409 (2023 climate package)",
+     "date": "2023-06-21",
+     "source": "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101884"
+    },
+    {
+     "what": "Testified against HB 3630 (energy help for environmental justice communities)",
+     "date": "2023-06-07",
+     "source": "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/100930"
+    }
+   ],
+   "geographic_focus": "Portland",
+   "lobbying": {
+    "years": {
+     "2022": 27200,
+     "2023": 36000,
+     "2024": 48000,
+     "2025": 48000
+    },
+    "total": 159200
+   }
+  },
+  {
+   "id": "or_opp_nw_natural",
+   "name": "NW Natural",
+   "abbrev": "NW Natural",
+   "type": "gas utility",
+   "description": "Oregon's largest natural gas utility.",
+   "website": "https://www.nwnatural.com",
+   "lat": 45.5152,
+   "lng": -122.6784,
+   "stances": [
+    {
+     "what": "Funded the campaign to overturn Eugene's ban on gas hookups in new low-rise homes",
+     "date": "2023-03-07",
+     "source": "https://www.desmog.com/2023/03/07/major-gas-utility-is-pouring-money-into-reversing-an-oregon-citys-electric-only-mandate"
+    },
+    {
+     "what": "Challenged the Climate Protection Program in the Court of Appeals",
+     "date": "2023-10-02",
+     "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/"
+    }
+   ],
+   "geographic_focus": "Portland",
+   "lobbying": {
+    "years": {
+     "2021": 148597,
+     "2022": 92612,
+     "2023": 244017,
+     "2024": 216744,
+     "2025": 323868
+    },
+    "total": 1025838
+   }
+  },
+  {
+   "id": "or_opp_avista",
+   "name": "Avista",
+   "abbrev": "Avista",
+   "type": "gas and electric utility",
+   "description": "Spokane-based utility serving natural gas customers in southern and eastern Oregon.",
+   "website": "https://www.myavista.com",
+   "remote": true,
+   "lat": 47.6588,
+   "lng": -117.426,
+   "stances": [
+    {
+     "what": "Challenged the Climate Protection Program in the Court of Appeals",
+     "date": "2023-10-02",
+     "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/"
+    }
+   ],
+   "geographic_focus": "Statewide",
+   "lobbying": {
+    "years": {
+     "2021": 47500,
+     "2022": 57000,
+     "2023": 38000,
+     "2024": 57000,
+     "2025": 57000
+    },
+    "total": 256500
+   }
+  },
+  {
+   "id": "or_opp_cascade_natural_gas",
+   "name": "Cascade Natural Gas",
+   "abbrev": "Cascade Natural",
+   "type": "gas utility",
+   "description": "Natural gas utility serving central and eastern Oregon.",
+   "website": "https://www.cngc.com",
+   "remote": true,
+   "lat": 46.2112,
+   "lng": -119.1372,
+   "stances": [
+    {
+     "what": "Challenged the Climate Protection Program in the Court of Appeals",
+     "date": "2023-10-02",
+     "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/"
+    }
+   ],
+   "geographic_focus": "Statewide",
+   "lobbying": {
+    "years": {
+     "2021": 42000,
+     "2022": 42000,
+     "2023": 84000,
+     "2024": 90560,
+     "2025": 90000
+    },
+    "total": 348560
+   }
+  },
+  {
+   "id": "or_opp_wspa",
+   "name": "Western States Petroleum Association",
+   "abbrev": "WSPA",
+   "type": "oil industry association",
+   "description": "California-based oil industry trade group whose members include Chevron, Shell and Exxon.",
+   "website": "https://www.wspa.org",
+   "remote": true,
+   "lat": 38.5816,
+   "lng": -121.4944,
+   "stances": [
+    {
+     "what": "Supported the court challenge to the Climate Protection Program",
+     "date": "2023-10-02",
+     "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/"
+    }
+   ],
+   "geographic_focus": "Statewide",
+   "lobbying": {
+    "years": {
+     "2021": 116000,
+     "2022": 175397,
+     "2023": 216442,
+     "2024": 231856,
+     "2025": 226284
+    },
+    "total": 965979
+   }
+  },
+  {
+   "id": "or_opp_ofic",
+   "name": "Oregon Forest & Industries Council",
+   "abbrev": "OFIC",
+   "type": "timber industry association",
+   "description": "Trade association of Oregon forest landowners and wood products companies.",
+   "website": "https://ofic.com",
+   "lat": 44.9429,
+   "lng": -123.0351,
+   "stances": [
+    {
+     "what": "Supported the court challenge to the Climate Protection Program",
+     "date": "2023-10-02",
+     "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/"
+    }
+   ],
+   "geographic_focus": "Salem",
+   "lobbying": {
+    "years": {
+     "2021": 339140,
+     "2022": 98582,
+     "2023": 511098,
+     "2024": 325313,
+     "2025": 253701
+    },
+    "total": 1527834
+   }
+  },
+  {
+   "id": "or_opp_erec",
+   "name": "Eugene Residents for Energy Choice",
+   "abbrev": "EREC",
+   "type": "ballot campaign",
+   "description": "Campaign registered days after Eugene banned gas hookups in new low-rise homes, to put the ordinance to a public vote; NW Natural was its only funder at first.",
+   "website": "",
+   "lat": 44.0521,
+   "lng": -123.0868,
+   "stances": [
+    {
+     "what": "Gathered signatures to overturn Eugene's gas hookup ordinance",
+     "date": "2023-03-09",
+     "source": "https://www.klcc.org/politics-government/2023-03-09/utility-funded-effort-to-overturn-natural-gas-ordinance-turns-in-signatures"
+    }
+   ],
+   "geographic_focus": "Eugene",
+   "lobbying": null
+  },
+  {
+   "id": "or_opp_data_center_coalition",
+   "name": "Data Center Coalition",
+   "abbrev": "DCC",
+   "type": "industry association",
+   "description": "National trade group of data center owners and operators.",
+   "website": "https://www.datacentercoalition.org",
+   "remote": true,
+   "lat": 38.9072,
+   "lng": -77.0369,
+   "stances": [
+    {
+     "what": "Testified against HB 3546 (POWER Act: large energy users pay their share), backed by climate groups",
+     "date": "2025-03-06",
+     "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/145942"
+    }
+   ],
+   "geographic_focus": "Statewide",
+   "lobbying": null
+  },
+  {
+   "id": "or_opp_aws",
+   "name": "Amazon Web Services",
+   "abbrev": "AWS",
+   "type": "company",
+   "description": "Amazon's cloud computing business, which runs large data centers in eastern Oregon. Lobbying shown is Amazon's (registered as Amazon.com Services, Inc.).",
+   "website": "https://aws.amazon.com",
+   "remote": true,
+   "lat": 45.6,
+   "lng": -119.5,
+   "stances": [
+    {
+     "what": "Testified against HB 3546 (POWER Act: large energy users pay their share), backed by climate groups",
+     "date": "2025-04-30",
+     "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200025"
+    }
+   ],
+   "geographic_focus": "Statewide",
+   "lobbying": {
+    "years": {
+     "2021": 138279,
+     "2022": 137708,
+     "2023": 205534,
+     "2024": 261658,
+     "2025": 237591
+    },
+    "total": 980770
+   }
+  }
+ ],
+ "flows": [
+  {
+   "from": "or_opp_obi",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 1624064,
+   "years": {
+    "2021": 227020,
+    "2022": 174349,
+    "2023": 374205,
+    "2024": 365476,
+    "2025": 483014
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_farm_bureau",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 754276,
+   "years": {
+    "2021": 181310,
+    "2022": 132694,
+    "2023": 230375,
+    "2024": 46242,
+    "2025": 163655
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_awec",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 233700,
+   "years": {
+    "2021": 57000,
+    "2022": 39900,
+    "2023": 57000,
+    "2024": 22800,
+    "2025": 57000
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_cascade_policy",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 159200,
+   "years": {
+    "2022": 27200,
+    "2023": 36000,
+    "2024": 48000,
+    "2025": 48000
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_nw_natural",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 1025838,
+   "years": {
+    "2021": 148597,
+    "2022": 92612,
+    "2023": 244017,
+    "2024": 216744,
+    "2025": 323868
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_avista",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 256500,
+   "years": {
+    "2021": 47500,
+    "2022": 57000,
+    "2023": 38000,
+    "2024": 57000,
+    "2025": 57000
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_cascade_natural_gas",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 348560,
+   "years": {
+    "2021": 42000,
+    "2022": 42000,
+    "2023": 84000,
+    "2024": 90560,
+    "2025": 90000
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_wspa",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 965979,
+   "years": {
+    "2021": 116000,
+    "2022": 175397,
+    "2023": 216442,
+    "2024": 231856,
+    "2025": 226284
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_ofic",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 1527834,
+   "years": {
+    "2021": 339140,
+    "2022": 98582,
+    "2023": 511098,
+    "2024": 325313,
+    "2025": 253701
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_opp_aws",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 980770,
+   "years": {
+    "2021": 138279,
+    "2022": 137708,
+    "2023": 205534,
+    "2024": 261658,
+    "2025": 237591
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_oec",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 324383,
+   "years": {
+    "2021": 64838,
+    "2022": 36677,
+    "2023": 85049,
+    "2024": 45510,
+    "2025": 92309
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_climate_solutions",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 356441,
+   "years": {
+    "2021": 69910,
+    "2022": 70384,
+    "2023": 74572,
+    "2024": 89986,
+    "2025": 51589
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_rnw",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 294851,
+   "years": {
+    "2021": 52657,
+    "2022": 55174,
+    "2023": 82156,
+    "2024": 78042,
+    "2025": 26822
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_olcv",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 56228,
+   "years": {
+    "2021": 7487,
+    "2022": 0,
+    "2023": 4303,
+    "2024": 1966,
+    "2025": 42472
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_sierra_club",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 35994,
+   "years": {
+    "2024": 2045,
+    "2025": 33949
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_verde",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 81308,
+   "years": {
+    "2021": 2041,
+    "2022": 1060,
+    "2023": 18474,
+    "2024": 30335,
+    "2025": 29398
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_columbia_riverkeeper",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 35284,
+   "years": {
+    "2025": 35284
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_beyond_toxics",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 21166,
+   "years": {
+    "2021": 1849,
+    "2022": 208,
+    "2023": 1899,
+    "2024": 358,
+    "2025": 16852
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_350pdx",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 1661,
+   "years": {
+    "2024": 1661,
+    "2025": 0
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_1000_friends",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 216250,
+   "years": {
+    "2021": 49000,
+    "2022": 48000,
+    "2023": 48750,
+    "2024": 48000,
+    "2025": 22500
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_environment_oregon",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 41444,
+   "years": {
+    "2021": 6380,
+    "2022": 1659,
+    "2023": 9224,
+    "2024": 11472,
+    "2025": 12709
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_ccc",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 6094,
+   "years": {
+    "2021": 1631,
+    "2022": 129,
+    "2023": 3607,
+    "2024": 195,
+    "2025": 532
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "from": "or_fww",
+   "to": "or_hub_legislature",
+   "kind": "lobbying",
+   "amount": 106,
+   "years": {
+    "2025": 106
+   },
+   "what": "Registered lobbying spending, 2021–2025",
+   "source": "https://apps.oregon.gov/OGEC/EFS/Records"
+  },
+  {
+   "kind": "political",
+   "from": "or_opp_nw_natural",
+   "to": "or_opp_erec",
+   "amount": 950000,
+   "approx": true,
+   "date": "2023-02",
+   "what": "Cash and in-kind contributions, Feb 10–24, 2023 (state campaign finance filings)",
+   "source": "https://www.desmog.com/2023/03/07/major-gas-utility-is-pouring-money-into-reversing-an-oregon-citys-electric-only-mandate"
+  }
+ ]
+}

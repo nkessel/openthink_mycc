@@ -6,6 +6,7 @@ import { h, clear } from "./dom";
 import { initials, typeLabel, typeList } from "./util";
 import { termsMatch } from "./itemfilters";
 import { computeSuggestions } from "./suggestions";
+import { sectorById } from "./sectors";
 
 export interface OrgsView {
   el: HTMLElement;
@@ -107,9 +108,11 @@ export function createOrgsView(data: DataFile, cb: OrgsCallbacks): OrgsView {
       if (linkCount.get(o.id)) meta.appendChild(h("span", { class: "pill" }, `works with ${linkCount.get(o.id)}`));
       if (o.profile?.youth_serving) meta.appendChild(h("span", { class: "pill" }, "youth-serving"));
       if (o.remote) meta.appendChild(h("span", { class: "pill" }, "remote"));
+      const sec = sectorById(o.sector);
+      if (sec) meta.prepend(h("span", { class: "pill sector-pill", style: `--sector:${sec.color}` }, sec.label));
       const card = h(
         "div",
-        { class: "list-card" },
+        sec ? { class: "list-card sector-item", style: `--sector:${sec.color}` } : { class: "list-card" },
         h("div", { class: "head" }, badge(o), h("div", { class: "coalition-name" }, [shownType(o.type), o.geographic_focus].filter(Boolean).join(" · "))),
         h("div", { class: "name" }, o.name),
         o.description ? h("div", { class: "desc" }, o.description) : null,

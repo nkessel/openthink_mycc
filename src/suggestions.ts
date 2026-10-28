@@ -46,7 +46,8 @@ let cache: { data: DataFile; list: Suggestion[] } | null = null;
 
 export function computeSuggestions(data: DataFile): Suggestion[] {
   if (cache?.data === data) return cache.list;
-  const orgs = data.organizations;
+  // Groups from the money & opposition layer are never suggested as partners.
+  const orgs = data.organizations.filter((o) => o.sector !== "opposition" && o.sector !== "money-hub");
 
   // TF-IDF over name + description + tags
   const docs = orgs.map((o) => tokens(`${o.name} ${o.description} ${(o.topic_tags || []).join(" ")}`));

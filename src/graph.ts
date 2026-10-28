@@ -17,6 +17,7 @@ import { shown as shownNow } from "./past";
 import { typeIcon, VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS } from "./icons";
 import { staleNotice } from "./notice";
 import { sectorById } from "./sectors";
+import { money as fmtMoney, moneyFlows } from "./money";
 import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
@@ -257,6 +258,8 @@ export function createGraph(
   // Inner <g> we transform for zoom/pan
   const root = svg.append("g").attr("class", "root");
   const linkLayer = root.append("g").attr("class", "links");
+  // Money & opposition layer (src/money.ts): arrows between the links and the groups, thicker for more money.
+  const moneyLayer = root.append("g").attr("class", "money-flows");
   const nodeLayer = root.append("g").attr("class", "nodes");
 
   // Zoom behavior
@@ -351,6 +354,7 @@ export function createGraph(
   function centerStrengthFor(n: GraphNode): number {
     // An open group's satellites get a smooth version of this pull in memberPull instead (see there).
     if (focusId && pinnedMembers.includes(n)) return 0;
+    if (n.sector === "opposition" || n.sector === "money-hub") return 0; // placed by moneySide (below)
     const base = centerForceStrength();
     return (degree.get(n.id) ?? 0) === 0 ? Math.max(base * 4, 0.05) : base;
   }
@@ -1176,8 +1180,71 @@ export function createGraph(
   }
 
   // ----- Tick -----
+  // ----- Money & opposition: arrows (lobbying amber, political red), and the layer's groups set to one side -----
+  type FlowD = { from: GraphNode; to: GraphNode; kind: string; amount: number; label: string };
+  const flowData: FlowD[] = moneyFlows().flatMap((f) => {
+    const from = nodeById.get(f.from), to = nodeById.get(f.to);
+    return from && to ? [{ from, to, kind: f.kind, amount: f.amount,
+      label: `${from.name} → ${to.name}: ${f.approx ? "about " : ""}${fmtMoney(f.amount)} (${f.what})` }] : [];
+  });
+  const maxFlow = Math.max(1, ...flowData.map((f) => f.amount));
+  if (flowData.length) {
+    const defs = svg.select<SVGDefsElement>("defs").empty() ? svg.insert("defs", ":first-child") : svg.select<SVGDefsElement>("defs");
+    for (const k of ["lobbying", "political", "grant"])
+      defs.append("marker").attr("id", `money-arrow-${k}`).attr("viewBox", "0 0 10 10").attr("refX", 9).attr("refY", 5)
+        .attr("markerWidth", 4).attr("markerHeight", 4).attr("orient", "auto-start-reverse")
+        .append("path").attr("d", "M0 0L10 5L0 10z").attr("class", `money-head k-${k}`);
+  }
+  const moneySel = moneyLayer.selectAll<SVGPathElement, FlowD>("path").data(flowData).enter().append("path")
+    .attr("class", (f) => `money-flow k-${f.kind}${f.from.sector === "opposition" ? " from-opp" : ""}`)
+    .attr("stroke-width", (f) => 1.2 + 9 * Math.sqrt(f.amount / maxFlow))
+    .attr("marker-end", (f) => `url(#money-arrow-${f.kind})`);
+  moneySel.append("title").text((f) => f.label);
+  /** A gentle curve from the edge of one group to the edge of the other. */
+  const flowPath = (f: FlowD) => {
+    const x1 = f.from.x ?? 0, y1 = f.from.y ?? 0, x2 = f.to.x ?? 0, y2 = f.to.y ?? 0;
+    const dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy) || 1;
+    const r1 = nodeRadiusOf(f.from) + 2, r2 = nodeRadiusOf(f.to) + 6;
+    const ax = x1 + (dx / d) * r1, ay = y1 + (dy / d) * r1, bx = x2 - (dx / d) * r2, by = y2 - (dy / d) * r2;
+    const bend = 0.12 * d, mx = (ax + bx) / 2 - (dy / d) * bend, my = (ay + by) / 2 + (dx / d) * bend;
+    return `M${ax},${ay}Q${mx},${my} ${bx},${by}`;
+  };
+  // The legislature sits just past the edge of the climate groups, and the opposing groups gather beyond it:
+  // two sides, with the money flowing in from both.
+  if (flowData.length || allNodes.some((n) => n.sector === "opposition")) {
+    const hub = allNodes.find((n) => n.sector === "money-hub");
+    const opp = allNodes.filter((n) => n.sector === "opposition");
+    // The opposing groups fan out in an arc beyond the hub, biggest spenders nearest the middle.
+    const spend = new Map<string, number>();
+    for (const f of flowData) spend.set(f.from.id, (spend.get(f.from.id) ?? 0) + f.amount);
+    opp.sort((a, b) => (spend.get(b.id) ?? 0) - (spend.get(a.id) ?? 0));
+    const order = opp.map((_, i) => (i % 2 ? -1 : 1) * Math.ceil(i / 2)); // 0, 1, -1, 2, -2, …
+    const step = opp.length > 1 ? Math.min(0.26, 2.4 / opp.length) : 0;
+    // Decided once (the map pane can measure 0 × 0 while the loading screen is up, and flipping sides mid-layout
+    // leaves the groups half-way), from the window's shape.
+    const down = window.innerHeight > window.innerWidth * 1.15;
+    sim.force("moneySide", (alpha: number) => {
+      if (focusId) return;
+      // Just past the edge of the climate groups (90th percentile, so one stray group doesn't set it): to the
+      // right on a wide screen, below on a tall one (phones).
+      const vs = allNodes.filter((n) => !n.sector).map((n) => (down ? n.y : n.x) ?? 0).sort((a, b) => a - b);
+      const edge = vs.length ? vs[Math.floor(vs.length * 0.9)] : 0;
+      const hx = down ? 0 : edge + 170, hy = down ? edge + 150 : 0;
+      const k = Math.min(0.4, 1.5 * alpha); // firm: these groups have no links, so only this holds them against the repulsion
+      if (hub) { hub.vx = (hub.vx ?? 0) + (hx - (hub.x ?? 0)) * k; hub.vy = (hub.vy ?? 0) + (hy - (hub.y ?? 0)) * k; }
+      const cx = hub?.x ?? hx, cy = hub?.y ?? hy;
+      opp.forEach((o, i) => {
+        const t = order[i] * step + (down ? Math.PI / 2 : 0), R = 230;
+        const tx = cx + R * Math.cos(t) * (down ? 1.3 : 1), ty = cy + R * Math.sin(t) * (down ? 1 : 1.3);
+        o.vx = (o.vx ?? 0) + (tx - (o.x ?? 0)) * k;
+        o.vy = (o.vy ?? 0) + (ty - (o.y ?? 0)) * k;
+      });
+    });
+  }
+
   sim.on("tick", () => {
     if (largePrint() && ++lpTick % 3 === 0) scheduleNameCull();
+    moneySel.attr("d", flowPath);
     linkSel
       .attr("x1", (l) => (l.source as GraphNode).x ?? 0)
       .attr("y1", (l) => (l.source as GraphNode).y ?? 0)
@@ -1225,6 +1292,7 @@ export function createGraph(
   function fitToView(animate = true) {
     let xs: number[] = [];
     let ys: number[] = [];
+    const keep: number[][] = []; // the money layer's groups are always in the first view, never trimmed as strays
     allNodes.forEach((n) => {
       if (n.x === undefined || n.y === undefined) return;
       const display = (
@@ -1237,6 +1305,7 @@ export function createGraph(
         n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
       xs.push(n.x - r, n.x + r);
       ys.push(n.y - r - 14, n.y + r + 14);
+      if (n.sector === "opposition" || n.sector === "money-hub") keep.push([n.x - r, n.x + r, n.y - r - 14, n.y + r + 14]);
     });
     if (!xs.length) return;
     // Fit the main cluster: a few unconnected orgs drift far out and would otherwise shrink
@@ -1246,10 +1315,13 @@ export function createGraph(
       return v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
     };
     const trim = xs.length > 40 ? 0.04 : 0;
-    const minX = q(xs, trim);
-    const maxX = q(xs, 1 - trim);
-    const minY = q(ys, trim);
-    const maxY = q(ys, 1 - trim);
+    let minX = q(xs, trim);
+    let maxX = q(xs, 1 - trim);
+    let minY = q(ys, trim);
+    let maxY = q(ys, 1 - trim);
+    for (const [x0, x1, y0, y1] of keep) {
+      minX = Math.min(minX, x0); maxX = Math.max(maxX, x1); minY = Math.min(minY, y0); maxY = Math.max(maxY, y1);
+    }
     const pad = 60;
     const bw = maxX - minX + pad * 2;
     const bh = maxY - minY + pad * 2;
@@ -1805,6 +1877,7 @@ export function createGraph(
       const t = typeof l.target === "string" ? l.target : l.target.id;
       return s !== id && t !== id;
     });
+    moneySel.classed("faded", (f) => f.from.id !== id && f.to.id !== id);
 
     // Satellites stay alive: each is on a soft spring to its place around the open group (wherever the group is
     // now), so they jostle, make way when one is dragged and drift back. The spring and the extra damping while a
@@ -2011,6 +2084,7 @@ export function createGraph(
     }
     nodeSel.classed("faded", false).classed("partner", false).classed("partner-many", false);
     linkSel.classed("faded", false);
+    moneySel.classed("faded", false);
     focusBar.style.display = "none";
     wrap.classList.remove("focusing");
     focusCard.style.display = "none";

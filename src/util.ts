@@ -75,7 +75,8 @@ export function coalitionRadius(c: Coalition): number {
   return 26 + Math.sqrt(c.member_count) * 7;
 }
 
-export function orgRadius(_o: Organization): number {
+export function orgRadius(o: Organization): number {
+  if (o.sector === "money-hub") return 34; // the legislature (money layer): every lobbying arrow lands here
   return 20; // was 14; bigger so logos read at the default zoom
 }
 
