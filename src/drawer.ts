@@ -516,7 +516,7 @@ export function createDrawer(
     row("Grassroots power", score(p.grassroots));
     row("Policy writing", score(p.policy_expertise));
     row("“In the building”", score(p.in_building));
-    const md = moneyDetails(org.id, (id) => orgsById.get(id)?.name ?? (id.endsWith("_hub_legislature") ? "the Oregon Legislature" : id));
+    const md = moneyDetails(org.id, (id) => orgsById.get(id)?.name ?? (id.endsWith("_hub_legislature") ? "the Oregon Legislature" : id), (id) => cb.onOrgClick?.(id));
     if (md) body.appendChild(md);
     if (!body.childNodes.length) body.appendChild(h("div", { class: "empty" }, "No details yet."));
   }

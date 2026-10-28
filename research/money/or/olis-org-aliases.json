@@ -1,0 +1,591 @@
+{
+ "_note": "OLIS testimony 'organization' field (free text) → a group on the Oregon map (\"or_*\" id), a group in the opposition list (\"or_opp_*\"), or the display name of another real organization. Anything not listed (personal names, slogans, bill numbers, 'myself') is only counted, never shown.",
+ "map": {
+  "1000 Friends of Oregon": "or_1000_friends",
+  "350 Eugene": "or_350_eugene",
+  "350PDX": "or_350pdx",
+  "350org Washington County": "or_350_washco",
+  "APANO": "or_apano",
+  "APANO CUF": "or_apano",
+  "AWEC": "or_opp_awec",
+  "Alliance of Western Energy Consumers": "or_opp_awec",
+  "Amazon Web Services": "or_opp_aws",
+  "Beyond Toxics": "or_beyond_toxics",
+  "BlueGreen Alliance": "or_bga",
+  "Central Oregon LandWatch": "or_landwatch",
+  "City of Gresham": "or_gresham",
+  "City of Milwaukie": "or_milwaukie",
+  "Climate Reality Project - Portland Chapter": "or_climate_reality_pdx",
+  "Climate Reality Project PDX": "or_climate_reality_pdx",
+  "Climate Reality Project Portland Chapter": "or_climate_reality_pdx",
+  "Climate Solutions": "or_climate_solutions",
+  "Climate Solutions - Oregon Environmental Council": [
+   "or_climate_solutions",
+   "or_oec"
+  ],
+  "Climate Solutions and Oregon Environmental Council": [
+   "or_climate_solutions",
+   "or_oec"
+  ],
+  "Coalition of Communities of Color": "or_ccc",
+  "Columbia Riverkeeper": "or_columbia_riverkeeper",
+  "Douglas County Global Warming Coalition": "or_dcgwc",
+  "Earth Advantage": "or_earth_advantage",
+  "Ecumenical Ministries of Oregon": "or_emo",
+  "c.o. Ecumenical Ministries of Oregon": "or_emo",
+  "Ecumenical Ministries of Oregon and Oregon IPL": "or_emo",
+  "Elders Climate Action--OR Chapter": "or_eca_oregon",
+  "Electrify Now": "or_electrify_now",
+  "Environment Oregon": "or_environment_oregon",
+  "Friends of the Columbia Gorge": "or_gorge_friends",
+  "Green Energy Institute": "or_gei",
+  "Green Energy Institute at L and C Law School": "or_gei",
+  "Havurah Climate Action Team": "or_havurah_cat",
+  "HazAdapt Inc": "or_hazadapt",
+  "IBEW Local 48": "or_ibew48",
+  "IBEW932": "or_ibew932",
+  "Ironworkers Local 29": "or_ironworkers29",
+  "LIUNA Local 737": "or_liuna737",
+  "LWV Oregon": "or_lwvor",
+  "LWV of Oregon": "or_lwvor",
+  "MCAT": "or_olcv_mcat",
+  "MCAT Steering Committee": "or_olcv_mcat",
+  "MCAT and self": "or_olcv_mcat",
+  "Multnomah County Office of Sustainability": "or_multco_sustainability",
+  "NFIB": "or_opp_nfib",
+  "NW Energy Coalition": "or_nwec",
+  "Native American Youth and Family Center": "or_naya",
+  "OEC": "or_oec",
+  "Oregon Environmental Council": "or_oec",
+  "OLCV": "or_olcv",
+  "Oregon League of Conservation Voters": "or_olcv",
+  "OLCV and OCN": "or_olcv",
+  "Oregon Conservation Network and OLCV": "or_olcv",
+  "OPAL Environmental Justice Oregon": "or_opal",
+  "OR AFL-CIO": "or_oregon_aflcio",
+  "Oregon AFL-CIO": "or_oregon_aflcio",
+  "OSBCTC": "or_building_trades",
+  "OSSIA": "or_ossia",
+  "Oregon Business and Industry": "or_opp_obi",
+  "Oregon Business for Climate": "or_ob4c",
+  "Oregon Farm Bureau Federation": "or_opp_farm_bureau",
+  "Oregon Physicians for Social Responsibility": "or_psr",
+  "Oregon Shores Conservation Coalition": "or_oregon_shores",
+  "Oregon Wild": "or_oregon_wild",
+  "PCUN": "or_pcun",
+  "Renewable Northwest": "or_rnw",
+  "Rogue Climate": "or_rogue_climate",
+  "SIERRA CLUB of OREGON": "or_sierra_club",
+  "Sierra Club": "or_sierra_club",
+  "Sierra Club Oregon": "or_sierra_club",
+  "Sierra Club Oregon Chapter": "or_sierra_club",
+  "The Oregon Sierra Club": "or_sierra_club",
+  "Southern Oregon Cimate Action Now": "or_socan",
+  "Southern Oregon Climate Action Now": "or_socan",
+  "Southern Oregon Climate Now": "or_socan",
+  "Sunrise PDX": "or_sunrise_pdx",
+  "The Environmental Center": "or_envirocenter",
+  "The Nature Conservancy in Oregon": "or_tnc",
+  "Third Act Oregon": "or_third_act_oregon",
+  "Third Act": "or_third_act_oregon",
+  "Timberunity": "or_opp_timber_unity",
+  "Unite Oregon": "or_unite_oregon",
+  "Verde": "or_verde",
+  "The Nature Conservancy": "or_tnc",
+  "Metro Climate Action Team": "or_olcv_mcat",
+  "Community Energy Project": "or_cep",
+  "Oregon Environmental Council and Climate Solutions": [
+   "or_oec",
+   "or_climate_solutions"
+  ],
+  "LWVOR": "or_lwvor",
+  "SOCAN": "or_socan",
+  "Cascade Policy Institute": "or_opp_cascade_policy",
+  "Elders Climate Action Oregon Chapter": "or_eca_oregon",
+  "350 PDX": "or_350pdx",
+  "Cascadia Wildlands": "or_cascadia_wildlands",
+  "Oregon Solar and Storage Industries Association": "or_ossia",
+  "Oregon Solar Energy Industries Association": "or_ossia",
+  "NAYA Family Center": "or_naya",
+  "Neighbors for Clean Air": "or_nca",
+  "Northwest Energy Efficiency Alliance": "or_neea",
+  "Renewable NW": "or_rnw",
+  "OFIC": "or_opp_ofic",
+  "Greater Hells Canyon Council": "or_ghcc",
+  "Oregon Coast Alliance": "or_orca",
+  "Tualatin Riverkeepers": "or_trk",
+  "Climate Reality Project Portland": "or_climate_reality_pdx",
+  "Oregon Climate and Agriculture Network": "or_orcan",
+  "Rogue Climate Coos Bay": "or_rogue_climate",
+  "Oregon Farm Bureau": "or_opp_farm_bureau",
+  "Data Center Coalition": "or_opp_data_center_coalition",
+  "City of Bend": "or_bend",
+  "Audubon Society of Portland": "or_bird_alliance"
+ },
+ "other": {
+  "350 Oregon Central Coast": "350 Oregon Central Coast",
+  "350 Salem OR": "350 Salem",
+  "350 Salem Oregon": "350 Salem",
+  "AWPPW": "Association of Western Pulp and Paper Workers",
+  "Avangrid Renewables": "Avangrid Renewables",
+  "Building Resilience Coalition": "Building Resilience Coalition",
+  "CAPO": "Community Action Partnership of Oregon",
+  "CREA": "Community Renewable Energy Association",
+  "CUB": "Oregon Citizens' Utility Board",
+  "Oregon CUB": "Oregon Citizens' Utility Board",
+  "Oregon Citizens' Utility Board": "Oregon Citizens' Utility Board",
+  "www.oregoncub.org": "Oregon Citizens' Utility Board",
+  "City of Beaverton": "City of Beaverton",
+  "City of Portland": "City of Portland",
+  "City of Wilsonville": "City of Wilsonville",
+  "Portland City Council": "Portland City Council",
+  "Community Action Organization": "Community Action Organization",
+  "Community Alliance of Tenants": "Community Alliance of Tenants",
+  "Community Alliance of Tenants CORRECTED TESTIMONY": "Community Alliance of Tenants",
+  "Community Alliance of Tenants- Board": "Community Alliance of Tenants",
+  "Consolidated Oregon Indivisible Network": "Consolidated Oregon Indivisible Network",
+  "Consolidated Oregon Indivisible Network - COIN": "Consolidated Oregon Indivisible Network",
+  "Disability Rights Oregon": "Disability Rights Oregon",
+  "Douglas County": "Douglas County",
+  "ECONW": "ECONorthwest",
+  "ECONorthwest": "ECONorthwest",
+  "EcoFaith Recovery": "EcoFaith Recovery",
+  "Energy Justice Leadership Institute": "Energy Justice Leadership Institute",
+  "Great Old Broads for Wilderness Cascade Volcano C": "Great Old Broads for Wilderness",
+  "Habitat for Humanity of Oregon": "Habitat for Humanity of Oregon",
+  "Idaho Power": "Idaho Power",
+  "Interfaith Movement for Immigrant Justice": "Interfaith Movement for Immigrant Justice",
+  "Latino Network": "Latino Network",
+  "League of Oregon Cities": "League of Oregon Cities",
+  "Metro": "Metro (Portland regional government)",
+  "Metro Mayors Consortium": "Metropolitan Mayors Consortium",
+  "Metropolitan Mayors Consortium": "Metropolitan Mayors Consortium",
+  "Multnomah County": "Multnomah County",
+  "Natural Resources Defense Council": "Natural Resources Defense Council",
+  "NewSun Energy": "NewSun Energy",
+  "Norwest Energy Efficiency Council": "Northwest Energy Efficiency Council",
+  "OMEU ORECA OPUDA": "Oregon consumer-owned utilities (OMEU, ORECA, OPUDA)",
+  "OPUDA": "Oregon People's Utility District Association",
+  "OR Municipal Electric Utilities Assn": "Oregon Municipal Electric Utilities Association",
+  "OR Municipal Electric Utility Association": "Oregon Municipal Electric Utilities Association",
+  "Oregon Municipal Electric Utilities Assn": "Oregon Municipal Electric Utilities Association",
+  "OSPIRG Students": "OSPIRG Students",
+  "OSPRIG Student": "OSPIRG Students",
+  "Obsidian Renewables LLC": "Obsidian Renewables",
+  "Oregon Association of Conservation Districts": "Oregon Association of Conservation Districts",
+  "Oregon Coalition of Christian Voices": "Oregon Coalition of Christian Voices",
+  "Oregon Conservation Network": "Oregon Conservation Network",
+  "Oregon Consumer Justice": "Oregon Consumer Justice",
+  "Oregon Education Association": "Oregon Education Association",
+  "Oregon Food Bank": "Oregon Food Bank",
+  "Oregon High Desert Family Ranchers": "Oregon High Desert Family Ranchers",
+  "Oregon Interfaith Power and Light": "Oregon Interfaith Power & Light",
+  "Oregon Law Center": "Oregon Law Center",
+  "Oregon Nurses Association": "Oregon Nurses Association",
+  "Oregon State Association of Electrical Workers": "Oregon State Association of Electrical Workers",
+  "Oregon Working Families Party": "Oregon Working Families Party",
+  "Our Children Oregon": "Our Children Oregon",
+  "PAE Consulting Engineers": "PAE Consulting Engineers",
+  "PGE and Pacific Power": "Portland General Electric and Pacific Power",
+  "Pacific Power": "Pacific Power",
+  "Portland General Electric": "Portland General Electric",
+  "Pool and Hot Tub Alliance": "Pool & Hot Tub Alliance",
+  "The Pool and Hot Tub Alliance": "Pool & Hot Tub Alliance",
+  "SEIU Local 503": "SEIU Local 503",
+  "Sacred Organizing Coalition": "Sacred Organizing Coalition",
+  "Soil Carbon Coalition": "Soil Carbon Coalition",
+  "The Pew Charitable Trusts": "The Pew Charitable Trusts",
+  "Umatilla Electric Cooperative": "Umatilla Electric Cooperative",
+  "Yakama Nation": "Confederated Tribes and Bands of the Yakama Nation",
+  "Independent Party of Oregon": "Independent Party of Oregon",
+  "Leaven Community Land and Housing Coalition": "Leaven Community Land & Housing Coalition",
+  "Laudato Si Movement": "Laudato Si' Movement",
+  "American Forest Foundation": "American Forest Foundation",
+  "Oregon Department of Energy": "Oregon Department of Energy",
+  "NIPPC": "Northwest & Intermountain Power Producers Coalition",
+  "Families for Climate": "Families for Climate",
+  "Rural Oregon Climate Political Action Committee": "Rural Oregon Climate PAC",
+  "SEIU Oregon": "SEIU Oregon",
+  "Oregon Health Authority": "Oregon Health Authority",
+  "Family Forward Oregon": "Family Forward Oregon",
+  "Family Forward": "Family Forward Oregon",
+  "Appliance Standards Awareness Project": "Appliance Standards Awareness Project",
+  "AARP Oregon": "AARP Oregon",
+  "Firebrand Resiliency Collective": "Firebrand Resiliency Collective",
+  "Better Energy LLC": "Better Energy LLC",
+  "UA Local 290": "UA Local 290",
+  "Rye Development": "Rye Development",
+  "NewSun Energy LLC": "NewSun Energy",
+  "Klamath County Economic Development Association": "Klamath County Economic Development Association",
+  "OSPIRG STUDENTS": "OSPIRG Students",
+  "OSPIRG students": "OSPIRG Students",
+  "OSPIRG Student": "OSPIRG Students",
+  "Braided River Campaign": "Braided River Campaign",
+  "Small Business Utility Advocates": "Small Business Utility Advocates",
+  "EJLI": "Energy Justice Leadership Institute",
+  "Basic Rights Oregon": "Basic Rights Oregon",
+  "Next Up Action Fund": "Next Up Action Fund",
+  "NW Workers Justice Project": "NW Workers Justice Project",
+  "Multnomah County Health Department": "Multnomah County",
+  "Sunrise Movement": "Sunrise Movement",
+  "Oregon Developmental Disability Coalition": "Oregon Developmental Disability Coalition",
+  "UFCW Local 555": "UFCW Local 555",
+  "Fair Shot For All Coalition": "Fair Shot for All Coalition",
+  "Oregon AFSCME Council 75": "Oregon AFSCME",
+  "Oregon AFSCME": "Oregon AFSCME",
+  "Causa Oregon": "Causa Oregon",
+  "Planned Parenthood Advocates of Oregon": "Planned Parenthood Advocates of Oregon",
+  "AO Smith Corporation": "A. O. Smith Corporation",
+  "Oregon PHCC": "Oregon PHCC (plumbing-heating-cooling contractors)",
+  "Portland Tenants United": "Portland Tenants United",
+  "211info": "211info",
+  "NEEC": "Northwest Energy Efficiency Council",
+  "Jackson Soil and Water Conservation District": "Jackson Soil & Water Conservation District",
+  "Oregon Small Woodlands Association": "Oregon Small Woodlands Association",
+  "Coalition of Oregon Land Trusts": "Coalition of Oregon Land Trusts",
+  "Sunrise Rural Oregon": "Sunrise Rural Oregon",
+  "Oregon Association of Nurseries": "Oregon Association of Nurseries",
+  "Associated Oregon Loggers": "Associated Oregon Loggers",
+  "West Multnomah Soil and Water Conservation Distric": "West Multnomah Soil & Water Conservation District",
+  "Shaniko Wool Company": "Shaniko Wool Company",
+  "Washington County Citizen Action Network": "Washington County Citizen Action Network",
+  "Environmental Caucus of the DPO": "Environmental Caucus of the Democratic Party of Oregon",
+  "American Farmland Trust": "American Farmland Trust",
+  "IUPAT DC5": "Painters District Council 5 (IUPAT)",
+  "DLCD": "Oregon Department of Land Conservation and Development",
+  "Oregon Citizens Lobby": "Oregon Citizens Lobby",
+  "Climate Accountability Institute": "Climate Accountability Institute",
+  "Portland State University": "Portland State University",
+  "Voz Workers' Rights Education Project": "Voz Workers' Rights Education Project",
+  "Oregon Rural Action": "Oregon Rural Action",
+  "Deschutes County": "Deschutes County",
+  "Jackson County": "Jackson County",
+  "Washington County Chamber of Commerce": "Washington County Chamber of Commerce",
+  "TechNet": "TechNet",
+  "LineVision": "LineVision",
+  "Oregon Clean Grid Collaborative": "Oregon Clean Grid Collaborative",
+  "Renewable Energy Coalition": "Renewable Energy Coalition",
+  "Oregon Organic Coalition": "Oregon Organic Coalition",
+  "Northwest Environmental Defense Center": "Northwest Environmental Defense Center",
+  "Community Pathways": "Community Pathways"
+ },
+ "_note_ogec": "Display org (map id or 'other' name) → its client name(s) in the OGEC lobbying records, so each bill shows what the groups on each side spent lobbying that year (on all issues).",
+ "ogec": {
+  "or_opp_obi": [
+   "Oregon Business & Industry"
+  ],
+  "or_opp_farm_bureau": [
+   "Oregon Farm Bureau Federation"
+  ],
+  "or_opp_awec": [
+   "Alliance of Western Energy Consumers"
+  ],
+  "or_opp_cascade_policy": [
+   "Cascade Policy Institute"
+  ],
+  "or_opp_nw_natural": [
+   "NW Natural"
+  ],
+  "or_opp_avista": [
+   "Avista Corp."
+  ],
+  "or_opp_cascade_natural_gas": [
+   "Cascade Natural Gas"
+  ],
+  "or_opp_wspa": [
+   "Western States Petroleum Association"
+  ],
+  "or_opp_ofic": [
+   "Oregon Forest Industries Council"
+  ],
+  "or_opp_aws": [
+   "Amazon.com Services, Inc."
+  ],
+  "or_oec": [
+   "Oregon Environmental Council"
+  ],
+  "or_climate_solutions": [
+   "Climate Solutions"
+  ],
+  "or_rnw": [
+   "Renewable Northwest"
+  ],
+  "or_olcv": [
+   "Oregon League of Conservation Voters"
+  ],
+  "or_sierra_club": [
+   "Sierra Club of Oregon"
+  ],
+  "or_verde": [
+   "Verde"
+  ],
+  "or_columbia_riverkeeper": [
+   "Columbia Riverkeeper"
+  ],
+  "or_beyond_toxics": [
+   "Beyond Toxics"
+  ],
+  "or_350pdx": [
+   "350PDX"
+  ],
+  "or_1000_friends": [
+   "1000 Friends of Oregon"
+  ],
+  "or_environment_oregon": [
+   "Environment America DBA Environment Oregon"
+  ],
+  "or_ccc": [
+   "Coalition of Communities of Color"
+  ],
+  "or_fww": [
+   "Food & Water Watch"
+  ],
+  "or_lwvor": [
+   "League of Women Voters of Oregon"
+  ],
+  "or_apano": [
+   "APANO"
+  ],
+  "or_pcun": [
+   "PCUN"
+  ],
+  "or_unite_oregon": [
+   "Unite Oregon"
+  ],
+  "or_bga": [
+   "BlueGreen Alliance"
+  ],
+  "or_nwec": [
+   "NW Energy Coalition"
+  ],
+  "or_tnc": [
+   "The Nature Conservancy"
+  ],
+  "or_oregon_wild": [
+   "Oregon Wild"
+  ],
+  "or_oregon_aflcio": [
+   "Oregon AFL-CIO"
+  ],
+  "or_building_trades": [
+   "Oregon Building Trades Council"
+  ],
+  "or_ibew48": [
+   "IBEW Local 48"
+  ],
+  "or_ibew932": [
+   "IBEW 932"
+  ],
+  "or_emo": [
+   "Ecumenical Ministries of Oregon"
+  ],
+  "Portland General Electric": [
+   "Portland General Electric"
+  ],
+  "Pacific Power": [
+   "PacifiCorp/Pacific Power"
+  ],
+  "Portland General Electric and Pacific Power": [
+   "Portland General Electric",
+   "PacifiCorp/Pacific Power"
+  ],
+  "Idaho Power": [
+   "Idaho Power Company"
+  ],
+  "Oregon Citizens' Utility Board": [
+   "Citizens Utility Board"
+  ],
+  "League of Oregon Cities": [
+   "League of Oregon Cities"
+  ],
+  "SEIU Local 503": [
+   "SEIU Local 503"
+  ],
+  "Oregon Nurses Association": [
+   "Oregon Nurses Association"
+  ],
+  "Oregon Education Association": [
+   "Oregon Education Association"
+  ],
+  "Oregon Food Bank": [
+   "Oregon Food Bank"
+  ],
+  "Natural Resources Defense Council": [
+   "Natural Resources Defense Council"
+  ],
+  "The Pew Charitable Trusts": [
+   "The Pew Charitable Trusts"
+  ],
+  "Oregon State Association of Electrical Workers": [
+   "Oregon State Association of Electrical Workers"
+  ],
+  "Oregon Municipal Electric Utilities Association": [
+   "Oregon Municipal Electric Utilities Association"
+  ],
+  "Umatilla Electric Cooperative": [
+   "Umatilla Electric Cooperative"
+  ],
+  "Avangrid Renewables": [
+   "Avangrid Management Co. LLC"
+  ],
+  "NewSun Energy": [
+   "NewSun Energy LLC"
+  ],
+  "Obsidian Renewables": [
+   "Obsidian Renewables, LLC"
+  ],
+  "Metro (Portland regional government)": [
+   "Metro"
+  ],
+  "Multnomah County": [
+   "Multnomah County"
+  ],
+  "City of Portland": [
+   "City of Portland"
+  ],
+  "City of Beaverton": [
+   "City of Beaverton"
+  ],
+  "City of Wilsonville": [
+   "City of Wilsonville"
+  ],
+  "Douglas County": [
+   "Douglas County"
+  ],
+  "Community Action Partnership of Oregon": [
+   "Community Action Partnership of Oregon"
+  ],
+  "Confederated Tribes and Bands of the Yakama Nation": [
+   "Yakama Nation"
+  ],
+  "Oregon Law Center": [
+   "Oregon Law Center"
+  ],
+  "Oregon Consumer Justice": [
+   "Oregon Consumer Justice"
+  ],
+  "Community Alliance of Tenants": [
+   "Community Alliance of Tenants"
+  ],
+  "American Forest Foundation": [
+   "American Forest Foundation"
+  ],
+  "Association of Western Pulp and Paper Workers": [
+   "Association of Western Pulp and Paper Workers - Oregon Area Council"
+  ],
+  "Oregon consumer-owned utilities (OMEU, ORECA, OPUDA)": [
+   "Oregon Municipal Electric Utilities Association",
+   "Oregon Rural Electric Cooperative Association"
+  ],
+  "Washington County Chamber of Commerce": [
+   "Washington County Chamber of Commerce"
+  ],
+  "Disability Rights Oregon": [
+   "Disability Rights Oregon"
+  ],
+  "Community Renewable Energy Association": [
+   "Community Renewable Energy Association"
+  ],
+  "UA Local 290": [
+   "UA Local 290"
+  ],
+  "Our Children Oregon": [
+   "Our Children Oregon"
+  ],
+  "Jackson County": [
+   "Jackson County"
+  ],
+  "Habitat for Humanity of Oregon": [
+   "Habitat for Humanity of Oregon"
+  ],
+  "Family Forward Oregon": [
+   "Family Forward Oregon"
+  ],
+  "Oregon Rural Action": [
+   "Oregon Rural Action"
+  ],
+  "UFCW Local 555": [
+   "UFCW Local 555"
+  ],
+  "Oregon Association of Nurseries": [
+   "Oregon Association of Nurseries"
+  ],
+  "Causa Oregon": [
+   "Causa Oregon"
+  ],
+  "Associated Oregon Loggers": [
+   "Associated Oregon Loggers"
+  ],
+  "Latino Network": [
+   "Latino Network"
+  ],
+  "Oregon Department of Energy": [
+   "Oregon Department of Energy"
+  ],
+  "Portland State University": [
+   "Portland State University"
+  ],
+  "Oregon Conservation Network": [
+   "Oregon Conservation Network"
+  ],
+  "Deschutes County": [
+   "Deschutes County"
+  ],
+  "211info": [
+   "211info"
+  ],
+  "AARP Oregon": [
+   "AARP Oregon"
+  ],
+  "Oregon Small Woodlands Association": [
+   "Oregon Small Woodlands Association"
+  ],
+  "Rye Development": [
+   "Rye Development"
+  ],
+  "Coalition of Oregon Land Trusts": [
+   "Coalition of Oregon Land Trusts"
+  ],
+  "Basic Rights Oregon": [
+   "Basic Rights Oregon"
+  ],
+  "Next Up Action Fund": [
+   "Next Up Action Fund"
+  ],
+  "Independent Party of Oregon": [
+   "Independent Party of Oregon"
+  ],
+  "Metropolitan Mayors Consortium": [
+   "Metropolitan Mayors Consortium"
+  ],
+  "Oregon Working Families Party": [
+   "Oregon Working Families Party"
+  ],
+  "Oregon Health Authority": [
+   "Oregon Health Authority"
+  ],
+  "Northwest & Intermountain Power Producers Coalition": [
+   "Northwest & Intermountain Power Producers Coalition (NIPPC)"
+  ],
+  "SEIU Oregon": [
+   "SEIU Oregon State Council"
+  ],
+  "Oregon AFSCME": [
+   "Oregon AFSCME Council 75"
+  ],
+  "or_ossia": [
+   "Oregon Solar Energy Industries Association (OSEIA)"
+  ]
+ },
+ "_note_prefix": "Testimony filed as '<organization> and <person>' or '<organization> - <person>': matched by the organization's name at the start, so no person's name needs to be listed here.",
+ "prefix": [
+  [
+   "^LWV of Oregon and ",
+   "or_lwvor"
+  ],
+  [
+   "^Climate Solutions - (?!Oregon Environmental Council)",
+   "or_climate_solutions"
+  ]
+ ]
+}

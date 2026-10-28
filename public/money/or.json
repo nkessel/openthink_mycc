@@ -38,6 +38,28 @@
      "2024": 365476,
      "2025": 483014
     },
+    "quarters": {
+     "2021Q1": 121653,
+     "2021Q2": 61802,
+     "2021Q3": 17497,
+     "2021Q4": 26068,
+     "2022Q1": 40683,
+     "2022Q2": 17886,
+     "2022Q3": 69658,
+     "2022Q4": 46122,
+     "2023Q1": 101209,
+     "2023Q2": 120527,
+     "2023Q3": 73891,
+     "2023Q4": 78579,
+     "2024Q1": 132326,
+     "2024Q2": 86551,
+     "2024Q3": 75349,
+     "2024Q4": 71251,
+     "2025Q1": 192526,
+     "2025Q2": 195192,
+     "2025Q3": 52470,
+     "2025Q4": 42827
+    },
     "total": 1624064
    }
   },
@@ -77,6 +99,28 @@
      "2024": 46242,
      "2025": 163655
     },
+    "quarters": {
+     "2021Q1": 70124,
+     "2021Q2": 71070,
+     "2021Q3": 13380,
+     "2021Q4": 26736,
+     "2022Q1": 50373,
+     "2022Q2": 27478,
+     "2022Q3": 40945,
+     "2022Q4": 13898,
+     "2023Q1": 101353,
+     "2023Q2": 100704,
+     "2023Q3": 17115,
+     "2023Q4": 11203,
+     "2024Q1": 3999,
+     "2024Q2": 18692,
+     "2024Q3": 13362,
+     "2024Q4": 10189,
+     "2025Q1": 61676,
+     "2025Q2": 64531,
+     "2025Q3": 9809,
+     "2025Q4": 27638
+    },
     "total": 754276
    }
   },
@@ -115,6 +159,28 @@
      "2023": 57000,
      "2024": 22800,
      "2025": 57000
+    },
+    "quarters": {
+     "2021Q1": 22800,
+     "2021Q2": 22800,
+     "2021Q3": 5700,
+     "2021Q4": 5700,
+     "2022Q1": 22800,
+     "2022Q2": 5700,
+     "2022Q3": 5700,
+     "2022Q4": 5700,
+     "2023Q1": 22800,
+     "2023Q2": 22800,
+     "2023Q3": 5700,
+     "2023Q4": 5700,
+     "2024Q1": 5700,
+     "2024Q2": 5700,
+     "2024Q3": 5700,
+     "2024Q4": 5700,
+     "2025Q1": 22800,
+     "2025Q2": 22800,
+     "2025Q3": 5700,
+     "2025Q4": 5700
     },
     "total": 233700
    }
@@ -194,6 +260,24 @@
      "2024": 48000,
      "2025": 48000
     },
+    "quarters": {
+     "2022Q1": 0,
+     "2022Q2": 0,
+     "2022Q3": 11200,
+     "2022Q4": 16000,
+     "2023Q1": 16000,
+     "2023Q2": 16000,
+     "2023Q3": 4000,
+     "2023Q4": 0,
+     "2024Q1": 12000,
+     "2024Q2": 12000,
+     "2024Q3": 12000,
+     "2024Q4": 12000,
+     "2025Q1": 8000,
+     "2025Q2": 16000,
+     "2025Q3": 12000,
+     "2025Q4": 12000
+    },
     "total": 159200
    }
   },
@@ -228,6 +312,28 @@
      "2024": 216744,
      "2025": 323868
     },
+    "quarters": {
+     "2021Q1": 35850,
+     "2021Q2": 61606,
+     "2021Q3": 27541,
+     "2021Q4": 23600,
+     "2022Q1": 0,
+     "2022Q2": 24265,
+     "2022Q3": 25300,
+     "2022Q4": 43047,
+     "2023Q1": 54528,
+     "2023Q2": 64444,
+     "2023Q3": 57600,
+     "2023Q4": 67445,
+     "2024Q1": 55963,
+     "2024Q2": 52704,
+     "2024Q3": 50744,
+     "2024Q4": 57333,
+     "2025Q1": 84716,
+     "2025Q2": 84560,
+     "2025Q3": 68532,
+     "2025Q4": 86060
+    },
     "total": 1025838
    }
   },
@@ -257,6 +363,28 @@
      "2023": 38000,
      "2024": 57000,
      "2025": 57000
+    },
+    "quarters": {
+     "2021Q1": 0,
+     "2021Q2": 19000,
+     "2021Q3": 14250,
+     "2021Q4": 14250,
+     "2022Q1": 9500,
+     "2022Q2": 14250,
+     "2022Q3": 14250,
+     "2022Q4": 19000,
+     "2023Q1": 0,
+     "2023Q2": 14250,
+     "2023Q3": 9500,
+     "2023Q4": 14250,
+     "2024Q1": 14250,
+     "2024Q2": 14250,
+     "2024Q3": 14250,
+     "2024Q4": 14250,
+     "2025Q1": 14250,
+     "2025Q2": 14250,
+     "2025Q3": 14250,
+     "2025Q4": 14250
     },
     "total": 256500
    }
@@ -288,6 +416,28 @@
      "2024": 90560,
      "2025": 90000
     },
+    "quarters": {
+     "2021Q1": 10500,
+     "2021Q2": 10500,
+     "2021Q3": 10500,
+     "2021Q4": 10500,
+     "2022Q1": 10500,
+     "2022Q2": 10500,
+     "2022Q3": 10500,
+     "2022Q4": 10500,
+     "2023Q1": 16500,
+     "2023Q2": 22500,
+     "2023Q3": 22500,
+     "2023Q4": 22500,
+     "2024Q1": 22500,
+     "2024Q2": 22500,
+     "2024Q3": 22845,
+     "2024Q4": 22715,
+     "2025Q1": 22500,
+     "2025Q2": 22500,
+     "2025Q3": 22500,
+     "2025Q4": 22500
+    },
     "total": 348560
    }
   },
@@ -318,6 +468,28 @@
      "2024": 231856,
      "2025": 226284
     },
+    "quarters": {
+     "2021Q1": 30000,
+     "2021Q2": 30000,
+     "2021Q3": 20000,
+     "2021Q4": 36000,
+     "2022Q1": 12000,
+     "2022Q2": 50695,
+     "2022Q3": 50745,
+     "2022Q4": 61957,
+     "2023Q1": 55500,
+     "2023Q2": 49500,
+     "2023Q3": 50356,
+     "2023Q4": 61086,
+     "2024Q1": 55500,
+     "2024Q2": 55500,
+     "2024Q3": 49000,
+     "2024Q4": 71856,
+     "2025Q1": 55500,
+     "2025Q2": 43000,
+     "2025Q3": 55892,
+     "2025Q4": 71893
+    },
     "total": 965979
    }
   },
@@ -346,6 +518,28 @@
      "2023": 511098,
      "2024": 325313,
      "2025": 253701
+    },
+    "quarters": {
+     "2021Q1": 140777,
+     "2021Q2": 140777,
+     "2021Q3": 3371,
+     "2021Q4": 54215,
+     "2022Q1": 40064,
+     "2022Q2": 31305,
+     "2022Q3": 16494,
+     "2022Q4": 10719,
+     "2023Q1": 44191,
+     "2023Q2": 78589,
+     "2023Q3": 97659,
+     "2023Q4": 290659,
+     "2024Q1": 109424,
+     "2024Q2": 103583,
+     "2024Q3": 66459,
+     "2024Q4": 45847,
+     "2025Q1": 86856,
+     "2025Q2": 76538,
+     "2025Q3": 44896,
+     "2025Q4": 45411
     },
     "total": 1527834
    }
@@ -417,6 +611,28 @@
      "2024": 261658,
      "2025": 237591
     },
+    "quarters": {
+     "2021Q1": 29532,
+     "2021Q2": 26843,
+     "2021Q3": 30362,
+     "2021Q4": 51542,
+     "2022Q1": 20146,
+     "2022Q2": 33219,
+     "2022Q3": 45196,
+     "2022Q4": 39146,
+     "2023Q1": 93219,
+     "2023Q2": 33411,
+     "2023Q3": 24175,
+     "2023Q4": 54728,
+     "2024Q1": 78783,
+     "2024Q2": 64279,
+     "2024Q3": 53865,
+     "2024Q4": 64731,
+     "2025Q1": 65885,
+     "2025Q2": 42591,
+     "2025Q3": 70250,
+     "2025Q4": 58865
+    },
     "total": 980770
    }
   }
@@ -434,6 +650,28 @@
     "2024": 365476,
     "2025": 483014
    },
+   "quarters": {
+    "2021Q1": 121653,
+    "2021Q2": 61802,
+    "2021Q3": 17497,
+    "2021Q4": 26068,
+    "2022Q1": 40683,
+    "2022Q2": 17886,
+    "2022Q3": 69658,
+    "2022Q4": 46122,
+    "2023Q1": 101209,
+    "2023Q2": 120527,
+    "2023Q3": 73891,
+    "2023Q4": 78579,
+    "2024Q1": 132326,
+    "2024Q2": 86551,
+    "2024Q3": 75349,
+    "2024Q4": 71251,
+    "2025Q1": 192526,
+    "2025Q2": 195192,
+    "2025Q3": 52470,
+    "2025Q4": 42827
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -448,6 +686,28 @@
     "2023": 230375,
     "2024": 46242,
     "2025": 163655
+   },
+   "quarters": {
+    "2021Q1": 70124,
+    "2021Q2": 71070,
+    "2021Q3": 13380,
+    "2021Q4": 26736,
+    "2022Q1": 50373,
+    "2022Q2": 27478,
+    "2022Q3": 40945,
+    "2022Q4": 13898,
+    "2023Q1": 101353,
+    "2023Q2": 100704,
+    "2023Q3": 17115,
+    "2023Q4": 11203,
+    "2024Q1": 3999,
+    "2024Q2": 18692,
+    "2024Q3": 13362,
+    "2024Q4": 10189,
+    "2025Q1": 61676,
+    "2025Q2": 64531,
+    "2025Q3": 9809,
+    "2025Q4": 27638
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -464,6 +724,28 @@
     "2024": 22800,
     "2025": 57000
    },
+   "quarters": {
+    "2021Q1": 22800,
+    "2021Q2": 22800,
+    "2021Q3": 5700,
+    "2021Q4": 5700,
+    "2022Q1": 22800,
+    "2022Q2": 5700,
+    "2022Q3": 5700,
+    "2022Q4": 5700,
+    "2023Q1": 22800,
+    "2023Q2": 22800,
+    "2023Q3": 5700,
+    "2023Q4": 5700,
+    "2024Q1": 5700,
+    "2024Q2": 5700,
+    "2024Q3": 5700,
+    "2024Q4": 5700,
+    "2025Q1": 22800,
+    "2025Q2": 22800,
+    "2025Q3": 5700,
+    "2025Q4": 5700
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -477,6 +759,24 @@
     "2023": 36000,
     "2024": 48000,
     "2025": 48000
+   },
+   "quarters": {
+    "2022Q1": 0,
+    "2022Q2": 0,
+    "2022Q3": 11200,
+    "2022Q4": 16000,
+    "2023Q1": 16000,
+    "2023Q2": 16000,
+    "2023Q3": 4000,
+    "2023Q4": 0,
+    "2024Q1": 12000,
+    "2024Q2": 12000,
+    "2024Q3": 12000,
+    "2024Q4": 12000,
+    "2025Q1": 8000,
+    "2025Q2": 16000,
+    "2025Q3": 12000,
+    "2025Q4": 12000
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -493,6 +793,28 @@
     "2024": 216744,
     "2025": 323868
    },
+   "quarters": {
+    "2021Q1": 35850,
+    "2021Q2": 61606,
+    "2021Q3": 27541,
+    "2021Q4": 23600,
+    "2022Q1": 0,
+    "2022Q2": 24265,
+    "2022Q3": 25300,
+    "2022Q4": 43047,
+    "2023Q1": 54528,
+    "2023Q2": 64444,
+    "2023Q3": 57600,
+    "2023Q4": 67445,
+    "2024Q1": 55963,
+    "2024Q2": 52704,
+    "2024Q3": 50744,
+    "2024Q4": 57333,
+    "2025Q1": 84716,
+    "2025Q2": 84560,
+    "2025Q3": 68532,
+    "2025Q4": 86060
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -507,6 +829,28 @@
     "2023": 38000,
     "2024": 57000,
     "2025": 57000
+   },
+   "quarters": {
+    "2021Q1": 0,
+    "2021Q2": 19000,
+    "2021Q3": 14250,
+    "2021Q4": 14250,
+    "2022Q1": 9500,
+    "2022Q2": 14250,
+    "2022Q3": 14250,
+    "2022Q4": 19000,
+    "2023Q1": 0,
+    "2023Q2": 14250,
+    "2023Q3": 9500,
+    "2023Q4": 14250,
+    "2024Q1": 14250,
+    "2024Q2": 14250,
+    "2024Q3": 14250,
+    "2024Q4": 14250,
+    "2025Q1": 14250,
+    "2025Q2": 14250,
+    "2025Q3": 14250,
+    "2025Q4": 14250
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -523,6 +867,28 @@
     "2024": 90560,
     "2025": 90000
    },
+   "quarters": {
+    "2021Q1": 10500,
+    "2021Q2": 10500,
+    "2021Q3": 10500,
+    "2021Q4": 10500,
+    "2022Q1": 10500,
+    "2022Q2": 10500,
+    "2022Q3": 10500,
+    "2022Q4": 10500,
+    "2023Q1": 16500,
+    "2023Q2": 22500,
+    "2023Q3": 22500,
+    "2023Q4": 22500,
+    "2024Q1": 22500,
+    "2024Q2": 22500,
+    "2024Q3": 22845,
+    "2024Q4": 22715,
+    "2025Q1": 22500,
+    "2025Q2": 22500,
+    "2025Q3": 22500,
+    "2025Q4": 22500
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -537,6 +903,28 @@
     "2023": 216442,
     "2024": 231856,
     "2025": 226284
+   },
+   "quarters": {
+    "2021Q1": 30000,
+    "2021Q2": 30000,
+    "2021Q3": 20000,
+    "2021Q4": 36000,
+    "2022Q1": 12000,
+    "2022Q2": 50695,
+    "2022Q3": 50745,
+    "2022Q4": 61957,
+    "2023Q1": 55500,
+    "2023Q2": 49500,
+    "2023Q3": 50356,
+    "2023Q4": 61086,
+    "2024Q1": 55500,
+    "2024Q2": 55500,
+    "2024Q3": 49000,
+    "2024Q4": 71856,
+    "2025Q1": 55500,
+    "2025Q2": 43000,
+    "2025Q3": 55892,
+    "2025Q4": 71893
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -553,6 +941,28 @@
     "2024": 325313,
     "2025": 253701
    },
+   "quarters": {
+    "2021Q1": 140777,
+    "2021Q2": 140777,
+    "2021Q3": 3371,
+    "2021Q4": 54215,
+    "2022Q1": 40064,
+    "2022Q2": 31305,
+    "2022Q3": 16494,
+    "2022Q4": 10719,
+    "2023Q1": 44191,
+    "2023Q2": 78589,
+    "2023Q3": 97659,
+    "2023Q4": 290659,
+    "2024Q1": 109424,
+    "2024Q2": 103583,
+    "2024Q3": 66459,
+    "2024Q4": 45847,
+    "2025Q1": 86856,
+    "2025Q2": 76538,
+    "2025Q3": 44896,
+    "2025Q4": 45411
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -567,6 +977,28 @@
     "2023": 205534,
     "2024": 261658,
     "2025": 237591
+   },
+   "quarters": {
+    "2021Q1": 29532,
+    "2021Q2": 26843,
+    "2021Q3": 30362,
+    "2021Q4": 51542,
+    "2022Q1": 20146,
+    "2022Q2": 33219,
+    "2022Q3": 45196,
+    "2022Q4": 39146,
+    "2023Q1": 93219,
+    "2023Q2": 33411,
+    "2023Q3": 24175,
+    "2023Q4": 54728,
+    "2024Q1": 78783,
+    "2024Q2": 64279,
+    "2024Q3": 53865,
+    "2024Q4": 64731,
+    "2025Q1": 65885,
+    "2025Q2": 42591,
+    "2025Q3": 70250,
+    "2025Q4": 58865
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -583,6 +1015,28 @@
     "2024": 45510,
     "2025": 92309
    },
+   "quarters": {
+    "2021Q1": 26989,
+    "2021Q2": 29266,
+    "2021Q3": 3497,
+    "2021Q4": 5086,
+    "2022Q1": 25473,
+    "2022Q2": 817,
+    "2022Q3": 3885,
+    "2022Q4": 6502,
+    "2023Q1": 39845,
+    "2023Q2": 44704,
+    "2023Q3": 300,
+    "2023Q4": 200,
+    "2024Q1": 40211,
+    "2024Q2": 1400,
+    "2024Q3": 1200,
+    "2024Q4": 2699,
+    "2025Q1": 34859,
+    "2025Q2": 53230,
+    "2025Q3": 4220,
+    "2025Q4": 0
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -597,6 +1051,28 @@
     "2023": 74572,
     "2024": 89986,
     "2025": 51589
+   },
+   "quarters": {
+    "2021Q1": 21100,
+    "2021Q2": 16732,
+    "2021Q3": 12965,
+    "2021Q4": 19114,
+    "2022Q1": 19311,
+    "2022Q2": 17181,
+    "2022Q3": 15692,
+    "2022Q4": 18200,
+    "2023Q1": 21350,
+    "2023Q2": 21098,
+    "2023Q3": 13310,
+    "2023Q4": 18813,
+    "2024Q1": 22652,
+    "2024Q2": 22436,
+    "2024Q3": 23396,
+    "2024Q4": 21502,
+    "2025Q1": 10812,
+    "2025Q2": 14844,
+    "2025Q3": 3568,
+    "2025Q4": 22366
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -613,6 +1089,28 @@
     "2024": 78042,
     "2025": 26822
    },
+   "quarters": {
+    "2021Q1": 12679,
+    "2021Q2": 13801,
+    "2021Q3": 13144,
+    "2021Q4": 13034,
+    "2022Q1": 13521,
+    "2022Q2": 13031,
+    "2022Q3": 14443,
+    "2022Q4": 14180,
+    "2023Q1": 15259,
+    "2023Q2": 21611,
+    "2023Q3": 25275,
+    "2023Q4": 20011,
+    "2024Q1": 19204,
+    "2024Q2": 17029,
+    "2024Q3": 20762,
+    "2024Q4": 21046,
+    "2025Q1": 20750,
+    "2025Q2": 0,
+    "2025Q3": 6072,
+    "2025Q4": 0
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -628,6 +1126,28 @@
     "2024": 1966,
     "2025": 42472
    },
+   "quarters": {
+    "2021Q1": 3776,
+    "2021Q2": 3711,
+    "2021Q3": 0,
+    "2021Q4": 0,
+    "2022Q1": 0,
+    "2022Q2": 0,
+    "2022Q3": 0,
+    "2022Q4": 0,
+    "2023Q1": 1629,
+    "2023Q2": 2461,
+    "2023Q3": 0,
+    "2023Q4": 213,
+    "2024Q1": 1825,
+    "2024Q2": 0,
+    "2024Q3": 0,
+    "2024Q4": 142,
+    "2025Q1": 14677,
+    "2025Q2": 17312,
+    "2025Q3": 9503,
+    "2025Q4": 979
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -639,6 +1159,16 @@
    "years": {
     "2024": 2045,
     "2025": 33949
+   },
+   "quarters": {
+    "2024Q1": 1832,
+    "2024Q2": 0,
+    "2024Q3": 0,
+    "2024Q4": 213,
+    "2025Q1": 11156,
+    "2025Q2": 19335,
+    "2025Q3": 0,
+    "2025Q4": 3457
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -655,6 +1185,28 @@
     "2024": 30335,
     "2025": 29398
    },
+   "quarters": {
+    "2021Q1": 938,
+    "2021Q2": 1039,
+    "2021Q3": 0,
+    "2021Q4": 64,
+    "2022Q1": 1027,
+    "2022Q2": 32,
+    "2022Q3": 0,
+    "2022Q4": 0,
+    "2023Q1": 4146,
+    "2023Q2": 10527,
+    "2023Q3": 3500,
+    "2023Q4": 302,
+    "2024Q1": 3681,
+    "2024Q2": 3962,
+    "2024Q3": 10819,
+    "2024Q4": 11872,
+    "2025Q1": 7823,
+    "2025Q2": 16626,
+    "2025Q3": 3846,
+    "2025Q4": 1102
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -665,6 +1217,12 @@
    "amount": 35284,
    "years": {
     "2025": 35284
+   },
+   "quarters": {
+    "2025Q1": 11125,
+    "2025Q2": 18271,
+    "2025Q3": 3919,
+    "2025Q4": 1969
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -681,6 +1239,28 @@
     "2024": 358,
     "2025": 16852
    },
+   "quarters": {
+    "2021Q1": 1651,
+    "2021Q2": 198,
+    "2021Q3": 0,
+    "2021Q4": 0,
+    "2022Q1": 0,
+    "2022Q2": 0,
+    "2022Q3": 0,
+    "2022Q4": 208,
+    "2023Q1": 1439,
+    "2023Q2": 460,
+    "2023Q3": 0,
+    "2023Q4": 0,
+    "2024Q1": 104,
+    "2024Q2": 0,
+    "2024Q3": 49,
+    "2024Q4": 205,
+    "2025Q1": 16852,
+    "2025Q2": 0,
+    "2025Q3": 0,
+    "2025Q4": 0
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -692,6 +1272,16 @@
    "years": {
     "2024": 1661,
     "2025": 0
+   },
+   "quarters": {
+    "2024Q1": 1586,
+    "2024Q2": 0,
+    "2024Q3": 75,
+    "2024Q4": 0,
+    "2025Q1": 0,
+    "2025Q2": 0,
+    "2025Q3": 0,
+    "2025Q4": 0
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -708,6 +1298,28 @@
     "2024": 48000,
     "2025": 22500
    },
+   "quarters": {
+    "2021Q1": 9000,
+    "2021Q2": 16000,
+    "2021Q3": 12000,
+    "2021Q4": 12000,
+    "2022Q1": 12000,
+    "2022Q2": 12000,
+    "2022Q3": 12000,
+    "2022Q4": 12000,
+    "2023Q1": 12000,
+    "2023Q2": 12750,
+    "2023Q3": 12000,
+    "2023Q4": 12000,
+    "2024Q1": 12000,
+    "2024Q2": 12000,
+    "2024Q3": 12000,
+    "2024Q4": 12000,
+    "2025Q1": 11250,
+    "2025Q2": 11250,
+    "2025Q3": 0,
+    "2025Q4": 0
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -722,6 +1334,28 @@
     "2023": 9224,
     "2024": 11472,
     "2025": 12709
+   },
+   "quarters": {
+    "2021Q1": 3963,
+    "2021Q2": 2031,
+    "2021Q3": 386,
+    "2021Q4": 0,
+    "2022Q1": 512,
+    "2022Q2": 478,
+    "2022Q3": 669,
+    "2022Q4": 0,
+    "2023Q1": 5810,
+    "2023Q2": 2087,
+    "2023Q3": 1227,
+    "2023Q4": 99,
+    "2024Q1": 6336,
+    "2024Q2": 2286,
+    "2024Q3": 0,
+    "2024Q4": 2850,
+    "2025Q1": 5699,
+    "2025Q2": 3153,
+    "2025Q3": 1789,
+    "2025Q4": 2068
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -738,6 +1372,28 @@
     "2024": 195,
     "2025": 532
    },
+   "quarters": {
+    "2021Q1": 610,
+    "2021Q2": 937,
+    "2021Q3": 12,
+    "2021Q4": 72,
+    "2022Q1": 129,
+    "2022Q2": 0,
+    "2022Q3": 0,
+    "2022Q4": 0,
+    "2023Q1": 1876,
+    "2023Q2": 1512,
+    "2023Q3": 146,
+    "2023Q4": 73,
+    "2024Q1": 195,
+    "2024Q2": 0,
+    "2024Q3": 0,
+    "2024Q4": 0,
+    "2025Q1": 198,
+    "2025Q2": 213,
+    "2025Q3": 0,
+    "2025Q4": 121
+   },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
@@ -748,6 +1404,12 @@
    "amount": 106,
    "years": {
     "2025": 106
+   },
+   "quarters": {
+    "2025Q1": 106,
+    "2025Q2": 0,
+    "2025Q3": 0,
+    "2025Q4": 0
    },
    "what": "Registered lobbying spending, 2021–2025",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
@@ -761,6 +1423,3851 @@
    "date": "2023-02",
    "what": "Cash and in-kind contributions, Feb 10–24, 2023 (state campaign finance filings)",
    "source": "https://www.desmog.com/2023/03/07/major-gas-utility-is-pouring-money-into-reversing-an-oregon-citys-electric-only-mandate"
+  }
+ ],
+ "bills": [
+  {
+   "id": "2021 HB 2021",
+   "year": "2021",
+   "short": "100% clean electricity by 2040",
+   "catchline": "Requires retail electricity providers to reduce greenhouse gas emissions associated with electricity sold to Oregon consumers to 80 percent below baseline emissions levels by 2030, 90 percent below baseline emissions levels by 2035 and 100 percent below baseline emissions levels by 2040.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2021",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2021",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "Portland General Electric and Pacific Power",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30286"
+     ],
+     "lobbying_year": 331833
+    },
+    {
+     "side": "Neutral",
+     "name": "Umatilla Electric Cooperative",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30158"
+     ],
+     "lobbying_year": 258003
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Local 503",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24325"
+     ],
+     "lobbying_year": 232776
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_obi",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24293"
+     ],
+     "lobbying_year": 227020
+    },
+    {
+     "side": "Neutral",
+     "id": "or_opp_obi",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30289"
+     ],
+     "lobbying_year": 227020
+    },
+    {
+     "side": "Support",
+     "name": "Portland General Electric",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24326"
+     ],
+     "lobbying_year": 205593
+    },
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23949"
+     ],
+     "lobbying_year": 183952
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_farm_bureau",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23909"
+     ],
+     "lobbying_year": 181310
+    },
+    {
+     "side": "Neutral",
+     "id": "or_oregon_aflcio",
+     "date": "4/5/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23553"
+     ],
+     "lobbying_year": 163468
+    },
+    {
+     "side": "Neutral",
+     "name": "Oregon consumer-owned utilities (OMEU, ORECA, OPUDA)",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19283",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/29991"
+     ],
+     "lobbying_year": 131588
+    },
+    {
+     "side": "Support",
+     "name": "Pacific Power",
+     "date": "4/5/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23713"
+     ],
+     "lobbying_year": 126240
+    },
+    {
+     "side": "Support",
+     "name": "Multnomah County",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24321"
+     ],
+     "lobbying_year": 96760
+    },
+    {
+     "side": "Neutral",
+     "name": "UA Local 290",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19742"
+     ],
+     "lobbying_year": 84000
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19365",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23434",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30160"
+     ],
+     "lobbying_year": 69910
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19365",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23434",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30160"
+     ],
+     "lobbying_year": 64838
+    },
+    {
+     "side": "Oppose",
+     "name": "NewSun Energy",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19816",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19846",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23680"
+     ],
+     "lobbying_year": 60000
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_awec",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24286"
+     ],
+     "lobbying_year": 57000
+    },
+    {
+     "side": "Support",
+     "id": "or_pcun",
+     "date": "4/5/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23463"
+     ],
+     "lobbying_year": 56318
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19840",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24294",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30290"
+     ],
+     "lobbying_year": 52657
+    },
+    {
+     "side": "Oppose",
+     "name": "Association of Western Pulp and Paper Workers",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30236"
+     ],
+     "lobbying_year": 44588
+    },
+    {
+     "side": "Support",
+     "name": "Avangrid Renewables",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30134"
+     ],
+     "lobbying_year": 44000
+    },
+    {
+     "side": "Support",
+     "name": "Metropolitan Mayors Consortium",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19725",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30207",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30251"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Oppose",
+     "name": "Northwest & Intermountain Power Producers Coalition",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19538"
+     ],
+     "lobbying_year": 35367
+    },
+    {
+     "side": "Neutral",
+     "name": "Oregon State Association of Electrical Workers",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23968"
+     ],
+     "lobbying_year": 33600
+    },
+    {
+     "side": "Oppose",
+     "id": "or_ossia",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19390"
+     ],
+     "lobbying_year": 24000
+    },
+    {
+     "side": "Oppose",
+     "name": "Obsidian Renewables",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19413",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19427"
+     ],
+     "lobbying_year": 18000
+    },
+    {
+     "side": "Support",
+     "id": "or_nwec",
+     "date": "4/5/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23460",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30054"
+     ],
+     "lobbying_year": 12000
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19847",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24254",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24291",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30279"
+     ],
+     "lobbying_year": 7487
+    },
+    {
+     "side": "Neutral",
+     "id": "or_environment_oregon",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19396"
+     ],
+     "lobbying_year": 6380
+    },
+    {
+     "side": "Support",
+     "id": "or_environment_oregon",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30087"
+     ],
+     "lobbying_year": 6380
+    },
+    {
+     "side": "Support",
+     "id": "or_emo",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19441",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23455",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30165"
+     ],
+     "lobbying_year": 4945
+    },
+    {
+     "side": "Support",
+     "id": "or_apano",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23477"
+     ],
+     "lobbying_year": 2466
+    },
+    {
+     "side": "Support",
+     "id": "or_beyond_toxics",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19825",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24052",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30133"
+     ],
+     "lobbying_year": 1849
+    },
+    {
+     "side": "Support",
+     "id": "or_ccc",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24253",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30272"
+     ],
+     "lobbying_year": 1631
+    },
+    {
+     "side": "Oppose",
+     "name": "ECONorthwest",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19042"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19127",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24088",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30222"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Better Energy LLC",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19223"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Oppose",
+     "name": "Independent Party of Oregon",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19238"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_multco_sustainability",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19355",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23859",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30268"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_sunrise_pdx",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19408"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Portland City Council",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19415"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_havurah_cat",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19469"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350_eugene",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19516"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Coalition of Christian Voices",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19543",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24327"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_ob4c",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19623",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23173",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/29800"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "name": "Rye Development",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19768"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "id": "or_envirocenter",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19794"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Families for Climate",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19810"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Northwest Energy Efficiency Council",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19823"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "name": "Klamath County Economic Development Association",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19824"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19836",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24239",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24258",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24337"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_eca_oregon",
+     "date": "3/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/19849"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "name": "ECONorthwest",
+     "date": "4/5/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23318",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24030"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_timber_unity",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23699",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23708",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23870"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "name": "Community Renewable Energy Association",
+     "date": "4/5/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23761"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_lwvor",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23976",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24299",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30155"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24023",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/29924"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24058",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30191"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_gei",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24083"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24089",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30281"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "OSPIRG Students",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24109",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24110",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24111",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24112",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24113",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24114",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24116",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30193"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_nfib",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24282"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_milwaukie",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24305",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24319"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_cascadia_wildlands",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24331"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Interfaith Movement for Immigrant Justice",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24335"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_opal",
+     "date": "4/7/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24336"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Rural Oregon Climate PAC",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30183"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "350 Oregon Central Coast",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30218"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "EcoFaith Recovery",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30247"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350_washco",
+     "date": "5/13/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/30275"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 16,
+    "Oppose": 7,
+    "Neutral": 2
+   },
+   "all": {
+    "Support": 266,
+    "Oppose": 100,
+    "Other": 22,
+    "Neutral": 19
+   },
+   "money": {
+    "Support": 1205802,
+    "Oppose": 647285,
+    "Neutral": 904059
+   }
+  },
+  {
+   "id": "2021 HB 2475",
+   "year": "2021",
+   "short": "Energy affordability (PUC can consider energy burden)",
+   "catchline": "Authorizes Public Utility Commission to consider differential energy burden and other inequities of affordability in rates.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2475",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2475",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "Pacific Power",
+     "date": "4/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26556"
+     ],
+     "lobbying_year": 126240
+    },
+    {
+     "side": "Support",
+     "name": "Multnomah County",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/691"
+     ],
+     "lobbying_year": 96760
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/569",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/25739"
+     ],
+     "lobbying_year": 69910
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/693",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26785"
+     ],
+     "lobbying_year": 64838
+    },
+    {
+     "side": "Neutral",
+     "id": "or_opp_awec",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/647"
+     ],
+     "lobbying_year": 57000
+    },
+    {
+     "side": "Support",
+     "id": "or_pcun",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1073"
+     ],
+     "lobbying_year": 56318
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/891",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26726"
+     ],
+     "lobbying_year": 52657
+    },
+    {
+     "side": "Neutral",
+     "name": "Oregon Municipal Electric Utilities Association",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1045"
+     ],
+     "lobbying_year": 39588
+    },
+    {
+     "side": "Support",
+     "id": "or_ossia",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/380",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/25154"
+     ],
+     "lobbying_year": 24000
+    },
+    {
+     "side": "Support",
+     "id": "or_nwec",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/587",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26663"
+     ],
+     "lobbying_year": 12000
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/672",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26638"
+     ],
+     "lobbying_year": 7487
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Citizens' Utility Board",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1162",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26109"
+     ],
+     "lobbying_year": 6189
+    },
+    {
+     "side": "Support",
+     "id": "or_emo",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1100",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26454"
+     ],
+     "lobbying_year": 4945
+    },
+    {
+     "side": "Support",
+     "id": "or_verde",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/619"
+     ],
+     "lobbying_year": 2041
+    },
+    {
+     "side": "Support",
+     "id": "or_ccc",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1050",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26568"
+     ],
+     "lobbying_year": 1631
+    },
+    {
+     "side": "Support",
+     "id": "or_sunrise_pdx",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/434"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_lwvor",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/445",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/558",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26274",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26788"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "350 Salem",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/602"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Portland City Council",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/654",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/25995"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Energy Justice Leadership Institute",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1046",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26560"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "2/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1098",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26189"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_opal",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1772"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1797",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26794"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_naya",
+     "date": "4/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/25970"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_multco_sustainability",
+     "date": "4/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26517"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "name": "Small Business Utility Advocates",
+     "date": "4/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26522"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_bend",
+     "date": "4/22/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/26734"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 5,
+    "Oppose": 0,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 90,
+    "Other": 8,
+    "Neutral": 3,
+    "Oppose": 1
+   },
+   "money": {
+    "Support": 525017,
+    "Oppose": 0,
+    "Neutral": 96588
+   }
+  },
+  {
+   "id": "2021 HB 2842",
+   "year": "2021",
+   "short": "Healthy Homes program",
+   "catchline": "Establishes Healthy Homes Program within the Oregon Health Authority to provide grants to entities to provide financial assistance to low income households and landlords.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2842",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2842",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "Oregon AFSCME",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3273"
+     ],
+     "lobbying_year": 500658
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Education Association",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3046"
+     ],
+     "lobbying_year": 457749
+    },
+    {
+     "side": "Support",
+     "id": "or_oregon_aflcio",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3088"
+     ],
+     "lobbying_year": 163468
+    },
+    {
+     "side": "Support",
+     "name": "Multnomah County",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3120"
+     ],
+     "lobbying_year": 96760
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3278"
+     ],
+     "lobbying_year": 69910
+    },
+    {
+     "side": "Support",
+     "name": "Latino Network",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3337"
+     ],
+     "lobbying_year": 68309
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3278"
+     ],
+     "lobbying_year": 64838
+    },
+    {
+     "side": "Support",
+     "name": "Basic Rights Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/2985"
+     ],
+     "lobbying_year": 48000
+    },
+    {
+     "side": "Support",
+     "name": "Family Forward Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3169",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3183",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3194"
+     ],
+     "lobbying_year": 42248
+    },
+    {
+     "side": "Support",
+     "name": "Metropolitan Mayors Consortium",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3674"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Support",
+     "id": "or_ossia",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1997"
+     ],
+     "lobbying_year": 24000
+    },
+    {
+     "side": "Support",
+     "name": "Habitat for Humanity of Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3323"
+     ],
+     "lobbying_year": 24000
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Conservation Network",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3664"
+     ],
+     "lobbying_year": 18000
+    },
+    {
+     "side": "Support",
+     "name": "UFCW Local 555",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3244"
+     ],
+     "lobbying_year": 16272
+    },
+    {
+     "side": "Support",
+     "name": "Community Action Partnership of Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3303"
+     ],
+     "lobbying_year": 14888
+    },
+    {
+     "side": "Neutral",
+     "name": "Oregon Health Authority",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/2885",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/2886"
+     ],
+     "lobbying_year": 13249
+    },
+    {
+     "side": "Support",
+     "id": "or_nwec",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3173"
+     ],
+     "lobbying_year": 12000
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Food Bank",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3166"
+     ],
+     "lobbying_year": 8215
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/2696"
+     ],
+     "lobbying_year": 6404
+    },
+    {
+     "side": "Support",
+     "id": "or_environment_oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3687"
+     ],
+     "lobbying_year": 6380
+    },
+    {
+     "side": "Support",
+     "id": "or_emo",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3690"
+     ],
+     "lobbying_year": 4945
+    },
+    {
+     "side": "Support",
+     "name": "Disability Rights Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/2896"
+     ],
+     "lobbying_year": 4255
+    },
+    {
+     "side": "Support",
+     "id": "or_unite_oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3396"
+     ],
+     "lobbying_year": 3144
+    },
+    {
+     "side": "Support",
+     "id": "or_apano",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3633"
+     ],
+     "lobbying_year": 2466
+    },
+    {
+     "side": "Support",
+     "name": "Next Up Action Fund",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3037"
+     ],
+     "lobbying_year": 2427
+    },
+    {
+     "side": "Support",
+     "id": "or_beyond_toxics",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3419"
+     ],
+     "lobbying_year": 1849
+    },
+    {
+     "side": "Support",
+     "id": "or_ccc",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3646",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3678"
+     ],
+     "lobbying_year": 1631
+    },
+    {
+     "side": "Support",
+     "name": "Causa Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3298"
+     ],
+     "lobbying_year": 1347
+    },
+    {
+     "side": "Support",
+     "name": "Community Action Organization",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/2828"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "NW Workers Justice Project",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3057"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_sunrise_pdx",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3184"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Sunrise Movement",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3188"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_lwvor",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3203"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Developmental Disability Coalition",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3230"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Fair Shot for All Coalition",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3267"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Community Pathways",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3414"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_opal",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3435",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3437"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Great Old Broads for Wilderness",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3591"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_naya",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3600"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_electrify_now",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3605"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_nca",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3608"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3611",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3651"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Planned Parenthood Advocates of Oregon",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3657"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "2/11/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/3661"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 5,
+    "Oppose": 0,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 77,
+    "Neutral": 3,
+    "Other": 6
+   },
+   "money": {
+    "Support": 1700163,
+    "Oppose": 0,
+    "Neutral": 13249
+   }
+  },
+  {
+   "id": "2021 HB 2062",
+   "year": "2021",
+   "short": "Appliance efficiency standards",
+   "catchline": "Establishes energy efficiency standards for certain appliances sold or offered for sale in this state.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2062",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2062",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "Portland General Electric",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1519"
+     ],
+     "lobbying_year": 205593
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1222",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/9525",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27365"
+     ],
+     "lobbying_year": 69910
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1222",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/9525",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27365"
+     ],
+     "lobbying_year": 64838
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Department of Energy",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1107",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1110",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/9056",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27203",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27500"
+     ],
+     "lobbying_year": 16354
+    },
+    {
+     "side": "Support",
+     "id": "or_nwec",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1360",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27335"
+     ],
+     "lobbying_year": 12000
+    },
+    {
+     "side": "Support",
+     "id": "or_environment_oregon",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1332",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27326"
+     ],
+     "lobbying_year": 6380
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Citizens' Utility Board",
+     "date": "3/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/9349"
+     ],
+     "lobbying_year": 6189
+    },
+    {
+     "side": "Support",
+     "name": "A. O. Smith Corporation",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1000"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "id": "or_neea",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1041"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Appliance Standards Awareness Project",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1124",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27331"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Independent Party of Oregon",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1297"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Pool & Hot Tub Alliance",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1315",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/8010",
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/27314"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "name": "Oregon PHCC (plumbing-heating-cooling contractors)",
+     "date": "2/3/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/1474"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "3/1/2021",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/9242"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 2,
+    "Oppose": 0,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 33,
+    "Neutral": 3,
+    "Other": 2
+   },
+   "money": {
+    "Support": 381265,
+    "Oppose": 0,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2022 SB 1536",
+   "year": "2022",
+   "short": "Heat pumps and cooling for renters",
+   "catchline": "Limits restrictions on portable cooling devices in residences by landlords, homeowners associations, condominium associations and local governments.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2022R1/Measures/Overview/SB1536",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2022R1/Measures/Testimony/SB1536",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "Oregon Nurses Association",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32825",
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33917"
+     ],
+     "lobbying_year": 285965
+    },
+    {
+     "side": "Support",
+     "name": "League of Oregon Cities",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33647"
+     ],
+     "lobbying_year": 190805
+    },
+    {
+     "side": "Support",
+     "name": "Metropolitan Mayors Consortium",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33490"
+     ],
+     "lobbying_year": 90000
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Food Bank",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32808"
+     ],
+     "lobbying_year": 78090
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Law Center",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33124"
+     ],
+     "lobbying_year": 74574
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32513"
+     ],
+     "lobbying_year": 70384
+    },
+    {
+     "side": "Support",
+     "name": "211info",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33426"
+     ],
+     "lobbying_year": 60000
+    },
+    {
+     "side": "Support",
+     "name": "Metro (Portland regional government)",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32649"
+     ],
+     "lobbying_year": 43990
+    },
+    {
+     "side": "Support",
+     "name": "AARP Oregon",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32919"
+     ],
+     "lobbying_year": 42046
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32513"
+     ],
+     "lobbying_year": 36677
+    },
+    {
+     "side": "Neutral",
+     "name": "Oregon Department of Energy",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32585"
+     ],
+     "lobbying_year": 10847
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Consumer Justice",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33339"
+     ],
+     "lobbying_year": 6502
+    },
+    {
+     "side": "Support",
+     "name": "City of Beaverton",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32284",
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33258"
+     ],
+     "lobbying_year": 2757
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Citizens' Utility Board",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33306"
+     ],
+     "lobbying_year": 1330
+    },
+    {
+     "side": "Support",
+     "name": "Our Children Oregon",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33125"
+     ],
+     "lobbying_year": 745
+    },
+    {
+     "side": "Support",
+     "id": "or_ccc",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33589"
+     ],
+     "lobbying_year": 129
+    },
+    {
+     "side": "Support",
+     "name": "Community Alliance of Tenants",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32549",
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32590",
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32592",
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32806"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/32807"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33043"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_earth_advantage",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33115"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Portland Tenants United",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33254"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33453"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33685"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Families for Climate",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33732"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv",
+     "date": "2/2/2022",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2022R1/Downloads/PublicTestimonyDocument/33992"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 1,
+    "Oppose": 0,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 34,
+    "Neutral": 1,
+    "Other": 6
+   },
+   "money": {
+    "Support": 983993,
+    "Oppose": 0,
+    "Neutral": 10847
+   }
+  },
+  {
+   "id": "2023 HB 3409",
+   "year": "2023",
+   "short": "2023 climate resilience package",
+   "catchline": "Requires State Department of Energy to report on rate of heat pump technology adoption and to collaborate with designated state agencies to reduce barriers to home energy efficiency and resilience.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Overview/HB3409",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Testimony/HB3409",
+   "positions": [
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "6/8/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101216",
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101261"
+     ],
+     "lobbying_year": 174106
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "6/8/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101024",
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101215"
+     ],
+     "lobbying_year": 85049
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "6/8/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/100928"
+     ],
+     "lobbying_year": 82156
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "6/8/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101229"
+     ],
+     "lobbying_year": 74572
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_cascade_policy",
+     "date": "6/21/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101884"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Support",
+     "name": "Building Resilience Coalition",
+     "date": "6/8/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101230"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_orcan",
+     "date": "6/8/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101254"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Northwest Energy Efficiency Council",
+     "date": "6/8/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101259"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "6/21/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101947"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 4,
+    "Oppose": 1,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 19,
+    "Oppose": 4,
+    "Other": 5
+   },
+   "money": {
+    "Support": 415883,
+    "Oppose": 36000,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2023 HB 3630",
+   "year": "2023",
+   "short": "State energy strategy and energy help for communities",
+   "catchline": "Directs State Department of Energy to establish program to provide assistance related to energy projects and activities to environmental justice communities.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Overview/HB3630",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Testimony/HB3630",
+   "positions": [
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "6/7/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101141"
+     ],
+     "lobbying_year": 174106
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "6/7/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/100926"
+     ],
+     "lobbying_year": 82156
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_cascade_policy",
+     "date": "6/7/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/100930"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Citizens' Utility Board",
+     "date": "6/7/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/100937"
+     ],
+     "lobbying_year": 7600
+    }
+   ],
+   "other": {
+    "Support": 2,
+    "Oppose": 0,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 5,
+    "Oppose": 1,
+    "Other": 1
+   },
+   "money": {
+    "Support": 263862,
+    "Oppose": 36000,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2023 SB 530",
+   "year": "2023",
+   "short": "Natural climate solutions",
+   "catchline": "Establishes state policy regarding natural climate solutions.",
+   "outcome": "Did not pass (in senate committee)",
+   "url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Overview/SB530",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Testimony/SB530",
+   "positions": [
+    {
+     "side": "Oppose",
+     "id": "or_opp_ofic",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49970"
+     ],
+     "lobbying_year": 511098
+    },
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50972"
+     ],
+     "lobbying_year": 174106
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49841",
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50293"
+     ],
+     "lobbying_year": 85049
+    },
+    {
+     "side": "Oppose",
+     "name": "Associated Oregon Loggers",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50374"
+     ],
+     "lobbying_year": 74800
+    },
+    {
+     "side": "Support",
+     "id": "or_1000_friends",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49960"
+     ],
+     "lobbying_year": 48750
+    },
+    {
+     "side": "Oppose",
+     "name": "Oregon Small Woodlands Association",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49822"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Support",
+     "name": "Coalition of Oregon Land Trusts",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50006"
+     ],
+     "lobbying_year": 30000
+    },
+    {
+     "side": "Support",
+     "id": "or_verde",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49793"
+     ],
+     "lobbying_year": 18474
+    },
+    {
+     "side": "Support",
+     "id": "or_oregon_wild",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/51130"
+     ],
+     "lobbying_year": 10045
+    },
+    {
+     "side": "Support",
+     "id": "or_emo",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49216",
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50842"
+     ],
+     "lobbying_year": 4277
+    },
+    {
+     "side": "Support",
+     "id": "or_beyond_toxics",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50236",
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50237"
+     ],
+     "lobbying_year": 1899
+    },
+    {
+     "side": "Support",
+     "id": "or_lwvor",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/46672"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/47206"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "The Pew Charitable Trusts",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/47550"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Jackson Soil & Water Conservation District",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/48598"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_eca_oregon",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49418"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "350 Salem",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49823"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Soil Carbon Coalition",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49859"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_orcan",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/49991"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Sunrise Rural Oregon",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50008"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_landwatch",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50096"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_bird_alliance",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50120"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Organic Coalition",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50211",
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50212",
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50213"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "American Forest Foundation",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50219"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "West Multnomah Soil & Water Conservation District",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50493"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Consolidated Oregon Indivisible Network",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50657"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50691"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Association of Conservation Districts",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50705"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50766"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Shaniko Wool Company",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50778"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Washington County Citizen Action Network",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50909"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_ghcc",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/50953"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Environmental Caucus of the Democratic Party of Oregon",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/51102"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_orca",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/51115"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Conservation Network",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/51163"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_sunrise_pdx",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/51171"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_trk",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/51181"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "American Farmland Trust",
+     "date": "2/15/2023",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/51193"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 20,
+    "Oppose": 1,
+    "Neutral": 1
+   },
+   "all": {
+    "Support": 160,
+    "Other": 11,
+    "Neutral": 2,
+    "Oppose": 5
+   },
+   "money": {
+    "Support": 372600,
+    "Oppose": 621898,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2024 HB 4080",
+   "year": "2024",
+   "short": "Offshore wind: community engagement and labor standards",
+   "catchline": "Declares a state policy to support engagement between offshore wind developers and impacted organizations, communities and tribes.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2024R1/Measures/Overview/HB4080",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2024R1/Measures/Testimony/HB4080",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "Oregon Nurses Association",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/105123"
+     ],
+     "lobbying_year": 480100
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_obi",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103486"
+     ],
+     "lobbying_year": 365476
+    },
+    {
+     "side": "Support",
+     "id": "or_building_trades",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/106163"
+     ],
+     "lobbying_year": 183375
+    },
+    {
+     "side": "Support",
+     "name": "Oregon AFSCME",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103905"
+     ],
+     "lobbying_year": 167163
+    },
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/105097"
+     ],
+     "lobbying_year": 137440
+    },
+    {
+     "side": "Support",
+     "id": "or_oregon_aflcio",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/104124",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/104136"
+     ],
+     "lobbying_year": 117531
+    },
+    {
+     "side": "Support",
+     "id": "or_ibew48",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/102976"
+     ],
+     "lobbying_year": 116395
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103263",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/104442"
+     ],
+     "lobbying_year": 89986
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103593"
+     ],
+     "lobbying_year": 78042
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/106115"
+     ],
+     "lobbying_year": 45510
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Oregon",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/104589"
+     ],
+     "lobbying_year": 28172
+    },
+    {
+     "side": "Support",
+     "id": "or_bga",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103471"
+     ],
+     "lobbying_year": 7237
+    },
+    {
+     "side": "Support",
+     "id": "or_ibew932",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103305"
+     ],
+     "lobbying_year": 7200
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/106200"
+     ],
+     "lobbying_year": 2045
+    },
+    {
+     "side": "Support",
+     "id": "or_liuna737",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/102840"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_ironworkers29",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103176",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103200",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103219",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103223",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103224",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103228",
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103233"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Painters District Council 5 (IUPAT)",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103322"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Department of Land Conservation and Development",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103601"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/103629"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/104942"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Neutral",
+     "id": "or_lwvor",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/104943"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "2/7/2024",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/PublicTestimonyDocument/106009"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 0,
+    "Oppose": 4,
+    "Neutral": 0
+   },
+   "all": {
+    "Oppose": 17,
+    "Support": 46,
+    "Neutral": 1,
+    "Other": 7
+   },
+   "money": {
+    "Support": 1460196,
+    "Oppose": 365476,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2025 SB 1187",
+   "year": "2025",
+   "short": "Climate Superfund (polluters pay for climate damage)",
+   "catchline": "Establishes the Climate Superfund Cost Recovery Program as an interagency response to the effects of climate change.",
+   "outcome": "Did not pass (in senate committee)",
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/SB1187",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/SB1187",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "Portland State University",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/190679"
+     ],
+     "lobbying_year": 265935
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_farm_bureau",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193358"
+     ],
+     "lobbying_year": 163655
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Local 503",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193719"
+     ],
+     "lobbying_year": 92111
+    },
+    {
+     "side": "Support",
+     "name": "Multnomah County",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193339"
+     ],
+     "lobbying_year": 88840
+    },
+    {
+     "side": "Support",
+     "name": "Deschutes County",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193631"
+     ],
+     "lobbying_year": 63647
+    },
+    {
+     "side": "Support",
+     "name": "Douglas County",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193297"
+     ],
+     "lobbying_year": 60000
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192602"
+     ],
+     "lobbying_year": 51589
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192702"
+     ],
+     "lobbying_year": 42472
+    },
+    {
+     "side": "Support",
+     "id": "or_columbia_riverkeeper",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192535"
+     ],
+     "lobbying_year": 35284
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/191098",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/191406",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193746"
+     ],
+     "lobbying_year": 33949
+    },
+    {
+     "side": "Support",
+     "id": "or_pcun",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192665"
+     ],
+     "lobbying_year": 10135
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Rural Action",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192756"
+     ],
+     "lobbying_year": 7705
+    },
+    {
+     "side": "Support",
+     "id": "or_emo",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/190881",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/190884",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192653",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192677"
+     ],
+     "lobbying_year": 5545
+    },
+    {
+     "side": "Oppose",
+     "name": "Oregon Citizens Lobby",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/170866"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_third_act_oregon",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/181423",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/188881",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/190928",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/191779",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192311",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192319",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192366",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192472",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192546"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350_eugene",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/185992",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/190107"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/189283",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192591",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193142"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Climate Accountability Institute",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/189856"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/190054",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/190828"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "350 Salem",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/191129",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193732",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193737",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193887"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/191143",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193494"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/191896"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Voz Workers' Rights Education Project",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192448"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192497",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192532",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/194027"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_gorge_friends",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192543"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_hazadapt",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192667"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Firebrand Resiliency Collective",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192713",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192719"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_orcan",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192718"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Northwest Environmental Defense Center",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192792",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193333",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193338"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Sacred Organizing Coalition",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/192835"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Leaven Community Land & Housing Coalition",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193248"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_dcgwc",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193366"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_oregon_shores",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193428"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Laudato Si' Movement",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193442"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_apano",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193452"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Interfaith Power & Light",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193860"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_gei",
+     "date": "4/7/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193920"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Consolidated Oregon Indivisible Network",
+     "date": "4/9/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193989"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 33,
+    "Oppose": 24,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 274,
+    "Oppose": 140
+   },
+   "money": {
+    "Support": 757212,
+    "Oppose": 163655,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2025 HB 3546",
+   "year": "2025",
+   "short": "POWER Act: large energy users pay their share",
+   "catchline": "Directs the Public Utility Commission to provide for a classification of service for large energy use facilities.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/HB3546",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/HB3546",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "City of Portland",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147106"
+     ],
+     "lobbying_year": 598569
+    },
+    {
+     "side": "Support",
+     "name": "Portland General Electric",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147102"
+     ],
+     "lobbying_year": 332235
+    },
+    {
+     "side": "Neutral",
+     "id": "or_opp_aws",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146068"
+     ],
+     "lobbying_year": 237591
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_aws",
+     "date": "4/30/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200025"
+     ],
+     "lobbying_year": 237591
+    },
+    {
+     "side": "Support",
+     "name": "Pacific Power",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147080",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/203051"
+     ],
+     "lobbying_year": 150181
+    },
+    {
+     "side": "Support",
+     "name": "League of Oregon Cities",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147233",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/199840"
+     ],
+     "lobbying_year": 101206
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Local 503",
+     "date": "5/5/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/202428"
+     ],
+     "lobbying_year": 92111
+    },
+    {
+     "side": "Support",
+     "name": "AARP Oregon",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147117"
+     ],
+     "lobbying_year": 65000
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_awec",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146776"
+     ],
+     "lobbying_year": 57000
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147140",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/203813"
+     ],
+     "lobbying_year": 51589
+    },
+    {
+     "side": "Support",
+     "name": "Jackson County",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146733"
+     ],
+     "lobbying_year": 48000
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146013",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200035",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200692"
+     ],
+     "lobbying_year": 42472
+    },
+    {
+     "side": "Oppose",
+     "name": "Washington County Chamber of Commerce",
+     "date": "5/5/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/202702"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Consumer Justice",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146181",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/199911"
+     ],
+     "lobbying_year": 34871
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146176",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146223"
+     ],
+     "lobbying_year": 33949
+    },
+    {
+     "side": "Support",
+     "name": "City of Wilsonville",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147065"
+     ],
+     "lobbying_year": 23506
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Citizens' Utility Board",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/140497",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147182",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200021",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/203842"
+     ],
+     "lobbying_year": 16452
+    },
+    {
+     "side": "Support",
+     "id": "or_bga",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146344",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200501"
+     ],
+     "lobbying_year": 6977
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Working Families Party",
+     "date": "4/30/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200211"
+     ],
+     "lobbying_year": 3734
+    },
+    {
+     "side": "Support",
+     "id": "or_nwec",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146100"
+     ],
+     "lobbying_year": 1120
+    },
+    {
+     "side": "Support",
+     "id": "or_ccc",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146849"
+     ],
+     "lobbying_year": 532
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136145",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146825",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200210",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200275"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_electrify_now",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/141248"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/143211"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_gorge_friends",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/145127",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/198973",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/199777"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_ob4c",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/145355"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_dcgwc",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/145377"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_data_center_coalition",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/145942"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_cep",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146274",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/203795"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146398"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_milwaukie",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146537"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_gei",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147001"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147108",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/203217"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147141"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147204"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Consolidated Oregon Indivisible Network",
+     "date": "3/6/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/147215",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/199677",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/201850"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 7,
+    "Oppose": 2,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 186,
+    "Oppose": 9,
+    "Neutral": 1,
+    "Other": 3
+   },
+   "money": {
+    "Support": 1602503,
+    "Oppose": 330591,
+    "Neutral": 237591
+   }
+  },
+  {
+   "id": "2025 HB 3336",
+   "year": "2025",
+   "short": "Electric transmission policy",
+   "catchline": "Declares a state policy regarding the electric transmission system.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/HB3336",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/HB3336",
+   "positions": [
+    {
+     "side": "Support",
+     "id": "or_opp_aws",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136258"
+     ],
+     "lobbying_year": 237591
+    },
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136089",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208703"
+     ],
+     "lobbying_year": 130781
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136186",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/207646"
+     ],
+     "lobbying_year": 92309
+    },
+    {
+     "side": "Oppose",
+     "name": "Oregon Municipal Electric Utilities Association",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208723"
+     ],
+     "lobbying_year": 53432
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134390",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/207433"
+     ],
+     "lobbying_year": 42472
+    },
+    {
+     "side": "Support",
+     "name": "Community Renewable Energy Association",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134380"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Support",
+     "id": "or_columbia_riverkeeper",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/135596"
+     ],
+     "lobbying_year": 35284
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/135853"
+     ],
+     "lobbying_year": 33949
+    },
+    {
+     "side": "Support",
+     "id": "or_ossia",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/133186",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/207460"
+     ],
+     "lobbying_year": 33000
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/135860"
+     ],
+     "lobbying_year": 26822
+    },
+    {
+     "side": "Oppose",
+     "name": "City of Wilsonville",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208674"
+     ],
+     "lobbying_year": 23506
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Citizens' Utility Board",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136274"
+     ],
+     "lobbying_year": 16452
+    },
+    {
+     "side": "Support",
+     "id": "or_bga",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208447"
+     ],
+     "lobbying_year": 6977
+    },
+    {
+     "side": "Support",
+     "id": "or_nwec",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136156"
+     ],
+     "lobbying_year": 1120
+    },
+    {
+     "side": "Support",
+     "id": "or_350_eugene",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/133416"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Natural Resources Defense Council",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/133456"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134161"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134402",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208688"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "TechNet",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134540"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_cep",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134699"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134919"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136154"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_ob4c",
+     "date": "2/25/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/136264",
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208645"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "LineVision",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/207393"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Consolidated Oregon Indivisible Network",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208047"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_electrify_now",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208422"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "PAE Consulting Engineers",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208680"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Clean Grid Collaborative",
+     "date": "5/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/208698"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 4,
+    "Oppose": 1,
+    "Neutral": 0
+   },
+   "all": {
+    "Oppose": 4,
+    "Support": 100
+   },
+   "money": {
+    "Support": 692757,
+    "Oppose": 76938,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2025 SB 688",
+   "year": "2025",
+   "short": "Performance-based regulation of electric utilities",
+   "catchline": "Allows the Public Utility Commission to adopt a framework for carrying out performance-based regulation of electric companies and use incentives and penalties to induce electric companies to bring electric utility operations in line with the public interest and certain objectives.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/SB688",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/SB688",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "City of Portland",
+     "date": "3/17/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/156045"
+     ],
+     "lobbying_year": 598569
+    },
+    {
+     "side": "Oppose",
+     "name": "Portland General Electric",
+     "date": "3/17/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/161089"
+     ],
+     "lobbying_year": 332235
+    },
+    {
+     "side": "Support",
+     "name": "League of Oregon Cities",
+     "date": "3/17/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/152602"
+     ],
+     "lobbying_year": 101206
+    },
+    {
+     "side": "Neutral",
+     "name": "Oregon Municipal Electric Utilities Association",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/149807"
+     ],
+     "lobbying_year": 53432
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "3/17/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/156484"
+     ],
+     "lobbying_year": 51589
+    },
+    {
+     "side": "Support",
+     "id": "or_columbia_riverkeeper",
+     "date": "3/17/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/160822"
+     ],
+     "lobbying_year": 35284
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Consumer Justice",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/149335"
+     ],
+     "lobbying_year": 34871
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/151062"
+     ],
+     "lobbying_year": 33949
+    },
+    {
+     "side": "Support",
+     "id": "or_ossia",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/149099"
+     ],
+     "lobbying_year": 33000
+    },
+    {
+     "side": "Support",
+     "id": "or_beyond_toxics",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/149705"
+     ],
+     "lobbying_year": 16852
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Citizens' Utility Board",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/153143"
+     ],
+     "lobbying_year": 16452
+    },
+    {
+     "side": "Support",
+     "id": "or_nwec",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/150653"
+     ],
+     "lobbying_year": 1120
+    },
+    {
+     "side": "Support",
+     "id": "or_lwvor",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/148638"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/149929"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "3/12/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/151050"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Renewable Energy Coalition",
+     "date": "3/17/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/156819"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "3/17/2025",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/161024"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 2,
+    "Oppose": 1,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 33,
+    "Neutral": 1,
+    "Oppose": 6
+   },
+   "money": {
+    "Support": 922892,
+    "Oppose": 332235,
+    "Neutral": 53432
+   }
   }
  ]
 }
