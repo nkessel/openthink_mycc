@@ -2409,6 +2409,7 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
   stroke-opacity: 0.9 !important;
 }
 .node-org.sector .ring { fill: color-mix(in srgb, var(--sector, #a16207) 35%, #9ca3af); }
+.node-org.sector.has-logo .ring { fill: #f8fafc; }
 .list-card.sector-item,
 .detail-card.sector-item { border-left: 3px solid var(--sector, #a16207); }
 .cal-ev.sector-item { background: color-mix(in srgb, var(--sector, #a16207) 12%, transparent); }

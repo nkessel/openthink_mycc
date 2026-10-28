@@ -843,3 +843,8 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 
 ## 2026-10-28 — Land acknowledgement wording
 - index.html: "the lands and waters they have cared for countless generations" → "…cared for over countless generations" (Nathan's wording). Build passes.
+
+## 2026-10-28 — Logos for the Oregon opposition groups
+- 12 of 14 opposition groups now have logos (public/logos/or_opp_*), fetched from their own sites with the fetch-logos.mjs logic (Google's icon service for OBI, NFIB and NW Natural, whose sites gave no usable logo). Timber Unity and Eugene Residents for Energy Choice have no website, so they keep their initials. Paths added to research/money/or/opposition.json; public/money/or.json rebuilt.
+- Sector-layer bubbles with a logo now get a white fill behind it (the tinted fill was washing logos out); the coloured dashed ring stays.
+- Checked: contact sheet of all 12, Playwright desktop + phone with the layer on (0 page errors), build + Apps Script tests.

@@ -2,7 +2,7 @@
   "_about": "Oregon groups on the public record against specific climate bills or programs (Nathan, Oct 28: 'start with groups on the record'). Each stance names what was opposed, when, and a public source. Inclusion rule: an organization (not an individual or a local government) that testified 'Oppose' on a core climate bill in OLIS, sued over or backed a suit against the Climate Protection Program, or funded/ran a campaign against a climate ordinance. Left out: solar and renewable firms that opposed details of HB 2021 while backing clean energy; cities, counties and individual testimony. `ogec` = the client name in the Oregon Government Ethics Commission lobbying records.",
   "organizations": [
     {
-      "id": "or_opp_obi", "name": "Oregon Business & Industry", "abbrev": "OBI", "type": "business association",
+      "id": "or_opp_obi", "logo": "logos/or_opp_obi.png", "name": "Oregon Business & Industry", "abbrev": "OBI", "type": "business association",
       "description": "Statewide business trade association; the largest lobbying spender among Oregon climate-policy opponents.",
       "website": "https://oregonbusinessindustry.com", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
       "ogec": ["Oregon Business & Industry"],
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "id": "or_opp_farm_bureau", "name": "Oregon Farm Bureau", "abbrev": "OFB", "type": "agriculture association",
+      "id": "or_opp_farm_bureau", "logo": "logos/or_opp_farm_bureau.png", "name": "Oregon Farm Bureau", "abbrev": "OFB", "type": "agriculture association",
       "description": "Statewide farm and ranch organization.",
       "website": "https://oregonfb.org", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
       "ogec": ["Oregon Farm Bureau Federation"],
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "id": "or_opp_awec", "name": "Alliance of Western Energy Consumers", "abbrev": "AWEC", "type": "industrial energy users' association",
+      "id": "or_opp_awec", "logo": "logos/or_opp_awec.png", "name": "Alliance of Western Energy Consumers", "abbrev": "AWEC", "type": "industrial energy users' association",
       "description": "Represents large industrial energy users in Oregon, Washington and Idaho in utility rate and regulatory proceedings.",
       "website": "https://awec.solutions", "town": "Portland", "lat": 45.5152, "lng": -122.6784,
       "ogec": ["Alliance of Western Energy Consumers"],
@@ -34,7 +34,7 @@
       ]
     },
     {
-      "id": "or_opp_nfib", "name": "NFIB Oregon", "abbrev": "NFIB", "type": "small business association",
+      "id": "or_opp_nfib", "logo": "logos/or_opp_nfib.png", "name": "NFIB Oregon", "abbrev": "NFIB", "type": "small business association",
       "description": "Oregon chapter of the National Federation of Independent Business.",
       "website": "https://www.nfib.com/oregon/", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
       "ogec": [],
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "id": "or_opp_cascade_policy", "name": "Cascade Policy Institute", "abbrev": "Cascade Policy", "type": "think tank",
+      "id": "or_opp_cascade_policy", "logo": "logos/or_opp_cascade_policy.svg", "name": "Cascade Policy Institute", "abbrev": "Cascade Policy", "type": "think tank",
       "description": "Free-market policy research group.",
       "website": "https://cascadepolicy.org", "town": "Portland", "lat": 45.5152, "lng": -122.6784,
       "ogec": ["Cascade Policy Institute"],
@@ -63,7 +63,7 @@
       ]
     },
     {
-      "id": "or_opp_nw_natural", "name": "NW Natural", "abbrev": "NW Natural", "type": "gas utility",
+      "id": "or_opp_nw_natural", "logo": "logos/or_opp_nw_natural.png", "name": "NW Natural", "abbrev": "NW Natural", "type": "gas utility",
       "description": "Oregon's largest natural gas utility.",
       "website": "https://www.nwnatural.com", "town": "Portland", "lat": 45.5152, "lng": -122.6784,
       "ogec": ["NW Natural"],
@@ -73,7 +73,7 @@
       ]
     },
     {
-      "id": "or_opp_avista", "name": "Avista", "abbrev": "Avista", "type": "gas and electric utility",
+      "id": "or_opp_avista", "logo": "logos/or_opp_avista.svg", "name": "Avista", "abbrev": "Avista", "type": "gas and electric utility",
       "description": "Spokane-based utility serving natural gas customers in southern and eastern Oregon.",
       "website": "https://www.myavista.com", "town": "", "remote": true, "lat": 47.6588, "lng": -117.426,
       "ogec": ["Avista Corp."],
@@ -82,7 +82,7 @@
       ]
     },
     {
-      "id": "or_opp_cascade_natural_gas", "name": "Cascade Natural Gas", "abbrev": "Cascade Natural", "type": "gas utility",
+      "id": "or_opp_cascade_natural_gas", "logo": "logos/or_opp_cascade_natural_gas.png", "name": "Cascade Natural Gas", "abbrev": "Cascade Natural", "type": "gas utility",
       "description": "Natural gas utility serving central and eastern Oregon.",
       "website": "https://www.cngc.com", "town": "", "remote": true, "lat": 46.2112, "lng": -119.1372,
       "ogec": ["Cascade Natural Gas"],
@@ -91,7 +91,7 @@
       ]
     },
     {
-      "id": "or_opp_wspa", "name": "Western States Petroleum Association", "abbrev": "WSPA", "type": "oil industry association",
+      "id": "or_opp_wspa", "logo": "logos/or_opp_wspa.png", "name": "Western States Petroleum Association", "abbrev": "WSPA", "type": "oil industry association",
       "description": "California-based oil industry trade group whose members include Chevron, Shell and Exxon.",
       "website": "https://www.wspa.org", "town": "", "remote": true, "lat": 38.5816, "lng": -121.4944,
       "ogec": ["Western States Petroleum Association"],
@@ -100,7 +100,7 @@
       ]
     },
     {
-      "id": "or_opp_ofic", "name": "Oregon Forest & Industries Council", "abbrev": "OFIC", "type": "timber industry association",
+      "id": "or_opp_ofic", "logo": "logos/or_opp_ofic.png", "name": "Oregon Forest & Industries Council", "abbrev": "OFIC", "type": "timber industry association",
       "description": "Trade association of Oregon forest landowners and wood products companies.",
       "website": "https://ofic.com", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
       "ogec": ["Oregon Forest Industries Council"],
@@ -118,7 +118,7 @@
       ]
     },
     {
-      "id": "or_opp_data_center_coalition", "name": "Data Center Coalition", "abbrev": "DCC", "type": "industry association",
+      "id": "or_opp_data_center_coalition", "logo": "logos/or_opp_data_center_coalition.png", "name": "Data Center Coalition", "abbrev": "DCC", "type": "industry association",
       "description": "National trade group of data center owners and operators.",
       "website": "https://www.datacentercoalition.org", "town": "", "remote": true, "lat": 38.9072, "lng": -77.0369,
       "ogec": [],
@@ -127,7 +127,7 @@
       ]
     },
     {
-      "id": "or_opp_aws", "name": "Amazon Web Services", "abbrev": "AWS", "type": "company",
+      "id": "or_opp_aws", "logo": "logos/or_opp_aws.png", "name": "Amazon Web Services", "abbrev": "AWS", "type": "company",
       "description": "Amazon's cloud computing business, which runs large data centers in eastern Oregon. Lobbying shown is Amazon's (registered as Amazon.com Services, Inc.).",
       "website": "https://aws.amazon.com", "town": "", "remote": true, "lat": 45.6, "lng": -119.5,
       "ogec": ["Amazon.com Services, Inc."],

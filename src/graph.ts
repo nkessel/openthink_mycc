@@ -639,6 +639,7 @@ export function createGraph(
           .on("load", () => {
             label.style("display", "none");
             sel.select("circle.ring").attr("fill", "#f8fafc").style("stroke", "none"); // no white border around logos
+            sel.classed("has-logo", true); // sector rings keep their colour but get a white fill behind the logo
           })
           .on("error", function () { d3.select(this).remove(); });
         queueLogo(img.node()!, d.logo);
