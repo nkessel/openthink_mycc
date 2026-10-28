@@ -289,6 +289,135 @@
     "Oppose": 1,
     "Neutral": 0
    }
+  },
+  {
+   "id": "2026 SB 1541",
+   "session": "2026R1",
+   "measure": "SB1541",
+   "short": "Climate Resilience Superfund (polluters pay)",
+   "catchline": "Establishes the Climate Superfund Cost Recovery Program as an interagency response to the effects of climate change.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1541",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1541",
+   "testimony_total": 574,
+   "testimony_by_position": {
+    "Support": 474,
+    "Oppose": 100
+   },
+   "other_orgs": {
+    "Support": 24,
+    "Oppose": 15,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4031",
+   "session": "2026R1",
+   "measure": "HB4031",
+   "short": "Faster permits for wind and solar before federal tax credits end",
+   "catchline": "Exempts an energy facility from needing a site certificate from the Energy Facility Siting Council if the energy facility produces power from a renewable energy source, qualifies for certain federal renewable energy tax credits and is placed in service on or before December 31, 2030, or a date allowed by exception and a local land use application for the facility is submitted  on or before December 31, 2028.",
+   "outcome": "Passed",
+   "chapter": "12",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4031",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4031",
+   "testimony_total": 27,
+   "testimony_by_position": {
+    "Support": 11,
+    "Oppose": 16
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 5,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4076",
+   "session": "2026R1",
+   "measure": "HB4076",
+   "short": "Easier land-use approval for energy projects near existing grid",
+   "catchline": "Requires the Energy Facility Siting Council to find that reasons justify why the state policy in applicable statewide planning goals should not apply to a proposed energy facility if the council finds that the proposed energy facility will deliver electricity to the electric grid using an existing energy facility\\u0027s surplus interconnection and does not require associated transmission lines more than two miles from the existing energy facility.",
+   "outcome": "Passed",
+   "chapter": "46",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4076",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4076",
+   "testimony_total": 12,
+   "testimony_by_position": {
+    "Oppose": 5,
+    "Support": 7
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 4,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 SB 1582",
+   "session": "2026R1",
+   "measure": "SB1582",
+   "short": "Community energy and virtual power plants",
+   "catchline": "Requires each electric company to develop a distributed power plant program for the procurement of grid services to be provided by distributed energy resources.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1582",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1582",
+   "testimony_total": 60,
+   "testimony_by_position": {
+    "Oppose": 12,
+    "Support": 47,
+    "Neutral": 1
+   },
+   "other_orgs": {
+    "Support": 7,
+    "Oppose": 2,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 SB 1588",
+   "session": "2026R1",
+   "measure": "SB1588",
+   "short": "Healthier, more efficient homes",
+   "catchline": "Requires each electric company to develop an inclusive utility investment program to provide financing for customers\\u0027 energy efficiency upgrades or renewable energy projects.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1588",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1588",
+   "testimony_total": 44,
+   "testimony_by_position": {
+    "Support": 36,
+    "Oppose": 7,
+    "Neutral": 1
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 2,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4100",
+   "session": "2026R1",
+   "measure": "HB4100",
+   "short": "Fuel terminals must show they can pay for spill cleanup",
+   "catchline": "Requires owners or operators of bulk oils or liquid fuels terminals to obtain a certificate of financial responsibility from the Department of Environmental Quality.",
+   "outcome": "Passed",
+   "chapter": "54",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4100",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4100",
+   "testimony_total": 51,
+   "testimony_by_position": {
+    "Support": 45,
+    "Oppose": 3,
+    "Neutral": 3
+   },
+   "other_orgs": {
+    "Support": 11,
+    "Oppose": 0,
+    "Neutral": 1
+   }
   }
  ]
 }

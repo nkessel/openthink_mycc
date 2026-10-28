@@ -29,6 +29,12 @@ export const BILLS = [
   ["2025R1", "HB3546", "POWER Act: large energy users pay their share"],
   ["2025R1", "HB3336", "Electric transmission policy"],
   ["2025R1", "SB688", "Performance-based regulation of electric utilities"],
+  ["2026R1", "SB1541", "Climate Resilience Superfund (polluters pay)"],
+  ["2026R1", "HB4031", "Faster permits for wind and solar before federal tax credits end"],
+  ["2026R1", "HB4076", "Easier land-use approval for energy projects near existing grid"],
+  ["2026R1", "SB1582", "Community energy and virtual power plants"],
+  ["2026R1", "SB1588", "Healthier, more efficient homes"],
+  ["2026R1", "HB4100", "Fuel terminals must show they can pay for spill cleanup"],
 ];
 const BASE = "https://olis.oregonlegislature.gov";
 const UA = "Mozilla/5.0 (compatible; research script; public records)";
@@ -63,6 +69,7 @@ for (const [session, measure, short] of BILLS) {
     if (!org) {
       if (behalf && /^(Support|Oppose|Neutral)$/.test(pos)) otherOrgs[pos] = (otherOrgs[pos] || 0) + 1;
       if (!behalf && cityOrOrg) unmatched[cityOrOrg] = (unmatched[cityOrOrg] || 0) + 1;
+      if (behalf && process.env.UNMATCHED_OUT) unmatched[`[behalf] ${behalf}`] = (unmatched[`[behalf] ${behalf}`] || 0) + 1;
       continue; // counted above; names never stored
     }
     const href = /href="([^"]*PublicTestimonyDocument[^"]*)"/.exec(tr)?.[1];

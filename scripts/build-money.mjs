@@ -1,7 +1,8 @@
 // Builds public/money/<map>.json, the "Money & opposition" layer (Oct 28: financial flows and oppositional
 // groups on the Oregon map), from the research files in research/money/<map>/:
 //   opposition.json                 groups on the public record against climate bills, each stance with a source
-//   ogec-lobbying-2021-2025.csv     Oregon Government Ethics Commission lobbying spending by client and year
+//   ogec-lobbying.csv               Oregon Government Ethics Commission lobbying spending by client and quarter
+//                                   (scripts/fetch-ogec-lobbying.mjs <year>)
 //                                   (public records lookup: apps.oregon.gov/OGEC/EFS/Records; contact names left out)
 //   olis-bills.json, olis-bill-positions.csv   organizational testimony on key climate & energy bills
 //                                   (scripts/fetch-olis-bills.mjs), matched to groups by olis-org-aliases.json
@@ -14,7 +15,7 @@ import { parseCsvText } from "./csv.mjs";
 const map = process.argv[2] || "or";
 const dir = `research/money/${map}`;
 const src = JSON.parse(readFileSync(`${dir}/opposition.json`, "utf8"));
-const lob = parseCsvText(readFileSync(`${dir}/ogec-lobbying-2021-2025.csv`, "utf8"));
+const lob = parseCsvText(readFileSync(`${dir}/ogec-lobbying.csv`, "utf8"));
 const OGEC = "https://apps.oregon.gov/OGEC/EFS/Records";
 // Quarters reported in obvious error (ogec-corrections.json) are left out of every total.
 const corrections = existsSync(`${dir}/ogec-corrections.json`) ? JSON.parse(readFileSync(`${dir}/ogec-corrections.json`, "utf8")) : [];
@@ -25,6 +26,13 @@ for (const c of corrections) {
   r.total = String(Number(r.total) - Number(r[k] || 0));
   r[k] = "0";
 }
+// The period covered: first year to the latest quarter anyone has reported spending in.
+const years = [...new Set(lob.map((r) => r.year))].sort();
+const lastYear = years.at(-1);
+const lastQ = [4, 3, 2, 1].find((q) => lob.some((r) => r.year === lastYear && Number(r[`q${q}`]) > 0)) || 4;
+const PERIOD = `${years[0]}–${lastYear}`;
+const THROUGH = lastQ === 4 ? lastYear : `${lastYear} Q${lastQ}`;
+const WHAT = `Registered lobbying spending, ${PERIOD}${lastQ === 4 ? "" : ` (through ${THROUGH})`}`;
 const HUB = { id: `${map}_hub_legislature`, name: "Oregon Legislature", abbrev: "Legislature" };
 
 /** Yearly (and quarterly) lobbying totals for a list of OGEC client names (a client listed under several contacts counts once). */
@@ -45,13 +53,13 @@ function lobbying(names) {
 const flows = [];
 const opposition = src.organizations.map(({ ogec, town, ...o }) => {
   const l = lobbying(ogec || []);
-  if (l) flows.push({ from: o.id, to: HUB.id, kind: "lobbying", amount: l.total, years: l.years, quarters: l.quarters, what: "Registered lobbying spending, 2021–2025", source: OGEC });
+  if (l) flows.push({ from: o.id, to: HUB.id, kind: "lobbying", amount: l.total, years: l.years, quarters: l.quarters, what: WHAT, source: OGEC });
   return { ...o, geographic_focus: town || "Statewide", lobbying: l };
 });
 for (const [id, names] of Object.entries(src.climate_lobbying)) {
   if (id.startsWith("_")) continue;
   const l = lobbying(names);
-  if (l) flows.push({ from: id, to: HUB.id, kind: "lobbying", amount: l.total, years: l.years, quarters: l.quarters, what: "Registered lobbying spending, 2021–2025", source: OGEC });
+  if (l) flows.push({ from: id, to: HUB.id, kind: "lobbying", amount: l.total, years: l.years, quarters: l.quarters, what: WHAT, source: OGEC });
 }
 
 // Bills: who testified for and against, as organizations (individuals are never kept), and what the named groups on
@@ -105,7 +113,7 @@ if (existsSync(ores)) {
   console.log("ORESTAR export found; add its rows here once its column names are known:", ores);
 }
 
-const out = { generated_at: new Date().toISOString().slice(0, 10), map, hub: HUB, opposition, flows, bills };
+const out = { generated_at: new Date().toISOString().slice(0, 10), map, period: PERIOD, through: THROUGH, hub: HUB, opposition, flows, bills };
 mkdirSync("public/money", { recursive: true });
 writeFileSync(`public/money/${map}.json`, JSON.stringify(out, null, 1) + "\n");
 const sum = (k) => flows.filter((f) => f.kind === k).length;

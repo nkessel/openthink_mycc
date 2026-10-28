@@ -862,3 +862,9 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Opposing groups have a glowing red halo (solid ring + drop-shadow glow) instead of the dashed sector ring; nodes now carry a sector-<id> class.
 - The Oregon Legislature is drawn as a gold capitol icon (its circle stays as an invisible click target). Legend updated with all of these.
 - Checked: desktop + phone screenshots, build, Apps Script tests.
+
+## 2026-10-28 — Oregon money layer: 2026 data (Nathan: "can you add 2026 data?")
+- Lobbying: scripts/fetch-ogec-lobbying.mjs (new; the OGEC records fetch that was a one-off before) pulled 2026 (Q1–Q3 reported so far). Re-pulling 2025 reproduced the earlier file exactly, so the dedupe rule is unchanged. File renamed ogec-lobbying.csv; the period ("2021–2026, through 2026 Q3") is now worked out from the data and shown in the map.
+- Bills: +6 from the 2026 short session (SB 1541 Climate Resilience Superfund, HB 4031, HB 4076, SB 1582, SB 1588, HB 4100), picked from ODOE's and Climate Solutions' session recaps; outcomes from OLIS. 19 bills in all. A few more 2026 organizations added to the alias list.
+- Added a note that "against" isn't always anti-climate (e.g. Multnomah County opposed HB 4100 because its spill insurance wasn't strong enough; checked in their testimony).
+- Checked: build, Apps Script tests, Playwright screenshots (OEC details shows 2026 testimony and 2026 quarters).

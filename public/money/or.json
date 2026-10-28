@@ -1,6 +1,8 @@
 {
  "generated_at": "2026-10-28",
  "map": "or",
+ "period": "2021–2026",
+ "through": "2026 Q3",
  "hub": {
   "id": "or_hub_legislature",
   "name": "Oregon Legislature",
@@ -36,7 +38,8 @@
      "2022": 174349,
      "2023": 374205,
      "2024": 365476,
-     "2025": 483014
+     "2025": 483014,
+     "2026": 98275
     },
     "quarters": {
      "2021Q1": 121653,
@@ -58,9 +61,13 @@
      "2025Q1": 192526,
      "2025Q2": 195192,
      "2025Q3": 52470,
-     "2025Q4": 42827
+     "2025Q4": 42827,
+     "2026Q1": 65018,
+     "2026Q2": 16260,
+     "2026Q3": 16996,
+     "2026Q4": 0
     },
-    "total": 1624064
+    "total": 1722339
    }
   },
   {
@@ -97,7 +104,8 @@
      "2022": 132694,
      "2023": 230375,
      "2024": 46242,
-     "2025": 163655
+     "2025": 163655,
+     "2026": 75837
     },
     "quarters": {
      "2021Q1": 70124,
@@ -119,9 +127,13 @@
      "2025Q1": 61676,
      "2025Q2": 64531,
      "2025Q3": 9809,
-     "2025Q4": 27638
+     "2025Q4": 27638,
+     "2026Q1": 52322,
+     "2026Q2": 12864,
+     "2026Q3": 10651,
+     "2026Q4": 0
     },
-    "total": 754276
+    "total": 830113
    }
   },
   {
@@ -158,7 +170,8 @@
      "2022": 39900,
      "2023": 57000,
      "2024": 22800,
-     "2025": 57000
+     "2025": 57000,
+     "2026": 22800
     },
     "quarters": {
      "2021Q1": 22800,
@@ -180,9 +193,13 @@
      "2025Q1": 22800,
      "2025Q2": 22800,
      "2025Q3": 5700,
-     "2025Q4": 5700
+     "2025Q4": 5700,
+     "2026Q1": 11400,
+     "2026Q2": 5700,
+     "2026Q3": 5700,
+     "2026Q4": 0
     },
-    "total": 233700
+    "total": 256500
    }
   },
   {
@@ -258,7 +275,8 @@
      "2022": 27200,
      "2023": 36000,
      "2024": 48000,
-     "2025": 48000
+     "2025": 48000,
+     "2026": 36000
     },
     "quarters": {
      "2022Q1": 0,
@@ -276,9 +294,13 @@
      "2025Q1": 8000,
      "2025Q2": 16000,
      "2025Q3": 12000,
-     "2025Q4": 12000
+     "2025Q4": 12000,
+     "2026Q1": 12000,
+     "2026Q2": 12000,
+     "2026Q3": 12000,
+     "2026Q4": 0
     },
-    "total": 159200
+    "total": 195200
    }
   },
   {
@@ -310,7 +332,8 @@
      "2022": 92612,
      "2023": 244017,
      "2024": 216744,
-     "2025": 323868
+     "2025": 323868,
+     "2026": 241880
     },
     "quarters": {
      "2021Q1": 35850,
@@ -332,9 +355,13 @@
      "2025Q1": 84716,
      "2025Q2": 84560,
      "2025Q3": 68532,
-     "2025Q4": 86060
+     "2025Q4": 86060,
+     "2026Q1": 81060,
+     "2026Q2": 67632,
+     "2026Q3": 93188,
+     "2026Q4": 0
     },
-    "total": 1025838
+    "total": 1267718
    }
   },
   {
@@ -362,7 +389,8 @@
      "2022": 57000,
      "2023": 38000,
      "2024": 57000,
-     "2025": 57000
+     "2025": 57000,
+     "2026": 42750
     },
     "quarters": {
      "2021Q1": 0,
@@ -384,9 +412,13 @@
      "2025Q1": 14250,
      "2025Q2": 14250,
      "2025Q3": 14250,
-     "2025Q4": 14250
+     "2025Q4": 14250,
+     "2026Q1": 14250,
+     "2026Q2": 14250,
+     "2026Q3": 14250,
+     "2026Q4": 0
     },
-    "total": 256500
+    "total": 299250
    }
   },
   {
@@ -414,7 +446,8 @@
      "2022": 42000,
      "2023": 84000,
      "2024": 90560,
-     "2025": 90000
+     "2025": 90000,
+     "2026": 67500
     },
     "quarters": {
      "2021Q1": 10500,
@@ -436,9 +469,13 @@
      "2025Q1": 22500,
      "2025Q2": 22500,
      "2025Q3": 22500,
-     "2025Q4": 22500
+     "2025Q4": 22500,
+     "2026Q1": 22500,
+     "2026Q2": 22500,
+     "2026Q3": 22500,
+     "2026Q4": 0
     },
-    "total": 348560
+    "total": 416060
    }
   },
   {
@@ -466,7 +503,8 @@
      "2022": 175397,
      "2023": 216442,
      "2024": 231856,
-     "2025": 226284
+     "2025": 226284,
+     "2026": 141000
     },
     "quarters": {
      "2021Q1": 30000,
@@ -488,9 +526,13 @@
      "2025Q1": 55500,
      "2025Q2": 43000,
      "2025Q3": 55892,
-     "2025Q4": 71893
+     "2025Q4": 71893,
+     "2026Q1": 55500,
+     "2026Q2": 30000,
+     "2026Q3": 55500,
+     "2026Q4": 0
     },
-    "total": 965979
+    "total": 1106979
    }
   },
   {
@@ -517,7 +559,8 @@
      "2022": 98582,
      "2023": 511098,
      "2024": 325313,
-     "2025": 253701
+     "2025": 253701,
+     "2026": 257652
     },
     "quarters": {
      "2021Q1": 140777,
@@ -539,9 +582,13 @@
      "2025Q1": 86856,
      "2025Q2": 76538,
      "2025Q3": 44896,
-     "2025Q4": 45411
+     "2025Q4": 45411,
+     "2026Q1": 58769,
+     "2026Q2": 143129,
+     "2026Q3": 55754,
+     "2026Q4": 0
     },
-    "total": 1527834
+    "total": 1785486
    }
   },
   {
@@ -609,7 +656,8 @@
      "2022": 137708,
      "2023": 205534,
      "2024": 261658,
-     "2025": 237591
+     "2025": 237591,
+     "2026": 154835
     },
     "quarters": {
      "2021Q1": 29532,
@@ -631,9 +679,13 @@
      "2025Q1": 65885,
      "2025Q2": 42591,
      "2025Q3": 70250,
-     "2025Q4": 58865
+     "2025Q4": 58865,
+     "2026Q1": 53523,
+     "2026Q2": 39731,
+     "2026Q3": 61582,
+     "2026Q4": 0
     },
-    "total": 980770
+    "total": 1135605
    }
   }
  ],
@@ -642,13 +694,14 @@
    "from": "or_opp_obi",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 1624064,
+   "amount": 1722339,
    "years": {
     "2021": 227020,
     "2022": 174349,
     "2023": 374205,
     "2024": 365476,
-    "2025": 483014
+    "2025": 483014,
+    "2026": 98275
    },
    "quarters": {
     "2021Q1": 121653,
@@ -670,22 +723,27 @@
     "2025Q1": 192526,
     "2025Q2": 195192,
     "2025Q3": 52470,
-    "2025Q4": 42827
+    "2025Q4": 42827,
+    "2026Q1": 65018,
+    "2026Q2": 16260,
+    "2026Q3": 16996,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_farm_bureau",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 754276,
+   "amount": 830113,
    "years": {
     "2021": 181310,
     "2022": 132694,
     "2023": 230375,
     "2024": 46242,
-    "2025": 163655
+    "2025": 163655,
+    "2026": 75837
    },
    "quarters": {
     "2021Q1": 70124,
@@ -707,22 +765,27 @@
     "2025Q1": 61676,
     "2025Q2": 64531,
     "2025Q3": 9809,
-    "2025Q4": 27638
+    "2025Q4": 27638,
+    "2026Q1": 52322,
+    "2026Q2": 12864,
+    "2026Q3": 10651,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_awec",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 233700,
+   "amount": 256500,
    "years": {
     "2021": 57000,
     "2022": 39900,
     "2023": 57000,
     "2024": 22800,
-    "2025": 57000
+    "2025": 57000,
+    "2026": 22800
    },
    "quarters": {
     "2021Q1": 22800,
@@ -744,21 +807,26 @@
     "2025Q1": 22800,
     "2025Q2": 22800,
     "2025Q3": 5700,
-    "2025Q4": 5700
+    "2025Q4": 5700,
+    "2026Q1": 11400,
+    "2026Q2": 5700,
+    "2026Q3": 5700,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_cascade_policy",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 159200,
+   "amount": 195200,
    "years": {
     "2022": 27200,
     "2023": 36000,
     "2024": 48000,
-    "2025": 48000
+    "2025": 48000,
+    "2026": 36000
    },
    "quarters": {
     "2022Q1": 0,
@@ -776,22 +844,27 @@
     "2025Q1": 8000,
     "2025Q2": 16000,
     "2025Q3": 12000,
-    "2025Q4": 12000
+    "2025Q4": 12000,
+    "2026Q1": 12000,
+    "2026Q2": 12000,
+    "2026Q3": 12000,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_nw_natural",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 1025838,
+   "amount": 1267718,
    "years": {
     "2021": 148597,
     "2022": 92612,
     "2023": 244017,
     "2024": 216744,
-    "2025": 323868
+    "2025": 323868,
+    "2026": 241880
    },
    "quarters": {
     "2021Q1": 35850,
@@ -813,22 +886,27 @@
     "2025Q1": 84716,
     "2025Q2": 84560,
     "2025Q3": 68532,
-    "2025Q4": 86060
+    "2025Q4": 86060,
+    "2026Q1": 81060,
+    "2026Q2": 67632,
+    "2026Q3": 93188,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_avista",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 256500,
+   "amount": 299250,
    "years": {
     "2021": 47500,
     "2022": 57000,
     "2023": 38000,
     "2024": 57000,
-    "2025": 57000
+    "2025": 57000,
+    "2026": 42750
    },
    "quarters": {
     "2021Q1": 0,
@@ -850,22 +928,27 @@
     "2025Q1": 14250,
     "2025Q2": 14250,
     "2025Q3": 14250,
-    "2025Q4": 14250
+    "2025Q4": 14250,
+    "2026Q1": 14250,
+    "2026Q2": 14250,
+    "2026Q3": 14250,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_cascade_natural_gas",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 348560,
+   "amount": 416060,
    "years": {
     "2021": 42000,
     "2022": 42000,
     "2023": 84000,
     "2024": 90560,
-    "2025": 90000
+    "2025": 90000,
+    "2026": 67500
    },
    "quarters": {
     "2021Q1": 10500,
@@ -887,22 +970,27 @@
     "2025Q1": 22500,
     "2025Q2": 22500,
     "2025Q3": 22500,
-    "2025Q4": 22500
+    "2025Q4": 22500,
+    "2026Q1": 22500,
+    "2026Q2": 22500,
+    "2026Q3": 22500,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_wspa",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 965979,
+   "amount": 1106979,
    "years": {
     "2021": 116000,
     "2022": 175397,
     "2023": 216442,
     "2024": 231856,
-    "2025": 226284
+    "2025": 226284,
+    "2026": 141000
    },
    "quarters": {
     "2021Q1": 30000,
@@ -924,22 +1012,27 @@
     "2025Q1": 55500,
     "2025Q2": 43000,
     "2025Q3": 55892,
-    "2025Q4": 71893
+    "2025Q4": 71893,
+    "2026Q1": 55500,
+    "2026Q2": 30000,
+    "2026Q3": 55500,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_ofic",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 1527834,
+   "amount": 1785486,
    "years": {
     "2021": 339140,
     "2022": 98582,
     "2023": 511098,
     "2024": 325313,
-    "2025": 253701
+    "2025": 253701,
+    "2026": 257652
    },
    "quarters": {
     "2021Q1": 140777,
@@ -961,22 +1054,27 @@
     "2025Q1": 86856,
     "2025Q2": 76538,
     "2025Q3": 44896,
-    "2025Q4": 45411
+    "2025Q4": 45411,
+    "2026Q1": 58769,
+    "2026Q2": 143129,
+    "2026Q3": 55754,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_opp_aws",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 980770,
+   "amount": 1135605,
    "years": {
     "2021": 138279,
     "2022": 137708,
     "2023": 205534,
     "2024": 261658,
-    "2025": 237591
+    "2025": 237591,
+    "2026": 154835
    },
    "quarters": {
     "2021Q1": 29532,
@@ -998,22 +1096,27 @@
     "2025Q1": 65885,
     "2025Q2": 42591,
     "2025Q3": 70250,
-    "2025Q4": 58865
+    "2025Q4": 58865,
+    "2026Q1": 53523,
+    "2026Q2": 39731,
+    "2026Q3": 61582,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_oec",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 324383,
+   "amount": 330468,
    "years": {
     "2021": 64838,
     "2022": 36677,
     "2023": 85049,
     "2024": 45510,
-    "2025": 92309
+    "2025": 92309,
+    "2026": 6085
    },
    "quarters": {
     "2021Q1": 26989,
@@ -1035,22 +1138,27 @@
     "2025Q1": 34859,
     "2025Q2": 53230,
     "2025Q3": 4220,
-    "2025Q4": 0
+    "2025Q4": 0,
+    "2026Q1": 5500,
+    "2026Q2": 585,
+    "2026Q3": 0,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_climate_solutions",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 356441,
+   "amount": 434505,
    "years": {
     "2021": 69910,
     "2022": 70384,
     "2023": 74572,
     "2024": 89986,
-    "2025": 51589
+    "2025": 51589,
+    "2026": 78064
    },
    "quarters": {
     "2021Q1": 21100,
@@ -1072,22 +1180,27 @@
     "2025Q1": 10812,
     "2025Q2": 14844,
     "2025Q3": 3568,
-    "2025Q4": 22366
+    "2025Q4": 22366,
+    "2026Q1": 25399,
+    "2026Q2": 25721,
+    "2026Q3": 26943,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_rnw",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 294851,
+   "amount": 347816,
    "years": {
     "2021": 52657,
     "2022": 55174,
     "2023": 82156,
     "2024": 78042,
-    "2025": 26822
+    "2025": 26822,
+    "2026": 52965
    },
    "quarters": {
     "2021Q1": 12679,
@@ -1109,22 +1222,27 @@
     "2025Q1": 20750,
     "2025Q2": 0,
     "2025Q3": 6072,
-    "2025Q4": 0
+    "2025Q4": 0,
+    "2026Q1": 18315,
+    "2026Q2": 17325,
+    "2026Q3": 17325,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_olcv",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 56228,
+   "amount": 58616,
    "years": {
     "2021": 7487,
     "2022": 0,
     "2023": 4303,
     "2024": 1966,
-    "2025": 42472
+    "2025": 42472,
+    "2026": 2388
    },
    "quarters": {
     "2021Q1": 3776,
@@ -1146,19 +1264,24 @@
     "2025Q1": 14677,
     "2025Q2": 17312,
     "2025Q3": 9503,
-    "2025Q4": 979
+    "2025Q4": 979,
+    "2026Q1": 2388,
+    "2026Q2": 0,
+    "2026Q3": 0,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_sierra_club",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 35994,
+   "amount": 36475,
    "years": {
     "2024": 2045,
-    "2025": 33949
+    "2025": 33949,
+    "2026": 481
    },
    "quarters": {
     "2024Q1": 1832,
@@ -1168,22 +1291,27 @@
     "2025Q1": 11156,
     "2025Q2": 19335,
     "2025Q3": 0,
-    "2025Q4": 3457
+    "2025Q4": 3457,
+    "2026Q1": 0,
+    "2026Q2": 481,
+    "2026Q3": 0,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_verde",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 81308,
+   "amount": 85260,
    "years": {
     "2021": 2041,
     "2022": 1060,
     "2023": 18474,
     "2024": 30335,
-    "2025": 29398
+    "2025": 29398,
+    "2026": 3952
    },
    "quarters": {
     "2021Q1": 938,
@@ -1205,39 +1333,49 @@
     "2025Q1": 7823,
     "2025Q2": 16626,
     "2025Q3": 3846,
-    "2025Q4": 1102
+    "2025Q4": 1102,
+    "2026Q1": 2890,
+    "2026Q2": 769,
+    "2026Q3": 292,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_columbia_riverkeeper",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 35284,
+   "amount": 51610,
    "years": {
-    "2025": 35284
+    "2025": 35284,
+    "2026": 16326
    },
    "quarters": {
     "2025Q1": 11125,
     "2025Q2": 18271,
     "2025Q3": 3919,
-    "2025Q4": 1969
+    "2025Q4": 1969,
+    "2026Q1": 12099,
+    "2026Q2": 848,
+    "2026Q3": 3379,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_beyond_toxics",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 21166,
+   "amount": 25517,
    "years": {
     "2021": 1849,
     "2022": 208,
     "2023": 1899,
     "2024": 358,
-    "2025": 16852
+    "2025": 16852,
+    "2026": 4351
    },
    "quarters": {
     "2021Q1": 1651,
@@ -1259,9 +1397,13 @@
     "2025Q1": 16852,
     "2025Q2": 0,
     "2025Q3": 0,
-    "2025Q4": 0
+    "2025Q4": 0,
+    "2026Q1": 808,
+    "2026Q2": 186,
+    "2026Q3": 3357,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
@@ -1271,7 +1413,8 @@
    "amount": 1661,
    "years": {
     "2024": 1661,
-    "2025": 0
+    "2025": 0,
+    "2026": 0
    },
    "quarters": {
     "2024Q1": 1586,
@@ -1281,22 +1424,27 @@
     "2025Q1": 0,
     "2025Q2": 0,
     "2025Q3": 0,
-    "2025Q4": 0
+    "2025Q4": 0,
+    "2026Q1": 0,
+    "2026Q2": 0,
+    "2026Q3": 0,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_1000_friends",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 216250,
+   "amount": 224250,
    "years": {
     "2021": 49000,
     "2022": 48000,
     "2023": 48750,
     "2024": 48000,
-    "2025": 22500
+    "2025": 22500,
+    "2026": 8000
    },
    "quarters": {
     "2021Q1": 9000,
@@ -1318,22 +1466,27 @@
     "2025Q1": 11250,
     "2025Q2": 11250,
     "2025Q3": 0,
-    "2025Q4": 0
+    "2025Q4": 0,
+    "2026Q1": 0,
+    "2026Q2": 4000,
+    "2026Q3": 4000,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
    "from": "or_environment_oregon",
    "to": "or_hub_legislature",
    "kind": "lobbying",
-   "amount": 41444,
+   "amount": 52919,
    "years": {
     "2021": 6380,
     "2022": 1659,
     "2023": 9224,
     "2024": 11472,
-    "2025": 12709
+    "2025": 12709,
+    "2026": 11475
    },
    "quarters": {
     "2021Q1": 3963,
@@ -1355,9 +1508,13 @@
     "2025Q1": 5699,
     "2025Q2": 3153,
     "2025Q3": 1789,
-    "2025Q4": 2068
+    "2025Q4": 2068,
+    "2026Q1": 5818,
+    "2026Q2": 2863,
+    "2026Q3": 2794,
+    "2026Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
@@ -1394,7 +1551,7 @@
     "2025Q3": 0,
     "2025Q4": 121
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
@@ -1411,7 +1568,7 @@
     "2025Q3": 0,
     "2025Q4": 0
    },
-   "what": "Registered lobbying spending, 2021–2025",
+   "what": "Registered lobbying spending, 2021–2026 (through 2026 Q3)",
    "source": "https://apps.oregon.gov/OGEC/EFS/Records"
   },
   {
@@ -5267,6 +5424,747 @@
     "Support": 922892,
     "Oppose": 332235,
     "Neutral": 53432
+   }
+  },
+  {
+   "id": "2026 SB 1541",
+   "year": "2026",
+   "short": "Climate Resilience Superfund (polluters pay)",
+   "catchline": "Establishes the Climate Superfund Cost Recovery Program as an interagency response to the effects of climate change.",
+   "outcome": "Did not pass (in senate committee)",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1541",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1541",
+   "positions": [
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/238158"
+     ],
+     "lobbying_year": 78064
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_farm_bureau",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/235704"
+     ],
+     "lobbying_year": 75837
+    },
+    {
+     "side": "Oppose",
+     "name": "Associated Oregon Loggers",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/236895"
+     ],
+     "lobbying_year": 65070
+    },
+    {
+     "side": "Support",
+     "name": "Jackson County",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/238254"
+     ],
+     "lobbying_year": 36000
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Local 503",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/237780"
+     ],
+     "lobbying_year": 30066
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/234983"
+     ],
+     "lobbying_year": 6085
+    },
+    {
+     "side": "Support",
+     "id": "or_beyond_toxics",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/233374"
+     ],
+     "lobbying_year": 4351
+    },
+    {
+     "side": "Support",
+     "id": "or_emo",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/235077"
+     ],
+     "lobbying_year": 3213
+    },
+    {
+     "side": "Support",
+     "id": "or_apano",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/228672"
+     ],
+     "lobbying_year": 409
+    },
+    {
+     "side": "Support",
+     "id": "or_rogue_climate",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/226206",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/238275"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_lwvor",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/227674"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_third_act_oregon",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/228319",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/228474"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_dcgwc",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/228475"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/230542"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/230659"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/231046",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/235559"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/234563",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/237345",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/238722"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_gorge_friends",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/234578"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_cep",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/234661",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/234669"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "350 Salem",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/237365",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/238511"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "2/5/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/239160"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 24,
+    "Oppose": 15,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 474,
+    "Oppose": 100
+   },
+   "money": {
+    "Support": 158187,
+    "Oppose": 140907,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4031",
+   "year": "2026",
+   "short": "Faster permits for wind and solar before federal tax credits end",
+   "catchline": "Exempts an energy facility from needing a site certificate from the Energy Facility Siting Council if the energy facility produces power from a renewable energy source, qualifies for certain federal renewable energy tax credits and is placed in service on or before December 31, 2030, or a date allowed by exception and a local land use application for the facility is submitted  on or before December 31, 2028.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4031",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4031",
+   "positions": [
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/3/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/226228"
+     ],
+     "lobbying_year": 78064
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "2/3/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/229648"
+     ],
+     "lobbying_year": 52965
+    },
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "2/3/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/229569"
+     ],
+     "lobbying_year": 42627
+    },
+    {
+     "side": "Support",
+     "id": "or_ossia",
+     "date": "2/3/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/225941",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/250710"
+     ],
+     "lobbying_year": 12000
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/3/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/228960"
+     ],
+     "lobbying_year": 6085
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Clean Grid Collaborative",
+     "date": "2/23/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/252799"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 2,
+    "Oppose": 5,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 11,
+    "Oppose": 16
+   },
+   "money": {
+    "Support": 191741,
+    "Oppose": 0,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4076",
+   "year": "2026",
+   "short": "Easier land-use approval for energy projects near existing grid",
+   "catchline": "Requires the Energy Facility Siting Council to find that reasons justify why the state policy in applicable statewide planning goals should not apply to a proposed energy facility if the council finds that the proposed energy facility will deliver electricity to the electric grid using an existing energy facility\\u0027s surplus interconnection and does not require associated transmission lines more than two miles from the existing energy facility.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4076",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4076",
+   "positions": [
+    {
+     "side": "Oppose",
+     "id": "or_opp_farm_bureau",
+     "date": "2/12/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/249528"
+     ],
+     "lobbying_year": 75837
+    },
+    {
+     "side": "Support",
+     "id": "or_rnw",
+     "date": "2/12/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/248330"
+     ],
+     "lobbying_year": 52965
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Clean Grid Collaborative",
+     "date": "2/25/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/253951"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 2,
+    "Oppose": 4,
+    "Neutral": 0
+   },
+   "all": {
+    "Oppose": 5,
+    "Support": 7
+   },
+   "money": {
+    "Support": 52965,
+    "Oppose": 75837,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 SB 1582",
+   "year": "2026",
+   "short": "Community energy and virtual power plants",
+   "catchline": "Requires each electric company to develop a distributed power plant program for the procurement of grid services to be provided by distributed energy resources.",
+   "outcome": "Did not pass (in senate committee)",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1582",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1582",
+   "positions": [
+    {
+     "side": "Oppose",
+     "name": "Portland General Electric",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/246675"
+     ],
+     "lobbying_year": 200848
+    },
+    {
+     "side": "Oppose",
+     "name": "Pacific Power",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/243504"
+     ],
+     "lobbying_year": 138292
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_solutions",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/246872"
+     ],
+     "lobbying_year": 78064
+    },
+    {
+     "side": "Support",
+     "id": "or_tnc",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/245109"
+     ],
+     "lobbying_year": 42627
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Local 503",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/244506"
+     ],
+     "lobbying_year": 30066
+    },
+    {
+     "side": "Oppose",
+     "id": "or_opp_awec",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/240927"
+     ],
+     "lobbying_year": 22800
+    },
+    {
+     "side": "Support",
+     "id": "or_columbia_riverkeeper",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/240652"
+     ],
+     "lobbying_year": 16326
+    },
+    {
+     "side": "Support",
+     "id": "or_ossia",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/238084",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/243323"
+     ],
+     "lobbying_year": 12000
+    },
+    {
+     "side": "Support",
+     "id": "or_oec",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/245264"
+     ],
+     "lobbying_year": 6085
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/239421"
+     ],
+     "lobbying_year": 481
+    },
+    {
+     "side": "Support",
+     "id": "or_apano",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/242680"
+     ],
+     "lobbying_year": 409
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/235767",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/237444"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/237205"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Oregon Clean Grid Collaborative",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/247548"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 7,
+    "Oppose": 2,
+    "Neutral": 0
+   },
+   "all": {
+    "Oppose": 12,
+    "Support": 47,
+    "Neutral": 1
+   },
+   "money": {
+    "Support": 186057,
+    "Oppose": 361940,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 SB 1588",
+   "year": "2026",
+   "short": "Healthier, more efficient homes",
+   "catchline": "Requires each electric company to develop an inclusive utility investment program to provide financing for customers\\u0027 energy efficiency upgrades or renewable energy projects.",
+   "outcome": "Did not pass (in senate committee)",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1588",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1588",
+   "positions": [
+    {
+     "side": "Oppose",
+     "name": "Pacific Power",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/243651"
+     ],
+     "lobbying_year": 138292
+    },
+    {
+     "side": "Support",
+     "name": "SEIU Local 503",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/244502"
+     ],
+     "lobbying_year": 30066
+    },
+    {
+     "side": "Support",
+     "id": "or_bga",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/247123"
+     ],
+     "lobbying_year": 3110
+    },
+    {
+     "side": "Support",
+     "id": "or_sierra_club",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/247292"
+     ],
+     "lobbying_year": 481
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/235773"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "Consolidated Oregon Indivisible Network",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/241180"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/243476",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/245873"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/244766"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/245623"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "2/9/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/247186"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 2,
+    "Oppose": 2,
+    "Neutral": 0
+   },
+   "all": {
+    "Support": 36,
+    "Oppose": 7,
+    "Neutral": 1
+   },
+   "money": {
+    "Support": 33656,
+    "Oppose": 138292,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4100",
+   "year": "2026",
+   "short": "Fuel terminals must show they can pay for spill cleanup",
+   "catchline": "Requires owners or operators of bulk oils or liquid fuels terminals to obtain a certificate of financial responsibility from the Department of Environmental Quality.",
+   "outcome": "Passed",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4100",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4100",
+   "positions": [
+    {
+     "side": "Support",
+     "name": "City of Portland",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/245032"
+     ],
+     "lobbying_year": 282917
+    },
+    {
+     "side": "Oppose",
+     "name": "Multnomah County",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/245313"
+     ],
+     "lobbying_year": 32465
+    },
+    {
+     "side": "Support",
+     "id": "or_beyond_toxics",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/245120"
+     ],
+     "lobbying_year": 4351
+    },
+    {
+     "side": "Support",
+     "id": "or_bga",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/247637"
+     ],
+     "lobbying_year": 3110
+    },
+    {
+     "side": "Support",
+     "id": "or_socan",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/240794"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_olcv_mcat",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/241237"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_climate_reality_pdx",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/244759"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_psr",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/246874",
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/248264"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "name": "EcoFaith Recovery",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/247523"
+     ],
+     "lobbying_year": 0
+    },
+    {
+     "side": "Support",
+     "id": "or_350pdx",
+     "date": "2/10/2026",
+     "docs": [
+      "https://olis.oregonlegislature.gov/liz/2026R1/Downloads/PublicTestimonyDocument/248274"
+     ],
+     "lobbying_year": 0
+    }
+   ],
+   "other": {
+    "Support": 11,
+    "Oppose": 0,
+    "Neutral": 1
+   },
+   "all": {
+    "Support": 45,
+    "Oppose": 3,
+    "Neutral": 3
+   },
+   "money": {
+    "Support": 290378,
+    "Oppose": 32465,
+    "Neutral": 0
    }
   }
  ]

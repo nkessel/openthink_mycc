@@ -4,7 +4,7 @@
 //  - groups on the public record against climate bills join the map in their own colour, each with the dated,
 //    linked record of what it opposed (no edit links: they aren't part of the coalition sheet);
 //  - one "Oregon Legislature" node receives every group's registered lobbying spending;
-//  - money is drawn as arrows, thicker for more money (lobbying 2021–2025 totals; documented political money).
+//  - money is drawn as arrows, thicker for more money (lobbying totals from 2021 on; documented political money).
 import type { DataFile, Organization } from "./types";
 import type { MapId } from "./maps";
 import { h } from "./dom";
@@ -38,6 +38,9 @@ export interface Bill {
 }
 interface MoneyFile {
   generated_at: string;
+  /** "2021–2026", and the latest quarter reported ("2026 Q3"), or the year when it's complete. */
+  period?: string;
+  through?: string;
   hub: { id: string; name: string; abbrev: string };
   opposition: (Organization & { stances: Stance[]; lobbying: { years: Record<string, number>; total: number } | null })[];
   flows: MoneyFlow[];
@@ -70,6 +73,9 @@ const stances = new Map<string, Stance[]>();
 let generated = "";
 let bills: Bill[] = [];
 let hubId = "";
+let period = "2021–2025";
+let through = "2025";
+const periodText = () => (through.includes("Q") ? `${period} (through ${through})` : period);
 /** Key climate & energy bills, newest first, with who testified for and against (empty when the layer is off). */
 export const moneyBills = () => bills;
 /** The money arrows to draw (empty when the layer is off). */
@@ -87,6 +93,8 @@ export async function attachMoney(data: DataFile, map: MapId): Promise<boolean> 
     if (!res.ok) return false;
     const m = (await res.json()) as MoneyFile;
     generated = m.generated_at;
+    period = m.period || period;
+    through = m.through || through;
     const ids = new Set([...data.coalitions, ...data.organizations].map((n) => n.id));
     const base = { coalition_ids: [] as string[], last_activity: m.generated_at, projects: [], events: [], actions: [] };
     for (const o of m.opposition) {
@@ -98,7 +106,7 @@ export async function attachMoney(data: DataFile, map: MapId): Promise<boolean> 
     }
     data.organizations.push({
       ...base, id: m.hub.id, name: m.hub.name, abbrev: m.hub.abbrev, type: "legislature", geographic_focus: "Salem",
-      description: "Where registered lobbying money goes. Each arrow is one group's lobbying spending, 2021–2025, from the Oregon Government Ethics Commission's records.",
+      description: `Where registered lobbying money goes. Each arrow is one group's lobbying spending, ${periodText()}, from the Oregon Government Ethics Commission's records.`,
       lat: 44.9386, lng: -123.0301, website: "https://www.oregonlegislature.gov", sector: "money-hub", remote: true,
     });
     bills = (m.bills || []).slice().sort((a, b) => b.year.localeCompare(a.year) || a.id.localeCompare(b.id));
@@ -120,7 +128,9 @@ const SIDE_LABEL: Record<Side, string> = { Support: "For", Oppose: "Against", Ne
 /** Quarterly lobbying as a row of small bars, 2021 Q1 to 2025 Q4, with the session quarters marked. */
 function quarterBars(q: Record<string, number>): HTMLElement {
   const keys: string[] = [];
-  for (let y = 2021; y <= 2025; y++) for (let i = 1; i <= 4; i++) keys.push(`${y}Q${i}`);
+  const [y0, y1] = period.split("–").map(Number);
+  const lastQ = through.includes("Q") ? Number(through.slice(-1)) : 4;
+  for (let y = y0; y <= y1; y++) for (let i = 1; i <= (y === y1 ? lastQ : 4); i++) keys.push(`${y}Q${i}`);
   const max = Math.max(1, ...keys.map((k) => q[k] || 0));
   const W = 6, G = 2, H = 34;
   const ns = "http://www.w3.org/2000/svg";
@@ -128,7 +138,7 @@ function quarterBars(q: Record<string, number>): HTMLElement {
   svg.setAttribute("viewBox", `0 0 ${keys.length * (W + G)} ${H + 12}`);
   svg.setAttribute("class", "money-quarters");
   svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", "Lobbying spending by quarter, 2021 to 2025");
+  svg.setAttribute("aria-label", `Lobbying spending by quarter, ${periodText()}`);
   keys.forEach((k, i) => {
     const v = q[k] || 0, hh = Math.max(v ? 1.5 : 0, (v / max) * H);
     const r = document.createElementNS(ns, "rect");
@@ -159,9 +169,9 @@ function testimonyOf(id: string): { bill: Bill; p: BillPosition }[] {
 /** The legislature's view: each bill, who testified on each side, and what those groups spent lobbying that year. */
 function billsSection(nameOf: (id: string) => string, open?: (id: string) => void): HTMLElement {
   const box = h("div", { class: "money-bills" });
-  box.appendChild(h("div", { class: "money-head" }, "Climate & energy bills, 2021–2025"));
+  box.appendChild(h("div", { class: "money-head" }, `Climate & energy bills, ${bills.length ? `${bills.at(-1)!.year}–${bills[0].year}` : period}`));
   box.appendChild(h("div", { class: "money-note" },
-    "Organizations that testified for or against each bill, from the legislature's site. The dollar figure is what the named groups on each side spent on lobbying that year, on all issues: Oregon's lobbying reports don't say which bills the money was for."));
+    "Organizations that testified for or against each bill, from the legislature's site. The dollar figure is what the named groups on each side spent on lobbying that year, on all issues: Oregon's lobbying reports don't say which bills the money was for. “Against” doesn't always mean against climate action: some groups opposed a bill for not going far enough (Multnomah County on HB 4100, for example), so read the testimony."));
   for (const b of bills) {
     const named = (s: Side) => b.positions.filter((p) => p.side === s);
     const count = (s: Side) => named(s).length + (b.other[s] || 0);
@@ -241,7 +251,7 @@ export function moneyDetails(id: string, nameOf: (id: string) => string, open?: 
   if (isHub) {
     // The legislature: biggest lobbying spenders first, then the bills.
     const ul = h("ul", { class: "money-list" });
-    box.appendChild(h("div", { class: "money-head" }, "Lobbying spending, 2021–2025"));
+    box.appendChild(h("div", { class: "money-head" }, `Lobbying spending, ${periodText()}`));
     for (const f of [...fl].sort((a, b) => b.amount - a.amount))
       ul.appendChild(h("li", {}, h("strong", {}, money(f.amount)), " ", (() => {
         const nm = nameOf(f.from);
@@ -269,7 +279,7 @@ export function createMoneySection(parent: HTMLElement, map: MapId): HTMLElement
   });
   row.append(label, sw);
   const hint = h("div", { class: "ctrl-hint" },
-    "Groups on the public record against climate bills, in red, and money as arrows (thicker = more): lobbying 2021–2025 and documented political spending. Every figure links to its source.");
+    "Groups on the public record against climate bills, in red, and money as arrows (thicker = more): lobbying from 2021 on, how groups testified on climate bills, and documented political spending. Every figure links to its source.");
   const box = h("div", { class: "money-section" }, row, hint);
   parent.appendChild(box);
   return box;
