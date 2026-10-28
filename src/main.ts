@@ -1,5 +1,4 @@
 import "./styles.css";
-import { topicListControl } from "./topiclist";
 import { displayControls, initDisplay, largePrint, onDisplayChange } from "./display";
 
 initDisplay();
@@ -9,17 +8,15 @@ import { createSidebar } from "./sidebar";
 import { createGraph } from "./graph";
 import { createTooltip } from "./tooltip";
 import { createDrawer } from "./drawer";
-import { createGeographicView } from "./geographic";
-import { createEventsView } from "./events";
-import { createProjectsView } from "./projects";
-import { createActionsView } from "./actions";
-import { createTopicsView } from "./topics";
 import { findItem, showItemCard, setCardActions } from "./itemcard";
-import { createOrgsView } from "./orgs";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
+import { checkSources } from "./sourcecheck";
+import { lazyPage, preloadWhenQuiet } from "./lazypage";
+import { geoCanLocate } from "./placed";
+import { setQuickFormData } from "./quickform";
 import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
 
 captureLandText(); // before the loading screen goes away
@@ -56,7 +53,7 @@ function hideBoot() {
   }
   // Otherwise let the last loading lines finish (they speed up now); the bar fills as they do, then the map opens.
   const open = () => (bootWin.bootHeld ? (bootWin.bootRelease = go) : go());
-  if (bootWin.bootAfterLines) bootWin.bootAfterLines(open, 4500);
+  if (bootWin.bootAfterLines) bootWin.bootAfterLines(open, 1800);
   else setTimeout(open, 250);
 }
 
@@ -222,7 +219,7 @@ async function main() {
       if (where === "map") locateOnMap(node, it);
       else locateOnGeo(node, it);
     },
-    canLocateGeo: (node, item) => geoView.canLocate(node, item as { lat?: number; lng?: number } | undefined),
+    canLocateGeo: (node, item) => geoCanLocate(node, item as { lat?: number; lng?: number } | undefined),
     currentView: () => activeTab,
   });
 
@@ -267,33 +264,15 @@ async function main() {
     onGroupsChange: (rules) => graphApi!.setGroups(rules),
     onAnimate: () => graphApi!.kickSimulation(),
   });
-  // The org-to-org connections toggle lives with the other advanced display options.
-  controls.advancedContainer().appendChild(graphApi.orgLinkToggle());
-  // Which topic list the Topics page uses (Wikipedia-based by default; group-based kept for comparison).
-  controls.advancedContainer().appendChild(topicListControl());
-  // Large print and low-power mode (also: the "Aa" button in the top bar for large print).
+  // The org-to-org connections switch sits right under the coalitions list.
+  sidebar.linksContainer().appendChild(graphApi.orgLinkToggle());
+  // Large print and Reduce motion (also in the top bar's Accessibility button).
   controls.advancedContainer().appendChild(displayControls());
   // Large print leaves out the Topics page; if it was showing, go back to the map.
   onDisplayChange(() => { if (largePrint() && activeTab === "topics") setTab("map"); });
   // "Social justice": one switch per sector layer, closed by default, just above Advanced display settings.
   createSectorSection(sidebar.controlsContainer(), currentMap.id);
 
-  // ----- Geographic view -----
-  const geoView = createGeographicView(data, {
-    onNodeClick: (node) => {
-      drawerApi!.open(node);
-    },
-    onItemClick: (_kind, id, at) => {
-      const f = findItem(data, id);
-      if (f) showItemCard(geoView.el, f.kind, f.item, f.owner, () => locateOnMap(f.owner.node), at);
-    },
-    onLocateMap: (node) => locateOnMap(node),
-  });
-  geoView.el.style.display = "none";
-  geoView.el.style.height = "100%";
-  geoView.el.style.position = "absolute";
-  geoView.el.style.inset = "0";
-  content.appendChild(geoView.el);
   // The drawer is mounted inside the map view's graphContainer; we want
   // it to overlay other views too — re-parent it to content so it appears
   // above all views.
@@ -302,67 +281,49 @@ async function main() {
     if (drawerEl) content.appendChild(drawerEl);
   }
 
-  // ----- Events view -----
-  const eventsView = createEventsView(data, {
-    onCoalitionClick: (node) => {
-      openDetails(node);
-    },
+  // ----- The other pages: each loads the first time it's opened (or earlier, while nobody is using the page) -----
+  const geoPage = lazyPage(content, "the geographic map", () => import("./geographic"), (m) => {
+    const v = m.createGeographicView(data, {
+      onNodeClick: (node) => {
+        drawerApi!.open(node);
+      },
+      onItemClick: (_kind, id, at) => {
+        const f = findItem(data, id);
+        if (f) showItemCard(v.el, f.kind, f.item, f.owner, () => locateOnMap(f.owner.node), at);
+      },
+      onLocateMap: (node) => locateOnMap(node),
+    });
+    return v;
   });
-  eventsView.el.style.display = "none";
-  eventsView.el.style.height = "100%";
-  eventsView.el.style.position = "absolute";
-  eventsView.el.style.inset = "0";
-  content.appendChild(eventsView.el);
-
-  // ----- Organizations view -----
-  const orgsView = createOrgsView(data, {
-    onOrgClick: (node) => {
-      drawerApi!.open(node);
-      graphApi!.setSelectedNode(node);
-    },
+  const eventsPage = lazyPage(content, "events", () => import("./events"), (m) =>
+    m.createEventsView(data, { onCoalitionClick: (node) => openDetails(node) }));
+  const orgsPage = lazyPage(content, "organizations", () => import("./orgs"), (m) =>
+    m.createOrgsView(data, {
+      onOrgClick: (node) => {
+        drawerApi!.open(node);
+        graphApi!.setSelectedNode(node);
+      },
+    }));
+  const projectsPage = lazyPage(content, "projects", () => import("./projects"), (m) =>
+    m.createProjectsView(data, { onCoalitionClick: (node) => openDetails(node) }));
+  const actionsPage = lazyPage(content, "actions", () => import("./actions"), (m) =>
+    m.createActionsView(data, { onCoalitionClick: (node) => openDetails(node) }));
+  // Topics: streams of energy into topics; also loads public/topics*.json the first time it's shown.
+  const topicsPage = lazyPage(content, "topics", () => import("./topics"), (m) => {
+    const v = m.createTopicsView({
+      hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
+      logoOf: (id) => (data.coalitions.find((c) => c.id === id) ?? data.organizations.find((o) => o.id === id))?.logo || undefined,
+      hasItem: (rid) => !!findItem(data, rid.slice(rid.indexOf(":") + 1)),
+      openItem: (rid, at) => {
+        const f = findItem(data, rid.slice(rid.indexOf(":") + 1));
+        if (f) showItemCard(v.el, f.kind, f.item, f.owner, () => openGroup(f.owner.node.id), at);
+      },
+      onGroupClick: (id) => openGroup(id),
+      data: () => data,
+    });
+    return v;
   });
-  orgsView.el.style.display = "none";
-  orgsView.el.style.height = "100%";
-  orgsView.el.style.position = "absolute";
-  orgsView.el.style.inset = "0";
-  content.appendChild(orgsView.el);
-
-  // ----- Projects view -----
-  const projectsView = createProjectsView(data, {
-    onCoalitionClick: (node) => {
-      openDetails(node);
-    },
-  });
-  projectsView.el.style.display = "none";
-  projectsView.el.style.height = "100%";
-  projectsView.el.style.position = "absolute";
-  projectsView.el.style.inset = "0";
-  content.appendChild(projectsView.el);
-
-  // ----- Actions & volunteer opportunities view -----
-  const actionsView = createActionsView(data, {
-    onCoalitionClick: (node) => {
-      openDetails(node);
-    },
-  });
-  actionsView.el.style.display = "none";
-  actionsView.el.style.height = "100%";
-  actionsView.el.style.position = "absolute";
-  actionsView.el.style.inset = "0";
-  content.appendChild(actionsView.el);
-
-  // ----- Topics view (streams of energy into topics; loads public/topics.json the first time it opens) -----
-  const topicsView = createTopicsView({
-    hasGroup: (id) => data.coalitions.some((c) => c.id === id) || data.organizations.some((o) => o.id === id),
-    logoOf: (id) => (data.coalitions.find((c) => c.id === id) ?? data.organizations.find((o) => o.id === id))?.logo || undefined,
-    hasItem: (rid) => !!findItem(data, rid.slice(rid.indexOf(":") + 1)),
-    openItem: (rid, at) => {
-      const f = findItem(data, rid.slice(rid.indexOf(":") + 1));
-      if (f) showItemCard(topicsView.el, f.kind, f.item, f.owner, () => openGroup(f.owner.node.id), at);
-    },
-    onGroupClick: (id) => openGroup(id),
-    data: () => data,
-  });
+  const pages = { geo: geoPage, events: eventsPage, orgs: orgsPage, projects: projectsPage, actions: actionsPage, topics: topicsPage } as const;
   function openGroup(id: string): boolean {
     const c = data.coalitions.find((x) => x.id === id);
     const o = data.organizations.find((x) => x.id === id);
@@ -371,11 +332,6 @@ async function main() {
     openDetails(node);
     return true;
   }
-  topicsView.el.style.display = "none";
-  topicsView.el.style.height = "100%";
-  topicsView.el.style.position = "absolute";
-  topicsView.el.style.inset = "0";
-  content.appendChild(topicsView.el);
 
   /** A group's full details in the pane, over whatever page you're on. Nothing moves. */
   function openDetails(node: GraphNode) {
@@ -396,7 +352,7 @@ async function main() {
   function locateOnGeo(node: GraphNode, it?: { kind: "event" | "project" | "action"; item: CoalitionEvent | Project | Action }) {
     setTab("geo");
     const pt = it?.item as { lat?: number; lng?: number } | undefined;
-    geoView.locate(node, it ? { kind: it.kind, id: it.item.id, lat: pt?.lat, lng: pt?.lng } : undefined);
+    void geoPage.get().then((v) => v.locate(node, it ? { kind: it.kind, id: it.item.id, lat: pt?.lat, lng: pt?.lng } : undefined));
     if (it) drawerApi!.openItem(it.kind, it.item, node);
     else drawerApi!.open(node);
   }
@@ -404,22 +360,36 @@ async function main() {
     details: (kind, item, owner) => drawerApi!.openItem(kind, item, owner.node),
     locateMap: (kind, item, owner) => locateOnMap(owner.node, { kind, item }),
     locateGeo: (kind, item, owner) => locateOnGeo(owner.node, { kind, item }),
-    hasGeo: (_kind, item, owner) => geoView.canLocate(owner.node, item as { lat?: number; lng?: number }),
+    hasGeo: (_kind, item, owner) => geoCanLocate(owner.node, item as { lat?: number; lng?: number }),
   });
 
-  function setTab(tab: TopTab) {
+  // The browser's Back button goes to the tab you were on before, instead of leaving the site (Oct 24): each tab
+  // change adds a history entry (#topics, #events…; the map has no hash), and Back/Forward switch tabs.
+  const TAB_IDS: TopTab[] = ["map", "geo", "orgs", "events", "projects", "actions", "topics"];
+  const tabFromHash = (): TopTab => {
+    const h = location.hash.replace(/^#/, "") as TopTab;
+    return TAB_IDS.includes(h) ? h : "map";
+  };
+  const urlFor = (tab: TopTab) => `${location.pathname}${location.search}${tab === "map" ? "" : `#${tab}`}`;
+  const startTab = tabFromHash(); // a link like …/#events opens that tab
+  try { history.replaceState({ tab: startTab }, "", urlFor(startTab)); } catch { /* ignore */ }
+  window.addEventListener("popstate", (e) => {
+    const t = ((e.state as { tab?: TopTab } | null)?.tab) ?? tabFromHash();
+    if (t !== activeTab) setTab(t, false);
+  });
+
+  function setTab(tab: TopTab, remember = true) {
+    if (remember && tab !== activeTab) {
+      try { history.pushState({ tab }, "", urlFor(tab)); } catch { /* ignore */ }
+    }
     activeTab = tab;
     topbar.setActive(tab);
     mapView.style.display = tab === "map" ? "grid" : "none";
-    geoView.el.style.display = tab === "geo" ? "block" : "none";
-    eventsView.el.style.display = tab === "events" ? "flex" : "none";
-    orgsView.el.style.display = tab === "orgs" ? "flex" : "none";
-    projectsView.el.style.display = tab === "projects" ? "flex" : "none";
-    actionsView.el.style.display = tab === "actions" ? "flex" : "none";
-    topicsView.el.style.display = tab === "topics" ? "flex" : "none";
-    if (tab === "topics") topicsView.show();
+    for (const [id, p] of Object.entries(pages)) p.holder.style.display = tab === id ? "block" : "none";
+    if (tab === "topics") void topicsPage.get().then((v) => { if (activeTab === "topics") v.show(); });
+    if (tab === "geo") void geoPage.get().then((v) => { if (activeTab === "geo") v.invalidate(); });
+    if (tab !== "map" && tab in pages) void pages[tab as keyof typeof pages].get();
     drawerApi?.refresh(); // its "Locate on …" buttons depend on the page
-    if (tab === "geo") geoView.invalidate();
     if (tab === "map") setTimeout(() => graphApi?.ensureInView(), 150);
     if (tab !== "map") {
       tooltip.hide();
@@ -433,6 +403,7 @@ async function main() {
   // "+" button for proposing edits/additions through the forms (pre-filled from the open drawer)
   setFormLabelData(data.organizations);
   setPrefillData(data);
+  setQuickFormData(data);
   setItemLabelData([...data.coalitions, ...data.organizations]);
   // Sector groups aren't in the Google Sheet yet, so the forms aren't pre-filled with them.
   createFab(content, () => {
@@ -442,6 +413,9 @@ async function main() {
 
   // Give the logos a moment so the map doesn't open on empty circles (they keep loading after that anyway).
   await Promise.race([logosReady, new Promise((r) => setTimeout(r, 1500))]);
+  if (startTab !== "map" && !(startTab === "topics" && largePrint())) setTab(startTab, false);
+  // Once the map is up and nobody is using the page for a moment, fetch the other pages in the background.
+  preloadWhenQuiet([geoPage, eventsPage, orgsPage, projectsPage, actionsPage, topicsPage], 4000);
 
   // Escape closes drawer
   document.addEventListener("keydown", (e) => {
@@ -454,6 +428,20 @@ async function main() {
 }
 
 /** Live data from the Google Sheet when configured, else the committed snapshot. */
+let lastErrBg: unknown = null;
+/**
+ * The live sheet had something newer than what is shown, but arrived after the map was up (Oct 27: no more "The map
+ * has new updates · Show them" note). If nobody has touched the page yet, reload quietly (the small quick-start card,
+ * from the copy just saved); otherwise the newer data is already saved and shows on the next visit or reload.
+ */
+let touched = false;
+for (const ev of ["pointerdown", "keydown", "wheel", "touchstart"]) window.addEventListener(ev, () => { touched = true; }, { once: true, capture: true, passive: true });
+function applyLateUpdate() {
+  if (touched || document.visibilityState !== "visible") return;
+  try { sessionStorage.setItem("openthink.quickboot", "1"); } catch { /* ignore */ }
+  location.reload();
+}
+
 async function loadData(map: MapDef = currentMap): Promise<DataFile> {
   if (map.combine) {
     // USA view: every state we have, side by side (a state that fails to load is skipped).
@@ -470,19 +458,52 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       org_links: got.flatMap((d) => d.org_links || []),
     };
   }
-  const get = async (url: string, ms: number) => {
+  const get = async (url: string, ms: number, quiet = false) => {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), ms);
     try {
       const res = await fetch(url, { signal: ctrl.signal });
       if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
-      const d = JSON.parse(await readWithProgress(res)) as DataFile;
+      const d = JSON.parse(quiet ? await res.text() : await readWithProgress(res)) as DataFile;
       if (!Array.isArray(d.coalitions) || !Array.isArray(d.organizations)) throw new Error("bad data");
-      return d;
+      return checkSources(d);
     } finally {
       clearTimeout(timer);
     }
   };
+  // Faster start (the live sheet takes ~4 s to answer): fetch the live sheet, and while the loading screen is up give
+  // it a few seconds. If it isn't back by then, show the copy saved on this device (or, on a first visit, the
+  // nightly snapshot), and bring in the newer data by itself when it arrives (applyLateUpdate).
+  const liveUrl = map.sources.find((u) => /script\.google/.test(u));
+  if (liveUrl) {
+    const key = `openthink.data.v1.${map.id}`;
+    const strip = (d: DataFile) => JSON.stringify({ ...d, generated_at: "" });
+    let cached: DataFile | null = null;
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        const c = JSON.parse(raw) as { at: number; data: DataFile };
+        if (Date.now() - c.at < 7 * 86400000 && Array.isArray(c.data?.organizations)) cached = checkSources(c.data);
+      }
+    } catch { /* private mode or a full store: no saved copy */ }
+    const live = get(liveUrl, 20000, !!cached).then((d) => {
+      try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), data: d })); } catch { /* full */ }
+      return d;
+    });
+    // Wait a little for the live sheet even with a saved copy, so the newest data shows straight away most of the time.
+    const inTime = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), cached ? 3000 : 2500))]).catch(() => null);
+    if (inTime) return inTime;
+    let first: DataFile | null = cached;
+    if (!first) {
+      for (const u of map.sources.filter((x) => x !== liveUrl)) {
+        try { first = await get(u, 8000); break; } catch (err) { lastErrBg = err; }
+      }
+      if (!first) return live; // nothing else to show: wait for the sheet after all
+    }
+    const shownKey = strip(first);
+    live.then((d) => { if (strip(d) !== shownKey) applyLateUpdate(); }).catch(() => { /* offline: keep what is shown */ });
+    return first;
+  }
   let lastErr: unknown = null;
   for (let i = 0; i < map.sources.length; i++) {
     const last = i === map.sources.length - 1;

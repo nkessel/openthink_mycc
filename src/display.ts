@@ -90,12 +90,12 @@ export function displayControls(): HTMLElement {
   const box = document.createElement("div");
   box.append(
     switchRow("Large print", "Bigger text, fewer things on screen, simpler pages.", largePrint, setLargePrint),
-    switchRow("Low-power mode", weakDevice() ? "On by default for this device: no decorative animation, lighter Topics page." : "No decorative animation and a lighter Topics page, for older phones and tablets.", lowPower, (v) => setLowPower(v)),
+    switchRow("Reduce motion", weakDevice() ? "On by default for this device: less movement and animation, lighter pages." : "Less movement and animation, and lighter pages for older phones and tablets.", lowPower, (v) => setLowPower(v)),
   );
   return box;
 }
 
-/** The "Aa" button in the top bar: large print on or off in one tap. */
+/** The "Aa Large print" button in the top bar: large print on or off in one tap. */
 export function largePrintButton(): HTMLElement {
   const b = document.createElement("button");
   b.type = "button";
@@ -103,10 +103,60 @@ export function largePrintButton(): HTMLElement {
   const sync = () => {
     b.setAttribute("aria-pressed", String(largePrint()));
     b.title = largePrint() ? "Large print is on — tap for the full map" : "Large print: bigger text, fewer things on screen";
-    b.textContent = "Aa";
+    b.innerHTML = `<span class="lp-aa" aria-hidden="true">Aa</span><span class="lp-word">${largePrint() ? "Large print: on" : "Large print"}</span>`;
   };
   sync();
   onDisplayChange(sync);
   b.addEventListener("click", () => setLargePrint(!largePrint()));
   return b;
+}
+
+/**
+ * The "Accessibility" button in the top bar (Oct 24: Large print moved behind it). Opens a small panel with the
+ * essential settings: Large print and Reduce motion (low-power mode). More can be added here as we iterate.
+ */
+export function accessibilityButton(): HTMLElement {
+  const wrap = document.createElement("div");
+  wrap.className = "a11y-wrap";
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "lp-btn a11y-btn";
+  b.setAttribute("aria-haspopup", "dialog");
+  b.setAttribute("aria-expanded", "false");
+  b.innerHTML = '<span class="lp-aa" aria-hidden="true">Aa</span><span class="lp-word">Accessibility</span>';
+  const panel = document.createElement("div");
+  panel.className = "a11y-panel";
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-label", "Accessibility settings");
+  panel.hidden = true;
+  const head = document.createElement("div");
+  head.className = "a11y-head";
+  head.textContent = "Accessibility";
+  panel.append(
+    head,
+    switchRow("Large print", "Bigger text and buttons, fewer things on screen, simpler pages.", largePrint, setLargePrint),
+    switchRow("Reduce motion", weakDevice() ? "On by default for this device: less movement and animation, lighter pages." : "Less movement and animation, and lighter pages for older phones and tablets.", lowPower, (v) => setLowPower(v)),
+  );
+  // The top bar scrolls sideways on small screens (overflow: auto), which clips anything popping out of it, so the
+  // panel lives on <body> and is placed under the button each time it opens (Oct 24 bug: it opened invisibly).
+  const place = () => {
+    const r = b.getBoundingClientRect();
+    panel.style.top = `${Math.round(r.bottom + 8)}px`;
+    panel.style.right = `${Math.max(12, Math.round(window.innerWidth - r.right))}px`;
+  };
+  const set = (open: boolean) => {
+    if (open) place();
+    panel.hidden = !open;
+    b.setAttribute("aria-expanded", String(open));
+  };
+  window.addEventListener("resize", () => { if (!panel.hidden) place(); });
+  b.addEventListener("click", (e) => { e.stopPropagation(); set(b.getAttribute("aria-expanded") !== "true"); });
+  document.addEventListener("click", (e) => { if (!panel.hidden && !wrap.contains(e.target as Node) && !panel.contains(e.target as Node)) set(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !panel.hidden) { set(false); b.focus(); } });
+  const sync = () => b.classList.toggle("on", largePrint() || lowPower());
+  sync();
+  onDisplayChange(sync);
+  wrap.append(b);
+  document.body.appendChild(panel);
+  return wrap;
 }

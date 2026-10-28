@@ -566,7 +566,7 @@ export function createDrawer(
       for (const p of topicsData.parents) for (const c of p.children) parentOf.set(c.id, { label: p.label, child: c.label });
       const byTopic = new Map<string, typeof recs>();
       for (const r of recs) for (const t of r.topics) (byTopic.get(t) ?? byTopic.set(t, []).get(t)!).push(r);
-      body.appendChild(h("div", { class: "ctrl-hint topics-tab-note" }, `${topicListInfo().label} topics, from this group's events, projects, actions and mission. Change the list in Map settings → Advanced display settings.`));
+      body.appendChild(h("div", { class: "ctrl-hint topics-tab-note" }, `Topic list: ${topicListInfo().label}, from this group's events, projects, actions and mission. Change the list with the Topics switch on the Topics page.`));
       if (!byTopic.size) { body.appendChild(h("div", { class: "empty" }, "No topics found for this group yet.")); return; }
       const sorted = [...byTopic].sort((a, b) => b[1].length - a[1].length);
       for (const [t, rs] of sorted) {
@@ -616,7 +616,7 @@ export function createDrawer(
     if (e.location) g.searchParams.set("location", e.location);
     const esc = (v: string) => v.replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
     const ics = [
-      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//MA Climate Coalition Map//EN", "BEGIN:VEVENT",
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//MA Climate Organization Map//EN", "BEGIN:VEVENT",
       `UID:${e.id}@openthink-map`, `DTSTAMP:${stamp(new Date())}`,
       `DTSTART;TZID=${tz}:${stamp(t.start)}`, `DTEND;TZID=${tz}:${stamp(t.end)}`,
       `SUMMARY:${esc(e.name)}`, e.location ? `LOCATION:${esc(e.location)}` : "", `DESCRIPTION:${esc(details)}`,

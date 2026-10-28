@@ -40,6 +40,8 @@ body {
 #app {
   display: grid;
   grid-template-rows: var(--topbar-h) 1fr;
+  /* one column exactly as wide as the screen: a wide child (the top bar on a small phone) can't stretch the page */
+  grid-template-columns: minmax(0, 1fr);
   height: 100vh;
   width: 100vw;
 }
@@ -727,6 +729,10 @@ body {
 .toggle-row .ctrl-label {
   margin: 0;
 }
+.toggle-row[hidden] { display: none; }
+/* "Show past events…" sits under "Show events, projects…", indented to read as part of it. */
+.toggle-row.sub-row { margin-left: 14px; margin-top: -4px; }
+.ctrl-hint.section-lead { margin: 0 0 10px; }
 .switch {
   display: inline-flex;
   align-items: center;
@@ -1710,6 +1716,8 @@ body {
 .sidebar .filters-block {
   margin: 12px 0 4px;
 }
+.sidebar .links-block { margin: 2px 0 6px; }
+.sidebar .links-block .org-link-toggle,
 .sidebar .filters-block .org-link-toggle {
   display: flex;
   align-self: auto;
@@ -2426,6 +2434,8 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 /* Land acknowledgement & dedication: a quiet link at the bottom of Map settings, opening the loading screen's text */
 .land-link { display: block; margin: 18px 14px 22px; padding: 0; appearance: none; border: none; background: none; color: var(--text-dim); font: inherit; font-size: 12px; text-align: left; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 .land-link:hover { color: var(--text); }
+.sector-lock { display: block; margin: 10px 0 2px; padding: 0; appearance: none; border: none; background: none; color: var(--text-dim); font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.sector-lock:hover { color: var(--text); }
 .land-overlay { position: fixed; z-index: 1000; }
 .land-card .land-text { width: auto; text-align: left; font-size: 13.5px; color: var(--text); }
 .land-card .land-text p { margin: 0 0 12px; }
@@ -2753,11 +2763,11 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .bt-items .bt-item.k-mission circle { stroke-width: 1.3px; }
 .bt-items .bt-item:hover circle, .bt-items .bt-item.sel circle { stroke: #fff; stroke-width: 1.6px; }
 .bt-item-lbl { fill: #e5e7eb; font-size: 11px; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
-.bt-head-ring { display: none; position: absolute; left: 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; pointer-events: none; z-index: 1; white-space: nowrap; }
-.bt-head-ring.top { top: 10px; color: #86efac; }
-.bt-head-ring.top::before { content: "▲ "; }
-.bt-head-ring.bot { bottom: 54px; color: #fda4af; }
-.bt-head-ring.bot::before { content: "▼ "; }
+.bt-head-ring { display: none; position: absolute; top: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; pointer-events: none; z-index: 1; white-space: nowrap; }
+.bt-head-ring.left { left: 16px; color: #fda4af; }
+.bt-head-ring.left::before { content: "◀ "; }
+.bt-head-ring.right { right: 16px; color: #86efac; }
+.bt-head-ring.right::after { content: " ▶"; }
 .bt[data-layout="circle"] .bt-heads { display: none; }
 .bt[data-layout="circle"][data-show="both"] .bt-head-ring { display: block; }
 .bt-fx {
@@ -2904,14 +2914,39 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
   color: var(--text-dim); background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 9px;
 }
 .lp-btn:hover { color: var(--text); border-color: var(--accent); }
+.lp-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; }
+.lp-btn .lp-aa { font-size: 15px; }
+.lp-btn .lp-word { font-size: 13px; font-weight: 600; white-space: nowrap; }
+@media (max-width: 420px) { .lp-btn .lp-word { font-size: 12px; } }
 .lp-btn[aria-pressed="true"] { color: #04202a; background: #7dd3fc; border-color: #7dd3fc; }
+/* Accessibility button + panel (Oct 24): Large print and Reduce motion live behind it */
+.a11y-wrap { position: relative; margin-left: auto; display: inline-flex; flex: none; }
+.a11y-wrap .lp-btn { margin-left: 0; }
+.a11y-btn.on { border-color: #7dd3fc; color: var(--text); }
+.a11y-panel { position: fixed; top: 56px; right: 12px; z-index: 1200; width: 300px; max-width: calc(100vw - 24px); padding: 12px 14px 6px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5); font-size: 13px; }
+.a11y-panel[hidden] { display: none; }
+.a11y-head { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+.a11y-panel .control { margin-bottom: 8px; }
 .large-print .topbar .tab, .large-print .tab-menu-btn { font-size: 17px; }
 .large-print .topbar .tab[data-tab="topics"] { display: none; }
 .large-print .drawer, .large-print .list-view > *, .large-print .sidebar, .large-print .detail-card, .large-print .geo-panel,
 .large-print .item-pop, .large-print .focus-bar { zoom: 1.22; }
 .large-print .drawer { width: calc(var(--drawer-w) / 1.22); }
 .large-print .sats, .large-print .sat-tethers, .large-print .map-legend, .large-print .focus-note, .large-print .boot-hint { display: none !important; }
-.large-print .node-name { font-size: 15px; font-weight: 600; }
+/* Large print: group names in their own layer above the map (graph.ts cullNames): 18px (coalitions 21px), bold
+   white on a near-black pill (contrast ~18:1), never covered by bubbles. */
+.lp-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 3; display: none; }
+.large-print .lp-labels { display: block; }
+.lp-name {
+  position: absolute; left: 0; top: 0; max-width: 15em; text-align: center; white-space: normal;
+  font-size: 18px; line-height: 1.2; font-weight: 700; color: #fff;
+  background: rgba(8, 10, 16, 0.88); border-radius: 6px; padding: 1px 6px; will-change: transform;
+}
+.lp-name.co { font-size: 21px; }
+@media (max-width: 720px) { .lp-name { max-width: 11em; } }
+.lp-name.off { display: none; }
+.large-print .node-name { display: none; }
+
 /* ---------- Low-power mode: no decorative animation ---------- */
 .low-power *, .low-power *::before, .low-power *::after { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
 .low-power .fab { box-shadow: var(--shadow); }
@@ -2923,9 +2958,202 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .leaflet-popup-content .geo-tip-kind { color: #64748b; }
 
 /* Legend: hide/show the org-to-org connections */
+.map-legend .map-legend-note { font-size: 11px; line-height: 1.4; opacity: 0.75; margin: 2px 0 6px; max-width: 230px; }
 .map-legend .legend-hide { margin-left: auto; background: none; border: 1px solid rgba(255,255,255,0.25); color: inherit; border-radius: 999px; font-size: 11px; padding: 1px 8px; cursor: pointer; }
 .map-legend .row.off > span:not(.line) { opacity: 0.55; }
 .map-legend .row.off .line.org { opacity: 0.3; }
 /* "Copy as a new event": a quieter second button next to "Edit this event" */
 .stale-notice .edit-btn.copy-btn { background: transparent; color: inherit; border-color: rgba(255,255,255,0.3); margin-left: 6px; }
 .stale-notice .edit-btn.copy-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+
+/* Topics page settings: topic list first, then "What counts more" (folded) */
+.topics-section { margin: 10px 0 14px; }
+/* Topics bar (Oct 24): topic list switch with ⓘ buttons, visual effects, visual settings */
+.topics-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--border); background: var(--bg-elev); }
+.topics-listseg .topics-info { width: 20px; height: 20px; padding: 0; margin: 0 6px 0 -2px; border-radius: 50%; font-size: 11px; font-weight: 700; font-style: italic; font-family: Georgia, serif; line-height: 18px; text-align: center; border: 1px solid var(--border); color: var(--text-dim); }
+.topics-listseg .topics-info:last-child { margin-right: 2px; }
+.topics-tipwrap { position: relative; display: inline-flex; }
+.topics-tip { display: none; position: absolute; top: calc(100% + 8px); left: -12px; z-index: 40; width: min(380px, 86vw); padding: 10px 12px 2px; font-size: 12.5px; line-height: 1.45; text-align: left; white-space: normal; color: var(--text); background: var(--bg-elev-2, #1f2230); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45); }
+.topics-tip strong { display: block; margin-bottom: 4px; font-size: 13px; }
+.topics-tip p { margin: 0 0 8px; color: var(--text-dim); }
+.topics-tipwrap:hover .topics-tip, .topics-tipwrap:focus-within .topics-tip, .topics-tipwrap.open .topics-tip { display: block; }
+.topics-layoutslot { display: inline-flex; flex-wrap: wrap; gap: 8px 16px; }
+.topics-layoutslot > [hidden] { display: none !important; }
+.topics-viewopts { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.topics-view .cr-bar { justify-content: flex-end; padding-top: 4px; padding-bottom: 4px; }
+/* no settings panel on the left any more */
+.topics-body.no-panel { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 900px) {
+  .topics-body.no-panel { grid-template-rows: minmax(70vh, 1fr) auto; }
+}
+@media (max-width: 720px) {
+  .topics-bar { gap: 6px 10px; padding: 6px 10px; }
+  .topics-listseg .topics-info { width: 28px; height: 28px; line-height: 26px; }
+}
+.topics-sizes > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); padding: 6px 0; list-style: revert; }
+.topics-sizes[open] > summary { margin-bottom: 4px; }
+.topics-sizes .topics-slider { margin: 10px 0 4px; }
+.topics-sizes .topics-slider .ctrl-hint { margin-top: 2px; }
+
+/* ===================== Mobile pass (Oct 13) ===================== */
+/* Nothing may push the page sideways on a phone. */
+html, body { overflow-x: clip; max-width: 100%; }
+@media (max-width: 480px) {
+  /* Top bar on narrow phones: the title gives way first; the large-print button keeps its words on two short lines;
+     the page menu shows its current page without pushing past the edge. */
+  .topbar { gap: 6px; }
+  /* The page name matters more than the title here: the title wraps onto two short lines instead of cutting the page name. */
+  .topbar .brand { flex: 0 1 auto; min-width: 0; max-width: 92px; white-space: normal; font-size: 13px; line-height: 1.1; margin-right: auto; }
+  .lp-btn { flex: none; margin-left: 0; padding: 4px 8px; gap: 5px; min-height: 40px; }
+  .lp-btn .lp-word { font-size: 11px; line-height: 1.1; white-space: normal; max-width: 5.2em; text-align: left; }
+  .tab-menu-btn { flex: 0 0 auto; min-width: 0; max-width: none; min-height: 40px; padding: 6px 10px; }
+  .topbar { min-width: 0; }
+  .tab-menu-btn > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+}
+@media (max-width: 900px) {
+  /* A group is open: its bar takes the top of the map, so the search row steps aside instead of showing underneath. */
+  .graph-wrap.focusing .graph-overlay, .graph-wrap.focusing .reset-map-btn { visibility: hidden; }
+  :has(> .graph-area .graph-wrap.focusing) > .sidebar-show,
+  .map-view:has(.graph-wrap.focusing) .sidebar-show { visibility: hidden; }
+}
+@media (max-width: 720px) {
+  /* Topics on a phone: the feedback note shrinks to one line and the view options fold, so the picture gets the screen. */
+  .topics-view .list-toolbar .feedback-bid, .topics-wrap .list-toolbar .feedback-bid { font-size: 12px; padding: 4px 10px; }
+  .list-toolbar .feedback-bid .fb-lead { display: none; }
+  .list-toolbar .count { font-size: 11px; }
+  .cr-bar.foldable.folded > :not(.panel-fold) { display: none !important; }
+  .cr-bar.foldable { flex-wrap: wrap; }
+  .topics-body { grid-template-rows: auto minmax(72vh, 1fr) auto; }
+  /* The picture first: the record count and the long feedback banner give way (feedback stays in the + menu). */
+  .topics-view > .list-toolbar { padding-top: 8px; padding-bottom: 8px; row-gap: 6px; }
+  .topics-view > .list-toolbar .count, .topics-view > .list-toolbar .feedback-bid { display: none; }
+  .topics-panel { padding: 8px 12px; }
+  .topics-panel.foldable.folded { padding: 6px 12px; }
+  .topics-panel .panel-fold, .cr-bar .panel-fold { margin: 0; padding: 6px 12px; font-size: 13px; }
+  .cr-bar.foldable.folded { padding: 6px 12px; }
+}
+
+/* Touch screens: controls big enough to hit with a thumb (WCAG 2.5.8 asks for 24px; we aim for 36–44px). */
+@media (pointer: coarse) {
+  .chip, .cr-seg button, .panel-fold, .reset-map-btn, .sidebar-hide, .sidebar-show, .focus-back, .map-legend-head,
+  .edit-btn, .btn-site, .section-head, .coalitions-block .actions button, .drawer-tab, .geo-near, .lp-btn { min-height: 40px; }
+  .stale-notice .edit-btn { display: inline-flex; align-items: center; padding: 8px 14px; font-size: 13px; }
+  .map-legend .legend-hide { min-height: 32px; padding: 4px 12px; }
+  .land-link { min-height: 40px; display: inline-flex; align-items: center; }
+  .cr-info { min-height: 36px; display: inline-flex; align-items: center; }
+  .switch { position: relative; }
+  .switch::after { content: ""; position: absolute; inset: -11px -4px; } /* a 44px-tall tap area around the small switch */
+  .leaflet-touch .leaflet-bar a { width: 40px; height: 40px; line-height: 40px; }
+  .geo-more { min-width: 32px; min-height: 32px; }
+  input[type="checkbox"] { width: 20px; height: 20px; }
+}
+/* Phones: room at the bottom of every scrolling page so the round + button never covers the last row. */
+@media (max-width: 720px) {
+  .list-view, .sidebar, .drawer .body, .topics-panel { padding-bottom: 96px; }
+  .fab-menu { max-height: calc(100vh - 160px); overflow-y: auto; }
+}
+@media (pointer: coarse) {
+  /* Search boxes, dropdowns and small buttons the audit found under ~36px on a phone */
+  input[type="search"], .search, .search-box input, select { min-height: 40px; }
+  .drawer .close, .drawer-close, .item-card .close { min-width: 40px; min-height: 40px; font-size: 22px; }
+  .locate-btn, .edit-link { min-height: 36px; display: inline-flex; align-items: center; }
+  .edit-link { padding: 4px 0; }
+  .leaflet-touch .leaflet-bar a.leaflet-control-zoom-in, .leaflet-touch .leaflet-bar a.leaflet-control-zoom-out { width: 40px; height: 40px; line-height: 40px; }
+  .cal-nav .chip, .calendar .chip { min-width: 40px; }
+  .geo-more { min-width: 36px; min-height: 36px; }
+}
+@media (max-width: 720px) {
+  /* An opened group on a phone: a two-line bar (name; back · counts · details) so the group itself stays in view.
+     "Don't zoom in on click" lives in Map settings there. */
+  .focus-bar .focus-classic, .focus-back-more { display: none; }
+}
+@media (pointer: coarse) {
+  .stale-notice.verified .edit-btn, .stale-notice .edit-btn.copy-btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; font-size: 13px; margin-top: 6px; }
+  .cr-zoom button { min-width: 40px; min-height: 40px; }
+}
+@media (max-width: 420px) {
+  /* Calendar month bar: the title shrinks so "Today" stays on screen */
+  .cal-nav { gap: 6px; }
+  .cal-nav .cal-title { flex: 1 1 auto; min-width: 0; font-size: 14px; text-align: center; }
+  .cal-nav .chip { padding: 5px 10px; }
+}
+/* Tablets and small laptops (721–1150px): every tab and the large-print button fit on one row */
+@media (min-width: 721px) and (max-width: 1150px) {
+  .topbar { gap: 4px; }
+  .topbar .brand { font-size: 15px; margin-right: 6px; }
+  .tab { padding: 0 8px; font-size: 14px; }
+  .lp-btn .lp-word { font-size: 11px; line-height: 1.1; white-space: normal; max-width: 5.2em; text-align: left; }
+  .lp-btn { flex: none; padding: 4px 8px; }
+  /* the hint sat on top of the search box: the search box already says what to do */
+  .graph-wrap > .hint { display: none; }
+  /* + goes to the corner so it never sits on the legend */
+  .fab-wrap, .drawer.open ~ .fab-wrap { left: auto; right: 16px; bottom: 16px; transform: none; align-items: flex-end; }
+}
+@media (max-width: 720px) { .graph-wrap > .hint { display: none; } }
+/* Tablets and small laptops (721–1150px): every tab and the large-print button fit on one row */
+@media (min-width: 721px) and (max-width: 1150px) {
+  .topbar { gap: 4px; }
+  .topbar .brand { font-size: 15px; margin-right: 6px; }
+  .tab { padding: 0 8px; font-size: 14px; }
+  .lp-btn .lp-word { font-size: 11px; line-height: 1.1; white-space: normal; max-width: 5.2em; text-align: left; }
+  .lp-btn { flex: none; padding: 4px 8px; }
+  /* the hint sat on top of the search box: the search box already says what to do */
+  .graph-wrap > .hint { display: none; }
+  /* + goes to the corner so it never sits on the legend */
+  .fab-wrap, .drawer.open ~ .fab-wrap { left: auto; right: 16px; bottom: 16px; transform: none; align-items: flex-end; }
+}
+@media (max-width: 720px) { .graph-wrap > .hint { display: none; } }
+/* Large-print names never cover the map's own buttons (Reset map, legend, the opened group's bar) */
+.large-print .reset-map-btn, .large-print .map-legend, .large-print .focus-bar { z-index: 6; }
+/* Phones held sideways: the Topics heading gives way so the picture has more of the short screen */
+@media (max-height: 500px) and (max-width: 950px) {
+  .topics-view > .list-toolbar h2, .topics-view > .list-toolbar .count, .topics-view > .list-toolbar .feedback-bid { display: none; }
+  .topics-view > .list-toolbar { padding-top: 6px; padding-bottom: 6px; }
+  .topics-body { grid-template-rows: auto minmax(85vh, 1fr) auto; }
+}
+/* Phones held sideways fold their panels like upright phones (same rules as the max-width: 720px block) */
+@media (max-height: 500px) and (max-width: 950px) and (min-width: 721px) {
+  .panel-fold {
+    display: inline-flex; align-items: center; gap: 6px; appearance: none; cursor: pointer;
+    border: 1px solid var(--border); background: var(--bg-elev); color: var(--text); border-radius: 999px;
+    padding: 6px 12px; font: inherit; font-size: 13px; font-weight: 600; box-shadow: var(--shadow);
+  }
+  .panel-fold[aria-expanded="true"] { border-color: var(--accent); }
+  .foldable.folded > :not(.panel-fold):not(.fold-keep) { display: none !important; }
+  .cr-bar.foldable.folded { padding: 4px 12px; }
+  .geo-panel.foldable.folded { background: transparent; box-shadow: none; }
+}
+/* Map name: full on wide screens, the short name (MACOM) where the top bar is tight */
+.brand .brand-short { display: none; }
+@media (max-width: 1150px) {
+  .brand .brand-long { display: none; }
+  .brand .brand-short { display: inline; }
+}
+/* Calm map (slow devices, low-power mode): no see-through blur behind panels, no pulsing + button */
+.calm-map *, .low-power * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.calm-map .fab, .low-power .fab { animation: none !important; }
+/* "The map has new updates" note (live sheet newer than the copy shown) */
+.update-note { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 1000; display: flex; align-items: center; gap: 10px;
+  background: var(--bg-elev); color: var(--text); border: 1px solid var(--accent); border-radius: 999px; padding: 6px 8px 6px 16px; box-shadow: var(--shadow); font-size: 14px; }
+.update-note-btn { appearance: none; border: none; background: var(--accent); color: #0f172a; font: inherit; font-weight: 600; border-radius: 999px; padding: 6px 14px; min-height: 36px; cursor: pointer; }
+.update-note-x { appearance: none; border: none; background: none; color: var(--text-dim); font-size: 20px; min-width: 36px; min-height: 36px; cursor: pointer; }
+@media (max-width: 720px) { .update-note { bottom: 72px; max-width: calc(100vw - 24px); } }
+/* On-map form (+ menu): fill in here, then the Google Form opens with the answers */
+.qf-shade { position: fixed; inset: 0; z-index: 2000; background: rgba(5, 8, 15, 0.6); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.qf { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 14px; width: min(560px, 100%); max-height: calc(100vh - 32px); display: flex; flex-direction: column; box-shadow: var(--shadow); }
+.qf-head { padding: 14px 18px 6px; } .qf-head h2 { margin: 0; font-size: 18px; }
+.qf-body { overflow-y: auto; padding: 6px 18px; display: flex; flex-direction: column; gap: 12px; }
+.qf-row { display: flex; flex-direction: column; gap: 4px; }
+.qf-label { font-size: 13px; color: var(--text-dim); }
+.qf input[type=text], .qf input[type=date], .qf input[type=time], .qf textarea, .qf select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; min-height: 40px; }
+.qf-checks { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.qf-check { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; min-height: 32px; }
+.qf-note { font-size: 12px; color: var(--text-dim); margin: 8px 18px 0; }
+.qf-foot { display: flex; align-items: center; gap: 10px; padding: 12px 18px 16px; flex-wrap: wrap; }
+.qf-go { margin-left: auto; appearance: none; border: none; border-radius: 999px; background: var(--accent); color: #0f172a; font: inherit; font-weight: 700; padding: 10px 18px; min-height: 44px; cursor: pointer; }
+.qf-cancel { appearance: none; border: 1px solid var(--border); background: none; color: var(--text); border-radius: 999px; font: inherit; padding: 8px 14px; min-height: 40px; cursor: pointer; }
+.qf-direct { font-size: 13px; color: var(--text-dim); }
+
+/* A page that is still downloading (first visit, slow connection) */
+.lazy-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--muted, #94a3b8); font-size: 15px; }
+.weight-sliders .weight-head { margin-top: 12px; }

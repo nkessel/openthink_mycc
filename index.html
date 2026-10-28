@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MA Climate Coalition Map</title>
+    <title>MA Climate Organization Map (MACOM)</title>
     <style>
       #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:14px;overflow:auto;padding:24px 0;background:#0f172a;color:#e2e8f0;font:500 15px system-ui,sans-serif;transition:opacity .5s ease}
       #boot.done{opacity:0;pointer-events:none}
@@ -25,7 +25,7 @@
         background:linear-gradient(90deg,#22d3ee 0%,#a78bfa 50%,#ec4899 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
       #boot .boot-hint{max-width:360px;padding:0 16px;text-align:center;font-size:12.5px;line-height:1.45;color:#7dd3fc}
       #boot .boot-hint b{color:#bae6fd;font-weight:600}
-      .land-text{width:min(860px,calc(100% - 40px));font-size:19px;font-weight:300;line-height:1.65;color:#d5dde8;text-align:center;text-wrap:pretty;letter-spacing:.005em}
+      .land-text{width:min(820px,calc(100% - 40px));font-size:15px;font-weight:300;line-height:1.6;color:#d5dde8;text-align:center;text-wrap:pretty;letter-spacing:.005em}
       .land-text p{margin:0 0 16px}
       .land-text .land-links{text-align:center;font-size:.85em}
       .land-text .land-links strong{font-weight:500}
@@ -49,21 +49,21 @@
       @media (max-width:600px){
         #boot{gap:9px;padding:14px 0}
         #boot canvas{width:200px;height:136px}
-        #boot .land-text{font-size:16px;line-height:1.55;margin-top:12px}
+        #boot .land-text{font-size:13.5px;line-height:1.5;margin-top:12px}
         #boot .land-text p{margin-bottom:12px}
       }
     </style>
   </head>
   <body>
     <div id="boot" role="status" aria-live="polite">
-      <div class="boot-title">Climate Coalition Map</div>
+      <div class="boot-title">MA Climate Organization Map (MACOM)</div>
       <canvas id="boot-bubbles" aria-hidden="true"></canvas>
       <div class="boot-msg">Gathering the movement&hellip;</div>
       <div class="bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><b></b></div>
       <button type="button" id="boot-hold" class="boot-hold" title="The map keeps loading behind this screen">Keep this screen open</button>
       <div class="boot-hint" hidden></div>
       <div class="land-text" id="land-dedication">
-        <p>This platform was designed in Natick, Wellesley, and Boston&mdash;on the ancestral homelands of the Massachusett, Nipmuc and Wampanoag peoples.</p>
+        <p>This platform was designed in Natick, Wellesley, and Boston, MA&mdash;on the ancestral homelands of the Massachusett, Nipmuc and Wampanoag peoples.</p>
         <p>It was built with the help of Claude (AI), which was built on land seized from the Ramaytush Ohlone (San Francisco), and taken from the Duwamish and Suquamish (Seattle) and Lenape (New York) peoples. It runs on data centers in the stolen homeland of the Pokagon Potawatomi in Indiana, and other places whose names we don't yet know. We honor these first peoples, and the lands and waters they have cared for countless generations.</p>
         <p>With respect and gratitude, we receive the many gifts of the Earth along with the great labors of our sisters and brothers across the planet: including minerals in our computer chips mined by slaves, water extracted for cooling data centers, and the electricity generated from coal, gas, wind, and sunlight that powers this platform.</p>
         <p>We acknowledge the harm woven into this, and commit to its repair, beginning with the return of land to Indigenous peoples and the freedom of enslaved people everywhere.</p>
@@ -130,6 +130,8 @@
         window.bootDone = function () {
           if (finished) return;
           finished = true;
+          // The map is ready: skip to the last waiting line instead of playing every one (that added ~5 s).
+          if (queue.length > 1) { var cut = queue.length - 1; queue.splice(0, cut); if (phase === "build") shownB += cut; }
           var ms = performance.now() - t0;
           try { localStorage.setItem(KEY, String(Math.round(expected * 0.4 + ms * 0.6))); } catch (e) {}
         };
@@ -235,7 +237,7 @@
         // Only the newest three wait their turn, so the screen never falls far behind what is happening.
         var queue = [], timer = null, shownAt = performance.now(), dwell = 900; // the opening line moves on quickly
         // once the map is ready, the lines still waiting go by quickly instead of keeping everyone waiting
-        var dwellFor = function (t) { return finished ? 480 : Math.min(1600, 750 + 16 * t.length); };
+        var dwellFor = function (t) { return finished ? 320 : Math.min(1600, 750 + 16 * t.length); };
         // "Loading volunteer opportunities (25/25)" shows its count running up from 1
         function countUp(text) {
           var m = /^(.*\()(\d+)\/(\d+)(\).*)$/.exec(text);

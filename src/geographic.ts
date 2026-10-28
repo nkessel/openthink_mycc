@@ -4,6 +4,9 @@ import type { Coalition, DataFile, GraphNode, Organization } from "./types";
 import { currentMap } from "./maps";
 import { STATE_GEO, type DistrictDef } from "./geodata";
 import { h, makeFoldable } from "./dom";
+import { atFallback, coalitionPlaced, orgPlaced } from "./placed";
+import { smoothWheelZoom } from "./smoothzoom";
+export { coalitionPlaced, orgPlaced } from "./placed";
 import { initials, shownType, hasTime, parseEventDate } from "./util";
 import { allEvents, allProjects, type Owner } from "./owners";
 import { APPROX_MAX_ZOOM, inMapView, loadTowns, placeFor, setMapBounds } from "./itemfilters";
@@ -41,17 +44,6 @@ const DISTRICTS: District[] = currentMap.geo.flatMap((p) => STATE_GEO[p].distric
   ...d, id: `${p}-${d.id}`, file: `${p}-${d.id}`, label: MULTI_STATE ? `${STATE_GEO[p].code} · ${d.label}` : d.label,
 })));
 
-/** The point the data uses when it only knows "Massachusetts" (statewide, national, or no address yet). */
-const atFallback = (lat: number, lng: number) => Math.abs(lat - 42.3601) < 1e-4 && Math.abs(lng + 71.0589) < 1e-4;
-/** A real place for this group: not remote, and not the fallback point (unless the group really is in Boston). */
-export function orgPlaced(o: Organization): boolean {
-  if (o.remote || !Number.isFinite(o.lat) || !Number.isFinite(o.lng) || (o.lat === 0 && o.lng === 0)) return false;
-  return !(o.profile?.geo_precision !== "exact" && atFallback(o.lat, o.lng) && !/\bboston\b/i.test(o.geographic_focus || ""));
-}
-/** Coalitions are placed by their members; statewide and national ones have no one place, so they aren't pinned. */
-export function coalitionPlaced(c: Coalition): boolean {
-  return c.member_count > 0 && !/statewide|national/i.test(c.geographic_scope || "") && !atFallback(c.lat, c.lng);
-}
 
 export function createGeographicView(data: DataFile, cb: GeoCallbacks): GeographicView {
   /** Massachusetts opens on the state; other maps open on wherever their groups are. */
@@ -79,7 +71,7 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
   const panel = h("div", { class: "geo-panel" });
   wrap.appendChild(panel);
   const geoSearch = createNodeSearch(everythingForSearch(data), (_id, item) => goTo(item), {
-    placeholder: "Search a place, organization, coalition, event…",
+    placeholder: "Search places, groups, events…",
     extra: findPlaces,
   });
   panel.appendChild(geoSearch);
@@ -502,8 +494,9 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
 
   function ensureMap() {
     if (map) return map;
-    // finer zoom steps and a gentler wheel, so zooming glides instead of jumping a whole level
-    map = L.map(mapEl, { zoomControl: true, attributionControl: true, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 110, wheelDebounceTime: 25 });
+    // Any zoom level (no snapping), half-level buttons, and a wheel/trackpad that glides (smoothzoom.ts).
+    map = L.map(mapEl, { zoomControl: true, attributionControl: true, zoomSnap: 0, zoomDelta: 0.5, scrollWheelZoom: false });
+    smoothWheelZoom(map);
     mapEl.appendChild(backBtn);
     (mapEl as unknown as { __map?: L.Map }).__map = map; // for automated checks
     map.fitBounds(startBounds(), { padding: [20, 20] });

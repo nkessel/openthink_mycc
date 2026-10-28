@@ -101,10 +101,13 @@ const parents = seeds.map((s) => ({
 const parentBySeed = new Map(parents.map((p) => [p.qid, p]));
 for (const [qid, n] of [...used].sort((a, b) => b[1] - a[1])) {
   const t = byQid.get(qid);
-  // A topic reached from several seeds sits under the first one listed.
-  const p = parentBySeed.get(t.seeds.split(",")[0]);
-  if (!p) continue;
-  p.children.push({ id: qid, label: t.hop_distance === "0" ? `${t.topic} (general)` : t.topic, qid, hop: Number(t.hop_distance) });
+  // A topic reached from several seeds sits under each of them (Turibius, Oct 19: "that correlates with a topic
+  // influencing other sectors", e.g. beef reduction touches water, animal rights, climate, agriculture, health).
+  const seedIds = t.hop_distance === "0" ? [t.qid] : t.seeds.split(",").map((x) => x.trim()).filter(Boolean);
+  for (const s of seedIds) {
+    const p = parentBySeed.get(s);
+    if (p) p.children.push({ id: qid, label: t.hop_distance === "0" ? `${t.topic} (general)` : t.topic, qid, hop: Number(t.hop_distance) });
+  }
 }
 // Seeds' own "general" child first, then by use.
 for (const p of parents) p.children.sort((a, b) => (b.hop === 0) - (a.hop === 0) || (used.get(b.id) || 0) - (used.get(a.id) || 0));
@@ -126,7 +129,8 @@ const slug = (s) => s.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g
 const catalog = {};
 for (const t of [...topics].sort((a, b) => rank(b) - rank(a))) {
   const k = slug(t.topic);
-  if (k && !catalog[k]) catalog[k] = [t.qid, t.topic, t.hop_distance === "0" ? t.qid : t.seeds.split(",")[0]];
+  // [qid, name, seed qid, …more seed qids]: a topic under several seeds lists all of them
+  if (k && !catalog[k]) catalog[k] = [t.qid, t.topic, ...(t.hop_distance === "0" ? [t.qid] : t.seeds.split(",").map((x) => x.trim()).filter(Boolean))];
 }
 writeFileSync("public/topics-wiki-catalog.json", JSON.stringify(catalog) + "\n");
 

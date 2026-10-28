@@ -52,7 +52,8 @@ export function makeFoldable(panel: HTMLElement, label: string, keep: HTMLElemen
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "panel-fold";
-  const phone = () => window.matchMedia("(max-width: 720px)").matches;
+  // phones, upright or held sideways
+  const phone = () => window.matchMedia("(max-width: 720px), (max-height: 500px) and (max-width: 950px)").matches;
   const set = (open: boolean) => {
     panel.classList.toggle("folded", !open);
     btn.setAttribute("aria-expanded", String(open));

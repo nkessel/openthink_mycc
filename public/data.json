@@ -240,27 +240,14 @@
           "online": true,
           "topic_tags": [
             "community_organizing"
-          ]
-        },
-        {
-          "id": "mycc_p_rep_refresh",
-          "name": "2026–27 member representative (vote caster) refresh",
-          "status": "active",
-          "description": "Each member organization names its vote-casting representative for the 2026–27 year, and prospective members identify themselves. Organizations facing setbacks are asked to say so.",
-          "skills_needed": [
-            "coalition organizing"
           ],
-          "online": true,
-          "topic_tags": [
-            "youth",
-            "community_organizing"
-          ]
+          "link": "https://nkessel.github.io/openthink_mycc/"
         },
         {
           "id": "mycc_p_cccc_collab",
-          "name": "MYCC × Cross Campus Climate Coalition collaboration matching",
+          "name": "MYCC × Cross Campus Climate Coalition collaboration",
           "status": "active",
-          "description": "MYCC and CCCC are pairing member organizations to collaborate and build stronger bonds. Interested organizations sign up through a form.",
+          "description": "MYCC and the Cross Campus Climate Coalition (CCCC) are collaborating this year to strengthen member organizations, learn from each other and build collective power for local politics. Interested organizations sign up through the form.",
           "skills_needed": [
             "coalition organizing"
           ],
@@ -268,13 +255,14 @@
           "topic_tags": [
             "youth",
             "community_organizing"
-          ]
+          ],
+          "link": "https://docs.google.com/forms/d/e/1FAIpQLSeTJ2u2Df3Dgs7DRfkQPbfqXXh29ZWPgB1dJ23M0076vgMoPQ/viewform"
         },
         {
           "id": "mycc_p_advocacy_day",
-          "name": "Annual Advocacy Day preparation",
+          "name": "Advocacy Day preparation: meet your state legislators",
           "status": "planning",
-          "description": "Member organizations are encouraged to meet their local legislators and build relationships before next year's Advocacy Day.",
+          "description": "MYCC holds a yearly youth Advocacy Day at the Massachusetts State House; sign-ups are posted on MYCC's Linktree. Before the next one, member groups are asked to meet their local state legislators and start building relationships.",
           "skills_needed": [
             "public speaking",
             "policy research"
@@ -282,28 +270,28 @@
           "topic_tags": [
             "climate_policy",
             "youth"
-          ]
-        }
-      ],
-      "events": [
-        {
-          "id": "mycc_e_call_1004",
-          "name": "MYCC full-coalition call",
-          "date": "2026-10-04T20:00:00",
-          "end": "2026-10-04T21:00:00",
-          "location": "Zoom",
-          "online": true,
-          "topic_tags": [
-            "youth",
-            "community_organizing"
           ],
-          "description": "Full-coalition call, every other Sunday 8–9 pm. Open to member organizations, returning members and prospective members. Agenda and Zoom link come from MYCC."
+          "link": "https://linktr.ee/mayouthclimatecoalition"
         }
       ],
-      "actions": [],
+      "events": [],
+      "actions": [
+        {
+          "id": "mycc_a_join",
+          "kind": "role",
+          "name": "Join MYCC: member interest form",
+          "description": "Youth-led groups in Massachusetts (generally ages 14–22) and their adult staff can join MYCC at three levels: Member (name a point person and bring members to at least one big event: Lobby Day, Rally or Summit), Steering Committee (a Member that also helps lead, meeting every other Tuesday), or Supporter (endorse key documents; good for adult-led groups). Individuals can fill it out too, and it isn't a binding commitment.",
+          "skills_needed": [
+            "coalition organizing"
+          ],
+          "link": "https://forms.gle/2Gsf55bHNGC6gLY68",
+          "verified": true,
+          "deadline": null
+        }
+      ],
       "last_activity": "2026-05-14T19:42:02.320Z",
       "logo": "logos/coalition_mycc.png",
-      "website": "https://ourclimate.us/state-campaigns/"
+      "website": "https://linktr.ee/mayouthclimatecoalition"
     },
     {
       "id": "ejlt",
@@ -1079,7 +1067,7 @@
         },
         {
           "name": "East Boston Cambria Hotel asbestos campaign",
-          "link": "https://masscosh.org/events/event-listings/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure",
+          "link": "https://www.masscosh.org/events/calendar/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure",
           "description": "Coalition campaign demanding accountability for alleged asbestos-handling failures and worker exposure at the Cambria Hotel construction project in East Boston, including an independent investigation and worker protections.",
           "status": "active",
           "id": "masscosh_tlaw_climate_change_p3",
@@ -1089,21 +1077,10 @@
       ],
       "events": [
         {
-          "name": "OSHA 10: Training (construction), Oct 8-9",
-          "date": "2026-10-08T10:00:00",
-          "location": "MassCOSH Office, 42 Charles St Suite D, Dorchester, MA",
-          "link": "https://masscosh.org/events/event-listings/osha-10-training-october-8th-and-9th",
-          "end": "2026-10-09T16:00",
-          "description": "10-hour OSHA construction safety course.",
-          "id": "masscosh_tlaw_climate_change_e1",
-          "verified": true,
-          "host_org_id": "masscosh_tlaw_climate_change_and_environmental_justice_team"
-        },
-        {
           "name": "Celebrating the Movement: 50 Years of MassCOSH",
           "date": "2026-10-23T17:00:00",
           "location": "Edward M. Kennedy Institute for the U.S. Senate, 210 Morrissey Blvd, Boston, MA",
-          "link": "https://masscosh.org/events/event-listings/masscosh-celebrating-the-movement-50th-year",
+          "link": "https://masscosh.org/events/calendar/masscosh-celebrating-the-movement-50th-year",
           "end": "2026-10-23T21:30",
           "description": "50th anniversary celebration honoring leaders in the labor health and safety movement; tickets via Zeffy.",
           "id": "masscosh_tlaw_climate_change_e2",
@@ -1114,7 +1091,7 @@
       "actions": [
         {
           "name": "Sign the Cambria Hotel asbestos petition",
-          "link": "https://masscosh.org/events/event-listings/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure",
+          "link": "https://www.masscosh.org/events/calendar/call-to-action-cambria-rally-advocacy-and-health-hazards-exposure",
           "description": "Sign the petition demanding answers and accountability over asbestos exposure at the East Boston Cambria Hotel project.",
           "kind": "task",
           "skills_needed": [],
@@ -1207,17 +1184,6 @@
           "host_org_id": "tree_boston"
         },
         {
-          "name": "Climb for the Canopy",
-          "date": "2026-10-23T07:00:00",
-          "location": "Harvard Stadium, 79 N Harvard St, Allston, MA",
-          "link": "https://treeboston.org/events/event/climb4thecanopy/",
-          "end": "2026-10-23T09:00",
-          "description": "Stadium-climb fundraiser; Tree Boston is first nonprofit partner for the Reach Green Stadium Challenge.",
-          "id": "tree_boston_e7",
-          "verified": true,
-          "host_org_id": "tree_boston"
-        },
-        {
           "name": "Free Tree Giveaway - Hyde Park Public Library",
           "date": "2026-10-24T10:00:00",
           "location": "Hyde Park Branch, Boston Public Library, 35 Harvard Ave, Hyde Park, MA",
@@ -1295,15 +1261,6 @@
           "skills_needed": []
         },
         {
-          "name": "Protecting Massachusetts Families from Lead",
-          "link": "https://cleanwater.org/states/massachusetts",
-          "description": "Clean Water Action campaign working at every level of government on lead paint and lead service lines, and helping residents access resources for homes, schools and other buildings.",
-          "status": "active",
-          "id": "clean_water_action_p3",
-          "host_org_id": "clean_water_action",
-          "skills_needed": []
-        },
-        {
           "name": "Clean Water Voter: 2026 Massachusetts Endorsements",
           "link": "https://cleanwater.org/states/massachusetts",
           "description": "Clean Water Action election endorsements program for the 2026 Massachusetts elections.",
@@ -1341,16 +1298,6 @@
           "skills_needed": [],
           "deadline": null,
           "id": "clean_water_action_a1",
-          "host_org_id": "clean_water_action"
-        },
-        {
-          "name": "Tell EPA: Stop Rolling Back Protections for Our Water",
-          "link": "https://act.cleanwater.org/page/200503/action/1",
-          "description": "Submit a public comment urging EPA and the Army Corps of Engineers to reject a proposal that would remove Clean Water Act protections from more streams and wetlands.",
-          "kind": "task",
-          "skills_needed": [],
-          "deadline": "2026-10-09",
-          "id": "clean_water_action_a2",
           "host_org_id": "clean_water_action"
         }
       ],
@@ -2115,39 +2062,6 @@
       "logo": "logos/climate_action_now_western_ma.png",
       "projects": [
         {
-          "id": "can_p_create",
-          "name": "CREATE farmer mutual aid",
-          "status": "active",
-          "description": "Cultivating Relationships: Education | Action | Tending Earth. Volunteers join local farmers for work shifts through the season; sign-up form required.",
-          "skills_needed": [
-            "farm labor"
-          ],
-          "topic_tags": [
-            "agriculture",
-            "community_organizing"
-          ],
-          "location": "Western Massachusetts",
-          "link": "https://climateactionnowma.org",
-          "host_org_id": "climate_action_now_western_ma"
-        },
-        {
-          "id": "can_p_miyawaki",
-          "name": "Miyawaki mini-forest group",
-          "status": "active",
-          "description": "Climate Action Now's working group on Miyawaki-method mini-forests and local biodiversity.",
-          "skills_needed": [
-            "ecology",
-            "gardening"
-          ],
-          "topic_tags": [
-            "biodiversity",
-            "reforestation"
-          ],
-          "location": "Western Massachusetts",
-          "link": "https://climateactionnowma.org",
-          "host_org_id": "climate_action_now_western_ma"
-        },
-        {
           "id": "can_p_no_clearcut",
           "name": "No Clearcut for Profit (Eversource tree clearing)",
           "status": "active",
@@ -2187,22 +2101,6 @@
         }
       ],
       "events": [
-        {
-          "id": "can_e_fall_gathering",
-          "name": "Fall Gathering: Nurturing biodiversity in a time of ecological chaos",
-          "date": "2026-09-29T17:30:00",
-          "end": "2026-09-29T19:30:00",
-          "location": "Arcadia Wildlife Sanctuary, Easthampton",
-          "description": "Potluck and connection at 5:30 pm; interactive program 6–7:30 pm with Owen Wormser and Matt Verson, hosted by the Miyawaki Forest Group. RSVP appreciated.",
-          "topic_tags": [
-            "biodiversity",
-            "community_organizing"
-          ],
-          "lat": 42.2668,
-          "lng": -72.669,
-          "link": "https://climateactionnowma.org",
-          "host_org_id": "climate_action_now_western_ma"
-        },
         {
           "id": "ev_can_1",
           "name": "Sierra Club Forest Protection Team Monthly Meeting",
@@ -2458,116 +2356,6 @@
       "description": "",
       "events": [
         {
-          "name": "Golden Hour by Canoe",
-          "date": "2026-10-01T16:00:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103551-golden-hour-by-canoe",
-          "end": "2026-10-01T18:30",
-          "description": "Naturalist-guided canoe trip (adults).",
-          "id": "mass_audubon_wma_e1",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Get Ready for Winter: Backyard Birds & Feeders",
-          "date": "2026-10-03T09:00:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103606-get-ready-for-winter-backyard-birds-feeders",
-          "end": "2026-10-03T12:00",
-          "description": "Adult program.",
-          "id": "mass_audubon_wma_e2",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "The Secret Lives of Bats",
-          "date": "2026-10-03T10:30:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103605-the-secret-lives-of-bats",
-          "end": "2026-10-03T12:00",
-          "description": "Family program.",
-          "id": "mass_audubon_wma_e3",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Ecological Management Walk at Laughing Brook",
-          "date": "2026-10-03T13:30:00",
-          "location": "Laughing Brook Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/104235-ecological-management-walk-at-laughing-brook",
-          "end": "2026-10-03T15:30",
-          "description": "Adult walk.",
-          "id": "mass_audubon_wma_e4",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Learn to Bird: Fall Migration",
-          "date": "2026-10-04T09:00:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103553-learn-to-bird-fall-migration",
-          "end": "2026-10-04T11:00",
-          "description": "Beginner birding walk.",
-          "id": "mass_audubon_wma_e5",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Hawk Migration Watch at Blueberry Hill",
-          "date": "2026-10-04T10:00:00",
-          "location": "Blueberry Hill, Granville",
-          "link": "https://www.massaudubon.org/programs/arcadia/102878-hawk-migration-watch-at-blueberry-hill",
-          "end": "2026-10-04T12:00",
-          "description": "Guided hawk watch.",
-          "id": "mass_audubon_wma_e6",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Trees Without Leaves: A Fall Tree ID Walk",
-          "date": "2026-10-07T09:00:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103607-trees-without-leaves-a-fall-tree-id-walk",
-          "end": "2026-10-07T12:00",
-          "description": "Adult tree ID walk.",
-          "id": "mass_audubon_wma_e7",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "First Child in the Woods: Caregiver & Young Child Walk",
-          "date": "2026-10-09T10:00:00",
-          "location": "Arcadia Wildlife Sanctuary",
-          "link": "https://www.massaudubon.org/programs/arcadia/103608-first-child-in-the-woods-caregiver-young-child-walk",
-          "end": "2026-10-09T11:00",
-          "description": "Family walk.",
-          "id": "mass_audubon_wma_e9",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Tiny Trekkers: Toddler Nature Time",
-          "date": "2026-10-09T10:00:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103548-tiny-trekkers-toddler-nature-time",
-          "end": "2026-10-09T11:30",
-          "description": "Toddler program.",
-          "id": "mass_audubon_wma_e10",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
-          "name": "Fall Colors by Canoe",
-          "date": "2026-10-10T08:30:00",
-          "location": "Pleasant Valley Wildlife Sanctuary, Lenox",
-          "link": "https://www.massaudubon.org/programs/pleasant-valley/103554-fall-colors-by-canoe",
-          "end": "2026-10-10T11:00",
-          "description": "Canoe trip (adults).",
-          "id": "mass_audubon_wma_e11",
-          "verified": true,
-          "host_org_id": "mass_audubon_wma"
-        },
-        {
           "name": "A Nature Year at Pleasant Valley: Fall Series",
           "link": "https://www.massaudubon.org/programs/pleasant-valley/98865-a-nature-year-at-pleasant-valley-fall-series",
           "description": "Three-session adult natural-history series at Pleasant Valley Wildlife Sanctuary: Beavers in the Berkshires (Oct 17), Waterfowl and Wetlands (Nov 21, at Canoe Meadows in Pittsfield), Time Traveling with Trees (Dec 19). Registration required.",
@@ -2623,17 +2411,6 @@
           "end": "2026-10-02T09:30:00",
           "recurrence": "Fridays, 8:30-9:30 AM (listed Oct 2, 9, 16)",
           "id": "mass_audubon_wellfleet_bay_w_e1",
-          "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
-        },
-        {
-          "name": "Tunes & Tales on the Trails",
-          "date": "2026-10-03T13:00:00",
-          "location": "Wellfleet Bay Wildlife Sanctuary, South Wellfleet, MA",
-          "link": "https://www.massaudubon.org/programs/wellfleet-bay/103688-tunes-tales-on-the-trails",
-          "end": "2026-10-03T16:00",
-          "description": "Adults & families, ages 0-17.",
-          "id": "mass_audubon_wellfleet_bay_w_e2",
-          "verified": true,
           "host_org_id": "mass_audubon_wellfleet_bay_wildlife_sanctuary"
         },
         {
@@ -3038,69 +2815,6 @@
           "id": "massachusetts_climate_action_p1",
           "host_org_id": "massachusetts_climate_action_network",
           "skills_needed": []
-        },
-        {
-          "name": "Fighting for Better Buildings",
-          "link": "https://www.massclimateaction.org/fighting_for_better_buildings",
-          "needs_info": true,
-          "description": "MCAN campaign on building decarbonization policy.",
-          "status": "active",
-          "id": "massachusetts_climate_action_p2",
-          "host_org_id": "massachusetts_climate_action_network",
-          "skills_needed": []
-        },
-        {
-          "name": "Embodied Carbon Act",
-          "link": "https://www.massclimateaction.org/embodied_carbon_act",
-          "needs_info": true,
-          "description": "MCAN advocacy on legislation addressing embodied carbon in construction.",
-          "status": "active",
-          "id": "massachusetts_climate_action_p3",
-          "host_org_id": "massachusetts_climate_action_network",
-          "skills_needed": []
-        },
-        {
-          "name": "Local Decarbonizers Program",
-          "link": "https://www.massclimateaction.org/stage_a_local_decarbonizers_program",
-          "needs_info": true,
-          "description": "MCAN program supporting local climate action in communities.",
-          "status": "active",
-          "id": "massachusetts_climate_action_p4",
-          "host_org_id": "massachusetts_climate_action_network",
-          "skills_needed": []
-        },
-        {
-          "name": "Climate Goals Tracker",
-          "link": "https://www.massclimateaction.org/climate_goals_tracker",
-          "needs_info": true,
-          "description": "MCAN tool tracking progress toward Massachusetts climate goals.",
-          "status": "active",
-          "id": "massachusetts_climate_action_p5",
-          "host_org_id": "massachusetts_climate_action_network",
-          "skills_needed": []
-        },
-        {
-          "name": "Net Zero for All Campaign",
-          "link": "https://www.massclimateaction.org/net_zero",
-          "needs_info": true,
-          "description": "MCAN campaign and advocacy toolkit promoting net-zero planning in Massachusetts communities.",
-          "status": "active",
-          "id": "massachusetts_climate_action_p6",
-          "host_org_id": "massachusetts_climate_action_network",
-          "skills_needed": []
-        }
-      ],
-      "actions": [
-        {
-          "name": "Volunteer with MCAN",
-          "link": "https://www.massclimateaction.org/volunteer_with_mcan",
-          "needs_info": true,
-          "description": "Sign-up form to volunteer with the Massachusetts Climate Action Network on projects from data collection to event planning.",
-          "kind": "task",
-          "skills_needed": [],
-          "deadline": null,
-          "id": "massachusetts_climate_action_a1",
-          "host_org_id": "massachusetts_climate_action_network"
         }
       ],
       "website": "https://www.massclimateaction.org/"
@@ -3697,15 +3411,6 @@
       "description": "",
       "projects": [
         {
-          "name": "Micromobility Advocacy",
-          "link": "https://climateactionbrookline.org/events/",
-          "description": "Climate Action Brookline advocacy and outreach on e-bikes, e-scooters and other micromobility as a climate and transportation solution.",
-          "status": "active",
-          "id": "climate_action_brookline_p1",
-          "host_org_id": "climate_action_brookline",
-          "skills_needed": []
-        },
-        {
           "name": "Brookline Climate Action and Resiliency Plan",
           "link": "https://climateactionbrookline.org/events/",
           "description": "Climate Action Brookline supports and tracks the town's new Climate Action and Resiliency Plan; progress and public engagement opportunities are posted on the Town's website.",
@@ -3891,7 +3596,7 @@
       "events": [
         {
           "name": "Stop Data Centers: Power-Building Committee (Food & Water Action meeting)",
-          "date": "2026-10-07T20:00:00",
+          "date": "2026-10-21T20:00:00",
           "location": "National / location not stated (8:00pm Eastern)",
           "link": "https://www.foodandwaterwatch.org/events/",
           "description": "Listed as Featured Event; Meeting hosted by Food & Water Action.",
@@ -4342,17 +4047,6 @@
       },
       "geographic_focus": "Cape Cod",
       "description": "All-volunteer grassroots group on Cape Cod that works to protect communities from the dangers of nuclear power, decommissioning and nuclear waste, with a focus on the Pilgrim Nuclear Power Station in Plymouth.",
-      "projects": [
-        {
-          "name": "Opposing the Pilgrim wastewater release",
-          "link": "https://www.capedownwinders.net/take-action",
-          "description": "Cape Downwinders campaign against Holtec discharging or evaporating radioactive wastewater from the shuttered Pilgrim nuclear plant; includes legislator contact and letter-writing actions.",
-          "status": "active",
-          "id": "cape_downwinders_p1",
-          "host_org_id": "cape_downwinders",
-          "skills_needed": []
-        }
-      ],
       "website": "https://www.capedownwinders.net"
     },
     {
@@ -4457,16 +4151,6 @@
           "description": "Inaugural convening on bringing swimming beaches back to the Lower Charles.",
           "id": "charles_river_watershed_asso_e2",
           "verified": true,
-          "host_org_id": "charles_river_watershed_association"
-        },
-        {
-          "name": "Run of the Charles Paddle Race",
-          "link": "https://www.crwa.org/rotc",
-          "description": "Annual kayak, canoe, and paddleboard race on the Charles River with 3-, 6-, 9-, and 14-mile relay courses, followed by the Finish Line RiverFest in Herter Park.",
-          "date": "2027-04-25",
-          "location": "Charles River, Boston/Cambridge area (Herter Park finish)",
-          "recurrence": "Annually, last Sunday of April",
-          "id": "charles_river_watershed_asso_e3",
           "host_org_id": "charles_river_watershed_association"
         }
       ],
@@ -5558,96 +5242,6 @@
           "skills_needed": []
         }
       ],
-      "events": [
-        {
-          "name": "Wednesday Morning Birding",
-          "date": "2026-09-30T09:30:00",
-          "location": "Newburyport and vicinity, MA",
-          "link": "https://www.massaudubon.org/programs/joppa-flats/103220-wednesday-morning-birding",
-          "end": "2026-09-30T12:30",
-          "description": "Joppa Flats program, fee applies.",
-          "id": "mass_audubon_e1",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Felix Neck Nature Stroll",
-          "date": "2026-09-30T10:00:00",
-          "location": "Felix Neck Wildlife Sanctuary, Edgartown, MA",
-          "link": "https://www.massaudubon.org/programs/felix-neck/102608-felix-neck-nature-stroll",
-          "end": "2026-09-30T11:30",
-          "description": "Fee applies.",
-          "id": "mass_audubon_e2",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Thursday Morning Bird Walk",
-          "date": "2026-10-01T07:30:00",
-          "location": "Drumlin Farm, Lincoln, MA",
-          "link": "https://www.massaudubon.org/programs/drumlin-farm/104176-thursday-morning-bird-walk",
-          "end": "2026-10-01T09:30",
-          "description": "Fee applies.",
-          "id": "mass_audubon_e3",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Drumlin Farm",
-          "date": "2026-10-03T13:00:00",
-          "location": "Drumlin Farm Wildlife Sanctuary, Lincoln, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-03T15:30",
-          "description": "Volunteer text banking for Question 6 (Nature for All Fund); training and food provided.",
-          "id": "mass_audubon_e4",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Belmont",
-          "date": "2026-10-04T13:00:00",
-          "location": "Habitat Education Center, Belmont, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-04T15:30",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e6",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Arcadia",
-          "date": "2026-10-10T12:00:00",
-          "location": "Arcadia Wildlife Sanctuary, Easthampton, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-10T14:30",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e8",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Long Pasture",
-          "date": "2026-10-10T13:30:00",
-          "location": "Long Pasture Wildlife Sanctuary, Barnstable, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-10T15:30",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e10",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Yes on 6 Picnic and Text Banking - Ipswich River",
-          "date": "2026-10-11T12:30:00",
-          "location": "Ipswich River Wildlife Sanctuary, Topsfield, MA",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "end": "2026-10-11T15:00",
-          "description": "Volunteer text banking for Question 6.",
-          "id": "mass_audubon_e11",
-          "verified": true,
-          "host_org_id": "mass_audubon"
-        }
-      ],
       "actions": [
         {
           "name": "Pledge, volunteer or request a lawn sign for Yes on 6",
@@ -5657,16 +5251,6 @@
           "skills_needed": [],
           "deadline": null,
           "id": "mass_audubon_a1",
-          "host_org_id": "mass_audubon"
-        },
-        {
-          "name": "Text-bank voters for Yes on 6",
-          "link": "https://www.massaudubon.org/take-action/advocate/vote-yes-on-6",
-          "description": "Volunteer to text voters about Question 6 using an approved platform; training, food and phone numbers are provided at in-person picnics.",
-          "kind": "role",
-          "skills_needed": [],
-          "deadline": null,
-          "id": "mass_audubon_a2",
           "host_org_id": "mass_audubon"
         },
         {
@@ -5703,19 +5287,7 @@
       },
       "geographic_focus": "Statewide",
       "description": "Coalition of unions, environmental, faith and student groups campaigning for the Massachusetts state pension fund to divest from fossil fuel companies and reinvest in renewables.",
-      "website": "https://massdivest.org/",
-      "projects": [
-        {
-          "name": "Fossil fuel divestment of MA public pension funds",
-          "link": "https://massdivest.org/",
-          "description": "Campaign for Massachusetts public pension funds to divest from fossil fuels.",
-          "status": "active",
-          "needs_info": true,
-          "id": "mass_divest_coalition_p1",
-          "host_org_id": "mass_divest_coalition",
-          "skills_needed": []
-        }
-      ]
+      "website": "https://massdivest.org/"
     },
     {
       "id": "massachusetts_peace_action",
@@ -6688,16 +6260,6 @@
       ],
       "actions": [
         {
-          "name": "Energy Transition Intern (Martha's Vineyard Regional High School students)",
-          "link": "https://www.vineyardpower.org/employment",
-          "description": "Paid internship (up to 15 hours per week) supporting outreach and engagement for Vineyard Power's energy transition program; open to MVRHS students, Portuguese fluency listed as a qualification.",
-          "kind": "role",
-          "skills_needed": [],
-          "deadline": null,
-          "id": "vineyard_power_cooperative_a1",
-          "host_org_id": "vineyard_power_cooperative"
-        },
-        {
           "name": "Sign up for a no-cost home energy assessment",
           "link": "https://www.vineyardpower.org/initiatives",
           "description": "Martha's Vineyard residents can sign up for a free home energy assessment, the first step in weatherizing and electrifying a home; takes about 15 minutes and a recent electric bill.",
@@ -7367,25 +6929,6 @@
         }
       ],
       "events": [
-        {
-          "name": "CCL Boston tabling at Open Streets Allston",
-          "link": "https://community.citizensclimate.org/groups/events/1153",
-          "description": "CCL Boston chapter tables at the Open Streets Allston event; volunteers can sign up for slots.",
-          "date": "2026-10-04T10:30:00",
-          "location": "Allston, Boston, MA",
-          "id": "citizens_climate_lobby_e1",
-          "host_org_id": "citizens_climate_lobby"
-        },
-        {
-          "name": "Tabling at Open Streets Roslindale",
-          "date": "2026-10-18T10:30:00",
-          "location": "Roslindale, Boston",
-          "link": "https://community.citizensclimate.org/groups/events/1153",
-          "description": "Tabling event.",
-          "id": "citizens_climate_lobby_e2",
-          "verified": true,
-          "host_org_id": "citizens_climate_lobby"
-        },
         {
           "name": "CCL Boston monthly chapter meeting",
           "link": "https://community.citizensclimate.org/groups/events/1153",

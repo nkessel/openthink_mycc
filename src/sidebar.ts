@@ -6,6 +6,7 @@ export interface Sidebar {
   getVisibleCoalitions(): Set<string>;
   /** Extra filters, right under the coalitions list. */
   filtersContainer(): HTMLElement;
+  linksContainer(): HTMLElement;
   /** A mount point below the coalitions list. */
   controlsContainer(): HTMLElement;
   element(): HTMLElement;
@@ -60,13 +61,18 @@ export function createSidebar(
   const aside = h("aside", { class: "sidebar", id: "map-sidebar" });
   parent.appendChild(aside);
 
-  let visible = new Set(data.coalitions.map((c) => c.id));
+  // Social-justice layers (src/sectors.ts) bring their own coalition bubbles; those start hidden so the map stays
+  // about the climate coalitions. Their groups still show (graph.ts), and the coalition can be ticked on here.
+  let visible = new Set(data.coalitions.filter((c) => !(c as { sector?: string }).sector).map((c) => c.id));
 
   // Sub-containers — built once. Only the coalitions list re-renders.
   const coalitionsBlock = h("div", { class: "coalitions-block" });
+  /** Right under the coalitions: the "Groups that work together" switch (main.ts puts it here). */
+  const linksBlock = h("div", { class: "links-block" });
   const filtersBlock = h("div", { class: "filters-block" });
   const controlsBlock = h("div", { class: "controls-block" });
   aside.appendChild(coalitionsBlock);
+  aside.appendChild(linksBlock);
   aside.appendChild(filtersBlock);
   aside.appendChild(controlsBlock);
 
@@ -132,6 +138,9 @@ export function createSidebar(
     filtersContainer() {
       return filtersBlock;
     },
+    linksContainer() {
+      return linksBlock;
+    },
     controlsContainer() {
       return controlsBlock;
     },
@@ -161,6 +170,8 @@ export function createMapLegend(
     head,
     h("div", { class: "map-legend-body" },
       row(h("span", { class: "swatch", style: "width:18px;height:18px" }), "Coalition (size = member groups)"),
+      // "Coalition" reads as jargon to some (Oct 23 meeting), and testers asked how the big bubbles relate to the small ones.
+      h("div", { class: "map-legend-note" }, "A coalition is a network of groups that work toward shared goals. Each big bubble is a coalition; the small bubbles linked to it are its member groups."),
       row(h("span", { class: "swatch", style: "width:9px;height:9px" }), "Organization"),
       row(h("span", { class: "line" }), "Member of a coalition"),
       ...(orgLinks && orgLinks.count ? [orgLinkRow(orgLinks.box, orgLinks.count)] : []),

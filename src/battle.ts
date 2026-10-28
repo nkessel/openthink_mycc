@@ -7,8 +7,9 @@
 // Calm by design: comets and seeds are launched at a slow, steady rate (each problem is hit about 1–3 times every
 // few seconds), drawn on canvas with additive glow; prefers-reduced-motion shows a still picture.
 import * as d3 from "d3";
-import { animAuto, animSimple, onAnimChange, reportFrame, setAnim, type AnimChoice } from "./perf";
-import { h, clear } from "./dom";
+import { reportFrame, fxBudget, onFxChange, stillPicture } from "./perf";
+import { onDisplayChange } from "./display";
+import { h, clear, makeFoldable } from "./dom";
 import type { TopicRecord, TopicsFile, TopicsCallbacks } from "./topics";
 import { PROBLEMS, VISIONS, SUB_SOLUTIONS, FIGHT_STRATEGIES } from "./problems";
 import { PROBLEM_ICONS, SOLUTION_ICONS } from "./topicIcons";
@@ -94,7 +95,7 @@ interface Fx {
 const BROAD = "broad";
 const BILLS = "bills";
 const STORE = "openthink.topics.battle.v2";
-const SPLIT_K = 1.7;
+const SPLIT_K = 2.6; // zoom where the main problem or solution nearest the middle splits (further in than before, Oct 23)
 const KIND_LABEL: Record<TopicRecord["kind"], string> = {
   event: "Event",
   project: "Project",
@@ -116,7 +117,7 @@ export const FX_DEFAULTS = {
   hitRate: 0.5, // how often problems are hit (× the usual 1–3 hits every few seconds)
   cometSpeed: 120, // px per second
   knock: 34, // how far a hit knocks a problem back
-  flinch: 0.55, // how much a problem shrinks for a moment when hit
+  flinch: 0.8, // how much a problem shrinks when hit (it regrows slowly)
   spark: 0.8, // the flash where a comet strikes
   chunks: 6, // grey bits that break off a problem with each hit
   chunkSize: 1.6,
@@ -185,8 +186,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     }
   })();
   let showing: Show = saved.show ?? "both";
-  let split: Split = saved.split ?? "strategy";
-  let layout: BLayout = saved.layout === "circle" ? "circle" : "columns";
+  const split: Split = "strategy"; // always split by strategy (the Energy switch was taken out, Oct 24)
+  // Narrow phones start in the circle: three columns are too cramped there. A layout someone picked is kept.
+  const narrow = window.matchMedia("(max-width: 600px)").matches;
+  let layout: BLayout = saved.layout === "circle" || saved.layout === "columns" ? saved.layout : narrow ? "circle" : "columns";
   const save = () => {
     try {
       localStorage.setItem(STORE, JSON.stringify({ show: showing, split, layout }));
@@ -194,12 +197,14 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       /* ignore */
     }
   };
-  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  // Still picture (no moving comets or seeds) with Reduce motion on, or the system's reduced-motion setting.
+  let reduced = stillPicture();
 
   // ---------- Data ----------
   const recs = ctx.file.records.filter((r) => ctx.mapIds.includes(r.map) && (r.topics.length || r.bills.length));
-  const c2p = new Map<string, string>();
-  for (const p of ctx.file.parents) for (const c of p.children) c2p.set(c.id, p.id);
+  // A topic can sit under several main topics (Turibius, Oct 19: it shows how one issue reaches other sectors).
+  const c2p = new Map<string, string[]>();
+  for (const p of ctx.file.parents) for (const c of p.children) c2p.set(c.id, [...(c2p.get(c.id) ?? []), p.id]);
   const childLabel = new Map<string, string>();
   for (const p of ctx.file.parents) for (const c of p.children) childLabel.set(`${p.id}/${c.id}`, c.label);
   const targets = new Map<string, Target>();
@@ -225,9 +230,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const topics = new Set(r.topics);
     if (r.bills.length && c2p.has(BILLS)) topics.add(BILLS);
     const hit = new Set<Target>();
-    for (const t of topics) {
-      const pid = c2p.get(t);
-      if (!pid) continue;
+    for (const t of topics) for (const pid of c2p.get(t) ?? []) {
       const key = `${pid}/${t}`;
       const pm = getT(`p:${pid}`, "prob", pid, PROBLEMS[pid] ?? pid, 0, null);
       const vm = getT(`v:${pid}`, "vis", pid, VISIONS[pid] ?? pid, 0, null);
@@ -340,47 +343,39 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     fx = [];
     relayout(true);
   }).g);
-  bar.appendChild(seg("Energy", [["strategy", "Split by strategy"], ["both", "Every item both ways"]], () => split, (v) => {
-    split = v as Split;
-    compute(true);
-    relayout(true);
-  }).g);
-  bar.appendChild(seg("Layout", [["columns", "Columns"], ["circle", "Circle"]], () => layout, (v) => {
+  // The "Energy" switch (split by strategy / every item both ways) was taken out to keep the page simple (Oct 24):
+  // energy is always split by strategy.
+  const layoutBox = seg("Layout", [["columns", "Columns"], ["circle", "Circle"]], () => layout, (v) => {
     layout = v as BLayout;
     el.dataset.layout = layout;
     shots = [];
     fx = [];
     relayout(true);
-  }).g);
+  }).g;
+  layoutBox.classList.add("cr-layout"); // the Topics page moves it up to its own bar (topics.ts)
+  bar.appendChild(layoutBox);
   el.dataset.layout = layout;
-  let splitAll = false;
+  // No "Split all" any more (Oct 23): zooming in splits only the main problem or solution nearest the middle of the
+  // view, and clicking one splits just that one.
+  const zoomOpen = new Set<string>();
   let zoomSplit = false;
-  const splitSeg = seg("Detail", [["main", "Main"], ["split", "Split all"]], () => (splitAll || zoomSplit ? "split" : "main"), (v) => {
-    splitAll = v === "split";
-    relayout(true);
-  });
-  bar.appendChild(splitSeg.g);
-  // Full or simple animation (switches to simple by itself when the browser can't keep up)
-  let simple = animSimple();
-  const animSeg = seg("Animation", [["full", "Full"], ["simple", "Simple"]], () => (simple ? "simple" : "full"), (v) => setAnim(v as AnimChoice));
-  bar.appendChild(animSeg.g);
-  const animNote = h("span", { class: "cr-anim-note" }, "auto");
-  animNote.title = "Switched to simple animation because this browser was drawing slowly. Pick Full to switch back.";
-  animSeg.g.appendChild(animNote);
-  const syncAnim = () => {
-    simple = animSimple();
-    animSeg.sync();
-    animNote.style.display = animAuto() ? "" : "none";
+  // How much to draw: the "Visual effects" control on the Topics bar (perf.ts). "More" brings back the sparks,
+  // sprouts and trails; "Less" also lowers the frame rate and the canvas sharpness.
+  let fxb = fxBudget();
+  let simple = !fxb.extras;
+  el.classList.toggle("simple", simple);
+  onDisplayChange(() => onFxRefresh());
+  onFxChange(() => onFxRefresh());
+  function onFxRefresh() {
+    reduced = stillPicture();
+    fxb = fxBudget();
+    simple = !fxb.extras;
     el.classList.toggle("simple", simple);
-  };
-  syncAnim();
-  onAnimChange(() => {
-    syncAnim();
     if (!shown) return;
     measure();
     baseDirty = true;
     kick();
-  });
+  }
   // Effects: detailed sliders for the hits and nourishment, saved as this browser's default
   const fx0 = (() => {
     try {
@@ -391,7 +386,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   })();
   const FX: FxParams = { ...fx0 };
   const fxPanel = h("div", { class: "bt-fx", role: "dialog", "aria-label": "Effect settings" });
-  const fxBtn = h("button", { type: "button", class: "cr-info", "aria-expanded": "false" }, "Modify Visual Effects") as HTMLButtonElement;
+  const fxBtn = h("button", { type: "button", class: "cr-info bt-fxbtn", "aria-expanded": "false" }, "Fine-tune effects") as HTMLButtonElement;
   const showFx = (on: boolean) => {
     fxPanel.classList.toggle("on", on);
     fxBtn.setAttribute("aria-expanded", String(on));
@@ -484,6 +479,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   bar.appendChild(fxBtn);
   bar.appendChild(infoBtn);
   el.appendChild(bar);
+  // On a phone the view options fold away, so the picture gets the screen.
+  makeFoldable(bar, "view options");
   el.dataset.show = showing;
 
   const viewport = h("div", { class: "cr-viewport" });
@@ -499,9 +496,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   const zOut = h("button", { type: "button", "aria-label": "Zoom out", title: "Zoom out" }, "−") as HTMLButtonElement;
   const zReset = h("button", { type: "button", "aria-label": "Reset view", title: "Reset view" }, "⟲") as HTMLButtonElement;
   zoomBox.append(zIn, zOut, zReset);
-  // circle layout: solutions round the top, problems round the bottom, each named on its side
-  const headTop = h("div", { class: "bt-head-ring top" }, "Solutions we are nurturing");
-  const headBot = h("div", { class: "bt-head-ring bot" }, "Problems we are solving");
+  // circle layout: problems round the left half, solutions round the right (the same sides as the columns)
+  const headTop = h("div", { class: "bt-head-ring left" }, "Problems we are solving");
+  const headBot = h("div", { class: "bt-head-ring right" }, "Solutions we are nurturing");
   // A clear way out of a selection (clicking empty space or pressing Esc works too)
   const deselBtn = h("button", { type: "button", class: "bt-deselect", title: "Show everything again (or click empty space, or press Esc)" }, "✕ Clear selection") as HTMLButtonElement;
   deselBtn.addEventListener("click", (ev) => {
@@ -563,7 +560,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   (window as unknown as { __battle: typeof stats }).__battle = stats;
 
   const liveKids = (t: Target) => t.kids.filter((k) => k.base > 0);
-  const isOpen = (t: Target) => liveKids(t).length > 1 && (expanded.has(t.id) || zoomSplit || splitAll);
+  const isOpen = (t: Target) => liveKids(t).length > 1 && (expanded.has(t.id) || zoomOpen.has(t.id));
   const showKind = (k: Stream["kind"]) => showing === "both" || (k === "fight" ? showing === "problems" : showing === "solutions");
   const sideShown = (t: Target) => showKind(t.kind === "prob" ? "fight" : "feed");
 
@@ -572,7 +569,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const r = viewport.getBoundingClientRect();
     W = Math.max(320, r.width);
     H = Math.max(300, r.height);
-    dpr = simple ? 1 : Math.min(2, window.devicePixelRatio || 1);
+    dpr = Math.min(fxb.dprMax, window.devicePixelRatio || 1); // simple keeps a sharp canvas: dpr 1 made every line look thick and soft
     for (const c of [canvas, base]) {
       c.width = Math.round(W * dpr);
       c.height = Math.round(H * dpr);
@@ -615,22 +612,26 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     }
     const total = u || 1;
     const yOf = (unit: number) => top + (unit / total) * (bot - top);
-    // circle: solutions around the top half and problems around the bottom (or one kind all the way round),
+    // circle: problems around the left half and solutions around the right (or one kind all the way round),
     // in the same order as the columns, top to bottom; the groups sit inside the ring
     const circle = layout === "circle";
     const full = showing !== "both";
     const M = 0.14;
-    const span = full ? 2 * Math.PI : Math.PI - 2 * M;
+    // a wider gap at the bottom of the ring, where the site's + button sits, so no name ends up under it
+    const MB = 0.42;
+    const sideSpan = Math.PI - M - MB;
+    const span = full ? 2 * Math.PI : sideSpan;
     if (circle) {
       ccx = W / 2;
       // room above and below the ring for the names (and the site's + button at the bottom)
-      ccy = (top + bot) / 2 - 6;
-      R = Math.max(110, Math.min(W / 2 - (small ? 80 : 200), (bot - top) / 2 - (full ? 8 : 52)));
+      ccy = (top + bot) / 2 - 16;
+      R = Math.max(110, Math.min(W / 2 - (small ? 80 : 200), (bot - top) / 2 - (full ? 8 : 46)));
     }
-    // both shown: solutions round the top (left to right), problems round the bottom (left to right)
+    // both shown: problems down the left half (top to bottom), solutions down the right half (top to bottom).
+    // Angles: -π/2 is the top, 0 the right, π/2 the bottom.
     const angle = (kind: Target["kind"], unit: number) =>
       full ? -Math.PI / 2 + (2 * Math.PI * unit) / total
-        : kind === "prob" ? Math.PI - M - (unit / total) * span : -Math.PI + M + (unit / total) * span;
+        : kind === "prob" ? -Math.PI / 2 - M - (unit / total) * sideSpan : -Math.PI / 2 + M + (unit / total) * sideSpan;
     const extent = circle ? span * R : bot - top; // length of the line the targets sit along
     const placeSide = (mains: Target[], x: number): Target[] => {
       const vis: Target[] = [];
@@ -1354,7 +1355,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   /** Where a target is drawn now: its place, plus any knock-back, with its pulse/shrink as a scale. */
   function nodeTransform(t: Target): string {
-    const sc = nodeScale() * (t.kind === "prob" ? 1 - 0.22 * FX.flinch * t.pulse : 1 + 0.3 * FX.grow * t.pulse);
+    // a hit shrinks a problem sharply; it regrows slowly and softly (the eased curve flattens out at the end)
+    const shrink = t.pulse * t.pulse * (3 - 2 * t.pulse);
+    const sc = nodeScale() * (t.kind === "prob" ? 1 - 0.42 * FX.flinch * shrink : 1 + 0.3 * FX.grow * t.pulse);
     return `translate(${t.kx.toFixed(2)},${t.ky.toFixed(2)}) scale(${sc.toFixed(3)})`;
   }
   function placeSvg(withItems = true) {
@@ -1377,13 +1380,24 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     tip.style.top = `${Math.max(8, Math.min(H - th - 8, y + 14))}px`;
   }
   const topRecs = (list: TopicRecord[], n: number) => [...list].filter((r) => (recW.get(r.id) ?? 0) > 0).sort((a, b) => (recW.get(b.id) ?? 0) - (recW.get(a.id) ?? 0)).slice(0, n);
+  /** How many events, projects, actions and mission statements reach a problem or solution (counted once each). */
+  function itemsOn(t: Target): number {
+    const ids = new Set<string>();
+    for (const st of allStreams) {
+      if (st.value <= 0) continue;
+      let x: Target | null = st.t;
+      while (x && x !== t) x = x.up;
+      if (x) for (const r of st.recs) ids.add(r.id);
+    }
+    return ids.size;
+  }
   const verb = (t: Target) => (t.kind === "prob" ? "solving" : "nurturing");
   function showStreamTip(ev: MouseEvent, s: Stream) {
     clear(tip);
     tip.append(
       h("div", { class: "cr-tip-meta" }, s.kind === "fight" ? "solving a problem" : "nurturing a solution"),
       h("div", { class: "cr-tip-title" }, `${s.org.name} → ${s.t.label}`),
-      h("div", { class: "cr-tip-meta" }, `energy ${s.value.toFixed(2)} · ${s.recs.length} item${s.recs.length === 1 ? "" : "s"}`),
+      h("div", { class: "cr-tip-meta" }, `${s.recs.length} item${s.recs.length === 1 ? "" : "s"}`),
     );
     for (const r of topRecs(s.recs, 3)) tip.appendChild(h("div", { class: "cr-tip-item" }, `${KIND_LABEL[r.kind]}: ${isMission(r) ? "mission statement" : r.name}`));
     placeTip(ev);
@@ -1395,7 +1409,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     tip.append(
       h("div", { class: "cr-tip-meta" }, t.kind === "prob" ? (t.up ? `Problem · part of “${t.up.label}”` : "Problem") : t.up ? `Solution · part of “${t.up.label}”` : "Solution"),
       h("div", { class: "cr-tip-title" }, t.label),
-      h("div", { class: "cr-tip-meta" }, `${n} group${n === 1 ? "" : "s"} ${verb(t)} it · energy ${t.energy.toFixed(1)}`),
+      h("div", { class: "cr-tip-meta" }, `${n} group${n === 1 ? "" : "s"} ${verb(t)} it · ${itemsOn(t)} item${itemsOn(t) === 1 ? "" : "s"}`),
       h("div", { class: "cr-tip-item" }, finer > 1 && !isOpen(t) ? `Click to split it into ${finer} finer ${t.kind === "prob" ? "problems" : "solutions"}` : "Click to see who is on it"),
     );
     placeTip(ev);
@@ -1484,13 +1498,13 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const list = allStreams.filter((s) => s.t === t && s.value > 0).sort((a, b) => b.value - a.value);
       const kindName = t.kind === "prob" ? "Problem" : "Solution";
       d.append(h("div", { class: "topics-detail-parent" }, t.up ? `${kindName} · ${t.up.label}` : kindName), h("h3", {}, t.label),
-        h("div", { class: "topics-detail-meta" }, `${list.length} group${list.length === 1 ? "" : "s"} ${verb(t)} it · energy ${t.energy.toFixed(1)}`));
+        h("div", { class: "topics-detail-meta" }, `${list.length} group${list.length === 1 ? "" : "s"} ${verb(t)} it · ${itemsOn(t)} item${itemsOn(t) === 1 ? "" : "s"}`));
       const finer = liveKids(t).sort((a, b) => b.energy - a.energy);
       if (finer.length > 1) {
         d.appendChild(h("div", { class: "cr-sub" }, t.kind === "prob" ? "Finer problems inside it" : "Finer solutions inside it"));
         const box = h("div", { class: "cr-chips" });
         for (const k of finer) {
-          const b = h("button", { type: "button" }, `${k.label} · ${k.energy.toFixed(1)}`);
+          const b = h("button", { type: "button" }, `${k.label} · ${itemsOn(k)}`);
           b.addEventListener("click", () => {
             expanded.add(t.id);
             selT = k;
@@ -1619,7 +1633,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         for (let i = 0; i <= 5; i++) gr.addColorStop(i / 5, `hsla(${(h0 + i * 60) % 360},85%,65%,${op})`);
         g.strokeStyle = gr;
       }
-      g.lineWidth = (lit ? 0.9 + 0.7 * k : 0.5 + 1.1 * k) * lw * (s.kind === "feed" ? 1.2 : 1);
+      g.lineWidth = (lit ? 0.7 + 0.5 * k : 0.35 + 0.75 * k) * lw * (s.kind === "feed" ? 1.1 : 1);
       g.beginPath();
       g.moveTo(s.pts[0], s.pts[1]);
       for (let i = 2; i < s.pts.length; i += 2) g.lineTo(s.pts[i], s.pts[i + 1]);
@@ -1628,7 +1642,7 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
         // a soft glow under a lit path
         g.setLineDash([]);
         g.globalAlpha = 0.12 * FX.lit;
-        g.lineWidth = (2.5 + 1.5 * k) * lw;
+        g.lineWidth = (2 + 1.2 * k) * lw;
         g.stroke();
         g.globalAlpha = 1;
       }
@@ -1677,7 +1691,8 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       // seeds drift a little slower than comets fly, so the nourishing side feels calmer
       shots.push({ s: pick, t0: now, dur: (pick.len / speed) * 1000 * (pick.kind === "fight" ? 1 : 1.45) });
     }
-    if (!simple && hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? FX.cometSpeed : FX.seedSpeed)) * 1000 });
+    // the path you point at fires extra comets/seeds only on "More": it's the most expensive part (Oct 25)
+    if (!simple && hover && hover.value > 0 && Math.random() < 0.9 * dt && shots.length < 160) shots.push({ s: hover, t0: now, dur: (hover.len / (hover.kind === "fight" ? FX.cometSpeed : FX.seedSpeed)) * 1000 * (hover.kind === "fight" ? 1 : 1.45) });
   }
 
   function arrive(sh: Shot, now: number) {
@@ -1715,12 +1730,57 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       t.vy += (-60 * t.ky - 9 * t.vy) * dt;
       t.kx += t.vx * dt;
       t.ky += t.vy * dt;
-      t.pulse = Math.max(0, t.pulse - dt * 1.4);
+      // problems regrow slowly after a hit (about 1.6 s); solutions settle back at the old pace
+      t.pulse = Math.max(0, t.pulse - dt * (t.kind === "prob" ? 0.62 : 1.4));
       t.light = Math.max(0, t.light - dt * 0.6);
       if (Math.abs(t.kx) < 0.05 && Math.abs(t.vx) < 0.05) t.kx = t.vx = 0;
       if (Math.abs(t.ky) < 0.05 && Math.abs(t.vy) < 0.05) t.ky = t.vy = 0;
     }
     return any;
+  }
+
+  /**
+   * A hit on a problem, drawn in screen space: a bright shockwave collapses from 1.9× the problem's radius to its
+   * centre (fast, then faster), `ripples` thinner rings follow it in from the surface one after another, and a
+   * small flash marks where everything meets. ms = time since the hit.
+   */
+  function drawImplosion(g: CanvasRenderingContext2D, cx: number, cy: number, rs: number, ms: number, ripples: number) {
+    const easeIn = (x: number) => x * x * x;
+    g.save();
+    g.globalCompositeOperation = "lighter";
+    g.lineCap = "round";
+    // the shockwave: 650 ms, from well outside the problem to its centre, thick and glowing, thinning as it closes
+    const sw = ms / 650;
+    if (sw < 1) {
+      const rad = Math.max(0.5, rs * 1.9 * (1 - easeIn(sw)));
+      for (const [w, col, al] of [[9, "rgba(248,113,113,1)", 0.22], [4.5, "rgba(252,165,165,1)", 0.5], [1.8, "rgba(255,241,242,1)", 0.9]] as [number, string, number][]) {
+        g.globalAlpha = al * (0.35 + 0.65 * sw);
+        g.strokeStyle = col;
+        g.lineWidth = w * (1 - 0.6 * sw);
+        g.beginPath();
+        g.arc(cx, cy, rad, 0, Math.PI * 2);
+        g.stroke();
+      }
+    }
+    // ripples: start on the surface 120 ms apart and run inward over 900 ms, fading as they go
+    for (let k = 0; k < ripples; k++) {
+      const p = (ms - 160 - k * 120) / 900;
+      if (p <= 0 || p >= 1) continue;
+      g.globalAlpha = 0.75 * (1 - p) * (1 - k * 0.18);
+      g.strokeStyle = k % 2 ? "#fecdd3" : "#fda4af";
+      g.lineWidth = 2.2 - k * 0.4;
+      g.beginPath();
+      g.arc(cx, cy, Math.max(0.5, rs * (1 - p * p)), 0, Math.PI * 2);
+      g.stroke();
+    }
+    // the flash at the centre when the shockwave arrives
+    const fl = (ms - 560) / 380;
+    if (fl > 0 && fl < 1) {
+      g.globalAlpha = 0.85 * (1 - fl);
+      const size = rs * (0.5 + 0.9 * fl);
+      g.drawImage(sprite("#ffe4e6"), cx - size, cy - size, size * 2, size * 2);
+    }
+    g.restore();
   }
 
   function drawFrame(now: number) {
@@ -1813,13 +1873,19 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
       const cx0 = X(t.x) + t.kx, cy0 = Y(t.y) + t.ky;
       const ex = cx0 + e.x, ey = cy0 + e.y;
       const rs = t.r * nodeScale();
+      if (simple && e.kind === "hit") {
+        // lighter levels: the same collapsing shockwave, with one ripple and no sparks or chunks
+        drawImplosion(g, cx0, cy0, rs, now - e.t0, 1);
+        continue;
+      }
       if (simple) {
-        // simple: one fading ring, no sparks or sprouts
+        // simple: one fading ring, no sprouts
         g.globalAlpha = 0.6 * (1 - age);
         g.strokeStyle = e.kind === "hit" ? "#fda4af" : "#fde68a";
         g.lineWidth = 1.5;
         g.beginPath();
-        g.arc(cx0, cy0, rs + 4 + age * 10, 0, Math.PI * 2);
+        // a hit closes inward from the problem's surface; a feed spreads outward from the solution
+        g.arc(cx0, cy0, e.kind === "hit" ? Math.max(1, rs * (1 - 0.65 * age)) : rs + 4 + age * 10, 0, Math.PI * 2);
         g.stroke();
         continue;
       }
@@ -1841,18 +1907,9 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
           g.globalAlpha = Math.min(1, 0.9 * FX.spark * (1 - sp));
           g.drawImage(sprite("#ffe4e6"), ex - 7, ey - 7, 14, 14);
         }
-        // 1b. the problem shrinks back: a dim ring closes in on it (light radiating inward, the opposite of a solution)
-        {
-          const ia = Math.min(1, age * 1.3);
-          g.globalCompositeOperation = "source-over";
-          g.globalAlpha = 0.55 * (1 - ia);
-          g.strokeStyle = "#7f1d1d";
-          g.lineWidth = 2 * (1 - ia) + 0.6;
-          g.beginPath();
-          g.arc(cx0, cy0, rs + 22 * (1 - ia) + 1, 0, Math.PI * 2);
-          g.stroke();
-          g.globalCompositeOperation = "lighter";
-        }
+        // 1b. the hit collapses inward (Oct 24): a shockwave rushes in from well outside the problem to its centre,
+        // ripples follow it in from the surface, and a flash where they meet.
+        drawImplosion(g, cx0, cy0, rs, ms, 3);
         // 2. bits of the problem itself break off its surface and drift away, as if it is being worn down
         const cl = Math.max(300, FX.chunkLife);
         if (ms < cl && FX.chunks > 0) {
@@ -1948,6 +2005,10 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
   function frame(now: number) {
     raf = 0;
     if (!shown || !el.isConnected || el.offsetParent === null) return;
+    if (last && now - last < fxb.frameMs) {
+      raf = requestAnimationFrame(frame); // frame rate set by the Visual effects level
+      return;
+    }
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
     if (last) {
       stats.intervalMs = stats.intervalMs ? stats.intervalMs * 0.95 + (now - last) * 0.05 : now - last;
@@ -2013,24 +2074,47 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     const want = tr.k >= SPLIT_K ? true : tr.k < SPLIT_K - 0.25 ? false : zoomSplit;
     if (want !== zoomSplit) {
       zoomSplit = want;
-      splitSeg.sync();
-      relayout(true);
+      if (updateZoomOpen()) relayout(true);
     }
     kick();
   }).on("end", () => {
+    if (zoomSplit && updateZoomOpen()) relayout(true); // panned onto another one: that one splits instead
     paintSvg();
     declutterItems();
     baseDirty = true;
     kick();
   });
   svg.call(zoom).on("dblclick.zoom", null);
+  /** Where a problem or solution is on screen: itself, or the middle of its finer ones while it is split. */
+  function screenPos(t: Target): [number, number] | null {
+    if (t.visible && Number.isFinite(t.x)) return [tr.applyX(t.x), tr.applyY(t.y)];
+    let sx = 0, sy = 0, n = 0;
+    for (const k of t.kids) { const q = screenPos(k); if (q) { sx += q[0]; sy += q[1]; n++; } }
+    return n ? [sx / n, sy / n] : null;
+  }
+  /** Which main problem or solution the zoom splits: the one nearest the middle (sticky unless another is clearly nearer). True when it changed. */
+  function updateZoomOpen(): boolean {
+    let next = "";
+    if (zoomSplit) {
+      const dist = (t: Target) => { const q = screenPos(t); return q ? Math.hypot(q[0] - W / 2, q[1] - H / 2) : Infinity; };
+      const cands = [...mainProbs, ...mainVis].filter((t) => liveKids(t).length > 1);
+      let best: Target | undefined;
+      for (const t of cands) if (!best || dist(t) < dist(best)) best = t;
+      const cur = cands.find((t) => zoomOpen.has(t.id));
+      if (cur && best && best !== cur && dist(best) > dist(cur) * 0.75) best = cur;
+      next = best?.id ?? "";
+    }
+    if ((next ? zoomOpen.has(next) && zoomOpen.size === 1 : zoomOpen.size === 0)) return false;
+    zoomOpen.clear();
+    if (next) zoomOpen.add(next);
+    return true;
+  }
   const zoomBy = (f: number) => (reduced ? svg : svg.transition().duration(450)).call(zoom.scaleBy as never, f);
   zIn.addEventListener("click", () => zoomBy(1.6));
   zOut.addEventListener("click", () => zoomBy(1 / 1.6));
   zReset.addEventListener("click", () => {
     expanded.clear();
-    splitAll = false;
-    splitSeg.sync();
+    zoomOpen.clear();
     if (tr.k === 1 && tr.x === 0 && tr.y === 0) relayout(true);
     else (reduced ? svg : svg.transition().duration(600)).call(zoom.transform as never, d3.zoomIdentity);
   });
@@ -2090,13 +2174,13 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
 
   clear(legend);
   legend.append(
-    h("div", {}, "Problems the groups are solving (left, or the bottom of the circle), reached by dashed paths. When a comet strikes, the problem is knocked back, grey bits break off it as it is worn down, and light breaks in."),
-    h("div", {}, "Solutions they are nurturing (right, or the top of the circle), reached by solid rainbow rivers. When a seed lands, the solution lights up and grows: shoots branch out in every direction."),
+    h("div", {}, "Problems the groups are solving (on the left), reached by dashed paths. When a comet strikes, the problem is knocked back, grey bits break off it as it is worn down, and light breaks in."),
+    h("div", {}, "Solutions they are nurturing (on the right), reached by solid rainbow rivers. When a seed lands, the solution lights up and grows: shoots branch out in every direction."),
     h("div", {}, "Centre: the groups, with their logos. Groups that mostly confront problems lean left; groups that mostly build solutions lean right. Showing only problems or only solutions puts the groups on the opposite side."),
-    h("div", {}, "Size: a problem or solution's area grows with the energy reaching it, compared with the busiest one at the same level. Busier ones are hit (or fed) more often, about 1–3 times every few seconds."),
-    h("div", {}, "Each item's weight (the sliders) is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
-    h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. The Modify Visual Effects button tunes the animation."),
-    h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or use Detail → Split all. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),
+    h("div", {}, "Size: the more events, projects, actions and mission statements reach a problem or solution, the bigger it is and the more often it is hit (or fed)."),
+    h("div", {}, "Each item's weight is split by how it works: advocacy, organizing, elections, legal and finance go to the problem; education, community building, stewardship, service, training, individual action and research go to the solution."),
+    h("div", {}, "Point at a group, one of its items, a problem or a solution to light up every path it is part of. Zoom in anywhere to spread things apart: past 2.4× each group shows its projects, events, actions and mission as small moons around it, and further in they are named. Visual effects on the Topics bar sets how much moves; Visual settings → Fine-tune effects tunes the hits and nourishment."),
+    h("div", { class: "cr-legend-hint" }, "Click a problem or solution to split it into finer ones, or zoom in on it. The names of the problems and solutions are still being shaped: tell us what fits through the feedback link above."),
   );
 
   let first = true;

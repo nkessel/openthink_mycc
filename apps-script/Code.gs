@@ -1,9 +1,9 @@
 /**
- * MA Climate Coalition Map — forms + spreadsheet backend
+ * MA Climate Organization Map — forms + spreadsheet backend
  * ---------------------------------------
- * Paste this whole file into the MA Climate Coalition Map data Google Sheet:
+ * Paste this whole file into the MA Climate Organization Map data Google Sheet:
  *   Extensions → Apps Script → replace Code.gs → Save.
- * Then reload the sheet and run  MA Climate Coalition Map → Set up sheet + forms  once.
+ * Then reload the sheet and run  MA Climate Organization Map → Set up sheet + forms  once.
  *
  * What it does
  *  - Loads the current map data from GitHub into the tabs (only if they're empty).
@@ -169,7 +169,7 @@ var BASE_SKILLS = ['data entry', 'event logistics', 'facilitation', 'fundraising
   'legal', 'outreach', 'photography', 'public speaking', 'research', 'social media', 'spanish',
   'portuguese', 'translation', 'video editing', 'writing'];
 
-/** Org profile fields from the MA Climate Coalition Map (org.profile in data.json). Admin-only: no form edits them. */
+/** Org profile fields from the MA Climate Organization Map (org.profile in data.json). Admin-only: no form edits them. */
 var PROFILE_BOOL = ['youth_serving', 'school_club', 'hub', 'inactive', 'paid_staff'];
 var PROFILE_NUM = ['ej_focus', 'grassroots', 'policy_expertise', 'in_building'];
 var PROFILE_STR = ['membership_size', 'c3_tier', 'c4_tier', 'geo_precision'];
@@ -201,9 +201,9 @@ var COLS = {
 };
 
 var START_TEXT = [
-  ['MA Climate Coalition Map data', ''],
+  ['MA Climate Organization Map data', ''],
   ['', ''],
-  ['This spreadsheet is the source of truth for the MA Climate Coalition Map. The forms write into it; the site reads from it.', ''],
+  ['This spreadsheet is the source of truth for the MA Climate Organization Map. The forms write into it; the site reads from it.', ''],
   ['', ''],
   ['Tabs', ''],
   ['Coalitions / Organizations / Projects / Events / Actions', 'The map data. Safe to edit by hand. Lists are comma-separated ids or tags.'],
@@ -225,7 +225,7 @@ var START_TEXT = [
 // ---------------------------------------------------------------- menu
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('MA Climate Coalition Map')
+    .createMenu('MA Climate Organization Map')
     .addItem('Set up sheet + forms (run once)', 'setUp')
     .addItem('Replace projects, events and actions from the repo', 'replaceActivityFromRepo')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
@@ -234,11 +234,145 @@ function onOpen() {
     .addItem('Fill in missing details (logos, websites, descriptions) from GitHub', 'fillLogosFromGitHub')
     .addItem('Use Wikipedia-based topics on the forms (Turibius)', 'useWikiTopicsOnForms')
     .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
+    .addItem('Add reviewed aliases from Unmatched Input (monthly topic review)', 'addReviewedAliases')
     .addItem('Add connections from the Organization Info Form (reviewed list on GitHub)', 'importReviewedConnections')
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
+    .addItem('Apply the source check (hide events, projects and actions with no page that names them)', 'applySourceCheck')
+    .addItem('Link the social justice spreadsheet', 'linkSocialJusticeSheet')
     .addToUi();
+}
+
+// ---------------------------------------------------------------- social justice spreadsheet
+/**
+ * The social justice groups (Palestinian rights, immigrant rights, …) are kept out of this sheet so it stays about
+ * climate (Oct 23 meeting). They live in their own spreadsheet, shared only with the people who manage them, with
+ * the same tabs and columns as this one (Coalitions = one row per sector, Organizations, Events, Projects,
+ * Actions, Connections). The web app serves it at ?feed=social-justice; the map only asks for it when someone
+ * switches a social justice layer on, so it adds nothing to the main map's loading.
+ */
+var SJ_PROP = 'SJ_SHEET_ID';
+function linkSocialJusticeSheet() {
+  var ui = SpreadsheetApp.getUi();
+  var cur = PropertiesService.getScriptProperties().getProperty(SJ_PROP);
+  var res = ui.prompt('Social justice spreadsheet', 'Paste the social justice spreadsheet\'s link (or its ID).' +
+    (cur ? '\n\nNow linked: https://docs.google.com/spreadsheets/d/' + cur : ''), ui.ButtonSet.OK_CANCEL);
+  if (res.getSelectedButton() !== ui.Button.OK) return;
+  var id = sheetIdFrom_(res.getResponseText());
+  if (!id) { ui.alert('That doesn\'t look like a Google Sheets link.'); return; }
+  var t = readAllFrom_(SpreadsheetApp.openById(id)); // fails here (not later, on the map) if this account can't open it
+  PropertiesService.getScriptProperties().setProperty(SJ_PROP, id);
+  logChange_('', 'Menu', 'applied', '', 'social justice', id, 'Social justice spreadsheet linked', t.coalitions.length + ' sectors, ' + t.orgs.length + ' groups');
+  ui.alert('Linked: ' + t.coalitions.length + ' sectors and ' + t.orgs.length + ' groups. The map reads it the next time someone switches a social justice layer on.');
+}
+/** Pure: a spreadsheet link or bare ID → the ID ('' when it isn't one). */
+function sheetIdFrom_(text) {
+  var s = String(text || '').trim();
+  var m = /\/spreadsheets\/d\/([\w-]{20,})/.exec(s);
+  if (m) return m[1];
+  return /^[\w-]{20,}$/.test(s) ? s : '';
+}
+function socialJusticeData_() {
+  var id = PropertiesService.getScriptProperties().getProperty(SJ_PROP);
+  if (!id) return { generated_at: nowIso_(), coalitions: [], organizations: [], edges: [], org_links: [], unlinked: true };
+  return buildDataFile_(readAllFrom_(SpreadsheetApp.openById(id)), nowIso_());
+}
+
+var SOURCE_CHECK_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/src/source-check.json';
+
+/**
+ * Only verified items on the map (Oct 18): on the Events, Projects and Actions tabs, applies the corrected links,
+ * dates and names from src/source-check.json (research/verification/*.csv), then hides every item whose page is
+ * gone, never named it, or exists only in an email, and every item with no web link. Hidden rows stay in the
+ * sheet; each change is in Change Log.
+ */
+function applySourceCheck() {
+  var check = JSON.parse(UrlFetchApp.fetch(SOURCE_CHECK_URL).getContentText());
+  var coalitionIds = {};
+  readTable_(ss_().getSheetByName(TAB.coalitions)).rows.forEach(function (r) { coalitionIds[str_(r.id)] = true; });
+  var adds = sourceCheckAdds_(check, coalitionIds);
+  var n = 0;
+  // group fields the check corrected (e.g. a website)
+  [[TAB.coalitions, 'coalition'], [TAB.orgs, 'org']].forEach(function (t) {
+    var sheet = ss_().getSheetByName(t[0]);
+    if (!sheet) return;
+    var table = readTable_(sheet);
+    table.rows.forEach(function (r) {
+      var want = (check.groups || {})[str_(r.id)];
+      if (!want) return;
+      var updates = {};
+      Object.keys(want).forEach(function (k) { if (str_(r[k]) !== want[k]) updates[k] = want[k]; });
+      if (!Object.keys(updates).length) return;
+      writeFields_(sheet, table.headers, r._row, updates);
+      logChange_('', 'Menu', 'updated', '', t[1], str_(r.id), str_(r.name), Object.keys(updates).map(function (k) { return k + ': ' + (str_(r[k]) || '∅') + ' → ' + updates[k]; }).join('\n'));
+      n++;
+    });
+  });
+  [[TAB.events, 'event', 'events'], [TAB.projects, 'project', 'projects'], [TAB.actions, 'action', 'actions']].forEach(function (t) {
+    var sheet = ss_().getSheetByName(t[0]);
+    if (!sheet) return;
+    addMissingColumns_(sheet, COLS[t[0]]);
+    var table = readTable_(sheet);
+    eventCheckUpdates_(table.rows, check).forEach(function (u) {
+      writeFields_(sheet, table.headers, u.row._row, u.updates);
+      logChange_('', 'Menu', u.updates.hidden ? 'removed' : 'updated', '', t[1], str_(u.row.id), str_(u.row.name), u.why);
+      n++;
+    });
+    var have = {};
+    table.rows.forEach(function (r) { have[str_(r.id)] = true; });
+    adds[t[2]].forEach(function (row) {
+      if (have[row.id]) return;
+      appendObject_(sheet, row);
+      logChange_('', 'Menu', 'added', '', t[1], row.id, row.name, 'added from the source check: ' + row.link);
+      n++;
+    });
+  });
+  ss_().toast(n ? 'Changed ' + n + ' item(s). See Change Log.' : 'Everything already passes the check.');
+}
+
+/**
+ * Sheet rows for the checked items the source check adds ({events, projects, actions}); their values also go into
+ * check.fix, so a row the sheet already has with that id takes the checked wording and link.
+ */
+function sourceCheckAdds_(check, coalitionIds) {
+  var out = { events: [], projects: [], actions: [] };
+  check.fix = check.fix || {};
+  var cell = function (v) { return v === null || v === undefined ? '' : Array.isArray(v) ? v.join(', ') : v === true ? 'TRUE' : v === false ? 'FALSE' : String(v); };
+  Object.keys(check.add || {}).forEach(function (gid) {
+    Object.keys(out).forEach(function (kind) {
+      ((check.add[gid] || {})[kind] || []).forEach(function (item) {
+        var row = {};
+        Object.keys(item).forEach(function (k) { row[k] = cell(item[k]); });
+        if (coalitionIds[gid]) row.coalition_id = gid; else row.host_org_id = gid;
+        out[kind].push(row);
+        var fix = {};
+        Object.keys(row).forEach(function (k) { if (k !== 'id') fix[k] = row[k]; });
+        check.fix[item.id] = Object.assign(fix, check.fix[item.id] || {});
+      });
+    });
+  });
+  return out;
+}
+
+/** The changes the source check makes to one tab's rows: [{row, updates, why}] (fixes first, then hiding). */
+function eventCheckUpdates_(rows, check) {
+  var remove = {};
+  (check.remove || []).forEach(function (id) { remove[id] = true; });
+  var page = function (u) { return /^https?:\/\/\S+\.\S+/.test(str_(u)); };
+  var out = [];
+  rows.forEach(function (r) {
+    var id = str_(r.id);
+    if (!id || isTrue_(r.hidden)) return;
+    if (remove[id]) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: its page is gone, does not name it, or it is only in an email (source check, ' + check.checked + ')' });
+    var fix = (check.fix || {})[id] || {};
+    var updates = {};
+    Object.keys(fix).forEach(function (k) { if (str_(r[k]) !== fix[k]) updates[k] = fix[k]; });
+    var link = 'link' in updates ? updates.link : r.link;
+    if (!page(link) && !page(r.rsvp_link)) return out.push({ row: r, updates: { hidden: 'TRUE' }, why: 'hidden: no web page for it' });
+    if (Object.keys(updates).length) out.push({ row: r, updates: updates, why: Object.keys(updates).map(function (k) { return k + ': ' + (str_(r[k]) || '∅') + ' → ' + updates[k]; }).join('\n') });
+  });
+  return out;
 }
 
 /**
@@ -280,11 +414,13 @@ function wikiTopicRows_(rows, minLift) {
     .filter(function (r) { return String(r[H]) === '0' || Number(r[L]) >= minLift; })
     .sort(function (a, b) { return (String(a[H]) === '0' ? 0 : 1) - (String(b[H]) === '0' ? 0 : 1); })
     .map(function (r) {
-      var seed = String(r[H]) === '0' ? r[Qd] : String(r[S]).split(',')[0];
+      // A topic sits under every seed it was reached from (Turibius, Oct 19: it shows one issue reaching others).
+      var seeds = String(r[H]) === '0' ? [r[Qd]] : String(r[S]).split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      var names = seeds.map(function (q) { return seedName[q] || q; });
       var al = String(r[A] || '');
       if (al.length > ALIAS_CELL_MAX) al = al.slice(0, al.lastIndexOf(' | ', ALIAS_CELL_MAX));
-      var note = String(r[H]) === '0' ? 'Seed topic' : 'Under ' + (seedName[seed] || seed);
-      return [r[T], al, note + ' · Wikidata ' + r[Qd], r[Qd], seedName[seed] || ''];
+      var note = String(r[H]) === '0' ? 'Seed topic' : 'Under ' + names.join(', ');
+      return [r[T], al, note + ' · Wikidata ' + r[Qd], r[Qd], names.join(' | ')];
     });
 }
 
@@ -395,6 +531,10 @@ function importReviewedConnections() {
 function updateForms() {
   var props = PropertiesService.getScriptProperties();
   var run = function (key, fn) { var id = props.getProperty(key); if (id && formExists_(id)) fn(FormApp.openById(id)); };
+  // forms keep their titles in step with the map's name (MA Climate Organization Map, 10/15 meeting)
+  var titles = { FORM_ORG: 'Update your organization', FORM_EVENT: 'Add or edit an event', FORM_PROJECT: 'Add or edit a project',
+    FORM_ACTION: 'Add or edit an action or volunteer opportunity', FORM_FEEDBACK: 'Send feedback' };
+  Object.keys(titles).forEach(function (k) { run(k, function (f) { var t = 'MA Climate Organization Map — ' + titles[k]; if (f.getTitle() !== t) f.setTitle(t); }); });
   run('FORM_ORG', upgradeOrgForm_);
   run('FORM_FEEDBACK', upgradeFeedbackForm_);
   run('FORM_EVENT', upgradeEventForm_);
@@ -405,7 +545,7 @@ function updateForms() {
 
 /** The questions each form should require, so filters like "Free food only" have answers to work with. */
 var REQUIRED_KEYS = {
-  FORM_EVENT: ['eventName', 'eventDate', 'online', 'freeFood', 'who'],
+  FORM_EVENT: ['eventName', 'eventDate', 'online', 'freeFood', 'who', 'link'], // every event needs a public page (Oct 18)
   FORM_PROJECT: ['projectName', 'online', 'freeFood', 'who', 'helpWanted'],
 };
 
@@ -738,11 +878,11 @@ function buildForms(dataLoaded) {
   var built = [];
 
   var specs = [
-    { key: 'FORM_ORG', title: 'MA Climate Coalition Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
-    { key: 'FORM_EVENT', title: 'MA Climate Coalition Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
-    { key: 'FORM_PROJECT', title: 'MA Climate Coalition Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
-    { key: 'FORM_ACTION', title: 'MA Climate Coalition Map — Add or edit an action or volunteer opportunity', build: buildActionForm_, tab: 'Responses: Actions', signIn: true },
-    { key: 'FORM_FEEDBACK', title: 'MA Climate Coalition Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
+    { key: 'FORM_ORG', title: 'MA Climate Organization Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
+    { key: 'FORM_EVENT', title: 'MA Climate Organization Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
+    { key: 'FORM_PROJECT', title: 'MA Climate Organization Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
+    { key: 'FORM_ACTION', title: 'MA Climate Organization Map — Add or edit an action or volunteer opportunity', build: buildActionForm_, tab: 'Responses: Actions', signIn: true },
+    { key: 'FORM_FEEDBACK', title: 'MA Climate Organization Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
   ];
 
   specs.forEach(function (s) {
@@ -906,7 +1046,7 @@ function addOwner_(form, what) {
 
 function buildOrgForm_(form) {
   header_(form,
-    'Use this form to add your organization to the MA Climate Coalition Map, or to fill in and correct what we already have.\n\n' +
+    'Use this form to add your organization to the MA Climate Organization Map, or to fill in and correct what we already have.\n\n' +
     OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE + '\n\n' + SIGNIN_NOTE);
   addWhichOrgText_(form);
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
@@ -1192,7 +1332,7 @@ function upgradeFeedbackForm_(form) {
     if (after) form.moveItem(phone.getIndex(), after.getIndex() + 1);
   }
 }
-var FEEDBACK_DESC = 'Tell us what is working, what is broken, or what you wish the MA Climate Coalition Map did. ' +
+var FEEDBACK_DESC = 'Tell us what is working, what is broken, or what you wish the MA Climate Organization Map did. ' +
   "You'll be asked to sign in with Google so we can follow up; only your feedback is required.";
 
 function buildFeedbackForm_(form) {
@@ -1371,7 +1511,11 @@ function topicCandidates_(t) {
   used.forEach(function (x) { add(humanize_(x), []); });
   return out;
 }
-/** Typed topics → { slugs: [matched], missed: [{typed, closest}] }. */
+/**
+ * Typed topics → { slugs: [matched], missed: [{typed, closest}] }. Matched only against Turibius's list on the
+ * Topics tab (names + aliases) and the tags in use: no Wikipedia lookups (Nathan, Oct 23: the related topics are
+ * already in his spreadsheet). Anything else goes to Unmatched Input with the closest names for the monthly review.
+ */
 function resolveTopics_(text, t) {
   var out = { slugs: [], missed: [] };
   var parts = String(text === undefined || text === null ? '' : text).split(/[,;\n]+/).map(function (x) { return x.trim(); }).filter(Boolean);
@@ -1391,17 +1535,56 @@ function resolveTopics_(text, t) {
       });
     });
     var m = matchTyped_(typed, near);
-    if (m.id) out.slugs.push(m.id); else out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
+    if (m.id) { out.slugs.push(m.id); return; }
+    out.missed.push({ typed: typed, closest: m.closest.join(' | ') });
   });
   return out;
 }
 
 /** Append a row to the Unmatched Input tab so the team can review what people typed. */
-function logUnmatched_(email, kind, what, field, typed, closest) {
+function logUnmatched_(email, kind, what, field, typed, closest, status, resolution) {
   var sheet = ss_().getSheetByName(TAB.unmatched);
   if (!sheet) return;
   appendObject_(sheet, { logged_at: nowIso_(), email: email || '', form: FORM_NAMES[kind] || kind, what: what, field: field,
-    typed: typed, closest_match: closest || '', status: 'new', resolution: '' });
+    typed: typed, closest_match: closest || '', status: status || 'new', resolution: resolution || '' });
+}
+
+/**
+ * Menu: the monthly alias review (Turibius, Oct 19). On Unmatched Input, put a topic's exact name from the Topics
+ * tab in "resolution" for any typed topic, and run this: the typed words become an alias of that topic, so the
+ * forms match them from then on, and the row's status becomes "alias added".
+ */
+function addReviewedAliases() {
+  var ss = ss_();
+  var un = ss.getSheetByName(TAB.unmatched), tp = ss.getSheetByName(TAB.topics);
+  var ut = readTable_(un), tt = readTable_(tp);
+  var res = reviewedAliases_(ut.rows, tt.rows);
+  res.topicUpdates.forEach(function (u) { writeFields_(tp, tt.headers, u.row._row, { aliases: u.aliases }); });
+  res.done.forEach(function (r) { writeFields_(un, ut.headers, r._row, { status: 'alias added' }); });
+  ss.toast(res.done.length ? 'Added ' + res.done.length + ' alias(es).' + (res.unknown.length ? ' Not on the Topics tab: ' + res.unknown.join('; ') : '') :
+    'Nothing to add: put a topic name from the Topics tab in "resolution" on Unmatched Input first.');
+}
+
+/** Pure: Unmatched Input rows with a topic name in "resolution" → alias additions for the Topics tab. */
+function reviewedAliases_(unRows, topicRows) {
+  var byName = {};
+  topicRows.forEach(function (r) { if (str_(r.name)) byName[normText_(r.name)] = r; });
+  var adds = {}, done = [], unknown = [];
+  unRows.forEach(function (r) {
+    var st = str_(r.status).toLowerCase();
+    if (str_(r.what) !== 'topic' || !str_(r.resolution) || st === 'alias added' || st === 'auto-matched') return;
+    var t = byName[normText_(str_(r.resolution).replace(/^Wikipedia search → /, ''))];
+    if (!t) { unknown.push(str_(r.resolution)); return; }
+    (adds[t.name] = adds[t.name] || { row: t, words: [] }).words.push(str_(r.typed));
+    done.push(r);
+  });
+  var topicUpdates = Object.keys(adds).map(function (k) {
+    var a = adds[k], cur = String(a.row.aliases || '').split(/\s*\|\s*/).filter(Boolean);
+    var have = {}; cur.concat([a.row.name]).forEach(function (x) { have[normText_(x)] = true; });
+    a.words.forEach(function (w) { if (!have[normText_(w)]) { cur.push(w); have[normText_(w)] = true; } });
+    return { row: a.row, aliases: cur.join(' | ') };
+  });
+  return { topicUpdates: topicUpdates, done: done, unknown: uniq_(unknown) };
 }
 
 // ---------------------------------------------------------------- submissions
@@ -1449,6 +1632,12 @@ function processSubmission_(kind, a, email, approver) {
   }
   if (kind === 'org' && a[COALITION_EDIT]) return saveCoalitionSubmission_(a, email, approver, t);
   var target = describeTarget_(kind, a, t);
+  // A new organization always needs a verified (Google sign-in) email, even when an admin approves it.
+  if (kind === 'org' && target.isNew && !email) {
+    if (approver) return { ok: false, reason: 'New organizations need a verified email: this submission has none. Ask them to send the form again, signed in with Google.' };
+    queueForReview_(kind, a, email, target, 'NO EMAIL — a new organization needs a verified email');
+    return;
+  }
   var access = approver ? { ok: true } : authorize_(email, kind, a, target, t);
   if (!access.ok) {
     queueForReview_(kind, a, email, target, access.reason);
@@ -1461,7 +1650,7 @@ function processSubmission_(kind, a, email, approver) {
   notifySubmitter_(email, submitterMessage_(approver || RECHECK_ ? 'approved' : 'live', kind, result.name));
   // An approved new org: its submitter becomes that org's point-person.
   if (approver && kind === 'org' && target.isNew && email) addEditorOrg_(email, result.id);
-  if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a);
+  if (kind === 'org' && result.id && result.action !== 'not found') savePointPerson_(result.id, a, email);
   refreshDropdowns();
 }
 
@@ -1586,6 +1775,7 @@ function permissionsFor_(email, editors) {
   if (ADMIN_EMAILS.map(function (x) { return x.toLowerCase(); }).indexOf(email) !== -1) { p.known = p.admin = true; }
   (editors || []).forEach(function (r) {
     if (String(r.email || '').trim().toLowerCase() !== email) return;
+    if (isPending_(r)) return; // email not confirmed yet
     p.known = true;
     if (/^admin$/i.test(str_(r.role))) p.admin = true;
     list_(r.org_ids).forEach(function (id) { if (id === '*') p.all = true; p.orgs[id] = true; });
@@ -1606,8 +1796,13 @@ function addEditorOrg_(email, orgId) {
   }
 }
 
-/** Point-person answers → an Editors row for that email with this org added (name/phone kept up to date). */
-function savePointPerson_(orgId, a) {
+/**
+ * Point-person answers → an Editors row for that email with this org added (name/phone kept up to date).
+ * The email has to be verified before it can edit anything (Nathan, Oct 23): when it is the submitter's own
+ * signed-in email, Google already verified it; any other address is saved as "pending" and sent a link to
+ * confirm (doGet ?verify=…). Pending rows grant nothing until the link is opened.
+ */
+function savePointPerson_(orgId, a, submitter) {
   var email = String(a[Q.pointEmail] || '').trim().toLowerCase();
   if (!email || email.indexOf('@') === -1) return;
   var name = String(a[Q.pointName] || '').trim();
@@ -1615,6 +1810,7 @@ function savePointPerson_(orgId, a) {
   var sheet = ss_().getSheetByName(TAB.editors);
   var table = readTable_(sheet);
   var row = table.rows.filter(function (r) { return String(r.email).toLowerCase() === email; })[0];
+  var verified = email === String(submitter || '').trim().toLowerCase() || (row && !isPending_(row));
   var note = phone ? 'phone: ' + phone : '';
   if (row) {
     var up = { org_ids: uniq_(list_(row.org_ids).concat([orgId])).join(', ') };
@@ -1623,10 +1819,54 @@ function savePointPerson_(orgId, a) {
       var rest = str_(row.notes).split(/;\s*/).filter(function (x) { return x && x.indexOf('phone: ') !== 0; });
       up.notes = [note].concat(rest).join('; ');
     }
+    if (isPending_(row) && verified) up.role = 'editor';
     writeFields_(sheet, table.headers, row._row, up);
   } else {
-    appendObject_(sheet, { email: email, role: 'editor', org_ids: orgId, name: name, notes: note ? note + '; point person from the org form' : 'point person from the org form' });
+    appendObject_(sheet, { email: email, role: verified ? 'editor' : PENDING_ROLE, org_ids: orgId, name: name,
+      notes: [note, verified ? 'point person from the org form' : 'point person from the org form; waiting for them to confirm their email'].filter(Boolean).join('; ') });
   }
+  if (!verified) sendVerification_(email, orgId, name);
+}
+
+/** Editors rows waiting for their email to be confirmed: listed, but allowed nothing. */
+var PENDING_ROLE = 'pending';
+function isPending_(r) { return /^pending/i.test(str_(r.role)); }
+
+/** Email a point person a one-time link that confirms the address (doGet ?verify=token). */
+function sendVerification_(email, orgId, name) {
+  var token = '';
+  for (var i = 0; i < 4; i++) token += Math.floor(Math.random() * 0x100000000).toString(16);
+  PropertiesService.getScriptProperties().setProperty('VERIFY_' + token, JSON.stringify({ email: email, org: orgId, at: nowIso_() }));
+  var url = '';
+  try { url = ScriptApp.getService().getUrl(); } catch (e) { /* not deployed as a web app (tests) */ }
+  url = (url || PropertiesService.getScriptProperties().getProperty('WEB_APP_URL') || '') + '?verify=' + token;
+  var label = (LABEL_INDEX_ && LABEL_INDEX_.byId.org[orgId]) || orgId;
+  logChange_('', FORM_NAMES.org, 'verification sent', 'PENDING', 'editor', orgId, label, 'point person ' + email + ' asked to confirm their email');
+  try {
+    MailApp.sendEmail(email, 'MA Climate Organization Map: please confirm your email',
+      'Hi' + (name ? ' ' + name : '') + ',\n\nSomeone named you as the point person for ' + label + ' on the MA Climate Organization Map. ' +
+      'Open this link to confirm your email, so you can keep the organization\'s information up to date:\n\n' + url +
+      '\n\nIf this wasn\'t you, ignore this email: nothing changes until the link is opened.');
+  } catch (e) { /* quota: the Change Log and Editors tab still show the pending row */ }
+}
+
+/** The confirmation link: the pending Editors row becomes an editor. Returns a short message for the page. */
+function confirmVerification_(token) {
+  var props = PropertiesService.getScriptProperties();
+  var raw = token && /^[0-9a-f]{8,64}$/.test(token) ? props.getProperty('VERIFY_' + token) : null;
+  if (!raw) return 'This link has expired or was already used. If you still need access, ask the core team.';
+  var v = JSON.parse(raw);
+  var sheet = ss_().getSheetByName(TAB.editors);
+  var table = readTable_(sheet);
+  var row = table.rows.filter(function (r) { return String(r.email).toLowerCase() === v.email; })[0];
+  if (row && isPending_(row)) {
+    var rest = str_(row.notes).split(/;\s*/).filter(function (x) { return x && x.indexOf('waiting for them to confirm') === -1; });
+    writeFields_(sheet, table.headers, row._row, { role: 'editor', notes: rest.concat(['email confirmed ' + nowIso_().slice(0, 10)]).join('; ') });
+  }
+  props.deleteProperty('VERIFY_' + token);
+  logChange_(v.email, 'Email confirmation', 'confirmed', '', 'editor', v.org, v.org, 'point person confirmed their email');
+  try { recheckWaiting_(); } catch (e) { /* held submissions are re-checked on the next Editors edit */ }
+  return 'Thanks, your email is confirmed. You can now update ' + v.org + ' through the forms on the map.';
 }
 
 function queueForReview_(kind, a, email, target, reason) {
@@ -1646,7 +1886,7 @@ function queueForReview_(kind, a, email, target, reason) {
   logChange_(email, FORM_NAMES[kind], 'needs review', reason, kind, target.id, target.label, summary);
   if (ALERT_ADMINS) {
     try {
-      MailApp.sendEmail(ADMIN_EMAILS.join(','), 'MA Climate Coalition Map: submission needs review (' + reason.split(' — ')[0] + ')',
+      MailApp.sendEmail(ADMIN_EMAILS.join(','), 'MA Climate Organization Map: submission needs review (' + reason.split(' — ')[0] + ')',
         'From: ' + (email || 'unknown') + '\nForm: ' + FORM_NAMES[kind] + '\nAbout: ' + target.label +
         '\nWhy: ' + reason + '\n\n' + summary + '\n\nReview it on the "Needs Review" tab: ' + ss_().getUrl());
     } catch (err) { /* email quota; the Change Log still has it */ }
@@ -1659,13 +1899,13 @@ function queueForReview_(kind, a, email, target, reason) {
 function submitterMessage_(status, kind, name) {
   var what = { org: 'organization', event: 'event', project: 'project', action: 'action' }[kind] || 'submission';
   var it = name ? '"' + name + '"' : 'your ' + what;
-  var subject = status === 'held' ? 'MA Climate Coalition Map: we received your ' + what : 'MA Climate Coalition Map: ' + it + ' is on the map';
+  var subject = status === 'held' ? 'MA Climate Organization Map: we received your ' + what : 'MA Climate Organization Map: ' + it + ' is on the map';
   var body = status === 'live'
     ? 'Thanks! Your changes to ' + it + ' are saved. They show on the map within a few minutes (reload the page to see them).'
     : status === 'approved'
       ? 'Thanks for your patience. The map team approved your changes to ' + it + ', and they now show on the map.'
       : 'Thanks! Your changes to ' + it + ' are waiting for the map team to check them, because this email isn\'t yet listed as a point person for that group. You\'ll get another email when they go live.';
-  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— MA Climate Coalition Map' };
+  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— MA Climate Organization Map' };
 }
 /** Sends the message unless turned off (Script property NOTIFY_SUBMITTERS = off). Never fails a submission. */
 function notifySubmitter_(email, msg) {
@@ -2063,8 +2303,14 @@ function logChange_(email, form, status, flag, type, id, name, changes) {
 
 // ---------------------------------------------------------------- data.json endpoint
 /** Deploy → New deployment → Web app (Execute as: me, Who has access: Anyone). */
-function doGet() {
-  var data = buildDataFile_(readAll_(), nowIso_());
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  if (p.verify) {
+    return HtmlService.createHtmlOutput('<p style="font:16px system-ui;max-width:520px;margin:48px auto">' +
+      confirmVerification_(String(p.verify)).replace(/[<>&]/g, '') + '</p>').setTitle('MA Climate Organization Map');
+  }
+  // The social justice groups live in their own spreadsheet and are only fetched when someone switches them on.
+  var data = p.feed === 'social-justice' ? socialJusticeData_() : buildDataFile_(readAll_(), nowIso_());
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -2192,7 +2438,11 @@ function ss_() {
 }
 
 function readAll_() {
-  var ss = ss_();
+  return readAllFrom_(ss_());
+}
+
+/** Every public tab of a spreadsheet laid out like this one (also the social justice spreadsheet). */
+function readAllFrom_(ss) {
   var r = function (name) { var sh = ss.getSheetByName(name); return sh ? readTable_(sh).rows : []; };
   return {
     coalitions: r(TAB.coalitions), orgs: r(TAB.orgs), connections: r(TAB.connections), projects: r(TAB.projects),

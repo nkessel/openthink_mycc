@@ -93,7 +93,7 @@ export function createNodeSearch(
   wrap.className = "search-box";
   const input = document.createElement("input");
   input.type = "search";
-  input.placeholder = opts.placeholder || "Search organizations or coalitions…";
+  input.placeholder = opts.placeholder || "Search groups and coalitions…";
   input.setAttribute("aria-label", input.placeholder);
   input.setAttribute("role", "combobox");
   input.setAttribute("aria-expanded", "false");

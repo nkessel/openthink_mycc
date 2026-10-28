@@ -11,6 +11,8 @@ export interface MapDef {
   name: string;
   /** Short title in the top bar. */
   title: string;
+  /** A short name for narrow screens (falls back to `title`). */
+  short?: string;
   /** Full name for the page title and tooltips. */
   fullTitle: string;
   /** Data sources, in order of preference (first that loads wins). Empty for a combined map. */
@@ -33,8 +35,10 @@ export const MAPS: Record<MapId, MapDef> = {
   ma: {
     id: "ma",
     name: "Massachusetts",
-    title: "MA Climate Map",
-    fullTitle: "MA Climate Coalition Map",
+    // Named at the 10/15 meeting: "MA Climate Organization Map (MACOM)", not "climate map" (that means something else).
+    title: "MA Climate Organization Map",
+    short: "MACOM",
+    fullTitle: "MA Climate Organization Map (MACOM)",
     sources: [LIVE_DATA_URL, SNAPSHOT_URL].filter(Boolean),
     editable: true,
     geo: ["ma"],
@@ -43,8 +47,9 @@ export const MAPS: Record<MapId, MapDef> = {
   vt: {
     id: "vt",
     name: "Vermont",
-    title: "VT Climate Map",
-    fullTitle: "Vermont Climate Coalition Map",
+    title: "VT Climate Organization Map",
+    short: "VT map",
+    fullTitle: "Vermont Climate Organization Map",
     sources: [`${base}maps/vt.json`],
     editable: false,
     geo: [],
@@ -54,8 +59,9 @@ export const MAPS: Record<MapId, MapDef> = {
   or: {
     id: "or",
     name: "Oregon",
-    title: "OR Climate Map",
-    fullTitle: "Oregon Climate Coalition Map",
+    title: "OR Climate Organization Map",
+    short: "OR map",
+    fullTitle: "Oregon Climate Organization Map",
     sources: [`${base}maps/or.json`],
     editable: false,
     geo: ["or"],
@@ -65,8 +71,9 @@ export const MAPS: Record<MapId, MapDef> = {
   us: {
     id: "us",
     name: "USA",
-    title: "US Climate Map",
-    fullTitle: "US Climate Coalition Map (states mapped so far)",
+    title: "US Climate Organization Map",
+    short: "US map",
+    fullTitle: "US Climate Organization Map (states mapped so far)",
     sources: [],
     combine: ["ma", "vt", "or"],
     editable: false,
