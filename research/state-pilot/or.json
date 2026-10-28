@@ -863,7 +863,24 @@
     "geo_precision": "approx"
    },
    "projects": [],
-   "events": [],
+   "events": [
+    {
+     "id": "or_1000_friends_e_2026_affiliate_partner_conference",
+     "name": "2026 Affiliate Partner Conference",
+     "date": "2026-11-05T09:00:00",
+     "location": "725 SW 26th St, 725 Southwest 26th Street, Corvallis, OR 97331, Corvallis, OR",
+     "description": "Join us for the 2026 Affiliate Partner Conference in November 2026!",
+     "link": "https://www.eventbrite.com/e/2026-affiliate-partner-conference-tickets-1998999272636",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/2026-affiliate-partner-conference-tickets-1998999272636"
+     ],
+     "end": "2026-11-06T16:30:00",
+     "lat": 44.5699,
+     "lng": -123.2783
+    }
+   ],
    "actions": [],
    "sources": [
     "https://apps.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/134722",
@@ -4520,7 +4537,7 @@
      "name": "Rogue Valley Monthly Volunteer Team Meeting",
      "date": "2026-11-12T17:30:00",
      "location": "Details on the event page",
-     "description": "Join the monthly volunteer gathering to learn organizing and leadership skills and take action for climate justice in the Rogue Valley! Email Susie@RogueClimate.org to get involved!",
+     "description": "Join the monthly volunteer gathering to learn organizing and leadership skills and take action for climate justice in the Rogue Valley!",
      "link": "https://rogueclimate.org/event/%f0%9f%8c%bf-rogue-valley-monthly-volunteer-team-meeting-2-2/2026-11-12/",
      "online": false,
      "verified": true,
@@ -4997,6 +5014,38 @@
       "https://www.eventbrite.com/e/community-solar-weatherization-workshop-reach-cdc-tickets-2002243945540"
      ],
      "end": "2026-10-28T18:30:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_cep_e_community_solar_weatherization_workshop__2",
+     "name": "Community Solar & Weatherization Workshop - Reach CDC",
+     "date": "2026-10-26T17:00:00",
+     "location": "Allen Fremont Plaza Apartments, 221 Northeast Fremont Street, Portland, OR 97212, Portland, OR",
+     "description": "Learn about the Pacific Power bill savings program & energy conservation with the Oregon Community Solar and Weatherization workshop,",
+     "link": "https://www.eventbrite.com/e/community-solar-weatherization-workshop-reach-cdc-tickets-2002243726886",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/community-solar-weatherization-workshop-reach-cdc-tickets-2002243726886"
+     ],
+     "end": "2026-10-26T19:00:00",
+     "lat": 45.537,
+     "lng": -122.65
+    },
+    {
+     "id": "or_cep_e_in_person_english_lead_poisoning_prevent_2",
+     "name": "IN PERSON English Lead Poisoning Prevention and Radon Workshop",
+     "date": "2026-12-01T17:30:00",
+     "location": "Community Energy Project Conference Room, 2705 East Burnside Street, Suite 114, Portland, OR 97214, Portland, OR",
+     "description": "This workshop provides information on household lead poisoning and Radon risks and how to prevent exposure and mitigate these hazards.",
+     "link": "https://www.eventbrite.com/e/in-person-english-lead-poisoning-prevention-and-radon-workshop-tickets-2002594578292",
+     "online": false,
+     "verified": true,
+     "sources": [
+      "https://www.eventbrite.com/e/in-person-english-lead-poisoning-prevention-and-radon-workshop-tickets-2002594578292"
+     ],
+     "end": "2026-12-01T18:30:00",
      "lat": 45.537,
      "lng": -122.65
     }
@@ -9543,5 +9592,5 @@
    "target": "or_dycc"
   }
  ],
- "notes": "METHOD (2026-10-13): WebSearch/WebFetch plus a Python fetcher that obeys robots.txt (ClaudeBot / Claude-User / anthropic-ai / *). Sites that disallow AI crawlers were not read: ojta.org, olcv.org (OCN page), socan.eco, centraloregonlandwatch.org .ics files, depave.org, aorr.org, environmentamerica.org, phnw.org. Sites returning 403/proxy errors could not be read (birdallianceoregon.org, envirocenter.org, oregonpsr.org, nwenergy.org, newbuildings.org, orbizclimate.org, friendsoftrees.org, thirdact.org, opalpdx.org, pcun.org, crag.org, several city sites, union sites).\nCOALITIONS: Oregon Conservation Network members come from OLCV's 25 Feb 2025 OCN letter (42 groups); the current list may differ. Oregon Climate Action Hub is an information hub; its \"members\" here are the 63 groups in its public directory (Oct 2026), not a formal membership. ZERO Coalition: about 18 business members (architecture/engineering/building firms, PGE) left out; the Climate Reality Project logo on its member page is not linked because it does not say which chapter. Energize Bend: 3 business partners and one unidentified logo (COCN) left out. Oregon Just Transition Alliance says it has 20+ member groups but its site blocks automated readers, so no members are linked. Climate Jobs Oregon: NW Labor Press lists 10 early sponsors but says 9 remain after UA Local 290 withdrew; all 10 listed are kept (UA 290 is not among them). PCEF Coalition = the 2018 founding partners named by APANO in June 2026.\nLOCATIONS: town centres only (Census 2024 gazetteer), geo_precision \"approx\". Groups with no Oregon address found are placed at Salem with remote: true. Some towns come from the group's name or its directory region (350 Washington County -> Hillsboro, EOC3 -> Pendleton, Douglas County GWC -> Roseburg, SOCAN -> Ashland): check these.\nDROPPED: 350 Corvallis (domain now a casino site), 350 Salem and Oregon Rural Action (sites unreachable), CRAG (blocked). Oregon Climate Equity Network / OCAP coalition looked inactive since 2022.\nNOT DONE: OLCV, Sierra Club Oregon, Third Act Oregon, Climate Solutions and OEC event calendars were blocked or empty; 1000 Friends events unreachable. last_activity is blank where no dated 2025-26 activity was seen on the homepage."
+ "notes": "COUNTS (2026-10-13): 9 coalitions, 165 groups, 183 memberships, 89 upcoming events, 103 projects, 46 actions; 116 logos.\nMETHOD: WebSearch/WebFetch plus a Python fetcher that obeys robots.txt (ClaudeBot / Claude-User / anthropic-ai / *). Not read: sites that disallow AI crawlers (ojta.org, olcv.org OCN page, socan.eco, depave.org, aorr.org, environmentamerica.org, phnw.org, emswcd.org, ecotrust.org) or that returned 403 / proxy errors (birdallianceoregon.org, envirocenter.org, oregonpsr.org, nwenergy.org, newbuildings.org, orbizclimate.org, thirdact.org, opalpdx.org, pcun.org, crag.org, several city and union sites). Mobilize was not used (Cloudflare challenge). Google Calendar feeds were not read (robots.txt).\nEVENTS: from groups' own calendars (event-calendar feeds, schema.org event data, .ics), the Oregon Climate Action Hub calendar, and Eventbrite pages whose organizer is the group itself. Repeating meetings are one event with a recurrence. Only events on or after 2026-10-13.\nPROJECTS / ACTIONS: from groups' own program, campaign, volunteer and take-action pages; descriptions are short paraphrases.\nCOALITIONS: Oregon Conservation Network members come from OLCV's 25 Feb 2025 letter (42 groups); the current list may differ. Oregon Climate Action Hub is an information hub; its \"members\" are the groups in its public directory (Oct 2026), not a formal membership. ZERO Coalition and Energize Bend business members (about 21) are left out. Oregon Just Transition Alliance has 20+ member groups but no readable public list, so none are linked. Climate Jobs Oregon: NW Labor Press lists 10 early sponsors and says 9 remain after UA Local 290 withdrew; all 10 listed are kept (UA 290 is not among them). PCEF Coalition = the 2018 founding partners named by APANO in June 2026.\nLOCATIONS: town centres only (Census 2024 Gazetteer), geo_precision \"approx\". 39 groups with no Oregon address found sit at Salem with remote: true. Some towns come from a group's name or directory region (350 Washington County → Hillsboro, EOC3 → Pendleton, Douglas County GWC → Roseburg, SOCAN → Ashland): check these.\nLAST ACTIVITY: newest dated post/feed item/sitemap entry on the group's own site, or its Climate Action Hub listing date, or a coalition letter it signed; 33 groups still blank.\nPROFILE: youth_serving / school_club set where the group's own description says so. 1-4 scores (ej_focus, grassroots, policy_expertise) are not set: the sources don't state them.\nGAPS: 58 groups without a usable logo; OLCV, Sierra Club Oregon, Third Act Oregon, Climate Solutions and OEC calendars were blocked or empty.\nDROPPED: 350 Corvallis (domain now a casino site), 350 Salem and Oregon Rural Action (sites unreachable), CRAG (blocked); Oregon Climate Equity Network / OCAP coalition looked inactive since 2022."
 }
