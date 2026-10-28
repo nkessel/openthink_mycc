@@ -2922,12 +2922,20 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .lp-btn[aria-pressed="true"] { color: #04202a; background: #7dd3fc; border-color: #7dd3fc; }
 /* Accessibility button + panel (Oct 24): Large print and Reduce motion live behind it */
 .a11y-wrap { position: relative; margin-left: auto; display: inline-flex; flex: none; }
-.a11y-wrap .lp-btn { margin-left: 0; }
-.a11y-btn.on { border-color: #7dd3fc; color: var(--text); }
-.a11y-panel { position: fixed; top: 56px; right: 12px; z-index: 1200; width: 300px; max-width: calc(100vw - 24px); padding: 12px 14px 6px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5); font-size: 13px; }
+.a11y-btn { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 36px; min-width: 36px; justify-content: center; padding: 6px 9px; appearance: none; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; color: var(--text-dim); background: transparent; border: 1px solid var(--border); border-radius: 999px; }
+.a11y-btn:hover, .a11y-btn[aria-expanded="true"] { color: var(--text); border-color: var(--accent); }
+.a11y-btn .a11y-dot { display: none; position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; background: #7dd3fc; box-shadow: 0 0 0 2px var(--bg); }
+.a11y-btn.on .a11y-dot { display: block; }
+.a11y-btn.on { color: var(--text); }
+@media (max-width: 1150px) { .a11y-btn .a11y-word { display: none; } .a11y-btn { padding: 6px; width: 40px; height: 40px; } }
+.a11y-panel { position: fixed; top: 56px; right: 12px; z-index: 1200; width: 300px; max-width: calc(100vw - 24px); padding: 10px 14px 6px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5); font-size: 13px; }
 .a11y-panel[hidden] { display: none; }
-.a11y-head { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+.a11y-head { display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+.a11y-x { appearance: none; background: none; border: none; color: var(--text-dim); font-size: 20px; line-height: 1; min-width: 36px; min-height: 36px; cursor: pointer; margin-right: -8px; }
+.a11y-x:hover { color: var(--text); }
 .a11y-panel .control { margin-bottom: 8px; }
+.a11y-panel .toggle-row { margin-bottom: 2px; cursor: pointer; }
+.a11y-panel .ctrl-label { cursor: pointer; }
 .large-print .topbar .tab, .large-print .tab-menu-btn { font-size: 17px; }
 .large-print .topbar .tab[data-tab="topics"] { display: none; }
 .large-print .drawer, .large-print .list-view > *, .large-print .sidebar, .large-print .detail-card, .large-print .geo-panel,
@@ -3124,7 +3132,7 @@ html, body { overflow-x: clip; max-width: 100%; }
   .cr-bar.foldable.folded { padding: 4px 12px; }
   .geo-panel.foldable.folded { background: transparent; box-shadow: none; }
 }
-/* Map name: full on wide screens, the short name (MACOM) where the top bar is tight */
+/* Map name: full on wide screens, the short name ("MA Climate Orgs") where the top bar is tight */
 .brand .brand-short { display: none; }
 @media (max-width: 1150px) {
   .brand .brand-long { display: none; }
