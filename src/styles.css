@@ -3182,3 +3182,33 @@ html, body { overflow-x: clip; max-width: 100%; }
 .map-legend .line.money-line.k-lobbying { background: #d97706; }
 .map-legend .line.money-line.k-political { background: repeating-linear-gradient(90deg, #b91c1c 0 6px, transparent 6px 9px); }
 .money-list a { color: var(--accent, #38bdf8); }
+.money-quarters-wrap { margin: 4px 0 2px; max-width: 260px; }
+.money-quarters { width: 100%; height: auto; display: block; }
+.money-quarters .bar { fill: #d97706; }
+.money-quarters text { font-size: 7px; fill: var(--muted, #6b7280); }
+.money-org { background: none; border: 0; padding: 0; color: var(--accent, #38bdf8); cursor: pointer; font: inherit; text-align: left; }
+.money-org:hover { text-decoration: underline; }
+.money-amt { color: var(--muted, #6b7280); }
+.money-more { color: var(--muted, #6b7280); list-style: none; margin-left: -18px; }
+.money-pos { display: inline-block; min-width: 54px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+.money-pos.support { color: #16a34a; }
+.money-pos.oppose { color: #dc2626; }
+.money-pos.neutral { color: var(--muted, #6b7280); }
+.money-bills { margin-top: 10px; }
+.money-bills details.bill { border: 1px solid var(--border, #374151); border-radius: 8px; padding: 8px 10px; margin: 8px 0; }
+.money-bills summary { cursor: pointer; line-height: 1.4; }
+.bill-id { font-weight: 700; white-space: nowrap; }
+.bill-outcome { font-size: 11px; padding: 1px 6px; border-radius: 999px; white-space: nowrap; }
+.bill-outcome.passed { background: rgba(22, 163, 74, 0.18); color: #16a34a; }
+.bill-outcome.failed { background: rgba(107, 114, 128, 0.2); color: var(--muted, #9ca3af); }
+.bill-tally { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; margin-top: 4px; }
+.bill-tally .for { color: #16a34a; }
+.bill-tally .against { color: #dc2626; }
+.bill-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 5px; background: rgba(127, 127, 127, 0.2); }
+.bill-bar .for { background: #16a34a; }
+.bill-bar .against { background: #dc2626; }
+.bill-body { margin-top: 8px; }
+.bill-catch { font-size: 12px; color: var(--muted, #9ca3af); margin-bottom: 6px; }
+.bill-side { font-weight: 600; font-size: 12px; margin-top: 6px; }
+.bill-side.support { color: #16a34a; }
+.bill-side.oppose { color: #dc2626; }
