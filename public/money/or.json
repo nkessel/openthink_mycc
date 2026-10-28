@@ -9,6 +9,7 @@
  "opposition": [
   {
    "id": "or_opp_obi",
+   "logo": "logos/or_opp_obi.png",
    "name": "Oregon Business & Industry",
    "abbrev": "OBI",
    "type": "business association",
@@ -42,6 +43,7 @@
   },
   {
    "id": "or_opp_farm_bureau",
+   "logo": "logos/or_opp_farm_bureau.png",
    "name": "Oregon Farm Bureau",
    "abbrev": "OFB",
    "type": "agriculture association",
@@ -80,6 +82,7 @@
   },
   {
    "id": "or_opp_awec",
+   "logo": "logos/or_opp_awec.png",
    "name": "Alliance of Western Energy Consumers",
    "abbrev": "AWEC",
    "type": "industrial energy users' association",
@@ -118,6 +121,7 @@
   },
   {
    "id": "or_opp_nfib",
+   "logo": "logos/or_opp_nfib.png",
    "name": "NFIB Oregon",
    "abbrev": "NFIB",
    "type": "small business association",
@@ -162,6 +166,7 @@
   },
   {
    "id": "or_opp_cascade_policy",
+   "logo": "logos/or_opp_cascade_policy.svg",
    "name": "Cascade Policy Institute",
    "abbrev": "Cascade Policy",
    "type": "think tank",
@@ -194,6 +199,7 @@
   },
   {
    "id": "or_opp_nw_natural",
+   "logo": "logos/or_opp_nw_natural.png",
    "name": "NW Natural",
    "abbrev": "NW Natural",
    "type": "gas utility",
@@ -227,6 +233,7 @@
   },
   {
    "id": "or_opp_avista",
+   "logo": "logos/or_opp_avista.svg",
    "name": "Avista",
    "abbrev": "Avista",
    "type": "gas and electric utility",
@@ -256,6 +263,7 @@
   },
   {
    "id": "or_opp_cascade_natural_gas",
+   "logo": "logos/or_opp_cascade_natural_gas.png",
    "name": "Cascade Natural Gas",
    "abbrev": "Cascade Natural",
    "type": "gas utility",
@@ -285,6 +293,7 @@
   },
   {
    "id": "or_opp_wspa",
+   "logo": "logos/or_opp_wspa.png",
    "name": "Western States Petroleum Association",
    "abbrev": "WSPA",
    "type": "oil industry association",
@@ -314,6 +323,7 @@
   },
   {
    "id": "or_opp_ofic",
+   "logo": "logos/or_opp_ofic.png",
    "name": "Oregon Forest & Industries Council",
    "abbrev": "OFIC",
    "type": "timber industry association",
@@ -361,6 +371,7 @@
   },
   {
    "id": "or_opp_data_center_coalition",
+   "logo": "logos/or_opp_data_center_coalition.png",
    "name": "Data Center Coalition",
    "abbrev": "DCC",
    "type": "industry association",
@@ -381,6 +392,7 @@
   },
   {
    "id": "or_opp_aws",
+   "logo": "logos/or_opp_aws.png",
    "name": "Amazon Web Services",
    "abbrev": "AWS",
    "type": "company",
