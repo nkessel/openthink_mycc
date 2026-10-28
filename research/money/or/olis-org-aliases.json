@@ -267,7 +267,20 @@
   "Renewable Energy Coalition": "Renewable Energy Coalition",
   "Oregon Organic Coalition": "Oregon Organic Coalition",
   "Northwest Environmental Defense Center": "Northwest Environmental Defense Center",
-  "Community Pathways": "Community Pathways"
+  "Community Pathways": "Community Pathways",
+  "ZERO Coalition": "ZERO Coalition",
+  "Oregon Just Transition Alliance": "Oregon Just Transition Alliance",
+  "Third Act Corvallis": "Third Act Corvallis",
+  "COIN": "Consolidated Oregon Indivisible Network",
+  "American Planning Association - Oregon Chapter": "American Planning Association, Oregon Chapter",
+  "Oregon REALTORS": "Oregon REALTORS",
+  "OHBA": "Oregon Home Builders Association",
+  "NWPPA": "Northwest Public Power Association",
+  "City of Talent": "City of Talent",
+  "Firefighters United For Safety Ethics and Ecology": "Firefighters United for Safety, Ethics & Ecology",
+  "Indivisible Bend": "Indivisible Bend",
+  "MN8 Energy": "MN8 Energy",
+  "Save Juniper Flat": "Save Juniper Flat"
  },
  "_note_ogec": "Display org (map id or 'other' name) → its client name(s) in the OGEC lobbying records, so each bill shows what the groups on each side spent lobbying that year (on all issues).",
  "ogec": {
@@ -575,6 +588,15 @@
   ],
   "or_ossia": [
    "Oregon Solar Energy Industries Association (OSEIA)"
+  ],
+  "Oregon REALTORS": [
+   "Oregon Realtors"
+  ],
+  "Oregon Home Builders Association": [
+   "Oregon Home Builders Association"
+  ],
+  "MN8 Energy": [
+   "MN8 Energy Operating Company LLC"
   ]
  },
  "_note_prefix": "Testimony filed as '<organization> and <person>' or '<organization> - <person>': matched by the organization's name at the start, so no person's name needs to be listed here.",
