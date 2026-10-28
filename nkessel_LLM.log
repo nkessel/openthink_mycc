@@ -840,3 +840,6 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Not done: ORESTAR (campaign contributions) blocks automated access, so political money is limited to reported flows; build-money.mjs has a hook for a browser export. Foundation grants and the wider industry side are next.
 - Layout: the legislature sits just past the climate groups (right on wide screens, below on phones), opposing groups in an arc beyond it; first view always includes them. Layer groups have no edit links and are left out of suggested connections.
 - Checked: all 23 lobbying totals recomputed from the CSV (0 mismatches); OPB, Corvallis Advocate and DeSmog sources re-read; build, test:apps-script, check:apps-script; Playwright desktop + phone with layer on and off, OBI details pane; 0 page errors.
+
+## 2026-10-28 — Land acknowledgement wording
+- index.html: "the lands and waters they have cared for countless generations" → "…cared for over countless generations" (Nathan's wording). Build passes.
