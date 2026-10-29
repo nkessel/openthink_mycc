@@ -17,7 +17,7 @@ Every question is optional except "which one is this about?". Blank answers neve
 
 ## Access, review, and the Change Log
 
-- **Admins** (edit everything, approve reviews, get alerts): `nathandkessel@gmail.com`, `ab130@wellesley.edu`, `turibius@bu.edu` — set in `ADMIN_EMAILS` at the top of `Code.gs` and listed on the **Editors** tab.
+- **Admins** (edit everything, approve reviews, get alerts): the core team. Their emails are kept out of the code: in the Apps Script editor, **Project settings → Script properties**, add `ADMIN_EMAILS` with the emails separated by commas. Editors-tab rows with role `admin` are admins too. The map's name, state and pin box are in `REGION` at the top of `Code.gs`.
 - **Point-people**: add a row on the **Editors** tab — their email, and the `org_ids` and/or `coalition_ids` they manage (comma-separated ids from the Organizations/Coalitions tabs). One person can manage several.
 - **Anything not allowed** (unknown email, someone else's org, a new org) goes to **Needs Review** instead of the map, is flagged in **Change Log** (highlighted yellow for unauthorized attempts), and emails the admins. Tick **approve** to apply it. When a new org is approved, the person who proposed it becomes its point-person automatically.
 - **Email verification** (Oct 23): a new organization always needs a verified (Google sign-in) email; one sent without it is held, and can't be approved either. A point person typed on the organization form becomes an editor straight away only when it's the submitter's own signed-in email. Any other address is added to **Editors** as `pending` (allowed nothing) and emailed a one-time link; opening it makes them an editor and applies anything of theirs that was waiting. The link uses the web app's address, so redeploy a **New version** after updating the script.
@@ -123,3 +123,13 @@ Use this when the repo has new events/projects/actions (from `node scripts/apply
 4. **Connect the site.** On **Start Here**, copy the JSON in the row "For the site: paste into src/forms.config.ts" and send it over (or paste it over `FORMS` in `src/forms.config.ts`). The `action` entry makes the "Update this action" link on the site open the new form.
 
 Anything a point person edits through a form clears that item's "needs more information" notice.
+
+## Group Confirmation Screen (Oct 29)
+
+Each group gets its own private link to a page that shows everything the map has for it: its details, events, projects and actions. The point person enters their name and email, then for each card chooses **Edit**, **Approve** or **Remove**. **Save for later** keeps their work; **Finalize and Submit** puts it on the map (approved items are marked verified, removed ones hidden, edits written in, every change in Change Log) and adds them as a point person (up to three per group, pending until they open the email confirmation link). If two people open the same card, the second sees who is editing it and can ask them to hand it over.
+
+1. In Apps Script, add a second file: **+ → Script**, name it `Confirm`, and paste in [`Confirm.gs`](Confirm.gs). Save, then deploy a new version of the web app.
+2. In the sheet: **menu → Make confirmation links (one private link per group)**. It makes a separate spreadsheet, shared only with the admins, with one row and link per group. Running it again only adds rows for new groups.
+3. Send each group its link (column `link`). The `status` column shows not sent → opened → saved for later → submitted.
+
+Anyone with a group's link can change that group's information, so send it only to the group. To cut off a link, delete its row (or change its token) in the links spreadsheet.

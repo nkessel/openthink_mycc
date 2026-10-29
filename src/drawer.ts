@@ -1,3 +1,4 @@
+import { REGION } from "./region.config";
 import { recurrenceLabel } from "./recurrence";
 import type {
   Coalition,
@@ -619,7 +620,7 @@ export function createDrawer(
     if (e.location) g.searchParams.set("location", e.location);
     const esc = (v: string) => v.replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
     const ics = [
-      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//MA Climate Organization Map//EN", "BEGIN:VEVENT",
+      "BEGIN:VCALENDAR", "VERSION:2.0", `PRODID:-//${REGION.title}//EN`, "BEGIN:VEVENT",
       `UID:${e.id}@openthink-map`, `DTSTAMP:${stamp(new Date())}`,
       `DTSTART;TZID=${tz}:${stamp(t.start)}`, `DTEND;TZID=${tz}:${stamp(t.end)}`,
       `SUMMARY:${esc(e.name)}`, e.location ? `LOCATION:${esc(e.location)}` : "", `DESCRIPTION:${esc(details)}`,

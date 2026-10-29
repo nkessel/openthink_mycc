@@ -2,6 +2,7 @@
 // state researched from public pages, or the USA view that combines every state we have.
 // Picked with ?map=<id> in the URL (so a link opens the right map); the plain link is always Massachusetts.
 import { LIVE_DATA_URL, SNAPSHOT_URL } from "./data.config";
+import { REGION } from "./region.config";
 
 export type MapId = "ma" | "vt" | "or" | "us";
 
@@ -34,16 +35,17 @@ const base = import.meta.env.BASE_URL;
 export const MAPS: Record<MapId, MapDef> = {
   ma: {
     id: "ma",
-    name: "Massachusetts",
+    // The home map: its name, state and geography come from src/region.config.ts.
     // Named at the 10/15 meeting: "MA Climate Organization Map", not "climate map" (that means something else).
     // Short name, only where even two lines of the full title will not fit (Oct 29, Nathan: "MA Climate Map").
-    title: "MA Climate Organization Map",
-    short: "MA Climate Map",
-    fullTitle: "MA Climate Organization Map",
+    name: REGION.stateName,
+    title: REGION.title,
+    short: REGION.short,
+    fullTitle: REGION.title,
     sources: [LIVE_DATA_URL, SNAPSHOT_URL].filter(Boolean),
     editable: true,
-    geo: ["ma"],
-    timeZone: "America/New_York",
+    geo: REGION.geo,
+    timeZone: REGION.timeZone,
   },
   vt: {
     id: "vt",
@@ -85,7 +87,7 @@ export const MAPS: Record<MapId, MapDef> = {
 
 function pick(): MapDef {
   const fromUrl = new URLSearchParams(location.search).get("map")?.toLowerCase();
-  if (fromUrl && fromUrl in MAPS) return MAPS[fromUrl as MapId];
+  if (REGION.extraMaps && fromUrl && fromUrl in MAPS) return MAPS[fromUrl as MapId];
   return MAPS.ma;
 }
 

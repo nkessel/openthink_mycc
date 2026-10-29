@@ -5,6 +5,7 @@ import { currentMap } from "./maps";
 import { STATE_GEO, type DistrictDef } from "./geodata";
 import { h, makeFoldable } from "./dom";
 import { atFallback, coalitionPlaced, orgPlaced } from "./placed";
+import { REGION } from "./region.config";
 import { smoothWheelZoom } from "./smoothzoom";
 export { coalitionPlaced, orgPlaced } from "./placed";
 import { initials, shownType, hasTime, parseEventDate } from "./util";
@@ -31,10 +32,7 @@ export interface GeoCallbacks {
 
 type LayerKey = "coalitions" | "orgs" | "events" | "projects";
 
-const MA_BOUNDS: L.LatLngBoundsExpression = [
-  [41.45, -73.55],
-  [42.95, -69.85],
-];
+const MA_BOUNDS: L.LatLngBoundsExpression = REGION.bounds; // the home region (src/region.config.ts)
 
 // Voting district outlines per state (public/geo/<state>-*.geojson; see geodata.ts for sources).
 // Representatives' names change between elections, so a district links to an official "find your …" page instead.
@@ -46,9 +44,9 @@ const DISTRICTS: District[] = currentMap.geo.flatMap((p) => STATE_GEO[p].distric
 
 
 export function createGeographicView(data: DataFile, cb: GeoCallbacks): GeographicView {
-  /** Massachusetts opens on the state; other maps open on wherever their groups are. */
+  /** The home region opens on its own bounds; other maps open on wherever their groups are. */
   function startBounds(): L.LatLngBoundsExpression {
-    if (currentMap.geo.length === 1 && currentMap.geo[0] === "ma" && !currentMap.combine) return MA_BOUNDS;
+    if (currentMap.id === "ma") return MA_BOUNDS;
     const pts = [...data.coalitions, ...data.organizations]
       .filter((n) => !(n as { remote?: boolean }).remote && Number.isFinite(n.lat) && Number.isFinite(n.lng) && (n.lat !== 0 || n.lng !== 0))
       .map((n) => [n.lat, n.lng] as [number, number]);

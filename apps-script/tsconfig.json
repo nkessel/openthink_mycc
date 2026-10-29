@@ -9,5 +9,5 @@
     "types": ["google-apps-script"],
     "noImplicitAny": false
   },
-  "files": ["../.apps-script-check/Code.js"]
+  "files": ["../.apps-script-check/Code.js", "../.apps-script-check/Confirm.js"]
 }
