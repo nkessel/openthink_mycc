@@ -306,7 +306,7 @@ export function createControls(
       state.settings.focusSatSize = v;
       cb.onSettingsChange({ focusSatSize: v });
       saveState(state);
-    }, { min: 0.6, max: 3, step: 0.1, hint: "Smaller ← → bigger: the coalitions and groups around the group you clicked." }),
+    }, { min: 1, max: 7, step: 0.25, hint: "Smaller ← → bigger: the coalitions and groups around the group you clicked." }),
   );
   bubbleBody.appendChild(
     makeSlider("All bubbles", state.settings.nodeSize, (v) => {
