@@ -1847,24 +1847,29 @@ function savePointPerson_(orgId, a, submitter) {
   var email = String(a[Q.pointEmail] || '').trim().toLowerCase();
   if (!email || email.indexOf('@') === -1) return;
   var name = String(a[Q.pointName] || '').trim();
-  var phone = String(a[Q.pointPhone] || '').trim();
+  var phone = String(a[Q.pointPhone] || '').trim().slice(0, 40);
+  var best = String(a.bestContact || '').trim().slice(0, 60); // confirmation screen: "Text", "Phone call", "Email", …
   var sheet = ss_().getSheetByName(TAB.editors);
   var table = readTable_(sheet);
   var row = table.rows.filter(function (r) { return String(r.email).toLowerCase() === email; })[0];
   var verified = email === String(submitter || '').trim().toLowerCase() || (row && !isPending_(row));
-  var note = phone ? 'phone: ' + phone : '';
+  // Contact details stay on the private Editors tab (never in the public feed), in notes: "phone: …; best way to reach: …"
+  var fresh = [phone ? 'phone: ' + phone : '', best ? 'best way to reach: ' + best : ''].filter(Boolean);
   if (row) {
     var up = { org_ids: uniq_(list_(row.org_ids).concat([orgId])).join(', ') };
     if (name) up.name = name;
-    if (note) {
-      var rest = str_(row.notes).split(/;\s*/).filter(function (x) { return x && x.indexOf('phone: ') !== 0; });
-      up.notes = [note].concat(rest).join('; ');
+    if (fresh.length) {
+      var rest = str_(row.notes).split(/;\s*/).filter(function (x) {
+        return x && !(phone && x.indexOf('phone: ') === 0) && !(best && x.indexOf('best way to reach: ') === 0);
+      });
+      up.notes = fresh.concat(rest).join('; ');
     }
     if (isPending_(row) && verified) up.role = 'editor';
     writeFields_(sheet, table.headers, row._row, up);
   } else {
+    var how = a.via || 'the org form';
     appendObject_(sheet, { email: email, role: verified ? 'editor' : PENDING_ROLE, org_ids: orgId, name: name,
-      notes: [note, verified ? 'point person from the org form' : 'point person from the org form; waiting for them to confirm their email'].filter(Boolean).join('; ') });
+      notes: fresh.concat([verified ? 'point person from ' + how : 'point person from ' + how + '; waiting for them to confirm their email']).join('; ') });
   }
   if (!verified) sendVerification_(email, orgId, name);
 }

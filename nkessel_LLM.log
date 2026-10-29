@@ -899,3 +899,7 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 ## 2026-10-29 — faster first load: WebP logos (branch claude/web-logos)
 - The first load was mostly logos (146 on the map, 3.7 MB; data.json is only 54 KB gzipped), and the loading screen waits for them. scripts/web-logos.py makes WebP copies (max 640 px, quality 88; no visible change, checked side by side) in public/logos/web/; src/weblogos.ts swaps them in when the data loads. Map logos 3.7 MB → about 1 MB. The sheet's logo paths don't change; a logo with no copy shows as before.
 - Full event descriptions: not done. Event pages can't be fetched from this session (sites not on the allowlist). Options in the report.
+
+## 2026-10-29 — point-person phone + best way to reach; draggable note (branch claude/point-person-contact)
+- Confirmation screen asks for phone (optional) and best way to reach (Email / Text / Phone call). Saved only on the private Editors tab (notes), never in the public feed or on the page (tests). The shared "Save for later" draft no longer holds anyone's name/email/phone; each browser remembers its own details.
+- Map note now starts "Note: this map…" and can be dragged anywhere on the map (plus the ×).

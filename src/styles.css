@@ -3273,6 +3273,8 @@ html, body { overflow-x: clip; max-width: 100%; }
   line-height: 1.4;
   box-shadow: var(--shadow);
 }
+.dev-note { cursor: grab; touch-action: none; user-select: none; }
+.dev-note.dragging { cursor: grabbing; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
 .dev-note a { color: var(--accent); text-decoration: underline; font-weight: 600; }
 .dev-note-x {
   flex: none;
