@@ -1,5 +1,6 @@
 name: Deploy to GitHub Pages
 # Publishes the site whenever development_branch changes (or on demand).
+# The build writes version.json from the latest release tag, e.g. v1.0.0 (see vite.config.ts).
 on:
   push:
     branches: [development_branch]
@@ -19,6 +20,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # tags, for version.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22

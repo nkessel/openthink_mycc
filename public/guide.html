@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start a Climate Organization Map for your region</title>
+<meta name="description" content="How to copy the MA Climate Organization Map and run one for another state or region.">
+<style>
+  :root {
+    --bg: #ffffff; --bg-soft: #f4f6f8; --text: #16202a; --dim: #4b5866; --line: #d7dde3;
+    --accent: #0b6e4f; --accent-soft: #e3f3ec; --warn: #8a5a00; --warn-soft: #fff4dc; --code: #eef1f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #11161c; --bg-soft: #1a2129; --text: #e6ebf0; --dim: #a7b2bd; --line: #2c3640;
+      --accent: #5fd3a6; --accent-soft: #17352b; --warn: #f2c46b; --warn-soft: #3a2f17; --code: #222b34;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #11161c; --bg-soft: #1a2129; --text: #e6ebf0; --dim: #a7b2bd; --line: #2c3640;
+    --accent: #5fd3a6; --accent-soft: #17352b; --warn: #f2c46b; --warn-soft: #3a2f17; --code: #222b34;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body.large { font-size: 21px; }
+  body.spacious p, body.spacious li { line-height: 2; letter-spacing: 0.02em; word-spacing: 0.08em; }
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  header { border-bottom: 1px solid var(--line); background: var(--bg-soft); }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 16px; }
+  header .wrap { padding-top: 28px; padding-bottom: 22px; }
+  h1 { font-size: 1.9em; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.3em; margin: 2.2em 0 0.4em; padding-top: 0.4em; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.05em; margin: 1.4em 0 0.3em; }
+  .lead { color: var(--dim); margin: 0; }
+  .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tools button { font: inherit; font-size: 0.85em; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; }
+  .tools button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+  nav.toc { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; margin: 24px 0; }
+  nav.toc ol { margin: 6px 0 0; padding-left: 1.3em; }
+  code, kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.88em; background: var(--code); padding: 1px 5px; border-radius: 4px; }
+  pre { background: var(--code); padding: 12px 14px; border-radius: 8px; overflow-x: auto; font-size: 0.85em; }
+  pre code { background: none; padding: 0; }
+  .note { background: var(--warn-soft); border-left: 4px solid var(--warn); padding: 10px 14px; border-radius: 6px; margin: 14px 0; }
+  .tip { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 10px 14px; border-radius: 6px; margin: 14px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92em; margin: 10px 0; display: block; overflow-x: auto; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 7px 10px 7px 0; vertical-align: top; }
+  footer { margin: 48px 0 32px; color: var(--dim); font-size: 0.9em; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Start a Climate Organization Map for your region</h1>
+    <p class="lead">The <a href="./">MA Climate Organization Map</a> is free to copy. This guide walks you through running one for another state or region: your own map, your own Google Sheet and forms, your own point people.</p>
+    <div class="tools" role="group" aria-label="Reading options">
+      <button type="button" id="t-large" aria-pressed="false">Large print</button>
+      <button type="button" id="t-space" aria-pressed="false">More spacing</button>
+      <button type="button" id="t-theme" aria-pressed="false">Dark theme</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="toc" aria-label="Steps">
+    <strong>Steps</strong> (about an hour, plus waiting for DNS)
+    <ol>
+      <li><a href="#what">What you will have</a></li>
+      <li><a href="#fork">Copy the code on GitHub</a></li>
+      <li><a href="#clean">Clear out Massachusetts and name your region</a></li>
+      <li><a href="#sheet">Set up the Google Sheet and forms</a></li>
+      <li><a href="#connect">Connect the site to your sheet</a></li>
+      <li><a href="#test">Test it</a></li>
+      <li><a href="#domain">Get a climateorgmap.earth address</a></li>
+      <li><a href="#update">Get updates from the MA map</a></li>
+      <li><a href="#handover">Who owns what (plan a handover)</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="what">1. What you will have</h2>
+  <p>Three pieces, all free:</p>
+  <table>
+    <thead><tr><th>Piece</th><th>What it does</th><th>Where it lives</th></tr></thead>
+    <tbody>
+      <tr><td>The website</td><td>The map people look at. It never changes data itself.</td><td>A copy (fork) of the code on GitHub, published with GitHub Pages</td></tr>
+      <tr><td>The Google Sheet</td><td>The source of truth: every coalition, group, event, project and action, and who may edit each one.</td><td>Your Google Drive (only your core team can open it)</td></tr>
+      <tr><td>Google Forms</td><td>How point people add and fix their group's information. They sign in with Google; changes from people not on the Editors tab wait for your review.</td><td>Made for you by the sheet's script</td></tr>
+    </tbody>
+  </table>
+  <p>The sheet's script also publishes a public data link (an Apps Script "web app") that the website reads. It only ever shares public information, never the Editors, Needs Review, Feedback or Change Log tabs.</p>
+  <p>You need: a GitHub account, a Google account for the sheet (ideally a shared team account, see <a href="#handover">step 9</a>), and a computer with <a href="https://nodejs.org/">Node.js</a> 22 or newer, or GitHub Codespaces (runs in the browser, nothing to install).</p>
+
+  <h2 id="fork">2. Copy the code on GitHub</h2>
+  <ol>
+    <li>Open <a href="https://github.com/nkessel/openthink_mycc">github.com/nkessel/openthink_mycc</a> and click <strong>Fork</strong>. <strong>Uncheck "Copy the main branch only"</strong>: the site is published from <code>development_branch</code>.</li>
+    <li>In your fork: <strong>Actions</strong> tab → <strong>I understand my workflows, go ahead and enable them</strong>.</li>
+    <li><strong>Settings → Pages → Build and deployment → Source: GitHub Actions</strong>.</li>
+    <li><strong>Settings → Environments → github-pages → Deployment branches</strong>: add <code>development_branch</code> (by default only <code>main</code> may publish).</li>
+  </ol>
+
+  <h2 id="clean">3. Clear out Massachusetts and name your region</h2>
+  <p>Open your fork on your computer (<code>git clone</code>, then <code>npm install</code>) or in a Codespace (<strong>Code → Codespaces → Create</strong>). Make a branch, then run:</p>
+  <pre><code>node scripts/start-new-region.mjs        # shows what it will change
+node scripts/start-new-region.mjs --yes  # makes the changes</code></pre>
+  <p>It empties the map data, deletes the Massachusetts logos, research and extra maps, clears the Massachusetts form links, and turns off the Vermont/Oregon/USA maps. The code, the topic lists and the geography files stay.</p>
+  <p>Then edit these by hand:</p>
+  <table>
+    <thead><tr><th>File</th><th>What to change</th></tr></thead>
+    <tbody>
+      <tr><td><code>src/region.config.ts</code></td><td>Your map's name and short name, state name and code, time zone, where the geographic map opens (<code>bounds</code>), and your main city (<code>fallback</code>: where a group with no address yet is placed). Set <code>geo: []</code> unless you add town outlines for your state (see <code>src/geodata.ts</code>).</td></tr>
+      <tr><td><code>apps-script/Code.gs</code></td><td><code>REGION</code> at the top (the same name and state, a box around your state for checking pins, your main city's point, and example towns and groups for the form hints), and <code>SEED_URL = ''</code> so your sheet starts empty.</td></tr>
+      <tr><td><code>index.html</code></td><td>The page title and the land acknowledgement: write your own, for the land your team is on.</td></tr>
+      <tr><td><code>README.md</code></td><td>Your map's name and who to contact.</td></tr>
+    </tbody>
+  </table>
+  <p>Run <code>npm run build</code> to check nothing broke, then open a pull request into <code>development_branch</code> on your fork and merge it.</p>
+
+  <h2 id="sheet">4. Set up the Google Sheet and forms</h2>
+  <ol>
+    <li>Make a new, blank Google Sheet, named after your map (for example "WI Climate Organization Map data").</li>
+    <li><strong>Extensions → Apps Script</strong>. Delete what is in <code>Code.gs</code> and paste in your edited <code>apps-script/Code.gs</code>. Click <strong>Save</strong>.</li>
+    <li>Still in Apps Script: <strong>Project settings</strong> (gear icon) → <strong>Script properties → Add script property</strong>. Name: <code>ADMIN_EMAILS</code>. Value: your core team's emails, separated by commas. These people can edit everything, approve changes and get alerts. (They are kept here, not in the code, so your public copy holds no personal emails.)</li>
+    <li>Close Apps Script and reload the sheet. A menu with your map's name appears. Choose <strong>Set up sheet + forms (run once)</strong> and allow the permissions Google asks for. It makes the tabs, builds the five forms, shares them with your admins, and puts their links on the <strong>Start Here</strong> tab.</li>
+    <li>Back in Apps Script: <strong>Deploy → New deployment → type: Web app</strong>. Execute as: <strong>Me</strong>. Who has access: <strong>Anyone</strong>. Click <strong>Deploy</strong> and copy the web app URL.</li>
+  </ol>
+  <div class="note"><strong>Later changes to the script:</strong> the web app keeps serving the version it was deployed with. After pasting a new <code>Code.gs</code>, go to <strong>Deploy → Manage deployments → ✏️ → Version: New version → Deploy</strong>. The URL stays the same.</div>
+
+  <h2 id="connect">5. Connect the site to your sheet</h2>
+  <p>In one more pull request into <code>development_branch</code>:</p>
+  <ol>
+    <li>Paste the web app URL into <code>LIVE_DATA_URL</code> in <code>src/data.config.ts</code>.</li>
+    <li>From the sheet's <strong>Start Here</strong> tab, copy the row "For the site: paste into src/forms.config.ts" and paste it over <code>FORMS</code> in <code>src/forms.config.ts</code>.</li>
+    <li>Run <code>node scripts/form-fields.mjs</code>. It reads your forms and writes <code>src/forms.fields.json</code>, so the site's Edit buttons open the forms with everything filled in.</li>
+  </ol>
+  <p>Then, on GitHub: <strong>Settings → Secrets and variables → Actions → Variables → New repository variable</strong>: <code>OPENTHINK_DATA_URL</code> = the same web app URL. This turns on the nightly backup: a pull request with the latest data, only when something changed.</p>
+
+  <h2 id="test">6. Test it</h2>
+  <ol>
+    <li>Open <strong>Actions → Deploy to GitHub Pages</strong> and wait for the green check. Your map is at <code>https://&lt;your-github-name&gt;.github.io/&lt;repo-name&gt;/</code>.</li>
+    <li>Add <code>version.json</code> to that address to see which version is live.</li>
+    <li>Press <strong>+</strong> on the map and add a test group through the form. As an admin, your change is applied straight away; reload the map and it appears (within about a minute).</li>
+    <li>Try it as someone else: a change from an email not on the Editors tab should land in <strong>Needs Review</strong>, and your admins should get an email.</li>
+    <li>When you are happy, delete the test rows from the sheet's tabs (Organizations, Events and so on).</li>
+  </ol>
+  <div class="tip"><strong>Adding your first groups:</strong> type them straight into the Organizations and Coalitions tabs (the column names are explained on Start Here), or send each group the "Update your organization" form. On the <strong>Editors</strong> tab, add each group's point person (up to three) with the group's id.</div>
+
+  <h2 id="domain">7. Get a climateorgmap.earth address</h2>
+  <p>Maps can have their own address, like <code>ma.climateorgmap.earth</code>.</p>
+  <ol>
+    <li><strong>Ask first.</strong> Send the request through the <a href="https://docs.google.com/forms/d/e/1FAIpQLScwazw1P9rbQT4KAoUn0DSuI6B9Lpdx-kcrZXdZV45-HlAVKw/viewform">MA map's feedback form</a> with the address you'd like, your map's GitHub link and who maintains it. The climateorgmap.earth team approves requests.</li>
+    <li><strong>Once approved, set the domain in your repo first:</strong> <strong>Settings → Pages → Custom domain</strong>: <code>&lt;region&gt;.climateorgmap.earth</code>. Doing this before the DNS record exists is GitHub's advice against someone else claiming the address.</li>
+    <li>The climateorgmap.earth team then adds a DNS record: <code>CNAME &lt;region&gt; → &lt;your-github-name&gt;.github.io</code>.</li>
+    <li>When the address works, tick <strong>Enforce HTTPS</strong> in the same Pages settings (it can take up to a day to become available).</li>
+  </ol>
+  <p>If a map is shut down, its DNS record is removed so the address can't be taken over.</p>
+
+  <h2 id="update">8. Get updates from the MA map</h2>
+  <ol>
+    <li>On your fork's page: <strong>Sync fork → Update branch</strong> (for <code>development_branch</code>). Your own settings files may show conflicts: keep your values.</li>
+    <li>If <code>apps-script/Code.gs</code> changed: paste it into Apps Script again (keep your <code>REGION</code> block and <code>SEED_URL</code>), save, and deploy a new version (step 4's note).</li>
+    <li>In the sheet, run <strong>Update the forms</strong> from your map's menu. It is safe to run any time.</li>
+  </ol>
+
+  <h2 id="handover">9. Who owns what (plan a handover)</h2>
+  <ul>
+    <li>The sheet's script and its web app <strong>run as the Google account that set them up</strong>. If that person leaves and their account is closed, the forms stop recording and the map stops updating. Use a shared team Google account if you can, or write down who will take over.</li>
+    <li>The GitHub fork belongs to whoever made it. Add a second maintainer (<strong>Settings → Collaborators</strong>).</li>
+    <li>Keep the sheet shared only with your core team. Point people never need to open it: they use the forms.</li>
+  </ul>
+
+  <footer>
+    Questions or something unclear in this guide? <a href="https://docs.google.com/forms/d/e/1FAIpQLScwazw1P9rbQT4KAoUn0DSuI6B9Lpdx-kcrZXdZV45-HlAVKw/viewform">Tell us</a>.
+    · <a href="./">Back to the map</a>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    var body = document.body, root = document.documentElement;
+    function bind(id, onToggle, key) {
+      var b = document.getElementById(id), on = false;
+      try { on = localStorage.getItem(key) === "1"; } catch (e) {}
+      function set(v) { on = v; b.setAttribute("aria-pressed", String(v)); onToggle(v); try { localStorage.setItem(key, v ? "1" : "0"); } catch (e) {} }
+      set(on);
+      b.addEventListener("click", function () { set(!on); });
+    }
+    bind("t-large", function (v) { body.classList.toggle("large", v); }, "guide.large");
+    bind("t-space", function (v) { body.classList.toggle("spacious", v); }, "guide.space");
+    var dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var tb = document.getElementById("t-theme");
+    function theme(v) { root.setAttribute("data-theme", v ? "dark" : "light"); tb.textContent = v ? "Light theme" : "Dark theme"; tb.setAttribute("aria-pressed", "false"); }
+    var saved = null;
+    try { saved = localStorage.getItem("guide.theme"); } catch (e) {}
+    var isDark = saved ? saved === "dark" : dark;
+    if (saved) theme(isDark); else tb.textContent = dark ? "Light theme" : "Dark theme";
+    tb.addEventListener("click", function () { isDark = !isDark; theme(isDark); try { localStorage.setItem("guide.theme", isDark ? "dark" : "light"); } catch (e) {} });
+  })();
+</script>
+</body>
+</html>

@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "pull-data": "node scripts/pull-data.mjs",
     "test:apps-script": "node tests/apps-script.test.cjs",
-    "check:apps-script": "mkdir -p .apps-script-check && cp apps-script/Code.gs .apps-script-check/Code.js && tsc -p apps-script/tsconfig.json"
+    "check:apps-script": "mkdir -p .apps-script-check && cp apps-script/Code.gs .apps-script-check/Code.js && cp apps-script/Confirm.gs .apps-script-check/Confirm.js && tsc -p apps-script/tsconfig.json"
   },
   "dependencies": {
     "@types/leaflet": "1.9.21",
