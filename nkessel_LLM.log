@@ -903,3 +903,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 ## 2026-10-29 — point-person phone + best way to reach; draggable note (branch claude/point-person-contact)
 - Confirmation screen asks for phone (optional) and best way to reach (Email / Text / Phone call). Saved only on the private Editors tab (notes), never in the public feed or on the page (tests). The shared "Save for later" draft no longer holds anyone's name/email/phone; each browser remembers its own details.
 - Map note now starts "Note: this map…" and can be dragged anywhere on the map (plus the ×).
+- Menu: each page has a one-line hint (second line in the phone menu, tooltip on wide screens); 'Directories: lists you can search'.
