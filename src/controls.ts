@@ -103,6 +103,8 @@ export interface ControlsPanel {
   activeRules(): GroupRule[];
   /** Where extra advanced options (e.g. the org-to-org links toggle) go. */
   advancedContainer(): HTMLElement;
+  /** The "Sizes in this view" panel shown on the map while a group is open (Oct 29). */
+  focusPanel(): HTMLElement;
 }
 
 export function createControls(
@@ -149,6 +151,28 @@ export function createControls(
     wrap.appendChild(input);
     if (opts.hint) wrap.appendChild(h("div", { class: "ctrl-hint slider-hint" }, opts.hint));
     return wrap;
+  }
+
+  // The opened-group size sliders appear twice (Map settings, and the panel on the map while a group is open):
+  // both copies stay in step.
+  const focusInputs = new Map<string, HTMLInputElement[]>();
+  type FocusKey = "focusSize" | "focusMoonSize" | "focusCoalSize" | "focusSatSize";
+  const FOCUS_SLIDERS: [FocusKey, string, number, number, number, string][] = [
+    ["focusSize", "This group", 0.4, 1.6, 0.05, "The group you clicked"],
+    ["focusMoonSize", "Its events, projects & actions", 0.4, 2.5, 0.05, "The small circles right around it"],
+    ["focusCoalSize", "Its coalitions", 0.3, 2, 0.05, "The coalitions it belongs to"],
+    ["focusSatSize", "Partner groups", 1, 7, 0.25, "Groups it works with"],
+  ];
+  function focusSlider(key: FocusKey, label: string, min: number, max: number, step: number, hint: string): HTMLElement {
+    const el = makeSlider(label, state.settings[key], (v) => {
+      state.settings[key] = v;
+      for (const i of focusInputs.get(key) || []) if (i !== input) i.value = String(v);
+      cb.onSettingsChange({ [key]: v });
+      saveState(state);
+    }, { min, max, step, hint });
+    const input = el.querySelector("input") as HTMLInputElement;
+    focusInputs.set(key, [...(focusInputs.get(key) || []), input]);
+    return el;
   }
 
   function makeToggle(
@@ -294,20 +318,8 @@ export function createControls(
   }
   bubbleBody.appendChild(sliderBox);
   // The opened group's size (Oct 26), then "All bubbles" last (Oct 29).
-  bubbleBody.appendChild(
-    makeSlider("Opened group", state.settings.focusSize, (v) => {
-      state.settings.focusSize = v;
-      cb.onSettingsChange({ focusSize: v });
-      saveState(state);
-    }, { min: 0.4, max: 1.6, step: 0.05, hint: "Smaller ← → bigger: the group you click, in the zoomed-in view. Middle = the site's default." }),
-  );
-  bubbleBody.appendChild(
-    makeSlider("Its partner groups", state.settings.focusSatSize, (v) => {
-      state.settings.focusSatSize = v;
-      cb.onSettingsChange({ focusSatSize: v });
-      saveState(state);
-    }, { min: 1, max: 7, step: 0.25, hint: "Smaller ← → bigger: the coalitions and groups around the group you clicked." }),
-  );
+  bubbleBody.appendChild(h("div", { class: "ctrl-subhead" }, "When you open a group"));
+  for (const [k, label, min, max, step, hint] of FOCUS_SLIDERS) bubbleBody.appendChild(focusSlider(k, label, min, max, step, hint));
   bubbleBody.appendChild(
     makeSlider("All bubbles", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;
@@ -478,6 +490,36 @@ export function createControls(
     },
     activeRules() {
       return activeRulesFromSpecs(state.groups);
+    },
+    focusPanel() {
+      const KEY = "openthink.sizes.closed";
+      let closed = false;
+      try { closed = localStorage.getItem(KEY) === "1"; } catch { /* ignore */ }
+      const body = h("div", { class: "fsp-body", id: "fsp-body" });
+      for (const [k, label, min, max, step, hint] of FOCUS_SLIDERS) body.appendChild(focusSlider(k, label, min, max, step, hint));
+      const reset = h("button", { type: "button", class: "fsp-reset" }, "Back to default sizes");
+      reset.addEventListener("click", () => {
+        const d: Partial<Record<FocusKey, number>> = {};
+        for (const [k] of FOCUS_SLIDERS) {
+          state.settings[k] = DEFAULT_GRAPH_SETTINGS[k];
+          d[k] = DEFAULT_GRAPH_SETTINGS[k];
+          for (const i of focusInputs.get(k) || []) i.value = String(DEFAULT_GRAPH_SETTINGS[k]);
+        }
+        cb.onSettingsChange(d);
+        saveState(state);
+      });
+      body.appendChild(reset);
+      const toggle = h("button", { type: "button", class: "fsp-head", "aria-expanded": String(!closed), "aria-controls": "fsp-body" },
+        h("span", {}, "Sizes in this view"), h("span", { class: "fsp-chev", "aria-hidden": "true" }, "\u25be"));
+      const panel = h("div", { class: `focus-sizes${closed ? " closed" : ""}`, role: "region", "aria-label": "Sizes in this view" }, toggle, body);
+      toggle.addEventListener("click", () => {
+        closed = !panel.classList.toggle("closed") ? false : true;
+        toggle.setAttribute("aria-expanded", String(!closed));
+        try { localStorage.setItem(KEY, closed ? "1" : "0"); } catch { /* ignore */ }
+      });
+      // stop map drags/zooms starting on the panel
+      for (const ev of ["pointerdown", "wheel", "dblclick"]) panel.addEventListener(ev, (e) => e.stopPropagation());
+      return panel;
     },
     advancedContainer() {
       return advExtras;
