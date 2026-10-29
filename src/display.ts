@@ -77,6 +77,7 @@ function switchRow(label: string, hint: string, get: () => boolean, set: (v: boo
   sync();
   onDisplayChange(sync);
   sw.addEventListener("click", () => set(!get()));
+  l.addEventListener("click", () => set(!get())); // the words switch it too, not just the small switch
   top.append(l, sw);
   const h = document.createElement("div");
   h.className = "ctrl-hint";
@@ -120,10 +121,13 @@ export function accessibilityButton(): HTMLElement {
   wrap.className = "a11y-wrap";
   const b = document.createElement("button");
   b.type = "button";
-  b.className = "lp-btn a11y-btn";
+  b.className = "a11y-btn";
   b.setAttribute("aria-haspopup", "dialog");
   b.setAttribute("aria-expanded", "false");
-  b.innerHTML = '<span class="lp-aa" aria-hidden="true">Aa</span><span class="lp-word">Accessibility</span>';
+  b.setAttribute("aria-label", "Accessibility settings");
+  b.title = "Accessibility: large print, reduce motion";
+  // Compact (Oct 28): the universal-access figure, with the word only where there's room; a dot when a setting is on.
+  b.innerHTML = '<svg class="a11y-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="6.6" r="1.7" fill="currentColor"/><path d="M6.5 9.4l5.5 1.2 5.5-1.2M12 10.6v3.6m0 0l-2.6 4.6m2.6-4.6l2.6 4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="a11y-word">Accessibility</span><span class="a11y-dot" aria-hidden="true"></span>';
   const panel = document.createElement("div");
   panel.className = "a11y-panel";
   panel.setAttribute("role", "dialog");
@@ -131,7 +135,14 @@ export function accessibilityButton(): HTMLElement {
   panel.hidden = true;
   const head = document.createElement("div");
   head.className = "a11y-head";
-  head.textContent = "Accessibility";
+  const title = document.createElement("span");
+  title.textContent = "Accessibility";
+  const x = document.createElement("button");
+  x.type = "button";
+  x.className = "a11y-x";
+  x.setAttribute("aria-label", "Close");
+  x.textContent = "\u00d7";
+  head.append(title, x);
   panel.append(
     head,
     switchRow("Large print", "Bigger text and buttons, fewer things on screen, simpler pages.", largePrint, setLargePrint),
@@ -151,9 +162,14 @@ export function accessibilityButton(): HTMLElement {
   };
   window.addEventListener("resize", () => { if (!panel.hidden) place(); });
   b.addEventListener("click", (e) => { e.stopPropagation(); set(b.getAttribute("aria-expanded") !== "true"); });
+  x.addEventListener("click", () => { set(false); b.focus(); });
   document.addEventListener("click", (e) => { if (!panel.hidden && !wrap.contains(e.target as Node) && !panel.contains(e.target as Node)) set(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !panel.hidden) { set(false); b.focus(); } });
-  const sync = () => b.classList.toggle("on", largePrint() || lowPower());
+  const sync = () => {
+    const on = largePrint() || lowPower();
+    b.classList.toggle("on", on);
+    b.title = on ? `Accessibility: ${[largePrint() && "large print", lowPower() && "reduce motion"].filter(Boolean).join(", ")} on` : "Accessibility: large print, reduce motion";
+  };
   sync();
   onDisplayChange(sync);
   wrap.append(b);
