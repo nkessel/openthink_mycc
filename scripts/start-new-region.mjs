@@ -31,6 +31,7 @@ if (existsSync("public/logos")) {
   act(`public/logos/: delete ${logos.length} Massachusetts logos`, () => {
     for (const f of logos) rmSync(join("public/logos", f), { recursive: true, force: true });
     writeFileSync("public/logos/.gitkeep", "");
+    writeFileSync("src/logos.web.json", "[]\n"); // no WebP copies yet (scripts/web-logos.py makes them)
   });
 }
 for (const dir of ["public/maps", "public/money", "public/sectors", "research", "data-review"]) {

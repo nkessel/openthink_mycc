@@ -12,6 +12,7 @@ import { findItem, showItemCard, setCardActions } from "./itemcard";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { FORMS } from "./forms.config";
+import { webLogo } from "./weblogos";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkSources } from "./sourcecheck";
@@ -109,6 +110,7 @@ async function main() {
   // Recurring events carry one stored date; show their next occurrence.
   for (const n of [...data.coalitions, ...data.organizations]) if (n.events) rollRecurringForward(n.events);
   const groups = [...data.coalitions, ...data.organizations];
+  for (const g of groups) g.logo = webLogo(g.logo); // small WebP copies (src/weblogos.ts)
   const bridges = data.organizations.filter((o) => (o.coalition_ids?.length || 0) > 1).length;
   const facts: string[] = [];
   if (bridges) facts.push(`Finding groups that work across coalitions (${bridges}/${bridges})`);
