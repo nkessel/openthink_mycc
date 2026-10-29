@@ -16,7 +16,7 @@ import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkSources } from "./sourcecheck";
 import { lazyPage, preloadWhenQuiet } from "./lazypage";
-import { geoCanLocate } from "./placed";
+import { atFallback, geoCanLocate } from "./placed";
 import { setQuickFormData } from "./quickform";
 import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
 
@@ -123,7 +123,7 @@ async function main() {
       const towns = new Set<string>();
       let placed = 0;
       for (const o of data.organizations) {
-        if (o.remote || !Number.isFinite(o.lat) || !Number.isFinite(o.lng) || (Math.abs(o.lat - 42.3601) < 1e-4 && Math.abs(o.lng + 71.0589) < 1e-4)) continue;
+        if (o.remote || !Number.isFinite(o.lat) || !Number.isFinite(o.lng) || atFallback(o.lat, o.lng)) continue;
         let best = "", bd = Infinity;
         for (const [name, [la, ln]] of centres) {
           const d = (la - o.lat) ** 2 + ((ln - o.lng) * 0.74) ** 2;

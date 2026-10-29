@@ -43,7 +43,7 @@ function sheet(name) {
   };
 }
 const ssObj = { getSheetByName: sheet, getUrl: () => "https://sheet", toast: () => {} };
-const props = {};
+const props = { ADMIN_EMAILS: "admin1@example.org, admin2@example.org, admin3@example.org" };
 const mail = [];
 const ctx = {
   console, Math, Date, JSON, String, Number, Array, Object, RegExp, isNaN,
@@ -68,7 +68,7 @@ if (!myccCo.events.some((e) => e.id === "mycc_e_call_1004")) myccCo.events.push(
 const seeded = ctx.sheetRowsFromData_(orig);
 for (const k of Object.keys(COLS)) book[k] = [COLS[k].slice()].concat(J(seeded[k] || []));
 book["Editors"].push(
-  ["nathandkessel@gmail.com", "admin", "", "", "", ""],
+  ["admin1@example.org", "admin", "", "", "", ""],
   ["point@bls.org", "editor", "boston_latin_school_youthcan", "", "", ""],
   ["lead@mycc.org", "editor", "", "mycc", "", ""],
 );
@@ -133,7 +133,7 @@ assert.equal(log().at(-1).status, "updated");
 assert.equal(log().at(-1).email, "point@bls.org");
 
 // the other org answers monthly → the pair keeps the stronger (weekly) and lists both reporters
-submit("fo", "nathandkessel@gmail.com", {
+submit("fo", "admin1@example.org", {
   [Q.whichOrg]: "Belmont High School Climate Action Club [belmont_high_school_climate_club]",
   [Q.worksWith("Monthly")]: [BLS],
 });
@@ -154,7 +154,7 @@ assert.equal(data().organizations.find((o) => o.id === "andover_climate_lobby").
 assert.match(review().at(-1).reason, /^UNAUTHORIZED/);
 assert.match(log().at(-1).flag, /^UNAUTHORIZED/);
 assert.equal(log().at(-1).status, "needs review");
-const adminMail = mail.filter((m) => /ab130@wellesley\.edu/.test(m.to));
+const adminMail = mail.filter((m) => /admin2@example\.org/.test(m.to));
 assert.equal(adminMail.length, 1, "one alert to the admins");
 // submitters hear back: "on the map" for the applied edits, "waiting for the map team" for the held one
 const toBls = mail.filter((m) => m.to === "point@bls.org");
@@ -172,14 +172,14 @@ assert.match(review().at(-1).reason, /^NEW ORG/);
 const approveCol = COLS["Needs Review"].indexOf("approve") + 1;
 const reviewRow = book["Needs Review"].length;
 book["Needs Review"][reviewRow - 1][approveCol - 1] = true;
-ctx.onReviewEdit({ range: sheet("Needs Review").getRange(reviewRow, approveCol), user: { getEmail: () => "ab130@wellesley.edu" } });
+ctx.onReviewEdit({ range: sheet("Needs Review").getRange(reviewRow, approveCol), user: { getEmail: () => "admin2@example.org" } });
 d = data();
 const natick = d.organizations.find((o) => o.id === "natick_climate_circle");
 assert.ok(natick && Math.abs(natick.lat - 42.2834) < 1e-6, "geocoded HQ");
 assert.equal(natick.profile.geo_precision, "exact");
 assert.ok(book["Editors"].some((r) => r[0] === "new@natick.org" && r[2] === "natick_climate_circle"));
 assert.equal(review().at(-1).status, "approved");
-assert.match(log().at(-1).flag, /approved by ab130@wellesley.edu/);
+assert.match(log().at(-1).flag, /approved by admin2@example.org/);
 
 // non-admin can't approve
 submit("fo", "x@y.org", { [Q.whichOrg]: NEW_ORG, [Q.orgName]: "Sneaky Org" });
@@ -194,7 +194,7 @@ assert.match(review().at(-1).reason, /^NO EMAIL — a new organization needs a v
 {
   const r3 = book["Needs Review"].length;
   book["Needs Review"][r3 - 1][approveCol - 1] = true;
-  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(r3, approveCol), user: { getEmail: () => "ab130@wellesley.edu" } });
+  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(r3, approveCol), user: { getEmail: () => "admin2@example.org" } });
   assert.ok(!data().organizations.find((o) => o.name === "Unverified Org"), "not added without a verified email");
   assert.equal(book["Needs Review"][r3 - 1][approveCol - 1], false, "approve box unticked");
 }
@@ -246,7 +246,7 @@ submit("fa", "point@bls.org", { [Q.whichAction]: NEW_ACTION, [Q.coalition]: MYCC
 assert.match(review().at(-1).reason, /^UNAUTHORIZED/);
 
 // admin removes a project
-submit("fp", "turibius@bu.edu", { [Q.whichProject]: "Annual Advocacy Day preparation [mycc_p_advocacy_day]", [Q.remove]: [G("REMOVE_YES")] });
+submit("fp", "admin3@example.org", { [Q.whichProject]: "Annual Advocacy Day preparation [mycc_p_advocacy_day]", [Q.remove]: [G("REMOVE_YES")] });
 assert.ok(!data().coalitions.find((c) => c.id === "mycc").projects.find((p) => p.id === "mycc_p_advocacy_day"));
 
 // feedback: signed-in email + optional phone saved on the (private) Feedback tab, logged
@@ -306,8 +306,8 @@ submit("fo", "point@bls.org", { [Q.whichOrg]: BLS, [Q.pointName]: "Rae Lin", [Q.
 }
 
 // after an org renames itself, the new plain name picks the same row
-submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby", [Q.orgName]: "Andover Climate Lobby Group" });
-submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: "Andover Climate Lobby Group", [Q.orgDesc]: "Renamed and still found" });
+submit("fo", "admin1@example.org", { [Q.whichOrg]: "Andover Climate Lobby", [Q.orgName]: "Andover Climate Lobby Group" });
+submit("fo", "admin1@example.org", { [Q.whichOrg]: "Andover Climate Lobby Group", [Q.orgDesc]: "Renamed and still found" });
 assert.equal(data().organizations.find((o) => o.id === "andover_climate_lobby").description, "Renamed and still found");
 
 console.log("access control, review queue, change log OK");
@@ -388,7 +388,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   // org form: typed org name (with a typo) + typed topics (some known, some not) + typed works-with lines
   const other = orgs.find((o) => o.id === "belmont_high_school_climate_club");
   const before = unmatched().length;
-  submit("fo", "nathandkessel@gmail.com", {
+  submit("fo", "admin1@example.org", {
     [Q.whichOrg]: "boston latin school youth climate action netwrk",
     [Q.orgType]: ["Nonprofit — 501(c)(3)", "Faith community", "Nonprofit — 501(c)(3)", "Mutual aid"],
     [Q.moreTopics]: "clean energy, Tree planting, quantum basket weaving",
@@ -407,7 +407,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
 
   // event form: a typed host org that matches nothing waits for review (and is kept on the Unmatched tab)
   const n = review().length;
-  submit("fe", "nathandkessel@gmail.com", { [Q.whichEvent]: NEW_EVENT, [Q.hostOrg]: "Imaginary Climate Club", [Q.eventName]: "Ghost event" });
+  submit("fe", "admin1@example.org", { [Q.whichEvent]: NEW_EVENT, [Q.hostOrg]: "Imaginary Climate Club", [Q.eventName]: "Ghost event" });
   assert.equal(review().length, n + 1);
   assert.match(review().at(-1).reason, /^UNMATCHED ORG/);
   assert.ok(!JSON.stringify(data()).includes("Ghost event"));
@@ -420,7 +420,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   // an admin can't approve it until the host org is fixed in the payload
   const idx = book["Needs Review"].findIndex((r, i) => i > 0 && /Ghost event/.test(String(r[COLS["Needs Review"].indexOf("summary")])));
   book["Needs Review"][idx][approveCol - 1] = true;
-  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(idx + 1, approveCol), user: { getEmail: () => "ab130@wellesley.edu" } });
+  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(idx + 1, approveCol), user: { getEmail: () => "admin2@example.org" } });
   assert.ok(!JSON.stringify(data()).includes("Ghost event"), "not applied while the org still matches nothing");
   const pc = COLS["Needs Review"].indexOf("payload");
   const payload = JSON.parse(book["Needs Review"][idx][pc]);
@@ -428,7 +428,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   payload.answers[Q.hostOrg] = bls.name;
   book["Needs Review"][idx][pc] = JSON.stringify(payload);
   book["Needs Review"][idx][approveCol - 1] = true;
-  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(idx + 1, approveCol), user: { getEmail: () => "ab130@wellesley.edu" } });
+  ctx.onReviewEdit({ range: sheet("Needs Review").getRange(idx + 1, approveCol), user: { getEmail: () => "admin2@example.org" } });
   assert.ok(JSON.stringify(data()).includes("Ghost event"), "approved once the org is fixed");
   console.log("typed answers (orgs + topics + unmatched log) OK");
 }
@@ -438,11 +438,11 @@ console.log("second round trip (org-owned items, locations, links) OK");
 {
   const coal = ctx.readAll_().coalitions[0];
   // host = a coalition (typed by its short name)
-  submit("fp", "nathandkessel@gmail.com", { [Q.whichProject]: NEW_PROJECT, [Q.hostOrg]: coal.abbrev || coal.name, [Q.projectName]: "Coalition-hosted project" });
+  submit("fp", "admin1@example.org", { [Q.whichProject]: NEW_PROJECT, [Q.hostOrg]: coal.abbrev || coal.name, [Q.projectName]: "Coalition-hosted project" });
   let dd = data();
   assert.ok(dd.coalitions.find((c) => c.id === coal.id).projects.some((p) => p.name === "Coalition-hosted project"), "typed coalition becomes the project's owner");
   // org form used for a coalition: an admin's edit lands on the coalition's own row
-  submit("fo", "nathandkessel@gmail.com", { [Q.whichOrg]: coal.abbrev || coal.name, [Q.orgDesc]: "Updated through the org form" });
+  submit("fo", "admin1@example.org", { [Q.whichOrg]: coal.abbrev || coal.name, [Q.orgDesc]: "Updated through the org form" });
   dd = data();
   assert.equal(dd.coalitions.find((c) => c.id === coal.id).description, "Updated through the org form", "coalition edited");
   // an unknown sender's project waits; adding them as an editor of that coalition applies it
@@ -451,7 +451,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(review().length, n0 + 1);
   assert.equal(review().at(-1).status, "waiting");
   ctx.appendObject_(sheet("Editors"), { email: "newcomer@example.org", role: "editor", coalition_ids: coal.id });
-  ctx.onReviewEdit({ range: sheet("Editors").getRange(2, 1), user: { getEmail: () => "ab130@wellesley.edu" } });
+  ctx.onReviewEdit({ range: sheet("Editors").getRange(2, 1), user: { getEmail: () => "admin2@example.org" } });
   assert.ok(JSON.stringify(data()).includes("Held until editor added"), "applied once the editor is listed");
   assert.match(review().at(-1).status, /^applied/);
   console.log("coalitions as owners + held submissions re-checked OK");

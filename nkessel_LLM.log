@@ -889,3 +889,8 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Org links now keep direction (reported_by). Named by both groups = solid, brighter, thicker line; named by one = dotted line with an arrow to the group named. Legend rows added.
 - Code.gs: the connections import keeps one row per direction and leaves frequency blank when unknown; buildDataFile_ accepts a blank frequency (weight 1). Tests updated.
 - Added a note at the top of the map ("This map is currently in development…") linking "please let us know" to the feedback form; × hides it for the visit.
+
+## 2026-10-29 — merge prep: private-data sweep, region setting, empty start, version.json, guide (branch claude/region-template)
+- Sweep: no keys or tokens in the repo. Personal emails were hard-coded as ADMIN_EMAILS in Code.gs (+ SETUP.md, tests): now read from the script property ADMIN_EMAILS (Editors rows with role admin also count); tests use example.org addresses. Other emails in the repo are fictional test addresses or groups' public contact emails. The git history still holds the old emails: a template made with GitHub's "Use this template" (no history) avoids carrying them.
+- Turibius's items: one region setting (src/region.config.ts + REGION in Code.gs); empty start (SEED_URL = '' and scripts/start-new-region.mjs); version.json written by every build (vite.config.ts, latest tag or commit). Default branch is a GitHub setting: left for Nathan.
+- public/guide.html: "Start a map for your region" (Turibius's GH outline, steps 1–10).

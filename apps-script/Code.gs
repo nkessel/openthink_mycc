@@ -1,9 +1,9 @@
 /**
- * MA Climate Organization Map — forms + spreadsheet backend
+ * Climate Organization Map — forms + spreadsheet backend (this copy: see REGION below)
  * ---------------------------------------
- * Paste this whole file into the MA Climate Organization Map data Google Sheet:
+ * Paste this whole file into the map's data Google Sheet:
  *   Extensions → Apps Script → replace Code.gs → Save.
- * Then reload the sheet and run  MA Climate Organization Map → Set up sheet + forms  once.
+ * Then reload the sheet and run  <map name> → Set up sheet + forms  once.
  *
  * What it does
  *  - Loads the current map data from GitHub into the tabs (only if they're empty).
@@ -23,9 +23,43 @@
  */
 
 // ---------------------------------------------------------------- settings
-/** Core team: can edit everything, approve reviews, and get alerts. */
-var ADMIN_EMAILS = ['nathandkessel@gmail.com', 'ab130@wellesley.edu', 'turibius@bu.edu'];
-/** Where the starting data comes from (the repo's public/data.json). */
+/**
+ * The region this copy of the map covers. A new map (say Wisconsin) changes only this block
+ * and the site's src/region.config.ts. See guide.html → "Start a map for your region".
+ */
+var REGION = {
+  title: 'MA Climate Organization Map',      // the map's name: form titles, emails, the sheet menu
+  stateName: 'Massachusetts',                // added to event/project locations before looking up a pin
+  stateCode: 'MA',
+  bounds: { south: 41.18, north: 42.89, west: -73.51, east: -69.85 }, // a pin outside this box is a wrong match
+  center: { lat: 42.3601, lng: -71.0589 },  // where a group with no address yet is placed (the site's REGION.fallback)
+  exampleTowns: 'Worcester, Cape Cod, Greater Boston, statewide',     // hint on the org form's town question
+  exampleOrgs: ['Sunrise Boston — monthly', 'Mass Power Forward — a few times a year'], // hint on "who do you work with"
+};
+/**
+ * Core team: can edit everything, approve reviews, and get alerts. Kept out of the code (so a public copy has no
+ * personal emails): set the script property ADMIN_EMAILS (Project settings → Script properties), comma-separated.
+ * Editors-tab rows with role "admin" are admins too.
+ */
+function adminEmails_() {
+  var raw = PropertiesService.getScriptProperties().getProperty('ADMIN_EMAILS') || '';
+  return raw.split(/[,;\s]+/).map(function (e) { return e.trim().toLowerCase(); }).filter(function (e) { return /@/.test(e); });
+}
+/** Everyone who gets review alerts: the ADMIN_EMAILS property plus confirmed Editors rows with role "admin". */
+function alertEmails_() {
+  var out = adminEmails_();
+  try {
+    readTable_(ss_().getSheetByName(TAB.editors)).rows.forEach(function (r) {
+      var e = String(r.email || '').trim().toLowerCase();
+      if (e && /^admin$/i.test(str_(r.role)) && !isPending_(r) && out.indexOf(e) === -1) out.push(e);
+    });
+  } catch (err) { /* no Editors tab yet */ }
+  return out;
+}
+/**
+ * Where the starting data comes from (the repo's public/data.json). Leave it '' to start a new map empty:
+ * Set up then makes the tabs with headers only, and you add groups through the forms or by typing into the tabs.
+ */
 var SEED_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/public/data.json';
 /** Where "Replace projects, events and actions from the repo" reads from (the repo's public/data.json). */
 var ACTIVITY_URL = SEED_URL;
@@ -169,7 +203,7 @@ var BASE_SKILLS = ['data entry', 'event logistics', 'facilitation', 'fundraising
   'legal', 'outreach', 'photography', 'public speaking', 'research', 'social media', 'spanish',
   'portuguese', 'translation', 'video editing', 'writing'];
 
-/** Org profile fields from the MA Climate Organization Map (org.profile in data.json). Admin-only: no form edits them. */
+/** Org profile fields from the original MA Climate Coalition Map import (org.profile in data.json). Admin-only: no form edits them. */
 var PROFILE_BOOL = ['youth_serving', 'school_club', 'hub', 'inactive', 'paid_staff'];
 var PROFILE_NUM = ['ej_focus', 'grassroots', 'policy_expertise', 'in_building'];
 var PROFILE_STR = ['membership_size', 'c3_tier', 'c4_tier', 'geo_precision'];
@@ -201,9 +235,9 @@ var COLS = {
 };
 
 var START_TEXT = [
-  ['MA Climate Organization Map data', ''],
+  [REGION.title + ' data', ''],
   ['', ''],
-  ['This spreadsheet is the source of truth for the MA Climate Organization Map. The forms write into it; the site reads from it.', ''],
+  ['This spreadsheet is the source of truth for the ' + REGION.title + '. The forms write into it; the site reads from it.', ''],
   ['', ''],
   ['Tabs', ''],
   ['Coalitions / Organizations / Projects / Events / Actions', 'The map data. Safe to edit by hand. Lists are comma-separated ids or tags.'],
@@ -225,7 +259,7 @@ var START_TEXT = [
 // ---------------------------------------------------------------- menu
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('MA Climate Organization Map')
+    .createMenu(REGION.title)
     .addItem('Set up sheet + forms (run once)', 'setUp')
     .addItem('Replace projects, events and actions from the repo', 'replaceActivityFromRepo')
     .addItem('Refresh form dropdowns', 'refreshDropdowns')
@@ -238,7 +272,7 @@ function onOpen() {
     .addItem('Add connections from the Organization Info Form (reviewed list on GitHub)', 'importReviewedConnections')
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
-    .addItem('Re-check event and project pins (wrong town or outside Massachusetts)', 'fixPinsOutsideMa')
+    .addItem('Re-check event and project pins (wrong town or outside ' + REGION.stateName + ')', 'fixPinsOutsideMa')
     .addItem('Apply the source check (hide events, projects and actions with no page that names them)', 'applySourceCheck')
     .addItem('Link the social justice spreadsheet', 'linkSocialJusticeSheet')
     .addToUi();
@@ -376,7 +410,7 @@ function eventCheckUpdates_(rows, check) {
 }
 
 /**
- * Finds in-person events and projects whose pin is missing, outside Massachusetts, or (for a location with no town)
+ * Finds in-person events and projects whose pin is missing, outside the region (REGION.bounds), or (for a location with no town)
  * far from where the host's town puts it, and geocodes them again
  * (room words dropped, host's town added). Each fix is recorded in Change Log.
  */
@@ -537,7 +571,7 @@ function updateForms() {
   // forms keep their titles in step with the map's name (MA Climate Organization Map, 10/15 meeting)
   var titles = { FORM_ORG: 'Update your organization', FORM_EVENT: 'Add or edit an event', FORM_PROJECT: 'Add or edit a project',
     FORM_ACTION: 'Add or edit an action or volunteer opportunity', FORM_FEEDBACK: 'Send feedback' };
-  Object.keys(titles).forEach(function (k) { run(k, function (f) { var t = 'MA Climate Organization Map — ' + titles[k]; if (f.getTitle() !== t) f.setTitle(t); }); });
+  Object.keys(titles).forEach(function (k) { run(k, function (f) { var t = REGION.title + ' — ' + titles[k]; if (f.getTitle() !== t) f.setTitle(t); }); });
   run('FORM_ORG', upgradeOrgForm_);
   run('FORM_FEEDBACK', upgradeFeedbackForm_);
   run('FORM_EVENT', upgradeEventForm_);
@@ -616,6 +650,7 @@ function fixPins_(t, geo) {
  * found by scripts/fetch-logos.mjs. Each filled row is recorded in Change Log.
  */
 function fillLogosFromGitHub() {
+  if (!SEED_URL) return 'No SEED_URL set, so there is nothing to copy logos from.';
   var data = JSON.parse(UrlFetchApp.fetch(SEED_URL).getContentText());
   var result = fillLogos_(data);
   var msg = 'Filled ' + result.logos + ' logo(s), ' + result.websites + ' website(s), ' + (result.rsvp || 0) + ' RSVP link(s) and ' + (result.details || 0) + ' other detail(s) (descriptions, types, focus, event pages) from GitHub. Only empty cells (and general events-page links) were filled.';
@@ -731,6 +766,7 @@ function ensureTrigger_(handler, create) {
  */
 function replaceActivityFromRepo() {
   var ui = SpreadsheetApp.getUi();
+  if (!ACTIVITY_URL) { ui.alert('No SEED_URL set at the top of Code.gs, so there is no repo data to copy.'); return; }
   var go = ui.alert('Replace Projects, Events and Actions?',
     'This overwrites those three tabs with the repo data (' + ACTIVITY_URL + '). Changes made through the forms in those tabs since the last export will be lost.',
     ui.ButtonSet.OK_CANCEL);
@@ -781,9 +817,10 @@ function seedSheet_(ss) {
     start.setColumnWidth(1, 380); start.setColumnWidth(2, 700);
   }
   var needsData = !ss.getSheetByName(TAB.orgs) || ss.getSheetByName(TAB.orgs).getLastRow() <= 1;
-  var rows = needsData ? sheetRowsFromData_(JSON.parse(UrlFetchApp.fetch(SEED_URL).getContentText())) : {};
+  // SEED_URL '' = start empty: the tabs get their headers and nothing else
+  var rows = needsData && SEED_URL ? sheetRowsFromData_(JSON.parse(UrlFetchApp.fetch(SEED_URL).getContentText())) : {};
   if (!ss.getSheetByName(TAB.editors) || ss.getSheetByName(TAB.editors).getLastRow() <= 1) {
-    rows[TAB.editors] = ADMIN_EMAILS.map(function (e) { return [e, 'admin', '', '', '', 'core team']; });
+    rows[TAB.editors] = adminEmails_().map(function (e) { return [e, 'admin', '', '', '', 'core team']; });
   }
   Object.keys(COLS).forEach(function (name) {
     var sh = ss.getSheetByName(name) || ss.insertSheet(name);
@@ -881,11 +918,11 @@ function buildForms(dataLoaded) {
   var built = [];
 
   var specs = [
-    { key: 'FORM_ORG', title: 'MA Climate Organization Map — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
-    { key: 'FORM_EVENT', title: 'MA Climate Organization Map — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
-    { key: 'FORM_PROJECT', title: 'MA Climate Organization Map — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
-    { key: 'FORM_ACTION', title: 'MA Climate Organization Map — Add or edit an action or volunteer opportunity', build: buildActionForm_, tab: 'Responses: Actions', signIn: true },
-    { key: 'FORM_FEEDBACK', title: 'MA Climate Organization Map — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
+    { key: 'FORM_ORG', title: REGION.title + ' — Update your organization', build: buildOrgForm_, tab: 'Responses: Organizations', signIn: true },
+    { key: 'FORM_EVENT', title: REGION.title + ' — Add or edit an event', build: buildEventForm_, tab: 'Responses: Events', signIn: true },
+    { key: 'FORM_PROJECT', title: REGION.title + ' — Add or edit a project', build: buildProjectForm_, tab: 'Responses: Projects', signIn: true },
+    { key: 'FORM_ACTION', title: REGION.title + ' — Add or edit an action or volunteer opportunity', build: buildActionForm_, tab: 'Responses: Actions', signIn: true },
+    { key: 'FORM_FEEDBACK', title: REGION.title + ' — Send feedback', build: buildFeedbackForm_, tab: 'Responses: Feedback', signIn: true },
   ];
 
   specs.forEach(function (s) {
@@ -904,7 +941,7 @@ function buildForms(dataLoaded) {
     s.build(form);
     publish_(form);
     form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
-    try { form.addEditors(ADMIN_EMAILS); } catch (e) { /* sharing can fail for some account types; share by hand */ }
+    try { if (adminEmails_().length) form.addEditors(adminEmails_()); } catch (e) { /* sharing can fail for some account types; share by hand */ }
     props.setProperty(s.key, form.getId());
     ScriptApp.newTrigger('handleSubmit').forForm(form).onFormSubmit().create();
     renameResponseSheet_(ss, form, s.tab);
@@ -1020,7 +1057,7 @@ function addHostOrgText_(form, what) {
 }
 function addWorksWithText_(form) {
   return form.addParagraphTextItem().setTitle(Q.worksWithText)
-    .setHelpText('One organization per line, with how often you work together if you like, e.g.\nSunrise Boston — monthly\nMass Power Forward — a few times a year\n' +
+    .setHelpText('One organization per line, with how often you work together if you like, e.g.\n' + REGION.exampleOrgs.join('\n') + '\n' +
       'Leave blank to keep your current answers; if you type anything, it replaces your current list.');
 }
 function addPublicContact_(form) {
@@ -1049,7 +1086,7 @@ function addOwner_(form, what) {
 
 function buildOrgForm_(form) {
   header_(form,
-    'Use this form to add your organization to the MA Climate Organization Map, or to fill in and correct what we already have.\n\n' +
+    'Use this form to add your organization to the ' + REGION.title + ', or to fill in and correct what we already have.\n\n' +
     OPTIONAL_NOTE + '\n\n' + PUBLIC_NOTE + '\n\n' + SIGNIN_NOTE);
   addWhichOrgText_(form);
   form.addTextItem().setTitle(Q.orgName).setHelpText('Only if it is new or has changed.');
@@ -1057,7 +1094,7 @@ function buildOrgForm_(form) {
   addPointPerson_(form);
   addOrgType_(form);
   form.addParagraphTextItem().setTitle(Q.orgDesc).setHelpText(ORG_HELP.desc);
-  form.addTextItem().setTitle(Q.orgTown).setHelpText('e.g. Worcester, Cape Cod, Greater Boston, statewide.');
+  form.addTextItem().setTitle(Q.orgTown).setHelpText('e.g. ' + REGION.exampleTowns + '.');
   form.addTextItem().setTitle(Q.orgHq).setHelpText(ORG_HELP.hq);
   form.addCheckboxItem().setTitle(Q.orgCoalitions)
     .setHelpText('If you answer this, check every coalition you are part of — it replaces your current list.')
@@ -1335,7 +1372,7 @@ function upgradeFeedbackForm_(form) {
     if (after) form.moveItem(phone.getIndex(), after.getIndex() + 1);
   }
 }
-var FEEDBACK_DESC = 'Tell us what is working, what is broken, or what you wish the MA Climate Organization Map did. ' +
+var FEEDBACK_DESC = 'Tell us what is working, what is broken, or what you wish the ' + REGION.title + ' did. ' +
   "You'll be asked to sign in with Google so we can follow up; only your feedback is required.";
 
 function buildFeedbackForm_(form) {
@@ -1775,7 +1812,7 @@ function authorize_(email, kind, a, target, t) {
 function permissionsFor_(email, editors) {
   var p = { known: false, admin: false, all: false, orgs: {}, coalitions: {} };
   email = String(email || '').toLowerCase();
-  if (ADMIN_EMAILS.map(function (x) { return x.toLowerCase(); }).indexOf(email) !== -1) { p.known = p.admin = true; }
+  if (email && adminEmails_().indexOf(email) !== -1) { p.known = p.admin = true; }
   (editors || []).forEach(function (r) {
     if (String(r.email || '').trim().toLowerCase() !== email) return;
     if (isPending_(r)) return; // email not confirmed yet
@@ -1846,8 +1883,8 @@ function sendVerification_(email, orgId, name) {
   var label = (LABEL_INDEX_ && LABEL_INDEX_.byId.org[orgId]) || orgId;
   logChange_('', FORM_NAMES.org, 'verification sent', 'PENDING', 'editor', orgId, label, 'point person ' + email + ' asked to confirm their email');
   try {
-    MailApp.sendEmail(email, 'MA Climate Organization Map: please confirm your email',
-      'Hi' + (name ? ' ' + name : '') + ',\n\nSomeone named you as the point person for ' + label + ' on the MA Climate Organization Map. ' +
+    MailApp.sendEmail(email, REGION.title + ': please confirm your email',
+      'Hi' + (name ? ' ' + name : '') + ',\n\nSomeone named you as the point person for ' + label + ' on the ' + REGION.title + '. ' +
       'Open this link to confirm your email, so you can keep the organization\'s information up to date:\n\n' + url +
       '\n\nIf this wasn\'t you, ignore this email: nothing changes until the link is opened.');
   } catch (e) { /* quota: the Change Log and Editors tab still show the pending row */ }
@@ -1889,7 +1926,8 @@ function queueForReview_(kind, a, email, target, reason) {
   logChange_(email, FORM_NAMES[kind], 'needs review', reason, kind, target.id, target.label, summary);
   if (ALERT_ADMINS) {
     try {
-      MailApp.sendEmail(ADMIN_EMAILS.join(','), 'MA Climate Organization Map: submission needs review (' + reason.split(' — ')[0] + ')',
+      var to = alertEmails_();
+      if (to.length) MailApp.sendEmail(to.join(','), REGION.title + ': submission needs review (' + reason.split(' — ')[0] + ')',
         'From: ' + (email || 'unknown') + '\nForm: ' + FORM_NAMES[kind] + '\nAbout: ' + target.label +
         '\nWhy: ' + reason + '\n\n' + summary + '\n\nReview it on the "Needs Review" tab: ' + ss_().getUrl());
     } catch (err) { /* email quota; the Change Log still has it */ }
@@ -1902,13 +1940,13 @@ function queueForReview_(kind, a, email, target, reason) {
 function submitterMessage_(status, kind, name) {
   var what = { org: 'organization', event: 'event', project: 'project', action: 'action' }[kind] || 'submission';
   var it = name ? '"' + name + '"' : 'your ' + what;
-  var subject = status === 'held' ? 'MA Climate Organization Map: we received your ' + what : 'MA Climate Organization Map: ' + it + ' is on the map';
+  var subject = status === 'held' ? REGION.title + ': we received your ' + what : REGION.title + ': ' + it + ' is on the map';
   var body = status === 'live'
     ? 'Thanks! Your changes to ' + it + ' are saved. They show on the map within a few minutes (reload the page to see them).'
     : status === 'approved'
       ? 'Thanks for your patience. The map team approved your changes to ' + it + ', and they now show on the map.'
       : 'Thanks! Your changes to ' + it + ' are waiting for the map team to check them, because this email isn\'t yet listed as a point person for that group. You\'ll get another email when they go live.';
-  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— MA Climate Organization Map' };
+  return { subject: subject, body: body + '\n\nTo change anything, use the Edit buttons on the map: they open the form with everything filled in.\n\n— ' + REGION.title };
 }
 /** Sends the message unless turned off (Script property NOTIFY_SUBMITTERS = off). Never fails a submission. */
 function notifySubmitter_(email, msg) {
@@ -2042,7 +2080,7 @@ function saveOrg_(a, t) {
   }
   if (isNew && patch.lat === undefined) {
     var c = patch.coalition_ids ? findById_(t.coalitions, list_(patch.coalition_ids)[0]) : null;
-    var base = c ? [Number(c.lat), Number(c.lng)] : [42.3601, -71.0589];
+    var base = c ? [Number(c.lat), Number(c.lng)] : [REGION.center.lat, REGION.center.lng];
     patch.lat = jitter_(base[0]); patch.lng = jitter_(base[1]); patch.geo_precision = 'approx';
   }
   var result = upsert_(TAB.orgs, 'organization', a[Q.whichOrg], NEW_ORG, patch);
@@ -2310,7 +2348,7 @@ function doGet(e) {
   var p = (e && e.parameter) || {};
   if (p.verify) {
     return HtmlService.createHtmlOutput('<p style="font:16px system-ui;max-width:520px;margin:48px auto">' +
-      confirmVerification_(String(p.verify)).replace(/[<>&]/g, '') + '</p>').setTitle('MA Climate Organization Map');
+      confirmVerification_(String(p.verify)).replace(/[<>&]/g, '') + '</p>').setTitle(REGION.title);
   }
   // The social justice groups live in their own spreadsheet and are only fetched when someone switches them on.
   var data = p.feed === 'social-justice' ? socialJusticeData_() : buildDataFile_(readAll_(), nowIso_());
@@ -2594,9 +2632,10 @@ function cleanPlace_(place) {
     .replace(/\s{2,}/g, ' ');
 }
 
-/** Rough box around Massachusetts; a pin outside it is a wrong match (e.g. a hall name found in another state). */
+/** Rough box around the region (REGION.bounds); a pin outside it is a wrong match (e.g. a hall name found in another state). */
 function inMass_(lat, lng) {
-  return lat >= 41.18 && lat <= 42.89 && lng >= -73.51 && lng <= -69.85;
+  var b = REGION.bounds;
+  return lat >= b.south && lat <= b.north && lng >= b.west && lng <= b.east;
 }
 
 /** The town to add when an event or project location has none: its host org's HQ or town, else its coalition's area. */
@@ -2615,7 +2654,8 @@ function placeHint_(patch, existing, t) {
 function geocodeQueries_(place, hint) {
   place = cleanPlace_(place);
   if (!place || VAGUE_PLACE.test(place)) return [];
-  var withMa = function (s) { return /\b(MA|Massachusetts)\b/i.test(s) ? s : s + ', Massachusetts'; };
+  var stateRe = new RegExp('\\b(' + REGION.stateCode + '|' + REGION.stateName + ')\\b', 'i');
+  var withMa = function (s) { return stateRe.test(s) ? s : s + ', ' + REGION.stateName; };
   var qs = [];
   var hasTown = /,/.test(place) || /\b\d{5}\b/.test(place);
   if (hint && !hasTown) qs.push(withMa(place + ', ' + hint));

@@ -16,6 +16,10 @@ Org list, org data, and logos come from the [MA Climate Organization Map](https:
 
 Hosted as a static site on GitHub Pages; data comes live from the Google Sheet (see [`apps-script/SETUP.md`](apps-script/SETUP.md)), with `public/data.json` as the fallback.
 
+## Start a map for your region
+
+See [`public/guide.html`](public/guide.html) (live at `/guide.html` on the site): fork, run `node scripts/start-new-region.mjs`, set `src/region.config.ts` and `REGION` in `apps-script/Code.gs`, then set up your own sheet and forms.
+
 ## Run locally
 
 ```bash
