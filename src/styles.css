@@ -2091,6 +2091,7 @@ text.sat-more { fill: var(--text-dim); }
 
 .reset-map-btn { appearance:none; border:1px solid var(--border); border-radius:999px; background:var(--bg-elev); color:var(--text-dim); font:inherit; font-size:12px; padding:6px 12px; cursor:pointer; align-self:flex-start; }
 .reset-map-btn:hover { color:var(--text); }
+.reset-map-btn.reset-bottom { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 4; align-self: auto; min-height: 34px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); }
 .node-org.member-ring, .node-org.member-ring.partner { opacity: 1; }
 /* An organization's coalitions and partner groups, gathered on the outer orbit when it is opened: present but quiet */
 .node-coalition.member-ring, .node-coalition.member-ring.partner { opacity: 0.8; }
@@ -3140,7 +3141,6 @@ html, body { overflow-x: clip; max-width: 100%; }
 @media (max-width: 350px) {
   .brand .brand-long { display: none; }
   .brand .brand-short { display: inline; }
-}
 }
 /* Calm map (slow devices, low-power mode): no see-through blur behind panels, no pulsing + button */
 .calm-map *, .low-power * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }

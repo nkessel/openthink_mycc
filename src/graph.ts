@@ -204,15 +204,16 @@ export function createGraph(
   // (Hiding the events / actions / projects around each group is a switch at the top of the settings panel.)
   const resetBtn = document.createElement("button");
   resetBtn.type = "button";
-  resetBtn.className = "reset-map-btn";
-  resetBtn.textContent = "⟲ Reset map";
+  // "Reset view", at the bottom middle of the map next to the legend (Oct 29)
+  resetBtn.className = "reset-map-btn reset-bottom";
+  resetBtn.textContent = "⟲ Reset view";
   resetBtn.title = "Zoom out to show the whole network again";
   resetBtn.addEventListener("click", () => {
     beforeFocus = null; // the whole network, not the view before the group was opened
     if (focusId) exitFocus();
     else fitToView(true);
   });
-  overlay.appendChild(resetBtn);
+  wrap.appendChild(resetBtn);
   function syncViewSwitch() {
     /* the switches live in the settings panel and listen for openthink:previewsmode / openthink:viewmode */
   }
