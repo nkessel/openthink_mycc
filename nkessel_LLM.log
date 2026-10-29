@@ -875,3 +875,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Oct 29 (Nathan): Bubble size weighting: Members, Events, Projects, Actions & volunteer roles are one group, "Bigger bubbles for groups with more…" ("slide right to make the groups with more of each one stand out"); then Opened group, then All bubbles.
 - Oct 29 (Nathan): the Coalitions list is a folding section like the others (remembered per browser); inside, "Show: All / None" and the "Groups that work together" switch come first, then the list.
 - Oct 29 (Nathan): All / None buttons for the coalitions list removed.
+- Oct 29 (Nathan, clarifying "the last two"): the "Show events, projects, actions, and volunteer roles" and "Show past…" switches now open the "Events, projects & actions" section; "Groups that work together" is back under the coalitions list.

@@ -71,8 +71,8 @@ export function createSidebar(
   const linksBlock = h("div", { class: "links-block" });
   const filtersBlock = h("div", { class: "filters-block" });
   const controlsBlock = h("div", { class: "controls-block" });
-  // Coalitions fold open and closed (Oct 29), remembered in this browser. Inside, the "Groups that work together"
-  // switch comes first, then the list.
+  // Coalitions fold open and closed (Oct 29), remembered in this browser: the list, then the "Groups that work
+  // together" switch.
   const COAL_KEY = "openthink.coalitionsOpen";
   let coalOpen = true;
   try { coalOpen = localStorage.getItem(COAL_KEY) !== "0"; } catch { /* ignore */ }
@@ -87,7 +87,7 @@ export function createSidebar(
     try { localStorage.setItem(COAL_KEY, coalOpen ? "1" : "0"); } catch { /* ignore */ }
   });
   const coalTools = h("div", { class: "coalitions-tools" });
-  coalBody.append(coalTools, linksBlock, coalitionsBlock);
+  coalBody.append(coalitionsBlock, linksBlock, coalTools);
   coalSection.append(coalHead, coalBody);
   aside.appendChild(coalSection);
   aside.appendChild(filtersBlock);
