@@ -876,3 +876,7 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Oct 29 (Nathan): the Coalitions list is a folding section like the others (remembered per browser); inside, "Show: All / None" and the "Groups that work together" switch come first, then the list.
 - Oct 29 (Nathan): All / None buttons for the coalitions list removed.
 - Oct 29 (Nathan, clarifying "the last two"): the "Show events, projects, actions, and volunteer roles" and "Show past…" switches now open the "Events, projects & actions" section; "Groups that work together" is back under the coalitions list.
+
+## 2026-10-29 — Land acknowledgement: Wellesley → Cambridge
+- index.html: "designed in Natick, Cambridge, and Boston, MA" (Nathan's request). Build passes.
+- Also: the domain is live (nkessel.github.io/openthink_mycc redirects to ma.climateorgmap.earth), so the MYCC map project link (source check + data.json) and SETUP.md now use https://ma.climateorgmap.earth/.

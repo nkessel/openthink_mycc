@@ -56,7 +56,7 @@ After that, approved edits show up on the site within a minute of a page reload,
 1. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 2. **Settings → Environments → github-pages → Deployment branches**: add `development_branch` (by default only `main` may deploy).
 3. **Settings → Secrets and variables → Actions → Variables**: add `OPENTHINK_DATA_URL` = the web app URL. This turns on the nightly backup (a PR with the latest `data.json`, only when something changed).
-4. Re-run **Actions → Deploy to GitHub Pages**. The site is at `https://nkessel.github.io/openthink_mycc/`.
+4. Re-run **Actions → Deploy to GitHub Pages**. The site is at `https://ma.climateorgmap.earth/` (the old `https://nkessel.github.io/openthink_mycc/` address redirects there).
 
 ## Who owns an event or project
 
