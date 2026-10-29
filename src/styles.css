@@ -2658,7 +2658,7 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 /* An opened organization's coalitions and partner groups, on the outskirts. The whole group scales (its dots too,
    so they never float loose while it moves into place). Coalitions are drawn big, so they read as bigger than
    groups even when they spill past the edges; partner groups are a little smaller and quieter. */
-.node-coalition.linked > * { transform: scale(calc(1.5 * var(--ss, 1))); }
+.node-coalition.linked > * { transform: scale(var(--ls, 1.5)); }
 .node-org.linked > * { transform: scale(var(--ss, 1)); }
 /* an opened group's satellites are drawn --ss times bigger (Map settings → Partner groups) */
 .node-org.member-ring:not(.linked) > :not(.sats), .node-coalition.member-ring:not(.linked) > :not(.sats) { transform: scale(var(--ss, 1)); }
@@ -2887,7 +2887,7 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
 .drawer .about-summary > .desc:first-child { margin-top: 0; }
 
 /* An opened org's coalitions: scaled by graph.ts (--ls) so they never dwarf the group you opened. */
-.node-coalition.linked > * { transform: scale(calc(var(--ls, 1.5) * var(--ss, 1))); }
+.node-coalition.linked > * { transform: scale(var(--ls, 1.5)); } /* --ls already includes the partner size (graph.ts) */
 /* Members of an opened group fade in one after another at their place around it. */
 .node-coalition.arriving, .node-org.arriving { animation: node-arrive 0.45s ease-out backwards; animation-delay: var(--arrive-delay, 0ms); }
 @keyframes node-arrive { from { opacity: 0; } }

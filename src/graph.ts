@@ -108,7 +108,7 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   focusSize: 1,
   focusSpace: 1,
   focusRowGap: 1,
-  focusSatSize: 2.5, // Oct 29: partners were too small next to the bigger opened group
+  focusSatSize: 4, // Oct 29: partners were too small next to the bigger opened group (1.8, then 2.5, then 4)
 };
 
 export interface Graph {
@@ -1736,11 +1736,13 @@ export function createGraph(
       if (pinnedMembers.length) {
         // as drawn: an opened org's coalitions are scaled up to 1.5× but never past ~70% of the opened org
         // (a big coalition used to crowd out the group you opened), its partner groups 0.75× (styles.css .linked)
-        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5, (0.7 * nodeR) / nodeRadiusOf(o)) : 1); // partner groups no longer drawn smaller than usual (Oct 29)
-        // Satellites are drawn bigger too (Map settings → Bubble size weighting → Partner groups, CSS --ss).
+        // Satellites are drawn bigger (Map settings → Bubble size weighting → Its partner groups, CSS --ss), but a
+        // coalition around an opened org never grows past 80% of the opened group (its own --ls, which already
+        // includes the --ss factor).
         const ss = settings.focusSatSize;
         nodeLayer.style("--ss", String(ss));
-        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? linkScale(o) : 1) * ss;
+        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5 * ss, (0.8 * nodeR) / nodeRadiusOf(o)) : ss);
+        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? linkScale(o) : ss);
         nodeSel.filter((d) => n.kind === "org" && d.kind === "coalition").style("--ls", (d) => String(Math.max(0.5, linkScale(d))));
         pinnedMembers.sort((a, b) => drawnR(b) - drawnR(a));
         const maxR = Math.max(...pinnedMembers.map((o) => drawnR(o)));
