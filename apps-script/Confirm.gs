@@ -145,6 +145,7 @@ function confirmData_(rec, t) {
   };
   var draft = null;
   try { draft = str_(rec.draft) ? JSON.parse(str_(rec.draft)) : null; } catch (e) { draft = null; }
+  if (draft) delete draft.who; // never show one person's details to the next
   return {
     token: str_(rec.token), title: REGION.title, submittedAt: str_(rec.submitted_at),
     org: pick(o, 'org'),
@@ -167,17 +168,24 @@ function confirmWho_(who) {
   var name = String((who && who.name) || '').trim().slice(0, 120);
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('Please enter your email address at the top of the page.');
   if (!name) throw new Error('Please enter your name at the top of the page.');
-  return { email: email, name: name };
+  var phone = String((who && who.phone) || '').trim().slice(0, 40);
+  if (phone && !/^[0-9+().\-\s x ext]{7,40}$/i.test(phone)) throw new Error('Please check the phone number (digits, spaces, dashes and + only).');
+  var best = String((who && who.best) || '').trim();
+  if (['', 'Email', 'Text', 'Phone call', 'Any'].indexOf(best) === -1) best = '';
+  return { email: email, name: name, phone: phone, best: best };
 }
 
 /** Save for later: keeps the page's state on the Links row. */
 function confirmSave(token, state) {
   var link = linkRow_(token);
   if (!link) throw new Error('This link no longer works.');
-  var json = JSON.stringify(state || {});
+  // The draft is shared by everyone with this group's link, so no personal details go in it (each browser keeps its own).
+  var copy = JSON.parse(JSON.stringify(state || {}));
+  var savedBy = copy.who ? String(copy.who.email || '').trim().toLowerCase() : '';
+  delete copy.who;
+  var json = JSON.stringify(copy);
   if (json.length > 45000) throw new Error('That is too much to save at once. Please submit what you have.');
-  var who = state && state.who ? String(state.who.email || '').trim().toLowerCase() : '';
-  setLinkFields_(link, { draft: json, saved_at: nowIso_(), status: str_(link.rec.submitted_at) ? link.rec.status : 'saved for later', notes: who ? 'last saved by ' + who : str_(link.rec.notes) });
+  setLinkFields_(link, { draft: json, saved_at: nowIso_(), status: str_(link.rec.submitted_at) ? link.rec.status : 'saved for later', notes: savedBy ? 'last saved by ' + savedBy : str_(link.rec.notes) });
   return { savedAt: nowIso_() };
 }
 
@@ -268,7 +276,7 @@ function confirmApply_(orgId, state, who, t) {
   var people = pointPeopleOf_(orgId, t.editors);
   var known = people.some(function (p) { return p.email === who.email; });
   if (known || people.length < MAX_POINT_PEOPLE) {
-    var a = {}; a[Q.pointEmail] = who.email; a[Q.pointName] = who.name;
+    var a = { bestContact: who.best, via: 'the confirmation screen' }; a[Q.pointEmail] = who.email; a[Q.pointName] = who.name; a[Q.pointPhone] = who.phone;
     savePointPerson_(orgId, a, '');
     lines.push('- ' + who.email + (known ? ' (already a point person)' : ' added as a point person (asked to confirm their email)'));
   } else {
@@ -368,7 +376,7 @@ var CONFIRM_HTML = [
   'var LABEL={name:"Name",description:"Description",website:"Website",geographic_focus:"Where you work (towns or region)",public_contact:"Public contact (email or phone people can use)",date:"Starts",end:"Ends",location:"Where",online:"Online",link:"Web page",rsvp_link:"Sign-up / RSVP link",status:"Status",deadline:"Deadline"};',
   'var FIELDS=' + JSON.stringify(CONFIRM_FIELDS) + ';',
   'var cards=[DATA.org].concat(DATA.items);',
-  'var st=DATA.draft||{who:{name:"",email:""},org:{decision:"",fields:{}},items:{}};st.org=st.org||{decision:"",fields:{}};st.items=st.items||{};',
+  'var st=DATA.draft||{org:{decision:"",fields:{}},items:{}};st.who={name:"",email:"",phone:"",best:""};try{var mem=JSON.parse(localStorage.getItem("confirm.me")||"null");if(mem)st.who=mem;}catch(e){}st.org=st.org||{decision:"",fields:{}};st.items=st.items||{};',
   'var editing={},holds={},dirty=false;',
   'function S(id){return cards[0].id===id?st.org:(st.items[id]=st.items[id]||{kind:find(id).kind,decision:"",fields:{}});}',
   'function find(id){for(var i=0;i<cards.length;i++)if(cards[i].id===id)return cards[i];}',
@@ -377,15 +385,15 @@ var CONFIRM_HTML = [
   'function when(c){var d=val(c,"date");if(!d)return"";try{var x=new Date(d);return x.toLocaleString(undefined,{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});}catch(e){return d;}}',
   'function el(h){var t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstChild;}',
   'function msg(t,bad){var s=document.getElementById("status");s.textContent=t;s.className="status"+(bad?" err":"");}',
-  'function who(){return{name:document.getElementById("pname").value.trim(),email:document.getElementById("pemail").value.trim()};}',
+  'function remember(w){try{localStorage.setItem("confirm.me",JSON.stringify(w));}catch(e){}}function who(){return{name:document.getElementById("pname").value.trim(),email:document.getElementById("pemail").value.trim(),phone:document.getElementById("pphone").value.trim(),best:document.getElementById("pbest").value};}',
   'function render(){',
   ' var app=document.getElementById("app");app.innerHTML="";',
   ' app.appendChild(el("<div><h1>Check "+esc(DATA.org.name)+"\\u2019s information</h1><p class=\\"lead\\">This is what the "+esc(DATA.title)+" shows for your group. For each card, choose <b>Approve</b> (it\\u2019s right, or right after your edits) or <b>Remove</b> (it shouldn\\u2019t be on the map). Nothing changes until you press <b>Finalize and Submit</b>; <b>Save for later</b> keeps your work.</p></div>"));',
   ' if(DATA.submittedAt)app.appendChild(el("<div class=\\"box done\\">Thank you: this was submitted on "+esc(new Date(DATA.submittedAt).toLocaleDateString())+". You can check it again and submit any changes.</div>"));',
   ' var pp=DATA.pointPeople.length?"Point people on file: "+DATA.pointPeople.map(function(p){return esc(p.name||p.email)+(p.pending?" (waiting for email confirmation)":"");}).join(", ")+".":"No point person on file yet.";',
-  ' var me=el("<div class=\\"box\\"><h2 style=\\"margin-top:0\\">You</h2><div class=\\"row2\\"><div><label for=\\"pname\\">Your name</label><input id=\\"pname\\" autocomplete=\\"name\\"></div><div><label for=\\"pemail\\">Your email</label><input id=\\"pemail\\" type=\\"email\\" autocomplete=\\"email\\"></div></div><p class=\\"pp\\">"+pp+" You\\u2019ll be added as a point person (up to "+DATA.maxPointPeople+" per group); we\\u2019ll email you a link to confirm your address.</p></div>");',
-  ' app.appendChild(me);document.getElementById("pname").value=st.who.name||"";document.getElementById("pemail").value=st.who.email||"";',
-  ' ["pname","pemail"].forEach(function(id){document.getElementById(id).addEventListener("input",function(){st.who=who();dirty=true;});});',
+  ' var me=el("<div class=\\"box\\"><h2 style=\\"margin-top:0\\">You</h2><div class=\\"row2\\"><div><label for=\\"pname\\">Your name</label><input id=\\"pname\\" autocomplete=\\"name\\"></div><div><label for=\\"pemail\\">Your email</label><input id=\\"pemail\\" type=\\"email\\" autocomplete=\\"email\\"></div><div><label for=\\"pphone\\">Phone (optional)</label><input id=\\"pphone\\" type=\\"tel\\" autocomplete=\\"tel\\"></div><div><label for=\\"pbest\\">Best way to reach you</label><select id=\\"pbest\\"><option value=\\"\\">No preference</option><option>Email</option><option>Text</option><option>Phone call</option></select></div></div><p class=\\"pp\\">"+pp+" You\\u2019ll be added as a point person (up to "+DATA.maxPointPeople+" per group); we\\u2019ll email you a link to confirm your address. Your phone and email are only seen by the map\\u2019s core team, never shown on the map.</p></div>");',
+  ' app.appendChild(me);document.getElementById("pname").value=st.who.name||"";document.getElementById("pemail").value=st.who.email||"";document.getElementById("pphone").value=st.who.phone||"";document.getElementById("pbest").value=st.who.best||"";',
+  ' ["pname","pemail","pphone","pbest"].forEach(function(id){document.getElementById(id).addEventListener(id==="pbest"?"change":"input",function(){st.who=who();remember(st.who);dirty=true;});});',
   ' app.appendChild(el("<h2>Your organization</h2>"));app.appendChild(card(DATA.org));',
   ' app.appendChild(el("<h2>Events, projects and actions ("+DATA.items.length+")</h2>"));',
   ' if(!DATA.items.length)app.appendChild(el("<p class=\\"empty\\">The map has no events, projects or actions for your group yet. You can add them with the + button on the map.</p>"));',

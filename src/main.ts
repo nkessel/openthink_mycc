@@ -202,14 +202,14 @@ async function main() {
     style: "position:relative;overflow:hidden",
   });
   mapView.appendChild(graphContainer);
-  // Note at the top of the map (Nathan, Oct 29). The × hides it for this visit.
+  // Note at the top of the map (Nathan, Oct 29). The × hides it for this visit; drag it anywhere out of the way.
   let noteHidden = false;
   try { noteHidden = sessionStorage.getItem("openthink.devnote") === "1"; } catch { /* ignore */ }
   if (!noteHidden) {
     const link = h("a", { href: FORMS.feedback.url, target: "_blank", rel: "noopener" }, "please let us know");
     const close = h("button", { type: "button", class: "dev-note-x", "aria-label": "Hide this note", title: "Hide this note" }, "\u00d7");
-    const note = h("div", { class: "dev-note", role: "note" },
-      h("span", {}, "This map is currently in development and uses data gathered from organization websites.  If you see any inaccuracies, ", link),
+    const note = h("div", { class: "dev-note", role: "note", title: "Drag to move" },
+      h("span", {}, "Note: this map is currently in development and uses data gathered from organization websites.  If you see any inaccuracies, ", link),
       close,
     );
     close.addEventListener("click", () => {
@@ -217,6 +217,32 @@ async function main() {
       try { sessionStorage.setItem("openthink.devnote", "1"); } catch { /* ignore */ }
     });
     graphContainer.appendChild(note);
+    // Drag the note (not its link or ×) anywhere inside the map; it stays where it is put for this visit.
+    let drag: { id: number; dx: number; dy: number } | null = null;
+    note.addEventListener("pointerdown", (e) => {
+      if ((e.target as HTMLElement).closest("a, button") || e.button !== 0) return;
+      const r = note.getBoundingClientRect();
+      drag = { id: e.pointerId, dx: e.clientX - r.left, dy: e.clientY - r.top };
+      note.setPointerCapture(e.pointerId);
+      note.classList.add("dragging");
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    note.addEventListener("pointermove", (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const box = graphContainer.getBoundingClientRect();
+      const w = note.offsetWidth, hh = note.offsetHeight;
+      const x = Math.min(Math.max(0, e.clientX - box.left - drag.dx), Math.max(0, box.width - w));
+      const y = Math.min(Math.max(0, e.clientY - box.top - drag.dy), Math.max(0, box.height - hh));
+      Object.assign(note.style, { left: `${x}px`, top: `${y}px`, right: "auto", width: `${w}px`, maxWidth: "none", transform: "none" });
+    });
+    const drop = (e: PointerEvent) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag = null;
+      note.classList.remove("dragging");
+    };
+    note.addEventListener("pointerup", drop);
+    note.addEventListener("pointercancel", drop);
   }
   setupSidebarToggle(mapView, sidebar.element(), graphContainer);
 

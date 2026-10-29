@@ -700,10 +700,11 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.ok(data.items.every((i) => i.id), "items have ids");
   assert.equal(G("maskEmail_")("nathan@example.org"), "na•••@example.org");
   // save for later keeps the state
-  const who = { name: "Pat Point", email: "Pat@Example.org" };
+  const who = { name: "Pat Point", email: "Pat@Example.org", phone: "617-555-0142", best: "Text" };
   G("confirmSave")(L.token, { who, items: { [evs[0].id]: { kind: "event", decision: "approve", fields: {} } } });
   assert.equal(linkRows().find((r) => r.org_id === orgId).status, "saved for later");
-  assert.equal(JSON.parse(linkRows().find((r) => r.org_id === orgId).draft).who.name, "Pat Point");
+  assert.equal(JSON.parse(linkRows().find((r) => r.org_id === orgId).draft).who, undefined, "no personal details in the shared draft");
+  assert.match(linkRows().find((r) => r.org_id === orgId).notes, /last saved by pat@example.org/);
   // holds: one person at a time; the second can ask; the first sees the request and hands it over
   assert.deepEqual(J(G("confirmHold")(L.token, evs[0].id, who)), { ok: true });
   const other = { name: "Sam Second", email: "sam@example.org" };
@@ -740,6 +741,10 @@ console.log("second round trip (org-owned items, locations, links) OK");
   // the submitter is now a pending point person, sent a confirmation email; admins were told
   const ed = ctx.readAll_().editors.find((r) => String(r.email).toLowerCase() === "pat@example.org");
   assert.ok(ed && ctx.isPending_(ed) && ctx.list_(ed.org_ids).includes(orgId));
+  assert.match(String(ed.notes), /phone: 617-555-0142/); assert.match(String(ed.notes), /best way to reach: Text/);
+  assert.ok(!JSON.stringify(ctx.buildDataFile_(ctx.readAll_(), "now")).includes("617-555-0142"), "phone never in the public feed");
+  assert.ok(!JSON.stringify(G("confirmData_")(G("linkRow_")(L.token).rec, ctx.readAll_())).includes("617-555-0142"), "nor on the confirmation page");
+  assert.throws(() => G("confirmWho_")({ name: "X", email: "x@example.org", phone: "call me maybe" }), /phone/);
   assert.ok(mail.slice(before).some((m) => m.to === "pat@example.org"));
   assert.ok(mail.slice(before).some((m) => /checked their information/.test(m.subject)));
   assert.match(res.summary, /approved/);
