@@ -482,7 +482,9 @@ function connectionsToAdd_(rows, t) {
   var orgIds = {}; t.orgs.forEach(function (o) { orgIds[str_(o.id)] = o; });
   var coIds = {}; t.coalitions.forEach(function (x) { coIds[str_(x.id)] = true; });
   var have = {};
-  (t.connections || []).forEach(function (r) { var a = str_(r.from_org), b = str_(r.to_org); have[a < b ? a + '|' + b : b + '|' + a] = true; });
+  // One row per group that named the other (Oct 29): B naming A after A named B is its own row, which is how the map
+  // tells "both named each other" from "only one did".
+  (t.connections || []).forEach(function (r) { have[str_(r.from_org) + '|' + str_(r.to_org)] = true; });
   var out = { links: [], memberships: [], skipped: [] };
   rows.slice(1).forEach(function (r) {
     var a = str_(r[c('from_org')]), b = str_(r[c('to_org')]), kind = str_(r[c('kind')]) || 'org';
@@ -493,11 +495,12 @@ function connectionsToAdd_(rows, t) {
       return;
     }
     if (!orgIds[a] || !orgIds[b]) { out.skipped.push(a + ' → ' + b + ' (not found)'); return; }
-    var key = a < b ? a + '|' + b : b + '|' + a;
+    var key = a + '|' + b;
     if (have[key]) return;
     have[key] = true;
-    var f = str_(r[c('frequency')]) || 'few_per_year';
-    out.links.push({ from_org: a, to_org: b, frequency: freqWeight_(f) ? f : 'few_per_year' });
+    // The Organization Info Form didn't ask how often, so no frequency is made up (blank = not stated).
+    var f = str_(r[c('frequency')]);
+    out.links.push({ from_org: a, to_org: b, frequency: freqWeight_(f) ? f : '' });
   });
   return out;
 }
@@ -2418,10 +2421,10 @@ function buildDataFile_(t, generatedAt) {
   var pairs = {};
   (t.connections || []).forEach(function (r) {
     var a = str(r.from_org), b = str(r.to_org), f = str(r.frequency);
-    if (!orgById[a] || !orgById[b] || a === b || !freqWeight_(f)) return;
+    if (!orgById[a] || !orgById[b] || a === b || (f && !freqWeight_(f))) return; // blank frequency = not stated
     var key = a < b ? a + '|' + b : b + '|' + a;
     var cur = pairs[key];
-    if (!cur) cur = pairs[key] = { source: a < b ? a : b, target: a < b ? b : a, frequency: f, weight: freqWeight_(f), reported_by: [] };
+    if (!cur) cur = pairs[key] = { source: a < b ? a : b, target: a < b ? b : a, frequency: f, weight: freqWeight_(f) || 1, reported_by: [] };
     if (freqWeight_(f) > cur.weight) { cur.weight = freqWeight_(f); cur.frequency = f; }
     if (cur.reported_by.indexOf(a) === -1) cur.reported_by.push(a);
   });

@@ -11,6 +11,7 @@ import { createDrawer } from "./drawer";
 import { findItem, showItemCard, setCardActions } from "./itemcard";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
+import { FORMS } from "./forms.config";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkSources } from "./sourcecheck";
@@ -199,6 +200,22 @@ async function main() {
     style: "position:relative;overflow:hidden",
   });
   mapView.appendChild(graphContainer);
+  // Note at the top of the map (Nathan, Oct 29). The × hides it for this visit.
+  let noteHidden = false;
+  try { noteHidden = sessionStorage.getItem("openthink.devnote") === "1"; } catch { /* ignore */ }
+  if (!noteHidden) {
+    const link = h("a", { href: FORMS.feedback.url, target: "_blank", rel: "noopener" }, "please let us know");
+    const close = h("button", { type: "button", class: "dev-note-x", "aria-label": "Hide this note", title: "Hide this note" }, "\u00d7");
+    const note = h("div", { class: "dev-note", role: "note" },
+      h("span", {}, "This map is currently in development and uses data gathered from organization websites.  If you see any inaccuracies, ", link),
+      close,
+    );
+    close.addEventListener("click", () => {
+      note.remove();
+      try { sessionStorage.setItem("openthink.devnote", "1"); } catch { /* ignore */ }
+    });
+    graphContainer.appendChild(note);
+  }
   setupSidebarToggle(mapView, sidebar.element(), graphContainer);
 
   drawerApi = createDrawer(graphContainer, data, {

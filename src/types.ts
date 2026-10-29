@@ -221,6 +221,8 @@ export interface GraphLink {
   kind?: "membership" | "org";
   /** Org-to-org strength, 1 (yearly or less) … 4 (weekly). */
   weight?: number;
+  /** Org-to-org: only one of the two groups named the other (source = the group that named it). */
+  oneWay?: boolean;
 }
 
 /** How often two orgs work together (from the organization form). */

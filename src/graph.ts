@@ -168,9 +168,16 @@ export function createGraph(
       kind: "membership" as const,
     })),
     // Org-to-org: how often they work together (weight 1 = yearly or less … 4 = weekly)
+    // Named by both groups = a solid line; named by only one = a dotted line with an arrow from the group that named
+    // it to the group it named (Oct 29).
     ...(data.org_links || [])
       .filter((l) => orgIds.has(l.source) && orgIds.has(l.target))
-      .map((l) => ({ source: l.source, target: l.target, coalitionId: "", kind: "org" as const, weight: l.weight })),
+      .map((l) => {
+        const by = l.reported_by || [];
+        const mutual = by.includes(l.source) && by.includes(l.target);
+        const from = !mutual && by.includes(l.target) ? l.target : l.source;
+        return { source: from, target: from === l.source ? l.target : l.source, coalitionId: "", kind: "org" as const, weight: l.weight, oneWay: !mutual };
+      }),
   ];
   const orgLinkCount = allLinks.filter((l) => l.kind === "org").length;
   let showOrgLinks = true;
@@ -386,7 +393,8 @@ export function createGraph(
     return linkForceStrength();
   }
   function linkWidthFor(l: GraphLink): number {
-    return l.kind === "org" ? settings.linkThickness * (0.6 + (l.weight ?? 1) * 0.6) : settings.linkThickness;
+    // org links: named by both groups twice as thick as one-way ones (and a little more with how often, when known)
+    return l.kind === "org" ? settings.linkThickness * (l.oneWay ? 1 : 2) * (0.8 + (l.weight ?? 1) * 0.2) : settings.linkThickness;
   }
   function activityCounts(n: GraphNode): { projects: number; events: number; actions: number } {
     return n.kind === "org"
@@ -547,7 +555,24 @@ export function createGraph(
     .data(allLinks)
     .enter()
     .append("line")
-    .attr("class", (l) => (l.kind === "org" ? `link org-link w${l.weight ?? 1}` : "link")) as LinkSel;
+    .attr("class", (l) => (l.kind === "org" ? `link org-link w${l.weight ?? 1} ${l.oneWay ? "one-way" : "mutual"}` : "link"))
+    .attr("marker-end", (l: GraphLink) => (l.kind === "org" && l.oneWay ? "url(#org-arrow)" : null)) as LinkSel;
+  {
+    const defs = svg.select<SVGDefsElement>("defs").empty() ? svg.insert("defs", ":first-child") : svg.select<SVGDefsElement>("defs");
+    defs.append("marker").attr("id", "org-arrow").attr("viewBox", "0 0 10 10").attr("refX", 9).attr("refY", 5)
+      .attr("markerWidth", 5).attr("markerHeight", 5).attr("orient", "auto").attr("markerUnits", "strokeWidth")
+      .append("path").attr("d", "M0 0L10 5L0 10z").attr("class", "org-arrow-head");
+  }
+  /** A one-way link stops at the edge of the group it points to, so its arrowhead shows. */
+  const linkEnd = (l: GraphLink, axis: "x" | "y"): number => {
+    const t = l.target as GraphNode, s0 = l.source as GraphNode;
+    const tv = (axis === "x" ? t.x : t.y) ?? 0;
+    if (!l.oneWay) return tv;
+    const dx = (t.x ?? 0) - (s0.x ?? 0), dy = (t.y ?? 0) - (s0.y ?? 0);
+    const d = Math.hypot(dx, dy) || 1;
+    const back = nodeRadiusOf(t) + 3;
+    return tv - ((axis === "x" ? dx : dy) / d) * back;
+  };
 
   let nodeSel: NodeSel = nodeLayer
     .selectAll<SVGGElement, GraphNode>("g.node")
@@ -1268,8 +1293,8 @@ export function createGraph(
     linkSel
       .attr("x1", (l) => (l.source as GraphNode).x ?? 0)
       .attr("y1", (l) => (l.source as GraphNode).y ?? 0)
-      .attr("x2", (l) => (l.target as GraphNode).x ?? 0)
-      .attr("y2", (l) => (l.target as GraphNode).y ?? 0);
+      .attr("x2", (l) => linkEnd(l, "x"))
+      .attr("y2", (l) => linkEnd(l, "y"));
     nodeSel.attr(
       "transform",
       (n) => `translate(${n.x ?? 0},${n.y ?? 0})`,
