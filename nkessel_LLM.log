@@ -905,3 +905,7 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Map note now starts "Note: this map…" and can be dragged anywhere on the map (plus the ×).
 - Menu: each page has a one-line hint (second line in the phone menu, tooltip on wide screens); 'Directories: lists you can search'.
 - Satellite (event/project/action) names now appear only when zoomed further in: 4.5x on computers (was 2.8x), 8x on phones (was 5.5x).
+
+## 2026-10-29 — sizes panel for the opened group; HANDOFF.md (branch claude/focus-size-panel)
+- "Sizes in this view" floats on the map while a group is open, open by default with a highlight; four sliders (this group, its events/projects/actions, its coalitions, partner groups) + "Back to default sizes", synced with Map settings → Bubble size weighting → When you open a group. Moons scale with the planet (×1–3) times the new slider; coalitions next to an opened org default to 45% of it (was 80%). Refocus debounced (120 ms).
+- HANDOFF.md: running notes any account/session reads first (linked from CLAUDE.md) and updates at the end.

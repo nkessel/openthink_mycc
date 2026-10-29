@@ -3293,3 +3293,23 @@ html, body { overflow-x: clip; max-width: 100%; }
 @media (max-width: 900px) {
   .dev-note { top: 58px; left: 12px; max-width: none; font-size: 12px; }
 }
+
+/* "Sizes in this view": the opened group's size sliders, on the map while a group is open (Oct 29) */
+.focus-sizes { display: none; position: absolute; top: 64px; right: 12px; z-index: 6; width: 240px; background: var(--bg-elev); border: 2px solid var(--accent); border-radius: 12px; box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.18), var(--shadow); padding: 4px 12px 10px; }
+.graph-area.focus-on .focus-sizes { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .graph-area.focus-on .focus-sizes { animation: fsp-glow 1.6s ease-out 2; }
+}
+@keyframes fsp-glow { 0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55), var(--shadow); } 100% { box-shadow: 0 0 0 12px rgba(251, 191, 36, 0), var(--shadow); } }
+.fsp-head { display: flex; width: 100%; justify-content: space-between; align-items: center; background: none; border: 0; color: var(--text); font: inherit; font-weight: 700; font-size: 13px; padding: 6px 0; cursor: pointer; }
+.fsp-chev { transition: transform 0.2s; }
+.focus-sizes.closed .fsp-chev { transform: rotate(-90deg); }
+.focus-sizes.closed .fsp-body { display: none; }
+.focus-sizes.closed { padding-bottom: 4px; }
+.fsp-body .control { margin: 6px 0; }
+.fsp-body .slider-hint { font-size: 11px; }
+.fsp-reset { margin-top: 6px; font-size: 12px; background: none; border: 1px solid var(--border); color: var(--text-dim); border-radius: 6px; padding: 3px 8px; cursor: pointer; }
+@media (max-width: 720px) {
+  .focus-sizes { top: auto; bottom: 64px; right: 8px; width: min(240px, calc(100% - 16px)); }
+}
+.ctrl-subhead { margin: 14px 0 2px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); }

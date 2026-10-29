@@ -82,7 +82,9 @@ export interface GraphSettings {
   focusSize: number; // how big the opened group is drawn
   focusSpace: number; // room between the opened group's activity and its partner groups
   focusRowGap: number; // spacing between the rows of partner groups
-  focusSatSize: number; // how big the opened group's coalitions and partner groups are drawn (1 = their usual size)
+  focusSatSize: number; // how big the opened group's partner groups are drawn (1 = their usual size)
+  focusMoonSize: number; // how big the opened group's own events, projects and actions are drawn (1 = the default)
+  focusCoalSize: number; // how big an opened org's coalitions are drawn, next to it (1 = the default)
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
@@ -109,6 +111,8 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   focusSpace: 1,
   focusRowGap: 1,
   focusSatSize: 4, // Oct 29: partners were too small next to the bigger opened group (1.8, then 2.5, then 4)
+  focusMoonSize: 1, // Oct 29: moons now grow with the planet (1 = about a sixth of its size); this scales that
+  focusCoalSize: 1, // Oct 29: coalitions around an opened org were too big (up to 80% of it); now about 45%
 };
 
 export interface Graph {
@@ -1426,6 +1430,10 @@ export function createGraph(
     item: Thought | Project | CoalitionEvent | Action;
   }
   const BUBBLE_R = 22;
+  // How much bigger the opened group's moons are drawn than BUBBLE_R (set on each open: they grow with the planet
+  // so they don't look tiny next to it, times Map settings → focusMoonSize).
+  let moonScale = 1;
+  let refocusTimer = 0;
   const focusLayer = root.append("g").attr("class", "focus-layer");
   const focusGroup = focusLayer.append("g").attr("class", "focus-group");
   // The opened group is drawn as a big planet (CSS scale(var(--fs)) on .focused) with its items as moons around it.
@@ -1704,6 +1712,7 @@ export function createGraph(
   }
 
   function enterFocus(id: string) {
+    parent.classList.add("focus-on"); // shows the "Sizes in this view" panel (controls.ts)
     const n = nodeById.get(id);
     if (!n) return;
     if (!settings.showBubbles) {
@@ -1731,10 +1740,13 @@ export function createGraph(
     const fs = Math.max(2.5 * settings.focusSize, Math.min(16 * settings.focusSize, (FOCUS_PLANET_R * settings.focusSize) / nodeRadiusOf(n)));
     nodeSel.classed("focused", (d) => d.id === id).filter((d) => d.id === id).style("--fs", String(fs));
     const nodeR = nodeRadiusOf(n) * fs;
+    moonScale = settings.focusMoonSize * Math.min(3, Math.max(1, (0.16 * nodeR) / BUBBLE_R));
+    const MB = BUBBLE_R * moonScale; // a moon's radius as drawn
+    const LR = LABEL_REACH * moonScale; // and how far its name reaches
     // Moons close around the planet: just enough room on the orbit for each moon, its name reads outward.
-    const ringR = bubbles.length ? Math.max(nodeR + 48, (bubbles.length * (2 * BUBBLE_R + 26)) / (2 * Math.PI)) : nodeR + 40;
+    const ringR = bubbles.length ? Math.max(nodeR + 48 * moonScale, (bubbles.length * (2 * BUBBLE_R + 26) * moonScale) / (2 * Math.PI)) : nodeR + 40;
     // Room the moons' names need beyond the orbit; everything else is moved out past this.
-    let clearR = bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 40 : nodeR + 120;
+    let clearR = bubbles.length ? ringR + MB + LR + 40 : nodeR + 120;
 
     // A coalition's member orgs sit, at full strength, in a cluster around the items: a few rows on an oval
     // that hugs the items and their labels (labels run sideways, so the oval is wider than tall).
@@ -1766,7 +1778,8 @@ export function createGraph(
         // includes the --ss factor).
         const ss = settings.focusSatSize;
         nodeLayer.style("--ss", String(ss));
-        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5 * ss, (0.8 * nodeR) / nodeRadiusOf(o)) : ss);
+        // coalitions next to an opened org: about 45% of it at the default (Map settings → focusCoalSize; was 80%)
+        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5 * ss, (0.45 * settings.focusCoalSize * nodeR) / nodeRadiusOf(o)) : ss);
         const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? linkScale(o) : ss);
         nodeSel.filter((d) => n.kind === "org" && d.kind === "coalition").style("--ls", (d) => String(Math.max(0.5, linkScale(d))));
         pinnedMembers.sort((a, b) => drawnR(b) - drawnR(a));
@@ -1777,7 +1790,7 @@ export function createGraph(
         const spacing = 2 * maxC + 6; // between neighbours along a row
         const rowGap = (2 * maxC + 20) * settings.focusRowGap; // between rows (room for a name under each)
         // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
-        let rx = ((bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR + 10 : 0)) * settings.focusSpace; // big coalitions sit fully outside the moons' names
+        let rx = ((bubbles.length ? ringR + MB + LR + 30 : nodeR + 120) + (n.kind === "org" ? maxR + 10 : 0)) * settings.focusSpace; // big coalitions sit fully outside the moons' names
         let ry = rx;
         // Members may jostle, but never into the items and their labels.
         memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
@@ -1868,8 +1881,8 @@ export function createGraph(
       const outer = focusGroup.append("g").attr("class", `bubble b-${b.kind}${isRoleB(b) ? " b-role" : ""}`);
       bubbleEls.push(outer.node()!);
       bubbleAngles.push(a);
-      const g = outer.append("g").attr("class", "bubble-body").attr("transform", "scale(0.2)").attr("opacity", 0);
-      g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", "scale(1)").attr("opacity", 1);
+      const g = outer.append("g").attr("class", "bubble-body").attr("transform", `scale(${0.2 * moonScale})`).attr("opacity", 0);
+      g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", `scale(${moonScale})`).attr("opacity", 1);
       g.append("circle").attr("r", b.r);
       if (b.kind === "thought") g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
       else {
@@ -1891,7 +1904,7 @@ export function createGraph(
     });
     if (bubbleEls.length) {
       // Keep each bubble's link line attached as it moves.
-      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map((b) => b.r + 2), ringR, nodeR, 6, (nodes) => {
+      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map((b) => b.r * moonScale + 2), ringR, nodeR, 6, (nodes) => {
         nodes.forEach((d, i) => {
           const ang = Math.atan2(d.y ?? 0, d.x ?? 0);
           const l = bubbleLines[i];
@@ -2071,8 +2084,8 @@ export function createGraph(
     // Zoom so the planet, its moons and its satellites all fit in the part of the map you can actually see:
     // below the group's bar and (when the details panel is open over the map) left of it. It used to fill the whole
     // map width, so satellites and moon names sat under the panel and the top satellite under the bar.
-    const outer = Math.max(ringR + BUBBLE_R + LABEL_REACH + 20, memberRX + 70);
-    const outerY = Math.max(ringR + BUBBLE_R + 50, memberRY + 90);
+    const outer = Math.max(ringR + (BUBBLE_R + LABEL_REACH) * moonScale + 20, memberRX + 70);
+    const outerY = Math.max(ringR + BUBBLE_R * moonScale + 50, memberRY + 90);
     const frame = () => {
       const wr = wrap.getBoundingClientRect();
       const { w, h: vh } = dimensions();
@@ -2106,6 +2119,7 @@ export function createGraph(
       n.fy = null;
     }
     focusId = null;
+    parent.classList.remove("focus-on");
     focusSim?.stop();
     focusSim = null;
     for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
@@ -2208,14 +2222,11 @@ export function createGraph(
         // An open group redraws its moons with the new kinds.
         if (focusId && partial.alwaysShow === undefined) { const f = focusId; exitFocus(false); enterFocus(f); }
       }
-      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined || partial.focusSatSize !== undefined) && focusId) {
-        const f = focusId;
-        exitFocus(false);
-        enterFocus(f);
-      }
-      // "When you open a group" sliders: redraw an open group with the new size and spacing straight away
-      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined) && focusId) {
-        const f = focusId; exitFocus(false); enterFocus(f);
+      // "When you open a group" sliders: redraw an open group with the new sizes and spacing (once the slider
+      // pauses for a moment, so dragging it stays smooth)
+      if ((["focusSize", "focusSpace", "focusRowGap", "focusSatSize", "focusMoonSize", "focusCoalSize"] as const).some((k) => partial[k] !== undefined) && focusId) {
+        clearTimeout(refocusTimer);
+        refocusTimer = window.setTimeout(() => { const f = focusId; if (f) { exitFocus(false); enterFocus(f); } }, 120);
       }
       if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
         collideForce.radius(collideRadius);
