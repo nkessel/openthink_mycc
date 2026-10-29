@@ -1,0 +1,331 @@
+{
+  "youth_climate_action_now": {
+    "skipped": "already has a logo",
+    "logo": "logos/youth_climate_action_now.png"
+  },
+  "roxbury_environmental_empowerment_project_by_alternatives_fo": {
+    "skipped": "already has a logo",
+    "logo": "logos/roxbury_environmental_empowerment_project_by_alternatives_fo.svg"
+  },
+  "masscosh_tlaw_climate_change_and_environmental_justice_team": {
+    "skipped": "already has a logo",
+    "logo": "logos/masscosh_tlaw_climate_change_and_environmental_justice_team.png"
+  },
+  "youth_action_collaborative_alumni_node_at_clean_water_action": {
+    "skipped": "already has a logo",
+    "logo": "logos/youth_action_collaborative_alumni_node_at_clean_water_action.png"
+  },
+  "sustainable_sharon_coalition_youth": {
+    "skipped": "already has a logo",
+    "logo": "logos/sustainable_sharon_coalition_youth.png"
+  },
+  "masspirg_amherst": {
+    "skipped": "already has a logo",
+    "logo": "logos/masspirg_amherst.png"
+  },
+  "masspirg_boston": {
+    "skipped": "already has a logo",
+    "logo": "logos/masspirg_boston.png"
+  },
+  "healthlink": {
+    "name": "HealthLink",
+    "error": "no usable image",
+    "tried": [
+      "favicon.ico: HTTP 404",
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
+    ]
+  },
+  "xr_western_mass": {
+    "name": "Extinction Rebellion Western Mass",
+    "how": "logo_url (set by hand)",
+    "url": "https://xrboston.org/static/images/cropped-favicon-192x192.bab4741cb0b2.png",
+    "file": "logos/xr_western_mass.png",
+    "bytes": 21509,
+    "note": "xrwesternmass.org now shows unrelated content; uses the XR symbol from XR Boston"
+  },
+  "climate_action_now_western_ma": {
+    "skipped": "already has a logo",
+    "logo": "logos/climate_action_now_western_ma.png"
+  },
+  "sunrise_boston": {
+    "skipped": "already has a logo",
+    "logo": "logos/sunrise_boston.png"
+  },
+  "sunrise_amherst": {
+    "skipped": "already has a logo",
+    "logo": "logos/sunrise_amherst.png"
+  },
+  "sunrise_lexington": {
+    "skipped": "already has a logo",
+    "logo": "logos/sunrise_lexington.png"
+  },
+  "greenroots": {
+    "skipped": "already has a logo",
+    "logo": "logos/greenroots.png"
+  },
+  "bodhisara_dharma_community": {
+    "name": "Bodhisara Dharma Community",
+    "skipped": "Google Sites page has no logo"
+  },
+  "mass_divest_coalition": {
+    "name": "Mass Divest Coalition",
+    "error": "no usable image",
+    "tried": [
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
+    ]
+  },
+  "no_sharon_gas_pipeline_clean_energy_now": {
+    "name": "No Sharon Gas Pipeline | Clean Energy Now",
+    "error": "no usable image",
+    "tried": [
+      "google s2 icon: HTTP 404",
+      "duckduckgo icon: HTTP 404"
+    ]
+  },
+  "solstice_initiative": {
+    "skipped": "already has a logo",
+    "logo": "logos/solstice_initiative.png"
+  },
+  "south_coast_neighbors_united": {
+    "name": "South Coast Neighbors United",
+    "skipped": "folder image is a crowd photo with a quote, not a logo — skipped"
+  },
+  "sunwealth": {
+    "skipped": "already has a logo",
+    "logo": "logos/sunwealth.png"
+  },
+  "sustainable_sharon_coalition": {
+    "skipped": "already has a logo",
+    "logo": "logos/sustainable_sharon_coalition.png"
+  },
+  "sustainable_sudbury": {
+    "skipped": "already has a logo",
+    "logo": "logos/sustainable_sudbury.png"
+  },
+  "vineyard_power_cooperative": {
+    "skipped": "already has a logo",
+    "logo": "logos/vineyard_power_cooperative.png"
+  },
+  "watertown_citizens_for_peace_justice_and_the_environment": {
+    "skipped": "already has a logo",
+    "logo": "logos/watertown_citizens_for_peace_justice_and_the_environment.png"
+  },
+  "wendell_state_forest_alliance": {
+    "skipped": "already has a logo",
+    "logo": "logos/wendell_state_forest_alliance.png"
+  },
+  "xr_boston": {
+    "skipped": "already has a logo",
+    "logo": "logos/xr_boston.png"
+  },
+  "league_of_women_voters_of_massachusetts": {
+    "skipped": "already has a logo",
+    "logo": "logos/league_of_women_voters_of_massachusetts.png"
+  },
+  "neighbor_to_neighbor_massachusetts": {
+    "skipped": "already has a logo",
+    "logo": "logos/neighbor_to_neighbor_massachusetts.png"
+  },
+  "community_action_works": {
+    "name": "Community Action Works",
+    "how": "header <img> logo",
+    "url": "https://communityactionworks.org/wp-content/uploads/2023/09/logo-1.svg",
+    "file": "logos/community_action_works.svg",
+    "bytes": 58491,
+    "note": "header logo is white-on-transparent; uses the site icon"
+  },
+  "21st_century_schools_fund": {
+    "name": "21st Century Schools Fund",
+    "skipped": "folder image is a blurry banner crop, unreadable as a logo — skipped"
+  },
+  "acadia_center": {
+    "skipped": "already has a logo",
+    "logo": "logos/acadia_center.svg"
+  },
+  "aft_mass": {
+    "skipped": "already has a logo",
+    "logo": "logos/aft_mass.png"
+  },
+  "alliance_for_business_leadership": {
+    "name": "Alliance for Business Leadership",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1jKjaGhekyek3y3Yk4pallFrxAEonIAF6",
+    "file": "logos/alliance_for_business_leadership.png",
+    "bytes": 29613,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "center_for_green_schools_at_us_gbc": {
+    "skipped": "already has a logo",
+    "logo": "logos/center_for_green_schools_at_us_gbc.png"
+  },
+  "chinese_progressive_association": {
+    "name": "Chinese Progressive Association",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1TJInF6YkFqmkL7QBm3wCP_3LteYD1EYS",
+    "file": "logos/chinese_progressive_association.png",
+    "bytes": 10649,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "collaborative_for_high_performance_schools": {
+    "skipped": "already has a logo",
+    "logo": "logos/collaborative_for_high_performance_schools.png"
+  },
+  "cooler_communities": {
+    "skipped": "already has a logo",
+    "logo": "logos/cooler_communities.png"
+  },
+  "franklin_county_and_north_quabbin_community_health_improveme": {
+    "skipped": "already has a logo",
+    "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png"
+  },
+  "green_weymouth": {
+    "skipped": "already has a logo",
+    "logo": "logos/green_weymouth.png"
+  },
+  "ma_senior_action": {
+    "skipped": "already has a logo",
+    "logo": "logos/ma_senior_action.png"
+  },
+  "mass_facilities_administrators_association": {
+    "skipped": "already has a logo",
+    "logo": "logos/mass_facilities_administrators_association.png"
+  },
+  "massachusetts_jobs_with_justice": {
+    "skipped": "already has a logo",
+    "logo": "logos/massachusetts_jobs_with_justice.png"
+  },
+  "metropolitan_area_planning_council": {
+    "skipped": "already has a logo",
+    "logo": "logos/metropolitan_area_planning_council.png"
+  },
+  "mtacan": {
+    "skipped": "already has a logo",
+    "logo": "logos/mtacan.png"
+  },
+  "northeast_climate_justice_research_collaborative": {
+    "skipped": "already has a logo",
+    "logo": "logos/northeast_climate_justice_research_collaborative.svg"
+  },
+  "pioneer_valley_asthma_coalition": {
+    "skipped": "already has a logo",
+    "logo": "logos/pioneer_valley_asthma_coalition.png"
+  },
+  "sustainable_business_network_of_massachusetts": {
+    "name": "Sustainable Business Network of Massachusetts",
+    "how": "icon",
+    "url": "https://images.squarespace-cdn.com/content/v1/5faab8eb29e0595fb9fbd867/1610648930278-YZGBGIG9XD3PI8QO835N/favicon.ico?format=100w",
+    "file": "logos/sustainable_business_network_of_massachusetts.png",
+    "bytes": 4477,
+    "note": "header logo is white-on-transparent; uses the site icon"
+  },
+  "undauntedk12": {
+    "skipped": "already has a logo",
+    "logo": "logos/undauntedk12.png"
+  },
+  "mpf": {
+    "skipped": "already has a logo",
+    "logo": "logos/coalition_mpf.png"
+  },
+  "crs": {
+    "skipped": "already has a logo",
+    "logo": "logos/coalition_crs.png"
+  },
+  "upper_cape_women_s_coalition": {
+    "name": "Upper Cape Women's Coalition",
+    "skipped": "folder image is a photo of a sign, not a logo — skipped (and their domain now serves a casino ad)"
+  },
+  "boston_student_advisory_council": {
+    "name": "Boston Student Advisory Council",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=12ikdO1TSTgoihFQvZqueNQYMZ2frBLQc",
+    "file": "logos/boston_student_advisory_council.png",
+    "bytes": 54669,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "four_rivers_climate_club": {
+    "name": "Four Rivers Climate Club",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1nUWZGWD3NcRDCSPohZ4qm9h2Tu5MYgvg",
+    "file": "logos/four_rivers_climate_club.png",
+    "bytes": 31803,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "andover_climate_lobby": {
+    "name": "Andover Climate Lobby",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1LYuM3eQB7ciPP7Qkb7XRGmqx7Nqpz1IA",
+    "file": "logos/andover_climate_lobby.png",
+    "bytes": 17195,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "newton_south_high_school_environmental_club": {
+    "name": "Newton South High School Environmental Club",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1K2r4RtI-2H3eMqy6kJsoBZOhGqW5ASwg",
+    "file": "logos/newton_south_high_school_environmental_club.png",
+    "bytes": 57018,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "andover_high_school_environmental_club": {
+    "name": "Andover High School Environmental Club",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=18ZdEbu_rIiNQmaMgULc7SqDDYJMZSA_Z",
+    "file": "logos/andover_high_school_environmental_club.png",
+    "bytes": 41639,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "students_for_environmental_action_at_weston_high_school": {
+    "name": "Students for Environmental Action at Weston High School",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=14BKffuszP4Rf5bYDQAAe6zznDU5ptHmP",
+    "file": "logos/students_for_environmental_action_at_weston_high_school.png",
+    "bytes": 21702,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "belmont_hill_sustainability_club": {
+    "name": "Belmont Hill Sustainability Club",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1DSxB7_19xfT4kVZ76nuUi9HNg_d_ahhN",
+    "file": "logos/belmont_hill_sustainability_club.png",
+    "bytes": 58170,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "lorax_at_milton_academy": {
+    "name": "LORAX at Milton Academy",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1hUYnSBLa7V_xdELjNaOSGyD2E381hc50",
+    "file": "logos/lorax_at_milton_academy.png",
+    "bytes": 31092,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "boston_latin_school_youthcan": {
+    "name": "Boston Latin School Youth Climate Action Network",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=16iurjlrY_jSIHoC6IyxJvGMfaRsM3Lzt",
+    "file": "logos/boston_latin_school_youthcan.png",
+    "bytes": 34573,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "mit_sea": {
+    "skipped": "already has a logo",
+    "logo": "logos/mit_sea.png"
+  },
+  "ma_youth_for_climate_justice": {
+    "name": "Massachusetts Youth for Climate Justice",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1n6L5W8cfdLvxCBzAB0wjOfikF8mzWlRD",
+    "file": "logos/ma_youth_for_climate_justice.png",
+    "bytes": 50103,
+    "note": "from the team logo folder in Google Drive (Aissata)"
+  },
+  "mycc": {
+    "name": "Massachusetts Youth Climate Coalition",
+    "how": "logo_url (set by hand)",
+    "url": "https://drive.google.com/uc?export=download&id=1IwTYIKhhANUfj10M-QDQTrytCoHB5Zcm",
+    "file": "logos/coalition_mycc.png",
+    "bytes": 17968,
+    "note": "Nathan's Drive: MYCC profile.PNG"
+  }
+}

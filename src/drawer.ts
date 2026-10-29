@@ -1,3 +1,4 @@
+import { recurrenceLabel } from "./recurrence";
 import type {
   Coalition,
   Organization,
@@ -7,20 +8,56 @@ import type {
   GraphNode,
   DataFile,
 } from "./types";
-import { initials, relTime, fmtDateTime, typeLabel } from "./util";
+import { initials, relTime, fmtEventTime, shownType } from "./util";
+import { contactLinks, itemButtons, joinLine } from "./links";
 import { h, clear } from "./dom";
+import { staleNotice } from "./notice";
+import { formUrl } from "./fab";
+import { sectorById } from "./sectors";
+import { moneyDetails } from "./money";
+import { orgProjects, orgEvents, orgActions } from "./owners";
+import { isPastAction, isPastEvent, isPastProject } from "./past";
+import { typeIcon } from "./icons";
+import { suggestionsFor } from "./suggestions";
+import { topicsUrl, topicListInfo, onTopicListChange, topicList } from "./topiclist";
+import { withLiveTags } from "./topiclive";
+import { currentMap, timeZoneFor } from "./maps";
+import type { TopicsFile as FullTopics } from "./topics";
 
-type DrawerTab = "projects" | "events" | "actions" | "coalitions" | "about";
+type DrawerTab = "activity" | "projects" | "events" | "actions" | "coalitions" | "suggested" | "about" | "topics";
+/** The kinds of item in the Activity tab, each with its own filter pill. */
+type ActKind = "event" | "project" | "action" | "volunteer";
+const ACT_KINDS: { k: ActKind; label: string }[] = [
+  { k: "event", label: "Events" },
+  { k: "project", label: "Projects" },
+  { k: "action", label: "Actions" },
+  { k: "volunteer", label: "Volunteer" },
+];
 
 export interface Drawer {
   open(node: GraphNode): void;
   close(): void;
   isOpen(): boolean;
+  current(): GraphNode | null;
   setActiveTab(tab: DrawerTab): void;
+  /** Show one event / project / action in full, with a way back to its group. */
+  openItem(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): void;
+  /** True while it shows one item rather than its group. */
+  showingItem(): boolean;
+  /** Redraw what's showing (e.g. after switching pages). */
+  refresh(): void;
 }
+
+export type ItemKind = "event" | "project" | "action";
 
 export interface DrawerCallbacks {
   onCoalitionClick?(coalitionId: string): void;
+  onOrgClick?(orgId: string): void;
+  /** "Locate on strategy map / geographic map": the only buttons in the pane that move a map. */
+  onLocate?(where: "map" | "geo", node: GraphNode, item?: { kind: ItemKind; item: CoalitionEvent | Project | Action }): void;
+  canLocateGeo?(node: GraphNode, item?: CoalitionEvent | Project | Action): boolean;
+  /** Which page is showing, so the pane doesn't offer to locate the group on the map you're already on. */
+  currentView?(): string;
 }
 
 export function createDrawer(
@@ -32,9 +69,28 @@ export function createDrawer(
   parent.appendChild(el);
 
   let currentNode: GraphNode | null = null;
-  let activeTab: DrawerTab = "projects";
+  let activeTab: DrawerTab = "about";
+  let actFilter = new Set<ActKind>(); // empty = everything
+  let currentItem: { kind: ItemKind; item: CoalitionEvent | Project | Action } | null = null;
+  let itemFromGroup = false;
   const orgsById = new Map(data.organizations.map((o) => [o.id, o]));
   const coalitionsById = new Map(data.coalitions.map((c) => [c.id, c]));
+
+  /** The pane never moves a map by itself; these buttons do, when you ask. */
+  function locateRow(node: GraphNode, item?: { kind: ItemKind; item: CoalitionEvent | Project | Action }): HTMLElement | null {
+    if (!cb.onLocate) return null;
+    const row = h("div", { class: "locate-row" });
+    const b = (label: string, where: "map" | "geo") => {
+      const x = h("button", { type: "button", class: "locate-btn" }, label);
+      x.addEventListener("click", () => cb.onLocate!(where, node, item));
+      row.appendChild(x);
+    };
+    // no button for the map you're already looking at
+    const here = cb.currentView?.();
+    if (here !== "map") b("Locate on strategy map", "map");
+    if (here !== "geo" && (cb.canLocateGeo?.(node, item?.item) ?? true)) b("Locate on geographic map", "geo");
+    return row.childElementCount ? row : null;
+  }
 
   function renderHead(node: GraphNode): HTMLElement {
     const head = h("div", { class: "head" });
@@ -48,11 +104,13 @@ export function createDrawer(
         h(
           "div",
           { class: "title-row" },
-          h(
-            "div",
-            { class: "badge", style: `background:${c.color}` },
-            c.abbrev || initials(c.name),
-          ),
+          c.logo
+            ? h("div", { class: "badge logo", style: `border:2px solid ${c.color}` }, h("img", { src: c.logo, alt: "" }))
+            : h(
+                "div",
+                { class: "badge", style: `background:${c.color}` },
+                c.abbrev || initials(c.name),
+              ),
           h(
             "div",
             {},
@@ -73,44 +131,46 @@ export function createDrawer(
         h(
           "div",
           { class: "meta" },
-          metaCell(c.member_count, "Members"),
+          metaCell(c.member_count, "Member groups"),
           metaCell(c.projects.length, "Projects"),
           metaCell(c.events.length, "Events"),
         ),
       );
     } else {
       const o = node as Organization;
+      const badge = o.logo
+        ? h("div", { class: "badge logo" }, h("img", { src: o.logo, alt: "" }))
+        : h("div", { class: "badge", style: "background:#3a3a4a;color:#e5e7eb" }, initials(o.name));
+      const sub = [o.abbrev, shownType(o.type), o.geographic_focus].filter(Boolean).join(" · ");
       head.appendChild(
-        h(
-          "div",
-          { class: "title-row" },
-          h(
-            "div",
-            {
-              class: "badge",
-              style: "background:#3a3a4a;color:#e5e7eb",
-            },
-            initials(o.name),
-          ),
-          h(
-            "div",
-            {},
-            h("h2", {}, o.name),
-            h(
-              "div",
-              { class: "sub" },
-              `${typeLabel(o.type)} · ${o.geographic_focus}`,
-            ),
-          ),
-        ),
+        h("div", { class: "title-row" }, badge, h("div", {}, h("h2", {}, o.name), h("div", { class: "sub" }, sub))),
       );
-      head.appendChild(h("div", { class: "desc" }, o.description));
+      head.appendChild(
+        o.description
+          ? h("div", { class: "desc" }, o.description)
+          : h("div", { class: "desc faint" }, "No description yet."),
+      );
+      const tags = h("div", { class: "tags" });
+      if (o.profile?.youth_serving) tags.appendChild(h("span", { class: "tag" }, "Youth-serving"));
+      if (o.profile?.school_club) tags.appendChild(h("span", { class: "tag" }, "School club"));
+      if (o.profile?.hub) tags.appendChild(h("span", { class: "tag" }, "Hub org"));
+      const sec = sectorById(o.sector);
+      if (sec) tags.appendChild(h("span", { class: "tag sector-pill", style: `--sector:${sec.color}` }, sec.label));
+      if (o.profile?.geo_precision === "approx") tags.appendChild(h("span", { class: "tag" }, "Approximate location"));
+      for (const t of o.topic_tags || []) tags.appendChild(h("span", { class: "tag" }, prettifyTag(t)));
+      if (tags.childNodes.length) head.appendChild(tags);
+      const edit = formUrl("org", node);
+      if (edit) {
+        head.appendChild(
+          h("a", { class: "edit-link", href: edit, target: "_blank", rel: "noopener" }, "✎ Update this organization's info"),
+        );
+      }
       head.appendChild(
         h(
           "div",
           { class: "meta" },
           metaCell(o.coalition_ids.length, "Coalitions"),
-          metaCell(relTime(o.last_activity), "Last active"),
+          metaCell(relTime(o.last_activity), "Last updated"),
         ),
       );
     }
@@ -132,17 +192,22 @@ export function createDrawer(
 
   function renderTabs(node: GraphNode): HTMLElement {
     const tabs = h("div", { class: "drawer-tabs" });
-    const tabList: { id: DrawerTab; label: string }[] =
-      node.kind === "coalition"
-        ? [
-            { id: "projects", label: "Projects" },
-            { id: "events", label: "Events" },
-            { id: "actions", label: "Actions" },
-          ]
-        : [
-            { id: "coalitions", label: "Coalitions" },
-            { id: "about", label: "About" },
-          ];
+    const n = {
+      projects: (node.kind === "coalition" ? node.projects : orgProjects(data, node)).filter((x) => !isPastProject(x)).length,
+      events: (node.kind === "coalition" ? node.events : orgEvents(data, node)).filter((x) => !isPastEvent(x)).length,
+      actions: (node.kind === "coalition" ? node.actions || [] : orgActions(data, node)).filter((x) => !isPastAction(x)).length,
+    };
+    const total = n.projects + n.events + n.actions;
+    const tabList: { id: DrawerTab; label: string }[] = [
+      { id: "about", label: "About" },
+      { id: "activity", label: `Activity (${total})` },
+      { id: "topics", label: "Topics" },
+    ];
+    // older links to a single kind open Activity filtered to that kind
+    if (activeTab === "projects" || activeTab === "events" || activeTab === "actions") {
+      actFilter = new Set<ActKind>(activeTab === "projects" ? ["project"] : activeTab === "events" ? ["event"] : ["action", "volunteer"]);
+      activeTab = "activity";
+    }
     // Ensure activeTab is valid for this node kind
     if (!tabList.find((t) => t.id === activeTab)) {
       activeTab = tabList[0].id;
@@ -153,6 +218,7 @@ export function createDrawer(
         {
           class: `drawer-tab ${t.id === activeTab ? "active" : ""}`,
         },
+        null,
         t.label,
       );
       btn.addEventListener("click", () => api.setActiveTab(t.id));
@@ -163,86 +229,149 @@ export function createDrawer(
 
   function renderBody(node: GraphNode): HTMLElement {
     const body = h("div", { class: "body" });
+    if (activeTab === "topics") {
+      renderTopicsTab(body, node);
+      return body;
+    }
     if (node.kind === "coalition") {
       const c = node as Coalition;
-      if (activeTab === "projects") {
-        renderProjects(body, c.projects);
-      } else if (activeTab === "events") {
-        renderEvents(body, c.events);
-      } else if (activeTab === "actions") {
-        renderActions(body, c.actions);
+      if (activeTab === "about") {
+        renderCoalitionAbout(body, c);
+      } else if (activeTab === "activity") {
+        renderActivity(body, c.events, c.projects, c.actions || [], node);
       }
     } else {
       const o = node as Organization;
       if (activeTab === "coalitions") {
+        // Connections: coalitions, orgs they work with, then suggested connections at the end.
         renderCoalitionList(body, o);
+        body.appendChild(h("div", { class: "section-label" }, "Suggested connections"));
+        renderSuggestions(body, o);
+      } else if (activeTab === "suggested") {
+        renderSuggestions(body, o);
+      } else if (activeTab === "activity") {
+        renderActivity(body, orgEvents(data, o), orgProjects(data, o), orgActions(data, o), node);
       } else if (activeTab === "about") {
         renderOrgAbout(body, o);
+        // Connections live at the end of About (they used to be a fifth tab that wrapped the tab row).
+        body.appendChild(h("div", { class: "section-label" }, "Connections"));
+        renderCoalitionList(body, o);
+        body.appendChild(h("div", { class: "section-label" }, "Suggested connections"));
+        renderSuggestions(body, o);
       }
     }
     return body;
   }
 
-  function renderProjects(body: HTMLElement, items: Project[]): void {
-    if (!items.length) {
-      body.appendChild(h("div", { class: "empty" }, "No active projects."));
+
+  /** Everything a group is doing in one list: a pill per kind picks what shows; each entry leads with its kind's icon. */
+  function renderActivity(body: HTMLElement, allEvents: CoalitionEvent[], allProjects: Project[], allActions: Action[], owner: GraphNode): void {
+    // Past items (events that happened, finished projects, actions past their deadline) go in their own section below.
+    const pastE = allEvents.filter(isPastEvent), pastP = allProjects.filter(isPastProject), pastA = allActions.filter(isPastAction);
+    const events = allEvents.filter((x) => !pastE.includes(x)), projects = allProjects.filter((x) => !pastP.includes(x)), actions = allActions.filter((x) => !pastA.includes(x));
+    const pastN = pastE.length + pastP.length + pastA.length;
+    const addPast = () => {
+      if (!pastN) return;
+      const box = h("details", { class: "act-past" }, h("summary", {}, `Past (${pastN})`));
+      const inner = h("div", { class: "act-list" });
+      renderEvents(inner, [...pastE].sort((a, b) => b.date.localeCompare(a.date)), owner);
+      renderProjects(inner, pastP, owner);
+      renderActions(inner, pastA, owner);
+      box.appendChild(inner);
+      body.appendChild(box);
+    };
+    if (!events.length && !projects.length && !actions.length) {
+      body.appendChild(h("div", { class: "empty" }, pastN ? "Nothing current listed." : "Nothing listed yet."));
+      addPast();
       return;
     }
+    const roles = actions.filter((a) => a.kind === "role");
+    const acts = actions.filter((a) => a.kind !== "role");
+    const count: Record<ActKind, number> = { event: events.length, project: projects.length, action: acts.length, volunteer: roles.length };
+    const pills = h("div", { class: "act-pills", role: "group", "aria-label": "Show" });
+    const list = h("div", { class: "act-list" });
+    const present = ACT_KINDS.filter((x) => count[x.k] > 0);
+    const shows = (k: ActKind) => actFilter.size === 0 || actFilter.has(k);
+    const draw = () => {
+      for (const b of pills.querySelectorAll<HTMLButtonElement>("button")) b.classList.toggle("on", shows(b.dataset.k as ActKind) && actFilter.size > 0);
+      clear(list);
+      if (shows("event")) renderEvents(list, events, owner);
+      if (shows("project")) renderProjects(list, projects, owner);
+      if (shows("action")) renderActions(list, acts, owner);
+      if (shows("volunteer")) renderActions(list, roles, owner);
+      if (!list.childElementCount) list.appendChild(h("div", { class: "empty" }, "Nothing of this kind yet."));
+    };
+    if (present.length > 1) {
+      for (const x of present) {
+        const b = h("button", { type: "button", class: `act-pill k-${x.k}`, "data-k": x.k, "aria-pressed": "false" }, typeIcon(x.k, 13), ` ${x.label} `, h("span", { class: "n" }, String(count[x.k]))) as HTMLButtonElement;
+        b.addEventListener("click", () => {
+          // pick one kind; pick more to add them; pick them all (or the only one again) to show everything
+          if (actFilter.has(x.k)) actFilter.delete(x.k);
+          else actFilter.add(x.k);
+          if (actFilter.size === present.length) actFilter.clear();
+          b.setAttribute("aria-pressed", String(actFilter.has(x.k)));
+          draw();
+        });
+        pills.appendChild(b);
+      }
+      body.appendChild(pills);
+    }
+    body.appendChild(list);
+    draw();
+    addPast();
+  }
+
+  function renderProjects(body: HTMLElement, items: Project[], owner: GraphNode): void {
+    if (!items.length) return;
     for (const p of items) {
       body.appendChild(
         h(
           "div",
           { class: "item" },
-          h("div", { class: "name" }, p.name),
+          openName("project", p, owner),
           h("div", { class: "desc" }, p.description),
           h(
             "div",
             { class: "row" },
             h("span", { class: "pill kind" }, p.status),
           ),
+          itemButtons("project", p),
+          staleNotice("project", owner, p.needs_info, p.verified, p),
         ),
       );
     }
   }
 
-  function renderEvents(body: HTMLElement, items: CoalitionEvent[]): void {
-    if (!items.length) {
-      body.appendChild(h("div", { class: "empty" }, "No upcoming events."));
-      return;
-    }
+  function renderEvents(body: HTMLElement, items: CoalitionEvent[], owner: GraphNode): void {
+    if (!items.length) return;
     for (const e of items) {
       body.appendChild(
         h(
           "div",
           { class: "item" },
-          h("div", { class: "name" }, e.name),
+          openName("event", e, owner),
           h(
             "div",
             { class: "row" },
-            h("span", { class: "pill deadline" }, fmtDateTime(e.date)),
-            h("span", { class: "pill kind" }, e.location),
+            h("span", { class: "pill deadline" }, fmtEventTime(e.date, e.end, e.recurrence)),
+            e.location ? h("span", { class: "pill kind" }, e.location) : null,
           ),
+          itemButtons("event", e),
+          staleNotice("event", owner, e.needs_info, e.verified, e),
         ),
       );
     }
   }
 
-  function renderActions(body: HTMLElement, items: Action[]): void {
-    if (!items.length) {
-      body.appendChild(h("div", { class: "empty" }, "No open actions."));
-      return;
-    }
+  function renderActions(body: HTMLElement, items: Action[], owner: GraphNode): void {
+    if (!items.length) return;
     for (const a of items) {
       const row = h(
         "div",
         { class: "row" },
-        h(
-          "span",
-          { class: `pill ${a.urgency}` },
-          `${a.urgency} urgency`,
-        ),
-        h("span", { class: "pill kind" }, a.kind),
+        h("span", { class: "pill kind" }, a.kind === "role" ? "volunteer role" : "action"),
       );
+      if (a.urgency) row.appendChild(h("span", { class: `pill ${a.urgency}` }, `${a.urgency} urgency`));
       if (a.deadline) {
         row.appendChild(
           h("span", { class: "pill deadline" }, `by ${a.deadline}`),
@@ -255,18 +384,74 @@ export function createDrawer(
         h(
           "div",
           { class: "item" },
-          h("div", { class: "name" }, a.name),
+          openName("action", a, owner),
+          a.description ? h("div", { class: "desc" }, a.description) : null,
           row,
+          itemButtons("action", a),
+          staleNotice("action", owner, a.needs_info, a.verified, a),
         ),
       );
     }
   }
 
+  function renderSuggestions(body: HTMLElement, org: Organization): void {
+    const list = suggestionsFor(data, org.id);
+    body.appendChild(
+      h("div", { class: "section-note" },
+        "Organizations doing similar work that haven't said they work together. Suggestions improve as groups add descriptions and topics."),
+    );
+    if (!list.length) {
+      body.appendChild(h("div", { class: "empty" }, "No suggestions yet."));
+      return;
+    }
+    for (const { other, s } of list) {
+      const o = orgsById.get(other);
+      if (!o) continue;
+      const row = h(
+        "div",
+        { class: "item clickable" },
+        h("div", { class: "name" }, o.name),
+        h("div", { class: "desc" }, s.reasons.join(" · ") + (s.sharedCoalition ? " · Already share a coalition" : "")),
+        h("div", { class: "row" }, h("span", { class: "pill" }, `${Math.round(s.score * 100)}% match`)),
+      );
+      row.addEventListener("click", () => cb.onOrgClick?.(other));
+      body.appendChild(row);
+    }
+  }
+
+  function renderOrgLinks(body: HTMLElement, org: Organization): void {
+    const FREQ: Record<string, string> = { weekly: "Weekly", monthly: "Monthly", few_per_year: "A few times a year", yearly: "Yearly or less" };
+    const links = (data.org_links || [])
+      .filter((l) => l.source === org.id || l.target === org.id)
+      .sort((x, y) => y.weight - x.weight);
+    body.appendChild(h("div", { class: "section-label" }, `Works with (${links.length})`));
+    if (!links.length) {
+      body.appendChild(h("div", { class: "empty" }, "No organizations reported yet."));
+      return;
+    }
+    for (const l of links) {
+      const otherId = l.source === org.id ? l.target : l.source;
+      const o = orgsById.get(otherId);
+      if (!o) continue;
+      const row = h(
+        "div",
+        { class: "coalition-link" },
+        h("div", { class: "dot", style: `background:#9ca3af;opacity:${0.4 + l.weight * 0.15}` }),
+        h("div", {}, h("div", { class: "name", style: "font-size:13px" }, o.name),
+          h("div", { class: "sub", style: "font-size:11px;color:#6b7280" }, FREQ[l.frequency] || l.frequency)),
+      );
+      row.addEventListener("click", () => cb.onOrgClick?.(otherId));
+      body.appendChild(row);
+    }
+  }
+
   function renderCoalitionList(body: HTMLElement, org: Organization): void {
+    body.appendChild(h("div", { class: "section-label" }, `Coalitions (${org.coalition_ids.length})`));
     if (!org.coalition_ids.length) {
       body.appendChild(
         h("div", { class: "empty" }, "Not currently in any coalition."),
       );
+      renderOrgLinks(body, org);
       return;
     }
     for (const cid of org.coalition_ids) {
@@ -283,58 +468,288 @@ export function createDrawer(
           h(
             "div",
             { class: "sub", style: "font-size:11px;color:#6b7280" },
-            `${c.member_count} members`,
+            `${c.member_count} member ${c.member_count === 1 ? "group" : "groups"}`,
           ),
         ),
       );
       row.addEventListener("click", () => cb.onCoalitionClick?.(cid));
       body.appendChild(row);
     }
+    renderOrgLinks(body, org);
+  }
+
+  function renderCoalitionAbout(body: HTMLElement, c: Coalition): void {
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    row("Type", "Coalition");
+    row("Geographic scope", c.geographic_scope ? c.geographic_scope[0].toUpperCase() + c.geographic_scope.slice(1) : "");
+    row("Description", c.description);
+    row("Website", c.website ? h("a", { class: "org-website", href: c.website, target: "_blank", rel: "noopener noreferrer" }, c.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
+    row("Focus", c.focus_tags.length ? c.focus_tags.map(prettifyTag).join(", ") : "");
+    const members = c.member_ids.map((id) => data.organizations.find((o) => o.id === id)).filter((o): o is Organization => !!o)
+      .sort((a, b) => a.name.localeCompare(b.name));
+    body.appendChild(h("div", { class: "section-label" }, `Member groups (${members.length})`));
+    if (!members.length) body.appendChild(h("div", { class: "empty" }, "No member groups listed yet."));
+    for (const o of members) {
+      const r = h("div", { class: "item clickable" }, h("div", { class: "name" }, o.name), o.geographic_focus ? h("div", { class: "sub" }, o.geographic_focus) : null);
+      r.addEventListener("click", () => cb.onOrgClick?.(o.id));
+      body.appendChild(r);
+    }
   }
 
   function renderOrgAbout(body: HTMLElement, org: Organization): void {
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Type"),
-        h("div", { class: "desc" }, typeLabel(org.type)),
-      ),
-    );
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Geographic focus"),
-        h("div", { class: "desc" }, org.geographic_focus),
-      ),
-    );
-    body.appendChild(
-      h(
-        "div",
-        { class: "item" },
-        h("div", { class: "name" }, "Description"),
-        h("div", { class: "desc" }, org.description),
-      ),
-    );
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    const score = (v?: number) => (v === undefined ? undefined : `${v} / 4`);
+    const p = org.profile || {};
+    row("Type", shownType(org.type));
+    row("Geographic focus", org.geographic_focus);
+    row("Description", org.description);
+    row("Website", org.website ? h("a", { class: "org-website", href: org.website, target: "_blank", rel: "noopener noreferrer" }, org.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
+    row("Contact", org.public_contact ? contactLinks(org.public_contact) : undefined);
+    row("Active membership", p.membership_size);
+    row("EJ / frontline focus", score(p.ej_focus));
+    row("Grassroots power", score(p.grassroots));
+    row("Policy writing", score(p.policy_expertise));
+    row("“In the building”", score(p.in_building));
+    const md = moneyDetails(org.id, (id) => orgsById.get(id)?.name ?? (id.endsWith("_hub_legislature") ? "the Oregon Legislature" : id), (id) => cb.onOrgClick?.(id));
+    if (md) body.appendChild(md);
+    if (!body.childNodes.length) body.appendChild(h("div", { class: "empty" }, "No details yet."));
   }
 
   // suppress unused-import warning
   void orgsById;
 
+  /** An item's name in a list: click it for the full view. */
+  function openName(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): HTMLElement {
+    const ik = kind === "action" && (item as Action).kind === "role" ? "volunteer" : kind;
+    const n = h("button", { class: "name item-open", type: "button", title: "See all the details" },
+      h("span", { class: `item-kind-icon k-${ik}` }, typeIcon(ik, 16)), h("span", { class: "item-open-name" }, item.name, h("span", { class: "item-open-more" }, " ›")));
+    n.addEventListener("click", () => api.openItem(kind, item, owner));
+    return n;
+  }
+
+  // ----- Full view of one event / project / action -----
+  type TopicsFile = { parents: { id: string; label: string; children: { id: string; label: string }[] }[]; records: { id: string; topics: string[]; bills: string[] }[] };
+  let topicsData: TopicsFile | null = null;
+  let topicsLoading: Promise<void> | null = null;
+  onTopicListChange(() => {
+    topicsData = null;
+    topicsLoading = null;
+  });
+  function loadTopics(): Promise<void> {
+    if (topicsData || topicsLoading) return topicsLoading ?? Promise.resolve();
+    topicsLoading = fetch(topicsUrl())
+      .then((r) => (r.ok ? (r.json() as Promise<FullTopics>) : null))
+      .then((j) => (j ? withLiveTags(j, data, currentMap.combine ? [...currentMap.combine] : [currentMap.id], topicList() === "wiki") : null))
+      .then((j) => { topicsData = j; })
+      .catch(() => {});
+    return topicsLoading;
+  }
+  function topicLabels(itemId: string): string[] {
+    if (!topicsData) return [];
+    const rec = topicsData.records.find((r) => r.id.endsWith(`:${itemId}`));
+    if (!rec) return [];
+    const label = new Map<string, string>();
+    for (const p of topicsData.parents) for (const c of p.children) label.set(c.id, c.label);
+    return rec.topics.filter((t) => t !== "broad").map((t) => label.get(t) || t);
+  }
+
+  /** The group's topics (from the topic list chosen in settings): each topic, and the group's items on it. */
+  function renderTopicsTab(body: HTMLElement, node: GraphNode): void {
+    const fill = () => {
+      clear(body);
+      if (!topicsData) { body.appendChild(h("div", { class: "empty" }, "Couldn't load the topics.")); return; }
+      const recs = topicsData.records.filter((r) => (r as unknown as { host: string }).host === node.id);
+      const parentOf = new Map<string, { label: string; child: string }>();
+      for (const p of topicsData.parents) for (const c of p.children) parentOf.set(c.id, { label: p.label, child: c.label });
+      const byTopic = new Map<string, typeof recs>();
+      for (const r of recs) for (const t of r.topics) (byTopic.get(t) ?? byTopic.set(t, []).get(t)!).push(r);
+      body.appendChild(h("div", { class: "ctrl-hint topics-tab-note" }, `Topic list: ${topicListInfo().label}, from this group's events, projects, actions and mission. Change the list with the Topics switch on the Topics page.`));
+      if (!byTopic.size) { body.appendChild(h("div", { class: "empty" }, "No topics found for this group yet.")); return; }
+      const sorted = [...byTopic].sort((a, b) => b[1].length - a[1].length);
+      for (const [t, rs] of sorted) {
+        const info = parentOf.get(t);
+        const box = h("div", { class: "item topic-row" },
+          h("div", { class: "name" }, info?.child ?? t, h("span", { class: "topic-count" }, ` · ${rs.length}`)),
+          info ? h("div", { class: "sub" }, info.label) : null);
+        const list = h("div", { class: "topic-items" });
+        for (const r of rs) {
+          const rr = r as unknown as { id: string; kind: string; name: string };
+          const id = rr.id.slice(rr.id.indexOf(":") + 1);
+          const found = rr.kind === "event" ? (node.kind === "coalition" ? node.events : orgEvents(data, node)).find((x) => x.id === id)
+            : rr.kind === "project" ? (node.kind === "coalition" ? node.projects : orgProjects(data, node)).find((x) => x.id === id)
+            : rr.kind === "action" ? (node.kind === "coalition" ? node.actions || [] : orgActions(data, node)).find((x) => x.id === id) : undefined;
+          if (found) list.appendChild(openName(rr.kind as ItemKind, found, node));
+          else list.appendChild(h("div", { class: "sub" }, rr.kind.endsWith("mission") ? "Mission statement" : rr.name));
+        }
+        box.appendChild(list);
+        body.appendChild(box);
+      }
+    };
+    if (topicsData) fill();
+    else { body.appendChild(h("div", { class: "empty" }, "Loading topics…")); loadTopics().then(() => { if (activeTab === "topics") fill(); }); }
+  }
+
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const stamp = (d: Date) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+  function eventTimes(e: CoalitionEvent): { start: Date; end: Date } | null {
+    if (!e.date) return null;
+    const start = new Date(e.date);
+    if (isNaN(start.getTime())) return null;
+    const end = e.end && !isNaN(new Date(e.end).getTime()) ? new Date(e.end) : new Date(start.getTime() + 60 * 60 * 1000);
+    return { start, end };
+  }
+  /** "Add to Google Calendar" and an .ics file for Apple / Outlook. Times are local to the host group's state. */
+  function calendarLinks(e: CoalitionEvent, owner: GraphNode): HTMLElement | null {
+    const t = eventTimes(e);
+    if (!t) return null;
+    const tz = timeZoneFor(owner.id);
+    const details = [e.description, e.link ? `More: ${e.link}` : "", `Hosted by ${owner.name}`].filter(Boolean).join("\n\n");
+    const g = new URL("https://calendar.google.com/calendar/render");
+    g.searchParams.set("action", "TEMPLATE");
+    g.searchParams.set("text", e.name);
+    g.searchParams.set("dates", `${stamp(t.start)}/${stamp(t.end)}`);
+    g.searchParams.set("ctz", tz);
+    g.searchParams.set("details", details);
+    if (e.location) g.searchParams.set("location", e.location);
+    const esc = (v: string) => v.replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
+    const ics = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//MA Climate Organization Map//EN", "BEGIN:VEVENT",
+      `UID:${e.id}@openthink-map`, `DTSTAMP:${stamp(new Date())}`,
+      `DTSTART;TZID=${tz}:${stamp(t.start)}`, `DTEND;TZID=${tz}:${stamp(t.end)}`,
+      `SUMMARY:${esc(e.name)}`, e.location ? `LOCATION:${esc(e.location)}` : "", `DESCRIPTION:${esc(details)}`,
+      e.link ? `URL:${e.link}` : "", "END:VEVENT", "END:VCALENDAR",
+    ].filter(Boolean).join("\r\n");
+    const icsHref = `data:text/calendar;charset=utf-8,${encodeURIComponent(ics)}`;
+    const file = `${e.name.replace(/[^\w]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "event"}.ics`;
+    return h("div", { class: "item-cal" },
+      h("a", { class: "btn-cal", href: g.toString(), target: "_blank", rel: "noopener noreferrer" }, "+ Google Calendar"),
+      h("a", { class: "btn-cal", href: icsHref, download: file }, "+ Apple / Outlook (.ics)"));
+  }
+
+  function renderItem(kind: ItemKind, item: CoalitionEvent | Project | Action, owner: GraphNode): void {
+    const back = h("button", { class: "item-back", type: "button" }, `← ${owner.name}`);
+    back.addEventListener("click", () => { currentItem = null; rerender(); });
+    const closeBtn = h("button", { class: "close", type: "button", "aria-label": itemFromGroup ? `Back to ${owner.name}` : "Close" }, "×");
+    closeBtn.addEventListener("click", () => {
+      if (itemFromGroup) { currentItem = null; rerender(); }
+      else api.close();
+    });
+    const e = item as CoalitionEvent, p = item as Project, a = item as Action;
+    const kindLabel = kind === "event" ? (e.recurrence ? "Event · repeats" : "Event")
+      : kind === "project" ? `Project · ${p.status || "active"}`
+      : a.kind === "role" ? "Volunteer role" : "Action";
+    const head = h("div", { class: "head item-head" },
+      h("div", { class: "item-top" }, back, closeBtn),
+      h("div", { class: `item-kind k-${a.kind === "role" && kind === "action" ? "volunteer" : kind}` },
+        typeIcon(kind === "action" && a.kind === "role" ? "volunteer" : kind, 15), " ", kindLabel),
+      h("h2", {}, item.name));
+    const locBtns = locateRow(owner, { kind, item });
+    if (locBtns) head.appendChild(locBtns);
+    el.appendChild(head);
+
+    const body = h("div", { class: "body item-detail" });
+    const row = (name: string, value: string | Node | undefined | null) => {
+      if (value === undefined || value === null || value === "") return;
+      body.appendChild(h("div", { class: "item" }, h("div", { class: "name" }, name), h("div", { class: "desc" }, value)));
+    };
+    if (kind === "event") {
+      row("When", fmtEventTime(e.date, e.end, e.recurrence));
+      if (e.recurrence) row("Repeats", recurrenceLabel(e.recurrence));
+    }
+    const loc = kind === "event" ? e.location : kind === "project" ? p.location : "";
+    if (loc) {
+      const online = /^online/i.test(loc) || (kind === "event" && e.online);
+      row("Where", online ? loc : h("span", {}, loc, " · ",
+        h("a", { href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, target: "_blank", rel: "noopener noreferrer" }, "Open in maps ↗")));
+    } else if (kind === "event" && e.online) row("Where", "Online");
+    if (kind === "action") {
+      if (a.deadline) row("Deadline", a.deadline);
+      if (a.urgency) row("Urgency", a.urgency);
+      if (a.skills_needed?.length) row("Skills that help", a.skills_needed.join(", "));
+    }
+    row("About", item.description || "");
+    const btns = itemButtons(kind, item as { rsvp_link?: string; link?: string });
+    if (btns) body.appendChild(btns);
+    if (kind === "event") { const cal = calendarLinks(e, owner); if (cal) body.appendChild(cal); }
+    const contact = (item as { public_contact?: string }).public_contact;
+    if (kind !== "event" && !(kind === "project" && p.status === "completed")) body.appendChild(joinLine(item as { public_contact?: string; link?: string }, owner as unknown as { public_contact?: string; website?: string; name: string }));
+    else if (contact) row("Contact", contactLinks(contact));
+
+    const ownerLogo = (owner as { logo?: string }).logo;
+    const hostRow = h("div", { class: "item clickable host-row" },
+      h("div", { class: "name" }, owner.kind === "coalition" ? "Coalition" : "Hosted by"),
+      h("div", { class: "desc host-who" },
+        ownerLogo ? h("span", { class: "host-logo" }, h("img", { src: ownerLogo, alt: "" })) : null,
+        h("span", {}, owner.name, " ›")));
+    hostRow.addEventListener("click", () => { currentItem = null; activeTab = "about"; rerender(); });
+    body.appendChild(hostRow);
+
+    const topicsBox = h("div", { class: "item item-topics" });
+    const fillTopics = () => {
+      clear(topicsBox);
+      const labels = topicLabels(item.id);
+      if (!labels.length) { topicsBox.remove(); return; }
+      topicsBox.append(h("div", { class: "name" }, "Topics"), h("div", { class: "tags" }, ...labels.map((l) => h("span", { class: "tag" }, l))));
+    };
+    body.appendChild(topicsBox);
+    if (topicsData) fillTopics(); else loadTopics().then(() => { if (currentItem?.item === item) fillTopics(); });
+
+    body.appendChild(staleNotice(kind, owner, (item as { needs_info?: boolean }).needs_info, (item as { verified?: boolean }).verified, item as never));
+
+    const more = [
+      ...(owner.kind === "coalition" ? owner.events : orgEvents(data, owner as Organization)).map((x) => ({ kind: "event" as ItemKind, x })),
+      ...(owner.kind === "coalition" ? owner.projects : orgProjects(data, owner as Organization)).map((x) => ({ kind: "project" as ItemKind, x })),
+      ...(owner.kind === "coalition" ? owner.actions : orgActions(data, owner as Organization)).map((x) => ({ kind: "action" as ItemKind, x })),
+    ].filter((m) => m.x.id !== item.id).slice(0, 5);
+    if (more.length) {
+      body.appendChild(h("div", { class: "section-label" }, `More from ${owner.name}`));
+      for (const m of more) {
+        const r = h("div", { class: "item clickable" },
+          h("div", { class: "name" }, m.x.name),
+          h("div", { class: "sub" }, m.kind === "event" ? fmtEventTime((m.x as CoalitionEvent).date, (m.x as CoalitionEvent).end, (m.x as CoalitionEvent).recurrence) : m.kind === "project" ? "Project" : "Action"));
+        r.addEventListener("click", () => api.openItem(m.kind, m.x, owner));
+        body.appendChild(r);
+      }
+    }
+    el.appendChild(body);
+  }
+
   function rerender() {
     if (!currentNode) return;
     clear(el);
-    el.appendChild(renderHead(currentNode));
+    if (currentItem) { renderItem(currentItem.kind, currentItem.item, currentNode); return; }
+    // Title (and the locate buttons) on top, then the About / Activity picker; the summary (description, tags,
+    // counts, edit link) opens the About tab, so Activity gets the pane's full height.
+    const full = renderHead(currentNode);
+    const head = h("div", { class: "head compact" });
+    const summary = h("div", { class: "about-summary" });
+    for (const child of [...full.childNodes]) {
+      const c = child as HTMLElement;
+      if (c.classList?.contains("close") || c.classList?.contains("title-row")) head.appendChild(c);
+      else summary.appendChild(c);
+    }
+    const loc = locateRow(currentNode);
+    if (loc) head.appendChild(loc);
+    el.appendChild(head);
     el.appendChild(renderTabs(currentNode));
-    el.appendChild(renderBody(currentNode));
+    const body = renderBody(currentNode);
+    if (activeTab === "about" && summary.childNodes.length) body.prepend(summary);
+    el.appendChild(body);
   }
 
   const api: Drawer = {
     open(node) {
       currentNode = node;
-      // Default tab depends on node kind
-      activeTab = node.kind === "coalition" ? "projects" : "coalitions";
+      currentItem = null;
+      // Every group opens on its About tab, with Activity showing everything.
+      actFilter = new Set();
+      activeTab = "about";
       rerender();
       el.classList.add("open");
     },
@@ -342,12 +757,31 @@ export function createDrawer(
       el.classList.remove("open");
       currentNode = null;
     },
+    current() {
+      return el.classList.contains("open") ? currentNode : null;
+    },
     isOpen() {
       return el.classList.contains("open");
     },
     setActiveTab(tab) {
       activeTab = tab;
       rerender();
+    },
+    showingItem() {
+      return el.classList.contains("open") && !!currentItem;
+    },
+    refresh() {
+      if (el.classList.contains("open")) rerender();
+    },
+    openItem(kind, item, owner) {
+      // opened from this group's own details: closing the item goes back to the group
+      itemFromGroup = el.classList.contains("open") && !currentItem && currentNode?.id === owner.id;
+      currentNode = owner;
+      currentItem = { kind, item };
+      activeTab = "activity";
+      rerender();
+      el.classList.add("open");
+      el.scrollTop = 0;
     },
   };
 

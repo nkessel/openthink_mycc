@@ -1,0 +1,162 @@
+{
+  "_about": "Oregon groups on the public record against specific climate bills or programs (Nathan, Oct 28: 'start with groups on the record'). Each stance names what was opposed, when, and a public source. Inclusion rule: an organization (not an individual or a local government) that testified 'Oppose' on a core climate bill in OLIS, sued over or backed a suit against the Climate Protection Program, or funded/ran a campaign against a climate ordinance. Left out: solar and renewable firms that opposed details of HB 2021 while backing clean energy; cities, counties and individual testimony. `ogec` = the client name in the Oregon Government Ethics Commission lobbying records.",
+  "organizations": [
+    {
+      "id": "or_opp_obi", "logo": "logos/or_opp_obi.png", "name": "Oregon Business & Industry", "abbrev": "OBI", "type": "business association",
+      "description": "Statewide business trade association; the largest lobbying spender among Oregon climate-policy opponents.",
+      "website": "https://oregonbusinessindustry.com", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
+      "ogec": ["Oregon Business & Industry"],
+      "stances": [
+        { "what": "Testified against HB 2021 (100% clean electricity by 2040)", "date": "2021-04-07", "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24293" },
+        { "what": "Led a Court of Appeals petition against the Climate Protection Program", "date": "2026-04-16", "source": "https://www.opb.org/article/2026/04/16/oregon-climate-protection-program-lawsuit/" }
+      ]
+    },
+    {
+      "id": "or_opp_farm_bureau", "logo": "logos/or_opp_farm_bureau.png", "name": "Oregon Farm Bureau", "abbrev": "OFB", "type": "agriculture association",
+      "description": "Statewide farm and ranch organization.",
+      "website": "https://oregonfb.org", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
+      "ogec": ["Oregon Farm Bureau Federation"],
+      "stances": [
+        { "what": "Testified against HB 2021 (filed as Oppose; raised concerns)", "date": "2021-04-07", "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23909" },
+        { "what": "Supported the gas utilities' court challenge to the Climate Protection Program", "date": "2023-10-02", "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/" },
+        { "what": "Testified in strong opposition to SB 1187 (Climate Superfund)", "date": "2025-04-07", "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/193358" }
+      ]
+    },
+    {
+      "id": "or_opp_awec", "logo": "logos/or_opp_awec.png", "name": "Alliance of Western Energy Consumers", "abbrev": "AWEC", "type": "industrial energy users' association",
+      "description": "Represents large industrial energy users in Oregon, Washington and Idaho in utility rate and regulatory proceedings.",
+      "website": "https://awec.solutions", "town": "Portland", "lat": 45.5152, "lng": -122.6784,
+      "ogec": ["Alliance of Western Energy Consumers"],
+      "stances": [
+        { "what": "Testified against HB 2021 (100% clean electricity by 2040)", "date": "2021-04-07", "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24286" },
+        { "what": "Testified against HB 3546 (POWER Act: large energy users pay their share), backed by climate groups", "date": "2025-03-06", "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/146776" },
+        { "what": "Petitioner in the court challenge to the Climate Protection Program", "date": "2026-04-16", "source": "https://www.opb.org/article/2026/04/16/oregon-climate-protection-program-lawsuit/" }
+      ]
+    },
+    {
+      "id": "or_opp_nfib", "logo": "logos/or_opp_nfib.png", "name": "NFIB Oregon", "abbrev": "NFIB", "type": "small business association",
+      "description": "Oregon chapter of the National Federation of Independent Business.",
+      "website": "https://www.nfib.com/oregon/", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
+      "ogec": [],
+      "stances": [
+        { "what": "Testified against HB 2021 (100% clean electricity by 2040)", "date": "2021-04-07", "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/24282" }
+      ]
+    },
+    {
+      "id": "or_opp_timber_unity", "name": "Timber Unity", "abbrev": "Timber Unity", "type": "advocacy group (501c6) and PAC",
+      "description": "Rural, timber and trucking movement that organized large protests in Salem against cap-and-trade; runs the Timber Unity PAC, which raised over $177,000 from June 2019 to January 2020 (Capital Press).",
+      "website": "", "town": "", "remote": true, "lat": 44.9429, "lng": -123.0351,
+      "ogec": [],
+      "stances": [
+        { "what": "Organized protests at the Capitol against the cap-and-trade bills (HB 2020, SB 1530)", "date": "2020-01-21", "source": "https://bakercityherald.com/?p=52697" },
+        { "what": "Testimony against HB 2021 filed on its behalf", "date": "2021-04-07", "source": "https://olis.oregonlegislature.gov/liz/2021R1/Downloads/PublicTestimonyDocument/23870" }
+      ]
+    },
+    {
+      "id": "or_opp_cascade_policy", "logo": "logos/or_opp_cascade_policy.svg", "name": "Cascade Policy Institute", "abbrev": "Cascade Policy", "type": "think tank",
+      "description": "Free-market policy research group.",
+      "website": "https://cascadepolicy.org", "town": "Portland", "lat": 45.5152, "lng": -122.6784,
+      "ogec": ["Cascade Policy Institute"],
+      "stances": [
+        { "what": "Testified against HB 3409 (2023 climate package)", "date": "2023-06-21", "source": "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/101884" },
+        { "what": "Testified against HB 3630 (energy help for environmental justice communities)", "date": "2023-06-07", "source": "https://olis.oregonlegislature.gov/liz/2023R1/Downloads/PublicTestimonyDocument/100930" }
+      ]
+    },
+    {
+      "id": "or_opp_nw_natural", "logo": "logos/or_opp_nw_natural.png", "name": "NW Natural", "abbrev": "NW Natural", "type": "gas utility",
+      "description": "Oregon's largest natural gas utility.",
+      "website": "https://www.nwnatural.com", "town": "Portland", "lat": 45.5152, "lng": -122.6784,
+      "ogec": ["NW Natural"],
+      "stances": [
+        { "what": "Funded the campaign to overturn Eugene's ban on gas hookups in new low-rise homes", "date": "2023-03-07", "source": "https://www.desmog.com/2023/03/07/major-gas-utility-is-pouring-money-into-reversing-an-oregon-citys-electric-only-mandate" },
+        { "what": "Challenged the Climate Protection Program in the Court of Appeals", "date": "2023-10-02", "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/" }
+      ]
+    },
+    {
+      "id": "or_opp_avista", "logo": "logos/or_opp_avista.svg", "name": "Avista", "abbrev": "Avista", "type": "gas and electric utility",
+      "description": "Spokane-based utility serving natural gas customers in southern and eastern Oregon.",
+      "website": "https://www.myavista.com", "town": "", "remote": true, "lat": 47.6588, "lng": -117.426,
+      "ogec": ["Avista Corp."],
+      "stances": [
+        { "what": "Challenged the Climate Protection Program in the Court of Appeals", "date": "2023-10-02", "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/" }
+      ]
+    },
+    {
+      "id": "or_opp_cascade_natural_gas", "logo": "logos/or_opp_cascade_natural_gas.png", "name": "Cascade Natural Gas", "abbrev": "Cascade Natural", "type": "gas utility",
+      "description": "Natural gas utility serving central and eastern Oregon.",
+      "website": "https://www.cngc.com", "town": "", "remote": true, "lat": 46.2112, "lng": -119.1372,
+      "ogec": ["Cascade Natural Gas"],
+      "stances": [
+        { "what": "Challenged the Climate Protection Program in the Court of Appeals", "date": "2023-10-02", "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/" }
+      ]
+    },
+    {
+      "id": "or_opp_wspa", "logo": "logos/or_opp_wspa.png", "name": "Western States Petroleum Association", "abbrev": "WSPA", "type": "oil industry association",
+      "description": "California-based oil industry trade group whose members include Chevron, Shell and Exxon.",
+      "website": "https://www.wspa.org", "town": "", "remote": true, "lat": 38.5816, "lng": -121.4944,
+      "ogec": ["Western States Petroleum Association"],
+      "stances": [
+        { "what": "Supported the court challenge to the Climate Protection Program", "date": "2023-10-02", "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/" }
+      ]
+    },
+    {
+      "id": "or_opp_ofic", "logo": "logos/or_opp_ofic.png", "name": "Oregon Forest & Industries Council", "abbrev": "OFIC", "type": "timber industry association",
+      "description": "Trade association of Oregon forest landowners and wood products companies.",
+      "website": "https://ofic.com", "town": "Salem", "lat": 44.9429, "lng": -123.0351,
+      "ogec": ["Oregon Forest Industries Council"],
+      "stances": [
+        { "what": "Supported the court challenge to the Climate Protection Program", "date": "2023-10-02", "source": "https://corvallisadvocate.com/nw-natural-others-argue-against-oregons-emission-deadlines-in-court/" }
+      ]
+    },
+    {
+      "id": "or_opp_erec", "name": "Eugene Residents for Energy Choice", "abbrev": "EREC", "type": "ballot campaign",
+      "description": "Campaign registered days after Eugene banned gas hookups in new low-rise homes, to put the ordinance to a public vote; NW Natural was its only funder at first.",
+      "website": "", "town": "Eugene", "lat": 44.0521, "lng": -123.0868,
+      "ogec": [],
+      "stances": [
+        { "what": "Gathered signatures to overturn Eugene's gas hookup ordinance", "date": "2023-03-09", "source": "https://www.klcc.org/politics-government/2023-03-09/utility-funded-effort-to-overturn-natural-gas-ordinance-turns-in-signatures" }
+      ]
+    },
+    {
+      "id": "or_opp_data_center_coalition", "logo": "logos/or_opp_data_center_coalition.png", "name": "Data Center Coalition", "abbrev": "DCC", "type": "industry association",
+      "description": "National trade group of data center owners and operators.",
+      "website": "https://www.datacentercoalition.org", "town": "", "remote": true, "lat": 38.9072, "lng": -77.0369,
+      "ogec": [],
+      "stances": [
+        { "what": "Testified against HB 3546 (POWER Act: large energy users pay their share), backed by climate groups", "date": "2025-03-06", "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/145942" }
+      ]
+    },
+    {
+      "id": "or_opp_aws", "logo": "logos/or_opp_aws.png", "name": "Amazon Web Services", "abbrev": "AWS", "type": "company",
+      "description": "Amazon's cloud computing business, which runs large data centers in eastern Oregon. Lobbying shown is Amazon's (registered as Amazon.com Services, Inc.).",
+      "website": "https://aws.amazon.com", "town": "", "remote": true, "lat": 45.6, "lng": -119.5,
+      "ogec": ["Amazon.com Services, Inc."],
+      "stances": [
+        { "what": "Testified against HB 3546 (POWER Act: large energy users pay their share), backed by climate groups", "date": "2025-04-30", "source": "https://olis.oregonlegislature.gov/liz/2025R1/Downloads/PublicTestimonyDocument/200025" }
+      ]
+    }
+  ],
+  "climate_lobbying": {
+    "_about": "Groups already on the Oregon map with registered lobbying spending, so both sides of the money show.",
+    "or_oec": ["Oregon Environmental Council"],
+    "or_climate_solutions": ["Climate Solutions"],
+    "or_rnw": ["Renewable Northwest"],
+    "or_olcv": ["Oregon League of Conservation Voters"],
+    "or_sierra_club": ["Sierra Club of Oregon"],
+    "or_verde": ["Verde"],
+    "or_columbia_riverkeeper": ["Columbia Riverkeeper"],
+    "or_beyond_toxics": ["Beyond Toxics"],
+    "or_350pdx": ["350PDX"],
+    "or_1000_friends": ["1000 Friends of Oregon"],
+    "or_environment_oregon": ["Environment America DBA Environment Oregon"],
+    "or_ccc": ["Coalition of Communities of Color"],
+    "or_fww": ["Food & Water Watch"]
+  },
+  "political": [
+    {
+      "from": "or_opp_nw_natural", "to": "or_opp_erec", "amount": 950000, "approx": true, "date": "2023-02",
+      "what": "Cash and in-kind contributions, Feb 10–24, 2023 (state campaign finance filings)",
+      "source": "https://www.desmog.com/2023/03/07/major-gas-utility-is-pouring-money-into-reversing-an-oregon-citys-electric-only-mandate"
+    }
+  ]
+}

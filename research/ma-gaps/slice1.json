@@ -1,0 +1,1012 @@
+[
+ {
+  "id": "andover_climate_lobby",
+  "name": "Andover Climate Lobby",
+  "abbrev": "ACL",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.658,
+   -71.138
+  ]
+ },
+ {
+  "id": "belmont_high_school_climate_club",
+  "name": "Belmont High School Climate Action Club",
+  "abbrev": "BHS CAC",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.394,
+   -71.167
+  ]
+ },
+ {
+  "id": "northfield_mount_hermon_ecoleaders",
+  "name": "Northfield Mount Hermon Ecoleaders",
+  "abbrev": "NHM Ecoleaders",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.666,
+   -72.485
+  ]
+ },
+ {
+  "id": "salem_high_school_sustainability_club",
+  "name": "Salem High School Sustainability Club",
+  "abbrev": "SHS Sustainability Club",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.506,
+   -70.912
+  ]
+ },
+ {
+  "id": "students_for_environmental_action_at_weston_high_school",
+  "name": "Students for Environmental Action at Weston High School",
+  "abbrev": "SEA Weston",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.339,
+   -71.304
+  ]
+ },
+ {
+  "id": "newton_south_high_school_environmental_club",
+  "name": "Newton South High School Environmental Club",
+  "abbrev": "NSHS Environmental Club",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.314,
+   -71.186
+  ]
+ },
+ {
+  "id": "andover_high_school_environmental_club",
+  "name": "Andover High School Environmental Club",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.657,
+   -71.155
+  ]
+ },
+ {
+  "id": "belmont_hill_sustainability_club",
+  "name": "Belmont Hill Sustainability Club",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.407,
+   -71.182
+  ]
+ },
+ {
+  "id": "lorax_at_milton_academy",
+  "name": "LORAX at Milton Academy",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.257,
+   -71.07
+  ]
+ },
+ {
+  "id": "boston_latin_school_youthcan",
+  "name": "Boston Latin School Youth Climate Action Network",
+  "abbrev": "BLS YouthCAN",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.338,
+   -71.101
+  ]
+ },
+ {
+  "id": "boston_university_environmental_student_organization",
+  "name": "Boston University Environmental Student Organization",
+  "abbrev": "BU ESO",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.35,
+   -71.105
+  ]
+ },
+ {
+  "id": "four_rivers_climate_club",
+  "name": "Four Rivers Climate Club",
+  "abbrev": "",
+  "website": "https://fourriverscharter.org/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.596,
+   -72.621
+  ]
+ },
+ {
+  "id": "youth_climate_action_now",
+  "name": "Youth Climate Action Now",
+  "abbrev": "YCAN",
+  "website": "https://climateactionnowma.org/building-the-movement/youth-climate-action-now/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "roxbury_environmental_empowerment_project_by_alternatives_fo",
+  "name": "Roxbury Environmental Empowerment Project",
+  "abbrev": "REEP by ACE",
+  "website": "https://ace-ej.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.331,
+   -71.083
+  ]
+ },
+ {
+  "id": "alternatives_for_community_and_environment",
+  "name": "Alternatives for Community and Environment",
+  "abbrev": "ACE",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.331,
+   -71.083
+  ]
+ },
+ {
+  "id": "boston_student_advisory_council",
+  "name": "Boston Student Advisory Council",
+  "abbrev": "BSAC",
+  "website": "https://www.bostonpublicschools.org/bps-departments/opportunity-youth/bsac",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.33,
+   -71.084
+  ]
+ },
+ {
+  "id": "greenroots_eco",
+  "name": "Greenroots Environmental Chelsea Organizers Youth Crew",
+  "abbrev": "Greenroots ECO",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.394,
+   -71.041
+  ]
+ },
+ {
+  "id": "masscosh_tlaw_climate_change_and_environmental_justice_team",
+  "name": "Massachusetts Coalition for Occupational Safety and Health Teens Lead at Work",
+  "abbrev": "MassCOSH TLAW",
+  "website": "https://masscosh.org/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.3,
+   -71.063
+  ]
+ },
+ {
+  "id": "tree_boston",
+  "name": "Tree Boston",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.302,
+   -71.056
+  ]
+ },
+ {
+  "id": "clean_water_action",
+  "name": "Clean Water Action",
+  "abbrev": "CWA",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition",
+   "Environmental Justice Legislative Table",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.359,
+   -71.059
+  ]
+ },
+ {
+  "id": "youth_action_collaborative_alumni_node_at_clean_water_action",
+  "name": "Youth Action Collaborative Alumni Node at  Clean Water Action",
+  "abbrev": "YAC at CWA",
+  "website": "https://cleanwater.org/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.359,
+   -71.059
+  ]
+ },
+ {
+  "id": "sustainable_sharon_coalition_youth",
+  "name": "Sustainable Sharon Coalition Youth Committee",
+  "abbrev": "",
+  "website": "https://www.sustainablesharon.org/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.123,
+   -71.179
+  ]
+ },
+ {
+  "id": "ma_youth_for_climate_justice",
+  "name": "Massachusetts Youth for Climate Justice",
+  "abbrev": "MA YCJ",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "masspirg",
+  "name": "Massachusetts Public Interest Research Group",
+  "abbrev": "MASSPIRG",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.357,
+   -71.058
+  ]
+ },
+ {
+  "id": "masspirg_amherst",
+  "name": "Massachusetts Public Interest Research Group Amherest",
+  "abbrev": "MASSPIRG - Amherst",
+  "website": "https://masspirg.org/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.387,
+   -72.531
+  ]
+ },
+ {
+  "id": "masspirg_boston",
+  "name": "Massachusetts Public Interest Research Group Boston",
+  "abbrev": "MASSPIRG - Boston",
+  "website": "https://masspirg.org/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.357,
+   -71.058
+  ]
+ },
+ {
+  "id": "vietaid",
+  "name": "Vietnamese American Initiative for Development",
+  "abbrev": "VietAID",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.3,
+   -71.063
+  ]
+ },
+ {
+  "id": "mothers_out_front",
+  "name": "Mothers Out Front",
+  "abbrev": "MOF",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.351,
+   -71.061
+  ]
+ },
+ {
+  "id": "healthlink",
+  "name": "HealthLink",
+  "abbrev": "",
+  "website": "https://citizensinaction.org/press-about-the-billboard-103.html",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "jewish_climate_action_network",
+  "name": "Jewish Climate Action Network",
+  "abbrev": "JCAN",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "massachusetts_interfaith_power_and_light",
+  "name": "Massachusetts Interfaith Power & Light",
+  "abbrev": "MassIPL",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.351,
+   -71.061
+  ]
+ },
+ {
+  "id": "the_enviro_show_on_wxoj_lp_103_3_fm",
+  "name": "The Enviro Show on WXOJ-LP (103.3 fm)",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.331,
+   -72.676
+  ]
+ },
+ {
+  "id": "xr_youth",
+  "name": "Extinction Rebellion Youth",
+  "abbrev": "XRY",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "xr_western_mass",
+  "name": "Extinction Rebellion Western Mass",
+  "abbrev": "XR Western Mass",
+  "website": "https://xrboston.org/west/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.327,
+   -72.641
+  ]
+ },
+ {
+  "id": "act_on_mass",
+  "name": "Act on Mass",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "climate_xchange",
+  "name": "Climate XChange",
+  "abbrev": "CXC",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "climate_action_now_western_ma",
+  "name": "Climate Action Now Western Massachusetts",
+  "abbrev": "CAN Western MA",
+  "website": "https://climateactionnowma.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.327,
+   -72.641
+  ]
+ },
+ {
+  "id": "sustainable_milton",
+  "name": "Sustainable Milton",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.249,
+   -71.066
+  ]
+ },
+ {
+  "id": "elders_climate_action_mass",
+  "name": "Elders Climate Action Massachusetts",
+  "abbrev": "ECA Mass",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "mass_audubon_wma",
+  "name": "Mass Audubon - WMa",
+  "abbrev": "Mass Audubon Western Massachusetts",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.328,
+   -72.526
+  ]
+ },
+ {
+  "id": "mass_audubon_wellfleet_bay_wildlife_sanctuary",
+  "name": "Mass Audubon Wellfleet Bay Wildlife Sanctuary",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   41.938,
+   -70.029
+  ]
+ },
+ {
+  "id": "sunrise_boston",
+  "name": "Sunrise Boston",
+  "abbrev": "",
+  "website": "https://www.sunrisemovement.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "sunrise_ipswich",
+  "name": "Sunrise Ipswich",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.679,
+   -70.841
+  ]
+ },
+ {
+  "id": "sunrise_western_mass",
+  "name": "Sunrise Western Mass",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.327,
+   -72.641
+  ]
+ },
+ {
+  "id": "sunrise_amherst",
+  "name": "Sunrise Amherst",
+  "abbrev": "",
+  "website": "https://hubs.sunrisemovement.org/amherst/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.373,
+   -72.52
+  ]
+ },
+ {
+  "id": "sunrise_lexington",
+  "name": "Sunrise Lexington",
+  "abbrev": "",
+  "website": "https://www.sunrisemovement.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.443,
+   -71.229
+  ]
+ },
+ {
+  "id": "mit_sea",
+  "name": "MIT Students for Environmental Action",
+  "abbrev": "MIT SEA",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.094
+  ]
+ },
+ {
+  "id": "unitarian_universalist_mass_action",
+  "name": "Unitarian Universalist Mass Action",
+  "abbrev": "UU Mass Action",
+  "website": "",
+  "coalitions": [
+   "Environmental Justice Legislative Table",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "environment_massachusetts",
+  "name": "Environment Massachusetts",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "massachusetts_climate_action_network",
+  "name": "Massachusetts Climate Action Network",
+  "abbrev": "MCAN",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Environmental Justice Legislative Table"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "pipeline_awareness_network_ne",
+  "name": "Pipeline Awareness Network Northeast",
+  "abbrev": "PLAN-NE",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "sierra_club",
+  "name": "Sierra Club",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.356,
+   -71.056
+  ]
+ },
+ {
+  "id": "coalition_for_social_justice",
+  "name": "Coalition for Social Justice",
+  "abbrev": "CSJ",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   41.626,
+   -70.947
+  ]
+ },
+ {
+  "id": "fore_river_residents_against_the_compressor_station",
+  "name": "Fore River Residents Against the Compressor Station",
+  "abbrev": "FRRACS",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.253,
+   -70.966
+  ]
+ },
+ {
+  "id": "greenroots",
+  "name": "Greenroots",
+  "abbrev": "",
+  "website": "https://www.greenrootschelsea.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   42.394,
+   -71.041
+  ]
+ },
+ {
+  "id": "north_american_indian_center_of_boston",
+  "name": "North American Indian Center of Boston",
+  "abbrev": "NAICOB",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "slingshot",
+  "name": "Slingshot",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "350ma",
+  "name": "350 Massachusetts",
+  "abbrev": "350MA",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "350ma_cape_cod",
+  "name": "350 Massachusetts Cape Cod",
+  "abbrev": "350MA Cape Cod",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   41.669,
+   -70.296
+  ]
+ },
+ {
+  "id": "350ma_central_mass",
+  "name": "350 Massachusetts Central Massachusetts",
+  "abbrev": "350MA Central Mass",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.263,
+   -71.802
+  ]
+ },
+ {
+  "id": "350ma_berkshires",
+  "name": "350 Massachusetts Berkshires",
+  "abbrev": "350MA Berkshires",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.45,
+   -73.245
+  ]
+ },
+ {
+  "id": "berkshire_environmental_action_team",
+  "name": "Berkshire Environmental Action Team",
+  "abbrev": "BEAT",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.43,
+   -73.31
+  ]
+ },
+ {
+  "id": "canton_residents_for_a_sustainable_equitable_future",
+  "name": "Canton Residents for a Sustainable Equitable Future",
+  "abbrev": "CR4SEF",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.158,
+   -71.15
+  ]
+ },
+ {
+  "id": "climate_action_brookline",
+  "name": "Climate Action Brookline",
+  "abbrev": "CAB",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.332,
+   -71.121
+  ]
+ },
+ {
+  "id": "climate_code_blue",
+  "name": "Climate Code Blue",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "conservation_law_foundation",
+  "name": "Conservation Law Foundation",
+  "abbrev": "CLF",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Environmental Justice Legislative Table",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.354,
+   -71.059
+  ]
+ },
+ {
+  "id": "food_and_water_watch",
+  "name": "Food & Water Watch",
+  "abbrev": "FWW",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "jewish_alliance_for_law_and_social_action",
+  "name": "Jewish Alliance for Law and Social Action",
+  "abbrev": "JALSA",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "partnership_for_policy_integrity",
+  "name": "Partnership for Policy Integrity",
+  "abbrev": "PFPI",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.373,
+   -72.52
+  ]
+ },
+ {
+  "id": "salem_alliance_for_the_environment",
+  "name": "Salem Alliance for the Environment",
+  "abbrev": "SAFE",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.52,
+   -70.897
+  ]
+ },
+ {
+  "id": "american_friends_service_committee_northeast_region",
+  "name": "American Friends Service Committee-Northeast Region",
+  "abbrev": "AFSC",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.393,
+   -71.124
+  ]
+ },
+ {
+  "id": "arise_for_social_justice",
+  "name": "Arise for Social Justice",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.104,
+   -72.581
+  ]
+ },
+ {
+  "id": "balanced_rock_investment_advisors",
+  "name": "Balanced Rock Investment Advisors",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "ben_hillman_and_company",
+  "name": "Ben Hillman & Company",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "bodhisara_dharma_community",
+  "name": "Bodhisara Dharma Community",
+  "abbrev": "",
+  "website": "https://www.bodhisara.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ }
+]

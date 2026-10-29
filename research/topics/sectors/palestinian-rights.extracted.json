@@ -1,0 +1,726 @@
+[
+ {
+  "id": "ma:sector_palestinian_rights:mission",
+  "kind": "coalition_mission",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestinian rights",
+    "evidence": "Palestinian rights"
+   }
+  ],
+  "strategies": [
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_golden_harvest",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestinian olive culture",
+    "evidence": "olive trees and the people of the Mediterranean"
+   }
+  ],
+  "strategies": [
+   "education"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_run_gsk",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "gaza soup kitchen",
+    "evidence": "raise funds for Gaza Soup Kitchen"
+   }
+  ],
+  "strategies": [
+   "finance"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_soul_of_gaza",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestinian cooking",
+    "evidence": "Palestinian cooking sessions"
+   }
+  ],
+  "strategies": [
+   "education",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "none"
+ },
+ {
+  "id": "ma:pal_e_havurah",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestinian literature",
+    "evidence": "Reading group on Palestinian stories"
+   }
+  ],
+  "strategies": [
+   "education",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "none"
+ },
+ {
+  "id": "ma:pal_e_wired_to_steal",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [],
+  "strategies": [
+   "education"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_l3harris",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "gaza solidarity",
+    "evidence": "Weekly standout for Gaza at L3Harris"
+   },
+   {
+    "phrase": "l3harris",
+    "evidence": "L3Harris"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_shelburne",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestine solidarity",
+    "evidence": "Weekly standout for Palestine"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_arms_embargo",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "arms embargo",
+    "evidence": "Weekly standout for an arms embargo"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_sunderland",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "ceasefire",
+    "evidence": "Weekly standout for a ceasefire and a free Palestine"
+   },
+   {
+    "phrase": "free palestine",
+    "evidence": "a free Palestine"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_greenfield",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "ceasefire",
+    "evidence": "Weekly standout for a ceasefire"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_pittsfield",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestine solidarity",
+    "evidence": "Standout for Palestine on some Sundays"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_centering",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestine solidarity community",
+    "evidence": "Weekly online gathering of Palestinians, Jews and allies"
+   }
+  ],
+  "strategies": [
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_dag",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "genocide in gaza",
+    "evidence": "Doctors Against Genocide"
+   }
+  ],
+  "strategies": [
+   "education"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_e_aroc",
+  "kind": "event",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestine solidarity",
+    "evidence": "Weekly online Palestine solidarity announcements"
+   }
+  ],
+  "strategies": [
+   "organizing",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_a_ndaa",
+  "kind": "action",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "deadly merger provision",
+    "evidence": "\"Deadly Merger\" provision"
+   }
+  ],
+  "strategies": [
+   "policy_advocacy"
+  ],
+  "bills": [
+   {
+    "name": "National Defense Authorization Act",
+    "number": null,
+    "evidence": "National Defense Authorization Act"
+   }
+  ],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_a_stockton",
+  "kind": "action",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "censorship of genocide",
+    "evidence": "stop censoring the word \"genocide\""
+   }
+  ],
+  "strategies": [
+   "policy_advocacy",
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_a_502b",
+  "kind": "action",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "502b resolution",
+    "evidence": "502B resolution"
+   }
+  ],
+  "strategies": [
+   "policy_advocacy"
+  ],
+  "bills": [
+   {
+    "name": "502B resolution",
+    "number": null,
+    "evidence": "502B resolution"
+   }
+  ],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_a_abu_safiya",
+  "kind": "action",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "release of detained gaza pediatrician",
+    "evidence": "release of detained Gaza pediatrician Dr. Hussam Abu Safiya"
+   }
+  ],
+  "strategies": [
+   "policy_advocacy"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_a_olive",
+  "kind": "action",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestinian olive trees",
+    "evidence": "fundraiser to plant olive trees"
+   }
+  ],
+  "strategies": [
+   "finance",
+   "building_and_stewardship"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_a_grassroots",
+  "kind": "action",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [
+   {
+    "phrase": "palestine emergency fund",
+    "evidence": "emergency fund for Palestine"
+   }
+  ],
+  "strategies": [
+   "finance"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_a_meca",
+  "kind": "action",
+  "map": "ma",
+  "host": "sector_palestinian_rights",
+  "topics": [],
+  "strategies": [
+   "finance"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:jvp_western_mass:mission",
+  "kind": "org_mission",
+  "map": "ma",
+  "host": "jvp_western_mass",
+  "topics": [
+   {
+    "phrase": "free palestine",
+    "evidence": "actions for a free Palestine"
+   }
+  ],
+  "strategies": [
+   "organizing",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_jvp_e1",
+  "kind": "event",
+  "map": "ma",
+  "host": "jvp_western_mass",
+  "topics": [
+   {
+    "phrase": "free palestine",
+    "evidence": "standout for a free Palestine"
+   },
+   {
+    "phrase": "arms embargo",
+    "evidence": "an arms embargo"
+   },
+   {
+    "phrase": "war on iran and lebanon",
+    "evidence": "no war on Iran and Lebanon"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_jvp_e2",
+  "kind": "event",
+  "map": "ma",
+  "host": "jvp_western_mass",
+  "topics": [],
+  "strategies": [
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_jvp_e3",
+  "kind": "event",
+  "map": "ma",
+  "host": "jvp_western_mass",
+  "topics": [
+   {
+    "phrase": "gaza solidarity",
+    "evidence": "half-hour of action for Gaza"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_jvp_a1",
+  "kind": "action",
+  "map": "ma",
+  "host": "jvp_western_mass",
+  "topics": [
+   {
+    "phrase": "military aid to israel",
+    "evidence": "block bombs to Israel"
+   }
+  ],
+  "strategies": [
+   "policy_advocacy"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_jvp_a2",
+  "kind": "action",
+  "map": "ma",
+  "host": "jvp_western_mass",
+  "topics": [
+   {
+    "phrase": "israel bonds",
+    "evidence": "divest from Israel Bonds"
+   }
+  ],
+  "strategies": [
+   "organizing",
+   "finance"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_jvp_a3",
+  "kind": "action",
+  "map": "ma",
+  "host": "jvp_western_mass",
+  "topics": [],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:berkshires_in_solidarity_with_palestine:mission",
+  "kind": "org_mission",
+  "map": "ma",
+  "host": "berkshires_in_solidarity_with_palestine",
+  "topics": [
+   {
+    "phrase": "palestine solidarity",
+    "evidence": "in solidarity with Palestine"
+   },
+   {
+    "phrase": "palestinian literature",
+    "evidence": "Palestinian Voices Reading Group"
+   }
+  ],
+  "strategies": [
+   "education",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_bsp_e1",
+  "kind": "event",
+  "map": "ma",
+  "host": "berkshires_in_solidarity_with_palestine",
+  "topics": [
+   {
+    "phrase": "palestinian literature",
+    "evidence": "Reading group on Palestinian writing"
+   }
+  ],
+  "strategies": [
+   "education",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "none"
+ },
+ {
+  "id": "ma:apartheid_free_western_mass:mission",
+  "kind": "org_mission",
+  "map": "ma",
+  "host": "apartheid_free_western_mass",
+  "topics": [
+   {
+    "phrase": "palestinian film",
+    "evidence": "Palestinian Film Fest at UMass Amherst"
+   }
+  ],
+  "strategies": [
+   "education"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_afwm_e1",
+  "kind": "event",
+  "map": "ma",
+  "host": "apartheid_free_western_mass",
+  "topics": [
+   {
+    "phrase": "palestinian film",
+    "evidence": "Screening of Seeds for Liberation"
+   }
+  ],
+  "strategies": [
+   "education"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "none"
+ },
+ {
+  "id": "ma:western_mass_coalition_for_palestine:mission",
+  "kind": "org_mission",
+  "map": "ma",
+  "host": "western_mass_coalition_for_palestine",
+  "topics": [
+   {
+    "phrase": "palestine solidarity",
+    "evidence": "working for Palestine"
+   }
+  ],
+  "strategies": [
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:easthampton_solidarity_with_palestine:mission",
+  "kind": "org_mission",
+  "map": "ma",
+  "host": "easthampton_solidarity_with_palestine",
+  "topics": [
+   {
+    "phrase": "palestine solidarity",
+    "evidence": "in solidarity with Palestine"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_esp_e1",
+  "kind": "event",
+  "map": "ma",
+  "host": "easthampton_solidarity_with_palestine",
+  "topics": [
+   {
+    "phrase": "palestine solidarity",
+    "evidence": "Weekly standout for Palestine"
+   }
+  ],
+  "strategies": [
+   "organizing"
+  ],
+  "bills": [],
+  "recurring": true,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:interlink_books:mission",
+  "kind": "org_mission",
+  "map": "ma",
+  "host": "interlink_books",
+  "topics": [
+   {
+    "phrase": "palestinian publishing",
+    "evidence": "Palestinian-owned independent publisher"
+   }
+  ],
+  "strategies": [
+   "education",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_il_e1",
+  "kind": "event",
+  "map": "ma",
+  "host": "interlink_books",
+  "topics": [
+   {
+    "phrase": "zionism and hasbara",
+    "evidence": "Zionism, Propaganda & the Uses of Hasbara"
+   },
+   {
+    "phrase": "social justice festival",
+    "evidence": "Outdoor social justice festival"
+   }
+  ],
+  "strategies": [
+   "education",
+   "community_building"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ },
+ {
+  "id": "ma:pal_il_a1",
+  "kind": "action",
+  "map": "ma",
+  "host": "interlink_books",
+  "topics": [],
+  "strategies": [
+   "finance"
+  ],
+  "bills": [],
+  "recurring": false,
+  "climate_relevance": "adjacent"
+ }
+]

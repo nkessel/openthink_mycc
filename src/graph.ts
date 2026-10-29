@@ -1,16 +1,46 @@
 import * as d3 from "d3";
+import { largePrint, onDisplayChange, lowPower, weakDevice } from "./display";
 import type {
   DataFile,
   GraphNode,
   GraphLink,
   CoalitionNode,
   OrgNode,
+  Thought,
+  Project,
+  CoalitionEvent,
+  Action,
 } from "./types";
+import { itemButtons } from "./links";
+import { h } from "./dom";
+import { shown as shownNow } from "./past";
+import { typeIcon, VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS } from "./icons";
+import { staleNotice } from "./notice";
+import { sectorById } from "./sectors";
+import { money as fmtMoney, moneyFlows } from "./money";
+
+/** A capitol building (dome, pediment, columns, steps) in a 100 × 100 box: the legislature in the money layer. */
+const CAPITOL_PATH =
+  "M48 4h4v12h-4z M27 40a23 23 0 0 1 46 0z M22 40h56v7H22z M10 56L50 47L90 56z" +
+  " M16 58h9v24h-9z M31 58h9v24h-9z M46 58h8v24h-8z M60 58h9v24h-9z M75 58h9v24h-9z M8 84h84v6H8z M4 92h92v5H4z";
+/** Scales the 100 × 100 capitol to a node of radius r (a little larger than the bubble it replaces). */
+const capitolTransform = (r: number) => { const k = (2.3 * r) / 100; return `translate(${-50 * k},${-54 * k}) scale(${k})`; };
+import { orgProjects, orgEvents, orgActions } from "./owners";
+import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
 import type { Tooltip } from "./tooltip";
+import { createNodeSearch, allNodesForSearch } from "./search";
 
 export interface GraphCallbacks {
   onNodeClick(node: GraphNode): void;
+  /** The open group was clicked again: it collapsed. */
+  onNodeDeselect?(node: GraphNode): void;
+  /** The summary card at the top was tapped: show the full details panel. */
+  onOpenDetails?(node: GraphNode): void;
+  /** Whether the details panel already shows this group (not one of its items, and not closed). */
+  showsDetailsOf?(node: GraphNode): boolean;
+  /** An event / project / action bubble was clicked: show it in full (the details tray). */
+  onItemClick?(kind: "event" | "project" | "action", item: Project | CoalitionEvent | Action, owner: GraphNode): void;
 }
 
 export interface GroupRule {
@@ -22,37 +52,92 @@ export interface GroupRule {
 
 export interface GraphSettings {
   centerForce: number; // 0..1
-  repelForce: number; // 0..1, scales charge strength
+  repelForce: number; // 0..1, scales charge strength (organizations)
+  /** 0..1: how hard coalitions push each other (and everything else) away. */
+  coalitionRepel: number;
   linkForce: number; // 0..1
   linkDistance: number; // 0..1
   nodeSize: number; // 0.5..2
   linkThickness: number; // 0.5..4 (px)
   textFadeThreshold: number; // 0..1; below this zoom scale, hide names
-  arrows: boolean;
+  /** Show group / org names on the map (off hides them all). */
+  showText: boolean;
+  /** 0..1: how much a coalition's size follows its number of connected orgs (0 = all the same size). */
+  weightConnections: number;
+  /** Bubbles for events / projects / actions appear around a group when it is opened. */
+  showBubbles: boolean;
+  /** How much each kind of activity adds to a group's size (0 = ignore it). */
+  weightEvents: number;
+  weightProjects: number;
+  weightActions: number;
+  /** true = every group's events / projects / actions are always on the map (dots that become bubbles as you zoom); false = only when a group is clicked. */
+  alwaysShow: boolean;
+  /** With alwaysShow on: which kinds to show. */
+  showAllEvents: boolean;
+  showAllProjects: boolean;
+  showAllActions: boolean;
+  /** Volunteer roles (actions with kind "role"), shown or hidden on their own. */
+  showAllVolunteer: boolean;
+  /** Zoomed-in view (Map settings → Bubble size weighting → When you open a group): 1 = the site's default. */
+  focusSize: number; // how big the opened group is drawn
+  focusSpace: number; // room between the opened group's activity and its partner groups
+  focusRowGap: number; // spacing between the rows of partner groups
+  focusSatSize: number; // how big the opened group's coalitions and partner groups are drawn (1 = their usual size)
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   centerForce: 0.5,
-  repelForce: 0.5,
+  repelForce: 0.42, // how hard bubbles push apart (lower = orgs closer)
+  coalitionRepel: 0.7, // how hard coalitions push apart
   linkForce: 0.5,
-  linkDistance: 0.5,
+  linkDistance: 0.4,
   nodeSize: 1,
   linkThickness: 1,
   textFadeThreshold: 0.5,
-  arrows: false,
+  showText: true,
+  weightConnections: 0.5,
+  showBubbles: true,
+  weightEvents: 0,
+  weightProjects: 0,
+  weightActions: 0,
+  alwaysShow: true,
+  showAllEvents: true,
+  showAllProjects: true,
+  showAllActions: true,
+  showAllVolunteer: true,
+  focusSize: 1,
+  focusSpace: 1,
+  focusRowGap: 1,
+  focusSatSize: 4, // Oct 29: partners were too small next to the bigger opened group (1.8, then 2.5, then 4)
 };
 
 export interface Graph {
   setVisibleCoalitions(ids: Set<string>): void;
+  /** Center on any node (coalition or org). */
+  focusOnNode(id: string): void;
   setSelectedNode(node: GraphNode | null): void;
   focusOnCoalition(id: string): void;
+  /** Zoom into a node: its projects, events and public thinking float around it as bubbles. */
+  enterFocus(id: string): void;
+  /** Leave the zoomed-in view and return to the whole network. */
+  exitFocus(): void;
+  /** Reset the view if nothing is on screen. */
+  ensureInView(): void;
+  /** The "org-to-org connections" checkbox, for the host page to place (the sidebar). */
+  orgLinkToggle(): HTMLElement;
   updateSettings(partial: Partial<GraphSettings>): void;
   setGroups(groups: GroupRule[]): void;
   kickSimulation(): void;
+  /** True when groups open with bubbles (the new view); false for the Classic network. */
+  bubblesOn(): boolean;
 }
 
 const COALITION_LABEL_FONT_SIZE = 14;
+/** Size every coalition shrinks / grows toward when "size by connected orgs" is turned down. */
+const UNIFORM_COALITION_R = 48;
 const ORG_LABEL_FONT_SIZE = 10;
+/** Logo size as a share of the node radius: fills the circle (no white rim). */
+const LOGO_SCALE = 1;
 const ORG_NAME_FONT_SIZE = 11;
 
 export function createGraph(
@@ -74,11 +159,28 @@ export function createGraph(
   const allNodes: GraphNode[] = [...coalitionNodes, ...orgNodes];
   const nodeById = new Map<string, GraphNode>(allNodes.map((n) => [n.id, n]));
 
-  const allLinks: GraphLink[] = data.edges.map((e) => ({
-    source: e.source,
-    target: e.target,
-    coalitionId: e.source, // source is always coalition in our data
-  }));
+  const orgIds = new Set(data.organizations.map((o) => o.id));
+  const allLinks: GraphLink[] = [
+    ...data.edges.map((e) => ({
+      source: e.source,
+      target: e.target,
+      coalitionId: e.source, // source is always coalition in our data
+      kind: "membership" as const,
+    })),
+    // Org-to-org: how often they work together (weight 1 = yearly or less … 4 = weekly)
+    // Named by both groups = a solid line; named by only one = a dotted line with an arrow from the group that named
+    // it to the group it named (Oct 29).
+    ...(data.org_links || [])
+      .filter((l) => orgIds.has(l.source) && orgIds.has(l.target))
+      .map((l) => {
+        const by = l.reported_by || [];
+        const mutual = by.includes(l.source) && by.includes(l.target);
+        const from = !mutual && by.includes(l.target) ? l.target : l.source;
+        return { source: from, target: from === l.source ? l.target : l.source, coalitionId: "", kind: "org" as const, weight: l.weight, oneWay: !mutual };
+      }),
+  ];
+  const orgLinkCount = allLinks.filter((l) => l.kind === "org").length;
+  let showOrgLinks = true;
 
   let visibleCoalitions = new Set(data.coalitions.map((c) => c.id));
   let selectedId: string | null = null;
@@ -90,8 +192,80 @@ export function createGraph(
 
   const hint = document.createElement("div");
   hint.className = "hint";
-  hint.textContent = "Drag nodes · Scroll to zoom · Click for details";
+  hint.textContent = window.matchMedia("(pointer: coarse)").matches
+    ? "Tap a group to zoom into its work · Pinch to zoom"
+    : "Click a group to zoom into its work · Scroll to zoom · Esc to go back";
   wrap.appendChild(hint);
+
+  // Top-left overlay: search + org-to-org link toggle
+  const overlay = document.createElement("div");
+  overlay.className = "graph-overlay";
+  wrap.appendChild(overlay);
+  overlay.appendChild(
+    createNodeSearch(allNodesForSearch(data), (id) => {
+      const n = nodeById.get(id);
+      if (!n) return;
+      api.focusOnNode(id);
+      cb.onNodeClick(n);
+      api.setSelectedNode(n);
+    }),
+  );
+  // (Hiding the events / actions / projects around each group is a switch at the top of the settings panel.)
+  const resetBtn = document.createElement("button");
+  resetBtn.type = "button";
+  // "Reset view", at the bottom middle of the map next to the legend (Oct 29)
+  resetBtn.className = "reset-map-btn reset-bottom";
+  resetBtn.textContent = "⟲ Reset view";
+  resetBtn.title = "Zoom out to show the whole network again";
+  resetBtn.addEventListener("click", () => {
+    beforeFocus = null; // the whole network, not the view before the group was opened
+    if (focusId) exitFocus();
+    else fitToView(true);
+  });
+  wrap.appendChild(resetBtn);
+  function syncViewSwitch() {
+    /* the switches live in the settings panel and listen for openthink:previewsmode / openthink:viewmode */
+  }
+  // The sidebar has the same switches; they talk to us through window events.
+  window.addEventListener("openthink:setview", (e) => setViewMode(!!(e as CustomEvent).detail?.bubbles));
+  window.addEventListener("openthink:setpreviews", (e) => setPreviews(!!(e as CustomEvent).detail?.on));
+  // Map settings → "Show past events, projects and actions": redraw every group's items
+  window.addEventListener("openthink:showpast", () => {
+    const f = focusId;
+    if (f) exitFocus(false);
+    refreshSpacing(0.3);
+    refreshSats();
+    if (f) enterFocus(f);
+  });
+  /** "Zoom in on a group when you click it" (and show its items around it). */
+  function setViewMode(bubbles: boolean) {
+    api.updateSettings({ showBubbles: bubbles });
+    try { localStorage.setItem("openthink.bubbles", bubbles ? "1" : "0"); } catch (_) { /* private mode */ }
+  }
+  /** Previews of every group's events, projects and actions around it. */
+  function setPreviews(on: boolean) {
+    api.updateSettings({ alwaysShow: on });
+    window.dispatchEvent(new CustomEvent("openthink:previewsmode", { detail: { on } }));
+  }
+  // Org-to-org toggle: built here (it drives the graph), shown in the sidebar with the other filters.
+  const toggle = document.createElement("label");
+  toggle.className = "org-link-toggle";
+  const box = document.createElement("input");
+  box.type = "checkbox";
+  box.checked = showOrgLinks;
+  box.addEventListener("change", () => {
+    showOrgLinks = box.checked;
+    linkForce.strength(linkStrengthFor);
+    applyVisibility();
+  });
+  toggle.appendChild(box);
+  toggle.appendChild(
+    document.createTextNode(
+      orgLinkCount
+        ? ` Show groups that work together (${orgLinkCount}) — thicker line = more often`
+        : " Groups that work together (none reported yet)",
+    ),
+  );
 
   const svg = d3
     .select(wrap)
@@ -101,12 +275,14 @@ export function createGraph(
   // Inner <g> we transform for zoom/pan
   const root = svg.append("g").attr("class", "root");
   const linkLayer = root.append("g").attr("class", "links");
+  // Money & opposition layer (src/money.ts): arrows between the links and the groups, thicker for more money.
+  const moneyLayer = root.append("g").attr("class", "money-flows");
   const nodeLayer = root.append("g").attr("class", "nodes");
 
   // Zoom behavior
   const zoom = d3
     .zoom<SVGSVGElement, unknown>()
-    .scaleExtent([0.2, 4])
+    .scaleExtent([0.2, 12]) // items and names keep their on-screen size, so deep zoom stays tidy
     .filter((event) => {
       // Allow wheel + drag on background, but not on nodes (so node drag works)
       if (event.type === "mousedown" || event.type === "touchstart") {
@@ -118,15 +294,32 @@ export function createGraph(
     .on("zoom", (event) => {
       root.attr("transform", event.transform.toString());
       currentZoomScale = event.transform.k;
+      currentTransform = event.transform;
       applyTextFade();
-      // Hide tooltip while zooming
+      applyItemScale();
+      updateSatLevel();
+      // Hide tooltip while zooming; a card anchored to a bubble would drift, so close it on manual pan/zoom
       tooltip.hide();
-    });
+      if (event.sourceEvent) focusCard.style.display = "none";
+    })
+    .on("end", () => { queueDetail(); ensureInView(); if (largePrint()) scheduleNameCull(); });
 
   let currentZoomScale = 1;
+  let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
+  /** The view just before a group was opened, so closing it goes back there. */
+  let beforeFocus: d3.ZoomTransform | null = null;
   function applyTextFade() {
     // The threshold slider value 0..1 maps to a zoom scale 0.2..2.5.
     // Below that scale, node-name labels fade out.
+    if (!settings.showText) {
+      nodeLayer.selectAll<SVGTextElement, GraphNode>("text.node-name").style("opacity", 0);
+      return;
+    }
+    if (largePrint()) {
+      // Large print draws the names in their own layer above the map (cullNames).
+      nodeLayer.selectAll<SVGTextElement, GraphNode>("text.node-name").style("opacity", 0);
+      return;
+    }
     const threshold = 0.2 + settings.textFadeThreshold * 2.3;
     const k = currentZoomScale;
     // Smooth fade across a small window for nicer transition.
@@ -149,33 +342,86 @@ export function createGraph(
 
   // ----- Settings (mutable) -----
   let settings: GraphSettings = { ...DEFAULT_GRAPH_SETTINGS };
+  try { if (localStorage.getItem("openthink.bubbles") === "0") settings.showBubbles = false; } catch (_) { /* ignore */ }
+  try { if (localStorage.getItem("openthink.previews") === "0") settings.alwaysShow = false; } catch (_) { /* ignore */ }
   let groups: GroupRule[] = [];
 
   // Helpers to compute the actual force strengths from normalized 0..1 sliders.
   function chargeStrengthFor(n: GraphNode): number {
     // Repel force 0..1 → coalition: -800..-6000, org: -100..-800
-    const t = settings.repelForce;
     return n.kind === "coalition"
-      ? -(800 + t * 5200)
-      : -(100 + t * 700);
+      ? -(200 + settings.coalitionRepel * 7200) // 0.3 = the old default (-2360)
+      : -(100 + settings.repelForce * 700);
   }
   function linkDistanceFor(l: GraphLink): number {
     const src =
       typeof l.source === "string" ? nodeById.get(l.source) : l.source;
     // 0..1 → 50..380
     const base = 50 + settings.linkDistance * 330;
+    // Orgs that work together more often sit closer
+    if (l.kind === "org") return base * (1.3 - (l.weight ?? 1) * 0.2);
     if (src?.kind === "coalition") return coalitionRadius(src) + base * 0.6;
     return base;
   }
   function centerForceStrength(): number {
     return settings.centerForce * 0.1;
   }
+  /** Groups with no connections drift to the edge; they get a firmer pull so they stay near the main cluster. */
+  const degree = new Map<string, number>();
+  function centerStrengthFor(n: GraphNode): number {
+    // An open group's satellites get a smooth version of this pull in memberPull instead (see there).
+    if (focusId && pinnedMembers.includes(n)) return 0;
+    if (n.sector === "opposition" || n.sector === "money-hub") return 0; // placed by moneySide (below)
+    const base = centerForceStrength();
+    return (degree.get(n.id) ?? 0) === 0 ? Math.max(base * 4, 0.05) : base;
+  }
   function linkForceStrength(): number {
     return 0.1 + settings.linkForce * 0.9;
   }
+  let focusId: string | null = null;
+  let pinnedMembers: GraphNode[] = []; // a coalition's member orgs, gathered on an outer ring while it is in focus
+  function linkStrengthFor(l: GraphLink): number {
+    // A group is open and its coalitions/partners are held around it: their other links would drag every one of
+    // their members across the map toward the new spot (what looked like bubbles twitching), so those links rest.
+    if (focusId && pinnedMembers.length) {
+      const s = typeof l.source === "string" ? l.source : l.source.id;
+      const t = typeof l.target === "string" ? l.target : l.target.id;
+      // (their link to the open group rests too: its length fought the satellite's spring to its place)
+      if (pinnedMembers.some((o) => o.id === s || o.id === t)) return 0;
+    }
+    if (l.kind === "org") return showOrgLinks ? linkForceStrength() * 0.25 * (l.weight ?? 1) : 0;
+    return linkForceStrength();
+  }
+  function linkWidthFor(l: GraphLink): number {
+    // org links: named by both groups twice as thick as one-way ones (and a little more with how often, when known)
+    return l.kind === "org" ? settings.linkThickness * (l.oneWay ? 1 : 2) * (0.8 + (l.weight ?? 1) * 0.2) : settings.linkThickness;
+  }
+  function activityCounts(n: GraphNode): { projects: number; events: number; actions: number } {
+    return n.kind === "org"
+      ? { projects: orgProjects(data, n).length, events: orgEvents(data, n).length, actions: orgActions(data, n).length }
+      : { projects: n.projects.length, events: n.events.length, actions: n.actions.length };
+  }
+  const countCache = new Map<string, { projects: number; events: number; actions: number }>();
+  function countsOf(n: GraphNode) {
+    let c = countCache.get(n.id);
+    if (!c) countCache.set(n.id, (c = activityCounts(n)));
+    return c;
+  }
+  tooltip.setCounts(countsOf);
+  function sizeFactor(n: GraphNode): number {
+    const { weightEvents: we, weightProjects: wp, weightActions: wa } = settings;
+    if (!we && !wp && !wa) return 1;
+    const c = countsOf(n);
+    const v = we * c.events + wp * c.projects + wa * c.actions;
+    return Math.min(2.8, 0.8 + 0.3 * Math.sqrt(v)); // no activity → a bit smaller; the more, the bigger
+  }
   function nodeRadiusOf(n: GraphNode): number {
-    const base = n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
-    return base * settings.nodeSize;
+    let base: number;
+    if (n.kind === "coalition") {
+      const w = settings.weightConnections;
+      base = UNIFORM_COALITION_R + (coalitionRadius(n) - UNIFORM_COALITION_R) * w;
+    } else base = orgRadius(n);
+    return base * settings.nodeSize * sizeFactor(n);
   }
 
   // ----- Force simulation -----
@@ -183,7 +429,7 @@ export function createGraph(
     .forceLink<GraphNode, GraphLink>(allLinks)
     .id((d) => d.id)
     .distance(linkDistanceFor)
-    .strength(linkForceStrength());
+    .strength(linkStrengthFor);
 
   const chargeForce = d3
     .forceManyBody<GraphNode>()
@@ -192,11 +438,17 @@ export function createGraph(
 
   const collideForce = d3
     .forceCollide<GraphNode>()
-    .radius((n) => nodeRadiusOf(n) + 14)
+    .radius((n) => nodeRadiusOf(n) + 18) // replaced by collideRadius() once the item helpers exist
     .iterations(2);
 
-  const xForce = d3.forceX<GraphNode>(0).strength(centerForceStrength());
-  const yForce = d3.forceY<GraphNode>(0).strength(centerForceStrength());
+  for (const l of allLinks) {
+    const sid = typeof l.source === "string" ? l.source : l.source.id;
+    const tid = typeof l.target === "string" ? l.target : l.target.id;
+    degree.set(sid, (degree.get(sid) ?? 0) + 1);
+    degree.set(tid, (degree.get(tid) ?? 0) + 1);
+  }
+  const xForce = d3.forceX<GraphNode>(0).strength(centerStrengthFor);
+  const yForce = d3.forceY<GraphNode>(0).strength(centerStrengthFor);
 
   const sim = d3
     .forceSimulation<GraphNode>(allNodes)
@@ -205,33 +457,91 @@ export function createGraph(
     .force("collide", collideForce)
     .force("x", xForce)
     .force("y", yForce)
-    .alphaDecay(0.02);
+    .alphaDecay(0.02)
+    .alphaMin(0.004); // stop a little sooner once the motion is too small to see
+
+  // Calm mode (10/15 meeting: "cap bubble movement based on the device"): on low-power mode, a weak device, or when
+  // the first seconds run below ~25 frames a second, the map settles about three times sooner, does less collision
+  // work per step, and the see-through blur behind panels (repainted every frame the map moves) is turned off.
+  let calm = false;
+  function setCalm(on: boolean) {
+    if (calm === on) return;
+    calm = on;
+    document.documentElement.classList.toggle("calm-map", on);
+    sim.alphaDecay(on ? 0.06 : 0.02).velocityDecay(on ? 0.5 : 0.4);
+    collideForce.iterations(on ? 1 : 2);
+  }
+  setCalm(lowPower() || weakDevice());
+  onDisplayChange(() => setCalm(lowPower() || weakDevice() || calmBySpeed));
+  let calmBySpeed = false;
+  {
+    const gaps: number[] = [];
+    let last = performance.now();
+    const start = last;
+    const watch = (t: number) => {
+      gaps.push(t - last);
+      last = t;
+      if (t - start < 3000) { requestAnimationFrame(watch); return; }
+      gaps.sort((a, b) => a - b);
+      if (gaps[Math.floor(gaps.length / 2)] > 40) { calmBySpeed = true; setCalm(true); }
+    };
+    requestAnimationFrame(watch);
+  }
 
   // Re-center on resize
-  function center() {
+  function center(animate = false) {
     const { w, h } = dimensions();
-    svg.attr("viewBox", `${-w / 2} ${-h / 2} ${w} ${h}`);
+    // While another tab is showing, the map is hidden and measures 0 × 0. A 0 × 0 viewBox makes the whole map
+    // blank when you come back (Oct 24 bug: resize the window on the Topics tab, then open Map), so keep the last one.
+    if (w < 2 || h < 2) return;
+    const vb = `${-w / 2} ${-h / 2} ${w} ${h}`;
+    if (animate && svg.attr("viewBox")) svg.transition("vb").duration(260).ease(d3.easeCubicOut).attr("viewBox", vb);
+    else svg.attr("viewBox", vb);
   }
   center();
-  window.addEventListener("resize", () => {
-    center();
-    sim.alpha(0.3).restart();
-  });
+  window.addEventListener("resize", () => center(true));
+  // ...and re-measure as soon as the map is visible (or resized) again.
+  new ResizeObserver(() => center(false)).observe(wrap);
 
   // ----- Drag behavior on nodes -----
+  // While someone drags a group (and briefly after), the dots of the groups that move get their trailing physics.
+  // Not during the map's own settling, when every group drifts at once.
+  let dotsLiveUntil = 0;
+  // While a node is being dragged (and for a moment after you let go), hover tooltips and click cards stay closed,
+  // so they don't pop up over everything the node passes (Oct 26).
+  let dragMoved = false;
+  let dragFrom: [number, number] = [0, 0];
+  let dragQuietUntil = 0;
+  const dragBlocked = () => dragMoved || performance.now() < dragQuietUntil;
   const drag = d3
     .drag<SVGGElement, GraphNode>()
     .on("start", (event, d) => {
+      dragMoved = false;
+      dragFrom = [event.x, event.y];
       if (!event.active) sim.alphaTarget(0.25).restart();
       d.fx = d.x ?? 0;
       d.fy = d.y ?? 0;
     })
     .on("drag", (event, d) => {
+      if (!dragMoved && Math.hypot(event.x - dragFrom[0], event.y - dragFrom[1]) > 3) {
+        dragMoved = true; // a real drag, not a click: close what's open and keep it closed until the drag ends
+        tooltip.hide();
+        clearHighlight();
+        focusCard.style.display = "none";
+      }
       d.fx = event.x;
       d.fy = event.y;
+      dotsLiveUntil = performance.now() + 1500;
     })
     .on("end", (event, d) => {
+      if (dragMoved) dragQuietUntil = performance.now() + 300; // the click that ends a drag opens nothing
+      dragMoved = false;
       if (!event.active) sim.alphaTarget(0);
+      // A satellite let go glides all the way back to its place (the motion used to die out halfway there).
+      if (focusId && memberHome.has(d)) sim.alpha(Math.max(sim.alpha(), 0.7)).restart();
+      dotsLiveUntil = performance.now() + 1500;
+      // A zoomed-in node stays where you put it until you leave the zoomed-in view (its satellites spring back home).
+      if (d.id === focusId) return;
       d.fx = null;
       d.fy = null;
     });
@@ -245,7 +555,24 @@ export function createGraph(
     .data(allLinks)
     .enter()
     .append("line")
-    .attr("class", "link") as LinkSel;
+    .attr("class", (l) => (l.kind === "org" ? `link org-link w${l.weight ?? 1} ${l.oneWay ? "one-way" : "mutual"}` : "link"))
+    .attr("marker-end", (l: GraphLink) => (l.kind === "org" && l.oneWay ? "url(#org-arrow)" : null)) as LinkSel;
+  {
+    const defs = svg.select<SVGDefsElement>("defs").empty() ? svg.insert("defs", ":first-child") : svg.select<SVGDefsElement>("defs");
+    defs.append("marker").attr("id", "org-arrow").attr("viewBox", "0 0 10 10").attr("refX", 9).attr("refY", 5)
+      .attr("markerWidth", 5).attr("markerHeight", 5).attr("orient", "auto").attr("markerUnits", "strokeWidth")
+      .append("path").attr("d", "M0 0L10 5L0 10z").attr("class", "org-arrow-head");
+  }
+  /** A one-way link stops at the edge of the group it points to, so its arrowhead shows. */
+  const linkEnd = (l: GraphLink, axis: "x" | "y"): number => {
+    const t = l.target as GraphNode, s0 = l.source as GraphNode;
+    const tv = (axis === "x" ? t.x : t.y) ?? 0;
+    if (!l.oneWay) return tv;
+    const dx = (t.x ?? 0) - (s0.x ?? 0), dy = (t.y ?? 0) - (s0.y ?? 0);
+    const d = Math.hypot(dx, dy) || 1;
+    const back = nodeRadiusOf(t) + 3;
+    return tv - ((axis === "x" ? dx : dy) / d) * back;
+  };
 
   let nodeSel: NodeSel = nodeLayer
     .selectAll<SVGGElement, GraphNode>("g.node")
@@ -253,10 +580,29 @@ export function createGraph(
     .enter()
     .append("g")
     .attr("class", (d) =>
-      d.kind === "coalition" ? "node-coalition" : "node-org",
+      (d.kind === "coalition" ? "node-coalition" : "node-org") + (d.sector ? ` sector sector-${d.sector}` : ""),
     ) as NodeSel;
+  // Sector layers get their own ring colour (see .sector in styles.css).
+  nodeSel.filter((d) => !!d.sector).style("--sector", (d) => sectorById(d.sector)?.color ?? "#a16207");
 
   // Append shapes + labels per node.
+  // Logos load after the map is on screen (Oct 23 meeting: "load org images after loading the map"): the bubbles
+  // show their initials first, then the logos fill in a few at a time while the browser is idle.
+  const logoQueue: [SVGImageElement, string][] = [];
+  let logoTimer = 0;
+  function queueLogo(img: SVGImageElement, url: string) {
+    logoQueue.push([img, url]);
+    if (!logoTimer) logoTimer = window.setTimeout(loadLogos, 1200);
+  }
+  function loadLogos() {
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+    const step = () => {
+      for (const [img, url] of logoQueue.splice(0, 24)) img.setAttribute("href", url);
+      if (logoQueue.length) { if (idle) idle(step, { timeout: 500 }); else setTimeout(step, 60); }
+      else logoTimer = 0;
+    };
+    step();
+  }
   // Structure per node: <circle.halo> (groups), <circle.ring> (main), <text.node-label>, <text.node-name>.
   nodeSel.each(function (this: SVGGElement, d) {
     const sel = d3.select(this);
@@ -268,42 +614,502 @@ export function createGraph(
       .attr("stroke-width", 0);
     if (d.kind === "coalition") {
       const r = coalitionRadius(d);
-      sel
+      const ring = sel
         .append("circle")
         .attr("class", "ring")
         .attr("r", r)
-        .attr("fill", d.color);
-      sel
+        .attr("fill", d.color); // white with a coloured rim once its logo has loaded (logos load after the map shows)
+      const cLabel = sel
         .append("text")
         .attr("class", "node-label")
         .attr("font-size", Math.min(r * 0.55, 22))
         .text(d.abbrev || initials(d.name));
+      if (d.logo) {
+        // Logo inside the coalition's colored ring, loaded after the map is up; the abbreviation shows until then
+        // (and stays if the image fails).
+        const s = r * LOGO_SCALE * 0.82; // inside the colored ring
+        const img = sel
+          .append("image")
+          .attr("class", "node-logo")
+          .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s)
+          .attr("preserveAspectRatio", "xMidYMid meet")
+          .style("clip-path", "circle(50%)")
+          .attr("pointer-events", "none")
+          .on("load", () => {
+            cLabel.style("display", "none");
+            // style() (not attr) so it beats the stylesheet's white ring
+            ring.attr("fill", "#f8fafc").style("stroke", d.color).style("stroke-width", "5px").style("stroke-opacity", "1");
+          })
+          .on("error", function () { d3.select(this).remove(); });
+        queueLogo(img.node()!, d.logo);
+      }
       sel
         .append("text")
         .attr("class", "node-name")
         .attr("font-size", COALITION_LABEL_FONT_SIZE)
-        .attr("y", r + 14)
-        .text(d.name);
+        .attr("y", r + 20)
+        .call((t) => nameLines(t, d.name));
     } else {
       const r = orgRadius(d);
       sel
         .append("circle")
         .attr("class", "ring")
         .attr("r", r)
-        .attr("fill", "#2a2a36");
-      sel
+        .attr("fill", "#2a2a36"); // white, without the border, once its logo has loaded
+      const label = sel
         .append("text")
         .attr("class", "node-label")
         .attr("font-size", ORG_LABEL_FONT_SIZE)
         .text(initials(d.name, 3));
+      if (d.sector === "money-hub") {
+        // The legislature (money & opposition layer) is drawn as a capitol building, not a bubble; the circle stays,
+        // invisible, as the click target.
+        label.style("display", "none");
+        sel.append("g").attr("class", "capitol-icon").attr("transform", capitolTransform(r))
+          .append("path").attr("d", CAPITOL_PATH);
+      }
+      if (d.logo) {
+        // Logo inside the circle, loaded after the map is up; the initials show until then (and stay if it fails).
+        const s = r * LOGO_SCALE;
+        const img = sel
+          .append("image")
+          .attr("class", "node-logo")
+          .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s)
+          .attr("preserveAspectRatio", "xMidYMid meet")
+          .style("clip-path", "circle(50%)")
+          .attr("pointer-events", "none")
+          .on("load", () => {
+            label.style("display", "none");
+            sel.select("circle.ring").attr("fill", "#f8fafc").style("stroke", "none"); // no white border around logos
+            sel.classed("has-logo", true); // sector rings keep their colour but get a white fill behind the logo
+          })
+          .on("error", function () { d3.select(this).remove(); });
+        queueLogo(img.node()!, d.logo);
+      }
       sel
         .append("text")
         .attr("class", "node-name")
         .attr("font-size", ORG_NAME_FONT_SIZE)
-        .attr("y", r + 12)
-        .text(shorten(d.name, 28));
+        .attr("y", r + 18)
+        .call((t) => nameLines(t, d.name));
     }
   });
+
+  // ----- Always-on items: every group's events / projects / actions ring it on one orbit -----
+  // The orbit never changes with zoom, so zooming never reshuffles the map. Far out the items are small dots; zoom
+  // in and the same items, in the same places, turn into icons, and further in their names appear beside them.
+  // Items keep a steady size on screen (up to a cap) while planets grow with the zoom: a planet with its moons.
+  const SAT_DOT_R = 3.2;
+  const SAT_BUB_R = 11; // an icon's radius on screen (px) at full size
+  const SAT_SPACING = 8.5; // world units between neighbouring items on the orbit
+  const SAT_MAX_WORLD_R = 3.6; // an icon never takes more room than this (world units), so neighbours never overlap
+  // Phones wait until you're zoomed far in before drawing icons (each icon is several SVG elements, and a phone
+  // fills its screen with many groups at moderate zoom), so the map stays light there.
+  const PHONE = window.matchMedia("(max-width: 720px)").matches;
+  const DETAIL_ON_K = PHONE ? 4.2 : 1.9; // zoom at which dots become icons
+  const DETAIL_OFF_K = PHONE ? 3.6 : 1.6; // and back (a gap so it doesn't flicker)
+  const LABEL_ON_K = PHONE ? 5.5 : 2.8; // zoom at which item names appear
+  let satsReady = false;
+  let satMode: 0 | 1 = 0;
+  const satLevel = new Map<string, 0 | 1>();
+  let detailToken = 0;
+
+  const loadingEl = h("div", { class: "map-loading" },
+    h("div", { class: "map-loading-label" }, "Loading details…"),
+    h("div", { class: "map-loading-track" }, h("div", { class: "map-loading-fill" })));
+  loadingEl.style.display = "none";
+  wrap.appendChild(loadingEl);
+  const loadingFill = loadingEl.querySelector<HTMLElement>(".map-loading-fill")!;
+  let loadingSince = 0;
+  function showLoading(frac: number) {
+    if (loadingEl.style.display === "none") { loadingEl.style.display = "flex"; loadingSince = performance.now(); }
+    loadingFill.style.width = `${Math.round(frac * 100)}%`;
+  }
+  function hideLoading() {
+    const wait = Math.max(0, 300 - (performance.now() - loadingSince));
+    setTimeout(() => { if (satsBusy === 0) loadingEl.style.display = "none"; }, wait);
+  }
+  let satsBusy = 0;
+
+  /** The items to show around a group: only the kinds that are switched on, one kind after another. */
+  function satItemsOf(n: GraphNode): Bubble[] {
+    const want = new Set<BubbleKind>();
+    if (settings.showAllProjects) want.add("project");
+    if (settings.showAllEvents) want.add("event");
+    if (settings.showAllActions || settings.showAllVolunteer) want.add("action");
+    return bubblesFor(n).filter((b) => want.has(b.kind) && kindShown(b));
+  }
+  /** Take items round-robin across kinds so a "+n" never hides a whole kind. */
+  function spread(items: Bubble[], cap: number): Bubble[] {
+    if (items.length <= cap) return items;
+    const by = new Map<BubbleKind, Bubble[]>();
+    for (const b of items) (by.get(b.kind) ?? by.set(b.kind, []).get(b.kind)!).push(b);
+    const out: Bubble[] = [];
+    const lists = [...by.values()];
+    for (let i = 0; out.length < cap; i++) {
+      let added = false;
+      for (const l of lists) if (i < l.length && out.length < cap) { out.push(l[i]); added = true; }
+      if (!added) break;
+    }
+    return out.sort((x, y) => items.indexOf(x) - items.indexOf(y));
+  }
+
+  // ----- Item physics: items on a ring push each other apart like the group bubbles do, can be dragged,
+  // and spring back to their place on the ring. One small simulation per ring (a few dozen items at most).
+  interface RingNode extends d3.SimulationNodeDatum { tx: number; ty: number; r: number; }
+  /** Each item's faint line back to its group ("home planet"), drawn under the planet so it starts at its rim. */
+  const tetherOf = new WeakMap<Element, SVGLineElement>();
+  function moveTether(el: Element, x: number, y: number) {
+    const l = tetherOf.get(el);
+    if (!l) return;
+    l.setAttribute("x2", String(x));
+    l.setAttribute("y2", String(y));
+  }
+  function addTether(tg: d3.Selection<SVGGElement, unknown, null, undefined>, el: Element, a: number, rr: number, kind: string) {
+    const l = tg.append("line").attr("class", `sat-tether t-${kind}`).attr("x1", 0).attr("y1", 0).node()!;
+    tetherOf.set(el, l);
+    moveTether(el, Math.cos(a) * rr, Math.sin(a) * rr);
+  }
+  function ringPhysics(
+    els: SVGGElement[],
+    angles: number[],
+    radii: number[],
+    ringR: number,
+    startR: number,
+    pad: number,
+    onTick?: (nodes: RingNode[]) => void,
+    still = false,
+    charge = -30,
+  ): d3.Simulation<RingNode, undefined> {
+    const nodes: RingNode[] = els.map((_, i) => ({
+      x: Math.cos(angles[i]) * startR, y: Math.sin(angles[i]) * startR,
+      tx: Math.cos(angles[i]) * ringR, ty: Math.sin(angles[i]) * ringR, r: radii[i],
+    }));
+    const place = () => {
+      els.forEach((el, i) => {
+        el.setAttribute("transform", `translate(${nodes[i].x},${nodes[i].y})`);
+        moveTether(el, nodes[i].x ?? 0, nodes[i].y ?? 0);
+      });
+      onTick?.(nodes);
+    };
+    const home = (alpha: number) => {
+      for (const d of nodes) {
+        d.vx = (d.vx ?? 0) + (d.tx - (d.x ?? 0)) * 0.07 * alpha;
+        d.vy = (d.vy ?? 0) + (d.ty - (d.y ?? 0)) * 0.07 * alpha;
+      }
+    };
+    const s = d3.forceSimulation<RingNode>(nodes)
+      .force("ring", d3.forceRadial<RingNode>(ringR, 0, 0).strength(0.16))
+      .force("home", home)
+      .force("collide", d3.forceCollide<RingNode>((d) => d.r + pad).strength(0.9).iterations(2))
+      .force("charge", charge ? d3.forceManyBody<RingNode>().strength(charge).distanceMax(Math.max(120, ringR)) : null)
+      .alphaDecay(0.025)
+      .velocityDecay(0.24)
+      .on("tick", place);
+    place();
+    if (still) s.stop().alpha(0); // already in place: wakes up when an item or its group is dragged
+    els.forEach((el, i) => {
+      d3.select<SVGGElement, RingNode>(el).datum(nodes[i]).call(
+        d3.drag<SVGGElement, RingNode>()
+          .clickDistance(4)
+          .on("start", (ev, d) => { if (!ev.active) s.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+          .on("drag", (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
+          // Let go and it springs back to its place on the ring (the others settle around it).
+          .on("end", (ev, d) => { if (!ev.active) s.alphaTarget(0).alpha(0.8).restart(); d.fx = null; d.fy = null; }),
+      );
+    });
+    return s;
+  }
+  const satSims = new Map<string, d3.Simulation<RingNode, undefined>>();
+  /** The parent moved by (dx, dy): leave its items behind for a moment so they trail it and jostle back into place. */
+  function nudgeRing(rs: d3.Simulation<RingNode, undefined>, dx: number, dy: number) {
+    for (const d of rs.nodes()) {
+      if (d.fx != null) continue;
+      // left behind for a moment, like a moon tugged by its planet, but never flung far from its orbit
+      const ox = (d.x ?? 0) - dx, oy = (d.y ?? 0) - dy;
+      const reach = Math.hypot(d.tx, d.ty) * 1.6 + 6;
+      const off = Math.hypot(ox - d.tx, oy - d.ty);
+      const k = off > reach ? reach / off : 1;
+      d.x = d.tx + (ox - d.tx) * k;
+      d.y = d.ty + (oy - d.ty) * k;
+    }
+    rs.alpha(Math.max(rs.alpha(), 0.45)).restart();
+  }
+  const lastPos = new Map<string, { x: number; y: number }>();
+  function trailItems() {
+    const follow = (id: string, rs: d3.Simulation<RingNode, undefined> | null | undefined) => {
+      const n = nodeById.get(id);
+      if (!n || !rs) return;
+      const x = n.x ?? 0, y = n.y ?? 0;
+      const last = lastPos.get(id);
+      lastPos.set(id, { x, y });
+      if (!last) return;
+      const dx = x - last.x, dy = y - last.y;
+      if (Math.abs(dx) + Math.abs(dy) < 0.05 || Math.abs(dx) + Math.abs(dy) > 300) return;
+      nudgeRing(rs, dx, dy);
+    };
+    if (focusId) follow(focusId, focusSim);
+    for (const [id, rs] of satSims) follow(id, rs);
+    // The coloured dots trail their group too. Their little simulation is made only for the groups that move
+    // most while someone drags (at most MAX_DOT_SIMS at once, on screen), and thrown away once they settle,
+    // so a still map, or the map settling by itself, costs nothing extra.
+    const fresh: { id: string; moved: number; dx: number; dy: number }[] = [];
+    let active = 0;
+    for (const [id, dots] of satDots) {
+      const n = nodeById.get(id);
+      if (!n) continue;
+      const x = n.x ?? 0, y = n.y ?? 0;
+      const last = lastPos.get(id);
+      lastPos.set(id, { x, y });
+      if (!last) continue;
+      const dx = x - last.x, dy = y - last.y;
+      const moved = Math.abs(dx) + Math.abs(dy);
+      if (moved > 300) continue;
+      if (dots.sim) { active++; if (moved > 0.05) nudgeRing(dots.sim, dx, dy); }
+      else if (moved >= 1 && performance.now() < dotsLiveUntil && onScreen(n)) fresh.push({ id, moved, dx, dy });
+    }
+    fresh.sort((p, q) => q.moved - p.moved);
+    for (const f of fresh.slice(0, Math.max(0, MAX_DOT_SIMS - active))) {
+      const dots = satDots.get(f.id)!;
+      const sim = ringPhysics(dots.els, dots.angles, dots.els.map(() => SAT_DOT_R), dots.rr, dots.rr, 0.8, undefined, true, 0);
+      sim.on("end.dispose", () => {
+        sim.stop();
+        dots.sim = null;
+        // back exactly on the orbit
+        dots.els.forEach((el, i) => {
+          const x = Math.cos(dots.angles[i]) * dots.rr, y = Math.sin(dots.angles[i]) * dots.rr;
+          el.setAttribute("transform", `translate(${x},${y})`);
+          moveTether(el, x, y);
+        });
+      });
+      dots.sim = sim;
+      nudgeRing(sim, f.dx, f.dy);
+    }
+  }
+  const MAX_DOT_SIMS = 16;
+  /** Each group's dots (when its items show as dots), with the physics that is running for them, if any. */
+  const satDots = new Map<string, { els: SVGCircleElement[]; angles: number[]; rr: number; sim: d3.Simulation<RingNode, undefined> | null }>();
+
+  /** The orbit a group's items sit on, just outside it (the same at every zoom). */
+  function satOrbitR(n: GraphNode): number {
+    return nodeRadiusOf(n) + 10;
+  }
+  /** The items that fit on the orbit, taken round-robin across kinds. */
+  function satShown(n: GraphNode, items: Bubble[]): Bubble[] {
+    const cap = Math.max(6, Math.floor((2 * Math.PI * satOrbitR(n)) / SAT_SPACING));
+    return spread(items, cap);
+  }
+  const satCountCache = new Map<string, number>();
+  /** How far a group's items reach (the same at every zoom, so the layout never changes when you zoom). */
+  function itemExtent(n: GraphNode): number {
+    const r0 = nodeRadiusOf(n);
+    if (!settings.alwaysShow) return r0;
+    let c = satCountCache.get(n.id);
+    if (c === undefined) satCountCache.set(n.id, (c = satItemsOf(n).length));
+    if (!c) return r0;
+    return satOrbitR(n) + SAT_MAX_WORLD_R;
+  }
+  /** Space each group keeps around itself: neighbouring groups' item rings may nearly touch. */
+  function collideRadius(n: GraphNode): number {
+    return settings.alwaysShow ? Math.max(itemExtent(n) + 1, nodeRadiusOf(n) + 14) : nodeRadiusOf(n) + 14;
+  }
+  /** Items keep a steady size on screen as you zoom in (never bigger than SAT_MAX_WORLD_R in the map). */
+  function applyItemScale() {
+    const k = currentZoomScale;
+    // Items grow gently on screen as you zoom in (square root of the extra zoom past 3x), but never take more room in
+    // the map than SAT_MAX_WORLD_R, so the spacing between neighbours holds at every zoom.
+    const grow = k > 3 ? Math.sqrt(k / 3) : 1;
+    nodeLayer.style("--is", String(Math.min(SAT_MAX_WORLD_R / SAT_BUB_R, grow / k)));
+    nodeLayer.style("--lf", String(grow ** -0.4)); // their names grow a little less than the icons
+    nodeLayer.classed("item-names", k >= LABEL_ON_K);
+    // Past 100% zoom, group names grow only gently (k^0.35) while planets grow with the zoom.
+    nodeLayer.style("--ns", String(k > 1 ? k ** 0.35 / k : 1));
+    // Large print: every group name is 18px on screen (coalitions 21px) at any zoom: CSS sizes are in map units,
+    // so divide by the zoom.
+    nodeLayer.style("--lpo", String(1 / k));
+    svg.classed("zoomed-in", k > 1);
+    if (largePrint()) scheduleNameCull();
+  }
+
+  // ----- Large print: names in a layer above every bubble -----
+  // SVG names sit inside each group's node, so later bubbles cover them, and they scale with the zoom. In large print
+  // the names are drawn instead as plain text above the whole map: 18px (coalitions 21px), bold, white on a dark
+  // pill, never covered. Where two would overlap, the bigger group (coalitions first) keeps its name and the other
+  // waits until you zoom in. The opened group and its partners always show theirs.
+  const lpLayer = h("div", { class: "lp-labels", "aria-hidden": "true" });
+  wrap.appendChild(lpLayer);
+  const lpSpans = new Map<string, { el: HTMLElement; w: number; h: number }>();
+  let cullTimer = 0;
+  let lpTick = 0;
+  function scheduleNameCull() {
+    if (cullTimer) return;
+    cullTimer = window.requestAnimationFrame(() => { cullTimer = 0; cullNames(); });
+  }
+  function cullNames() {
+    if (!largePrint() || !settings.showText) { lpLayer.style.display = "none"; return; }
+    lpLayer.style.display = "";
+    const base = wrap.getBoundingClientRect();
+    const items: { d: GraphNode; x: number; y: number; pri: number }[] = [];
+    nodeSel.each(function (d) {
+      const g = this as SVGGElement;
+      if (g.style.display === "none" || g.classList.contains("faded") || g.classList.contains("partner-many")) return;
+      const ring = g.querySelector("circle.ring") as SVGCircleElement | null;
+      if (!ring) return;
+      const b = ring.getBoundingClientRect();
+      if (!b.width || b.bottom < base.top - 40 || b.top > base.bottom || b.right < base.left || b.left > base.right) return;
+      const focused = g.classList.contains("selected") || g.classList.contains("focused") || g.classList.contains("member-ring");
+      items.push({ d, x: b.left + b.width / 2 - base.left, y: b.bottom - base.top + 3, pri: (focused ? 1e6 : 0) + (d.kind === "coalition" ? 1e5 : 0) + nodeRadiusOf(d) });
+    });
+    items.sort((a, b) => b.pri - a.pri);
+    const placed: { l: number; t: number; r: number; b: number }[] = [];
+    const used = new Set<string>();
+    for (const it of items) {
+      let sp = lpSpans.get(it.d.id);
+      if (!sp) {
+        const el = h("span", { class: `lp-name ${it.d.kind === "coalition" ? "co" : ""}` }, it.d.name);
+        lpLayer.appendChild(el);
+        sp = { el, w: el.offsetWidth, h: el.offsetHeight };
+        lpSpans.set(it.d.id, sp);
+      }
+      // kept fully on screen (a name near the edge slides in rather than being cut off)
+      const left = Math.max(4, Math.min(base.width - sp.w - 4, it.x - sp.w / 2));
+      const box = { l: left, t: it.y, r: left + sp.w, b: it.y + sp.h };
+      const hit = placed.some((q) => box.l < q.r + 2 && box.r > q.l - 2 && box.t < q.b + 2 && box.b > q.t - 2);
+      if (hit && it.pri < 1e6) continue;
+      placed.push(box);
+      used.add(it.d.id);
+      sp.el.style.transform = `translate(${Math.round(box.l)}px, ${Math.round(box.t)}px)`;
+    }
+    for (const [id, sp] of lpSpans) sp.el.classList.toggle("off", !used.has(id));
+  }
+  onDisplayChange(() => { applyTextFade(); applyItemScale(); cullNames(); });
+  window.addEventListener("resize", () => { if (largePrint()) scheduleNameCull(); });
+  function refreshSpacing(alpha = 0.5) {
+    satCountCache.clear();
+    collideForce.radius(collideRadius);
+    sim.alpha(Math.max(sim.alpha(), alpha)).restart();
+  }
+
+  /** Where the i-th of n items sits around its group: spread evenly, leaving a gap straight below the group,
+   *  where its name is, so an item and its label never sit on top of the group's name. */
+  const NAME_GAP = (70 * Math.PI) / 180;
+  function satAngle(i: number, n: number): number {
+    return Math.PI / 2 + NAME_GAP / 2 + ((i + 0.5) * (2 * Math.PI - NAME_GAP)) / n;
+  }
+
+  function drawSats(n: GraphNode, level: 0 | 1) {
+    const sel = d3.select<SVGGElement, GraphNode>(nodeSel.filter((d) => d.id === n.id).node() as SVGGElement);
+    satSims.get(n.id)?.stop();
+    satSims.delete(n.id);
+    satDots.get(n.id)?.sim?.stop();
+    satDots.delete(n.id);
+    sel.selectAll("g.sats, g.sat-tethers").remove();
+    satLevel.set(n.id, level);
+    if (!settings.alwaysShow) return;
+    const items = satItemsOf(n);
+    if (!items.length) return;
+    const tg = sel.insert("g", ":first-child").attr("class", "sat-tethers") as unknown as d3.Selection<SVGGElement, unknown, null, undefined>;
+    const g = sel.append("g").attr("class", `sats lv${level}`);
+    const rr = satOrbitR(n); // everything sits on this one circle, just outside the planet
+    const shown = satShown(n, items);
+    const more = items.length - shown.length;
+    if (level === 0) {
+      g.style("pointer-events", "none");
+      const dots = { els: [] as SVGCircleElement[], angles: [] as number[], rr, sim: null };
+      shown.forEach((b, i) => {
+        const a = satAngle(i, shown.length);
+        const c = g.append("circle").attr("class", `sat sat-${b.kind}${isRoleB(b) ? " sat-role" : ""}`)
+          .attr("transform", `translate(${Math.cos(a) * rr},${Math.sin(a) * rr})`).attr("r", SAT_DOT_R);
+        dots.els.push(c.node()!);
+        dots.angles.push(a);
+        addTether(tg, c.node()!, a, rr, b.kind);
+      });
+      satDots.set(n.id, dots);
+      if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
+      return;
+    }
+    // Icons in exactly the dots' places; the inner group is scaled by CSS (--is) so they keep a steady size on screen.
+    const els: SVGGElement[] = [];
+    const angles: number[] = [];
+    shown.forEach((b, i) => {
+      const a = satAngle(i, shown.length);
+      const bg = g.append("g").attr("class", `sat-bubble b-${b.kind}${isRoleB(b) ? " b-role" : ""}`).style("cursor", "pointer");
+      els.push(bg.node()!);
+      angles.push(a);
+      addTether(tg, bg.node()!, a, rr, b.kind);
+      bg.append("title").text(fullName(b));
+      const inner = bg.append("g").attr("class", "sat-in");
+      inner.append("circle").attr("r", SAT_BUB_R);
+      const icon = inner.append("g").attr("transform", "scale(0.5)");
+      const isRole = b.kind === "action" && (b.item as Action).kind === "role";
+      drawIcon(icon as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : (b.kind as BubbleKind), b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
+      if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) drawRecurArc(inner as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, SAT_BUB_R - 1.2, 0.9);
+      // its full name beside it, pointing away from the planet (shown once you are zoomed in far enough)
+      radialLabel(inner, a, SAT_BUB_R + 4, fullName(b), itemMeta(b), 10, 22).attr("class", `sat-label k-${b.kind}`);
+      bg.on("click", (event: Event) => {
+        event.stopPropagation();
+        const cb2 = (inner.select("circle").node() as SVGCircleElement).getBoundingClientRect();
+        const wb = wrap.getBoundingClientRect();
+        showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 }, n);
+      });
+    });
+    if (more > 0) g.append("text").attr("class", "sat-more").attr("y", -rr - 6).text(`+${more}`);
+    // Drag one and the others make room; until then nothing moves.
+    satSims.set(n.id, ringPhysics(els, angles, els.map(() => SAT_MAX_WORLD_R), rr, rr, 0.6, undefined, true, 0)); // no push between moons: they keep their orbit and spacing
+  }
+
+  /** Dots for everyone (cheap); bubbles for what is on screen when zoomed in, a batch at a time. */
+  function refreshSats() {
+    if (!satsReady) return;
+    detailToken++;
+    satMode = currentZoomScale >= DETAIL_ON_K ? 1 : 0;
+    nodeLayer.classed("detail", satMode === 1);
+    applyItemScale();
+    nodeSel.each((d) => drawSats(d, 0));
+    queueDetail();
+  }
+  function onScreen(n: GraphNode): boolean {
+    const { w, h: vh } = dimensions();
+    const k = currentTransform.k;
+    const m = 140; // a bit of margin so bubbles are ready just before they slide in
+    const sx = (n.x ?? 0) * k + currentTransform.x;
+    const sy = (n.y ?? 0) * k + currentTransform.y;
+    return Math.abs(sx) < w / 2 + m && Math.abs(sy) < vh / 2 + m;
+  }
+  function queueDetail() {
+    if (!satsReady || !settings.alwaysShow || satMode !== 1) return;
+    const todo = allNodes.filter((n) => satLevel.get(n.id) !== 1 && onScreen(n) && (nodeSel.filter((d) => d.id === n.id).style("display") !== "none") && satItemsOf(n).length);
+    if (!todo.length) return;
+    const token = ++detailToken;
+    const BATCH = 8;
+    let done = 0;
+    satsBusy++;
+    const step = () => {
+      if (token !== detailToken) { satsBusy--; hideLoading(); return; }
+      for (const n of todo.slice(done, done + BATCH)) drawSats(n, 1);
+      done += BATCH;
+      if (todo.length > BATCH) showLoading(Math.min(1, done / todo.length));
+      if (done < todo.length) requestAnimationFrame(step);
+      else { satsBusy--; hideLoading(); }
+    };
+    if (todo.length > BATCH) showLoading(0);
+    requestAnimationFrame(step);
+  }
+  function updateSatLevel() {
+    if (!satsReady) return;
+    const want: 0 | 1 = satMode === 1 ? (currentZoomScale < DETAIL_OFF_K ? 0 : 1) : (currentZoomScale >= DETAIL_ON_K ? 1 : 0);
+    if (want === satMode) return;
+    satMode = want;
+    detailToken++;
+    nodeLayer.classed("detail", want === 1);
+    if (!settings.alwaysShow) return;
+    // Nothing moves: dots and icons sit in the same places at the same size. Zoomed out, icons go back to dots.
+    if (want === 0) nodeSel.each((d) => { if (satLevel.get(d.id) === 1) drawSats(d, 0); });
+    else queueDetail();
+  }
+  // Groups keep moving after a zoom (they spread out or gather); upgrade any that slide into view.
+  setInterval(() => { if (satsReady && satMode === 1 && settings.alwaysShow && satsBusy === 0) queueDetail(); }, 1200);
+  const renderSatellites = refreshSats;
 
   // ----- Apply visual settings (radii, halos, link thickness, fade) -----
   function applyVisualSettings() {
@@ -312,6 +1118,10 @@ export function createGraph(
       const sel = d3.select(this);
       const r = nodeRadiusOf(d);
       sel.select<SVGCircleElement>("circle.ring").attr("r", r);
+      sel.select<SVGGElement>("g.capitol-icon").attr("transform", capitolTransform(r));
+      const s = r * LOGO_SCALE * (d.kind === "coalition" ? 0.82 : 1);
+      sel.select<SVGImageElement>("image.node-logo")
+        .attr("x", -s).attr("y", -s).attr("width", 2 * s).attr("height", 2 * s);
 
       // Find matching group (if any) — first match wins
       let matchedColor: string | null = null;
@@ -335,10 +1145,11 @@ export function createGraph(
       // Label below the node
       sel
         .select<SVGTextElement>("text.node-name")
-        .attr("y", r + (d.kind === "coalition" ? 14 : 12));
+        .attr("y", r + (d.kind === "coalition" ? 20 : 18));
     });
-    // Link thickness
-    linkSel.attr("stroke-width", settings.linkThickness);
+    // Link thickness (org-to-org links scale with how often they work together)
+    linkSel.attr("stroke-width", linkWidthFor);
+    renderSatellites();
   }
   // Apply on initial render
   applyVisualSettings();
@@ -347,10 +1158,12 @@ export function createGraph(
   nodeSel
     .call(drag)
     .on("mouseenter", function (event, d) {
+      if (dragBlocked()) return;
       tooltip.show(d, event.clientX, event.clientY);
       highlightConnected(d);
     })
     .on("mousemove", function (event) {
+      if (dragBlocked()) return;
       tooltip.move(event.clientX, event.clientY);
     })
     .on("mouseleave", function () {
@@ -359,12 +1172,26 @@ export function createGraph(
     })
     .on("click", function (event, d) {
       event.stopPropagation();
+      if (dragBlocked()) return;
+      if (focusId === d.id) {
+        // Looking at one of its items (or the panel was closed): the first click brings back the group's details,
+        if (cb.showsDetailsOf && !cb.showsDetailsOf(d)) {
+          cb.onOpenDetails?.(d);
+          return;
+        }
+        // and clicking the open group again folds its bubbles back in.
+        exitFocus();
+        cb.onNodeDeselect?.(d);
+        return;
+      }
       cb.onNodeClick(d);
+      if (settings.showBubbles) enterFocus(d.id);
     });
 
-  // Clicking the background closes selection
+  // Clicking the background closes selection and zooms back out
   svg.on("click", () => {
     api.setSelectedNode(null);
+    exitFocus();
   });
 
   // ----- Highlight connected nodes/edges on hover -----
@@ -397,21 +1224,92 @@ export function createGraph(
   }
 
   // ----- Tick -----
+  // ----- Money & opposition: arrows (lobbying amber, political red), and the layer's groups set to one side -----
+  type FlowD = { from: GraphNode; to: GraphNode; kind: string; amount: number; label: string };
+  const flowData: FlowD[] = moneyFlows().flatMap((f) => {
+    const from = nodeById.get(f.from), to = nodeById.get(f.to);
+    return from && to ? [{ from, to, kind: f.kind, amount: f.amount,
+      label: `${from.name} → ${to.name}: ${f.approx ? "about " : ""}${fmtMoney(f.amount)} (${f.what})` }] : [];
+  });
+  const maxFlow = Math.max(1, ...flowData.map((f) => f.amount));
+  if (flowData.length) {
+    const defs = svg.select<SVGDefsElement>("defs").empty() ? svg.insert("defs", ":first-child") : svg.select<SVGDefsElement>("defs");
+    for (const k of ["good", "bad"])
+      defs.append("marker").attr("id", `money-arrow-${k}`).attr("viewBox", "0 0 10 10").attr("refX", 9).attr("refY", 5)
+        .attr("markerWidth", 4).attr("markerHeight", 4).attr("orient", "auto-start-reverse")
+        .append("path").attr("d", "M0 0L10 5L0 10z").attr("class", `money-head side-${k}`);
+  }
+  const moneySel = moneyLayer.selectAll<SVGPathElement, FlowD>("path").data(flowData).enter().append("path")
+    // Green from climate groups, red from groups on the record against climate bills (Oct 28).
+    .attr("class", (f) => `money-flow k-${f.kind} side-${f.from.sector === "opposition" ? "bad" : "good"}`)
+    .attr("stroke-width", (f) => 1.2 + 9 * Math.sqrt(f.amount / maxFlow))
+    .attr("marker-end", (f) => `url(#money-arrow-${f.from.sector === "opposition" ? "bad" : "good"})`);
+  moneySel.append("title").text((f) => f.label);
+  /** A gentle curve from the edge of one group to the edge of the other. */
+  const flowPath = (f: FlowD) => {
+    const x1 = f.from.x ?? 0, y1 = f.from.y ?? 0, x2 = f.to.x ?? 0, y2 = f.to.y ?? 0;
+    const dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy) || 1;
+    const r1 = nodeRadiusOf(f.from) + 2, r2 = nodeRadiusOf(f.to) + 6;
+    const ax = x1 + (dx / d) * r1, ay = y1 + (dy / d) * r1, bx = x2 - (dx / d) * r2, by = y2 - (dy / d) * r2;
+    const bend = 0.12 * d, mx = (ax + bx) / 2 - (dy / d) * bend, my = (ay + by) / 2 + (dx / d) * bend;
+    return `M${ax},${ay}Q${mx},${my} ${bx},${by}`;
+  };
+  // The legislature sits just past the edge of the climate groups, and the opposing groups gather beyond it:
+  // two sides, with the money flowing in from both.
+  if (flowData.length || allNodes.some((n) => n.sector === "opposition")) {
+    const hub = allNodes.find((n) => n.sector === "money-hub");
+    const opp = allNodes.filter((n) => n.sector === "opposition");
+    // The opposing groups fan out in an arc beyond the hub, biggest spenders nearest the middle.
+    const spend = new Map<string, number>();
+    for (const f of flowData) spend.set(f.from.id, (spend.get(f.from.id) ?? 0) + f.amount);
+    opp.sort((a, b) => (spend.get(b.id) ?? 0) - (spend.get(a.id) ?? 0));
+    const order = opp.map((_, i) => (i % 2 ? -1 : 1) * Math.ceil(i / 2)); // 0, 1, -1, 2, -2, …
+    const step = opp.length > 1 ? Math.min(0.26, 2.4 / opp.length) : 0;
+    // Decided once (the map pane can measure 0 × 0 while the loading screen is up, and flipping sides mid-layout
+    // leaves the groups half-way), from the window's shape.
+    const down = window.innerHeight > window.innerWidth * 1.15;
+    sim.force("moneySide", (alpha: number) => {
+      if (focusId) return;
+      // Just past the edge of the climate groups (90th percentile, so one stray group doesn't set it): to the
+      // right on a wide screen, below on a tall one (phones).
+      const vs = allNodes.filter((n) => !n.sector).map((n) => (down ? n.y : n.x) ?? 0).sort((a, b) => a - b);
+      const edge = vs.length ? vs[Math.floor(vs.length * 0.9)] : 0;
+      const hx = down ? 0 : edge + 170, hy = down ? edge + 150 : 0;
+      const k = Math.min(0.4, 1.5 * alpha); // firm: these groups have no links, so only this holds them against the repulsion
+      if (hub) { hub.vx = (hub.vx ?? 0) + (hx - (hub.x ?? 0)) * k; hub.vy = (hub.vy ?? 0) + (hy - (hub.y ?? 0)) * k; }
+      const cx = hub?.x ?? hx, cy = hub?.y ?? hy;
+      opp.forEach((o, i) => {
+        const t = order[i] * step + (down ? Math.PI / 2 : 0), R = 230;
+        const tx = cx + R * Math.cos(t) * (down ? 1.3 : 1), ty = cy + R * Math.sin(t) * (down ? 1 : 1.3);
+        o.vx = (o.vx ?? 0) + (tx - (o.x ?? 0)) * k;
+        o.vy = (o.vy ?? 0) + (ty - (o.y ?? 0)) * k;
+      });
+    });
+  }
+
   sim.on("tick", () => {
+    if (largePrint() && ++lpTick % 3 === 0) scheduleNameCull();
+    moneySel.attr("d", flowPath);
     linkSel
       .attr("x1", (l) => (l.source as GraphNode).x ?? 0)
       .attr("y1", (l) => (l.source as GraphNode).y ?? 0)
-      .attr("x2", (l) => (l.target as GraphNode).x ?? 0)
-      .attr("y2", (l) => (l.target as GraphNode).y ?? 0);
+      .attr("x2", (l) => linkEnd(l, "x"))
+      .attr("y2", (l) => linkEnd(l, "y"));
     nodeSel.attr(
       "transform",
       (n) => `translate(${n.x ?? 0},${n.y ?? 0})`,
     );
+    if (focusId) {
+      const f = nodeById.get(focusId);
+      if (f) focusGroup.attr("transform", `translate(${f.x ?? 0},${f.y ?? 0})`);
+    }
+    trailItems();
   });
 
   // Auto-fit once the simulation has settled enough
   let didInitialFit = false;
   sim.on("end", () => {
+    if (largePrint()) scheduleNameCull();
     if (didInitialFit) return;
     didInitialFit = true;
     fitToView(false);
@@ -423,9 +1321,23 @@ export function createGraph(
     fitToView(false);
   }, 2500);
 
+  /** If nothing is on screen (panned away, zoomed past everything, or the pane was hidden), reset the view. */
+  function ensureInView() {
+    if (focusId) return;
+    const wr = wrap.getBoundingClientRect();
+    if (wr.width < 50 || wr.height < 50) return; // hidden tab; check again when shown
+    const nr = nodeLayer.node()!.getBoundingClientRect();
+    const empty = nr.width === 0 && nr.height === 0;
+    const off = nr.right < wr.left + 20 || nr.left > wr.right - 20 || nr.bottom < wr.top + 20 || nr.top > wr.bottom - 20;
+    if (empty || off) fitToView(true);
+  }
+  setInterval(ensureInView, 3000);
+  window.addEventListener("resize", () => setTimeout(ensureInView, 200));
+
   function fitToView(animate = true) {
     let xs: number[] = [];
     let ys: number[] = [];
+    const keep: number[][] = []; // the money layer's groups are always in the first view, never trimmed as strays
     allNodes.forEach((n) => {
       if (n.x === undefined || n.y === undefined) return;
       const display = (
@@ -438,12 +1350,23 @@ export function createGraph(
         n.kind === "coalition" ? coalitionRadius(n) : orgRadius(n);
       xs.push(n.x - r, n.x + r);
       ys.push(n.y - r - 14, n.y + r + 14);
+      if (n.sector === "opposition" || n.sector === "money-hub") keep.push([n.x - r, n.x + r, n.y - r - 14, n.y + r + 14]);
     });
     if (!xs.length) return;
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
-    const minY = Math.min(...ys);
-    const maxY = Math.max(...ys);
+    // Fit the main cluster: a few unconnected orgs drift far out and would otherwise shrink
+    // everything (tiny on phones). They stay reachable by panning or zooming out.
+    const q = (arr: number[], p: number) => {
+      const v = [...arr].sort((a, b) => a - b);
+      return v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
+    };
+    const trim = xs.length > 40 ? 0.04 : 0;
+    let minX = q(xs, trim);
+    let maxX = q(xs, 1 - trim);
+    let minY = q(ys, trim);
+    let maxY = q(ys, 1 - trim);
+    for (const [x0, x1, y0, y1] of keep) {
+      minX = Math.min(minX, x0); maxX = Math.max(maxX, x1); minY = Math.min(minY, y0); maxY = Math.max(maxY, y1);
+    }
     const pad = 60;
     const bw = maxX - minX + pad * 2;
     const bh = maxY - minY + pad * 2;
@@ -461,11 +1384,13 @@ export function createGraph(
     // A node is visible iff:
     //  - it's a coalition and its id ∈ visible set
     //  - it's an org and at least one of its coalition_ids ∈ visible set
+    //  - or it belongs to no coalition at all (always shown)
     const orgVisible = new Map<string, boolean>();
     for (const o of orgNodes) {
       orgVisible.set(
         o.id,
-        o.coalition_ids.some((c) => visibleCoalitions.has(c)),
+        // social-justice groups (sector layers) show while their layer is on, even with its coalition bubble hidden
+        !o.coalition_ids.length || o.coalition_ids.some((c) => visibleCoalitions.has(c)) || !!o.sector,
       );
     }
     nodeSel.style("display", (n) => {
@@ -475,14 +1400,753 @@ export function createGraph(
       return orgVisible.get(n.id) ? null : "none";
     });
     linkSel.style("display", (l) => {
-      const sid = (l.source as GraphNode).id ?? l.source;
-      const tid = (l.target as GraphNode).id ?? l.target;
-      if (typeof sid !== "string" || typeof tid !== "string") return null;
+      const sid = typeof l.source === "string" ? l.source : l.source.id;
+      const tid = typeof l.target === "string" ? l.target : l.target.id;
+      if (l.kind === "org") return showOrgLinks && orgVisible.get(sid) && orgVisible.get(tid) ? null : "none";
       if (!visibleCoalitions.has(sid)) return "none";
       if (!orgVisible.get(tid)) return "none";
       return null;
     });
-    sim.alpha(0.3).restart();
+    sim.alpha(Math.max(sim.alpha(), 0.08)).restart();
+  }
+
+
+  // ----- Focus mode: zoom into one group and see its work as bubbles -----
+  // Bubbles ring the node: thinking (purple), projects (green), events (amber), each kind together.
+  // They sit right next to the node, so they read as closer to it than any partner org.
+  type BubbleKind = "thought" | "project" | "event" | "action";
+  interface Bubble {
+    id: string;
+    kind: BubbleKind;
+    label: string;
+    glyph: string;
+    /** Second line under the label: date and place for events. */
+    subtitle?: string;
+    r: number;
+    item: Thought | Project | CoalitionEvent | Action;
+  }
+  const BUBBLE_R = 22;
+  const focusLayer = root.append("g").attr("class", "focus-layer");
+  const focusGroup = focusLayer.append("g").attr("class", "focus-group");
+  // The opened group is drawn as a big planet (CSS scale(var(--fs)) on .focused) with its items as moons around it.
+  // the opened group's radius on the map at focusSize 1 (always the biggest thing in view): 78 until Oct 24, then 115,
+  // then 2.5× that (Oct 26: "at least 2–3× its current size")
+  const FOCUS_PLANET_R = 290;
+  const LABEL_REACH = 150; // how far a moon's name reaches beyond it
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let focusSim: d3.Simulation<any, undefined> | null = null;
+  let focusSettleTimer = 0;
+  // Where each member belongs, relative to the coalition: a spring pulls it there (it isn't pinned), so members
+  // jostle, make room for each other and follow the coalition when you drag it.
+  const memberHome = new Map<GraphNode, { ox: number; oy: number }>();
+  let memberKeepOut = { rx: 0, ry: 0 };
+  const focusBar = h("div", { class: "focus-bar" });
+  const focusCard = h("div", { class: "focus-card" });
+  focusBar.style.display = "none";
+  focusCard.style.display = "none";
+  wrap.appendChild(focusBar);
+  wrap.appendChild(focusCard);
+
+  const THOUGHT_GLYPH: Record<string, string> = { topic: "◆", decision: "✓", question: "?", update: "•" };
+
+  function bubblesFor(n: GraphNode): Bubble[] {
+    const thoughts: Thought[] = n.thoughts || [];
+    // past items stay in the details pane unless Map settings → "Show past…" is on
+    const projects: Project[] = shownNow("project", n.kind === "org" ? orgProjects(data, n) : n.projects);
+    const events: CoalitionEvent[] = shownNow("event", n.kind === "org" ? orgEvents(data, n) : n.events);
+    const actions: Action[] = shownNow("action", n.kind === "org" ? orgActions(data, n) : n.actions || []);
+    const sortedEvents = [...events].sort((a, b) => parseEventDate(a.date).getTime() - parseEventDate(b.date).getTime());
+    return [
+      ...thoughts.map((t): Bubble => ({
+        id: t.id, kind: "thought", label: shorten(t.text, 34), glyph: THOUGHT_GLYPH[t.kind] || "•", r: BUBBLE_R, item: t,
+      })),
+      ...projects.map((p): Bubble => ({
+        id: p.id, kind: "project", label: shorten(p.name, 34), glyph: "", subtitle: p.location ? shorten(p.location, 38) : undefined, r: BUBBLE_R, item: p,
+      })),
+      ...sortedEvents.map((e): Bubble => ({
+        id: e.id, kind: "event", label: shorten(e.name, 34), glyph: "",
+        subtitle: shorten([fmtShortDate(e.date), e.location].filter(Boolean).join(" · "), 42), r: BUBBLE_R - 2, item: e,
+      })),
+      ...actions.map((a): Bubble => ({
+        id: a.id, kind: "action", label: shorten(a.name, 34), glyph: "", subtitle: a.deadline ? `by ${shorten(a.deadline, 30)}` : undefined, r: BUBBLE_R - 2, item: a,
+      })),
+    ];
+  }
+
+  /** Nodes closest to the focused one: shared coalitions, org-to-org links, and its members. */
+  function partnersOf(n: GraphNode): Set<string> {
+    const ids = new Set<string>();
+    for (const l of allLinks) {
+      const s = typeof l.source === "string" ? l.source : l.source.id;
+      const t = typeof l.target === "string" ? l.target : l.target.id;
+      if (s === n.id) ids.add(t);
+      if (t === n.id) ids.add(s);
+    }
+    if (n.kind === "org") {
+      for (const l of allLinks) {
+        if (l.kind !== "membership") continue;
+        const s = typeof l.source === "string" ? l.source : l.source.id;
+        const t = typeof l.target === "string" ? l.target : l.target.id;
+        if (ids.has(s)) ids.add(t); // fellow members of the same coalitions
+      }
+    }
+    ids.delete(n.id);
+    return ids;
+  }
+
+  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode) {
+    if (dragBlocked()) return;
+    const owner = ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null);
+    if (b.kind !== "thought" && owner && cb.onItemClick) {
+      focusCard.style.display = "none";
+      cb.onItemClick(b.kind, b.item as Project | CoalitionEvent | Action, owner);
+      return;
+    }
+    while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
+    const it = b.item as Thought & Project & CoalitionEvent & Action;
+    const kindLabel =
+      b.kind === "thought" ? { topic: "Thinking · topic", decision: "Thinking · decision", question: "Thinking · open question", update: "Thinking · update" }[(it as Thought).kind] || "Thinking"
+      : b.kind === "project" ? `Project · ${(it as Project).status}`
+      : b.kind === "action" ? ((it as Action).kind === "role" ? "Volunteer opportunity" : "Action")
+      : "Event";
+    const title = b.kind === "thought" ? (it as Thought).text : (it as Project | CoalitionEvent | Action).name;
+    const meta: string[] = [];
+    if (b.kind === "event") meta.push(fmtEventTime((it as CoalitionEvent).date, (it as CoalitionEvent).end, (it as CoalitionEvent).recurrence));
+    if (b.kind === "action" && (it as Action).deadline) meta.push(`by ${(it as Action).deadline}`);
+    if (b.kind === "thought" && (it as Thought).date) meta.push(fmtDate(`${(it as Thought).date}T12:00:00`));
+    const loc = b.kind === "event" ? (it as CoalitionEvent).location : b.kind === "project" ? (it as Project).location : "";
+    if (loc) meta.push(loc);
+    const close = h("button", { class: "focus-card-close", type: "button", "aria-label": "Close" }, "×");
+    close.addEventListener("click", () => (focusCard.style.display = "none"));
+    focusCard.appendChild(close);
+    focusCard.appendChild(h("div", { class: `focus-card-kind k-${b.kind}` }, kindLabel));
+    if (b.kind !== "thought") focusCard.appendChild(h("h3", {}, title));
+    else focusCard.appendChild(h("p", { class: "focus-card-text" }, title));
+    if (meta.length) focusCard.appendChild(h("div", { class: "focus-card-meta" }, meta.join(" · ")));
+    const desc = b.kind === "thought" ? "" : (it as Project | CoalitionEvent | Action).description;
+    if (desc) focusCard.appendChild(h("p", { class: "focus-card-text" }, desc));
+    if (b.kind === "thought") focusCard.appendChild(h("div", { class: "focus-card-source" }, `Source: ${(it as Thought).source}`));
+    if (b.kind !== "thought") {
+      const btns = itemButtons(b.kind, it as { rsvp_link?: string; link?: string });
+      if (btns) focusCard.appendChild(btns);
+    }
+    if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified, b.item as never));
+    focusCard.style.visibility = "hidden";
+    focusCard.style.display = "block";
+    placeCard(anchor);
+    focusCard.style.visibility = "";
+  }
+
+  /** Put the card right next to the clicked bubble (below it, or above if there's no room), kept fully on screen. */
+  function placeCard(anchor?: { x: number; y: number; r: number }) {
+    const box = wrap.getBoundingClientRect();
+    const W = box.width;
+    const H = box.height;
+    const panel = W > 900 && focusId ? 420 : 0; // the details panel covers the right side
+    const usableW = W - panel;
+    const cw = Math.min(360, usableW - 24);
+    focusCard.style.width = `${cw}px`;
+    const ch = Math.min(focusCard.offsetHeight, H * 0.55);
+    if (!anchor) {
+      focusCard.style.left = "12px";
+      focusCard.style.top = `${Math.max(12, H - ch - 12)}px`;
+      return;
+    }
+    const gap = anchor.r + 14;
+    const below = anchor.y + gap + ch <= H - 12;
+    let top = below ? anchor.y + gap : anchor.y - gap - ch;
+    if (!below && top < 12) top = Math.max(12, Math.min(anchor.y - ch / 2, H - ch - 12)); // neither fits: sit beside it
+    let left = anchor.x - cw / 2;
+    if (!below && top < anchor.y - gap - ch + 1 && top + ch > anchor.y - gap) left = anchor.x + gap; // beside
+    left = Math.max(12, Math.min(left, usableW - cw - 12));
+    focusCard.style.left = `${left}px`;
+    focusCard.style.top = `${Math.max(12, top)}px`;
+  }
+
+  const LABEL_PX = 6; // rough width of one label character, for hit areas and spacing
+
+  /** A recurring item's border: one circular arrow running around the bubble (a ring with an arrowhead, not many little symbols). */
+  function drawRecurArc(g: d3.Selection<SVGGElement, unknown, null, undefined>, rr: number, w: number) {
+    const a0 = -Math.PI / 2 + 0.35;
+    const a1 = a0 + 2 * Math.PI - 0.7;
+    const px = (a: number) => Math.cos(a) * rr;
+    const py = (a: number) => Math.sin(a) * rr;
+    g.classed("recurring", true);
+    g.append("path").attr("class", "recur-arc").style("stroke-width", `${1.9 * w}px`)
+      .attr("d", `M ${px(a0)} ${py(a0)} A ${rr} ${rr} 0 1 1 ${px(a1)} ${py(a1)}`);
+    // arrowhead at the end, pointing the way the ring runs (clockwise)
+    const tx = -Math.sin(a1), ty = Math.cos(a1); // direction of travel
+    const nx = Math.cos(a1), ny = Math.sin(a1); // outward
+    const L = 6.5 * w, Wd = 3.6 * w;
+    const bx = px(a1), by = py(a1);
+    g.append("path").attr("class", "recur-head")
+      .attr("d", `M ${bx + tx * L} ${by + ty * L} L ${bx + nx * Wd} ${by + ny * Wd} L ${bx - nx * Wd} ${by - ny * Wd} Z`);
+  }
+
+  /** Volunteer roles are actions with kind "role"; they get their own colour and icon. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function isRoleB(b: any): boolean { return b.kind === "action" && (b.item as Action).kind === "role"; }
+  /** Map settings / legend: actions and volunteer roles are switched on and off separately. */
+  function kindVisible(b: Bubble): boolean {
+    if (b.kind === "event") return settings.showAllEvents;
+    if (b.kind === "project") return settings.showAllProjects;
+    return b.kind === "action" ? kindShown(b) : true;
+  }
+  function kindShown(b: Bubble): boolean {
+    if (b.kind !== "action") return true;
+    return isRoleB(b) ? settings.showAllVolunteer : settings.showAllActions;
+  }
+
+  // Icons drawn inside the bubbles, centred on (0,0): a calendar, a seedling, a person with a raised hand, a checkmark.
+  function drawIcon(g: d3.Selection<SVGGElement, unknown, null, undefined>, kind: BubbleKind | "volunteer", date?: string) {
+    const ic = g.append("g").attr("class", "bubble-icon");
+    if (kind === "event") {
+      // A little calendar page showing the actual date: month on the band, day number below.
+      const d = date ? parseEventDate(date) : null;
+      ic.append("rect").attr("x", -10).attr("y", -11).attr("width", 20).attr("height", 21).attr("rx", 3);
+      ic.append("rect").attr("class", "cal-band").attr("x", -10).attr("y", -11).attr("width", 20).attr("height", 7).attr("rx", 3);
+      ic.append("text").attr("class", "cal-month").attr("y", -5.6).text(d ? d.toLocaleDateString("en-US", { month: "short" }).toUpperCase() : "");
+      ic.append("text").attr("class", "cal-day").attr("y", 6.5).text(d ? String(d.getDate()) : "");
+    } else if (kind === "project") {
+      // a seedling: two leaves on a stem, in soil
+      ic.append("path").attr("d", "M-8 9 H8");
+      ic.append("path").attr("d", "M0 9 V-1");
+      ic.append("path").attr("d", "M0 3 C-8 3 -10 -3 -10 -6 C-4 -6 0 -3 0 3");
+      ic.append("path").attr("d", "M0 -1 C0 -7 4 -11 10 -11 C10 -5 6 -1 0 -1");
+    } else if (kind === "volunteer") {
+      // a person (head and shoulders) with one hand raised: "I'll help"
+      for (const d of [VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS]) ic.append("path").attr("d", d);
+    } else if (kind === "action") {
+      ic.append("path").attr("class", "check").attr("d", "M-7 0.5 L-2.2 5.5 L7.5 -5");
+    }
+  }
+
+  /** A group's full name under it, wrapped onto a few short lines (never cut off). */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function nameLines(t: d3.Selection<SVGTextElement, any, any, any>, name: string) {
+    wrapLines(name, 24).forEach((l, i) => t.append("tspan").attr("x", 0).attr("dy", i ? "1.15em" : 0).text(l));
+  }
+  /** Split text into lines of about `max` characters at word breaks; nothing is cut off. */
+  function wrapLines(text: string, max: number): string[] {
+    const out: string[] = [];
+    let cur = "";
+    for (const w of text.split(/\s+/).filter(Boolean)) {
+      if (cur && (cur + " " + w).length > max) { out.push(cur); cur = w; } else cur = cur ? `${cur} ${w}` : w;
+    }
+    if (cur) out.push(cur);
+    return out;
+  }
+  /** One short line under an item's name: when, by when, or what state it's in. */
+  function itemMeta(b: Bubble): string {
+    if (b.kind === "event") {
+      const e = b.item as CoalitionEvent;
+      return e.recurrence ? `${fmtShortDate(e.date)} · repeats` : fmtShortDate(e.date);
+    }
+    if (b.kind === "action") {
+      const a = b.item as Action;
+      return a.kind === "role" ? "Volunteer role" : a.deadline ? `By ${a.deadline}` : "Action";
+    }
+    if (b.kind === "project") return `Project · ${(b.item as Project).status}`;
+    return "";
+  }
+  /** Text beside a point (angle a, distance d from the centre), reading away from the centre: the full name, then a meta line. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function radialLabel(parent: d3.Selection<SVGGElement, any, any, any>, a: number, d: number, title: string, meta: string, size: number, max: number) {
+    const c = Math.cos(a), sn = Math.sin(a);
+    const anchor = c > 0.35 ? "start" : c < -0.35 ? "end" : "middle";
+    const lines = wrapLines(title, max);
+    const lh = size * 1.2;
+    const count = lines.length + (meta ? 1 : 0);
+    const x = c * d, y = sn * d;
+    const y0 = anchor === "middle"
+      ? (sn < 0 ? y - (count - 1) * lh - 2 : y + size)
+      : y - ((count - 1) * lh) / 2 + size * 0.35;
+    const t = parent.append("text").attr("text-anchor", anchor).attr("font-size", size);
+    lines.forEach((l, i) => t.append("tspan").attr("x", x).attr("y", y0 + i * lh).text(l));
+    if (meta) t.append("tspan").attr("class", "lbl-meta").attr("x", x).attr("y", y0 + lines.length * lh).text(meta);
+    return t;
+  }
+
+  /** Push moon names apart: each name that overlaps another name or another moon moves outward, away from
+   *  the planet, a few pixels at a time. Works in screen space, so it is right at any zoom. */
+  function declutterLabels(moons: SVGGElement[], labels: SVGTextElement[]) {
+    const pad = 2;
+    const hit = (r: DOMRect, o: DOMRect) =>
+      r.left < o.right + pad && r.right + pad > o.left && r.top < o.bottom + pad && r.bottom + pad > o.top;
+    labels.forEach((t) => t.removeAttribute("transform"));
+    const circles = moons.map((m) => (m.querySelector("circle") as SVGCircleElement).getBoundingClientRect());
+    const placed: DOMRect[] = [];
+    // Names straight above or below the planet run sideways into their neighbours; place the others first.
+    const order = labels.map((_, i) => i).sort((i, j) => verticality(moons[i]) - verticality(moons[j]));
+    for (const i of order) {
+      const t = labels[i];
+      const m = /translate\(([-\d.e]+)[ ,]+([-\d.e]+)\)/.exec(moons[i].getAttribute("transform") || "");
+      const a = m ? Math.atan2(+m[2], +m[1]) : 0;
+      const bb = t.getBBox();
+      const scale = bb.width ? t.getBoundingClientRect().width / bb.width : 1;
+      if (!scale) continue; // hidden
+      let r = t.getBoundingClientRect();
+      for (let step = 1; step <= 16 && (placed.some((o) => hit(r, o)) || circles.some((o, j) => j !== i && hit(r, o))); step++) {
+        const d = (step * 6) / scale;
+        t.setAttribute("transform", `translate(${Math.cos(a) * d},${Math.sin(a) * d})`);
+        r = t.getBoundingClientRect();
+      }
+      placed.push(r);
+    }
+  }
+  function verticality(el: SVGGElement): number {
+    const m = /translate\(([-\d.e]+)[ ,]+([-\d.e]+)\)/.exec(el.getAttribute("transform") || "");
+    return m ? Math.abs(Math.sin(Math.atan2(+m[2], +m[1]))) : 0;
+  }
+
+  function fullName(b: Bubble): string {
+    return b.kind === "thought" ? (b.item as Thought).text : (b.item as Project | CoalitionEvent | Action).name;
+  }
+
+  function enterFocus(id: string) {
+    const n = nodeById.get(id);
+    if (!n) return;
+    if (!settings.showBubbles) {
+      // Classic view: just bring the group to the middle, no bubbles.
+      const { w, h: vh } = dimensions();
+      const panel = 0; // the details pane never moves the map
+      const k = Math.max(currentZoomScale, 0.8);
+      svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(-(n.x ?? 0) * k - panel / 2, -(n.y ?? 0) * k).scale(k));
+      return;
+    }
+    if (!focusId) beforeFocus = currentTransform; // closing the group returns here
+    if (focusId && focusId !== id) exitFocus(false);
+    for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
+    focusId = id;
+    nodeSel.classed("sats-hidden", (d) => d.id === id); // its items are already bubbles around it
+    const cx = n.x ?? 0;
+    const cy = n.y ?? 0;
+    n.fx = cx; // hold the node still while you look around it
+    n.fy = cy;
+
+    const allBubbles = bubblesFor(n);
+    // Kinds switched off in Map settings or the legend stay hidden here too (the details pane still lists them).
+    const bubbles = settings.showBubbles ? allBubbles.filter(kindVisible) : [];
+    // The opened group shows a little larger (CSS scales it; the ring makes room for it).
+    const fs = Math.max(2.5 * settings.focusSize, Math.min(16 * settings.focusSize, (FOCUS_PLANET_R * settings.focusSize) / nodeRadiusOf(n)));
+    nodeSel.classed("focused", (d) => d.id === id).filter((d) => d.id === id).style("--fs", String(fs));
+    const nodeR = nodeRadiusOf(n) * fs;
+    // Moons close around the planet: just enough room on the orbit for each moon, its name reads outward.
+    const ringR = bubbles.length ? Math.max(nodeR + 48, (bubbles.length * (2 * BUBBLE_R + 26)) / (2 * Math.PI)) : nodeR + 40;
+    // Room the moons' names need beyond the orbit; everything else is moved out past this.
+    let clearR = bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 40 : nodeR + 120;
+
+    // A coalition's member orgs sit, at full strength, in a cluster around the items: a few rows on an oval
+    // that hugs the items and their labels (labels run sideways, so the oval is wider than tall).
+    // Bigger orgs take the inner rows.
+    pinnedMembers = [];
+    memberHome.clear();
+    let memberRX = 0;
+    let memberRY = 0;
+    {
+      // A coalition gathers its member orgs; an org gathers its coalitions and the orgs it works with.
+      const seen = new Set<string>();
+      for (const l of allLinks) {
+        const sid = typeof l.source === "string" ? l.source : l.source.id;
+        const tid = typeof l.target === "string" ? l.target : l.target.id;
+        let other: string | null = null;
+        if (n.kind === "coalition") { if (l.kind === "membership" && sid === id) other = tid; }
+        else if (sid === id) other = tid;
+        else if (tid === id) other = sid;
+        if (!other || seen.has(other)) continue;
+        seen.add(other);
+        const o = nodeById.get(other);
+        if (o && (n.kind === "org" || o.kind === "org")) pinnedMembers.push(o);
+      }
+      if (pinnedMembers.length) {
+        // as drawn: an opened org's coalitions are scaled up to 1.5× but never past ~70% of the opened org
+        // (a big coalition used to crowd out the group you opened), its partner groups 0.75× (styles.css .linked)
+        // Satellites are drawn bigger (Map settings → Bubble size weighting → Its partner groups, CSS --ss), but a
+        // coalition around an opened org never grows past 80% of the opened group (its own --ls, which already
+        // includes the --ss factor).
+        const ss = settings.focusSatSize;
+        nodeLayer.style("--ss", String(ss));
+        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5 * ss, (0.8 * nodeR) / nodeRadiusOf(o)) : ss);
+        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? linkScale(o) : ss);
+        nodeSel.filter((d) => n.kind === "org" && d.kind === "coalition").style("--ls", (d) => String(Math.max(0.5, linkScale(d))));
+        pinnedMembers.sort((a, b) => drawnR(b) - drawnR(a));
+        const maxR = Math.max(...pinnedMembers.map((o) => drawnR(o)));
+        // Spacing matches the collision size, so neighbours on a row never shove each other while their springs
+        // pull them back (that tug-of-war made a crowded ring rock).
+        const maxC = Math.max(maxR, ...pinnedMembers.map((o) => collideRadius(o) * ss));
+        const spacing = 2 * maxC + 6; // between neighbours along a row
+        const rowGap = (2 * maxC + 20) * settings.focusRowGap; // between rows (room for a name under each)
+        // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
+        let rx = ((bubbles.length ? ringR + BUBBLE_R + LABEL_REACH + 30 : nodeR + 120) + (n.kind === "org" ? maxR + 10 : 0)) * settings.focusSpace; // big coalitions sit fully outside the moons' names
+        let ry = rx;
+        // Members may jostle, but never into the items and their labels.
+        memberKeepOut = { rx: rx - maxR - 16, ry: rx - maxR - 16 };
+        let placed = 0;
+        let row = 0;
+        while (placed < pinnedMembers.length) {
+          const per = 2 * Math.PI * rx; // circumference of this orbit
+          const cap = Math.max(6, Math.floor(per / spacing));
+          const left = pinnedMembers.length - placed;
+          // the last row spreads its few members evenly instead of bunching at the top
+          const inRow = Math.min(cap, left);
+          const offset = (row % 2) * 0.5; // stagger rows so members don't line up in spokes
+          for (let i = 0; i < inRow; i++) {
+            const a = (2 * Math.PI * (i + offset)) / inRow - Math.PI / 2;
+            const o = pinnedMembers[placed + i];
+            memberHome.set(o, { ox: Math.cos(a) * rx, oy: Math.sin(a) * ry });
+          }
+          placed += inRow;
+          memberRX = rx;
+          memberRY = ry;
+          rx += rowGap;
+          ry += rowGap;
+          row++;
+        }
+        clearR = Math.max(memberRX, memberRY) + 60;
+        // Members go straight to their place and fade in one after another, instead of flying across the map.
+        const fx = n.x ?? 0, fy = n.y ?? 0;
+        pinnedMembers.forEach((o) => {
+          const home = memberHome.get(o)!;
+          o.x = fx + home.ox;
+          o.y = fy + home.oy;
+          o.vx = 0;
+          o.vy = 0;
+        });
+        const order = new Map(pinnedMembers.map((o, i) => [o.id, i]));
+        nodeSel.filter((d) => order.has(d.id))
+          .classed("arriving", true)
+          .style("--arrive-delay", (d) => `${Math.min(700, (order.get(d.id) ?? 0) * 18)}ms`)
+          .attr("transform", (d) => `translate(${d.x},${d.y})`);
+        setTimeout(() => nodeSel.classed("arriving", false), 1300);
+      }
+    }
+
+    linkForce.strength(linkStrengthFor);
+    xForce.strength(centerStrengthFor);
+    yForce.strength(centerStrengthFor);
+    // While a group is open, its satellites feel every force through the smooth versions in memberPull (below),
+    // not d3's: d3's collision corrects overlaps in one hard step and its repulsion is approximate, and against a
+    // satellite's spring both made big rings (ORCAH's 63 members) twitch, worst on phones. The open group (held
+    // still) and the satellites leave d3's collision; the background keeps it among itself.
+    {
+      const open = n;
+      sim.force("collide", Object.assign((a: number) => collideForce(a), {
+        initialize: (nodes: GraphNode[]) => collideForce.initialize(nodes.filter((o) => o !== open && !memberHome.has(o)), Math.random),
+      }) as unknown as d3.Force<GraphNode, undefined>);
+    }
+    // Satellites keep their spacing by collision only. The map-wide repulsion fought their springs and made a
+    // crowded ring (MPF's 104 members) rock back and forth, so while a group is open it skips them.
+    if (memberHome.size) {
+      const focusCharge = d3.forceManyBody<GraphNode>().strength(chargeStrengthFor).distanceMax(900);
+      const wrapped = Object.assign((a: number) => focusCharge(a), {
+        initialize: (nodes: GraphNode[]) => focusCharge.initialize(nodes.filter((o) => !memberHome.has(o)), Math.random),
+      });
+      sim.force("charge", wrapped as unknown as d3.Force<GraphNode, undefined>);
+    }
+    // While a group is open, the groups being moved out of the way settle without bouncing, and then hold still
+    // (the open group is what you're looking at; nothing behind it should keep drifting).
+    sim.velocityDecay(0.6);
+    clearTimeout(focusSettleTimer);
+    // (With satellites it only winds down to a slow glide, so they finish easing to their places instead of
+    // freezing mid-way when the motion is cut.)
+    focusSettleTimer = window.setTimeout(() => { if (focusId === id) sim.alphaTarget(0).alpha(Math.min(sim.alpha(), memberHome.size ? 0.012 : 0.004)); }, 1800);
+    focusSim?.stop();
+    focusSim = null;
+    lastPos.delete(id);
+    focusGroup.selectAll("*").remove();
+    focusGroup.attr("transform", `translate(${cx},${cy})`);
+    const bubbleEls: SVGGElement[] = [];
+    const bubbleAngles: number[] = [];
+    const bubbleLines: SVGLineElement[] = [];
+    const bubbleLabels: SVGTextElement[] = [];
+    bubbles.forEach((b, i) => {
+      const a = (2 * Math.PI * i) / bubbles.length - Math.PI / 2;
+      // Bubbles spill out of the group, push each other into a ring, and can be dragged around.
+      const line = focusGroup.insert("line", ".bubble").attr("class", "bubble-link")
+        .attr("x1", Math.cos(a) * nodeR).attr("y1", Math.sin(a) * nodeR).attr("x2", Math.cos(a) * nodeR).attr("y2", Math.sin(a) * nodeR);
+      bubbleLines.push(line.node()!);
+      const outer = focusGroup.append("g").attr("class", `bubble b-${b.kind}${isRoleB(b) ? " b-role" : ""}`);
+      bubbleEls.push(outer.node()!);
+      bubbleAngles.push(a);
+      const g = outer.append("g").attr("class", "bubble-body").attr("transform", "scale(0.2)").attr("opacity", 0);
+      g.transition().duration(500).ease(d3.easeCubicOut).attr("transform", "scale(1)").attr("opacity", 1);
+      g.append("circle").attr("r", b.r);
+      if (b.kind === "thought") g.append("text").attr("class", "bubble-glyph").attr("dy", "0.35em").text(b.glyph);
+      else {
+        const isRole = b.kind === "action" && (b.item as Action).kind === "role";
+        drawIcon(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, isRole ? "volunteer" : b.kind, b.kind === "event" ? (b.item as CoalitionEvent).date : undefined);
+        if (b.kind === "event" && (b.item as CoalitionEvent).recurrence) {
+          drawRecurArc(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, b.r - 1.5, 1);
+        }
+      }
+      // Beside the moon: its full name and one line of when / what, reading away from the planet.
+      bubbleLabels.push(radialLabel(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, a, b.r + 6, fullName(b), itemMeta(b), 11, 24)
+        .attr("class", `moon-label k-${b.kind}`).node()!);
+      outer.on("click", (event: Event) => {
+        event.stopPropagation();
+        const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
+        const wb = wrap.getBoundingClientRect();
+        showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 });
+      });
+    });
+    if (bubbleEls.length) {
+      // Keep each bubble's link line attached as it moves.
+      focusSim = ringPhysics(bubbleEls, bubbleAngles, bubbles.map((b) => b.r + 2), ringR, nodeR, 6, (nodes) => {
+        nodes.forEach((d, i) => {
+          const ang = Math.atan2(d.y ?? 0, d.x ?? 0);
+          const l = bubbleLines[i];
+          l.setAttribute("x1", String(Math.cos(ang) * nodeR));
+          l.setAttribute("y1", String(Math.sin(ang) * nodeR));
+          l.setAttribute("x2", String(d.x ?? 0));
+          l.setAttribute("y2", String(d.y ?? 0));
+        });
+      });
+      // Once the moons settle (and again after each drag), nudge any names that overlap outward.
+      // (first as soon as they are nearly in place, so names never sit on top of each other for long)
+      let tidy = false;
+      const fs = focusSim;
+      fs.on("tick.labels", () => {
+        if (fs.alpha() > 0.3) tidy = false;
+        else if (!tidy && fs.alpha() < 0.2) { tidy = true; declutterLabels(bubbleEls, bubbleLabels); }
+      });
+      fs.on("end.labels", () => declutterLabels(bubbleEls, bubbleLabels));
+    }
+
+    // Partners stay visible but recede; everything else nearly disappears.
+    const partners = partnersOf(n);
+    // A coalition has dozens of members, so its partners fade further than an org's few neighbours.
+    nodeSel
+      .classed("faded", (d) => d.id !== id && !partners.has(d.id))
+      .classed("partner", (d) => partners.has(d.id))
+      .classed("partner-many", (d) => partners.has(d.id) && partners.size > 12 && !pinnedMembers.includes(d))
+      .classed("member-ring", (d) => pinnedMembers.includes(d))
+      // an org's coalitions and partners: drawn smaller and quieter on the outskirts
+      .classed("linked", (d) => n.kind === "org" && pinnedMembers.includes(d));
+    linkSel.classed("faded", (l) => {
+      const s = typeof l.source === "string" ? l.source : l.source.id;
+      const t = typeof l.target === "string" ? l.target : l.target.id;
+      return s !== id && t !== id;
+    });
+    moneySel.classed("faded", (f) => f.from.id !== id && f.to.id !== id);
+
+    // Satellites stay alive: each is on a soft spring to its place around the open group (wherever the group is
+    // now), so they jostle, make way when one is dragged and drift back. The spring and the extra damping while a
+    // group is open (velocityDecay 0.6) are set so they ease in without overshooting — no rocking back and forth.
+    // Every force still acts on the satellites, as smooth versions tuned so a ring eases into place and never
+    // twitches: each push grows gradually with closeness (no hard corrections), uses exact distances (no
+    // approximations that jump from tick to tick), and is gentler than the spring, so the spring always wins
+    // smoothly. Together with the extra damping while a group is open (velocityDecay 0.6) nothing overshoots.
+    //  - spring to its place around the open group
+    //  - pull toward the middle of the map (a tenth of the usual)
+    //  - repulsion from nearby groups (7% of the usual, exact, within 360 map units)
+    //  - soft collisions with the open group, the faded groups and each other
+    // Like d3's own forces, the pushes fade as the map settles, so every satellite ends exactly at its place.
+    const SAT_CENTER = 0.1, SAT_REPEL = 0.07, SAT_REPEL_RANGE = 360, SAT_SOFT = 0.12;
+    const radius = new Map<GraphNode, number>();
+    const rOf = (o: GraphNode) => {
+      let r = radius.get(o);
+      if (r === undefined) radius.set(o, (r = o === n ? nodeR + 10 : collideRadius(o)));
+      return r;
+    };
+    sim.force("memberPull", memberHome.size ? (alpha: number) => {
+      const f = nodeById.get(id);
+      if (!f) return;
+      const k = 0.05 + 0.04 * Math.min(1, alpha / 0.4);
+      let away = 0; // furthest any satellite is from its place
+      for (const [o, h] of memberHome) {
+        if (o.fx != null) continue; // being dragged
+        const ox = o.x ?? 0, oy = o.y ?? 0;
+        const ex = (f.x ?? 0) + h.ox - ox, ey = (f.y ?? 0) + h.oy - oy;
+        away = Math.max(away, Math.abs(ex), Math.abs(ey));
+        let ax = ex * k, ay = ey * k;
+        const cs = centerForceStrength() * SAT_CENTER * alpha;
+        ax -= ox * cs;
+        ay -= oy * cs;
+        const ro = rOf(o);
+        for (const q of allNodes) {
+          if (q === o) continue;
+          const dx = ox - (q.x ?? 0), dy = oy - (q.y ?? 0);
+          if (Math.abs(dx) > SAT_REPEL_RANGE || Math.abs(dy) > SAT_REPEL_RANGE) continue;
+          const d2 = dx * dx + dy * dy;
+          const d = Math.sqrt(d2) || 1;
+          const touch = ro + rOf(q);
+          // repulsion, softened inside touching distance so it never spikes
+          const rep = (-chargeStrengthFor(q) * SAT_REPEL * alpha) / Math.max(d2, touch * touch);
+          ax += dx * rep;
+          ay += dy * rep;
+          if (d < touch) {
+            // soft collision: a share of the overlap per tick (a satellite pair splits it)
+            const push = ((touch - d) / d) * SAT_SOFT * (memberHome.has(q) ? 0.5 : 1);
+            ax += dx * push;
+            ay += dy * push;
+          }
+        }
+        o.vx = (o.vx ?? 0) + ax;
+        o.vy = (o.vy ?? 0) + ay;
+        // Keep-out oval around the moons and their names: anything inside eases back out along its own direction
+        // (a soft edge: the old hard reset to the boundary made satellites flick).
+        const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
+        const { rx, ry } = memberKeepOut;
+        const e = rx && ry ? Math.sqrt((dx / rx) ** 2 + (dy / ry) ** 2) : 2;
+        if (e < 1) {
+          const len = Math.hypot(dx, dy) || 1;
+          const gap = (1 / Math.max(e, 0.05) - 1) * len; // distance to the edge
+          o.vx = (o.vx ?? 0) * 0.5 + (dx / len) * gap * 0.25;
+          o.vy = (o.vy ?? 0) * 0.5 + (dy / len) * gap * 0.25;
+        }
+      }
+      // Don't let the map stop while a satellite is still on its way home (one let go used to freeze halfway back).
+      if (away > 1.5 && sim.alpha() < 0.012) sim.alpha(0.012);
+    } : null);
+
+    // Push every other group well away so the bubbles have clear space (and nothing sits behind them).
+    // Groups that sit where the satellites and moons go step straight out to the edge of the clear space (they
+    // are faded behind the open group). Gliding out, they ploughed through the satellite rows and set them rocking.
+    {
+      const f = n;
+      for (const o of allNodes) {
+        if (o === f || memberHome.has(o)) continue;
+        const dx = (o.x ?? 0) - (f.x ?? 0), dy = (o.y ?? 0) - (f.y ?? 0);
+        const d = Math.hypot(dx, dy) || 1;
+        const min = clearR + itemExtent(o);
+        if (d < min) { o.x = (f.x ?? 0) + (dx / d) * min; o.y = (f.y ?? 0) + (dy / d) * min; o.vx = 0; o.vy = 0; }
+      }
+    }
+    sim.force("focusPush", (alpha: number) => {
+      const f = nodeById.get(id);
+      if (!f) return;
+      for (const o of allNodes) {
+        if (o === f || pinnedMembers.includes(o)) continue;
+        const dx = (o.x ?? 0) - (f.x ?? 0);
+        const dy = (o.y ?? 0) - (f.y ?? 0);
+        const d = Math.hypot(dx, dy) || 1;
+        const min = clearR + itemExtent(o);
+        if (d < min) {
+          // Glide straight out to the edge of the clear space (a share of the gap each tick) instead of being
+          // shoved with speed: shoves bounced off neighbours and rocked back and forth for seconds.
+          const step = (min - d) * (0.18 + 0.12 * Math.min(1, alpha / 0.5));
+          o.x = (o.x ?? 0) + (dx / d) * step;
+          o.y = (o.y ?? 0) + (dy / d) * step;
+          o.vx = (o.vx ?? 0) * 0.3;
+          o.vy = (o.vy ?? 0) * 0.3;
+        }
+      }
+    });
+
+    // Header: who, what's here, how to leave.
+    while (focusBar.firstChild) focusBar.removeChild(focusBar.firstChild);
+    const count = (k: BubbleKind | "volunteer") => k === "volunteer" ? allBubbles.filter(isRoleB).length
+      : allBubbles.filter((b) => b.kind === k && !isRoleB(b)).length;
+    const back = h("button", { class: "focus-back", type: "button", "aria-label": "Back to the whole network" }, "← Back", h("span", { class: "focus-back-more" }, " to network"));
+    back.addEventListener("click", () => exitFocus());
+    focusBar.appendChild(back);
+    focusBar.appendChild(h("strong", { class: "focus-title" }, n.name));
+    const stat = (k: "project" | "event" | "action" | "volunteer", label: string) => count(k) === 0 && k === "volunteer" ? null :
+      h("span", { class: `lg k-${k}`, title: label, "aria-label": `${label} ${count(k)}` }, typeIcon(k, 16), h("b", {}, String(count(k))));
+    const legend = h("div", { class: "focus-legend" },
+      count("thought") ? h("span", { class: "lg k-thought" }, `Thinking ${count("thought")}`) : null,
+      stat("project", "Projects"),
+      stat("event", "Events"),
+      stat("action", "Actions"),
+      stat("volunteer", "Volunteer roles"),
+    );
+    focusBar.appendChild(legend);
+    const classicBtn = h("button", { class: "focus-back focus-classic", type: "button", title: "From now on, clicking a group only opens its details panel (turn back on in Map settings)" }, "Don't zoom in on click");
+    classicBtn.addEventListener("click", () => setViewMode(false));
+    focusBar.appendChild(classicBtn);
+    if (!count("thought")) {
+      focusBar.appendChild(h("div", { class: "focus-note" },
+        "Public thinking (what this group is discussing, decisions it made, open questions) will show here once it shares some. Point people can add it with the + button."));
+    }
+    focusBar.appendChild(h("span", { class: "focus-more" }, "Details ›"));
+    focusBar.classList.add("tappable");
+    focusBar.onclick = (ev) => {
+      if ((ev.target as HTMLElement).closest("button")) return;
+      cb.onOpenDetails?.(n);
+    };
+    focusBar.style.display = "flex";
+    wrap.classList.add("focusing");
+    focusCard.style.display = "none";
+
+    // Zoom so the planet, its moons and its satellites all fit in the part of the map you can actually see:
+    // below the group's bar and (when the details panel is open over the map) left of it. It used to fill the whole
+    // map width, so satellites and moon names sat under the panel and the top satellite under the bar.
+    const outer = Math.max(ringR + BUBBLE_R + LABEL_REACH + 20, memberRX + 70);
+    const outerY = Math.max(ringR + BUBBLE_R + 50, memberRY + 90);
+    const frame = () => {
+      const wr = wrap.getBoundingClientRect();
+      const { w, h: vh } = dimensions();
+      const bar = focusBar.getBoundingClientRect();
+      const pane = wrap.ownerDocument.querySelector(".drawer.open") as HTMLElement | null;
+      // the panel may still be sliding in, so use its width, not where it is right now
+      const paneW = pane && pane.offsetWidth < wr.width - 200 ? pane.offsetWidth : 0;
+      const left = wr.left + 8;
+      const right = wr.right - paneW - 8;
+      const top = bar.height ? Math.max(wr.top, bar.bottom) + 8 : wr.top + 8;
+      const bottom = wr.bottom - 8;
+      // screen px → viewBox units (the svg's viewBox is the wrap's size, so they match 1:1)
+      const sx = w / wr.width, sy = vh / wr.height;
+      const availW = (right - left) * sx, availH = (bottom - top) * sy;
+      const scale = Math.max(0.3, Math.min(2.2, availW / (2 * outer), availH / (2 * outerY)));
+      const vcx = ((left + right) / 2 - (wr.left + wr.width / 2)) * sx;
+      const vcy = ((top + bottom) / 2 - (wr.top + wr.height / 2)) * sy;
+      const t = d3.zoomIdentity.translate(vcx - cx * scale, vcy - cy * scale).scale(scale);
+      svg.transition().duration(600).call(zoom.transform, t);
+    };
+    // after this click has opened (or not) the details panel
+    requestAnimationFrame(() => requestAnimationFrame(frame));
+    sim.alpha(0.45).restart();
+  }
+
+  function exitFocus(fit = true) {
+    if (!focusId) return;
+    const n = nodeById.get(focusId);
+    if (n) {
+      n.fx = null;
+      n.fy = null;
+    }
+    focusId = null;
+    focusSim?.stop();
+    focusSim = null;
+    for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
+    pinnedMembers = [];
+    nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("linked", false).classed("focused", false);
+    nodeLayer.style("--ss", null);
+    sim.force("focusPush", null);
+    sim.force("memberPull", null);
+    sim.velocityDecay(calm ? 0.5 : 0.4);
+    sim.force("charge", chargeForce);
+    sim.force("collide", collideForce);
+    memberHome.clear();
+    linkForce.strength(linkStrengthFor);
+    xForce.strength(centerStrengthFor);
+    yForce.strength(centerStrengthFor);
+    // Bubbles fold back into the group, then disappear.
+    if (fit) {
+      const nn = n;
+      focusGroup.selectAll<SVGGElement, unknown>("g.bubble")
+        .transition().duration(350).ease(d3.easeCubicIn)
+        .attr("transform", `translate(0,0) scale(0.2)`).attr("opacity", 0);
+      focusGroup.selectAll("line.bubble-link").transition().duration(350).attr("opacity", 0);
+      setTimeout(() => { if (!focusId) focusGroup.selectAll("*").remove(); }, 380);
+      void nn;
+    } else {
+      focusGroup.selectAll("*").remove();
+    }
+    nodeSel.classed("faded", false).classed("partner", false).classed("partner-many", false);
+    linkSel.classed("faded", false);
+    moneySel.classed("faded", false);
+    focusBar.style.display = "none";
+    wrap.classList.remove("focusing");
+    focusCard.style.display = "none";
+    // back to the view from before the group was opened (or the whole network)
+    if (fit) setTimeout(() => {
+      if (focusId) return;
+      if (beforeFocus) svg.transition().duration(600).call(zoom.transform, beforeFocus);
+      else fitToView(true);
+      beforeFocus = null;
+    }, 450);
+    sim.alpha(0.6).restart();
   }
 
   // ----- Selection -----
@@ -491,6 +2155,9 @@ export function createGraph(
   }
 
   const api: Graph = {
+    orgLinkToggle() {
+      return toggle;
+    },
     setVisibleCoalitions(ids) {
       visibleCoalitions = new Set(ids);
       applyVisibility();
@@ -499,49 +2166,84 @@ export function createGraph(
       selectedId = node?.id ?? null;
       applySelection();
     },
+    focusOnNode(id) {
+      enterFocus(id);
+    },
     focusOnCoalition(id) {
-      const n = nodeById.get(id);
-      if (!n || n.x === undefined || n.y === undefined) return;
-      const { w, h } = dimensions();
-      const scale = 1.4;
-      const t = d3.zoomIdentity
-        .translate(-n.x * scale, -n.y * scale)
-        .scale(scale);
-      void w;
-      void h;
-      svg.transition().duration(550).call(zoom.transform, t);
+      enterFocus(id);
+    },
+    enterFocus(id) {
+      enterFocus(id);
+    },
+    exitFocus() {
+      exitFocus();
+    },
+    ensureInView() {
+      ensureInView();
     },
     updateSettings(partial) {
       const before = { ...settings };
       settings = { ...settings, ...partial };
       // Forces that depend on settings need re-init
       if (partial.linkForce !== undefined) {
-        linkForce.strength(linkForceStrength());
+        linkForce.strength(linkStrengthFor);
       }
       if (partial.linkDistance !== undefined) {
         linkForce.distance(linkDistanceFor);
       }
-      if (partial.repelForce !== undefined) {
+      if (partial.repelForce !== undefined || partial.coalitionRepel !== undefined) {
         chargeForce.strength(chargeStrengthFor);
       }
       if (partial.centerForce !== undefined) {
-        xForce.strength(centerForceStrength());
-        yForce.strength(centerForceStrength());
+        xForce.strength(centerStrengthFor);
+        yForce.strength(centerStrengthFor);
+      }
+      if (partial.showAllEvents !== undefined || partial.showAllProjects !== undefined || partial.showAllActions !== undefined || partial.showAllVolunteer !== undefined || partial.alwaysShow !== undefined) {
+        if (partial.alwaysShow !== undefined) {
+          try { localStorage.setItem("openthink.previews", settings.alwaysShow ? "1" : "0"); } catch (_) { /* ignore */ }
+          syncViewSwitch();
+        }
+        refreshSats();
+        refreshSpacing();
+        // An open group redraws its moons with the new kinds.
+        if (focusId && partial.alwaysShow === undefined) { const f = focusId; exitFocus(false); enterFocus(f); }
+      }
+      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined || partial.focusSatSize !== undefined) && focusId) {
+        const f = focusId;
+        exitFocus(false);
+        enterFocus(f);
+      }
+      // "When you open a group" sliders: redraw an open group with the new size and spacing straight away
+      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined) && focusId) {
+        const f = focusId; exitFocus(false); enterFocus(f);
+      }
+      if (partial.weightEvents !== undefined || partial.weightProjects !== undefined || partial.weightActions !== undefined || partial.weightConnections !== undefined) {
+        collideForce.radius(collideRadius);
+        applyVisualSettings();
+        sim.alpha(0.4).restart();
+      }
+      if (partial.showBubbles !== undefined) {
+        if (!settings.showBubbles && focusId) exitFocus(); // Classic: fold everything back to the plain network
+        refreshSats();
+        refreshSpacing();
+        syncViewSwitch();
+        window.dispatchEvent(new CustomEvent("openthink:viewmode", { detail: { bubbles: settings.showBubbles } }));
       }
       if (partial.nodeSize !== undefined) {
-        collideForce.radius((n) => nodeRadiusOf(n) + 14);
+        collideForce.radius(collideRadius);
         applyVisualSettings();
       }
       if (partial.linkThickness !== undefined) {
-        linkSel.attr("stroke-width", settings.linkThickness);
+        linkSel.attr("stroke-width", linkWidthFor);
       }
-      if (partial.textFadeThreshold !== undefined) {
+      if (partial.textFadeThreshold !== undefined || partial.showText !== undefined) {
         applyTextFade();
       }
       // If any force changed, re-energize the sim
       const forceChanged =
         partial.centerForce !== undefined ||
         partial.repelForce !== undefined ||
+        partial.coalitionRepel !== undefined ||
         partial.linkForce !== undefined ||
         partial.linkDistance !== undefined ||
         partial.nodeSize !== undefined;
@@ -555,11 +2257,23 @@ export function createGraph(
     kickSimulation() {
       sim.alpha(1).restart();
     },
+    bubblesOn() {
+      return settings.showBubbles;
+    },
   };
 
+  syncViewSwitch();
+  satsReady = true;
+  refreshSats();
+  collideForce.radius(collideRadius);
   return api;
 }
 
 function shorten(s: string, n: number): string {
   return s.length > n ? s.slice(0, n - 1) + "…" : s;
+}
+
+function fmtShortDate(iso: string): string {
+  const d = parseEventDate(iso);
+  return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }

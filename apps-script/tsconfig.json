@@ -1,0 +1,13 @@
+{
+  // Type-checks Code.gs against the official Google Apps Script typings: npm run check:apps-script
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "target": "ES2019",
+    "lib": ["ES2019"],
+    "types": ["google-apps-script"],
+    "noImplicitAny": false
+  },
+  "files": ["../.apps-script-check/Code.js"]
+}

@@ -1,140 +1,733 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { DataFile, GraphNode } from "./types";
-import { h } from "./dom";
-import { initials, typeLabel } from "./util";
+import type { Coalition, DataFile, GraphNode, Organization } from "./types";
+import { currentMap } from "./maps";
+import { STATE_GEO, type DistrictDef } from "./geodata";
+import { h, makeFoldable } from "./dom";
+import { atFallback, coalitionPlaced, orgPlaced } from "./placed";
+import { smoothWheelZoom } from "./smoothzoom";
+export { coalitionPlaced, orgPlaced } from "./placed";
+import { initials, shownType, hasTime, parseEventDate } from "./util";
+import { allEvents, allProjects, type Owner } from "./owners";
+import { APPROX_MAX_ZOOM, inMapView, loadTowns, placeFor, setMapBounds } from "./itemfilters";
+import { createNodeSearch, everythingForSearch, findPlaces, type SearchItem } from "./search";
 
 export interface GeographicView {
   el: HTMLElement;
   invalidate(): void;
+  /** Show this group, or one of its events / projects, on the map (the only thing here that moves the view). */
+  locate(node: GraphNode, item?: { kind: "event" | "project" | "action"; id: string; lat?: number; lng?: number }): void;
+  /** Whether locate() has a place to go to. */
+  canLocate(node: GraphNode, item?: { lat?: number; lng?: number }): boolean;
 }
 
 export interface GeoCallbacks {
   onNodeClick(node: GraphNode): void;
+  /** An event or project pin was clicked at (x, y) on screen: show its card there. */
+  onItemClick?(kind: "event" | "project", id: string, at: { x: number; y: number }): void;
+  /** The "Locate on strategy map" button in a group's card. */
+  onLocateMap?(node: GraphNode): void;
 }
 
-export function createGeographicView(
-  data: DataFile,
-  cb: GeoCallbacks,
-): GeographicView {
+type LayerKey = "coalitions" | "orgs" | "events" | "projects";
+
+const MA_BOUNDS: L.LatLngBoundsExpression = [
+  [41.45, -73.55],
+  [42.95, -69.85],
+];
+
+// Voting district outlines per state (public/geo/<state>-*.geojson; see geodata.ts for sources).
+// Representatives' names change between elections, so a district links to an official "find your …" page instead.
+type District = DistrictDef & { file: string };
+const MULTI_STATE = currentMap.geo.length > 1;
+const DISTRICTS: District[] = currentMap.geo.flatMap((p) => STATE_GEO[p].districts.map((d) => ({
+  ...d, id: `${p}-${d.id}`, file: `${p}-${d.id}`, label: MULTI_STATE ? `${STATE_GEO[p].code} · ${d.label}` : d.label,
+})));
+
+
+export function createGeographicView(data: DataFile, cb: GeoCallbacks): GeographicView {
+  /** Massachusetts opens on the state; other maps open on wherever their groups are. */
+  function startBounds(): L.LatLngBoundsExpression {
+    if (currentMap.geo.length === 1 && currentMap.geo[0] === "ma" && !currentMap.combine) return MA_BOUNDS;
+    const pts = [...data.coalitions, ...data.organizations]
+      .filter((n) => !(n as { remote?: boolean }).remote && Number.isFinite(n.lat) && Number.isFinite(n.lng) && (n.lat !== 0 || n.lng !== 0))
+      .map((n) => [n.lat, n.lng] as [number, number]);
+    return pts.length ? L.latLngBounds(pts).pad(0.08) : MA_BOUNDS;
+  }
   const wrap = h("div", { class: "geo-wrap" });
   const mapEl = h("div", { class: "geo-map" });
   wrap.appendChild(mapEl);
 
-  const legend = h(
-    "div",
-    { class: "geo-legend" },
-    h("h3", {}, "On the map"),
-    h(
-      "div",
-      { class: "row" },
-      h("div", {
-        class: "swatch",
-        style: "width:22px;height:22px;background:#34d399",
-      }),
-      h("div", {}, `${data.coalitions.length} coalitions (sized by members)`),
-    ),
-    h(
-      "div",
-      { class: "row" },
-      h("div", {
-        class: "swatch",
-        style:
-          "width:10px;height:10px;background:#2a2a36;border:1px solid #fff;",
-      }),
-      h("div", {}, `${data.organizations.length} member orgs`),
-    ),
-    h(
-      "div",
-      { class: "row hint" },
-      h("div", {}, "Click any marker for details."),
-    ),
-  );
-  wrap.appendChild(legend);
+  const events = allEvents(data).filter(({ event: e }) => !e.online && e.lat !== undefined && e.lng !== undefined);
+  const projects = allProjects(data).filter(({ project: p }) => !p.online && p.lat !== undefined && p.lng !== undefined);
+  const pinnedOrgs = data.organizations.filter(orgPlaced);
+  const remoteCount = data.organizations.length - pinnedOrgs.length;
+  const pinnedCoalitions = data.coalitions.filter(coalitionPlaced);
+
+  // Which layers are on. Events and projects start off.
+  const on: Record<LayerKey, boolean> = { coalitions: true, orgs: true, events: false, projects: false };
+
+  // ---- Panel: search, layer checkboxes, near me
+  const panel = h("div", { class: "geo-panel" });
+  wrap.appendChild(panel);
+  const geoSearch = createNodeSearch(everythingForSearch(data), (_id, item) => goTo(item), {
+    placeholder: "Search places, groups, events…",
+    extra: findPlaces,
+  });
+  panel.appendChild(geoSearch);
+
+  const layers = h("div", { class: "geo-layers" }, h("h3", {}, "Show on the map"));
+  const layerDefs: { key: LayerKey; label: string; swatch: string }[] = [
+    { key: "coalitions", label: `Coalitions (${pinnedCoalitions.length})`, swatch: "background:#34d399;border-radius:50%" },
+    { key: "orgs", label: `Organizations (${pinnedOrgs.length})`, swatch: "background:#2a2a36;border:1px solid #fff;border-radius:50%" },
+    { key: "events", label: `Events (${events.length})`, swatch: "background:#f472b6;border-radius:3px" },
+    { key: "projects", label: `Projects (${projects.length})`, swatch: "background:#38bdf8;transform:rotate(45deg)" },
+  ];
+  const boxes = new Map<LayerKey, HTMLInputElement>();
+  for (const d of layerDefs) {
+    const box = h("input", { type: "checkbox" }) as HTMLInputElement;
+    box.checked = on[d.key];
+    box.addEventListener("change", () => setLayer(d.key, box.checked));
+    boxes.set(d.key, box);
+    layers.appendChild(
+      h("label", { class: "geo-layer" }, box, h("span", { class: "swatch", style: `width:10px;height:10px;${d.swatch}` }), h("span", {}, d.label)),
+    );
+  }
+  if (remoteCount) layers.appendChild(h("div", { class: "geo-note" }, `${remoteCount} organization${remoteCount === 1 ? "" : "s"} with no address on file (remote, statewide or national) ${remoteCount === 1 ? "isn't" : "aren't"} pinned.`));
+  const unpinnedC = data.coalitions.length - pinnedCoalitions.length;
+  if (unpinnedC) layers.appendChild(h("div", { class: "geo-note" }, `${unpinnedC} statewide or national coalition${unpinnedC === 1 ? "" : "s"} ${unpinnedC === 1 ? "isn't" : "aren't"} pinned; search for one to see its members.`));
+  const pinless = allEvents(data).length + allProjects(data).length - events.length - projects.length;
+  if (pinless) layers.appendChild(h("div", { class: "geo-note" }, `${pinless} online or unlocated events/projects are in the lists.`));
+  panel.appendChild(layers);
+
+  const nearBtn = h("button", { class: "geo-near", type: "button" }, "◎ What's near me?");
+  panel.appendChild(nearBtn);
+  const nearList = h("div", { class: "geo-near-list" });
+  panel.appendChild(nearList);
+
+  // Town / county outlines: click one to zoom to it.
+  const boundsBox = h("div", { class: "geo-layers geo-bounds" }, h("h3", {}, "Boundaries"));
+  const boundChoices: { id: "none" | "towns" | "counties"; label: string }[] = [
+    { id: "none", label: "None" }, { id: "towns", label: "Towns" }, { id: "counties", label: "Counties" },
+  ];
+  const boundBtns = new Map<string, HTMLElement>();
+  const boundRow = h("div", { class: "filters" });
+  for (const b of boundChoices) {
+    const btn = h("button", { class: `chip ${b.id === "none" ? "active" : ""}`, type: "button" }, b.label);
+    btn.addEventListener("click", () => { setBoundary(b.id); });
+    boundBtns.set(b.id, btn);
+    boundRow.appendChild(btn);
+  }
+  boundsBox.appendChild(boundRow);
+  const districtBoxes = new Map<string, HTMLInputElement>();
+  // Voting districts: each its own outline, on or off independently (they overlap, so line styles differ).
+  boundsBox.appendChild(h("h3", { class: "geo-sub" }, "Voting districts"));
+  for (const d of DISTRICTS) {
+    const box = h("input", { type: "checkbox" }) as HTMLInputElement;
+    box.addEventListener("change", () => setDistrict(d, box.checked));
+    districtBoxes.set(d.id, box);
+    boundsBox.appendChild(
+      h("label", { class: "geo-layer" }, box,
+        h("span", { class: "swatch", style: `width:14px;height:0;border-top:${d.weight + 0.5}px ${d.dash ? "dashed" : "solid"} ${d.color}` }),
+        h("span", {}, d.label)),
+    );
+  }
+  const precinctNote = h("div", { class: "geo-note", hidden: "" }, "Precincts show when you zoom in to street level.");
+  boundsBox.appendChild(precinctNote);
+  boundsBox.appendChild(h("div", { class: "geo-note" }, `District lines: ${currentMap.geo.map((p) => (MULTI_STATE ? `${STATE_GEO[p].code}: ` : "") + STATE_GEO[p].credit).join("; ")}. Click a district to find who represents it.`));
+  // Town/county outlines exist only for states with bundled geography (geodata.ts).
+  if (currentMap.geo.length) panel.insertBefore(boundsBox, nearBtn);
+
+  const inViewBtn = h("button", { class: "geo-near", type: "button" }, "Show list of events in view");
+  panel.insertBefore(inViewBtn, nearBtn);
 
   let map: L.Map | null = null;
+  const groups: Record<LayerKey, L.LayerGroup> = {
+    coalitions: L.layerGroup(), orgs: L.layerGroup(), events: L.layerGroup(), projects: L.layerGroup(),
+  };
+  const orgMarkers = new Map<string, L.Marker>();
+  const pinMarkers = new Map<string, L.Marker>();
+  let highlight: L.Layer | null = null;
+
+  function setLayer(key: LayerKey, value: boolean) {
+    // turning a layer off also clears a search highlight that may have been on one of its markers
+    if (!value && highlight) { highlight.remove(); highlight = null; }
+    on[key] = value;
+    boxes.get(key)!.checked = value;
+    if (!map) return;
+    if (value) groups[key].addTo(map);
+    else groups[key].remove();
+    if (key === "orgs") recluster();
+  }
+
+  let boundaryLayer: L.GeoJSON | null = null;
+  const boundaryCache = new Map<string, unknown>();
+  let boundarySeq = 0;
+  async function setBoundary(kind: "none" | "towns" | "counties") {
+    for (const [id, el] of boundBtns) el.classList.toggle("active", id === kind);
+    const seq = ++boundarySeq;
+    const m = ensureMap();
+    boundaryLayer?.remove();
+    boundaryLayer = null;
+    if (kind === "none") return;
+    let json = boundaryCache.get(kind);
+    if (!json) {
+      // One file per state; merged into one layer.
+      const parts = await Promise.all(currentMap.geo.map((p) =>
+        fetch(`${import.meta.env.BASE_URL}geo/${p}-${kind}.geojson`).then((r) => r.json() as Promise<GeoJSON.FeatureCollection>).catch(() => null)));
+      const features = parts.flatMap((part) => part?.features ?? []);
+      if (!features.length) return;
+      json = { type: "FeatureCollection", features } as GeoJSON.FeatureCollection;
+      boundaryCache.set(kind, json);
+    }
+    if (seq !== boundarySeq) return; // a newer choice replaced this one
+    const base: L.PathOptions = { color: "#94a3b8", weight: kind === "towns" ? 0.8 : 1.5, opacity: 0.7, fillColor: "#38bdf8", fillOpacity: 0.02 };
+    boundaryLayer = L.geoJSON(json as GeoJSON.GeoJsonObject, {
+      style: () => base,
+      onEachFeature: (f, layer) => {
+        const p = f.properties as { name?: string; county?: string };
+        const name = kind === "towns" ? `${p.name}${p.county ? `, ${p.county} County` : ""}` : `${p.county} County`;
+        layer.bindTooltip(escapeHTML(name), { sticky: true });
+        layer.on("mouseover", () => (layer as L.Path).setStyle({ fillOpacity: 0.12, weight: 2 }));
+        layer.on("mouseout", () => (layer as L.Path).setStyle(base));
+        layer.on("click", (e) => {
+          L.DomEvent.stopPropagation(e);
+          m.fitBounds((layer as L.Polygon).getBounds(), { padding: [30, 30], maxZoom: 14 });
+        });
+      },
+    }).addTo(m);
+    boundaryLayer.bringToBack();
+  }
+
+  const districtLayers = new Map<string, L.GeoJSON>();
+  const districtOn = new Set<string>();
+  const PRECINCT_ZOOM = 12;
+  async function setDistrict(d: District, value: boolean) {
+    const m = ensureMap();
+    if (value) districtOn.add(d.id);
+    else districtOn.delete(d.id);
+    districtBoxes.get(d.id)!.checked = value;
+    if (!value) { districtLayers.get(d.id)?.remove(); syncPrecinctNote(); return; }
+    let layer = districtLayers.get(d.id);
+    if (!layer) {
+      let json: unknown;
+      try {
+        json = await (await fetch(`${import.meta.env.BASE_URL}geo/${d.file}.geojson`)).json();
+      } catch (_) { return; }
+      const style: L.PathOptions = { color: d.color, weight: d.weight, opacity: 0.85, dashArray: d.dash, fillColor: d.color, fillOpacity: 0.01 };
+      layer = L.geoJSON(json as GeoJSON.GeoJsonObject, {
+        style: () => style,
+        onEachFeature: (f, l) => {
+          const name = String((f.properties as { name?: string }).name || "");
+          l.bindTooltip(`${escapeHTML(name)} <span class="geo-tip-kind">${escapeHTML(d.kind)}</span>`, { sticky: true });
+          l.bindPopup(`<b>${escapeHTML(name)}</b><br><span class="geo-tip-kind">${escapeHTML(d.kind)}</span><br><a href="${d.link}" target="_blank" rel="noopener">${escapeHTML(d.linkText)} ↗</a>`);
+          l.on("mouseover", () => (l as L.Path).setStyle({ fillOpacity: 0.1, weight: d.weight + 1 }));
+          l.on("mouseout", () => (l as L.Path).setStyle(style));
+          l.on("click", (e) => L.DomEvent.stopPropagation(e));
+        },
+      });
+      districtLayers.set(d.id, layer);
+    }
+    if (!districtOn.has(d.id)) return; // switched off while loading
+    if (d.minZoom && m.getZoom() < d.minZoom) { syncPrecinctNote(); return; }
+    layer.addTo(m);
+    layer.bringToBack();
+    boundaryLayer?.bringToBack();
+    syncPrecinctNote();
+  }
+  // Precincts (2,256 small shapes) only appear zoomed in, so the map stays readable and quick.
+  function syncDistrictZoom() {
+    if (!map) return;
+    for (const d of DISTRICTS) {
+      if (!d.minZoom || !districtOn.has(d.id)) continue;
+      const layer = districtLayers.get(d.id);
+      if (!layer) continue;
+      const show = map.getZoom() >= d.minZoom;
+      if (show && !map.hasLayer(layer)) { layer.addTo(map); layer.bringToBack(); }
+      if (!show && map.hasLayer(layer)) layer.remove();
+    }
+    syncPrecinctNote();
+  }
+  function syncPrecinctNote() {
+    precinctNote.hidden = !(districtOn.has("ma-precincts") && (!map || map.getZoom() < PRECINCT_ZOOM));
+  }
+
+  // "Show list of events in view": upcoming events whose address is in view (or, zoomed out to town level, whose
+  // town is). It follows the map while open, and the same button closes it.
+  let inViewOpen = false;
+  const isUpcoming = (e: { date: string; recurrence?: string }) =>
+    !!e.recurrence || parseEventDate(e.date).getTime() + (hasTime(e.date) ? 0 : 86400000) >= Date.now();
+  async function renderInView() {
+    const m = ensureMap();
+    await loadTowns();
+    if (!inViewOpen) return;
+    const b = m.getBounds();
+    const box = { south: b.getSouth(), west: b.getWest(), north: b.getNorth(), east: b.getEast(), zoom: m.getZoom() };
+    const rows = allEvents(data)
+      .filter(({ event: e }) => isUpcoming(e))
+      .map(({ event: e, owner }) => ({ e, owner, at: placeFor(e, owner.node as { lat?: number; lng?: number; remote?: boolean; kind?: string }) }))
+      .filter((r) => inMapView({ ...r.at, online: r.e.online }, box))
+      .sort((a, c) => a.e.date.localeCompare(c.e.date));
+    const approx = rows.filter((r) => r.at.approx).length;
+    const note = box.zoom > APPROX_MAX_ZOOM
+      ? "Only events with an exact address. Zoom out to include events known only by town."
+      : approx ? `${approx} of them are known only by town (or their group's address).` : "";
+    nearList.replaceChildren(...[
+      h("div", { class: "geo-near-head" }, `${rows.length} upcoming event${rows.length === 1 ? "" : "s"} in view`),
+      note ? h("div", { class: "geo-note" }, note) : null,
+      ...rows.slice(0, 40).map(({ e, owner, at }) => {
+        const el = h("button", { class: "geo-near-row", type: "button" },
+          h("span", { class: "n" }, e.name), h("span", { class: "k" }, `${e.recurrence ? "↻ " : ""}${e.date.slice(0, 10)} · ${e.location || owner.name}${at.approx ? " (by town)" : ""}`));
+        el.addEventListener("click", (ev) => {
+          if (cb.onItemClick) cb.onItemClick("event", e.id, { x: (ev as MouseEvent).clientX, y: (ev as MouseEvent).clientY });
+          else cb.onNodeClick(owner.node);
+        });
+        return el;
+      }),
+      rows.length > 40 ? h("div", { class: "geo-note" }, `…and ${rows.length - 40} more. Zoom in to narrow the list.`) : null,
+    ].filter((x): x is HTMLElement => !!x));
+  }
+  inViewBtn.addEventListener("click", () => {
+    inViewOpen = !inViewOpen;
+    inViewBtn.textContent = inViewOpen ? "Hide list of events in view" : "Show list of events in view";
+    inViewBtn.classList.toggle("on", inViewOpen);
+    if (inViewOpen) void renderInView();
+    else nearList.replaceChildren();
+  });
+  // the "near me" / place lists share the space below; they close this one
+  const closeInView = () => {
+    if (!inViewOpen) return;
+    inViewOpen = false;
+    inViewBtn.textContent = "Show list of events in view";
+    inViewBtn.classList.remove("on");
+  };
+
+  function ownerLine(owner: Owner): string {
+    return `${escapeHTML(owner.name)}`;
+  }
+
+  function pinIcon(cls: string, glyph: string): L.DivIcon {
+    return L.divIcon({ className: "", iconSize: [18, 18], iconAnchor: [9, 9], html: `<div class="geo-pin ${cls}">${glyph}</div>` });
+  }
+
+  /** Every organization is the same size: easy to see, a little bigger as you zoom in. */
+  const orgRadiusAt = (zoom: number) => Math.max(9, Math.min(22, 6 + (zoom - 6) * 1.7));
+
+  // ---- Groups that sit on top of each other: one shows, with a "+N" badge that fans the rest out around it ----
+  const clusterLayer = L.layerGroup();
+  const hidden = new Set<string>();
+  let spread: { ids: string[]; lines: L.Layer[] } | null = null;
+  function collapse() {
+    if (!spread || !map) return;
+    for (const id of spread.ids) {
+      const o = pinnedOrgs.find((x) => x.id === id)!;
+      orgMarkers.get(id)!.setLatLng([o.lat, o.lng]);
+      if (hidden.has(id)) groups.orgs.removeLayer(orgMarkers.get(id)!);
+    }
+    for (const l of spread.lines) l.remove();
+    spread = null;
+  }
+  /** Which group each hidden one is stacked under (to animate it in from, or out to, that spot). */
+  const leaderOf = new Map<string, string>();
+  const orgById = new Map(pinnedOrgs.map((o) => [o.id, o]));
+  const innerOf = (id: string) => orgMarkers.get(id)?.getElement()?.querySelector<HTMLElement>(".geo-org") ?? null;
+  /** Slide a group's icon from (dx, dy) px away to its place, growing in; or the reverse, then call done. */
+  function glide(id: string, dx: number, dy: number, into: boolean, done?: () => void) {
+    const el = innerOf(id);
+    if (!el || reduceMotion) { done?.(); return; }
+    // (the icon is centred on its point with translate(-50%, -50%) in styles.css; keep that)
+    const away = `translate(-50%, -50%) translate(${dx.toFixed(0)}px, ${dy.toFixed(0)}px) scale(0.35)`;
+    el.style.transition = "none";
+    el.style.transform = into ? away : "";
+    el.style.opacity = into ? "0" : "1";
+    void el.offsetWidth; // start from there
+    el.style.transition = "transform 0.32s ease-out, opacity 0.32s ease-out";
+    el.style.transform = into ? "" : away;
+    el.style.opacity = into ? "1" : "0";
+    setTimeout(() => {
+      el.style.transition = "";
+      if (!into) { el.style.transform = ""; el.style.opacity = ""; }
+      done?.();
+    }, 340);
+  }
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  let firstStack = true;
+
+  function recluster() {
+    if (!map) return;
+    collapse();
+    clusterLayer.clearLayers();
+    const size = 2 * orgRadiusAt(map.getZoom()) + (map.getZoom() >= 10 ? 8 : 4);
+    const view = map.getBounds().pad(0.2);
+    const pt = (o: Organization) => map!.latLngToContainerPoint([o.lat, o.lng]);
+    const pts = on.orgs ? pinnedOrgs.filter((o) => view.contains([o.lat, o.lng])).map((o) => ({ o, p: pt(o) })) : [];
+    // groups with logos and more coalitions stay on top
+    pts.sort((a, b) => Number(!!b.o.logo) - Number(!!a.o.logo) || (b.o.coalition_ids?.length || 0) - (a.o.coalition_ids?.length || 0));
+    const taken = new Set<string>();
+    const nowHidden = new Map<string, string>(); // hidden id → its stack's leader
+    const stacks: { lead: Organization; ids: string[] }[] = [];
+    for (const a of pts) {
+      if (taken.has(a.o.id)) continue;
+      taken.add(a.o.id);
+      const near = pts.filter((b) => !taken.has(b.o.id) && a.p.distanceTo(b.p) < size * 0.75);
+      if (!near.length) continue;
+      for (const b of near) {
+        taken.add(b.o.id);
+        nowHidden.set(b.o.id, a.o.id);
+      }
+      stacks.push({ lead: a.o, ids: [a.o.id, ...near.map((b) => b.o.id)] });
+    }
+    // Groups coming out of a stack slide out of it; groups joining one slide into it, then disappear.
+    for (const id of [...hidden]) {
+      if (nowHidden.has(id)) continue;
+      hidden.delete(id);
+      groups.orgs.addLayer(orgMarkers.get(id)!);
+      const lead = orgById.get(leaderOf.get(id) ?? "");
+      const me = orgById.get(id)!;
+      if (lead) {
+        const d = pt(lead).subtract(pt(me));
+        requestAnimationFrame(() => glide(id, d.x, d.y, true));
+      }
+    }
+    for (const [id, lead] of nowHidden) {
+      if (hidden.has(id)) continue;
+      hidden.add(id);
+      const d = pt(orgById.get(lead)!).subtract(pt(orgById.get(id)!));
+      const drop = () => { if (hidden.has(id)) groups.orgs.removeLayer(orgMarkers.get(id)!); };
+      if (firstStack) drop(); // the first time the map is drawn, nothing to animate
+      else glide(id, d.x, d.y, false, drop);
+    }
+    leaderOf.clear();
+    for (const [id, lead] of nowHidden) leaderOf.set(id, lead);
+    firstStack = false;
+    for (const { lead, ids } of stacks) {
+      const n = ids.length - 1;
+      // a quiet grey "+N" about the size of a group, tucked against the group on top
+      const d = Math.round(size * 0.82);
+      const badge = L.marker([lead.lat, lead.lng], {
+        icon: L.divIcon({ className: "geo-more-icon", iconSize: [0, 0], html: `<button type="button" class="geo-more" style="--off:${(size / 2).toFixed(0)}px;--d:${d}px" aria-label="${n} more groups here: zoom in">+${n}</button>` }),
+        zIndexOffset: 1000,
+      });
+      badge.bindTooltip(`${n + 1} groups here: ${escapeHTML(ids.map((id) => orgById.get(id)!.name).slice(0, 6).join(", "))}${ids.length > 6 ? "…" : ""}<br><span style="color:#94a3b8">Click to zoom in</span>`, { direction: "top", offset: [size / 2, -size / 2] });
+      badge.on("click", (ev: L.LeafletMouseEvent) => {
+        L.DomEvent.stopPropagation(ev);
+        openStack(ids, pt(lead), size);
+      });
+      clusterLayer.addLayer(badge);
+    }
+  }
+
+  // "+N" zooms in until the stack's groups separate; "−" (bottom-left) zooms back to where you were.
+  let before: { center: L.LatLng; zoom: number } | null = null;
+  const backBtn = h("button", { type: "button", class: "geo-back", title: "Back to the view you had before" }, "− Zoom back out") as HTMLButtonElement;
+  backBtn.style.display = "none";
+  backBtn.addEventListener("click", () => {
+    if (!map || !before) return;
+    map.flyTo(before.center, before.zoom, { duration: 0.6 });
+    before = null;
+    backBtn.style.display = "none";
+  });
+  function openStack(ids: string[], at: L.Point, size: number) {
+    if (!map) return;
+    const pts = ids.map((id) => L.latLng(orgById.get(id)!.lat, orgById.get(id)!.lng));
+    const bounds = L.latLngBounds(pts);
+    // the same address (or nearly): zooming won't separate them, so fan them out instead
+    if (bounds.getNorthEast().distanceTo(bounds.getSouthWest()) < 40) return fanOut(ids, at, size);
+    if (!before) before = { center: map.getCenter(), zoom: map.getZoom() };
+    backBtn.style.display = "";
+    // zoom until the closest pair is a group's width apart (or as far as the map goes)
+    let z = map.getZoom();
+    const maxZ = 18;
+    const apart = (zz: number) => {
+      const ps = pts.map((ll) => map!.project(ll, zz));
+      let m = Infinity;
+      for (let i = 0; i < ps.length; i++) for (let j = i + 1; j < ps.length; j++) m = Math.min(m, ps[i].distanceTo(ps[j]));
+      return m;
+    };
+    while (z < maxZ && apart(z) < 2 * orgRadiusAt(z) + 10) z += 0.5;
+    const fit = map.getBoundsZoom(bounds.pad(0.3));
+    map.flyTo(bounds.getCenter(), Math.min(maxZ, Math.max(z, Math.min(fit, z + 1))), { duration: 0.7 });
+  }
+  /** Spread a stack of groups around where they are, with a thin line back to each one's real place. */
+  function fanOut(ids: string[], at: L.Point, size: number) {
+    if (!map) return;
+    collapse();
+    const n = ids.length;
+    const r = Math.max(size * 1.2, (n * (size + 6)) / (2 * Math.PI));
+    const lines: L.Layer[] = [];
+    ids.forEach((id, i) => {
+      const a = -Math.PI / 2 + (2 * Math.PI * i) / n;
+      const ll = map!.containerPointToLatLng(L.point(at.x + Math.cos(a) * r, at.y + Math.sin(a) * r));
+      const m = orgMarkers.get(id)!;
+      const o = pinnedOrgs.find((x) => x.id === id)!;
+      lines.push(L.polyline([[o.lat, o.lng], ll], { color: "#94a3b8", weight: 1, opacity: 0.7, interactive: false }).addTo(map!));
+      m.setLatLng(ll);
+      groups.orgs.addLayer(m);
+    });
+    spread = { ids, lines };
+  }
+
+  /** A group was clicked: a small card beside it, and its full details in the pane. Neither moves the map. */
+  function openGroupCard(n: Organization | Coalition, marker: L.Marker) {
+    const isCoal = "member_ids" in n;
+    const node: GraphNode = isCoal ? { ...(n as Coalition), kind: "coalition" } : { ...(n as Organization), kind: "org" };
+    const count = (k: "events" | "projects" | "actions") => ((n as unknown as Record<string, unknown[] | undefined>)[k])?.length || 0;
+    const coals = isCoal ? [] : data.coalitions.filter((c) => (n as Organization).coalition_ids?.includes(c.id)).map((c) => c.abbrev || c.name);
+    const desc = n.description ? (n.description.length > 170 ? `${n.description.slice(0, 168)}…` : n.description) : "";
+    const box = h("div", { class: "geo-card" },
+      h("div", { class: "geo-card-head" },
+        n.logo ? h("img", { src: n.logo, alt: "" }) : null,
+        h("div", {}, h("div", { class: "geo-card-kind" }, isCoal ? `Coalition · ${(n as Coalition).member_count} member groups` : [shownType((n as Organization).type), (n as Organization).geographic_focus].filter(Boolean).join(" · ")),
+          h("strong", {}, n.name))),
+      desc ? h("p", {}, desc) : null,
+      h("div", { class: "geo-card-meta" }, [count("events") && `${count("events")} events`, count("projects") && `${count("projects")} projects`, count("actions") && `${count("actions")} actions`].filter(Boolean).join(" · ")),
+      coals.length ? h("div", { class: "geo-card-meta" }, `In ${coals.join(", ")}`) : null,
+    );
+    if (cb.onLocateMap) {
+      const b = h("button", { type: "button", class: "geo-card-btn" }, "Locate on strategy map");
+      b.addEventListener("click", () => cb.onLocateMap!(node));
+      box.appendChild(b);
+    }
+    L.popup({ autoPan: false, closeButton: true, className: "geo-card-pop", offset: [0, -8], maxWidth: 300 }).setLatLng(marker.getLatLng()).setContent(box).openOn(map!);
+    cb.onNodeClick(node);
+  }
 
   function ensureMap() {
     if (map) return map;
-    map = L.map(mapEl, {
-      zoomControl: true,
-      attributionControl: true,
-    });
-    // Fit to MA bounds + small padding
-    map.fitBounds(
-      [
-        [41.45, -73.55],
-        [42.95, -69.85],
-      ],
-      { padding: [20, 20] },
-    );
-    L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-      {
-        attribution:
-          '© <a href="https://www.openstreetmap.org/copyright">OSM</a> · © <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
-        maxZoom: 19,
-      },
-    ).addTo(map);
+    // Any zoom level (no snapping), half-level buttons, and a wheel/trackpad that glides (smoothzoom.ts).
+    map = L.map(mapEl, { zoomControl: true, attributionControl: true, zoomSnap: 0, zoomDelta: 0.5, scrollWheelZoom: false });
+    smoothWheelZoom(map);
+    mapEl.appendChild(backBtn);
+    (mapEl as unknown as { __map?: L.Map }).__map = map; // for automated checks
+    map.fitBounds(startBounds(), { padding: [20, 20] });
+    // OpenStreetMap's own tiles need no API key (CARTO's now do). They're light, so CSS
+    // (.geo-view .leaflet-tile-pane) darkens them to match the site.
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(map);
 
-    // Coalition markers (large colored circles with abbrev label)
-    for (const c of data.coalitions) {
+    // Coalitions (large colored circles with abbrev label)
+    for (const c of pinnedCoalitions) {
       const r = 14 + Math.sqrt(c.member_count) * 2.5;
-      const labelText = c.abbrev || initials(c.name);
-      // Build a safe DOM node for the divIcon (no innerHTML)
       const labelNode = document.createElement("div");
       labelNode.className = "geo-coalition-label";
       labelNode.style.background = c.color;
       labelNode.style.width = `${r * 2}px`;
       labelNode.style.height = `${r * 2}px`;
       labelNode.style.lineHeight = `${r * 2}px`;
-      labelNode.textContent = labelText;
+      if (c.logo) {
+        labelNode.classList.add("has-logo");
+        const img = document.createElement("img");
+        img.src = c.logo;
+        img.alt = "";
+        labelNode.appendChild(img);
+      } else labelNode.textContent = c.abbrev || initials(c.name);
       const marker = L.marker([c.lat, c.lng], {
-        icon: L.divIcon({
-          className: "",
-          iconSize: [r * 2, r * 2],
-          iconAnchor: [r, r],
-          html: labelNode.outerHTML,
-        }),
+        icon: L.divIcon({ className: "", iconSize: [r * 2, r * 2], iconAnchor: [r, r], html: labelNode.outerHTML }),
       });
       marker.bindTooltip(
-        `<strong>${escapeHTML(c.name)}</strong><br/><span style="color:#94a3b8">${c.member_count} members · ${escapeHTML(c.geographic_scope)}</span>`,
+        `<strong>${escapeHTML(c.name)}</strong><br/><span style="color:#94a3b8">${c.member_count} member ${c.member_count === 1 ? "group" : "groups"} · ${escapeHTML(c.geographic_scope)}</span>`,
         { direction: "top", offset: [0, -2] },
       );
-      marker.on("click", () => {
-        cb.onNodeClick({ ...c, kind: "coalition" });
-      });
-      marker.addTo(map);
+      marker.on("click", () => openGroupCard(c, marker));
+      marker.addTo(groups.coalitions);
     }
 
-    // Org markers
-    for (const o of data.organizations) {
-      const dot = L.circleMarker([o.lat, o.lng], {
-        radius: 4,
-        color: "#94a3b8",
-        weight: 1,
-        opacity: 0.8,
-        fillColor: "#2a2a36",
-        fillOpacity: 0.95,
-      });
+    // Organizations (HQ pins; remote orgs are skipped)
+    // groups show their logos; the size follows the zoom through a CSS variable
+    const sizeOrgs = () => mapEl.style.setProperty("--geo-org", `${2 * orgRadiusAt(map!.getZoom()) + (map!.getZoom() >= 10 ? 8 : 4)}px`);
+    sizeOrgs();
+    for (const o of pinnedOrgs) {
+      const inner = document.createElement("div");
+      inner.className = `geo-org${o.logo ? " has-logo" : ""}`;
+      if (o.logo) {
+        const img = document.createElement("img");
+        img.src = o.logo;
+        img.alt = "";
+        img.loading = "lazy";
+        inner.appendChild(img);
+      }
+      const dot = L.marker([o.lat, o.lng], { icon: L.divIcon({ className: "geo-org-icon", iconSize: [0, 0], html: inner.outerHTML }) });
+      const approx = o.profile?.geo_precision === "approx" ? " · approximate location" : "";
       dot.bindTooltip(
-        `<strong>${escapeHTML(o.name)}</strong><br/><span style="color:#94a3b8">${typeLabel(o.type)} · ${escapeHTML(o.geographic_focus)}</span>`,
+        `<strong>${escapeHTML(o.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML([shownType(o.type), o.geographic_focus].filter(Boolean).join(" · "))}${approx}</span>`,
         { direction: "top", offset: [0, -2] },
       );
-      dot.on("click", () => cb.onNodeClick({ ...o, kind: "org" }));
-      dot.addTo(map);
+      dot.on("click", () => openGroupCard(o, dot));
+      dot.addTo(groups.orgs);
+      orgMarkers.set(o.id, dot);
     }
 
+    map.on("zoomend", sizeOrgs);
+    map.on("zoomend moveend", () => recluster());
+    // zoomed back out past where "+N" started: the "−" button has done its job
+    map.on("zoomend", () => { if (before && map!.getZoom() <= before.zoom) { before = null; backBtn.style.display = "none"; } });
+    map.on("click zoomstart", () => collapse());
+    clusterLayer.addTo(map);
+    const publishBounds = () => { const b = map!.getBounds(); setMapBounds({ south: b.getSouth(), west: b.getWest(), north: b.getNorth(), east: b.getEast(), zoom: map!.getZoom() }); };
+    map.on("moveend", publishBounds);
+    map.on("zoomend", syncDistrictZoom);
+    map.on("moveend", () => { if (inViewOpen) void renderInView(); });
+    // a search highlight goes when you click the map
+    map.on("click", () => { highlight?.remove(); highlight = null; });
+    publishBounds();
+
+    // Events + projects (only those with an in-person location)
+    for (const { event: e, owner } of events) {
+      // pins sit above group bubbles and "+N" stacks, so a click on a pin opens the pin, not the group under it
+      const m = L.marker([e.lat!, e.lng!], { icon: pinIcon("event", "●"), zIndexOffset: 2000 });
+      m.bindTooltip(
+        `<strong>${escapeHTML(e.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML(e.date.slice(0, 10))} · ${escapeHTML(e.location || "")}<br/>${ownerLine(owner)}</span>`,
+        { direction: "top", offset: [0, -6] },
+      );
+      m.on("click", (ev: L.LeafletMouseEvent) => (cb.onItemClick ? cb.onItemClick("event", e.id, { x: ev.originalEvent.clientX, y: ev.originalEvent.clientY }) : cb.onNodeClick(owner.node)));
+      m.addTo(groups.events);
+      pinMarkers.set(`event:${e.id}`, m);
+    }
+    for (const { project: p, owner } of projects) {
+      const m = L.marker([p.lat!, p.lng!], { icon: pinIcon("project", "◆"), zIndexOffset: 2000 });
+      m.bindTooltip(
+        `<strong>${escapeHTML(p.name)}</strong><br/><span style="color:#94a3b8">${escapeHTML(p.status)} · ${escapeHTML(p.location || "")}<br/>${ownerLine(owner)}</span>`,
+        { direction: "top", offset: [0, -6] },
+      );
+      m.on("click", (ev: L.LeafletMouseEvent) => (cb.onItemClick ? cb.onItemClick("project", p.id, { x: ev.originalEvent.clientX, y: ev.originalEvent.clientY }) : cb.onNodeClick(owner.node)));
+      m.addTo(groups.projects);
+      pinMarkers.set(`project:${p.id}`, m);
+    }
+
+    (Object.keys(groups) as LayerKey[]).forEach((k) => on[k] && groups[k].addTo(map!));
+    setTimeout(() => recluster(), 0);
     return map;
   }
+
+  function mark(latlng: L.LatLngExpression, radiusM = 0) {
+    const m = ensureMap();
+    if (highlight) highlight.remove();
+    highlight = radiusM
+      ? L.circle(latlng, { radius: radiusM, color: "#fbbf24", weight: 1.5, fillOpacity: 0.06, interactive: false })
+      : L.circleMarker(latlng, { radius: 14, color: "#fbbf24", weight: 2, fill: false, interactive: false });
+    highlight.addTo(m);
+  }
+
+  /** Center on a search result: place, org, coalition (its members), event or project. */
+  function goTo(item: SearchItem) {
+    const m = ensureMap();
+    if (item.kind === "coalition") {
+      const c = data.coalitions.find((x) => x.id === item.id)!;
+      const pts = pinnedOrgs.filter((o) => o.coalition_ids.includes(c.id)).map((o) => L.latLng(o.lat, o.lng));
+      if (coalitionPlaced(c) || !pts.length) pts.push(L.latLng(c.lat, c.lng));
+      setLayer("coalitions", true);
+      setLayer("orgs", true);
+      m.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 12 });
+      if (highlight) highlight.remove();
+      highlight = L.layerGroup(pts.map((p) => L.circleMarker(p, { radius: 8, color: c.color, weight: 2, fill: false, interactive: false }))).addTo(m);
+      cb.onNodeClick({ ...c, kind: "coalition" });
+      return;
+    }
+    if (item.kind === "org") {
+      const o = data.organizations.find((x) => x.id === item.id)!;
+      cb.onNodeClick({ ...o, kind: "org" });
+      if (!orgPlaced(o)) return; // no address on file: details only
+      setLayer("orgs", true);
+      m.setView([o.lat, o.lng], 14);
+      mark([o.lat, o.lng]);
+      return;
+    }
+    if (item.kind === "event" || item.kind === "project") {
+      if (item.lat === undefined || item.lng === undefined) return;
+      setLayer(item.kind === "event" ? "events" : "projects", true);
+      m.setView([item.lat, item.lng], 14);
+      pinMarkers.get(`${item.kind}:${item.id}`)?.openTooltip();
+      mark([item.lat, item.lng]);
+      return;
+    }
+    // place
+    if (item.lat !== undefined && item.lng !== undefined) {
+      m.setView([item.lat, item.lng], 13);
+      mark([item.lat, item.lng], 3000);
+      showNearby(item.lat, item.lng, item.label);
+    }
+  }
+
+  /** List what's within ~15 km of a point: orgs, and events/projects with locations. */
+  function showNearby(lat: number, lng: number, label: string) {
+    closeInView();
+    const here = L.latLng(lat, lng);
+    const rows: { name: string; kind: string; km: number; onClick: () => void }[] = [];
+    for (const o of pinnedOrgs) {
+      const d = here.distanceTo([o.lat, o.lng]) / 1000;
+      if (d <= 15) rows.push({ name: o.name, kind: "Organization", km: d, onClick: () => { cb.onNodeClick({ ...o, kind: "org" }); map!.setView([o.lat, o.lng], 14); } });
+    }
+    for (const { event: e, owner } of events) {
+      const d = here.distanceTo([e.lat!, e.lng!]) / 1000;
+      if (d <= 15) rows.push({ name: e.name, kind: `Event · ${e.date.slice(0, 10)}`, km: d, onClick: () => { setLayer("events", true); map!.setView([e.lat!, e.lng!], 14); cb.onNodeClick(owner.node); } });
+    }
+    for (const { project: p, owner } of projects) {
+      const d = here.distanceTo([p.lat!, p.lng!]) / 1000;
+      if (d <= 15) rows.push({ name: p.name, kind: "Project", km: d, onClick: () => { setLayer("projects", true); map!.setView([p.lat!, p.lng!], 14); cb.onNodeClick(owner.node); } });
+    }
+    rows.sort((a, b) => a.km - b.km);
+    nearList.replaceChildren(
+      h("div", { class: "geo-near-head" }, `${rows.length} within 15 km of ${label}`),
+      ...rows.slice(0, 25).map((r) => {
+        const el = h("button", { class: "geo-near-row", type: "button" },
+          h("span", { class: "n" }, r.name), h("span", { class: "k" }, `${r.kind} · ${r.km.toFixed(1)} km`));
+        el.addEventListener("click", r.onClick);
+        return el;
+      }),
+    );
+  }
+
+  nearBtn.addEventListener("click", () => {
+    closeInView();
+    if (!navigator.geolocation) {
+      nearList.replaceChildren(h("div", { class: "geo-near-head" }, "Your browser can't share its location. Try searching for your town instead."));
+      return;
+    }
+    nearBtn.textContent = "Finding you…";
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        nearBtn.textContent = "◎ What's near me?";
+        const { latitude, longitude } = pos.coords;
+        ensureMap().setView([latitude, longitude], 12);
+        mark([latitude, longitude], 15000);
+        showNearby(latitude, longitude, "you");
+      },
+      () => {
+        nearBtn.textContent = "◎ What's near me?";
+        nearList.replaceChildren(h("div", { class: "geo-near-head" }, "Couldn't get your location. Try searching for your town instead."));
+      },
+      { timeout: 10000 },
+    );
+  });
+
+  // on a phone the layers and lists fold away behind one button, so the map itself stays in view
+  makeFoldable(panel, "map options", [geoSearch]);
 
   return {
     el: wrap,
     invalidate() {
-      // Mount map lazily on first show; on subsequent shows invalidate sizing
       const m = ensureMap();
       setTimeout(() => m.invalidateSize(), 50);
+    },
+    canLocate(node, item) {
+      if (item && item.lat !== undefined && item.lng !== undefined) return true;
+      return node.kind === "coalition" ? true : orgPlaced(node as Organization);
+    },
+    locate(node, item) {
+      const m = ensureMap();
+      setTimeout(() => {
+        m.invalidateSize();
+        if (item && item.lat !== undefined && item.lng !== undefined && item.kind !== "action") {
+          setLayer(item.kind === "event" ? "events" : "projects", true);
+          m.setView([item.lat, item.lng], 14);
+          pinMarkers.get(`${item.kind}:${item.id}`)?.openTooltip();
+          mark([item.lat, item.lng]);
+          return;
+        }
+        goTo({ kind: node.kind === "coalition" ? "coalition" : "org", id: node.id, label: node.name } as SearchItem);
+      }, 80);
     },
   };
 }

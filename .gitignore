@@ -8,3 +8,9 @@ dist
 # Local-only inspiration material + dev artifacts (not part of the deployable app)
 context/
 .screenshots/
+.apps-script-check/
+
+# logo candidates downloaded by scripts/fetch-logos.py (accepted ones are copied to public/logos/)
+research/logos/*.png
+research/logos/up/*.png
+__pycache__/

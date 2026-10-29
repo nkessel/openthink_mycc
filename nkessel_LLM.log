@@ -1,0 +1,891 @@
+2026-09-25 — Claude (claude-opus-5-5), working for Nathan (nkessel)
+Branch: claude/forms-org-import-fab → PR into development_branch
+
+What / why
+- Created development_branch from main (it didn't exist yet; guideline 10 says we work there). No content changes on it; everything else goes through this PR (guideline 9).
+- git pull + checked open PRs first (none) (guideline 8).
+- Org data: added scripts/import-orgs.mjs and ran it against aissatabarry/ma-climate-coalition-map
+  (commit e8bb5ce, 2026-09-25) because Nathan said that repo is the most up-to-date org source.
+  -> 150 orgs, 88 logos (public/logos/*.png, extracted from embedded base64), 175 memberships.
+  -> Coalitions now match the source's 8: MPF, MYCC, EJLT, GJC, CRS, HERO kept their projects/events/actions;
+     CCCC and SCJC added (no projects/events yet).
+  -> Dropped mara, gfn, ghs, zcrf (not in the source) with their 12 projects, 12 events, 12 actions,
+     per "get rid of any projects or events that belong to orgs not on this list". Projects/events are
+     attached to coalitions in our schema, so "belongs to" was read as "belongs to a coalition not on the list".
+  -> Source has no member ties for CCCC, CRS, HERO, so they show 0 members.
+  -> Source has no town/description for orgs, and type only for school clubs; the rest are "unknown"
+     until groups fill them in via the org form.
+- Forms + sheet: apps-script/Code.gs builds 4 Google Forms (org, event, project, feedback) linked to a sheet,
+  seeds the sheet from development_branch's data.json, applies submissions (blank = keep), logs changes,
+  and serves public data as JSON. All questions optional except "which one is this about?" (and the feedback
+  message), per Nathan's request. Includes every question from the team's existing "Climate Map Modification
+  Form" (organization, contact info, event name/description, date/time/location, climate topic tags).
+  Tested with a mocked Sheets/Forms runtime in Node (seed → data.json round-trip, and simulated submissions).
+  Not yet run inside real Google Apps Script — first real run may surface permission/API quirks.
+- App: + floating action button (src/fab.ts) with the 4 forms, pre-filled with the org/coalition open in the
+  drawer; org drawer shows logo, abbreviation, profile scores, and an "Update this organization's info" link.
+  Form URLs go in src/forms.config.ts after setup (empty until then; menu says "Form not connected yet").
+- Added LLM_GUIDELINES.md (featured in README) and CLAUDE.md so Claude Code sessions pick the rules up.
+
+2026-09-25 (later) — Claude, same PR (#1, not yet merged)
+- Nathan: events/projects can belong to coalitions OR orgs. Changed the schema: org-owned items now live in
+  organizations[].projects/events; coalition items stay under coalitions (optionally with host_org_id).
+  Events/Projects views and the org drawer (new Projects + Events tabs) show both. Forms explain the choice;
+  items with neither are kept in the sheet but flagged in Change Log and left off the map.
+  Replaces my earlier workaround (org-only items were filed under the org's first coalition).
+- To raise confidence before the first real Google run: added `npm run check:apps-script` (type-checks Code.gs
+  against @types/google-apps-script — catches misspelled/nonexistent Google API calls) and
+  `npm run test:apps-script` (the Node simulation tests, now in the repo), plus a GitHub Actions CI workflow
+  running build + both checks on every PR. Wrapped Form.shortenFormUrl in try/catch (legacy API; falls back to the long link).
+
+2026-09-25 (afternoon) — Claude, same PR (#1), per Nathan's requirements review
+- Hosting: stays static on GitHub Pages (relative base, Pages deploy workflow from development_branch). Site reads the
+  sheet's public JSON live (src/data.config.ts LIVE_DATA_URL) and falls back to public/data.json; nightly Action opens a
+  snapshot PR when data changed. Couldn't enable Pages via API from here — repo owner does 2 clicks (SETUP.md step 5).
+- Access control (Nathan's design, replacing per-org passwords): forms require Google sign-in and record the verified
+  email; Editors tab maps emails → org_ids / coalition_ids; admins = Nathan, Aissata, Turibius. Unauthorized, no-email,
+  and new-org submissions go to "Needs Review" (tick approve), are flagged in Change Log, and email the admins.
+  Every submission (incl. feedback and refused approvals) gets a Change Log row. Approved new orgs make their proposer
+  the point-person.
+- Org-to-org connections: org form page "Who you work with" (weekly / monthly / a few times a year / yearly or less);
+  stored in Connections tab; data.json org_links (one per pair, strongest answer wins, both reporters kept); drawn as
+  weighted amber edges on the graph with a toggle.
+- Locations: events and projects get location + "online?" (geocoded on submit); geographic view has Events/Projects
+  checkboxes (off by default). Orgs get HQ address + "remote" (no pin).
+- Search: graph search box, Organizations tab (search + filters), geographic search (places via OSM Nominatim,
+  orgs, coalitions → fit to members, events, projects) and "What's near me?".
+- Holes: src/suggestions.ts scores unconnected org pairs (TF-IDF of name/description/tags, shared tags/skills, type,
+  youth-serving, distance); shown per org (drawer "Suggested") and as a list. Same-name pairs are flagged as possible
+  duplicates (the source data has e.g. 3× Citizens Climate Lobby).
+- Also: orgs with no coalition were hidden on the graph (pre-existing bug) — now shown.
+- Verified: build, Apps Script type check against official typings, Node simulation tests (access rules, review
+  approval, change log count, connections, locations, round trips), screenshots with injected test data.
+  Not verified: a real run in Google Apps Script (setEmailCollectionType/setPublished are feature-detected with fallbacks).
+- Shared the "Openthink data" sheet with ab130@wellesley.edu and turibius@bu.edu as editors (Drive).
+
+2026-09-25 14:35 — Claude
+- At Nathan's request: merged PR #1 into development_branch, renamed the Google Sheet to "MA Climate Coalition Map
+  data" (Drive), and updated the name in Code.gs/SETUP.md (this PR). The Apps Script paste + first run must be done by
+  Nathan in his Google account — no tool here can run Apps Script or reach his browser.
+
+2026-09-25 15:30 — Claude
+- Setup done in Google/GitHub (no code): pasted Code.gs into the sheet's bound Apps Script (via Nathan's Chrome — the
+  in-app browser pane can't open the Apps Script popup) and ran Set up sheet + forms (Nathan approved the permissions):
+  150 orgs loaded, 4 forms built. GitHub Pages turned on (Source: GitHub Actions; development_branch allowed in the
+  github-pages environment); deploy re-run succeeded, site live at https://nkessel.github.io/openthink_mycc/.
+- Leftover: a standalone "Untitled project" in Nathan's Apps Script (my first attempt, not bound to the sheet) — safe to delete.
+- This PR, per Nathan ("replace Openthink with MA Climate Coalition Map", scope = what people see): site title/header,
+  sheet menu, form titles/descriptions, admin alert subject, docs. Kept internal names (repo, package name,
+  OPENTHINK_DATA_URL, localStorage key) so nothing breaks. Re-running "Set up sheet + forms" now also retitles the
+  already-built forms, since those were created with the old name.
+
+2026-09-25 15:35 — Claude (connect PR, stacked on the rename PR)
+- Pasted the Start Here "For the site" JSON into src/forms.config.ts, so the + button and "Update this info" links open
+  the real forms (pre-filled with the open org/coalition). LIVE_DATA_URL still empty: the web app deployment errored when
+  I tried it from Chrome; waiting on Nathan to deploy it (SETUP.md step 3) and send the /exec URL.
+- 16:20 — Web app deployed (Anyone, execute as Nathan; Nathan approved the authorization). Checked it: returns 150 orgs /
+  8 coalitions, no emails. Added it as LIVE_DATA_URL, so approved form edits show up on the site without code changes.
+
+2026-09-25 16:30 — Claude (launch wrap-up)
+- Nathan said to do everything: merged PRs #3 (rename) and #4 (forms + live data) after CI passed; Pages redeployed.
+  Verified on the live site: title/header "MA Climate Coalition Map", data loads from the sheet's web app.
+- Pasted the renamed Code.gs into the sheet's Apps Script and re-ran setup (Nathan approved Google's re-authorization):
+  sheet menu and all four forms now say "MA Climate Coalition Map"; also renamed the forms' Drive files to match.
+- Added repo variable OPENTHINK_DATA_URL (= web app URL), which turns on the nightly snapshot PRs (sync-data.yml).
+- 16:35 — Fixed the Start Here intro line (A3) to say "MA Climate Coalition Map"; moved my stray standalone
+  "Untitled project" Apps Script to Drive trash (recoverable).
+- Not done: an end-to-end test submission (blocked as a write to live shared data) — Nathan to submit one test event.
+
+2026-09-25 19:15 — Claude
+- Nathan: the "[org_id]" in form dropdowns looks weird; make names unique instead (e.g. the 3 "Citizens Climate Lobby"
+  rows get their chapter in the name, like the 350 Mass groups). Done: dropdowns now show plain names
+  (coalitions as "Name (ABBR)", events as "Name — date"). The script maps a picked name back to its row by matching
+  the sheet as it is at submit time; " [id]" is added only if two records of the same kind still share a name, so a
+  duplicate can never silently hit the wrong row. Old "[id]" labels (e.g. queued Needs Review items) still work.
+  Site pre-fill (src/fab.ts) uses the same rule. Tests: plain names, duplicate-name fallback, org rename then re-pick.
+- The sheet's id column stays: Connections, Editors, Events/Projects point to orgs by id, and ids never change.
+- Renamed in the sheet: citizens_climate_lobby_boston → "Citizens Climate Lobby Boston",
+  citizens_climate_lobby_south_shore_cape_and_islands → "Citizens Climate Lobby South Shore, Cape and Islands".
+
+2026-09-25 19:25 — Claude
+- Nathan: replace the four "who you work with" checkbox lists with one list of orgs, checkboxes per frequency, blank =
+  no active contact. Now a checkbox grid (rows = orgs, columns = Weekly / Monthly / A few times a year / Yearly or less).
+  If a row has several ticks, the most frequent wins. An entirely blank grid keeps the org's current answers, so an org
+  that only edits its description doesn't lose its connections (judgment call — flag if Nathan wants blank = clear all).
+  Re-running "Set up sheet + forms" swaps the old questions for the grid on the live form; old-style answers still parse.
+- Same PR, per Nathan: (1) org description help text now invites detail (was "one or two sentences"; the map shows the
+  full text and more text improves suggested connections). (2) HQ address and the "No public location?" checkbox are
+  one question: type an address/town, or "remote" for no pin. Old checkbox answers still parse. The upgrade step on
+  re-running setup applies both to the live form.
+- Not possible in Google Forms: type-to-search dropdowns and address autocomplete (no custom widgets). Addresses are
+  geocoded on submit instead; pre-filling from the map's + button avoids scrolling the org list.
+- Same PR, more of Nathan's form notes:
+  - Youth-serving was asked twice (its own yes/no question and a "Youth serving" topic tag); the tag is no longer
+    offered on the org form (still on events/projects).
+  - New private "Point person" page on the org form: name, email (validated), phone (optional). Saved on the Editors
+    tab (never published); that email can then edit the org. Only applied when the submission itself is authorized or
+    approved, so nobody can grant themselves access.
+  - "Other" is now a write-in for org type (was a dropdown, now multiple choice) and feedback type. Written-in org types
+    are stored as slugs and shown humanized on the site.
+  - Upgrade step on re-running setup applies all of it to the live forms.
+
+2026-09-25 20:00 — Claude (site: sidebar, mobile, logos, map tiles)
+- Nathan: retractable left sidebar; short app name so it fits (esp. mobile); mobile-friendly pass; logos on the map.
+- Sidebar: "‹ Hide" in the panel, "☰ Filters" on the map to bring it back. Desktop remembers the choice; phones start
+  hidden and open it as an overlay (tap the map to close).
+- Brand: "MA Climate Map" (full name as tooltip/page title); topbar never wraps, tabs scroll sideways on phones.
+- Mobile: list views no longer overflow (search/filters wrap, one card per row), drawer is full width, smaller topbar,
+  touch hint text, 100dvh for phone browser bars. Checked with headless screenshots at 375×740 and 1280×800.
+- Logos: orgs with a logo show it inside their circle (88 of 150); initials come back if an image fails to load.
+  (The map never drew logos before — they were only in the drawer and Organizations list.)
+- Found while testing: the Geographic basemap showed "API KEY REQUIRED" everywhere (CARTO now needs a key). Switched to
+  OpenStreetMap's keyless tiles, darkened with CSS to match. Also the initial auto-fit now ignores the outermost ~4% of
+  nodes so a few far-off unconnected orgs don't shrink the whole map.
+
+2026-09-25 20:10 — Claude
+- Feedback form (Nathan: collect phone, require email like the other forms): now Google sign-in with the verified email
+  recorded (the old optional "Email" question is removed), plus "Phone (optional)". Saved on the private Feedback tab
+  (new "phone" column is added to the existing tab automatically). Re-running setup upgrades the live form.
+- Map: the org-to-org connections checkbox moved from the map overlay into the sidebar, under the coalition filters.
+- Pending (needs Nathan's click): the sheet's script still has my temporary "One-time form fix" helper + menu item
+  (removes "Remove from the map?" from the forms, fixes leftover "Openthink" text). My clicks on that menu item didn't
+  register; a workaround via the edit trigger was blocked as a change to shared automation. After Nathan runs it, the
+  script gets replaced with the repo version (which also drops the helper).
+- Same PR: "+" button centered at the bottom with a pulsing blue halo (static if reduced motion); stays centered in the
+  uncovered area when the drawer is open. Event form: new "End time" question (stored as `end`, same day as the start;
+  site shows "Jun 5, 5:00 PM – 7:00 PM"). Existing event form gets it on the next setup run; Events tab gets an `end` column.
+
+2026-09-25 20:20 — Claude
+- Nathan chose (a): on the org form, "Youth serving" is a topic checkbox again and the separate Yes/No question is
+  removed (setup's upgrade step deletes it on the live form). Ticking/unticking it in the topics also sets the org's
+  youth_serving flag, so the site's "Youth-serving only" filter keeps working. Old Yes/No answers still parse.
+- Nathan: keep "Remove from the map?" on the event and project forms; the one-time helper now only removes it from the
+  org form. (Repo code unchanged for that, per his earlier "no backend change" for the removal.)
+
+2026-09-25 evening — Claude, PR "Fetch missing org logos"
+- Nathan asked for the missing group logos (62 of 150 had none). Found official websites by web search for 49; the
+  workspace can't download from arbitrary sites, so scripts/fetch-logos.mjs runs in a GitHub Action
+  (.github/workflows/fetch-logos.yml) that scrapes each site's header logo / touch icon / favicon, resizes to 256px,
+  and commits them back to the branch. Reviewed every pick by eye (contact sheet on the site's badge color).
+- Rejected wrong picks. uppercapewomen.org now shows a casino and xrwesternmass.org shows unrelated content — likely
+  lapsed/taken-over domains — so neither is linked (XR Western Mass uses the XR symbol from XR Boston instead).
+- Some logos are the parent org's (Sunrise hubs → Sunrise Movement, MASSPIRG chapters → PIRG, REEP → ACE,
+  YAC → Clean Water Action, YCAN → Climate Action Now, MTACAN → MTA, NE CJ Research Collaborative → UMass Boston).
+- Also filled in `website` for those orgs. import-orgs.mjs no longer wipes public/logos and keeps fetched logos/websites.
+- Still missing: school clubs and groups with no website found or sites that block downloads; they can add a logo
+  link through the organization form.
+- The live site reads the Google Sheet, not data.json, so added menu item "Fill in missing logos + websites from
+  GitHub" (fillLogosFromGitHub): copies logo paths/websites from development_branch's data.json into empty sheet cells
+  only, logging each row. Nathan runs it once after this PR merges (and after re-pasting Code.gs).
+
+2026-09-25 20:25 — Claude
+- Nathan ran the temporary "One-time form fix" and "Set up sheet + forms". Verified all four live forms: org form has no
+  "Remove from the map?" and no separate youth question ("Youth serving" is a topic checkbox); event + project forms keep
+  "Remove from the map?"; event form has End time; feedback form has sign-in + Phone (optional), old Email question gone;
+  no "Openthink" text left in any form.
+- Restored the sheet's Apps Script to exactly the repo's apps-script/Code.gs (temporary helper + menu item removed).
+
+2026-09-25 20:30 — Claude
+- Nathan: point-person questions should come right after "Short name or abbreviation". They're now a section header +
+  name/email/phone on the first page (no separate page). placePointPerson_ moves them on the live form (and removes the
+  old "Point person (private)" page break) the next time "Set up sheet + forms" runs.
+
+2026-09-25 20:45 — Claude
+- Nathan: coalition logos; bigger org nodes; org panel tabs About > Projects > Events > Connections, with suggested
+  connections at the end of Connections.
+- Coalition logos: official sites found for only 2 of 8 (Mass Power Forward → mapowerforward.com, Climate Resilient
+  Schools → climateresilientschoolsma.org). MYCC, EJLT, CCCC, SCJC, GJC, HERO only have social pages or live on a member
+  org's site, so no logo was guessed (risk of the wrong logo); they keep their colored abbreviation circle. Add a
+  logo_url in scripts/logo-sources.json (kind: "coalition") to fill one in.
+  fetch-logos.mjs now takes coalition entries (saved as logos/coalition_<id>.png). Sheet: Coalitions tab gets logo +
+  website columns; "Fill in missing logos + websites from GitHub" also fills coalitions; the live data includes them.
+- Map: coalition logos sit inside their colored ring; org circles 14 → 20 px radius.
+- Org panel opens on About; Connections = coalitions, works-with, then "Suggested connections".
+
+2026-09-26 16:10 — Claude
+- Found why coalition logos (and event end times) weren't on the site: the Apps Script web app was still serving
+  deployment Version 1 (Google freezes a web app at its deployed version). Published Version 2 (same URL) from
+  Manage deployments. After any doGet/buildDataFile_ change, the web app needs a new version — noted in SETUP.md.
+- Nathan: logos shouldn't have a white border; fill more of the missing logos; repel force a bit stronger by default.
+  - Logos now fill the circle (no white rim/stroke); coalition logos sit inside their colored ring (the stylesheet's
+    white stroke was overriding it).
+  - Repel default 0.5 → 0.65; controls storage key bumped to v2 so browsers pick up the new defaults once.
+  - More logo sources: CPA (exact logo URL), Upper Cape Women's Coalition, HealthLink (citizensinaction.org), and for
+    school clubs / BSAC the school's (or BPS's) logo, noted as such in logo-sources.json. Still none for: MA Youth for
+    Climate Justice, South Coast Neighbors United, Hands Across the River, Take Back the Grid (no website found), Bodhisara
+    (site has no logo). Sites that blocked the downloader last time are retried.
+
+2026-09-26 16:25 — Claude
+- Nathan pointed to the team's logo folder in Drive (Aissata's collection, shared "anyone with link"). It has the real
+  logos for 16 orgs that were missing or had a stand-in (school logos for clubs); only part of the folder had made it
+  into the original import. logo-sources.json now downloads those via Drive links (logo_url). MYCC's logo comes from
+  "MYCC profile.PNG" in Nathan's Drive (also public). Each result is checked by eye before merging.
+- Result, checked by eye: 13 good (Andover Climate Lobby, Andover HS, BLS YouthCAN, BSAC, Weston SEA, NSHS, Belmont
+  Hill, MAYCJ, ABL, CPA, Four Rivers, LORAX, and MYCC's coalition logo). Skipped 3 folder images that are photos/banner
+  crops, not logos (21st Century Schools Fund, Upper Cape Women's Coalition, South Coast Neighbors United). The folder's
+  "MIT SEA" file is MIT's Sustainable Energy Alliance, a different group than Students for Environmental Action — kept
+  the MIT logo and flagged it. 9 orgs still without a logo.
+
+2026-09-26 16:35 — Claude
+- Nathan: coalitions say "x member groups" instead of "x members" (panel, tooltip, map popup, search, legend).
+
+2026-09-29 — Claude
+- Nathan: "update the map with actual current projects / events using all data available to us."
+- Found: the live sheet and public/data.json only had generated placeholder events/projects/actions (coalition-owned, none org-owned); the sheet's form-response tabs are still empty (no real submissions yet).
+- Gathered real, public items from: the CAN Western MA newsletter (9/29), JCAN events email (9/7), MYCC check-in email (9/16), team notes (Running: Climate Network Map), and the Amherst Indy article on MPF's dashboard launch (9/28). Skipped anything past, undated, or without a clear host.
+- scripts/apply-current-events.mjs (new): replaces all placeholder events/projects/actions with 9 projects + 9 events, each commented with its source; org-owned where an org hosts it (CAN Western MA, Sierra Club, JCAN), coalition-owned for MPF and MYCC. Optional --csv writes Projects/Events tab rows for the sheet.
+- Orgs, coalitions' other fields, and edges are unchanged (checked). Placeholder actions were removed too since none were real.
+- Uncertain: Arcadia pin is the Easthampton town centre (approximate); MYCC 10/4 call date is inferred from "every other Sunday 8 pm" + the 9/6 call; JCAN 10/12 and 10/20 have no named organizer, attributed to JCAN because they're on its calendar.
+- Note: the live site reads the Google Sheet, so the sheet's Projects/Events tabs still need these rows (CSV provided) or the site keeps showing the placeholders until the nightly snapshot logic is changed.
+
+2026-09-29 (later) — Claude
+- Nathan: use newsletters for events/projects; use MYCC meeting notes to make org thinking open; clicking an org should zoom in and show its events/projects/thinking as bubbles close to it, partner orgs further out ("openthink").
+- Decisions (asked): notes → draft summaries that MYCC approves before publishing; newsletters → one-time import, orgs confirm; build the zoom view first.
+- Newsletters: swept the inbox. Only Climate Action Now, JCAN, Sierra Club MA items (already imported earlier) were map-org events. Act on Mass is electoral/political; the energy-siting listening sessions are state-hosted with no map org as host. Nothing else added.
+- Zoom view: src/graph.ts enterFocus/exitFocus (click a node, search result, or drawer link). Static polar layout: thinking, projects, events ring the pinned node; partners fade; header bar with legend + Back; click a bubble for a detail card. Esc / background click exits. New Thought type, public/thoughts.json (empty until groups approve), merged in main.ts.
+- Thinking bubbles are NOT published: drafts for MYCC (11 items from the June–Sept call notes, no names/emails) were kept out of the repo and sent to Nathan for MYCC review. Tested the view with them locally, then reset thoughts.json to {}.
+- Found: the live site still shows the old placeholders (the Google Sheet has them), so zoomed org views look empty until the sheet's Projects/Events tabs are updated with the CSVs.
+- Uncertain: only tested in headless Chromium at 1400x850; mobile layout of the header/card not checked. Coalition zoom with 45 members is busy but readable. Sheet has no Thoughts tab yet (thoughts.json is static for now).
+
+## 2026-09-29 — Researched public activity for all 150 orgs (branch claude/current-public-activity)
+- Asked: keep additions to public events, projects, actions, volunteer opportunities; research every org.
+- Did: 10 parallel researchers searched each org and read its public pages (curl; WebFetch was blocked on permissions). Findings curated into scripts/researched-activity.json (source `link` on every item) and merged by scripts/apply-current-events.mjs into public/data.json. Result: 212 projects, 95 events, 0 coalition actions. Sheet CSVs regenerated (--csv).
+- Decisions: org-level volunteer roles / action alerts stored as projects ("Volunteer: ...", "Take action: ...") because the sheet only has coalition-level Actions. Events capped at 6 per org, projects at 7. Mailing-list sign-ups dropped. Past events dropped.
+- Uncertain: ~50 orgs have nothing (blocked by Cloudflare/captcha, dead sites, or school clubs). Only ~30 links spot-checked (29/30 matched). Some events have no time (T12:00 placeholder). Some events are political (ballot-question, protest); kept as the orgs publicly list them, MYCC may want to filter.
+- The live site still reads the Google Sheet; Projects/Events tabs must be replaced with the CSVs for it to change.
+
+## 2026-09-29 (later) — Org-level actions, confidence-based inclusion, no faked times
+- Asked: actions at org and coalition level; links wherever possible; no arbitrary caps (use relevancy confidence); note missing times instead of faking them; list items <50% confidence before publishing; update CSVs.
+- Did: Action now has optional host_org_id/description/link and Organization.actions (types, owners.ts, drawer Actions tab for orgs, zoom-view action bubbles, "More info" links on projects/events/actions). Apps Script: Actions tab gains host_org_id, description, link (appended columns); actions round-trip and org-owned actions work; urgency no longer defaults to "medium". Events with no posted time are stored date-only and shown as "time not posted" (6 such events). Removed the 6/7 caps; each item scored by re-reading its cited page; items >= 50% included, 49 below held in data-review/held-low-confidence.md (NOT in data.json). Fixed tests/apps-script.test.cjs, which still pointed at the old placeholder ids.
+- Result: 149 projects, 106 events, 60 actions across 86 orgs/coalitions. CSVs regenerated (Projects, Events, Actions).
+- Uncertain: confidence is a heuristic (page text match + year mentions), not human verification; JS-only pages score low even if real. One Mass Audubon deadline (Nov 3 election) is inferred, and says so in its description. Item ids changed from the previous push, so any sheet rows imported from the earlier CSVs should be replaced, not appended.
+- Sheet: add the three new columns to the Actions tab (Apps Script adds them on next setup run) and import the 3 CSVs.
+
+## 2026-09-29 (evening) — "May be inaccurate" notice on every project/event/action
+- Asked: warn on all researched items, with a link to a Google Form to update.
+- Did: src/notice.ts adds a warning box to every project, event and action card (drawer, zoom-view card, Events and Projects lists). Events/projects link to their existing Google Form pre-filled with the owning org/coalition; actions have no form yet, so they link to the feedback form.
+- Uncertain: the forms can't pre-select the specific event/project being corrected (their dropdown labels are built by the Apps Script), so the person picks it themselves. Applies to all items, including the hand-sourced MYCC/MPF ones.
+
+## 2026-09-29 (night) — Audit pass, recurring events, actions form
+- Asked: an actions form like the other item types; fix mislabeled items (e.g. Watertown "weekly vigil" was a project); find recurring event times; get the list right before publishing.
+- Did: 8 parallel auditors re-read every project/action (and every low-confidence or date-only event) with pages rendered in a browser (Playwright), then classified each as project / event / recurring event / action / hold / drop, with reworded neutral descriptions and links. 327 decisions -> 120 projects, 135 events (21 recurring, 4 date-only), 63 actions in data.json; 40 held (data-review/held-low-confidence.md); 37 dropped (news posts, reports, past, off-mission, stale bills). Events gain `recurrence` (date = next occurrence); Events tab gets a `recurrence` column and the event form a "Does it repeat?" question. Apps Script gains a fourth form (actions: name, description, type, urgency, deadline, skills, link, owner) with review queue, change log and dropdown refresh; tests cover it.
+- Uncertain: the actions form URL in src/forms.config.ts is empty until "Set up sheet + forms" is re-run and the JSON pasted; until then the "update this info" link on actions goes to the feedback form. Recurring `date` goes stale after the next occurrence passes. Some auditors relied on search snippets where sites blocked bots (noted in held list). Audit was by AI agents reading pages, not by the orgs.
+- MYCC calendar (calendar.online link in the call notes) is readable without sign-in and has per-category ICS feeds, but currently holds only MYCC's own recurring meetings; not imported (internal, not confirmed public).
+
+## 2026-09-30 — Held items published with "needs more information"; setup steps
+- Asked: allow all held items with a "needs more information - update this [item]" warning; how to do the sheet/form steps.
+- Did: the 40 held items are now in data.json with `needs_info: true` (38 added; 2 events without a usable future date stay out) and show a red "Needs more information. We couldn't confirm this <item> is current. Update this <item> ↗" notice; everything else keeps the yellow warning. `needs_info` is a new column on Projects/Events/Actions and round-trips through the Apps Script; a point person editing an item through a form clears it. SETUP.md gains section 5 (update script, replace data tabs from CSVs, build the actions form, connect the site).
+- Uncertain: the 37 dropped items (news posts, reports, past, off-mission) stay dropped. Importing CSVs with "Replace current sheet" wipes form edits made in those tabs since the last export.
+
+## 2026-09-30 — live sheet updated + actions form connected
+- Nathan saved/deployed the new Apps Script (version 3). I ran the sheet menu: "Replace projects, events and actions from the repo" (155 projects, 135 events, 68 actions) and "Set up sheet + forms" (actions form + event recurrence question built).
+- Pasted the actions form url/entry ids from Start Here "For the site" into src/forms.config.ts so "Update this action" links open the real form.
+- Why: finishes the rollout in apps-script/SETUP.md section 5. TODO after PR merges: set ACTIVITY_URL in the pasted script back to SEED_URL.
+
+## 2026-09-30 — calendar view + logo home (branch claude/calendar-view-logo-home, stacked on PR #18)
+- Events tab: List/Calendar toggle; month grid with prev/next/Today, day click lists that day's events. Recurring events (↻) show on their next date only (we store one next-occurrence date, not every repeat).
+- Top-left "MA Climate Map" logo now returns to the default map (Map tab, exits zoom, closes drawer).
+- Why: requested by Nathan. Checked with Playwright: no JS errors.
+
+## 2026-09-30 — recurring events expand on the calendar
+- src/recurrence.ts parses the free-text recurrence (weekly, every other, nth weekday of month, "no July or December" skips) and the calendar draws every occurrence from the next date onward. Checked against all 21 current recurrences: 19 parse; 2 ("Monthly; next meeting …") fall back to showing only their next date.
+- Why: Nathan asked for every recurrence on the calendar. Text parsing is best-effort; a structured repeat field in the sheet/form would be exact (not built).
+
+## 2026-09-30 — duplicates, CAN calendar, map interaction overhaul (branch claude/calendar-view-logo-home)
+- Duplicates: the old check only matched exact normalized names. New pass in apply-current-events.mjs (same owner + same day + title similarity: Jaccard>=0.7 or >=0.8 containment; projects/actions Jaccard>=0.7) dropped 18 duplicate events. Not caught: near-same projects with different wording (e.g. two Sierra Club "Quabbin" projects) and co-hosted events listed under two different orgs (kept on purpose).
+- Climate Action Now: their /events calendar had 5 monthly Zoom series we missed; added as recurring events (source was model-summarised WebFetch because the site blocked curl/Playwright, confidence ~0.85). iCal/REST feeds not reachable.
+- Map: hover shows projects/events/actions counts; Display settings got "Make groups bigger by" (none/all/events/projects/actions) and "Show events, projects & actions around a group when you open it"; bubbles use icons (calendar, team of people, checkmark) with date·place subtitles; bubbles grow out of the clicked group, other groups are pushed away, clicking the open group again folds them back; info card appears next to the clicked bubble.
+- Why: requested by Nathan. Checked with Playwright (no JS errors). The preview reads the LIVE sheet, so it still showed pre-dedupe data.
+
+## 2026-09-30 — calendar layout fix, seedling icon + type captions, activity-weight sliders (branch claude/calendar-fix-icons-weights)
+- Calendar was broken because its nav, grid and day cards were direct children of .list-body, which is a multi-column card grid; they landed side by side. Wrapped them in one full-width .cal-wrap, styled the nav buttons, and on narrow screens show coloured dots instead of event names.
+- Project bubbles now use a seedling icon; volunteer roles keep the team-of-people icon, tasks the checkmark. Each bubble has a small type caption (EVENT / PROJECT / ACTION / VOLUNTEER) under its icon.
+- Replaced the "Make groups bigger by" dropdown with a "Size by activity" section near the top of the sidebar: three sliders (events, projects, actions & volunteer roles), 0 = ignore, size grows with the square root of the weighted total.
+- Why: Nathan's feedback. Checked with Playwright (calendar wide + narrow, bubbles, slider changed a node's radius 20 -> 30.7; no JS errors).
+- Also: switching away from the Map tab now closes the org details panel and leaves zoom (it used to float over Events/Orgs/Projects). Clicking an item from those tabs still jumps to the map and opens it. Checked with Playwright.
+
+## 2026-09-30 — Bubbles/Classic switch + loose ends (branch claude/view-toggle-cleanup)
+- Map: a clear "● Bubbles | Classic" switch under the search box (also "Switch to Classic view" in the zoomed-in header). Classic = the plain network: clicking a group just opens its details panel (no zoom, no bubbles, nothing pushed away). Choice is remembered (localStorage openthink.bubbles); controls panel no longer carries this setting.
+- Data: removed the duplicate Sierra Club Quabbin project (kept the one sourced from the CAN newsletter with the sierraclub.org link); manual drop for XR Boston's "Drop-in Climate Justice Art Build" (same time/place as the Mystic art build). Re-checked all same-start-time pairs; the only other hit (Senior Action Council chapter meetings) is legitimately separate.
+- Climate Action Now: verified all 5 series against climateactionnowma.org/events/ (dates, times) and added end times/recurrence ranges (confidence 0.95). The site also offers "Subscribe To Calendar" (ICS) which could be used for automatic sync later.
+- Event form checked: it has End time and "Does it repeat?".
+- Why: Nathan asked to do everything + add a clear Bubbles/Classic toggle. Checked with Playwright (toggle, persistence, no JS errors).
+
+## 2026-10-01 — date icons, ↻ ring, always-on dots, mobile top card, tray counts, verified events (branch claude/mobile-icons-verified, stacked on PR #22)
+- Event bubbles show the actual date (e.g. OCT 7) on a mini calendar page; recurring events get a ring of ↻ around the bubble instead of a corner badge.
+- Sidebar "Bubbles & size": "When you click a group: Show its work | Details only"; "Always show on the map" toggles for all events / projects / actions (small dots around each group, max 14 + "+n"); the three weight sliders sit directly below and grey out in Details-only mode.
+- Mobile (<=900px): with bubbles on, clicking a group shows a small top card (type icons + counts) and the bubbles; tapping the card opens the tray. With Details-only the tray opens as before. Tray tabs show counts, e.g. "Events (5)".
+- Verified flag: events with confidence >= 0.95 and a specific (non-homepage) link get verified=true and show "Listed on the group's own page" instead of the "may be out of date" warning. Added a verified column to Code.gs and the sheet export, so the sheet needs the updated script + re-run of "Replace projects, events and actions".
+- Removed the old focus-bar legend ring (::before) that showed a stray "0" beside the icons.
+- Why: Nathan's feedback. Checked with Playwright desktop + 390px mobile; no JS errors.
+
+## 2026-10-01 (2) — sidebar rework, universal bubbles, typed form answers, RSVP links, event detail card (branch claude/sidebar-orbits-forms, off development_branch)
+- Recurring events: the bubble border is now ONE circular arrow (arc + arrowhead) instead of a ring of small ↻ symbols. Same arrow on the always-on bubbles.
+- Sidebar section renamed "Projects, Events, and Actions": master toggle "Show events, projects & actions"; one two-sided switch "On click | Always on"; per-kind toggles (events / projects / actions) appear only when Always on; weight sliders grey out when the master is off. Map overlay switch is now "Items on | Items off".
+- Always-on items are one system: dots on a single orbit (even spacing, same distance for every group), which turn into real mini bubbles (icon, date, click for the card) when zoomed in past ~1.9x. Bubbles are built in batches for what is on screen, with a centre loading bar. The clicked group's own dots hide while its full bubbles are out.
+- Removed the dashed orbit circle that appeared when a group is clicked.
+- Org drawer: Connections moved to the end of About (the 5th tab wrapped the tab row once counts were added).
+- RSVP link: new rsvp_link on events (types, sheet column, form question, drawer, Events list, map card), shown before "More info". Auto-set for events linked straight to Eventbrite / Mobilize event pages / Action Network events / Sierra Club events.
+- Verified (no warning): now also events with their own /event/ page at confidence >= 0.9, or an RSVP page at >= 0.8 (83 of 121 events; was 77). Hanscom standout is now verified; its end time (9:00) and recurrence ("Every Wednesday, 8:00-9:00 AM") were already saved.
+- Recurring events are rolled forward to their next occurrence at load (the Hanscom standout showed last Wednesday; now Oct 7).
+- Events tab: clicking an event opens a detail card (description, RSVP, More info, contact, topics) instead of jumping to the map; calendar chips do the same; "See <org> on the map" button inside it.
+- Apps Script: typed answers. Org pickers and the works-with grid become typed questions matched to the org list (typos, short names, filler words); a "More topics" box takes any number of topics matched against a new Topics tab; anything that matches nothing is saved on a new Unmatched Input tab. Unmatched host org = held in Needs Review (admin fixes the name in the payload, then approves). Menu: "Switch forms to typed answers (orgs + topics)" converts the existing forms in place. Tests added (typo match, typed topics, unmatched logging, review hold + approval).
+- Why: Nathan's requests (form with no topic cap and cross-referencing; sidebar/bubble changes; RSVP; event detail card; fewer warnings).
+
+## 2026-10-01 (3) — change-log batch: loading screen, size by connections, toggles, multi-type, action autofill, Actions tab (branch claude/change-log-batch3)
+- Loading screen: index.html shows a bubble-orbit splash ("Please wait, loading the map…") from the first byte; main.ts fades it out once the first frame is drawn (also on a data error). Reduced-motion users get a still version.
+- New setting "Group size follows connected orgs" (0..1, default 0.5): coalition radius blends from one uniform size (0) to the member-count size (1) so big coalitions aren't huge.
+- Arrows toggle removed (arrows were always off). "Text fade threshold" slider replaced by a "Show text" on/off toggle at the top of the settings bar.
+- Org type is now several-choice on the form (checkboxes + write-in Other); stored comma-separated ("501c3, faith_org"). Site: typeList()/typeLabel() split it; Organizations filter, group colouring and suggestions match any of the types. Existing forms are converted by upgradeOrgForm_ (run "Switch forms..." / the upgrade menu item).
+- Action/event/project autofill: the "Which … is this about?" question ids (entry.1447795421 event, entry.378180696 project, entry.1959573726 action, read from the live forms) are in forms.config.ts as itemEntry; "Update this info" links now pass the clicked item, labelled exactly as the dropdown is (events "Name — Mon D, YYYY"; " [id]" only when labels clash). Recurring events keep their sheet date (sheet_date) for this. Code.gs also exports itemEntry in the "For the site" JSON.
+- Events / Projects / (new) Actions pages show the org's logo instead of initials when it has one.
+- New "Actions" tab (actions.ts): search, Take action / Volunteer roles filter, skills filter, same cards.
+- Why: Nathan's change-request list in the Google Doc.
+- "Update this info" links are now a real button, "Edit this event / project / action" (notice.ts editBtn + CSS), shown under the warning / verified note. Why: Nathan asked for a button.
+- Google Doc tab "current Map V1 Change request log": deleted every item now implemented (loading screen, weight by connections, arrows toggle, show-text toggle, which-org / works-with typing, multi-select org type, action autofill, database id in org names — the id only appears on a duplicate name now, and the dropdown is gone with typed answers).
+- Filters (src/itemfilters.ts) on Events and Projects: merged search over name, description, location, topics, owner — commas = AND of terms ("solar, boston"); zip code + "within N miles" slider (bundled MA zip table public/geo/ma-zips.json); include online/remote; only what's in view on the Geographic map; free food; open-to-public vs affiliated-only; events also have a date + time range (repeating events match any occurrence); projects have "Help wanted only" (default on). Organizations search is merged/comma-aware too.
+- Most events/projects have no coordinates (3 of 275), so items are placed approximately for filtering: the town named in `location` (public/geo/ma-town-centroids.json), else the org's HQ. Map pins still use real coordinates only.
+- New optional fields, end to end: free_food, affiliated_only (events + projects), help_wanted (projects; blank = yes). Types, Code.gs (columns, export/import, buildDataFile_, save, form questions via addAttendanceQuestions_, upgrade path), tests.
+- Geographic tab: Boundaries (None / Towns / Counties; click one to zoom; MassGIS-derived outlines, simplified, public/geo/), "Show list of events in view", all org dots one size that grows with zoom, coalitions with no member locations are no longer pinned. Voting districts are NOT done (need a boundary source).
+- Why: Nathan's change-request list; answers: add all three fields, towns + counties, bundled zip table with a miles slider.
+
+## 2026-10-01 — Reset map button, empty-view auto reset, loading bar
+- graph.ts: "⟲ Reset map" button next to the Items on/off switch; ensureInView() refits the network when no nodes are on screen (checked after every pan/zoom, every 3 s, on resize, and when switching to the Map tab). Tested in Playwright: dragged the map far off screen, it returned within ~4 s.
+- index.html: loading splash now also has a sliding progress bar (user said loading bars are helpful).
+- Uncertainty: I could not reproduce the black screen itself; this covers panned-away and hidden-tab cases. If it is a different cause (e.g. a WebGL/GPU issue) it won't help.
+
+## 2026-10-01 — Coalition zoom: member orgs on an outer ring
+- graph.ts enterFocus: for a coalition, member orgs are pinned (fx/fy) on a ring outside the items ring (memberR), shown at full opacity (.member-ring) instead of greyed; released on exit/refocus. Other nodes are pushed out past memberR; zoom fit uses memberR.
+- Tested in Playwright with Mass Power Forward (104 members): ring renders, no page errors, class cleared on exit.
+- Uncertainty: with 100+ members, org names are tiny at the fitted zoom (logos show); zoom in to read.
+
+## 2026-10-01 — Apps Script go-live (with Nathan's OK) + link-writer fix
+- In the browser: replaced Code.gs in the Apps Script project with the merged version, saved, deployed as version 5 on the existing web app (URL unchanged).
+- Ran "Set up sheet + forms": form upgrades + dropdown refresh ran, then failed at the final writeLinks_ step with a transient FormApp.openById "Unexpected error". Re-ran "Show form + data links" OK, then "Switch forms to typed answers" (8 questions changed), then "Replace projects, events and actions from the repo" (154 projects, 121 events, 68 actions).
+- Bug found: after the typed-answers switch, "Show form + data links" failed ("Invalid conversion for item type: TEXT") because siteFormConfig_ assumed dropdowns. Fixed to handle TEXT/PARAGRAPH/CHECKBOX/MULTIPLE_CHOICE; added openForm_ retry for the transient openById error. New test covers both.
+- Follow-up: the typed-answers swap changed some entry ids, so src/forms.config.ts needs the new ids from Start Here.
+
+## 2026-10-01 — Progressive loading bar + clustered coalition members
+- index.html: splash now has a real progress bar with "About N seconds left". Estimate = how long recent loads took (localStorage openthink.loadMs, default 6 s), moving steadily to 90% by then and creeping after; sharpened by real progress from main.ts (fetch start, streamed download when content-length is known, drawing, tabs). Animation: canvas bubbles that grow and split; how many may exist follows the progress. Reduced-motion: static redraw only.
+- graph.ts coalition zoom: members packed into staggered rows on an oval around the items (wider than tall, since item labels run sideways), bigger orgs on inner rows; zoom fit uses the oval. Replaces the single huge ring.
+- Tested in Playwright with data slowed 7 s: bar 15% / 44% / 73% at 1 / 3 / 5 s with 5 / 4 / 2 s left; Mass Power Forward zoom shows 104 members in ~4 rows, no page errors.
+- Uncertainty: the first visit on a device has no history, so the countdown starts from the 6 s guess; the Apps Script feed sends no content-length, so there the bar is time-based.
+- Added playful loading "reasons" under the stage label (23 climate/organizing quips, shuffled, one every 2.2 s with a fade). Tested: rotates, splash still removed, no errors.
+- Per Nathan: replaced the random quips with 11 warm lines about what the map is doing ("Gathering the coalitions…", "Getting the latest events…", …), shown in order instead of shuffled.
+- Loading lines edited per Nathan: "Checking in on projects…" (no "taking root"), dropped "Tracing the threads…", "Locating the towns across Massachusetts…", plus 4 new ones (14 total).
+- Made the new lines literal where possible (next meetings, newest member groups, this week's events, connecting organizations that work together).
+
+## 2026-10-01 — State expansion pilot: Vermont
+- research/state-pilot/INSTRUCTIONS.md: per-state agent brief (coalitions, members from their own pages, other key orgs, upcoming events/projects/actions; a source on every fact; output in data.json shape).
+- Ran one Sonnet research agent for Vermont (Nathan asked to prioritize VT over the planned RI/NY pilot): ~40 min, ~200 tool calls, ~300k tokens. Output research/state-pilot/vt.json: 6 coalitions, 49 orgs, 18 events, 14 projects, 6 actions, 75 memberships.
+- Checked: schema/ids/edges/sources all consistent; spot-checked 5 facts against live pages (Common Agenda 22/22 partners, T4VT members, EAN member sample 11/11, VNRC + VCV event dates/places) — all matched.
+- Cleaned: blanked placeholder last_activity dates (24), removed research notes from event locations; util.ts relTime shows "unknown" for blank dates. Tightened INSTRUCTIONS accordingly.
+- Gaps: Energy Action Network has ~80 nonprofit members, only 28 linked; VECAN's 100+ town energy committees mostly missing (map not readable); #ActOnClimateVT has no member list. Site is still MA-branded and its forms are MA's; a state switcher is not built.
+
+## 2026-10-01 — Map switcher (MA / VT / USA)
+- src/maps.ts: map registry (ma = live sheet + snapshot, vt = public/maps/vt.json, us = MA + VT merged). ?map=vt|us in the URL; plain link is always MA.
+- topbar: title shows the map name; right-click (or long-press on phones) opens "Switch map" (Massachusetts / Vermont / USA).
+- Non-MA maps have no forms yet: "Edit this…" becomes "Suggest a correction" → feedback form; + menu offers feedback only. Zip filter and town/county outlines are MA-only (hidden on VT); MA town names aren't matched for locations in other states; geographic view opens on the map's own groups; place search box follows the map.
+- Tested in Playwright: MA 8 coalitions/150 orgs, VT 6/49, USA 14/199; menu switches and URL updates; no page errors.
+- Gap filling (Sonnet research agents, a source on every field):
+  - Vermont: +1 coalition (Vermont EJ Network, no public member list), 49 → 100 orgs (+23 EAN non-profit members, +17 town energy committees, +9 350Vermont nodes, VT Racial Justice Alliance, REJOICE), +9 events, lat/lng on all 24 physical events, 17 real last_activity dates. Copied to public/maps/vt.json.
+  - Massachusetts: 114 descriptions, 114 geographic focus, 52 types, 57 websites, Springfield Climate Justice Coalition description; merged into public/data.json only where blank. Still missing: 36 descriptions (34 never researched: the session's 200-web-search cap ran out), 87 types, 43 websites; Cross Campus Climate Coalition not found.
+  - Spot-checked against live pages: Green Cambridge, JCAN-MA (founding year + activities) — both matched.
+- Apps Script: "Fill in missing details (logos, websites, descriptions) from GitHub" now also fills blank description / type ("unknown" counts as blank) / geographic_focus for orgs and blank coalition descriptions; never overwrites. Test added.
+
+## 2026-10-01 — Scheduled continuation
+- research/BACKLOG.md: ordered backlog (MA/VT data gaps, next states NH→ME→RI→CT→NY→NJ→PA, site items). A scheduled task works the first unchecked item each run and pushes a branch for review (never merges).
+- topbar: switcher lists every map in MAPS (USA last), so adding a state only touches maps.ts + search.ts.
+
+## 2026-10-01 — Missed change requests (found by re-reading the 2026-10-01 change-log tab)
+- I had deleted these doc lines earlier without building them; now done:
+  - Sidebar header "Map settings" stays at the top while scrolling, with the Hide button beside it.
+  - "Groups" section renamed "Group Types".
+  - "Advanced display settings" section, closed by default, last in the panel: Forces, Display (node size, link thickness, Animate, Reset) and the org-to-org connections toggle.
+  - Legend moved from the sidebar onto the map (bottom-left, click "Legend" to fold); adds the org-to-org line.
+  - "Last active" → "Last updated" in the details panel and tooltips (was ticked in the doc but never changed).
+- Audit of the rest of that tab: everything else is built, except voting-district outlines (no data source yet) and the form item "Organization => project, branching" (unclear what's wanted). The long "Which organization?" dropdown was solved with typed names + fuzzy matching rather than the suggested org numbers.
+- Tested in Playwright: sections order/titles, Advanced closed by default, header visible after scrolling, Hide still works, no page errors.
+
+## 2026-10-01 — Item physics + spacing for item rings
+- graph.ts ringPhysics(): events/projects/actions around a group are now a small force simulation (radial pull to their ring, collision, gentle repulsion, a spring to their home spot). They spill out of the group, jostle into place, can be dragged (the others make room) and spring back on release; clicking still opens the card (drag threshold 4px). Used for the zoomed-in group view and the always-on zoomed-in item bubbles.
+- Spacing: each group's collision radius now covers its ring of items when "Always on" is selected (itemExtent + 18px), so neighbouring groups' items don't overlap; recalculated when the item settings change. In the zoomed-in group view, other groups (and their items) are pushed clear of the focus ring.
+- Tested in Playwright: focus bubbles move and settle with 0 overlaps; dragging one 211px moves others and it returns to 0px from home after release; card still opens on click; always-on view spreads groups; no page errors.
+- Uncertainty: with "Always on", the whole network spreads out more (by design); the dot-level view uses the zoomed-in ring size for spacing so the layout doesn't jump when you zoom.
+
+## 2026-10-01 — Group drag carries items; members in a free orbit; previews on by default with clear switches
+- Dragging the opened group (or a group with zoomed-in previews) now leaves its items behind for a moment: they trail it and jostle back into their ring (nudgeRing/trailItems on the main simulation tick). Tested: items lag up to 73px while dragging, settle back within 4px.
+- The opened group shows 1.35× larger (CSS .focused; the item ring makes room for it).
+- Coalition members are no longer pinned: each springs toward its place on a circular orbit above the items (ringR + 250, rows outward), can be pushed around, follows the coalition when it's dragged, and is kept out of the circle holding the items and their labels. Tested on MPF (104), MYCC (45), GJC (11): 0 members touching items or labels; dragging the coalition 130px moves members ~130px.
+- Previews of every group's events, projects & actions are ON by default (new storage key, so old "off" choices don't carry over) and no longer depend on "zoom in on click".
+- Wording: map button "◉ Hide event & project previews" / "○ Show event & project previews" (replaces "Items on / Items off"). Sidebar section "Events, projects & actions": "Show previews of each group's events, projects & actions" (+ "Which to preview"), "Zoom in on a group when you click it" (replaces "On click / Always on" and "Show events, projects & actions"), "Group size" sliders reworded. Focus bar button "Turn items off" → "Don't zoom in on click". Saved sidebar settings reset once (controls.v3).
+
+## 2026-10-02 — Settings tidy: group types hidden, one "Bubble sizes" section, described forces, zoom-aware spacing
+- Group Types section hidden for now (SHOW_GROUP_TYPES = false in controls.ts); all types switched on by default for when it returns; while hidden it doesn't colour the map.
+- New "Bubble sizes" section: Overall size (was Node size under Advanced), "Coalitions: bigger with more member orgs", and the Events / Projects / Actions weight sliders (moved out of "Events, projects & actions").
+- Forces renamed with a one-line description under each: Pull to the middle, Push apart (lower = orgs closer), Pull to their coalition, Distance from their coalition (lower = members closer); "Line thickness"; "Re-settle the map" (was Animate).
+- Spacing follows zoom: zoomed out, previews are dots and groups keep the old gap (circle + dots + 14px); zoomed in past the bubble threshold they drift apart so full icons don't overlap, and come back together when you zoom out. Measured org nearest-neighbour median: live 114 → 82 zoomed out, 106 zoomed in; 0 overlapping icons between groups when zoomed in.
+- Saved sidebar settings reset once (controls.v4).
+
+## 2026-10-02 — Item cards in the zoomed-in group view; legend dots
+- Each event/project/action/thinking item in the zoomed-in view now has a translucent card under its icon (HTML in an SVG foreignObject): kind line (e.g. "Event · repeats", "Project · active", "Volunteer role"), the full name (wraps, never cut off), then date/time and place (or deadline). Clicking the card opens the detail card as before. Replaces the one-line labels that were cut at 34/42 characters.
+- Layout: ring sized for a card's width per item and room for the top cards above the group; item physics uses a card-sized collision circle; members' orbit and the zoom fit allow for the cards. Members' keep-out edge is now hard (crowded rings like Mass Power Forward's 104 members could push inner ones over a card).
+- Legend: "Dots around each group" with the event / project / action colours.
+- Tested in Playwright: MYCC 5 cards, MPF 2, GJC 0 — 0 card overlaps, 0 members on cards; card click opens details; no page errors.
+
+## 2026-10-02 — "Hide events, actions, and projects" switch
+- Removed the big "Hide event & project previews" button from the map. In its place: a switch right under "Show organization names" (renamed from "Show text") at the top of Map settings: "Hide events, actions, and projects" (off by default). Removed the duplicate previews switch from the "Events, projects & actions" section; its kind toggles now read "Which to show around each group".
+- Built on claude/item-cards (PR #32, not yet merged) to avoid conflicts.
+- Tested: switch hides/shows the dots (93 groups ↔ 0), survives reload, no map button, no page errors.
+- Moved Bubble sizes above Events, projects & actions.
+- Tighter first load: zoomed out, neighbouring groups' dot rings may nearly touch (collide = dot ring + 1px, min circle + 14 as before previews), and defaults Push apart 0.65 → 0.30, Distance from their coalition 0.50 → 0.25. Measured: org nearest-neighbour median 82 → 68, map spread 1096×1052 → 926×811, 0 overlapping orgs. Saved sidebar settings reset once (controls.v5).
+- Zoomed-in tier (k ≥ 1.9, previews on or off): organization planets draw 2× (CSS scale on the node, name kept normal size just under it), each item shows its full name under its icon (up to 3 lines), item rings sized for names, and groups spread out much more (collide = item extent incl. names + 22). Zoomed out they gather back (median 68). Dots are redrawn outside the planet on every tier change, and groups that slide into view after spreading are upgraded within ~1s.
+- Tested: zoomed in 16 item names visible, 0 overlapping names, 0 groups left with dots; zoom out restores spacing; no page errors.
+- Event buttons: new src/links.ts itemButtons(): a prominent yellow "RSVP" (the event's rsvp_link, or its link when that is itself a sign-up page: Zoom/Eventbrite/Mobilize/Action Network/Google Forms…) and a prominent "Link to website ↗" (was "More info ↗"); used in the drawer, Events/Projects/Actions pages, calendar detail and the map card. "Edit this …" is now a small underlined text link.
+- Green Energy Consumers Alliance: read its event pages (robots.txt allows) and added 8 RSVP links (7 Zoom webinar registrations + the Annual Fall Meeting on Eventbrite; the Harvest Festival has no registration) and the specific event page for 3 that pointed at the general events page; marked verified. Skipped "Electric Trunk-or-Treat" (Providence, RI).
+- Apps Script "Fill in missing details" also fills blank event rsvp_link and swaps a general events-page link for the event's own page (test added).
+- BACKLOG: "RSVP links for every upcoming event" added at the top (13 of ~110 upcoming events have one now).
+
+## 2026-10-02 — Seamless zoom, planets with moons, full names, coalition About + details, new loading screen
+- Zoom no longer reshuffles the map. Item orbits and group spacing are now the same at every zoom: no more planet doubling or collide change at the detail threshold. Dots turn into icons in the same places at the same size, and icons keep a steady on-screen size (CSS --is), so planets grow around them as you zoom. Item names appear beside the icons from 2.8× zoom, as light unboxed text reading away from the planet: full name plus one meta line. Measured: 0.0 px node movement while zooming from 1× to 4×.
+- Past 100% zoom, group names and lines keep their on-screen size (CSS --ns, non-scaling strokes), so they no longer balloon over neighbours.
+- Group names are never cut off: wrapped onto lines of about 24 characters.
+- Click-to-zoom view: no more cards. The group is drawn as a big planet (radius about 64, CSS --fs) with its items as moons close around it, each with its full name and a meta line beside it. Coalition members orbit outside the names.
+- New slider "Push coalitions apart" (Advanced → Forces). "Push apart" is renamed "Push organizations apart". The coalition default matches the old strength.
+- Coalitions get an About tab: type, scope, description, website, focus and a clickable member list.
+- Data (research/ma-gaps/fill5.json, a Sonnet research agent with a source per field; merged by scripts/merge-fill5.mjs):
+  - Websites and fuller descriptions for GJC, EJLT, HERO and MYCC; scope for GJC and SCJC.
+  - Logos for GJC and South Coast Neighbors United.
+  - 17 memberships named on the coalitions' own pages (EJLT +3, HERO +14). SCJC's list is campaign supporters, so it was skipped.
+  - Blank org fields for Bodhisara, HealthLink (own site) and Take Back the Grid.
+  - CCCC: nothing sourceable.
+- Loading screen: the network assembles itself from nothing. Coalitions appear, organizations bud off them and link up, and org-to-org links come later, all paced by the progress bar. Also added a land acknowledgement (Massachusett, Nipmuc and Wampanoag; Natick, Wellesley, Boston), based on the MassBay CC, Wellesley College Davis Museum and Bunker Hill CC acknowledgements.
+- Loading screen: added Nathan's dedication ("This site was made with the help of Claude Code (AI)…", with his links) under the land acknowledgement. The same text stays reachable after load via a quiet "Land acknowledgement & dedication" link at the bottom of Map settings, which opens a dialog.
+- Sheet (with Nathan's OK): put a temporary OneOffFill5.gs (generated from the fill5 changes) in the Apps Script project via the built-in browser, ran applyFill5 (36 cells: 5 coalitions' descriptions, websites, scope, tags and the GJC logo; 4 orgs' blank fields; 16 orgs' coalition_ids for the 17 new memberships), then deleted the file. The live feed now shows them. The GJC/SCNU logo images go live when this PR deploys.
+- Phones: the map legend starts folded (it covered about a third of the map); still one tap to open.
+## 2026-10-02 — Research notes out of public text; event-link fill fix
+- Rewrote 26 public descriptions (13 MA in data.json, 13 VT in maps/vt.json + research/state-pilot/vt.json) that still carried notes for the research team ("no climate work found", "could not be confirmed as current", "website blocks automated readers", scraper errors…). The map is in scripts/clean-notes.mjs.
+- Apps Script fillEventLinks_: also swaps a site's events listing (…/events, /calendar, /upcoming-events…) for the event's own page on the same site (e.g. greenenergyconsumers.org/events → /event/<slug>). Test added.
+- Sheet (Nathan: "do as much for me as you can"): temporary OneOffClean.gs in the built-in browser updated the 13 MA descriptions and the 3 GECA event links (16 cells), then the file was deleted. Code.gs in Apps Script still needs this branch's version after merge (Fill in missing details).
+## 2026-10-02 — Palestinian rights sector: source material + scheduled build
+- Nathan forwarded the JVP Western Mass newsletter (2026-10-02) as the first "Social justice" sector for a future topic expansion. research/sectors/palestinian-rights/SOURCE.md keeps only its public parts (groups, events, recurring standouts, actions, public links). Personal emails and phone numbers were left out on purpose, and so were items not about Palestine (kept for later sectors).
+- A one-time scheduled task ("Climate map: Palestinian rights layer + Topics view prototype", 2026-10-02 7:52 PM ET) builds (A) the sector layer with a closed-by-default "Social justice" settings section and toggles that are off by default, and (B) the Topics view prototype on the draft topic list with the cheap re-tag. Two PRs; it never merges.
+
+## 2026-10-03 — Social justice sector layer: Palestinian rights (scheduled run)
+- New src/sectors.ts: registry of sector layers (id, label, toggle wording, data path, colour, maps). Only "Palestinian rights" so far (public/sectors/palestinian-rights.json, same schema as data.json).
+- Map settings: new "Social justice" section (closed by default, just above Advanced display settings) with "Show Palestinian rights groups and events". Off by default, saved in localStorage (openthink.sectors.v1). Switching reloads the page so every view is rebuilt with or without the layer (same approach as "Reset to defaults"); the section reopens after the reload. Disabled on the Vermont map (layer applies to Massachusetts and USA).
+- When on: groups get a dashed ring in the sector colour (#a16207, muted), the hub is translucent; cards in Events/Projects/Actions get a coloured left border and a "Palestinian rights" pill; calendar chips are tinted and sorted under the day's climate events (so the daily online event never crowds them out); search results are prefixed "Palestinian rights ·"; the legend gets a "Social justice" row; the org drawer shows a tag.
+- No edit links for sector records: formUrl() returns null for sector groups, staleNotice() shows "From a community newsletter, not confirmed by the host. This layer can't be edited through the map's forms yet.", and the + button isn't pre-filled with a sector group.
+- Data: 6 Massachusetts groups (JVP Western Mass, Berkshires in Solidarity with Palestine, Apartheid-Free Western Mass, Western Mass Coalition for Palestine, Easthampton Solidarity with Palestine, Interlink) under one sector hub "Palestinian rights" (described as a sector, not a coalition; no other memberships). 22 events (13 recurring) and 11 actions. Items with no MA host (unattributed standouts, Smith film, national online events, IMEU/USCPR/Grassroots/MECA actions) sit on the hub rather than being credited to JVP; JVP's own items sit on JVP WM. Skipped the Oct 2 Turners Falls report-back (before today). Town-centre coordinates, geo_precision "approx"; AFWM and WMCP are "remote" (no town stated). No personal emails or phones.
+- NOT DONE: the linked pages could not be opened. WebFetch needs a permission approval that nobody could answer in this unattended run (I did not fetch them any other way). Everything comes from the newsletter, nothing is marked verified, and each card carries the "not confirmed" notice. Next step: open each link and correct dates/places where the page differs.
+- recurrence.ts: "Every day …"/"Daily …" is now understood (rolls forward like weekly events).
+- Tagging: research/topics/sectors/palestinian-rights.records.json + .extracted.json (39 records, Sonnet sub-agent, INSTRUCTIONS.md rules). I removed 7 topics whose evidence was only a title or group name. Kept apart from the climate topics.
+- Tested in Playwright (preview, live sheet blocked → snapshot): off by default with 0 sector nodes/cards/calendar chips/search hits/legend rows; on → 7 nodes, sector cards in Events/Actions + calendar, 7 search hits, legend row; survives reload; drawer has no edit link; USA map shows it, VT switch disabled; off again → 0 everywhere; 0 page errors.
+
+## 2026-10-02 — Sector layer: every item from the newsletter (Nathan: "include all the items… classification that makes sense")
+- Three more sectors next to Palestinian rights, each with its own switch under Map settings → Social justice (off by default):
+  - Immigrant rights: Jewish Activists for Immigration Justice, the Franklin County LUCE hub, and donations to Operation Milkweed, the Immigrant Solidarity Collective and the Western Mass Asylum Support Network.
+  - Jewish spiritual life: four Beloved Center gatherings in Florence.
+  - Movement skills & culture: Songleading for Protests (Truth School, online).
+- Same source and rules as Palestinian rights: newsletter only, linked pages not yet checked, no personal contacts. SOURCE.md now lists where each item went.
+- Playwright: all four on adds 13 nodes; switches present; sector cards show on the Events page; no page errors.
+- 2026-10-02: after #38 and #39 were merged, put development_branch's Code.gs (with the isListingFor_ link rule) into the Apps Script project via the built-in browser, saved and reloaded to confirm. doGet is unchanged, so no redeploy. Merged development_branch into #36 (legend: kept the folded-on-phones start and the sector rows; styles: kept both blocks); Playwright sector, zoom and land checks pass.
+## 2026-10-02 — Go-live steps (not logged earlier)
+- With Nathan's OK: pasted Code.gs from commit 6522571 into the Apps Script project (doGet unchanged, so no redeploy) and ran "Fill in missing details … from GitHub": 8 Green Energy Consumers Alliance RSVP links reached the sheet; the live feed shows 12 events with RSVP links. Still open: fillEventLinks_ misses 3 GECA events whose general link is …/events and specific page is …/event/<slug> (not a prefix match).
+
+## 2026-10-02 — Topic map, step 1–2: topic extraction + draft topic list
+- Why: Nathan wants a topical "topic galaxy" view of where groups' energy goes (items as the main weight, mission statements as a second layer; every weight a "not important → important" slider). Plan agreed: extract topics bottom-up, cluster into a two-level list for team review, then re-tag against the final list.
+- scripts/topic-records.mjs flattens public/data.json + public/maps/vt.json into research/topics/records.json: 618 records (390 events/projects/actions, 228 org/coalition mission statements).
+- research/topics/INSTRUCTIONS.md: extraction rules (only the record's own words, an evidence quote per topic, fixed strategy list, named bills, recurring flag, climate relevance). Four parallel sub-agents did 155 records each → research/topics/extracted.json (every evidence string checked as a substring of its record). 772 distinct phrases; 68 records with no topic (general meetings/socials).
+- research/topics/cluster.mjs: rule-based first draft grouping the phrases into 18 parents / 75 children + a bill list (21 bills/laws/ballot questions) → draft-taxonomy.json + hierarchy.md. Rules + explicit overrides were checked by reading every child's phrase list.
+- Review copy for the team: Claude Docs "Topic map: draft topic list for review" (findings, the list as an editable table, bills, strategies, open questions, planned sliders).
+- Findings: justice (45 missions / 16 activities) and local action (42 / 16) are stated far more than listed; a few groups dominate some topics (Mass Audubon WMa + Tree Boston = 19 of 68 nature activities; Vermont Conservation Voters = 10 of 23 democracy activities) → proposed a per-group cap slider.
+- Side finding: ~30 public descriptions contain internal research notes ("no climate work found", "website blocks automated readers", "could not be confirmed as current") → added to BACKLOG.
+- Mistake: an `rm extract*.json` glob also deleted the merged extracted.json; rebuilt it from the sub-agents' chunk files in the scratchpad (same 772 phrases, same per-slice counts).
+
+## 2026-10-03 — Topics page prototype ("topic galaxy") (scheduled run)
+- Based on claude/topic-extraction (PR #35, not merged yet), so this PR includes #35's commits until that one is merged.
+- scripts/topic-tags.mjs: tags every record without AI. Each extracted phrase is looked up in draft-taxonomy.json (exactly the phrase → child mapping cluster.mjs produced); bills use cluster.mjs's BILLS patterns (copied, with a "keep in step" note, so cluster.mjs's side effects don't run). Writes public/topics.json (237 KB): per record child topics, bills, strategies, kind, host, map, date, status, recurring, climate_relevance and the item link, plus the parent → child list and bill names. 618 records, 551 tagged, 67 left untagged (no topic phrase).
+- New "Topics" tab (src/topics.ts) next to Actions. It loads topics.json the first time it opens and shows the current map's records (MA; VT; USA = both).
+- The page is zoomable d3.pack circle packing: parents → children, with bills as children of "Climate policy & legislation" (they replace "Named bills"; records naming no known bill stay in "Other named bills").
+  - Click a parent to zoom in. Click a topic to open its records beside the bubbles (kind, date, "repeats", "related issue", item link ↗, and the group, which opens it on the map). The view stays on the parent so the neighbouring topics stay visible.
+  - Breadcrumbs and "− Zoom out" go back up; clicking the background goes to the top.
+- Sliders, each "Not important → Important" and saved in localStorage:
+  - Projects / Events / Actions: per-kind weight (0.6 / 0.5 / 0.5).
+  - Recurring events: × 2v (middle = same as one-off).
+  - Recency: exp(−3·v·age/365). Events are dated; active projects count as 0 days old, completed ones 730, actions 90, missions 0.
+  - Mission statements: default 0.15.
+  - Cap per group: each group adds at most 1 + 9(1−v) to a topic; lowest = no cap.
+  - Related issues: × v for adjacent/none records.
+  - A "Reset sliders" button.
+- The draft note sits in the header. "Broad climate" is grey, dashed and dimmed.
+- Tested in Playwright:
+  - The page loads with 18 parents, 93 topic bubbles and 18 bill bubbles.
+  - Sliders change radii (energy 105→97 with projects at 0; nature 118→138), and Reset restores them.
+  - Zoom in and out, the record list, crumbs and the group → map link all work. Mobile is usable.
+  - 0 page errors.
+- Pre-existing, not from this PR: leaving the Map tab before the map settles and coming back logs "translate(NaN,NaN) scale(NaN)" console errors from graph.ts's zoom (reproduced on development_branch via the Projects tab).
+
+## 2026-10-03 — Topics page: "Command room" view (scheduled run)
+- Why: Nathan's saved choice from the command-room brainstorm (claude.ai project doc "Topics view: command room idea"): show where the groups' problem-solving energy flows, Galcon / WarGames style but about repair, grand but calm.
+- Based on development_branch (#35 and #37 are merged). Open PRs checked first: only #40 (logos), which doesn't touch the Topics page.
+- New src/commandroom.ts, shown by a "Bubbles | Command room" switch in the Topics header (remembered in localStorage). topics.ts now exports TopicsFile, hands the command room its weight function, cap and colours, and calls update() when a slider moves.
+- Energy: each record's weight is the same slider weight the bubbles use. A stream is one group → one problem; its value is the sum of its records' weights, capped by "Cap per group". A record counts fully for each topic it's tagged with (same as the bubbles), not split between them.
+- Importance: new "Problem importance" sliders (one per parent topic, "Not important → Important", default 0.5; Broad climate 0.2) in the side panel, open in the command room. Coverage = the problem's share of all energy ÷ its share of all importance (Broad climate left out of both). Child topics: the parent's coverage × the child's energy ÷ the mean of its siblings'. Glow = min(1, coverage/1.25)^0.75.
+- Layouts: (a) groups in the middle, placed toward the problems they feed (focused groups near the rim, generalists in the centre, collision-relaxed), problems on a ring; (b) groups in a column on the left (staggered when crowded, ordered by where their energy goes), problems on the right.
+- Styles: "Comets + shields" (glowing particles with short fading tails on curved arcs; the problem's shield, coverage arc and blurred glow follow coverage) and "Watershed" (rivulets from each group join one river per problem; the delta goes from cracked dry ground to a green-blue wetland with reeds as coverage rises).
+- Zoomed out: one stream per group → parent topic. Clicking a parent, "Split all", or zooming past 1.7× splits parents into child topics. Clicking a split group's arc/label folds it back; background click clears the selection, then folds.
+- Zoom moves nodes rather than scaling them (labels stay readable); canvas strokes and particles are kept at screen size.
+- Hover a stream: highlight + "group → problem", energy and its top 3 items. Click a group: only its streams + its items by problem, and a map link. Click a problem: who feeds it (bars, each with map ↗) and its items with item links and group → map links.
+- Playback (Sep 2026 → May 2027, the span of dated events; about 9 days a second): undated projects/actions/missions are always on; one-off events appear on their date (ripple) and fade over a few weeks; repeating events stay on and pulse weekly. In the whole-year view, problems with repeating events pulse gently every 7–11 s.
+- Calm: canvas particles with a fixed budget (one per live stream plus the rest of ≤650 comets / ≤850 water glints shared by weight; about 490 / 710 on a 1440×900 screen), speeds of 12–38 px/s, low opacity, additive blending; the static stream layer is cached in an offscreen canvas. prefers-reduced-motion: no animation loop, static dotted flows, playback steps every 0.4 s.
+- "Where is help needed?": dims everything except problems with importance ≥ 0.5 and coverage < 0.7, and lists them (click to open). With default sliders on MA: Food & farming, Democracy, Resilience, Other movements (0.3×), Education, Jobs (0.6×).
+- Kept the draft note and the dimmed, dashed "Broad climate". Ring and labels leave room for the site's round + button.
+- Playwright (vite preview, 1440×900, headless Chromium without a GPU): both layouts × both styles, hover, click problem/group, the map link, help, playback + scrub, zoom split (75 problems), Split all, slider update, importance slider (food 0.5→1 dims its core 0.30→0.22), Reset, Bubbles ↔ Command room, reduced motion (0 animation frames), phone width. Average drawing work 0.9–2.2 ms per frame, frame interval ≈16.7 ms. 0 page errors.
+  - Console errors that are not from this PR: "translate(NaN,NaN) scale(NaN)" from graph.ts after visiting the Map tab and leaving it before it settles (already logged on 2026-10-03), and one 404 during page load that didn't reproduce.
+
+## 2026-10-03 — Topics page: streams view is now the only view (PR #41, Nathan's feedback)
+- Nathan: "the command room is incredibly beautiful"; take out importance (too confusing: keep it a picture of where people's energy goes), add the org images, let zooming show the groups/items that contribute and the finer topics inside a topic; make it the one and only Topics view, still called "Topics".
+- Removed: the bubble (circle-packing) view and its switch, the Problem importance sliders, coverage ("fair share") and "Where is help needed?" (it depended on importance). topics.ts now only holds the data types, sliders and weighting, and hosts the streams view.
+- Glow/wetness now = how much energy reaches a topic compared with the busiest topic at the same depth (sqrt, capped at 1). Broad climate stays grey and dimmed.
+- Topic tree is three deep: main topic → sub-topic → bill ("Named bills" splits into each bill; records naming no known bill go to "Other named bills"; a record naming a bill also counts under "Named bills").
+- Zoom: + / − / reset buttons as well as scroll. ≥1.7× splits main topics into sub-topics; ≥2.8× splits Named bills into bills and shows each item (project, event, action, mission statement) as a coloured dot along its stream (754 dots at full depth on MA). Hysteresis so it doesn't flicker. Clicking a topic that holds finer topics splits it and glides the view to it (stays below 1.7× so only that topic opens); its detail panel lists the topics inside it as chips.
+- Logos: group nodes show the group's logo (from the map data via a new logoOf callback in main.ts; 125 of 135 MA groups have one) on a white disc, and grow up to 2.6× as you zoom in. Group names are placed in screen space, so more fit as you zoom (7 at start, ~55–67 zoomed).
+- Items: hover a dot for its kind, name, group and topic; click it for its detail (item link, group, "show all of this group's streams", and every topic it feeds). Items also appear when a group or topic is selected.
+- Bug fixes found while testing: a dangling `else` that emptied the topic list; topic labels over-truncated when zoomed (now fitted to the space left on screen); feeding groups dimmed when the cursor rested on a stream (selection checks now ignore hover).
+- Playback cost: stream paths and logo sizes are only rebuilt when things move, and the stream layer redraws at most every 0.4 s while playing (was every simulated day) — playing went from ~7.4 to ~3.8 ms/frame in headless Chromium without a GPU; other states 0.9–2.3 ms.
+- Playwright: both layouts × both styles, zoom levels (18 → 75 → 93 topics, 19 bills, 754 item dots), item hover + click, click Climate policy (splits into 6 + zooms) then Named bills (19 bills), group click with logo, stream hover, playback, slider, Reset, map link, reduced motion (0 frames), phone width; 0 page errors (console: the known graph.ts NaN after visiting the Map tab, and the load-time 404).
+- Nathan: "we don't need to have it day by day — use all available history/information for now." Removed the year playback (play button, date slider, per-day fading of one-off events); the view always counts every record. Topics with repeating events still pulse gently. Recency is still a slider weight. Re-tested in Playwright: same checks minus playback, 0 page errors.
+## 2026-10-02 — Logos for Vermont, About tab first, full item view, livelier moons, deeper zoom, linked groups in org view
+- scripts/fetch-logos.py: for groups with a website and no logo, reads the group's own homepage and takes the image marked as its logo (else its large site icon, else og:image), normalised to PNG ≤400px. research/logos/report.json records the source URL and whether each was accepted. I reviewed every candidate on a contact sheet and accepted 74 of 97 (rejected: photos, sponsor logos, generic icons, blank images, other groups' logos). Added for 74 Vermont groups (orgs + 4 VT coalitions). No usable logo on their own sites for MA's EJLT, HERO, SCJC or CCCC (they keep their abbreviations).
+- Details tray opens on About for coalitions too.
+- Full view of an event / project / action in the details tray: kind, when (with recurrence), where (+ Open in maps), full description, RSVP / website, + Google Calendar and an .ics file, host (back to the group), topics from the topic map, last-checked notice, and "More from <group>". Clicking an item's icon or its name on the map opens it, as do item names in the tray's lists.
+- Moons now trail their planet when it is dragged and spring back (they were frozen: the still ring sims never restarted because their alpha stayed at 1). No push between moons, so their orbit and spacing are unchanged. Max zoom 4× → 12×.
+- Opening an organization now also shows its coalitions and partner groups on the outskirts, smaller (60%) and quieter (75%), instead of greyed out.
+
+## 2026-10-04 — Topics page: new "Command room" view (problems vs. what we build), stacked on PR #41
+- Nathan: keep the streams view as it is; add a command room where identified problems sit on the left under attack from the groups and their initiatives in the centre, while the same groups feed magical rainbow energy along river paths; add fun/beautiful variations behind buttons. He also said every cause can be framed as a problem (lack of climate education, fossil-fuel-backed legislation, community fragmentation).
+- Branch claude/command-room-battle from claude/command-room (#41 not merged yet), so the PR shows #41's commits until #41 is merged.
+- src/problems.ts: a problem name for all 18 main topics and 75 sub-topics, and a vision name for each main topic (e.g. education → "Lack of climate education & awareness" / "A climate-literate public"; policy → "Fossil-fuel-backed legislation & policy gridlock" / "Strong climate laws"; local → "Community fragmentation & isolation" / "Connected, acting communities"). Draft for team review.
+- Split of energy: each record's slider weight is divided by its strategy tags — policy_advocacy, organizing, electoral, legal and finance push back on the problem; education, community_building, building_and_stewardship, direct_service, training, individual_action and research build the vision. "Every item both ways" shows the full weight on both sides. (MA: 132 advocacy, 129 organizing, 148 education, 121 community building, …)
+- src/battle.ts: problems on the left (dark orbs whose gold "kintsugi" cracks fill in as more energy hits them; click to split into sharper sub-problems, or "Split all"/zoom ≥1.7×; crowded labels are thinned by energy), groups with logos in the centre (fighters lean left, builders right), visions on the right (blooms that open, or stars that grow).
+- Buttons: Attack = Comets / Arrows of light / Seed bombs (each with its own impact: sparks, flashes, petal bursts); Feed = Rainbow rivers / Aurora / Fireflies (rivulets merge into one river per vision); Garden = Blooms / Stars; Show = Both / Attack only / Building only; Energy = Split by strategy / Every item both ways. All remembered per browser.
+- Hover a stream (pushing back on / helping build, top items), click a problem, vision or group for who's on it and the items (each tagged pushes back / builds), map links. Zoom +/−/reset. Fixed particle budgets, impacts capped at 70, reduced motion = still picture.
+- topics.ts: "Streams | Command room" switch in the Topics header (remembered); each view is built the first time it's opened; switching clears the other's selection.
+- Playwright (1440×900, headless, no GPU): all style combinations, both/attack/building, both-ways energy, click problem (education → 3 sharper problems, 12 groups), vision, group with logo, stream hover, split all (71 problems), zoom, switch to Streams and back, slider update, reduced motion (0 frames), phone width. JS work 1.2–3.3 ms/frame; with comets + rainbow the frame interval is ~30 ms in software rendering (additive sprites), fine elsewhere. 0 page errors (only the known load-time 404). Streams view re-tested: unchanged.
+## 2026-10-03 — Items grow with zoom, sharper logos, shorter land acknowledgement & dedication
+- Items now grow gently on screen as you zoom past 3× (√(k/3): ~1.4× at 6×, 2× at 12×), still capped at SAT_MAX_WORLD_R in map space so the spacing holds. Their names grow a little less (font × grow^-0.4). Group names grow gently too (k^0.35 instead of fixed).
+- Sharper logos: scripts/upgrade-logos.py re-read each group's own homepage for a bigger version of its current logo (≥1.8× the size). I reviewed 88 candidates side by side and accepted 39 that were the same logo, just sharper (list and sources in research/logos/up/report.json). The rest were different images (photos, partner logos, Instagram icons) and were rejected.
+- XR Boston and XR Western Mass: their own site only offers a 192px icon. Rebuilt it at 640px from Extinction Rebellion's published vector symbol (rebellion.global/assets/img/logos/xr.svg), in the chapters' own black-on-green.
+- About 110 logos are still under 256px (mostly the 160px images from the original MA import). They look soft past about 4× zoom. A deeper search (press kits, social profiles) could fix more; added to BACKLOG.
+- Loading screen text, workshopped with Nathan: "made with Claude Code" first (plain, not bold), then all the peoples in one paragraph, then gratitude, harm and dedication in one paragraph, in the original wording as far as possible (221 → 186 words, links included).
+- Loading screen: links on their own lines ("Whose land are you on?", then "Give back", then "Learn more"). Smaller animation and text on phones, so it all fits on one screen. New "Keep this open to read" button: the map keeps loading behind it, and the splash stays until "Enter the map →".
+
+2026-10-03 09:55 ET (Claude, PR #42 follow-up)
+- Loading screen: "Open the map automatically when it's ready" checkbox (on by default; saved in localStorage openthink.autoEnter). Off = screen stays until "Enter the map". Why: Nathan asked for a toggle next to the Enter button.
+- Loading screen: replaced the joke lines with what is actually loading (spreadsheet request, KB downloaded, counts, layers, repeating events, layout, pages) and a "map is ready" line when held.
+- Item colours: Watershed palette tuned for colour blindness (event #2dd4bf, project #bef264, action #ea580c, volunteer #8b5cf6; min ΔE 29 under protan/deutan/tritan simulation). Volunteer roles get their own colour (--k-volunteer) and legend row.
+- Volunteer icon: one person (head and shoulders) with a hand raised, shared by map bubbles and the drawer (src/icons.ts). Actions keep the checkmark. Drawer tabs and the item header now show the type icon next to the name; the focus header counts volunteer roles separately.
+
+2026-10-03 11:50 ET (Claude, PR #42 follow-up 2)
+- Loading screen: no toggle. The map opens by itself when ready; a glossy blue-green "Read more" button keeps the screen up and becomes "Open the map →" (Nathan's call: default auto, no toggle).
+- Loading lines now include real facts from the data (memberships and organizations in 2+ coalitions, events in the next 30 days, actions and volunteer roles, days since the latest group update) and a logo preload counter (the map waits up to 1.5 s for logos so it doesn't open on blank circles). Each line stays up 0.6 s; the map waits at most 1.6 s extra for queued lines.
+- "Whose land are you on?" is now a white label like "Give back:", linking to Native Land Digital.
+- Phone loading screen: items no longer shrink when the text runs long (the progress bar had collapsed and the button was clipped).
+- Close-up view: overlapping moon names are pushed outward once the moons settle (and again after a drag), measured in screen space.
+- Item dots now trail their group like the icons do. The physics is created only while a group is dragged, for at most 16 on-screen groups that move most, and disposed when settled. Measured headless: ~10% more main-thread time during a drag, none at rest.
+
+## 2026-10-05 — Command room v2 (icons, forcefields, hit/feed effects), steadier Topics zoom, roomier map, loading-screen button
+- Nathan's list (after #41/#43 went live): explain/fix the Topics view shifting on zoom; map spaced out a bit more so coalition membership reads at a glance; loading-screen button at the bottom with wording that means "keep this open"; Command room: Problems/Solutions/Both, titles that don't look like buttons, icons instead of kintsugi, forcefields that show hits, fewer comets (~1–3 hits every few seconds), seed bombs for solutions, solution icons, finer solutions on zoom, replace Attack/Feed/Garden with 2–3 hit effects and 2–3 nourish effects that say what we're doing; headings "Problems we are solving" / "Solutions we are nurturing"; sub-problem text too small when zoomed.
+- Why it shifted: every split re-spaced the whole ring (or column) and re-ran the group layout. Now each main topic owns a fixed slice/band sized for its sub-topics (its finer topics fan out inside it), and group positions are computed from main topics only and cached until the window size or weights change. Checked: toggling Split all moves 0 groups and 0 other topics in both views (only float noise). Clicking a topic in Streams still glides the camera to it on purpose.
+- Streams labels: no more shrinking to 7.5px in crowded spots; the busiest labels that fit are shown at full size (11px+), the rest on hover or when zoomed.
+- Selector titles: now plain small caps outside the pill (Layout, Style, Show, …), in both views.
+- Map (graph.ts defaults): organizations repel 0.3→0.42, member link length 0.25→0.4, coalitions repel 0.3→0.7 (settings key v5→v6 so everyone gets them once). Coalition clusters now sit apart; still fits the screen.
+- Loading screen: the button moved under the land acknowledgement and reads "Keep this screen open" (then "Open the map →" as before).
+- Command room rewrite (src/battle.ts, src/topicIcons.ts, SUB_SOLUTIONS in problems.ts):
+  - 36 hand-drawn line icons (a problem and a solution icon per main topic; sub-topics reuse them).
+  - Problems: dark core + red icon inside a pink forcefield. Comets are launched per target at 0.18 + 0.55×glow per second (busier = more often), 120 px/s; measured ~1–1.3 hits per target per 4 s on average, busier ones ~2–3.
+  - Hit effects: "Shield ripples" (the field lights up at the strike point and a ring runs round it), "Pushed back" (the problem is knocked back on a spring and shrinks as more energy reaches it), "Light breaks in" (gold light seeps through the shield; the icon turns gold).
+  - Solutions: green core + light icon, fed by seed bombs (75 px/s, pollen trail). Nourish effects: "Grows" (sprouts with leaves grow from where the seed landed, the solution pulses), "Blooms" (petals burst; petals open with energy), "Lights up" (a warm ring of light and sparkles).
+  - Show: Problems / Solutions / Both. Detail: Main / Split all; solutions now split into 75 finer solutions too (names written for each sub-topic).
+  - Zoom stretches rows vertically only, so both columns and the groups stay on screen; labels 12.5/11.5px.
+  - Sizes: radius 10–20px (sub-topics 7–13px) by √(energy ÷ the busiest at the same level), so area ∝ energy; never smaller than 5px or taller than ~0.42 of its row.
+- Fix found while testing (pre-existing): hollow mission-statement dots in the Streams view only reacted at their thin outline; now hoverable inside.
+- Playwright: all hit/feed combinations, Show modes (0 solutions drawn on Problems), split/zoom (71 problems + 73 solutions), clicks (education solution → 4 finer solutions), group, reduced motion (0 frames), Streams regression (zoom levels, items, hover), loading screen at 1440 and 390 wide (button below the text, stays open after load), map screenshot. 0 page errors (known load 404 only).
+
+## 2026-10-05 — Topics icons + hover, one combined hit/feed effect, 2D zoom, circle layout, simple animation, item cards, map/geo/drawer/loading fixes (PR #44, round 3)
+- Nathan asked (many messages in one session): icons in the Streams view; one combined problem effect and one combined solution effect (grow branches out in every direction, plus light), no effect selector; zoom into any part; Show problems/solutions alone re-orients to two columns; hovering a topic or group highlights its streams, groups and items; dashed paths to problems, solid rainbow paths to solutions; problem comets ~25% rarer and a single comet with a tail; seeds ~35% more often; a Simple animation button that switches on by itself when the browser struggles; a circle layout for the Command room; test features invite feedback instead of warning; item clicks in Topics show the same detail card as other pages, as a pop-up beside the item while the details pane stays; link buttons named for what they open; logos on the geographic map and no pins for groups without a location; drop the loading-bar time estimate and merge its two text lines; tether lines from map items to their group; map hint to the upper right and drop the unused org-to-org legend line; clearer slider text; a raised-hand volunteer icon; no circle outline on recurring events; closing a group returns to the earlier view; clicking a group after viewing one of its items shows the group first; group logo on "Hosted by"; one Activity tab with a pill per kind and an icon before each title.
+- Command room (battle.ts): semantic 2D zoom (positions spread, nodes grow gently, √k up to 1.8×); item dots past 2.4× or for the hovered/selected topic or group; hit = knock-back + forcefield ripple + spark + light; feed = 8 forking sprouts round the rim + warm light; problem rate 0.135+0.41·glow, solution 0.27+0.81·glow per second; Layout Columns/Circle (problems round the left half, solutions the right, groups inside, pulled toward what they work on; one kind all the way round when shown alone).
+- Simple animation (src/perf.ts, shared): canvas at 1× pixel ratio, half the comets/no tails/no sparks (Command room), 35% particles/no ripples (Streams). With no saved choice it switches to Simple after ~4 s under ~20 fps (an "auto" note shows; picking Full keeps Full). Measured: CPU throttled 12× → switched; normal headless run → stayed Full.
+- Item card (src/itemcard.ts): shared card; Topics opens it beside the click (pop-up, closes on Esc / outside click). links.ts names the link: Event page, Project page, Take action, Volunteer page, Sign the petition, Read the bill, Read the PDF, Donate, Watch the video, Sign up, Group's website.
+- Geographic: orgs whose position is only the Boston fallback point (statewide/national/no address) aren't pinned (35); statewide/national coalitions aren't pinned (6 of 8; search still shows their members). Orgs and coalitions show logos.
+- Loading screen: one line at a time, each up 1.5–3.4 s by length; at most 3 waiting; lines rewritten to be short and about people (counts, chances to show up, actions you can take); no time estimate.
+- Drawer: About | Activity (n); pills Events/Projects/Actions/Volunteer (multi-select; all = everything).
+- Checked in Playwright (1440×900): Command room hover topic/group (others dim, items appear), Simple toggle, circle layout, Show problems, split/zoom, item card + pane, Streams icons (63) + hover topic/group (16–20 items), auto-switch under throttle, map tethers (343), focus → item → group click shows details → second click closes and restores the earlier transform exactly, Activity tab (CRWA: 3/2/1/5, volunteer filter 5 with icons), host logo, geo (112 logos of 115 pins, 2 coalitions). Build, test:apps-script and check:apps-script pass. Known load 404 only.
+
+2026-10-05 09:00 ET (Claude, Command room follow-up, stacked on PR #44)
+- Items are now moons around their groups (not dots along the paths): shown for every group on screen past 2.4× zoom, or for the group you point at / pick; named once a group is ~20px+ on screen; overlapping names hidden.
+- Deeper zoom (to 14×): groups grow with zoom (k^0.82, up to 9×), full names past 4×, problem/solution names grow a little (CSS --bt-lf) and wrap to two lines instead of being cut.
+- Pointing at a group, an item, a problem/solution or a path lights every path it is part of (bright line + soft glow), like the Streams view.
+- Circle layout: solutions round the top, problems round the bottom, names read outward on short lines; ring headings in the corners.
+- Hits: the forcefield is gone; impact flash and knock-back stay, and grey bits break off the problem so it looks worn down. New Effects panel: 18 sliders (rates, speeds, knock-back, shrink, bits, light, sprouts, path brightness) with "Save as default" (this browser), "Site defaults" and "Copy for everyone" (to bake into FX_DEFAULTS).
+- The details tray now slides over the picture on desktop (Topics page) instead of taking room from it, so clicking a group never moves the view. Checked: org transforms identical before/after the click.
+
+2026-10-05 09:40 ET (Claude, map polish, stacked on #46)
+- Details pane never moves a map (Nathan: "in any context"): clicking groups inside the pane, or a group name on the Events/Projects/Actions/Topics pages, opens its details in place (no tab switch, no zoom); the close-up no longer nudges itself left for the pane. Only the new "Locate on strategy map" / "Locate on geographic map" buttons (pane header, item view, item cards, geo group card) move a map.
+- Item cards (Events, Projects, Actions, Topics, geo pins): quick look, plus "More details →" (pane), "Locate on strategy map", "Locate on geographic map". Projects/Actions cards now open the card instead of jumping to the map.
+- Geographic map: bigger group icons (18–44px by zoom); groups stacked on the same spot show one icon with a "+N" badge that fans the rest out around it (lines back to their real places); clicking a group shows a small card by it and its details in the pane, without moving the map.
+- Main map close-up of an org: its coalitions are drawn 1.5× and sit clear of the moons' names (they may spill past the edges); partner groups 0.75×. The whole node scales, dots included, which fixes the dots floating loose while the group moved into place (the glitch).
+- Loading lines: Nathan picked 4, 5, "Loading…", 11–16 from the list; facts shuffle each visit (queue up to 10, ~1.1–2.6s each).
+- Loading screen: dedication split into short paragraphs, larger and brighter text; now opens "This platform was designed on the homelands of … (Natick, Wellesley and Boston) with the help of Claude Code (AI)."; "who live and lead here today" → "who carry that care forward today" (options sent to Nathan). Loading lines made literal ("Gathering the movement…" → "Loading the map…").
+- Events page "When": quick ranges (Any date, Today, Tomorrow, This weekend, Next 7 days, Next 30 days, Pick dates… with two plain date boxes; "to" optional) and time of day (Any time, Mornings, Afternoons, Evenings), replacing the two date-time boxes.
+- Past items (events that happened, finished projects, actions past their deadline: src/past.ts) are hidden from the map dots, close-ups and Projects/Actions lists by default and listed in each group's details pane under a folded "Past (n)" section. One switch in Map settings, "Show past events, projects and actions", shows them everywhere.
+2026-10-05 08:00 ET (Claude, mobile menu)
+- Phones: the top tabs were a hidden-scrollbar row, so only Map/Geographic/Organizations were visible and the rest were hard or impossible to reach (Nathan: "impossible to traverse the main menu in mobile"). At ≤720px the tabs now fold into a menu: a pill button shows the current page + ☰ and opens a list of all pages, plus "Switch map…" (the long-press on the title was undiscoverable). The top bar sits above page content on phones so the menu isn't covered (the Geographic panel covered it). Desktop unchanged. Tested with Playwright on iPhone 13: every tab reachable, map switcher opens, 0 page errors.
+- Loading screen tips (Nathan: one per visit + newcomers only): one "Tip:" under the progress bar, a different one each visit, shown on the first 5 visits only (localStorage openthink.visits); 8 tips, all about things the site really does.
+- Loading line "Connecting {n} groups across {n} towns" (MA: each placed group to its nearest town centre within ~9 km; currently 105 groups across 41 towns). "Gathering the movement…" restored as the opening line.
+
+2026-10-05 10:00 ET (Claude): Dedication rewritten with Nathan (fewer "We" openings; gratitude for minerals, water and electricity; "We recognize the harm woven into all of this, and commit to its repair, beginning with the return of land to Indigenous peoples."; "This platform is dedicated to…"). Easier to read: 15px (13.5px on phones), line-height 1.75, brighter text, narrower left-aligned column, more space between paragraphs.
+
+2026-10-07 (Claude, Oct 7 polish)
+- Command room: lit paths thinner (0.9–1.6px, faint glow); comets halved (FX hitRate default 0.5); paths light up only after the pointer rests ~0.16s (leaving after 0.07s; one lit thing at a time); "✕ Clear selection" button, Esc, and clicks on empty space or on a (nearly invisible) path all deselect; groups can be dragged (their paths and items follow); with only problems or only solutions shown, the groups spread over the whole free area; zoomed in, items show as icons (calendar, seedling, check, speech bubble for missions) with their full name on up to two lines and a date / kind line, fading in; item repaint throttled to once per frame while zooming (names tidied when the zoom settles).
+- Dedication column 700px, 17px text (15px on phones) — carried over from Oct 5 (#50 merged before it was pushed).
+- Geographic map: finer zoom steps (zoomSnap 0.25, zoomDelta 0.5, gentler wheel); groups glide out of / into the stack they belong to as you zoom (0.32s, none on first draw or with reduced motion); "+N" is a quiet grey disc about the size of a group; clicking it flies in until the stack's groups separate (or fans them out when they share an address), and a "− Zoom back out" button returns to the exact earlier view (it hides once you zoom out past that view yourself).
+
+2026-10-07 (Claude, loading screen + dedication)
+- Loading screen: map title shown at the very top so people know what's loading; welcome line shows while data is fetched (shorter "Gathering the movement…" wait); lines now read "Loading volunteer opportunities (25/25)" etc., with the first number counting up quickly; line dwell 0.75–1.6s (was longer).
+- Dedication: Nathan's new text (Natick/Wellesley/Boston; Claude's land and data centers; gifts and harm; repair; dedication). Column 860px wide, 19px light (300) text, left-aligned; 16px on phones.
+- Branch includes #51 (merged in) so it can be merged alone.
+
+2026-10-07 (Claude, dedication v2)
+- Dedication: Nathan's updated wording (verbatim; "--" shown as an em dash, closing period added to the fourth paragraph). Text is now centered.
+
+2026-10-12 (Claude, Wikipedia-based topics as default)
+- Topics page now uses Turibius's Wikipedia-based topics by default: his 13 seed topics are the main topics; sub-topics are his topics that our items actually use. The group-based list (public/topics.json, unchanged) stays available in Map settings → Advanced display settings → Topic list (remembered per browser; ?topics=groups|wiki in links). Item cards follow the same choice.
+- scripts/merge-wiki-topics.mjs merges his topics + aliases CSVs (his spec: hop_distance,topic,aliases,qid,seeds,lift_lcb_max) → research/topics/wiki/topics-merged.csv. scripts/wiki-topics.mjs tags each item's already-extracted topic phrases against topic names/aliases (exact, then a topic name inside a longer phrase, with a stoplist of vague words) → public/topics-wiki.json + research/topics/wiki/coverage.md (what is lost).
+- Lift cutoff 8 (not his suggested 10): 10 tags only 133 of 618 items (22%); 8 tags 374 (61%); group-based tags 550 (89%). Topics reached from several seeds sit under the first seed listed.
+- Command room: problem/vision wording for the 13 seeds (src/problems.ts); their sub-topics use their own names.
+
+2026-10-12 (Claude, full feedback update on PR #54 — not merged; Nathan reviews first)
+Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedback.md, merged in Project doc claude/feedback-2026-10-12-merged.md.
+- Events/Projects lists: "Only what's in view" uses the same rule as the Geographic list (src/itemfilters.ts inMapView: items placed only by town or group HQ count only when zoomed out to town level); Free food / Affiliated-only / Help wanted now filter (help wanted = marked wanted or skills listed, not finished); time of day checks the whole start–end span; counts on each switch and a reason when the list is empty; long date text wraps; filters fold on phones.
+- Geographic: events-in-view list opens/closes, follows pan/zoom, upcoming only; search highlight ring can't be clicked and clears when its layer is hidden or the map is clicked; pins sit above groups; pin popups have "More details".
+- Details pane: title, locate row, then About/Activity/Topics tabs at the top (Topics tab new); emails/phones are mailto:/tel: links; "how to join" line on help-wanted projects; no "Unknown" subtitle; thinking note explained; ✕ on an item opened from a group returns to the group; "Locate on strategy map" hidden when already there.
+- Strategy map: steadier focus (no restart on resize, gentler filter changes), opened group bigger, linked coalitions capped in size, members arrive staggered, isolated groups pulled closer, item labels leave room for the group name.
+- Topics page: clicking a group opens the normal details pane; Command room effects panel renamed "Modify Visual Effects" with Hide, Keep these settings, Undo changes, Site's settings, Share; comets ease out, seeds slower with glow, radiation slower, problems shrink inward when hit, debris from the problem, drag pushes others, hover 40ms; item labels later. Auto-simple animation sooner (34ms frames for 3s).
+- Loading screen: bar tracks fetch (0–55%) then lines shown; waiting lines while fetching; map opens only after the last line; button under the bar; wording "ancestral homelands" and "minerals in our computer chips mined by slaves". Adding social-justice layers uses a small loader; one switch for all of them.
+- Display: Large print ("Aa" in the top bar) and Low-power mode (auto on devices with ≤2 GB memory or ≤2 cores) in Map settings → Advanced display settings (src/display.ts). Phones: panels and legends fold.
+- Forms/Apps Script: coalitions can own and edit items (fixes "UNMATCHED ORG — CCCC"); adding someone to Editors re-checks their held submissions (fixes "waiting" forever); event/project locations with no town use the host org's town, room/floor words dropped, matches outside MA ignored (Cross Campus Mixer → Pantry Brook WMA); menu items "Re-check event and project pins" and "Make key questions required"; in-person events with no location keep "needs info". New orgs from non-admins already wait in Needs Review (Turibius is an admin, so his went straight in). Tests 6–9 added.
+- Not done: voting districts, domain, beta testers, Turibius's form/sheet topic steps (seed multiple choice, Topics tab push, alias matching), feedback-form update, org→project form branching, mission-statement field for new orgs.
+
+2026-10-12 late (Claude, finishing the update on PR #54 — still not merged)
+- Geographic: voting districts with a switch each: US Congress (9), State Senate (40), State House (160), city wards (285, in 39 cities), voting precincts (2,256; shown only zoomed in to street level). Lines differ in colour and dash so they can overlap. Clicking one links to the official find-your-legislator / where-do-I-vote page; reps' names aren't shown because they change between elections. Data: MassGIS (House/Senate 2021, Congress 118th, wards/precincts 2022), simplified into public/geo/ma-*.geojson (≈2.3 MB total, loaded only when switched on); scripts/fetch-districts.sh rebuilds them.
+- Recurring events: "Monthly" with no weekday order now takes it from the stored date (Camberville: first Monday → next Nov 2); stale "next meeting Oct 5" / "(listed Oct 2, 9, 16)" text hidden.
+- Turibius's topic steps (Nathan had no preference; built now, run after merge): menu "Use Wikipedia-based topics on the forms" fills the Topics tab with his seeds + lift ≥ 8 topics (≈2,800, aliases, QID, seed), makes the 13 seeds (+ Youth serving) the form checkboxes, and matches typed "More topics" against names and aliases (exact first, fuzzy only over likely candidates for speed). "Go back to group-based topics" undoes it.
+- Topics page + details pane read live topic tags from the map data (src/topiclive.ts), so form-added topics and new orgs show without rebuilding research files; tags naming any of Turibius's topics go under their seed (public/topics-wiki-catalog.json).
+- Forms: "Short description" → "Mission statement and description" (old title still read); feedback form areas match the site's current pages; org form thank-you page links to the project/event/action forms (Forms can't branch between forms). Menu "Update the forms" applies these.
+- Left for people: domain, beta testers.
+
+2026-10-13 (Claude, Organization Info Form connections)
+- Read Aissata's "Organization Info Form (Responses)" (10 replies). All 10 orgs are already on the map. Matched the groups each named to map orgs by hand: research/connections/org-info-form-2026-10.csv (34 org-to-org links, frequency unknown → "a few times a year"; BEAT's "we consult with" → "yearly"; BostonCAN → MYCC membership). Names not on the map (MassEnergize, Trustees, AMC, T4MA, Dayenu, …) left out. Cooler Communities left out: they asked to talk first about which connections to publicize. No contact emails or names copied (they're point-person contacts, not public).
+- Apps Script menu "Add connections from the Organization Info Form" adds these to the Connections tab (skips pairs already there, either direction) and the membership; logged in Change Log. Test added.
+- Map legend: "Groups that work together (n)" row with Hide/Show, driving the same switch as Advanced settings.
+- Running doc: struck through the 58 done lines (45 in "current Map V1 Change request log", 13 in "2026-10-01 Map V1 Change request log") via the Google Docs connector. Left open: domain, beta testers, group responses (this PR).
+- Smoother edits (Nathan picked option 2 over an on-site editor; teammates worried about security and upkeep): Edit buttons now open the forms with every known answer filled in (src/prefill.ts; question ids read from the live forms by scripts/form-fields.mjs → src/forms.fields.json). This also fixed the old pre-fill: the org/host-org question ids in forms.config.ts were stale since the typed-answer switch, so groups weren't being filled in. Unknown yes/no answers, private point-person fields and text too long for a link are left blank (blank keeps the sheet's value). "Copy as a new event" button. Submitters get an email: on the map / waiting for review / approved (Script property NOTIFY_SUBMITTERS=off turns it off). Tests updated.
+- Noticed: the organization form still has the old "Organizations you work with" grid (one row per org) as well as the typed box; running the sheet menu "Switch forms to typed answers" again should remove it.
+
+2026-10-13 (Claude, finishing)
+- Merged PR #55 (Nathan: "do everything you can yourself"), pasted the new script into the sheet and ran "Add connections from the Organization Info Form".
+- Fix: the org form's old one-row-per-org "works with" grid kept coming back because "Update the forms" re-added it whenever it was missing. Now it's removed when the typed box exists. Test added.
+- Merged PR #57, pasted the script, ran "Update the forms": the org form now has only the typed "works with" box. Live data: 35 org-to-org links, BostonCAN in MYCC. Running doc: struck "add group responses" (both lines). Live site (Vercel) has the legend Hide/Show and the "Copy as a new event" button.
+
+## 2026-10-13 — Oregon map (Nathan: "a new page for Oregon … all the climate groups and coalitions, logos, events, projects")
+- Researched in-session (no sub-agents), following research/state-pilot/INSTRUCTIONS.md; a source URL on every group, coalition and item; robots.txt respected (ClaudeBot / Claude-User / anthropic-ai / *).
+- research/state-pilot/or.json → public/maps/or.json: 9 coalitions, 153 groups, 183 memberships, 62 upcoming events (13 Oct 2026 →), 25 projects, 10 actions, 88 logos.
+  - Coalitions: Oregon Conservation Network (42, from OLCV's Feb 2025 letter), Oregon Climate Action Hub (63 groups in its directory — a hub, not a formal membership), ZERO Coalition (38 non-business members), Fossil Free Eugene Coalition (7), Climate Jobs Oregon (10 union sponsors, launched Jan 2026), PCEF Coalition (7 founding partners), Oregon Ocean Alliance (8), Energize Bend (8), Oregon Just Transition Alliance (no public member list: site blocks AI readers).
+  - Events from the groups' own calendars (350PDX, Rogue Climate, Solar Oregon, LOSN, Columbia Riverkeeper, Beyond Toxics, LandWatch …) and the Climate Action Hub calendar; repeating meetings collapsed into one event with a recurrence the calendar understands.
+  - Towns from the Census 2024 gazetteer (approx). 39 groups with no Oregon address found sit at Salem with remote: true.
+- Logos: own site first (scripts/fetch-logos.py wrapped with a robots check), else the copy on the ZERO / Energize Bend partner pages. Reviewed every candidate on contact sheets; accepted 88 of 117 (rejected photos, sponsor logos, white-on-transparent logos that vanish, generic icons). Sources in research/logos/or-accepted.json.
+- Site: maps.ts (MapId "or", ?map=or, USA = MA + VT + OR), search.ts place box. Switcher lists it automatically.
+- Checked: JSON ids/edges/member counts/sources/no past events; spot-checked Columbia Riverkeeper 14 Oct info session and PCUN 29 Oct event against live pages (match). Playwright: OR 421 SVG circles / 88 logos, all tabs open (Topics: 77 of 77 records tagged), switcher shows Oregon, USA map 308 logos, MA and VT unchanged; 0 page errors.
+- Gaps (also in or.json notes): 124 groups have no last_activity; OLCV / Sierra Club / Third Act / Climate Solutions / OEC calendars blocked or empty; 29 groups have no usable logo; OJTA members; some towns inferred from names/regions (350 Washington County → Hillsboro, EOC3 → Pendleton, SOCAN → Ashland).
+
+## 2026-10-13 — Oregon map, round 2 (Nathan: "make it as awesome as the MA map") — paused mid-way at Nathan's request
+- PR #56 rebased on development_branch (log conflict only; both entries kept).
+- Data: 165 groups (+CCL chapters, Portland Youth Climate Council, BEF, SOLVE, JCWC, SOLC, EMSWCD, Ecotrust), ~86 events, 100+ projects, 46 actions (from groups' own program/campaign/volunteer pages, and Eventbrite listings whose organizer is the group), last_activity from groups' own posts/feeds/sitemaps plus directory/letter dates (blank 124 → about 21), 116 logos (second review round), youth_serving / school_club flags. 1–4 judgment scores (ej_focus etc.) deliberately left out.
+- Site: geography is now per state (src/geodata.ts; MapDef.geo / timeZone / idPrefix). Oregon gets town and county outlines, the ZIP filter, and US Congress / State Senate / State House districts (US Census 2024 files, scripts/fetch-or-geo.sh); the USA map shows both states. Calendar links use the host group's time zone (Pacific for Oregon).
+- Tested (Playwright): OR / MA / USA geographic layers load (OR 36 counties, 232 towns, districts), VT unchanged, ZIP 97401 shows Eugene events, "not an Oregon zip" for an MA zip, 0 page errors. Still to do: confirm calendar-link time zone in the item view; then more events and the final PR update.
+
+2026-10-13 afternoon (Claude, Nathan's notes)
+- Large print: group names on the strategy map are now drawn in a layer above the map: 18px (coalitions 21px), bold white on a dark pill (~18:1 contrast), never covered by bubbles, a constant size at every zoom, kept on screen. Overlapping names give way to bigger groups (coalitions first) and appear as you zoom in; the opened group and its partners always show. The top-bar button reads "Aa Large print" / "Large print: on".
+- Command room: a hit now radiates inward: two rings start on the problem's surface, swell ~7%, then close toward its centre and fade (simple mode: one ring closing inward).
+- Map settings: "Show groups that work together" switch moved right under the coalitions list. Social-justice layer coalitions start unticked; their groups still show while the layer is on.
+- Topics page: new "Topic settings" panel: Topic list (Wikipedia-based / Group-based buttons, moved from Map settings → Advanced) and a folded "What counts more" with the sliders. Circle layout: problems down the left half, solutions down the right, with a gap at the bottom for the + button.
+
+2026-10-13 evening (Claude, mobile UX pass; Nathan's scheduled task, paused 5:12–9:50 PM)
+- Audited every screen with Playwright on iPhone SE (320px), iPhone 13 (portrait + landscape) and iPad mini (portrait + landscape): horizontal scroll, cut-off text, tap targets, overlaps, panels that can't close. Final run: no sideways scroll or cut-off controls on any device, 0 page errors.
+- Fixed: top bar on phones (title wraps so the page name shows in full; "Aa Large print" fits); tablets (tabs and Large print fit on one row, map hint no longer on the search box, + in the corner off the legend); Topics on phones (picture first: count and feedback banner hidden there, view options and topic settings folded; sideways phones get most of the screen); project skills fold behind a button; opened-group bar two lines on phones ("Don't zoom in on click" stays in Map settings); calendar "Today" no longer cut; touch targets ≥40px for search boxes, selects, drawer ×, locate/edit links, Leaflet and Topics zoom, Edit/Copy buttons on confirmed items; large-print names stay under Reset map / legend / group bar; panels fold on phones held sideways too; shorter search placeholders.
+
+2026-10-13 night (Claude, Nathan: twitching on zoom-in, focus zoom level, circle on phones)
+- Measured with Playwright (node positions every 100ms). Plain zooming: no movement at all. Opening a group: nodes kept moving and reversing direction for 5+ s (up to ~140 units per 100ms) — the twitch. Causes: (1) the opened group's coalitions/partners, placed around it, were still pulled by the forces and rocked back and forth; (2) their other links dragged every member of those coalitions across the map toward the new spot; (3) groups pushed out of the way were shoved with speed and bounced off neighbours.
+- Fixes (src/graph.ts): satellites are held at their place while a group is open (draggable, stay where dropped); links between held satellites and other groups rest while open; pushed groups glide out instead of being shoved; higher damping while open, and the background stops drifting ~1.8 s after opening. Now: BostonCAN, MPF and JCAN all settle within ~2 s, 0 nodes moving back and forth after that.
+- Framing: the opened group, its moons and satellites now fit the part of the map you can see (below the group's bar, left of the details panel). Before, on a 1400px screen, the planet sat under the panel's edge and moon names and a coalition were hidden behind it.
+- Command room: narrow phones (≤600px) start in the Circle layout; a layout someone picked is kept.
+
+2026-10-18 (Claude, Nathan: "Satellites shouldn't hold still, they should be dynamic … without glitching")
+- Satellites around an open group move again: each is on a soft, damped spring to its place (jostle, make way when one is dragged, drift back; a dropped satellite springs home). The rocking came from forces fighting the springs; while a group is open: map-wide repulsion skips satellites (collision keeps their spacing), their links rest (including to the open group), row spacing now matches the collision size, the keep-out edge eases instead of snapping, and background groups that sat in the satellite area step straight out instead of ploughing through the rows.
+- Measured (Playwright, data coords every 100 ms): BostonCAN / MPF (104 satellites) / JCAN move smoothly and are still within ~2.5 s; after a drag the ring settles in ~1–2 s; whole map after opening: 0–1 nodes moving back and forth; plain zoom: no movement.
+- Running doc: copied the 10/15 meeting's action items into the current "Map V1 Change request log" tab (loading/per-page loads, MACOM name, domain ideas, point people, hosting, next steps, bubble performance, data limits, scraped data decision, fill-in-on-map form).
+- Name (10/15): "MA Climate Organization Map (MACOM)" on the loading screen, page title and top bar (MACOM where the bar is tight); VT/OR/US maps renamed the same way; forms, emails, sheet menu, SETUP and README too ("Update the forms" re-titles the live forms).
+- Performance (10/15 "cap bubble movement based on device"): calm mode on low-power, weak devices, or when the first 3 s run under ~25 fps: the map settles ~3× sooner, less collision work, no see-through blur behind panels (it was repainted every frame), no pulsing + button. Measured with 6× CPU throttling: idle 17 → 61 fps, just after loading 17 → 54 fps, opening MPF 9 → 14 fps; normal speed: opening MPF 25 → 38 fps.
+- Loading (10/15 "taking too long"): first visit 11 s → 5.4 s, return visit ~3.9 s. The map now opens from the copy saved on this device (or, if the live sheet takes over 2.5 s on a first visit, the nightly snapshot), fetches the live sheet in the background, and shows "The map has new updates · Show them" if it has anything newer. When the map is ready the loading screen skips to its last line instead of playing every queued line (that alone was ~5 s).
+- Fill in on the map, send with the Google Form (10/15): the + menu's Add event / project / action (and Update for an open organization) opens a short form on the site, the group picked from a list as you type; "Continue" opens the Google Form with every answer in, so the last step is Submit. Nothing is sent from the site; sign-in and checks unchanged. Checked: the opened link fills in name, group, date, time, online, topics (Google shows them).
+
+## 2026-10-18 — Verified events only; thinner Topics lines
+- Nathan: "make sure any events on the MA map are completely verified — a direct link to a page that mentions the event details". Fetched every event's link (122 in the live sheet), checked the page names the event and its date or schedule, and read the unclear ones by hand. 94 pass, 2 needed fixes (MassCOSH 50th: link moved; Food & Water Action committee: page lists Oct 21), 27 fail (page gone, page never names it, no link, one test entry). Results: research/events/verification-2026-10-18.csv.
+- Site: src/eventcheck.ts drops listed events and any event without a web link, on every load (live, cached, snapshot). public/data.json updated the same way.
+- Sheet: new menu "Apply the event check" hides the same rows (hidden=TRUE, logged) and applies the fixes; the event form's Link question becomes required via "Make key questions required". Test added.
+- Nathan: Topics lines "thinner like they used to be". Simple animation (auto-on for slower frames) drew the canvas at 1x, which made every line soft and thick on retina screens; it now keeps up to 1.5x. Stream widths ~30% thinner in Streams and Command room.
+
+## 2026-10-18 — Each page loads separately, preloaded when quiet
+- Nathan: "load each page separately, and pre-load them if there's a moment of no interaction". Geographic (Leaflet), Events, Organizations, Projects, Actions and Topics are now their own downloads (src/lazypage.ts, dynamic import). Startup script 529 kB → 211 kB.
+- 3–4 s after the map opens, whenever nobody has touched the page for 2 s and the browser is idle, the next page is fetched and set up, one at a time (geo, events, orgs, projects, actions, topics). Low-power devices only download the code; Save-Data skips preloading.
+- "Locate on geographic map" checks moved to src/placed.ts so the details pane works before Leaflet loads.
+- Tested in Chromium: every tab opens (≤0.3 s after preload, ~0.2 s from a cold click), preload finished ~10 s after load with no errors.
+
+## 2026-10-18 — Smooth geographic zoom; projects and actions verified too
+- Nathan: "make the geo map zoom in and out more smoothly and not in jumps". src/smoothzoom.ts replaces Leaflet's wheel zoom: every wheel/trackpad event moves a target zoom and each frame glides toward it, keeping the spot under the pointer fixed (measured drift < 0.001°); zoomend fires once at the end so pins and clusters update as before. Any zoom level is allowed (zoomSnap 0).
+- Nathan: "make sure all the other items (projects etc) are verified… on a web page not just email". Checked all 224 projects and actions (curl, then a real browser for blocked/JS pages, then web search for sites that block bots). 201 pass, 4 fixed, 19 off the map (list and reasons: research/verification/projects-actions-2026-10-18.csv). Email-only MYCC items (rep refresh, Advocacy Day prep) are off.
+- MYCC × CCCC project: real (MYCC check-in email 9/16) and now verified on a web page, the MYCC x CCCC sign-up form, which names the collaboration; its link and wording now match the form.
+- The check (src/source-check.json, src/sourcecheck.ts) now covers events, projects and actions; any item without a web link is left off. Sheet menu renamed "Apply the source check" and covers all three tabs.
+
+## 2026-10-18 — MYCC: ways to get involved
+- Nathan: "include advocacy day prep and anything MYCC has that would be helpful for ppl to know to engage" (and earlier: only things on a web page, not just email).
+- Found MYCC's public Linktree (linktr.ee/mayouthclimatecoalition): Advocacy Day RSVP (2026 form, now closed), Policy Principles, Purpose Statement, Member Interest Form.
+- Added: "Join MYCC: member interest form" (action; the form's own description of Member / Steering Committee / Supporter levels) and Advocacy Day prep (project, linked to the Linktree, which names Advocacy Day; the meet-your-legislators ask comes from the 9/16 email). MYCC's website on the map now points to the Linktree instead of Our Climate's general page.
+- Still off (no web page): the every-other-Sunday full-coalition call and the vote-caster refresh (email and private docs only).
+- source-check.json gained `add` (checked items not yet in the sheet) and `groups` (group field fixes); the sheet menu "Apply the source check" adds/updates those rows too. Test added.
+
+## 2026-10-19 — Loading-screen acknowledgement
+- Nathan: smaller text, and name MA for the first place names. Text 19 → 17 px (phones 16 → 15 px); "Natick, Wellesley, and Boston, Massachusetts". The details-pane copy reads the same paragraph, so it updates too.
+
+## 2026-10-19 — Satellites glitching on phones (big groups)
+- Nathan (screenshot: ORCAH on the Oregon map, phone): satellites glitching. Reproduced on an iPhone-sized screen: ORCAH's 63 satellites reversed direction ~50–125 times in the first 2.5 s (MA's earlier fix had been tuned on smaller groups).
+- Measured each force's push on the satellites: the pull toward the map's middle, collisions with the open group itself (its collision circle reached the first row) and collisions with the faded groups pushed to the edge all fought the satellites' springs.
+- Fix (src/graph.ts): while a group is open, satellites skip the centering pull and collide only with each other (own force); the open group takes no part in collisions. Result: 0 reversals and no drift on open (ORCAH, MPF 104, MYCC 45; phone and desktop; 1× and 4× slowed CPU).
+- Dragging a satellite still nudges its neighbours; on release it now glides all the way home (it used to stop halfway when the map's motion died out): slightly firmer spring, and the map keeps moving until every satellite is back. Also: leaving a group restores calm mode's damping instead of resetting it.
+
+## 2026-10-19 — Satellites: every force back on, tuned so they never twitch
+- Nathan: "The satellites should still have the forces acting on them, it should just be tuned well so it doesn't glitch ever" (PR #69 had switched the centering pull and outside collisions off for satellites).
+- Now every force acts on an open group's satellites, as smooth versions in memberPull (src/graph.ts): spring to their place, pull toward the map's middle (10% of usual), exact repulsion from nearby groups (7% of usual, within 360 map units, softened inside touching distance), and soft collisions with the open group, the faded groups and each other (12% of the overlap per tick, split between two satellites). d3's hard collision and approximate repulsion stay off for satellites: those were what made rings twitch.
+- The pushes fade with the map's settling (like d3's own forces), so satellites ease a little out and back to their exact places. The 1.8 s settle timer used to cut the motion and freeze satellites mid-way (a messy ring); with satellites it now only winds down to a slow glide until they're home.
+- Measured frame by frame (jit4.cjs: reversals = >120° turns; "rapid" = two within 300 ms): ORCAH (63), MPF (104), MYCC (45), phone and desktop, 1× and 4× CPU: 0 rapid reversals, at most one gentle turn per satellite, all within 3.5 px of home by 4 s. Dragging one now nudges the whole ring; on release it glides back.
+
+## 2026-10-19 — Turibius's answers on the topic report
+1. Cutoff stays at lift 8 (no change). 3. No hand-picked topics (no change).
+2. Community service is a valid seed (BSAC, Belmont High clubs). Our descriptions of those groups don't mention service, so no record tags it directly; with point 4 it now holds 4 shared topics.
+4. "Show under all": a topic reached from several seeds now sits under every one (scripts/wiki-topics.mjs, Topics tab seed column, topics-wiki-catalog.json, topiclive, battle.ts and commandroom.ts take a list of parents). 162 topics → 598 placements; 1,781 of 2,790 list topics have more than one seed.
+5. Unmatched input → aliases, plus an automatic closest match: when a typed topic matches no name/alias/spelling, the sheet script asks Wikipedia's search (top 5, cached 6 h) and takes the best result on our list (e.g. "climate superfund" → Polluter pays principle); logged on Unmatched Input as "auto-matched" for review. New menu "Add reviewed aliases from Unmatched Input": a topic name in "resolution" becomes an alias. (Wikipedia's API rate-limits this server, so the lookup runs in Apps Script only.) Tests added.
+
+## 2026-10-23 — Full update (Nathan's 10/23 feedback, 10/23 meeting notes)
+- Map settings: "Show events, projects, actions, and volunteer roles" (was "Hide …"); "Show past …" only appears while that is on. Volunteer roles get their own switch (showAllVolunteer), separate from actions; the legend's Event / Project / Action / Volunteer role rows each have a Show / Hide button like "Groups that work together" (same switches, kept in sync; also applies to an opened group's moons). Coalition forces (push coalitions apart, pull to / distance from their coalition) are their own folded section right under "Events, projects & actions"; the other two forces stay in Advanced.
+- Phones: dots turn into icons only past 4.2× zoom (was 1.9×), names past 5.5×, to save work on phones.
+- Loading screen acknowledgement: text 17 → 15 px (phones 15 → 13.5 px); "Boston, MA" (the peoples are named right after).
+- Topics (both views): Split all, the Full/Simple animation switch and the Watershed style are gone; always the light animation, drawn at ≤30 fps. Zooming splits further in (2.6× / 4.2×, was 1.7× / 2.8×) and only splits the main topic nearest the middle of the view (then its nearest sub-topic), switching as you pan. Streams: items show as dots in a ring around their own group's bubble, only for the group/topic you hover or pick (no longer along the streams at deep zoom). Command room items already ring their group.
+- Sheet script: no Wikipedia lookups when matching typed topics (Turibius's list + aliases only; test updated). A new organization needs a verified email (held, and can't be approved, without one). Point-person emails typed on the org form must be confirmed: pending Editors row + one-time link (doGet ?verify=), unless it's the submitter's own signed-in email. Tests added.
+- Social justice groups: kept out of the climate sheet in their own spreadsheet ("MA Climate Organization Map: social justice groups", Nathan's Drive, filled from public/sectors/). Web app serves it at ?feed=social-justice (menu: Link the social justice spreadsheet). The site fetches it only when a layer is switched on (falls back to public/sectors/), and the Social justice settings only appear with the secret link ?sj (?sj=off hides them). Nightly snapshot backs it up into public/sectors/. Main-map downloads unchanged.
+- From the meeting notes: legend defines "coalition" (jargon; testers unsure how big and small bubbles relate); logos load after the map is up, a few at a time when idle (initials until then).
+- Live sheet: hid the test organization and its event (hidden=TRUE, Change Log rows added).
+- Not done: full event descriptions. The details pane already shows a description in full; the sheet's descriptions are one-line summaries, and this session couldn't reach the event pages to write fuller ones. Not built or browser-tested here (npm registry blocked in this workspace); CI builds it.
+- Oct 24 (Nathan: "group-based topics less prominent"): the Topics page's Topic list buttons are gone from the top of Topic settings; a folded "Other topic list" at the bottom offers the group-based list (and the way back). The saved choice was reset once (new storage key), so everyone starts on the Wikipedia-based list.
+
+## 2026-10-24 — Topics bar, lighter Topics page; sheet script deployed
+- Sheet: pasted the merged Code.gs into the sheet's Apps Script (it was the Oct 13 version, unchanged from the repo; checked by hash), saved, deployed the web app as version 6 (it had been serving version 5 from Oct 1). Linked the social justice spreadsheet by adding the script property SJ_SHEET_ID (same as the menu item). Checked both feeds: main 8 coalitions / 150 orgs, no sector rows, test org gone; ?feed=social-justice 4 sectors / 9 groups / 43 items.
+- Nathan: Layout was the only control left because Watershed (the Style switch's only other option), Split all and Full/Simple were taken out on his Oct 23 list.
+- Topics bar (above the picture): Topics switch "Wikipedia topics" / "In the groups' own words" (renamed from Wikipedia-based / group-based), each with an ⓘ that explains how the list is made and what it's good for; "Visual effects: Less · Some · More" (perf.ts: frame rate 15/30/60 fps, particle share, canvas sharpness, ripples/sparks only on More; low-power devices start on Less; drops to Less by itself when slow); "⚙ Visual settings" reveals the views' own options (Layout; Command room's Show and Fine-tune effects). "How to read" stays visible.
+- Removed (keep it simple, Oct 24): the left Topic settings panel with the "What counts more" weights (defaults used) and the Command room's Energy switch (always split by strategy).
+
+## 2026-10-24 (later) — blank map fix, Back button, Accessibility button, Topics clean-up
+- Bug (Nathan: Topics → Map was a blank screen): reproduced in Chrome. Resizing the window while another tab shows measures the hidden map as 0×0 and set the SVG viewBox to "0 0 0 0", which draws nothing. center() now skips a 0-size measure, and a ResizeObserver re-measures when the map shows again.
+- Back button: each tab change adds a history entry (#geo, #topics…; the map has none); Back/Forward switch tabs, and a link with #events etc. opens that tab.
+- Map settings: new section "Activity around each group" (name to be chosen) above Bubble sizes, holding the dots switch ("Show the dots around each group"), which kinds, "Include past ones too", and "Zoom in on a group when you click it", with a one-line explanation at the top. Legend: the Show/Hide buttons on the event/project/action/volunteer rows are gone.
+- Top bar: "Aa Large print" replaced by an "Aa Accessibility" button with a small panel: Large print and Reduce motion (the old low-power mode, renamed here and in Advanced).
+- Topics: each view's Layout switch moved up to the Topics bar; the topic-list ⓘ is now a hover/focus/tap info bubble; "energy" numbers replaced by plain counts (items = events, projects, actions, mission statements); the "301 of 464 records tagged" line removed.
+
+## 2026-10-24 (night) — Nathan's follow-ups
+- Accessibility button: its panel opened but was clipped by the top bar (overflow: auto). The panel now lives on <body>, placed under the button. Reduce motion now also stops the Topics comets and seeds (a still picture), like the system reduced-motion setting.
+- Map settings: reverted to the earlier layout and wording ("Show events, projects, actions, and volunteer roles" + past at the top; "Events, projects & actions" section). Order now: Events, projects & actions → Bubble sizes → Coalition forces. Bubble sizes rewritten to be clearer (lead line; "All bubbles", "Coalitions with more members", "Busier groups", each slider says what left/right do). Section name still to choose.
+- Topic list renamed "Topics named by groups".
+- Topics: no "Visual settings" button; each view's options (Layout; Command room's Show and Fine-tune effects) sit on the Topics bar. "More" is the default effects level again (saved key bumped to v2). Slow devices: instead of dropping to Less, first a slightly softer canvas (1.5×), then 30 fps, then "Some"; particles, trails and hover paths stay. Hover paths now fire at every level.
+- Seeds: history check — seed speed has been 75 px/s since Oct 5 (×1.45 slower flight since Oct 7), so speed hasn't changed; what was lost on Oct 23 was the pollen trail and twinkle (hidden in the always-simple mode). "More" by default brings them back; hover seeds now drift at the same calmer speed.
+- Command room hits: a glowing shockwave collapses from 1.9× the radius into the centre, ripples follow inward from the surface, and a flash where they meet; the problem shrinks sharply (up to ~34%) and regrows slowly with an eased curve (~1.6 s). Lighter levels keep the shockwave with one ripple.
+- Oct 24 night (Nathan): the group you click is drawn bigger when the map zooms in (planet radius 78 → 115 map units; at least 1.6× its usual size, up to 6×).
+- Oct 25 (Nathan): hover paths fire only on the "More" effects level again (they are the biggest compute cost).
+- Oct 25 (Nathan): "Bubble sizes" section renamed "Bubble size weighting".
+
+## 2026-10-26 — drag quiet, white logos, bigger opened group + sliders
+- Dragging a node (moved > 3 px): the hover tooltip, highlight and item card close and stay closed until 300 ms after you let go, so nothing pops up over the nodes it passes or on release.
+- Logos: scanned all 336 map logos for white/blank images on the white bubble. Three were white artwork on transparency: 350 Mass Cape Cod, Mass Interfaith Power & Light, Community Labor United. Recoloured their white to dark slate (#1e293b), keeping the shapes and edges. Others pass (SVGs checked too).
+- Opened group: 2.5× bigger than Oct 24 (planet radius 115 → 290; at least 2.5×, up to 16× its usual size). New sliders under Bubble size weighting → "When you open a group": Opened group size, Room around its activity, Space between partner rows (0.4–1.6, middle = default); changes redraw an open group straight away.
+- Oct 27 (Nathan: "take away that load new data note, why does it not just show automatically?"): the note is gone. The map waits up to 3 s for the live sheet even when a saved copy exists, so the newest data usually shows straight away; if the sheet answers later, the page reloads by itself (quick-start card) as long as nobody has touched it yet, otherwise the newer data (already saved) shows on the next visit.
+## 2026-10-13 — Oregon map, round 2 finish (resumed 4:41 PM as Nathan asked; PR #56 had been merged meanwhile, so this is a new branch)
+- Checked calendar links in the event details view (Playwright): Oregon events use America/Los_Angeles on ?map=or and ?map=us (Columbia Riverkeeper 14 Oct, 6:00 PM local); Massachusetts events stay America/New_York.
+- +3 events from Eventbrite pages whose organizer is the group itself (1000 Friends Affiliate Partner Conference, 2 Community Energy Project workshops). Matching by search query alone was too noisy (craft nights etc.), so only organizer-name matches were kept.
+- or.json notes rewritten (they still had round-1 counts and gaps): now 9 coalitions, 165 groups, 183 memberships, 89 upcoming events, 103 projects, 46 actions, 116 logos. Still open: 58 of 174 without a logo, 33 groups without a last-activity date.
+- Checked: ids/edges/member counts/sources/links/coords/no past events/no research notes in public text (0 problems); spot-checked ONDA Hootenanny (19 Nov, 5–7 PM, KEEN Garage) and LOSN Electrify LO against live pages; npm run build, test:apps-script, check:apps-script; Playwright OR / MA / VT / USA with all six tabs: 0 page errors, 0 missing logos/geo/map files.
+
+## 2026-10-28 — Oregon map: money & opposition layer (Nathan: "upgrade the oregon climate map with financial flows and inclusion of oppositional groups"; chose lobbying + political money first, groups on the record against bills, a layer off by default)
+- New switch in Map settings → "Money & opposition" (Oregon only, off by default; src/money.ts). When on: 14 groups on the public record against climate bills (red ring; each with dated, linked stances: OLIS Oppose testimony, CPP court challenge, Eugene gas-ban referendum), an "Oregon Legislature" hub, and money arrows (thicker = more): 23 lobbying flows (OGEC public records, 2021–2025, climate groups and opponents alike) and 1 political flow (NW Natural → Eugene Residents for Energy Choice, about $950K, DeSmog citing state filings).
+- Data: research/money/or/ (OGEC lobbying CSV, OLIS oppose-testimony CSV, opposition.json); scripts/build-money.mjs → public/money/or.json. No contact names or individuals. Solar/renewable firms and cities that opposed details of bills are left out.
+- Not done: ORESTAR (campaign contributions) blocks automated access, so political money is limited to reported flows; build-money.mjs has a hook for a browser export. Foundation grants and the wider industry side are next.
+- Layout: the legislature sits just past the climate groups (right on wide screens, below on phones), opposing groups in an arc beyond it; first view always includes them. Layer groups have no edit links and are left out of suggested connections.
+- Checked: all 23 lobbying totals recomputed from the CSV (0 mismatches); OPB, Corvallis Advocate and DeSmog sources re-read; build, test:apps-script, check:apps-script; Playwright desktop + phone with layer on and off, OBI details pane; 0 page errors.
+
+## 2026-10-28 — Land acknowledgement wording
+- index.html: "the lands and waters they have cared for countless generations" → "…cared for over countless generations" (Nathan's wording). Build passes.
+
+## 2026-10-28 — Logos for the Oregon opposition groups
+- 12 of 14 opposition groups now have logos (public/logos/or_opp_*), fetched from their own sites with the fetch-logos.mjs logic (Google's icon service for OBI, NFIB and NW Natural, whose sites gave no usable logo). Timber Unity and Eugene Residents for Energy Choice have no website, so they keep their initials. Paths added to research/money/or/opposition.json; public/money/or.json rebuilt.
+- Sector-layer bubbles with a logo now get a white fill behind it (the tinted fill was washing logos out); the coloured dashed ring stays.
+- Checked: contact sheet of all 12, Playwright desktop + phone with the layer on (0 page errors), build + Apps Script tests.
+
+## 2026-10-28 — Oregon: bill-level detail for the money & opposition layer (Nathan: "higher fidelity data about the money flows and legislation")
+- 13 key climate & energy bills, 2021–2025 (HB 2021, 2475, 2842, 2062; SB 1536; HB 3409, 3630, SB 530; HB 4080; SB 1187, HB 3546, 3336, SB 688). scripts/fetch-olis-bills.mjs pulls each bill's summary, outcome and testimony from OLIS. Only organizations are kept, matched by research/money/or/olis-org-aliases.json (map groups, opposition groups, ~150 other named orgs). OLIS's "On Behalf of" field sometimes holds a person's name, so raw text is never stored; unmatched filings are only counted.
+- Each bill shows orgs for and against, and what the named groups on each side spent lobbying that year (OGEC, all issues; each lobbying client counted once per side). Opening the Oregon Legislature bubble shows all bills; each group's details show its testimony. Lobbying now has a quarterly bar chart (session spikes are visible).
+- Data fix: League of Oregon Cities reported $4,876,349 for 2022 Q3 (~60× its usual quarter); treated as a filing error and left out (research/money/or/ogec-corrections.json). It wasn't in any earlier total.
+- Corrected one stance: AWS filed Neutral on HB 3546 in the House (3/6/2025) and Oppose in the Senate (4/30/2025); both now show.
+- Still blocked: ORESTAR (campaign contributions) shows a security block page to automated browsers; not worked around.
+- Checked: no personal names in the stored CSV; desktop + phone screenshots of the legislature and OEC details; build + Apps Script tests.
+
+## 2026-10-28 — Money layer look (Nathan: green flows for good groups, red for bad; red glowing halo; legislature not a circle)
+- Lobbying arrows are green from climate groups and red from opposing groups (political spending stays dashed). Arrowheads match.
+- Opposing groups have a glowing red halo (solid ring + drop-shadow glow) instead of the dashed sector ring; nodes now carry a sector-<id> class.
+- The Oregon Legislature is drawn as a gold capitol icon (its circle stays as an invisible click target). Legend updated with all of these.
+- Checked: desktop + phone screenshots, build, Apps Script tests.
+
+## 2026-10-28 — Oregon money layer: 2026 data (Nathan: "can you add 2026 data?")
+- Lobbying: scripts/fetch-ogec-lobbying.mjs (new; the OGEC records fetch that was a one-off before) pulled 2026 (Q1–Q3 reported so far). Re-pulling 2025 reproduced the earlier file exactly, so the dedupe rule is unchanged. File renamed ogec-lobbying.csv; the period ("2021–2026, through 2026 Q3") is now worked out from the data and shown in the map.
+- Bills: +6 from the 2026 short session (SB 1541 Climate Resilience Superfund, HB 4031, HB 4076, SB 1582, SB 1588, HB 4100), picked from ODOE's and Climate Solutions' session recaps; outcomes from OLIS. 19 bills in all. A few more 2026 organizations added to the alias list.
+- Added a note that "against" isn't always anti-climate (e.g. Multnomah County opposed HB 4100 because its spill insurance wasn't strong enough; checked in their testimony).
+- Checked: build, Apps Script tests, Playwright screenshots (OEC details shows 2026 testimony and 2026 quarters).
+- Oct 28 (Nathan): "MACOM" replaced: phones show "MA Climate Orgs" (keeps "orgs" so it is not read as a climate-data map, per 10/15); title and loading screen read "MA Climate Organization Map". Accessibility button made compact: a universal-access icon (word only on wide screens), a dot when a setting is on, a × in the panel, and the setting names are tappable too.
+- Oct 29 (Nathan): removed the "Switch map…" menu item (other maps stay a quiet extra via long-press/right-click on the title); page menu grouped: Map, Geographic, Topics, then a "Directories" heading (divider on wide screens) with Organizations, Events, Projects, Actions; phones show the full title on up to two lines, and only the narrowest (≤350px) use the short name, now "MA Climate Map".
+- Oct 29 (Nathan): "Reset map" is now "Reset view", at the bottom middle of the map next to the legend. Fixed a stray } in styles.css that broke the build on this branch.
+- Oct 29 (Nathan): one section, "How spread out the map is" (was "Coalition forces"), with a plain lead line, holds every push/pull: Pull toward the middle and Space between organizations (moved out of Advanced), Space between coalitions, How tightly members cluster, How far members sit from their coalition, and the opened group's Room around its activity / Space between partner rows. Bubble size weighting ends with Opened group, then All bubbles last.
+- Oct 29 (Nathan): Bubble size weighting: Members, Events, Projects, Actions & volunteer roles are one group, "Bigger bubbles for groups with more…" ("slide right to make the groups with more of each one stand out"); then Opened group, then All bubbles.
+- Oct 29 (Nathan): the Coalitions list is a folding section like the others (remembered per browser); inside, "Show: All / None" and the "Groups that work together" switch come first, then the list.
+- Oct 29 (Nathan): All / None buttons for the coalitions list removed.
+- Oct 29 (Nathan, clarifying "the last two"): the "Show events, projects, actions, and volunteer roles" and "Show past…" switches now open the "Events, projects & actions" section; "Groups that work together" is back under the coalitions list.
+
+## 2026-10-29 — Land acknowledgement: Wellesley → Cambridge
+- index.html: "designed in Natick, Cambridge, and Boston, MA" (Nathan's request). Build passes.
+- Also: the domain is live (nkessel.github.io/openthink_mycc redirects to ma.climateorgmap.earth), so the MYCC map project link (source check + data.json) and SETUP.md now use https://ma.climateorgmap.earth/.
+- Oct 29 (Nathan: satellites way too small when you open an org): satellites (its coalitions and partner groups, or a coalition's members) are drawn 1.8× bigger by default, with spacing to match; new slider Bubble size weighting → "Its partner groups" (0.6–3×), right under "Opened group".
+- Oct 29 (checked in the browser): partner orgs were still ~37 px next to a ~390 px opened group. Partner groups are no longer drawn at 0.75×, and the default "Its partner groups" size is 2.5× (about 70 px there).
+- Oct 29: partner groups default 4× (slider 1–7×); coalitions around an opened org are capped at 80% of the opened group so they never outgrow it.
+
+## 2026-10-29 — one-way vs. mutual org links; development note (branch claude/one-way-links)
+- Audited the Connections tab against the Organization Info Form responses: all 34 rows match; removed a test row, cleared made-up frequencies (the form never asked), added MOF's Springfield Climate Justice Coalition membership.
+- Org links now keep direction (reported_by). Named by both groups = solid, brighter, thicker line; named by one = dotted line with an arrow to the group named. Legend rows added.
+- Code.gs: the connections import keeps one row per direction and leaves frequency blank when unknown; buildDataFile_ accepts a blank frequency (weight 1). Tests updated.
+- Added a note at the top of the map ("This map is currently in development…") linking "please let us know" to the feedback form; × hides it for the visit.

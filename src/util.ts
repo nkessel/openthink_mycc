@@ -1,3 +1,4 @@
+import { recurrenceLabel } from "./recurrence";
 import type { Coalition, Organization } from "./types";
 
 export function initials(name: string, maxChars = 3): string {
@@ -16,6 +17,7 @@ export function initials(name: string, maxChars = 3): string {
 export function relTime(iso: string): string {
   const now = Date.now();
   const t = new Date(iso).getTime();
+  if (!iso || isNaN(t)) return "unknown"; // no dated activity found
   const diff = now - t;
   const s = Math.floor(diff / 1000);
   if (s < 60) return "just now";
@@ -40,6 +42,24 @@ export function fmtDate(iso: string): string {
   });
 }
 
+/** "Jun 5, 5:00 PM – 7:00 PM" when an end time is known. */
+export function hasTime(iso: string): boolean {
+  return iso.length > 10;
+}
+
+/** Date-only strings ("2026-10-12") parse as UTC and can slip a day; parse them as local dates. */
+export function parseEventDate(iso: string): Date {
+  return new Date(hasTime(iso) ? iso : `${iso}T00:00:00`);
+}
+
+export function fmtEventTime(start: string, end?: string, recurrence?: string): string {
+  if (recurrence) return `${recurrenceLabel(recurrence)} · next ${hasTime(start) ? fmtDateTime(start) : fmtDate(`${start}T12:00:00`)}`;
+  if (!hasTime(start)) return `${fmtDate(`${start}T12:00:00`)} · time not posted`;
+  if (!end) return fmtDateTime(start);
+  const t = new Date(end).toLocaleString("en-US", { hour: "numeric", minute: "2-digit" });
+  return `${fmtDateTime(start)} – ${t}`;
+}
+
 export function fmtDateTime(iso: string): string {
   const d = new Date(iso);
   return d.toLocaleString("en-US", {
@@ -55,11 +75,25 @@ export function coalitionRadius(c: Coalition): number {
   return 26 + Math.sqrt(c.member_count) * 7;
 }
 
-export function orgRadius(_o: Organization): number {
-  return 14;
+export function orgRadius(o: Organization): number {
+  if (o.sector === "money-hub") return 34; // the legislature (money layer): every lobbying arrow lands here
+  return 20; // was 14; bigger so logos read at the default zoom
+}
+
+/** An org can have several types, stored comma-separated ("501c3, faith_org"). */
+export function typeList(t: string | undefined): string[] {
+  return (t || "").split(",").map((x) => x.trim()).filter(Boolean);
+}
+
+/** The type label for display next to a name: "" when the type isn't known, so no "Unknown" shows. */
+export function shownType(t: string): string {
+  const l = typeLabel(t);
+  return /^unknown$/i.test(l) ? "" : l;
 }
 
 export function typeLabel(t: string): string {
+  const parts = typeList(t);
+  if (parts.length > 1) return parts.map(typeLabel).join(" + ");
   const map: Record<string, string> = {
     "501c3": "501(c)(3)",
     "501c4": "501(c)(4)",
@@ -76,5 +110,6 @@ export function typeLabel(t: string): string {
     university: "University",
     unknown: "Unknown",
   };
-  return map[t] || t;
+  // Write-in types from the form arrive as slugs ("mutual_aid") → "Mutual aid".
+  return map[t] || (t ? t.charAt(0).toUpperCase() + t.slice(1).replace(/_/g, " ") : t);
 }

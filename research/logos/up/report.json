@@ -1,0 +1,1149 @@
+{
+ "mpf": {
+  "from": [
+   256,
+   128
+  ],
+  "to": [
+   640,
+   320
+  ],
+  "kind": "logo-img",
+  "url": "https://www.mapowerforward.com/wp-content/uploads/2026/09/MPF_Logo-Tagline_White_on_Blue-page-001-1024x512.jpg",
+  "accepted": true
+ },
+ "crs": {
+  "from": [
+   256,
+   256
+  ],
+  "to": [
+   640,
+   237
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/661f4a3f76c077227c70ab0b/72e32af6-1d7a-47f6-abd6-54694cdde779/green+energy+cosumer+logo.png",
+  "accepted": false
+ },
+ "students_for_environmental_action_at_weston_high_school": {
+  "from": [
+   251,
+   256
+  ],
+  "to": [
+   640,
+   244
+  ],
+  "kind": "logo-img",
+  "url": "https://www.westonschools.org/high/wp-content/themes/weston-public-schools/assets/images/logos/weston-high-school.png",
+  "accepted": false
+ },
+ "lorax_at_milton_academy": {
+  "from": [
+   256,
+   247
+  ],
+  "to": [
+   625,
+   625
+  ],
+  "kind": "icon-0",
+  "url": "https://resources.finalsite.net/images/v1778182764/miltonedu/ubb0ylxj5wrfu05i92yx/Shield_Favicon1.png",
+  "accepted": false
+ },
+ "four_rivers_climate_club": {
+  "from": [
+   235,
+   256
+  ],
+  "to": [
+   439,
+   593
+  ],
+  "kind": "logo-img",
+  "url": "https://fourriverscharter.org/wp-content/uploads/2024/08/FRLogo.png",
+  "accepted": false
+ },
+ "masscosh_tlaw_climate_change_and_environmental_justice_team": {
+  "from": [
+   204,
+   256
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://cdn.prod.website-files.com/69f1350e3d459d11eacec686/6aabfc945c6c4c242b0be190_Masscosh%20Logo%20White%20Transparent.png",
+  "accepted": false
+ },
+ "clean_water_action": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   640,
+   131
+  ],
+  "kind": "logo-img",
+  "url": "https://cleanwater.org/themes/custom/clean_water_theme/logo.png",
+  "accepted": false
+ },
+ "youth_action_collaborative_alumni_node_at_clean_water_action": {
+  "from": [
+   256,
+   52
+  ],
+  "to": [
+   640,
+   131
+  ],
+  "kind": "logo-img",
+  "url": "https://cleanwater.org/themes/custom/clean_water_theme/logo.png",
+  "accepted": true
+ },
+ "sustainable_sharon_coalition_youth": {
+  "from": [
+   256,
+   104
+  ],
+  "to": [
+   640,
+   259
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62005882aa12560e4865b66d/3ed147ed-0c7d-4a85-a687-318a48590a63/2022-Horizontal-SSC-logo-trans+1200dpi.png?format=1500w",
+  "accepted": true
+ },
+ "jewish_climate_action_network": {
+  "from": [
+   160,
+   90
+  ],
+  "to": [
+   600,
+   338
+  ],
+  "kind": "logo-img",
+  "url": "https://massenergize-wp-media.s3.us-east-2.amazonaws.com/sites/21/cropped-JCAN-MA-Logo-2021.jpeg",
+  "accepted": true
+ },
+ "massachusetts_interfaith_power_and_light": {
+  "from": [
+   160,
+   43
+  ],
+  "to": [
+   400,
+   99
+  ],
+  "kind": "logo-img",
+  "url": "https://cdn.prod.website-files.com/69036055d5c79f6f32b5ee68/699f70dd895f1e511fa81ead_01MainLogo-1Color-White-MassIPL.svg",
+  "accepted": false
+ },
+ "sunrise_amherst": {
+  "from": [
+   256,
+   73
+  ],
+  "to": [
+   512,
+   512
+  ],
+  "kind": "icon-512",
+  "url": "https://hubs.sunrisemovement.org/icons/icon-512x512.png?v=57a4d2d3d51902d75527a1134f5c77f2",
+  "accepted": false
+ },
+ "salem_alliance_for_the_environment": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://i0.wp.com/salemsafe.org/wp-content/uploads/2025/08/white-safe-logo-transp-6.png?fit=1200%2C1200&ssl=1",
+  "accepted": true
+ },
+ "boston_catholic_climate_movement": {
+  "from": [
+   160,
+   50
+  ],
+  "to": [
+   474,
+   150
+  ],
+  "kind": "logo-img",
+  "url": "https://i0.wp.com/bostoncatholicclimate.org/wp-content/uploads/2025/05/OIP.jpg?fit=474%2C150&ssl=1",
+  "accepted": true
+ },
+ "boston_climate_action_network": {
+  "from": [
+   112,
+   112
+  ],
+  "to": [
+   640,
+   49
+  ],
+  "kind": "logo-img",
+  "url": "https://bostonclimateaction.org/wp-content/uploads/2024/09/new-funder-logos-1.png",
+  "accepted": false
+ },
+ "cero_cooperative": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   640,
+   537
+  ],
+  "kind": "logo-img",
+  "url": "https://www.cero.coop/Images_Current/Home%20Page/Partners/partners%20-15-.jpg",
+  "accepted": false
+ },
+ "charles_river_watershed_association": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   640,
+   280
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62f29bd77847013a6cd07cce/9cd40f43-51d8-4bf7-a93b-d3c2a4123e62/CRWALogo_White.png",
+  "accepted": false
+ },
+ "citizens_awareness_network": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   500,
+   121
+  ],
+  "kind": "logo-img",
+  "url": "https://www.nukebusters.org/images/CCDSE Logo-500x121-1.jpg",
+  "accepted": false
+ },
+ "the_climate_reality_project_massachusetts_southcoast": "site error SSLError",
+ "co_op_power_inc": {
+  "from": [
+   160,
+   45
+  ],
+  "to": [
+   640,
+   183
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/55fa115ee4b01a082ee73da3/1446586396976-7RFXRCK5D7BB16XZDP99/CoopPowerLOGO.jpg?format=1500w",
+  "accepted": true
+ },
+ "community_labor_united": {
+  "from": [
+   160,
+   120
+  ],
+  "to": [
+   640,
+   314
+  ],
+  "kind": "logo-img",
+  "url": "https://www.massclu.org/wp-content/uploads/2024/10/gjc_environmental-justice_logo-4a.png",
+  "accepted": false
+ },
+ "faith_science_alliance": "site error ConnectionError",
+ "first_parish_in_concord_environmental_team": {
+  "from": [
+   160,
+   36
+  ],
+  "to": [
+   640,
+   505
+  ],
+  "kind": "logo-img",
+  "url": "https://firstparish.org/wp/wp-content/themes/uua-congregation/assets/images/logo-welcoming-congregation.png",
+  "accepted": false
+ },
+ "greater_boston_physicians_for_social_responsibility": {
+  "from": [
+   160,
+   30
+  ],
+  "to": [
+   640,
+   249
+  ],
+  "kind": "logo-img",
+  "url": "https://gbpsr.org/wp-content/uploads/sites/3/2022/02/psr_white_logo.png",
+  "accepted": false
+ },
+ "green_newton": {
+  "from": [
+   159,
+   132
+  ],
+  "to": [
+   305,
+   56
+  ],
+  "kind": "logo-img",
+  "url": "https://greennewton.org/wp-content/uploads/2025/10/Green-Newton-Logo-Footer.png",
+  "accepted": false
+ },
+ "islamic_society_of_boston_cultural_center": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   640,
+   124
+  ],
+  "kind": "logo-img",
+  "url": "https://isbcc.org/wp-content/uploads/2021/07/ISB-Logo-2021-v.2.png",
+  "accepted": false
+ },
+ "mass_audubon": {
+  "from": [
+   160,
+   33
+  ],
+  "to": [
+   400,
+   85
+  ],
+  "kind": "logo-img",
+  "url": "https://www.massaudubon.org/build/images/globals/logo.svg",
+  "accepted": true
+ },
+ "massachusetts_peace_action": {
+  "from": [
+   160,
+   30
+  ],
+  "to": [
+   400,
+   400
+  ],
+  "kind": "logo-img",
+  "url": "https://masspeaceaction.org/wp-content/plugins/accessibility-onetap/assets/images/admin/Original_Logo_Icon.svg",
+  "accepted": false
+ },
+ "mount_grace_land_conservation_trust": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   400,
+   89
+  ],
+  "kind": "logo-img",
+  "url": "https://www.mountgrace.org/_assets/90f0f17375ff54ccc7e56d67fc18213b/Images/logo-mountgrace.svg?1790970947",
+  "accepted": false
+ },
+ "october_engineering_llc": {
+  "from": [
+   160,
+   156
+  ],
+  "to": [
+   464,
+   453
+  ],
+  "kind": "logo-img",
+  "url": "https://octoberengineering.com/assets/img/logo6.png",
+  "accepted": true
+ },
+ "passive_house_massachusetts": {
+  "from": [
+   160,
+   154
+  ],
+  "to": [
+   640,
+   135
+  ],
+  "kind": "logo-img",
+  "url": "https://i0.wp.com/phmass.org/wp-content/uploads/2024/10/phmass_logo.png?fit=1782%2C377&ssl=1",
+  "accepted": false
+ },
+ "progressive_democrats_of_mass": {
+  "from": [
+   160,
+   54
+  ],
+  "to": [
+   640,
+   216
+  ],
+  "kind": "logo-img",
+  "url": "https://www.progressivedemsofmass.org/wp-content/uploads/2023/10/BetterPDMBanner.png",
+  "accepted": true
+ },
+ "quincy_climate_action_network": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   323,
+   119
+  ],
+  "kind": "logo-img",
+  "url": "https://quincycan.files.wordpress.com/2020/01/gecalogo.png",
+  "accepted": false
+ },
+ "resonant_energy": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   640,
+   228
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/56fbfd2d37013b142d331d72/1591992523833-OB85O6JKQ8LTD3TLRDF8/web+footer+logo+6.png",
+  "accepted": false
+ },
+ "restore_the_north_woods": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   640,
+   131
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5a230104914e6b1c9b2dfddb/1533057900215-C1NCB4VSUECDGN1KR62T/R+logo+stacked+text+black+header+match+copy.jpg?format=1500w",
+  "accepted": false
+ },
+ "south_coast_neighbors_united": {
+  "from": [
+   125,
+   126
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "icon-0",
+  "url": "https://actionnetwork.org/images/favicon.png",
+  "accepted": false
+ },
+ "sunwealth": {
+  "from": [
+   256,
+   73
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/59552faaff7c50fb8b38c931/0dd82bde-57b5-4c0d-9555-62df25ebd623/Sebane+2024+Award+logo.png",
+  "accepted": false
+ },
+ "sustainable_sharon_coalition": {
+  "from": [
+   256,
+   104
+  ],
+  "to": [
+   640,
+   259
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62005882aa12560e4865b66d/3ed147ed-0c7d-4a85-a687-318a48590a63/2022-Horizontal-SSC-logo-trans+1200dpi.png?format=1500w",
+  "accepted": true
+ },
+ "sustainable_sudbury": {
+  "from": [
+   150,
+   150
+  ],
+  "to": [
+   596,
+   597
+  ],
+  "kind": "og-image",
+  "url": "https://lh7-us.googleusercontent.com/sitesv-images-rt/AMxu72s1VaFFbag1e9u8tQ2iYdZskVmw9cJRToIzeINFVcql6QnjIvxKwjHRjFwDuuUZksDx6bOJYiys8O9g4PKb4iBWVsFkZvp1vmF9AmsjH6vI5WdPeLqJknAmWoQU-nHab8VfAztSxCu3TlD54GroiAdbz88ZmiahiTG2XhQNGrVA7-Ffec3BFOIQQD2Z=w16383",
+  "accepted": true
+ },
+ "vineyard_power_cooperative": {
+  "from": [
+   256,
+   34
+  ],
+  "to": [
+   640,
+   86
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/61f06ae063ffc57c9538fc95/798ae1fb-8dba-4e56-994c-4517a16076ee/VP_Logo_Revised_3.png?format=1500w",
+  "accepted": true
+ },
+ "watertown_citizens_for_peace_justice_and_the_environment": {
+  "from": [
+   256,
+   68
+  ],
+  "to": [
+   640,
+   224
+  ],
+  "kind": "logo-img",
+  "url": "https://watertowncitizens.org/wp-content/uploads/2015/02/FriendsofBeesLogo_header.jpg",
+  "accepted": false
+ },
+ "neighbor_to_neighbor_massachusetts": {
+  "from": [
+   225,
+   224
+  ],
+  "to": [
+   640,
+   426
+  ],
+  "kind": "og-image",
+  "url": "https://n2nma.org/wp-content/uploads/2015/10/CarlosHugforweb.png",
+  "accepted": false
+ },
+ "aft_mass": {
+  "from": [
+   256,
+   38
+  ],
+  "to": [
+   640,
+   96
+  ],
+  "kind": "logo-img",
+  "url": "https://ma.aft.org/sites/default/files/media/images/2026/aft-ma.banner.png",
+  "accepted": true
+ },
+ "alliance_for_business_leadership": "site error ProxyError",
+ "center_for_green_schools_at_us_gbc": {
+  "from": [
+   256,
+   36
+  ],
+  "to": [
+   640,
+   91
+  ],
+  "kind": "logo-img",
+  "url": "https://centerforgreenschools.org/sites/default/files/2022-11/cfgs-logo.png",
+  "accepted": true
+ },
+ "chinese_progressive_association": {
+  "from": [
+   256,
+   103
+  ],
+  "to": [
+   640,
+   256
+  ],
+  "kind": "logo-img",
+  "url": "https://cpaboston.org/wp-content/uploads/2025/10/CPA-Logo-Dark-Red.png",
+  "accepted": true
+ },
+ "citizens_climate_lobby": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   401,
+   59
+  ],
+  "kind": "logo-img",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCL-Logo-H2.png",
+  "accepted": false
+ },
+ "citizens_climate_lobby_boston": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   480,
+   480
+  ],
+  "kind": "logo-img",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2018/06/Instagram-Icon_med.png",
+  "accepted": false
+ },
+ "citizens_climate_lobby_south_shore_cape_and_islands": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   401,
+   59
+  ],
+  "kind": "logo-img",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2014/10/CCL-Logo-H2.png",
+  "accepted": false
+ },
+ "citizens_climate_lobby_north_shore_chapter": {
+  "from": [
+   160,
+   160
+  ],
+  "to": [
+   480,
+   480
+  ],
+  "kind": "logo-img",
+  "url": "https://citizensclimatelobby.org/wp-content/uploads/2018/06/Instagram-Icon_med.png",
+  "accepted": false
+ },
+ "collaborative_for_high_performance_schools": {
+  "from": [
+   256,
+   198
+  ],
+  "to": [
+   640,
+   495
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/642de662bb454d02a92440d4/de7025fb-372e-4902-b4c9-7591a5e53712/CHPS-updated-logo+USGBC.jpg?format=1500w",
+  "accepted": true
+ },
+ "cooler_communities": {
+  "from": [
+   256,
+   256
+  ],
+  "to": [
+   520,
+   171
+  ],
+  "kind": "logo-img",
+  "url": "https://coolercommunities.org/wp-content/uploads/logo.jpg",
+  "accepted": false
+ },
+ "green_weymouth": {
+  "from": [
+   195,
+   256
+  ],
+  "to": [
+   410,
+   539
+  ],
+  "kind": "logo-img",
+  "url": "https://greenweymouth.com/wp-content/uploads/2017/10/cropped-green-weymouth-logo4.png",
+  "accepted": true
+ },
+ "ma_senior_action": {
+  "from": [
+   256,
+   151
+  ],
+  "to": [
+   640,
+   377
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/55ae9518e4b0a617842e0104/1438190195431-W38AGWU05SG2UFVZWQDO/MSAC_LOGO.jpg?format=1500w",
+  "accepted": true
+ },
+ "mass_facilities_administrators_association": {
+  "from": [
+   256,
+   128
+  ],
+  "to": [
+   640,
+   283
+  ],
+  "kind": "logo-img",
+  "url": "https://avatar-development.com/mfaa/wp-content/uploads/2024/02/MIIA_Logo_12-20.png",
+  "accepted": false
+ },
+ "massachusetts_jobs_with_justice": {
+  "from": [
+   256,
+   64
+  ],
+  "to": [
+   640,
+   160
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5930ccefbe6594842fe981ce/1580498648230-1XWVPWC85WDG4ZOV0F76/2.png",
+  "accepted": true
+ },
+ "metropolitan_area_planning_council": {
+  "from": [
+   180,
+   180
+  ],
+  "to": [
+   400,
+   198
+  ],
+  "kind": "logo-img",
+  "url": "https://www.mapc.org/wp-content/themes/mapc/assets/images/mapc-logo.svg",
+  "accepted": false
+ },
+ "mtacan": {
+  "from": [
+   180,
+   180
+  ],
+  "to": [
+   400,
+   153
+  ],
+  "kind": "logo-img",
+  "url": "https://www.massteacher.org/sites/mta/files/mta_logo_mobile.svg",
+  "accepted": false
+ },
+ "pioneer_valley_asthma_coalition": {
+  "from": [
+   256,
+   248
+  ],
+  "to": [
+   640,
+   621
+  ],
+  "kind": "logo-img",
+  "url": "https://irp.cdn-website.com/4788b297/dms3rep/multi/opt/PVAC_Logo.354120108_std-1920w.jpg",
+  "accepted": true
+ },
+ "sustainable_business_network_of_massachusetts": {
+  "from": [
+   100,
+   104
+  ],
+  "to": [
+   640,
+   159
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5faab8eb29e0595fb9fbd867/4dc6b828-c009-454b-bc10-688686c06d02/Vanguard+Renewables+NEW+logo.png",
+  "accepted": false
+ },
+ "vt_vnrc": {
+  "from": [
+   400,
+   194
+  ],
+  "to": [
+   640,
+   310
+  ],
+  "kind": "logo-img",
+  "url": "https://vnrc.org/wp-content/themes/vnrc/assets/images/logo-green.png",
+  "accepted": true
+ },
+ "vt_vpirg": {
+  "from": [
+   180,
+   137
+  ],
+  "to": [
+   640,
+   427
+  ],
+  "kind": "og-image",
+  "url": "https://www.vpirg.org/wp-content/uploads/2026/07/BHUD0467-scaled.jpg",
+  "accepted": false
+ },
+ "vt_vcv": {
+  "from": [
+   400,
+   211
+  ],
+  "to": [
+   640,
+   210
+  ],
+  "kind": "logo-img",
+  "url": "https://vermontconservationvoters.com/wp-content/uploads/2023/09/CLF_logolockup_horizontal_fullcolor.png",
+  "accepted": false
+ },
+ "vt_350vermont": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_rad": {
+  "from": [
+   400,
+   371
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://radmovement.org/wp-content/uploads/2025/03/bluesky_logo.webp",
+  "accepted": false
+ },
+ "vt_vctn": {
+  "from": [
+   400,
+   211
+  ],
+  "to": [
+   640,
+   337
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/6329d214da4067742d066f7b/78f2fd46-c824-485f-bce7-02d2158b7770/VCTN+Small+Logo.png?format=1500w",
+  "accepted": true
+ },
+ "vt_clf": {
+  "from": [
+   400,
+   131
+  ],
+  "to": [
+   640,
+   210
+  ],
+  "kind": "logo-img",
+  "url": "https://i0.wp.com/www.clf.org/wp-content/uploads/2022/11/CLF_logolockup_horizontal_fullcolor.png?fit=6001%2C1968&ssl=1",
+  "accepted": true
+ },
+ "vt_hunger_free_vermont": {
+  "from": [
+   400,
+   188
+  ],
+  "to": [
+   640,
+   301
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/5f83855960657429dda4af3c/31ce4a4a-0b16-486e-a21c-b982a1c8e6dc/4141VCH10_Logo_PMS195+-+transparent.png?format=1500w",
+  "accepted": true
+ },
+ "vt_carshare_vermont": {
+  "from": [
+   192,
+   192
+  ],
+  "to": [
+   400,
+   46
+  ],
+  "kind": "logo-img",
+  "url": "https://www.carsharevt.org/wp-content/uploads/2023/01/CarShare-Logo.svg",
+  "accepted": false
+ },
+ "vt_capstone_community_action": {
+  "from": [
+   400,
+   96
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://capstonevt.org/assets/image-cache/Default.2f96d4a5.w4w_logo_1433_x_1433_px.290406f4.png",
+  "accepted": false
+ },
+ "vt_sustainable_woodstock": {
+  "from": [
+   400,
+   125
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://www.sustainablewoodstock.org/wp-content/uploads/2022/02/SW-LOGO-CIRCLE-white-300.png",
+  "accepted": false
+ },
+ "vt_vcil": {
+  "from": [
+   300,
+   305
+  ],
+  "to": [
+   640,
+   427
+  ],
+  "kind": "og-image",
+  "url": "https://www.vcil.org/wp-content/uploads/2021/04/AdobeStock_209231503-scaled.jpeg",
+  "accepted": false
+ },
+ "vt_vermont_passive_house": {
+  "from": [
+   154,
+   60
+  ],
+  "to": [
+   640,
+   169
+  ],
+  "kind": "logo-img",
+  "url": "https://www.vermontpassivehouse.org/gallery/Timber%20HP%20Logo.png?ts=1750342936",
+  "accepted": false
+ },
+ "vt_catma": {
+  "from": [
+   179,
+   60
+  ],
+  "to": [
+   640,
+   149
+  ],
+  "kind": "logo-img",
+  "url": "https://catmavt.org/wp-content/uploads/2023/09/lockup_horizontal_02_color-1.png",
+  "accepted": false
+ },
+ "vt_center_for_sustainable_energy": {
+  "from": [
+   400,
+   192
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://energycenter.org/sites/default/files/image_CoreValues_logo.png",
+  "accepted": false
+ },
+ "vt_ceac_addison": {
+  "from": [
+   400,
+   400
+  ],
+  "to": [
+   640,
+   640
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/669ab22caf715c2262e54d84/3572351c-6617-493f-b839-c7686a9f9d44/circle+ceac+logo.png?format=1500w",
+  "accepted": true
+ },
+ "vt_evernorth": {
+  "from": [
+   400,
+   100
+  ],
+  "to": [
+   640,
+   161
+  ],
+  "kind": "logo-img",
+  "url": "https://evernorthus.org/wp-content/themes/housing/dist/images/logo.png",
+  "accepted": true
+ },
+ "vt_grassroots_fund": {
+  "from": [
+   180,
+   180
+  ],
+  "to": [
+   400,
+   400
+  ],
+  "kind": "icon-0",
+  "url": "https://grassrootsfund.org/safari-pinned-tab.svg",
+  "accepted": false
+ },
+ "vt_nature_conservancy_vt": {
+  "from": [
+   400,
+   185
+  ],
+  "to": [
+   640,
+   336
+  ],
+  "kind": "og-image",
+  "url": "https://natureconservancy-h.assetsadobe.com/is/image/content/dam/tnc/nature/en/photos/tnc_90867982_Original.jpg?crop=0%2C237%2C3351%2C1759&wid=1200&hei=630&scl=2.7925",
+  "accepted": false
+ },
+ "vt_vermont_adult_learning": {
+  "from": [
+   400,
+   88
+  ],
+  "to": [
+   640,
+   141
+  ],
+  "kind": "logo-img",
+  "url": "https://vtadultlearning.org/wp-content/uploads/VAL-logo-Banner-with-tag-color-scaled.png",
+  "accepted": true
+ },
+ "vt_craftsbury_energy_committee": {
+  "from": [
+   180,
+   72
+  ],
+  "to": [
+   512,
+   512
+  ],
+  "kind": "icon-0",
+  "url": "https://craftsbury.gov/wp-content/uploads/sites/39/2024/08/android-chrome-512x512-1.png",
+  "accepted": false
+ },
+ "vt_brandon_energy_committee": {
+  "from": [
+   400,
+   71
+  ],
+  "to": [
+   640,
+   113
+  ],
+  "kind": "logo-img",
+  "url": "https://www.brandonvermont.gov/ImageRepository/Document?documentID=116",
+  "accepted": true
+ },
+ "vt_climate_advocates_bennington": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_350_chittenden_county": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_earth_matters_manchester": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_350_rutland_county": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_350_addison_county": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_families_rise_up": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_350_white_river": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_350_montpelier": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ },
+ "vt_climate_action_collective": {
+  "from": [
+   400,
+   346
+  ],
+  "to": [
+   640,
+   553
+  ],
+  "kind": "logo-img",
+  "url": "https://images.squarespace-cdn.com/content/v1/62d9a2e1929bff371b6bbfe2/a35cc7e9-e240-4aa5-a541-be58cfaf4bc0/350VT+Logo+-+2018+%285%29.png?format=1500w",
+  "accepted": true
+ }
+}

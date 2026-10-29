@@ -1,0 +1,385 @@
+[
+ {
+  "id": "ma:sector_palestinian_rights:mission",
+  "map": "ma",
+  "kind": "coalition_mission",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Palestinian rights",
+  "text": "Groups and events in Massachusetts working for Palestinian rights. This is a sector on the map, not a coalition: the groups here are shown together, not as members of one organization."
+ },
+ {
+  "id": "ma:pal_e_golden_harvest",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Film: The Golden Harvest, with filmmaker Alia Yunis",
+  "text": "Screening of The Golden Harvest, about olive trees and the people of the Mediterranean, including the filmmaker's Palestinian father, followed by a Q&A with Alia Yunis.",
+  "date": "2026-10-05T16:30:00"
+ },
+ {
+  "id": "ma:pal_e_run_gsk",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Run for Gaza: Boston 10K for Women (team Run for GSK)",
+  "text": "Run or walk with the team \"Run for GSK\" in the Boston 10K for Women to raise funds for Gaza Soup Kitchen.",
+  "date": "2026-10-10T09:00:00"
+ },
+ {
+  "id": "ma:pal_e_soul_of_gaza",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Soul of Gaza: Authentic Palestinian Cooking with Samah Nijim",
+  "text": "Palestinian cooking sessions with Samah Nijim. (Every other Sunday, 3:00-5:00 PM)",
+  "date": "2026-10-18T15:00:00"
+ },
+ {
+  "id": "ma:pal_e_havurah",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Jews Read Palestinian Stories Havurah: Fire in Every Direction",
+  "text": "Reading group on Palestinian stories. This month: Fire in Every Direction: A Memoir. November 15: Perfect Victims.",
+  "date": "2026-10-18"
+ },
+ {
+  "id": "ma:pal_e_wired_to_steal",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Book talk: Wired to Steal, by Ilan Pappé and Yoav Litvin",
+  "text": "Talk on the book Wired to Steal by Ilan Pappé and Yoav Litvin.",
+  "date": "2026-11-18T19:00:00"
+ },
+ {
+  "id": "ma:pal_e_l3harris",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Gaza Bullhorn Standout at L3Harris",
+  "text": "Weekly standout for Gaza at L3Harris. (Wednesdays, 12:00-12:30 PM)",
+  "date": "2026-10-07T12:00:00"
+ },
+ {
+  "id": "ma:pal_e_shelburne",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Shelburne Falls Standout",
+  "text": "Weekly standout for Palestine. (Thursdays, 4:30-5:30 PM)",
+  "date": "2026-10-08T16:30:00"
+ },
+ {
+  "id": "ma:pal_e_arms_embargo",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Standout for an Arms Embargo",
+  "text": "Weekly standout for an arms embargo. (Fridays, 12:00-1:00 PM)",
+  "date": "2026-10-09T12:00:00"
+ },
+ {
+  "id": "ma:pal_e_sunderland",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Sunderland for Ceasefire & a Free Palestine",
+  "text": "Weekly standout for a ceasefire and a free Palestine. (Fridays, 4:00-5:00 PM)",
+  "date": "2026-10-09T16:00:00"
+ },
+ {
+  "id": "ma:pal_e_greenfield",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Greenfield for a Ceasefire",
+  "text": "Weekly standout for a ceasefire. (Saturdays, 11:00 AM-12:00 PM)",
+  "date": "2026-10-03T11:00:00"
+ },
+ {
+  "id": "ma:pal_e_pittsfield",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Pittsfield for Palestine",
+  "text": "Standout for Palestine on some Sundays, weather permitting; not every Sunday. (Some Sundays, 3:00 PM)",
+  "date": "2026-10-04T15:00:00"
+ },
+ {
+  "id": "ma:pal_e_centering",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Centering Palestine (online)",
+  "text": "Weekly online gathering of Palestinians, Jews and allies. Covid-aware. (Tuesdays, 8:00 PM)",
+  "date": "2026-10-06T20:00:00"
+ },
+ {
+  "id": "ma:pal_e_dag",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Doctors Against Genocide weekly webinar (online)",
+  "text": "Weekly webinar from Doctors Against Genocide. (Sundays, 12:00 PM)",
+  "date": "2026-10-04T12:00:00"
+ },
+ {
+  "id": "ma:pal_e_aroc",
+  "map": "ma",
+  "kind": "event",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "AROC Friday Palestine Solidarity Announcements (online)",
+  "text": "Weekly online Palestine solidarity announcements from the Arab Resource & Organizing Center (AROC). (Fridays, 3:00 PM)",
+  "date": "2026-10-09T15:00:00"
+ },
+ {
+  "id": "ma:pal_a_ndaa",
+  "map": "ma",
+  "kind": "action",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Phonebank against the \"Deadly Merger\" provision in the NDAA",
+  "text": "Phonebank with USCPR Action against the \"Deadly Merger\" provision in the National Defense Authorization Act.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_a_stockton",
+  "map": "ma",
+  "kind": "action",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Write to Stockton University: stop censoring the word \"genocide\"",
+  "text": "Send a letter to Stockton University asking it to stop censoring the word \"genocide\".",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_a_502b",
+  "map": "ma",
+  "kind": "action",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Thank Senators Markey and Warren for their 502B resolution vote",
+  "text": "From the IMEU Policy Project: thank Senators Markey and Warren for voting for the 502B resolution.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_a_abu_safiya",
+  "map": "ma",
+  "kind": "action",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Free Dr. Hussam Abu Safiya",
+  "text": "From the IMEU Policy Project: message Congress and sign the petition for the release of detained Gaza pediatrician Dr. Hussam Abu Safiya.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_a_olive",
+  "map": "ma",
+  "kind": "action",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Donate: USCPR olive trees",
+  "text": "US Campaign for Palestinian Rights fundraiser to plant olive trees, with a goal of 5,000 trees.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_a_grassroots",
+  "map": "ma",
+  "kind": "action",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Donate: Grassroots International Palestine Emergency Fund",
+  "text": "Grassroots International's emergency fund for Palestine.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_a_meca",
+  "map": "ma",
+  "kind": "action",
+  "host": "sector_palestinian_rights",
+  "host_name": "Palestinian rights",
+  "name": "Donate: Middle East Children's Alliance (MECA)",
+  "text": "Donate to the Middle East Children's Alliance.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:jvp_western_mass:mission",
+  "map": "ma",
+  "kind": "org_mission",
+  "host": "jvp_western_mass",
+  "host_name": "Jewish Voice for Peace Western Mass",
+  "name": "Jewish Voice for Peace Western Mass",
+  "text": "Western Massachusetts chapter of Jewish Voice for Peace. Holds a weekly Friday standout in Northampton, working groups and monthly member meetings, and sends a newsletter of actions for a free Palestine."
+ },
+ {
+  "id": "ma:pal_jvp_e1",
+  "map": "ma",
+  "kind": "event",
+  "host": "jvp_western_mass",
+  "host_name": "Jewish Voice for Peace Western Mass",
+  "name": "JVP Weekly Standout for a Free Palestine",
+  "text": "Weekly standout for a free Palestine, an arms embargo and no war on Iran and Lebanon. Rain or shine. (Fridays, 5:00-6:00 PM)",
+  "date": "2026-10-09T17:00:00"
+ },
+ {
+  "id": "ma:pal_jvp_e2",
+  "map": "ma",
+  "kind": "event",
+  "host": "jvp_western_mass",
+  "host_name": "Jewish Voice for Peace Western Mass",
+  "name": "JVP National Member Meeting (online)",
+  "text": "Jewish Voice for Peace national member meeting, held online.",
+  "date": "2026-10-13T17:00:00"
+ },
+ {
+  "id": "ma:pal_jvp_e3",
+  "map": "ma",
+  "kind": "event",
+  "host": "jvp_western_mass",
+  "host_name": "Jewish Voice for Peace Western Mass",
+  "name": "JVP Power Half-Hour for Gaza (online)",
+  "text": "Daily online half-hour of action for Gaza. (Every day, 3:00 PM)",
+  "date": "2026-10-03T15:00:00"
+ },
+ {
+  "id": "ma:pal_jvp_a1",
+  "map": "ma",
+  "kind": "action",
+  "host": "jvp_western_mass",
+  "host_name": "Jewish Voice for Peace Western Mass",
+  "name": "Call Congress: Fund People, Not Bombs",
+  "text": "Call your senators and ask them to block bombs to Israel.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_jvp_a2",
+  "map": "ma",
+  "kind": "action",
+  "host": "jvp_western_mass",
+  "host_name": "Jewish Voice for Peace Western Mass",
+  "name": "Break the Bonds: divest from Israel Bonds",
+  "text": "Campaign for institutions to divest from Israel Bonds.",
+  "subkind": "task"
+ },
+ {
+  "id": "ma:pal_jvp_a3",
+  "map": "ma",
+  "kind": "action",
+  "host": "jvp_western_mass",
+  "host_name": "Jewish Voice for Peace Western Mass",
+  "name": "Join JVP Western Mass",
+  "text": "Fill in the interest form to get involved with JVP Western Mass.",
+  "subkind": "role"
+ },
+ {
+  "id": "ma:berkshires_in_solidarity_with_palestine:mission",
+  "map": "ma",
+  "kind": "org_mission",
+  "host": "berkshires_in_solidarity_with_palestine",
+  "host_name": "Berkshires in Solidarity with Palestine",
+  "name": "Berkshires in Solidarity with Palestine",
+  "text": "Berkshire County group in solidarity with Palestine. Hosts the Palestinian Voices Reading Group."
+ },
+ {
+  "id": "ma:pal_bsp_e1",
+  "map": "ma",
+  "kind": "event",
+  "host": "berkshires_in_solidarity_with_palestine",
+  "host_name": "Berkshires in Solidarity with Palestine",
+  "name": "Palestinian Voices Reading Group: Against the Loveless World",
+  "text": "Reading group on Palestinian writing. This session: Against the Loveless World by Susan Abulhawa, chapters 1-8.",
+  "date": "2026-10-15T17:15:00"
+ },
+ {
+  "id": "ma:apartheid_free_western_mass:mission",
+  "map": "ma",
+  "kind": "org_mission",
+  "host": "apartheid_free_western_mass",
+  "host_name": "Apartheid-Free Western Mass",
+  "name": "Apartheid-Free Western Mass",
+  "text": "Western Massachusetts group. Sponsors the Palestinian Film Fest at UMass Amherst."
+ },
+ {
+  "id": "ma:pal_afwm_e1",
+  "map": "ma",
+  "kind": "event",
+  "host": "apartheid_free_western_mass",
+  "host_name": "Apartheid-Free Western Mass",
+  "name": "Palestinian Film Fest: Seeds for Liberation",
+  "text": "Screening of Seeds for Liberation, with a Q&A with the director and Dr. Ayman Nijim.",
+  "date": "2026-10-22T18:30:00"
+ },
+ {
+  "id": "ma:western_mass_coalition_for_palestine:mission",
+  "map": "ma",
+  "kind": "org_mission",
+  "host": "western_mass_coalition_for_palestine",
+  "host_name": "Western Mass Coalition for Palestine",
+  "name": "Western Mass Coalition for Palestine",
+  "text": "Western Massachusetts group working for Palestine. On Instagram as @westernmasscoalition4pal."
+ },
+ {
+  "id": "ma:easthampton_solidarity_with_palestine:mission",
+  "map": "ma",
+  "kind": "org_mission",
+  "host": "easthampton_solidarity_with_palestine",
+  "host_name": "Easthampton Solidarity with Palestine",
+  "name": "Easthampton Solidarity with Palestine",
+  "text": "Easthampton group in solidarity with Palestine. Holds a weekly Tuesday standout."
+ },
+ {
+  "id": "ma:pal_esp_e1",
+  "map": "ma",
+  "kind": "event",
+  "host": "easthampton_solidarity_with_palestine",
+  "host_name": "Easthampton Solidarity with Palestine",
+  "name": "Easthampton Solidarity with Palestine standout",
+  "text": "Weekly standout for Palestine. (Tuesdays, 5:00-6:00 PM)",
+  "date": "2026-10-06T17:00:00"
+ },
+ {
+  "id": "ma:interlink_books:mission",
+  "map": "ma",
+  "kind": "org_mission",
+  "host": "interlink_books",
+  "host_name": "Interlink Books / Interlink Foundation",
+  "name": "Interlink Books / Interlink Foundation",
+  "text": "Palestinian-owned independent publisher in Northampton, with the Interlink Foundation. Hosts the Read & Resist Festival."
+ },
+ {
+  "id": "ma:pal_il_e1",
+  "map": "ma",
+  "kind": "event",
+  "host": "interlink_books",
+  "host_name": "Interlink Books / Interlink Foundation",
+  "name": "Read & Resist Festival",
+  "text": "Outdoor social justice festival with 25 other social justice groups: book sale, teach-ins and workshops, and a 3 pm talk, \"Selling Israel: Zionism, Propaganda & the Uses of Hasbara\". Free, all ages, masks required.",
+  "date": "2026-10-03T10:00:00"
+ },
+ {
+  "id": "ma:pal_il_a1",
+  "map": "ma",
+  "kind": "action",
+  "host": "interlink_books",
+  "host_name": "Interlink Books / Interlink Foundation",
+  "name": "Donate to the Interlink Foundation",
+  "text": "Support the Interlink Foundation.",
+  "subkind": "task"
+ }
+]

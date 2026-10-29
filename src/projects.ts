@@ -1,6 +1,12 @@
-import type { DataFile, Coalition, Project, GraphNode } from "./types";
+import type { DataFile, Project, GraphNode } from "./types";
+import { allProjects, ownerBadge, type Owner, sectorAttrs, sectorPill } from "./owners";
+import { itemButtons, joinLine, wantsHelp } from "./links";
+import { showItemCard } from "./itemcard";
+import { isPast, showPast } from "./past";
+import { makeFoldable } from "./dom";
 import { h, clear } from "./dom";
-import { initials } from "./util";
+import { staleNotice } from "./notice";
+import { createItemFilters, placeFor, termsMatch } from "./itemfilters";
 
 export interface ProjectsView {
   el: HTMLElement;
@@ -13,7 +19,7 @@ export interface ProjectsCallbacks {
 
 interface Row {
   project: Project;
-  coalition: Coalition;
+  owner: Owner;
 }
 
 export function createProjectsView(
@@ -22,12 +28,7 @@ export function createProjectsView(
 ): ProjectsView {
   const wrap = h("div", { class: "list-view" });
 
-  const rows: Row[] = [];
-  for (const c of data.coalitions) {
-    for (const p of c.projects) {
-      rows.push({ project: p, coalition: c });
-    }
-  }
+  const rows: Row[] = allProjects(data);
 
   // Skill universe across all projects
   const skillSet = new Set<string>();
@@ -48,7 +49,7 @@ export function createProjectsView(
   const search = h("input", {
     class: "search",
     type: "search",
-    placeholder: "Search projects or coalitions…",
+    placeholder: "Search topics, names, places…",
   }) as HTMLInputElement;
   search.addEventListener("input", () => {
     q = search.value.trim().toLowerCase();
@@ -80,6 +81,9 @@ export function createProjectsView(
   toolbar.appendChild(statusFilters);
   wrap.appendChild(toolbar);
 
+  const itemFilters = createItemFilters({ online: true, inView: true, freeFood: true, publicSwitch: true, helpWanted: true }, () => render());
+  wrap.appendChild(itemFilters.el);
+
   // Second toolbar row for skill chips (so they wrap nicely)
   const skillBar = h("div", {
     class: "list-toolbar",
@@ -109,6 +113,8 @@ export function createProjectsView(
   }
   skillBar.appendChild(skillChips);
   wrap.appendChild(skillBar);
+  // On a phone the 20+ skill chips fold behind one button, like the other filters, so the projects come first.
+  makeFoldable(skillBar, "skills");
 
   // ---- Body ----
   const body = h("div", { class: "list-body" });
@@ -124,21 +130,31 @@ export function createProjectsView(
       }
       if (!any) return false;
     }
-    if (!q) return true;
-    return (
-      r.project.name.toLowerCase().includes(q) ||
-      r.project.description.toLowerCase().includes(q) ||
-      r.coalition.name.toLowerCase().includes(q) ||
-      r.coalition.abbrev.toLowerCase().includes(q)
-    );
+    const p = r.project;
+    const hay = `${p.name} ${p.description} ${p.location || ""} ${(p.topic_tags || []).join(" ")} ${(p.skills_needed || []).join(" ")} ${r.owner.name} ${r.owner.abbrev}`;
+    if (q && !termsMatch(q, hay)) return false;
+    return itemFilters.test(facts(r, hay));
   }
+  const ownerOf = (r: Row) => r.owner.node as unknown as { public_contact?: string; website?: string; name: string; lat?: number; lng?: number; remote?: boolean; kind?: string };
+  const facts = (r: Row, hay = "") => {
+    const p = r.project;
+    return { hay, ...placeFor(p, ownerOf(r)), online: p.online, free_food: p.free_food, affiliated_only: p.affiliated_only, help_wanted: wantsHelp(p) };
+  };
+  // how many projects each switch would show (among those not hidden as past)
+  const current = rows.filter((r) => !isPast("project", r.project));
+  itemFilters.setCounts({
+    freeFood: current.filter((r) => r.project.free_food).length,
+    affiliated: current.filter((r) => r.project.affiliated_only).length,
+    helpWanted: current.filter((r) => facts(r).help_wanted).length,
+  });
 
   function render() {
     clear(body);
-    const filtered = rows.filter(matches);
+    // past ones only when Map settings → "Show past events, projects and actions" is on
+    const filtered = rows.filter((r) => matches(r) && (showPast() || !isPast("project", r.project)));
     count.textContent = `${filtered.length} project${filtered.length === 1 ? "" : "s"}`;
     if (!filtered.length) {
-      body.appendChild(h("div", { class: "list-empty" }, "No projects match."));
+      body.appendChild(h("div", { class: "list-empty" }, itemFilters.emptyReason() || "No projects match."));
       return;
     }
     for (const r of filtered) {
@@ -151,31 +167,28 @@ export function createProjectsView(
       }
       const card = h(
         "div",
-        { class: "list-card" },
+        { class: `list-card${sectorAttrs(r.owner).cls}`, style: sectorAttrs(r.owner).style },
         h(
           "div",
           { class: "head" },
-          h(
-            "div",
-            {
-              class: "coalition-badge",
-              style: `background:${r.coalition.color}`,
-            },
-            r.coalition.abbrev || initials(r.coalition.name),
-          ),
-          h("div", { class: "coalition-name" }, r.coalition.name),
+          ownerBadge(r.owner),
+          h("div", { class: "coalition-name" }, r.owner.name), sectorPill(r.owner),
         ),
         h("div", { class: "name" }, r.project.name),
         h("div", { class: "desc" }, r.project.description),
         meta,
+        r.project.status !== "completed" ? joinLine(r.project, ownerOf(r)) : null,
+        itemButtons("project", r.project),
+        staleNotice("project", r.owner.node, r.project.needs_info, r.project.verified, r.project),
       );
-      card.addEventListener("click", () => {
-        cb.onCoalitionClick({ ...r.coalition, kind: "coalition" });
-      });
+      card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (ev) => ev.stopPropagation()));
+      // a quick look at the project in a card, without leaving the page
+      card.addEventListener("click", () => showItemCard(wrap, "project", r.project, r.owner, () => cb.onCoalitionClick(r.owner.node)));
       body.appendChild(card);
     }
   }
 
   render();
+  window.addEventListener("openthink:showpast", () => render());
   return { el: wrap, refresh: render };
 }

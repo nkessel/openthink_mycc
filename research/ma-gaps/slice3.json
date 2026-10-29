@@ -1,0 +1,466 @@
+[
+ {
+  "id": "xr_western_mass",
+  "name": "Extinction Rebellion Western Mass",
+  "abbrev": "XR Western Mass",
+  "website": "https://xrboston.org/west/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.327,
+   -72.641
+  ]
+ },
+ {
+  "id": "climate_xchange",
+  "name": "Climate XChange",
+  "abbrev": "CXC",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "elders_climate_action_mass",
+  "name": "Elders Climate Action Massachusetts",
+  "abbrev": "ECA Mass",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "mass_audubon_wma",
+  "name": "Mass Audubon - WMa",
+  "abbrev": "Mass Audubon Western Massachusetts",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.328,
+   -72.526
+  ]
+ },
+ {
+  "id": "mass_audubon_wellfleet_bay_wildlife_sanctuary",
+  "name": "Mass Audubon Wellfleet Bay Wildlife Sanctuary",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   41.938,
+   -70.029
+  ]
+ },
+ {
+  "id": "sunrise_boston",
+  "name": "Sunrise Boston",
+  "abbrev": "",
+  "website": "https://www.sunrisemovement.org/",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "sunrise_ipswich",
+  "name": "Sunrise Ipswich",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.679,
+   -70.841
+  ]
+ },
+ {
+  "id": "sunrise_western_mass",
+  "name": "Sunrise Western Mass",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.327,
+   -72.641
+  ]
+ },
+ {
+  "id": "sunrise_amherst",
+  "name": "Sunrise Amherst",
+  "abbrev": "",
+  "website": "https://hubs.sunrisemovement.org/amherst/",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.373,
+   -72.52
+  ]
+ },
+ {
+  "id": "sunrise_lexington",
+  "name": "Sunrise Lexington",
+  "abbrev": "",
+  "website": "https://www.sunrisemovement.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.443,
+   -71.229
+  ]
+ },
+ {
+  "id": "mit_sea",
+  "name": "MIT Students for Environmental Action",
+  "abbrev": "MIT SEA",
+  "website": "",
+  "coalitions": [
+   "Massachusetts Youth Climate Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.094
+  ]
+ },
+ {
+  "id": "unitarian_universalist_mass_action",
+  "name": "Unitarian Universalist Mass Action",
+  "abbrev": "UU Mass Action",
+  "website": "",
+  "coalitions": [
+   "Environmental Justice Legislative Table",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "environment_massachusetts",
+  "name": "Environment Massachusetts",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "pipeline_awareness_network_ne",
+  "name": "Pipeline Awareness Network Northeast",
+  "abbrev": "PLAN-NE",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "sierra_club",
+  "name": "Sierra Club",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.356,
+   -71.056
+  ]
+ },
+ {
+  "id": "coalition_for_social_justice",
+  "name": "Coalition for Social Justice",
+  "abbrev": "CSJ",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Green Justice Coalition"
+  ],
+  "near": [
+   41.626,
+   -70.947
+  ]
+ },
+ {
+  "id": "fore_river_residents_against_the_compressor_station",
+  "name": "Fore River Residents Against the Compressor Station",
+  "abbrev": "FRRACS",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.253,
+   -70.966
+  ]
+ },
+ {
+  "id": "north_american_indian_center_of_boston",
+  "name": "North American Indian Center of Boston",
+  "abbrev": "NAICOB",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "slingshot",
+  "name": "Slingshot",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "350ma",
+  "name": "350 Massachusetts",
+  "abbrev": "350MA",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "350ma_cape_cod",
+  "name": "350 Massachusetts Cape Cod",
+  "abbrev": "350MA Cape Cod",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   41.669,
+   -70.296
+  ]
+ },
+ {
+  "id": "350ma_central_mass",
+  "name": "350 Massachusetts Central Massachusetts",
+  "abbrev": "350MA Central Mass",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.263,
+   -71.802
+  ]
+ },
+ {
+  "id": "350ma_berkshires",
+  "name": "350 Massachusetts Berkshires",
+  "abbrev": "350MA Berkshires",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.45,
+   -73.245
+  ]
+ },
+ {
+  "id": "berkshire_environmental_action_team",
+  "name": "Berkshire Environmental Action Team",
+  "abbrev": "BEAT",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.43,
+   -73.31
+  ]
+ },
+ {
+  "id": "canton_residents_for_a_sustainable_equitable_future",
+  "name": "Canton Residents for a Sustainable Equitable Future",
+  "abbrev": "CR4SEF",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.158,
+   -71.15
+  ]
+ },
+ {
+  "id": "climate_action_brookline",
+  "name": "Climate Action Brookline",
+  "abbrev": "CAB",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.332,
+   -71.121
+  ]
+ },
+ {
+  "id": "climate_code_blue",
+  "name": "Climate Code Blue",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "food_and_water_watch",
+  "name": "Food & Water Watch",
+  "abbrev": "FWW",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "jewish_alliance_for_law_and_social_action",
+  "name": "Jewish Alliance for Law and Social Action",
+  "abbrev": "JALSA",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "partnership_for_policy_integrity",
+  "name": "Partnership for Policy Integrity",
+  "abbrev": "PFPI",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.373,
+   -72.52
+  ]
+ },
+ {
+  "id": "american_friends_service_committee_northeast_region",
+  "name": "American Friends Service Committee-Northeast Region",
+  "abbrev": "AFSC",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.393,
+   -71.124
+  ]
+ },
+ {
+  "id": "arise_for_social_justice",
+  "name": "Arise for Social Justice",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward",
+   "Springfield Climate Justice Coalition"
+  ],
+  "near": [
+   42.104,
+   -72.581
+  ]
+ },
+ {
+  "id": "balanced_rock_investment_advisors",
+  "name": "Balanced Rock Investment Advisors",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "ben_hillman_and_company",
+  "name": "Ben Hillman & Company",
+  "abbrev": "",
+  "website": "",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ },
+ {
+  "id": "bodhisara_dharma_community",
+  "name": "Bodhisara Dharma Community",
+  "abbrev": "",
+  "website": "https://www.bodhisara.org/",
+  "coalitions": [
+   "Mass Power Forward"
+  ],
+  "near": [
+   42.36,
+   -71.059
+  ]
+ }
+]

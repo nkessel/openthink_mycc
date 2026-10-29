@@ -1,0 +1,423 @@
+{
+ "fetched": "2026-10-28",
+ "bills": [
+  {
+   "id": "2021 HB 2021",
+   "session": "2021R1",
+   "measure": "HB2021",
+   "short": "100% clean electricity by 2040",
+   "catchline": "Requires retail electricity providers to reduce greenhouse gas emissions associated with electricity sold to Oregon consumers to 80 percent below baseline emissions levels by 2030, 90 percent below baseline emissions levels by 2035 and 100 percent below baseline emissions levels by 2040.",
+   "outcome": "Passed",
+   "chapter": "508",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2021",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2021",
+   "testimony_total": 407,
+   "testimony_by_position": {
+    "Support": 266,
+    "Oppose": 100,
+    "Other": 22,
+    "Neutral": 19
+   },
+   "other_orgs": {
+    "Support": 16,
+    "Oppose": 7,
+    "Neutral": 2
+   }
+  },
+  {
+   "id": "2021 HB 2475",
+   "session": "2021R1",
+   "measure": "HB2475",
+   "short": "Energy affordability (PUC can consider energy burden)",
+   "catchline": "Authorizes Public Utility Commission to consider differential energy burden and other inequities of affordability in rates.",
+   "outcome": "Passed",
+   "chapter": "90",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2475",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2475",
+   "testimony_total": 102,
+   "testimony_by_position": {
+    "Support": 90,
+    "Other": 8,
+    "Neutral": 3,
+    "Oppose": 1
+   },
+   "other_orgs": {
+    "Support": 5,
+    "Oppose": 0,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2021 HB 2842",
+   "session": "2021R1",
+   "measure": "HB2842",
+   "short": "Healthy Homes program",
+   "catchline": "Establishes Healthy Homes Program within the Oregon Health Authority to provide grants to entities to provide financial assistance to low income households and landlords.",
+   "outcome": "Passed",
+   "chapter": "622",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2842",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2842",
+   "testimony_total": 86,
+   "testimony_by_position": {
+    "Support": 77,
+    "Neutral": 3,
+    "Other": 6
+   },
+   "other_orgs": {
+    "Support": 5,
+    "Oppose": 0,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2021 HB 2062",
+   "session": "2021R1",
+   "measure": "HB2062",
+   "short": "Appliance efficiency standards",
+   "catchline": "Establishes energy efficiency standards for certain appliances sold or offered for sale in this state.",
+   "outcome": "Passed",
+   "chapter": "108",
+   "url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Overview/HB2062",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2021R1/Measures/Testimony/HB2062",
+   "testimony_total": 38,
+   "testimony_by_position": {
+    "Support": 33,
+    "Neutral": 3,
+    "Other": 2
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 0,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2022 SB 1536",
+   "session": "2022R1",
+   "measure": "SB1536",
+   "short": "Heat pumps and cooling for renters",
+   "catchline": "Limits restrictions on portable cooling devices in residences by landlords, homeowners associations, condominium associations and local governments.",
+   "outcome": "Passed",
+   "chapter": "86",
+   "url": "https://olis.oregonlegislature.gov/liz/2022R1/Measures/Overview/SB1536",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2022R1/Measures/Testimony/SB1536",
+   "testimony_total": 41,
+   "testimony_by_position": {
+    "Support": 34,
+    "Neutral": 1,
+    "Other": 6
+   },
+   "other_orgs": {
+    "Support": 1,
+    "Oppose": 0,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2023 HB 3409",
+   "session": "2023R1",
+   "measure": "HB3409",
+   "short": "2023 climate resilience package",
+   "catchline": "Requires State Department of Energy to report on rate of heat pump technology adoption and to collaborate with designated state agencies to reduce barriers to home energy efficiency and resilience.",
+   "outcome": "Passed",
+   "chapter": "442",
+   "url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Overview/HB3409",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Testimony/HB3409",
+   "testimony_total": 28,
+   "testimony_by_position": {
+    "Support": 19,
+    "Oppose": 4,
+    "Other": 5
+   },
+   "other_orgs": {
+    "Support": 4,
+    "Oppose": 1,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2023 HB 3630",
+   "session": "2023R1",
+   "measure": "HB3630",
+   "short": "State energy strategy and energy help for communities",
+   "catchline": "Directs State Department of Energy to establish program to provide assistance related to energy projects and activities to environmental justice communities.",
+   "outcome": "Passed",
+   "chapter": "562",
+   "url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Overview/HB3630",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Testimony/HB3630",
+   "testimony_total": 7,
+   "testimony_by_position": {
+    "Support": 5,
+    "Oppose": 1,
+    "Other": 1
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 0,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2023 SB 530",
+   "session": "2023R1",
+   "measure": "SB530",
+   "short": "Natural climate solutions",
+   "catchline": "Establishes state policy regarding natural climate solutions.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Overview/SB530",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Testimony/SB530",
+   "testimony_total": 178,
+   "testimony_by_position": {
+    "Support": 160,
+    "Other": 11,
+    "Neutral": 2,
+    "Oppose": 5
+   },
+   "other_orgs": {
+    "Support": 20,
+    "Oppose": 1,
+    "Neutral": 1
+   }
+  },
+  {
+   "id": "2024 HB 4080",
+   "session": "2024R1",
+   "measure": "HB4080",
+   "short": "Offshore wind: community engagement and labor standards",
+   "catchline": "Declares a state policy to support engagement between offshore wind developers and impacted organizations, communities and tribes.",
+   "outcome": "Passed",
+   "chapter": "31",
+   "url": "https://olis.oregonlegislature.gov/liz/2024R1/Measures/Overview/HB4080",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2024R1/Measures/Testimony/HB4080",
+   "testimony_total": 71,
+   "testimony_by_position": {
+    "Oppose": 17,
+    "Support": 46,
+    "Neutral": 1,
+    "Other": 7
+   },
+   "other_orgs": {
+    "Support": 0,
+    "Oppose": 4,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2025 SB 1187",
+   "session": "2025R1",
+   "measure": "SB1187",
+   "short": "Climate Superfund (polluters pay for climate damage)",
+   "catchline": "Establishes the Climate Superfund Cost Recovery Program as an interagency response to the effects of climate change.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/SB1187",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/SB1187",
+   "testimony_total": 414,
+   "testimony_by_position": {
+    "Support": 274,
+    "Oppose": 140
+   },
+   "other_orgs": {
+    "Support": 33,
+    "Oppose": 24,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2025 HB 3546",
+   "session": "2025R1",
+   "measure": "HB3546",
+   "short": "POWER Act: large energy users pay their share",
+   "catchline": "Directs the Public Utility Commission to provide for a classification of service for large energy use facilities.",
+   "outcome": "Passed",
+   "chapter": "323",
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/HB3546",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/HB3546",
+   "testimony_total": 199,
+   "testimony_by_position": {
+    "Support": 186,
+    "Oppose": 9,
+    "Neutral": 1,
+    "Other": 3
+   },
+   "other_orgs": {
+    "Support": 7,
+    "Oppose": 2,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2025 HB 3336",
+   "session": "2025R1",
+   "measure": "HB3336",
+   "short": "Electric transmission policy",
+   "catchline": "Declares a state policy regarding the electric transmission system.",
+   "outcome": "Passed",
+   "chapter": "391",
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/HB3336",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/HB3336",
+   "testimony_total": 104,
+   "testimony_by_position": {
+    "Oppose": 4,
+    "Support": 100
+   },
+   "other_orgs": {
+    "Support": 4,
+    "Oppose": 1,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2025 SB 688",
+   "session": "2025R1",
+   "measure": "SB688",
+   "short": "Performance-based regulation of electric utilities",
+   "catchline": "Allows the Public Utility Commission to adopt a framework for carrying out performance-based regulation of electric companies and use incentives and penalties to induce electric companies to bring electric utility operations in line with the public interest and certain objectives.",
+   "outcome": "Passed",
+   "chapter": "538",
+   "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/SB688",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Testimony/SB688",
+   "testimony_total": 40,
+   "testimony_by_position": {
+    "Support": 33,
+    "Neutral": 1,
+    "Oppose": 6
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 1,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 SB 1541",
+   "session": "2026R1",
+   "measure": "SB1541",
+   "short": "Climate Resilience Superfund (polluters pay)",
+   "catchline": "Establishes the Climate Superfund Cost Recovery Program as an interagency response to the effects of climate change.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1541",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1541",
+   "testimony_total": 574,
+   "testimony_by_position": {
+    "Support": 474,
+    "Oppose": 100
+   },
+   "other_orgs": {
+    "Support": 24,
+    "Oppose": 15,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4031",
+   "session": "2026R1",
+   "measure": "HB4031",
+   "short": "Faster permits for wind and solar before federal tax credits end",
+   "catchline": "Exempts an energy facility from needing a site certificate from the Energy Facility Siting Council if the energy facility produces power from a renewable energy source, qualifies for certain federal renewable energy tax credits and is placed in service on or before December 31, 2030, or a date allowed by exception and a local land use application for the facility is submitted  on or before December 31, 2028.",
+   "outcome": "Passed",
+   "chapter": "12",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4031",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4031",
+   "testimony_total": 27,
+   "testimony_by_position": {
+    "Support": 11,
+    "Oppose": 16
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 5,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4076",
+   "session": "2026R1",
+   "measure": "HB4076",
+   "short": "Easier land-use approval for energy projects near existing grid",
+   "catchline": "Requires the Energy Facility Siting Council to find that reasons justify why the state policy in applicable statewide planning goals should not apply to a proposed energy facility if the council finds that the proposed energy facility will deliver electricity to the electric grid using an existing energy facility\\u0027s surplus interconnection and does not require associated transmission lines more than two miles from the existing energy facility.",
+   "outcome": "Passed",
+   "chapter": "46",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4076",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4076",
+   "testimony_total": 12,
+   "testimony_by_position": {
+    "Oppose": 5,
+    "Support": 7
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 4,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 SB 1582",
+   "session": "2026R1",
+   "measure": "SB1582",
+   "short": "Community energy and virtual power plants",
+   "catchline": "Requires each electric company to develop a distributed power plant program for the procurement of grid services to be provided by distributed energy resources.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1582",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1582",
+   "testimony_total": 60,
+   "testimony_by_position": {
+    "Oppose": 12,
+    "Support": 47,
+    "Neutral": 1
+   },
+   "other_orgs": {
+    "Support": 7,
+    "Oppose": 2,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 SB 1588",
+   "session": "2026R1",
+   "measure": "SB1588",
+   "short": "Healthier, more efficient homes",
+   "catchline": "Requires each electric company to develop an inclusive utility investment program to provide financing for customers\\u0027 energy efficiency upgrades or renewable energy projects.",
+   "outcome": "Did not pass (in senate committee)",
+   "chapter": null,
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/SB1588",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/SB1588",
+   "testimony_total": 44,
+   "testimony_by_position": {
+    "Support": 36,
+    "Oppose": 7,
+    "Neutral": 1
+   },
+   "other_orgs": {
+    "Support": 2,
+    "Oppose": 2,
+    "Neutral": 0
+   }
+  },
+  {
+   "id": "2026 HB 4100",
+   "session": "2026R1",
+   "measure": "HB4100",
+   "short": "Fuel terminals must show they can pay for spill cleanup",
+   "catchline": "Requires owners or operators of bulk oils or liquid fuels terminals to obtain a certificate of financial responsibility from the Department of Environmental Quality.",
+   "outcome": "Passed",
+   "chapter": "54",
+   "url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Overview/HB4100",
+   "testimony_url": "https://olis.oregonlegislature.gov/liz/2026R1/Measures/Testimony/HB4100",
+   "testimony_total": 51,
+   "testimony_by_position": {
+    "Support": 45,
+    "Oppose": 3,
+    "Neutral": 3
+   },
+   "other_orgs": {
+    "Support": 11,
+    "Oppose": 0,
+    "Neutral": 1
+   }
+  }
+ ]
+}

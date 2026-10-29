@@ -1,0 +1,49 @@
+{
+ "orgs": {
+  "sierra_club": {
+   "description": "Massachusetts chapter of the Sierra Club, a volunteer-led group that lobbies and organizes statewide on clean energy, fossil fuel and pipeline opposition, transit, pollution, forests and water.",
+   "website": "https://www.sierraclub.org/massachusetts",
+   "geographic_focus": "Statewide",
+   "sources": [
+    "https://www.sierraclub.org/massachusetts"
+   ]
+  }
+ },
+ "not_found": [
+  "xr_western_mass",
+  "climate_xchange",
+  "elders_climate_action_mass",
+  "mass_audubon_wma",
+  "mass_audubon_wellfleet_bay_wildlife_sanctuary",
+  "sunrise_boston",
+  "sunrise_ipswich",
+  "sunrise_western_mass",
+  "sunrise_amherst",
+  "sunrise_lexington",
+  "mit_sea",
+  "unitarian_universalist_mass_action",
+  "environment_massachusetts",
+  "pipeline_awareness_network_ne",
+  "coalition_for_social_justice",
+  "fore_river_residents_against_the_compressor_station",
+  "north_american_indian_center_of_boston",
+  "slingshot",
+  "350ma",
+  "350ma_cape_cod",
+  "350ma_central_mass",
+  "350ma_berkshires",
+  "berkshire_environmental_action_team",
+  "canton_residents_for_a_sustainable_equitable_future",
+  "climate_action_brookline",
+  "climate_code_blue",
+  "food_and_water_watch",
+  "jewish_alliance_for_law_and_social_action",
+  "partnership_for_policy_integrity",
+  "american_friends_service_committee_northeast_region",
+  "arise_for_social_justice",
+  "balanced_rock_investment_advisors",
+  "ben_hillman_and_company",
+  "bodhisara_dharma_community"
+ ],
+ "notes": "INCOMPLETE. The session's WebSearch budget was already exhausted (200/200) when I started, and WebFetch returned PROVENANCE_REQUIRED (permission not answered) for nearly every URL; only sierraclub.org/massachusetts and massaudubon.org homepage were fetched. Listed not_found ids were NOT researched, not confirmed absent. The Mass Audubon homepage (501c3 statewide nonprofit) did not mention Western Mass or Wellfleet Bay specifically, so nothing was filled for those two. Sierra Club type left blank (page does not state 501c3/c4)."
+}
