@@ -75,7 +75,7 @@ export function createTopbar(
   // Each page has a one-line hint (Oct 29: "make the menu more self-explanatory"): a second line in the phone menu,
   // a tooltip on wide screens.
   const tabs: { id: TopTab; label: string; hint: string; disabled?: boolean; group?: "dir" }[] = [
-    { id: "map", label: "Map", hint: "Groups and coalitions, and who works with whom" },
+    { id: "map", label: "Network map", hint: "Groups and coalitions, and who works with whom" },
     { id: "geo", label: "Geographic", hint: "Where groups and events are, on a map" },
     { id: "topics", label: "Topics", hint: "What groups are working on" },
     { id: "orgs", label: "Organizations", hint: "Every group, with its links and contacts", group: "dir" },
