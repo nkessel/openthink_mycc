@@ -21,9 +21,9 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 - `npm run test:apps-script` tests the sheet script in Node (no Google needed).
 
 ## Waiting on a person
-1. **Switch on the confirmation screen**: web app version 7 (Code.gs + Confirm.gs, Oct 29) is deployed. Left for Nathan: in the sheet, menu → "Make confirmation links" (Google asks to approve new permissions once), and optionally add the script property `ADMIN_EMAILS` (Editors rows with role admin already count as admins).
+1. **Confirmation links are made** (Oct 29): the private spreadsheet "MA Climate Organization Map: confirmation links (private)" in Nathan's Drive has one link per group (150), all "not sent". Sending them (Wave 1) is the team's call. Optional: script property `ADMIN_EMAILS` (admins are also taken from Editors rows with role admin).
 2. **Default branch** on GitHub (`development_branch` vs `main`): Nathan's call.
-3. **Full event descriptions**: event pages couldn't be opened from the cloud session. Options: approve the sites in a browser session, a sheet menu that fetches each page's summary, or let groups rewrite them on the confirmation screen.
+3. **Event descriptions**: 25 upcoming/recurring events rewritten from their own pages on Oct 29 (Change Log row). Broken link: passive_house_massachusetts_e3 (Green Building Showcase page is 404).
 4. **Name for the "Map" tab**: ideas given: Network (suggested), Connections, Constellation, Ecosystem, Who works with whom, Relationships, Coalitions.
 
 ## Recent (newest first)

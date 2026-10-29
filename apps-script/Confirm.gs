@@ -48,10 +48,15 @@ function makeConfirmationLinks() {
 }
 
 function webAppUrl_() {
+  // Run from the editor, getUrl() gives the editors-only /dev address (Oct 29: the first links had it), so the
+  // public /exec address is taken from the script property WEB_APP_URL, or from the live site's LIVE_DATA_URL.
   var url = '';
   try { url = ScriptApp.getService().getUrl() || ''; } catch (e) { /* not deployed yet */ }
-  return url || PropertiesService.getScriptProperties().getProperty('WEB_APP_URL') || '';
+  if (/\/dev$/.test(url)) url = '';
+  return url || PropertiesService.getScriptProperties().getProperty('WEB_APP_URL') || DEFAULT_WEB_APP_URL;
 }
+/** The deployed web app (the same address as LIVE_DATA_URL in src/data.config.ts). */
+var DEFAULT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwj2109KXf2Ndv-0ZCHp0a6MH3aVSejxkqofBOfOFHRSvMi61DXjkeIe25OlsHNbs5S/exec';
 
 /** Adds a row (with a new secret token) for every visible organization that has none yet. Returns how many. */
 function addConfirmationLinks_(ss, t, baseUrl) {
