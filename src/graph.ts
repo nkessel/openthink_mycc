@@ -82,6 +82,7 @@ export interface GraphSettings {
   focusSize: number; // how big the opened group is drawn
   focusSpace: number; // room between the opened group's activity and its partner groups
   focusRowGap: number; // spacing between the rows of partner groups
+  focusSatSize: number; // how big the opened group's coalitions and partner groups are drawn (1 = their usual size)
 }
 
 export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
@@ -107,6 +108,7 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   focusSize: 1,
   focusSpace: 1,
   focusRowGap: 1,
+  focusSatSize: 1.8, // Oct 29: partners were too small next to the bigger opened group
 };
 
 export interface Graph {
@@ -1735,13 +1737,16 @@ export function createGraph(
         // as drawn: an opened org's coalitions are scaled up to 1.5× but never past ~70% of the opened org
         // (a big coalition used to crowd out the group you opened), its partner groups 0.75× (styles.css .linked)
         const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5, (0.7 * nodeR) / nodeRadiusOf(o)) : 0.75);
-        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? linkScale(o) : 1);
+        // Satellites are drawn bigger too (Map settings → Bubble size weighting → Partner groups, CSS --ss).
+        const ss = settings.focusSatSize;
+        nodeLayer.style("--ss", String(ss));
+        const drawnR = (o: GraphNode) => nodeRadiusOf(o) * (n.kind === "org" ? linkScale(o) : 1) * ss;
         nodeSel.filter((d) => n.kind === "org" && d.kind === "coalition").style("--ls", (d) => String(Math.max(0.5, linkScale(d))));
         pinnedMembers.sort((a, b) => drawnR(b) - drawnR(a));
         const maxR = Math.max(...pinnedMembers.map((o) => drawnR(o)));
         // Spacing matches the collision size, so neighbours on a row never shove each other while their springs
         // pull them back (that tug-of-war made a crowded ring rock).
-        const maxC = Math.max(maxR, ...pinnedMembers.map((o) => collideRadius(o)));
+        const maxC = Math.max(maxR, ...pinnedMembers.map((o) => collideRadius(o) * ss));
         const spacing = 2 * maxC + 6; // between neighbours along a row
         const rowGap = (2 * maxC + 20) * settings.focusRowGap; // between rows (room for a name under each)
         // A circular orbit above the items' orbit, far enough out to clear their labels (which run sideways).
@@ -2079,6 +2084,7 @@ export function createGraph(
     for (const o of pinnedMembers) { o.fx = null; o.fy = null; }
     pinnedMembers = [];
     nodeSel.classed("sats-hidden", false).classed("member-ring", false).classed("linked", false).classed("focused", false);
+    nodeLayer.style("--ss", null);
     sim.force("focusPush", null);
     sim.force("memberPull", null);
     sim.velocityDecay(calm ? 0.5 : 0.4);
@@ -2175,7 +2181,7 @@ export function createGraph(
         // An open group redraws its moons with the new kinds.
         if (focusId && partial.alwaysShow === undefined) { const f = focusId; exitFocus(false); enterFocus(f); }
       }
-      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined) && focusId) {
+      if ((partial.focusSize !== undefined || partial.focusSpace !== undefined || partial.focusRowGap !== undefined || partial.focusSatSize !== undefined) && focusId) {
         const f = focusId;
         exitFocus(false);
         enterFocus(f);

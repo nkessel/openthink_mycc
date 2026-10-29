@@ -302,6 +302,13 @@ export function createControls(
     }, { min: 0.4, max: 1.6, step: 0.05, hint: "Smaller ← → bigger: the group you click, in the zoomed-in view. Middle = the site's default." }),
   );
   bubbleBody.appendChild(
+    makeSlider("Its partner groups", state.settings.focusSatSize, (v) => {
+      state.settings.focusSatSize = v;
+      cb.onSettingsChange({ focusSatSize: v });
+      saveState(state);
+    }, { min: 0.6, max: 3, step: 0.1, hint: "Smaller ← → bigger: the coalitions and groups around the group you clicked." }),
+  );
+  bubbleBody.appendChild(
     makeSlider("All bubbles", state.settings.nodeSize, (v) => {
       state.settings.nodeSize = v;
       cb.onSettingsChange({ nodeSize: v });
