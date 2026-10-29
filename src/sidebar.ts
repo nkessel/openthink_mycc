@@ -71,8 +71,25 @@ export function createSidebar(
   const linksBlock = h("div", { class: "links-block" });
   const filtersBlock = h("div", { class: "filters-block" });
   const controlsBlock = h("div", { class: "controls-block" });
-  aside.appendChild(coalitionsBlock);
-  aside.appendChild(linksBlock);
+  // Coalitions fold open and closed (Oct 29), remembered in this browser. Inside, the All / None buttons and the
+  // "Groups that work together" switch come first, then the list.
+  const COAL_KEY = "openthink.coalitionsOpen";
+  let coalOpen = true;
+  try { coalOpen = localStorage.getItem(COAL_KEY) !== "0"; } catch { /* ignore */ }
+  const coalHead = h("button", { class: "section-head coalitions-head", type: "button", "aria-expanded": String(coalOpen) },
+    h("span", { class: "caret" }, "▾"), h("span", { class: "section-title" }, "Coalitions"));
+  const coalSection = h("section", { class: `panel-section coalitions-section ${coalOpen ? "open" : ""}` });
+  const coalBody = h("div", { class: "section-body" });
+  coalHead.addEventListener("click", () => {
+    coalOpen = !coalSection.classList.contains("open");
+    coalSection.classList.toggle("open", coalOpen);
+    coalHead.setAttribute("aria-expanded", String(coalOpen));
+    try { localStorage.setItem(COAL_KEY, coalOpen ? "1" : "0"); } catch { /* ignore */ }
+  });
+  const coalTools = h("div", { class: "coalitions-tools" });
+  coalBody.append(coalTools, linksBlock, coalitionsBlock);
+  coalSection.append(coalHead, coalBody);
+  aside.appendChild(coalSection);
   aside.appendChild(filtersBlock);
   aside.appendChild(controlsBlock);
 
@@ -83,7 +100,7 @@ export function createSidebar(
 
   function renderCoalitions() {
     clear(coalitionsBlock);
-    coalitionsBlock.appendChild(h("h3", {}, "Coalitions"));
+    clear(coalTools);
 
     for (const c of data.coalitions) {
       const cb_in = h("input", {
@@ -120,9 +137,10 @@ export function createSidebar(
       renderCoalitions();
       cb.onChange(new Set(visible));
     });
+    actions.appendChild(h("span", { class: "coalitions-tools-label" }, "Show:"));
     actions.appendChild(allBtn);
     actions.appendChild(noneBtn);
-    coalitionsBlock.appendChild(actions);
+    coalTools.appendChild(actions);
   }
 
   renderCoalitions();

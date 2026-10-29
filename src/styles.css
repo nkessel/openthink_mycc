@@ -3048,7 +3048,7 @@ html, body { overflow-x: clip; max-width: 100%; }
 /* Touch screens: controls big enough to hit with a thumb (WCAG 2.5.8 asks for 24px; we aim for 36–44px). */
 @media (pointer: coarse) {
   .chip, .cr-seg button, .panel-fold, .reset-map-btn, .sidebar-hide, .sidebar-show, .focus-back, .map-legend-head,
-  .edit-btn, .btn-site, .section-head, .coalitions-block .actions button, .drawer-tab, .geo-near, .lp-btn { min-height: 40px; }
+  .edit-btn, .btn-site, .section-head, .coalitions-tools .actions button, .drawer-tab, .geo-near, .lp-btn { min-height: 40px; }
   .stale-notice .edit-btn { display: inline-flex; align-items: center; padding: 8px 14px; font-size: 13px; }
   .map-legend .legend-hide { min-height: 32px; padding: 4px 12px; }
   .land-link { min-height: 40px; display: inline-flex; align-items: center; }
@@ -3237,3 +3237,7 @@ html, body { overflow-x: clip; max-width: 100%; }
 .bill-side { font-weight: 600; font-size: 12px; margin-top: 6px; }
 .bill-side.support { color: #16a34a; }
 .bill-side.oppose { color: #dc2626; }
+/* Coalitions as a folding section (Oct 29): All / None and "Groups that work together" first, then the list */
+.coalitions-section .coalitions-tools .actions { margin: 2px 0 6px; align-items: center; }
+.coalitions-section .coalitions-tools-label { font-size: 12px; color: var(--text-dim); margin-right: 2px; }
+.coalitions-section .links-block { margin: 0 0 8px; }
