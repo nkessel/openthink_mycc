@@ -708,7 +708,7 @@ export function createGraph(
   const PHONE = window.matchMedia("(max-width: 720px)").matches;
   const DETAIL_ON_K = PHONE ? 4.2 : 1.9; // zoom at which dots become icons
   const DETAIL_OFF_K = PHONE ? 3.6 : 1.6; // and back (a gap so it doesn't flicker)
-  const LABEL_ON_K = PHONE ? 5.5 : 2.8; // zoom at which item names appear
+  const LABEL_ON_K = PHONE ? 8 : 4.5; // zoom at which item names appear (Oct 29: later, so they overlap less)
   let satsReady = false;
   let satMode: 0 | 1 = 0;
   const satLevel = new Map<string, 0 | 1>();
