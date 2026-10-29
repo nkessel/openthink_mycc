@@ -273,16 +273,17 @@ export function createControls(
   // Clearer wording (Oct 24): every slider says what moving it does, and both ends are explained.
   const { section: bubbleSection, body: bubbleBody } = makeSection("Bubble size weighting");
   bubbleBody.appendChild(h("div", { class: "ctrl-hint section-lead" }, "Change how big the circles on the map are, and what makes one bigger than another."));
-  bubbleBody.appendChild(
-    makeSlider("Coalitions with more members", state.settings.weightConnections, (v) => {
+  // One group (Oct 29): each slider makes groups with more of one thing visibly bigger.
+  const sliderBox = h("div", { class: "weight-sliders" });
+  sliderBox.appendChild(h("div", { class: "ctrl-label weight-head" }, "Bigger bubbles for groups with more…"));
+  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Slide right to make the groups with more of each one stand out. All the way left: it doesn't change the size."));
+  sliderBox.appendChild(
+    makeSlider("Members", state.settings.weightConnections, (v) => {
       state.settings.weightConnections = v;
       cb.onSettingsChange({ weightConnections: v });
       saveState(state);
-    }, { hint: "Left: every coalition the same size. Right: coalitions with more member groups are bigger." }),
+    }, { hint: "Coalitions with more member groups." }),
   );
-  const sliderBox = h("div", { class: "weight-sliders" });
-  sliderBox.appendChild(h("div", { class: "ctrl-label weight-head" }, "Busier groups"));
-  sliderBox.appendChild(h("div", { class: "ctrl-hint" }, "Left: doesn't change the size. Right: each one a group has makes its bubble bigger."));
   for (const [label, key] of [["Events", "weightEvents"], ["Projects", "weightProjects"], ["Actions & volunteer roles", "weightActions"]] as const) {
     sliderBox.appendChild(
       makeSlider(label, state.settings[key], (v) => {
