@@ -111,6 +111,8 @@ body {
 
 .topbar .tabs { display: flex; align-items: center; gap: 4px; }
 .tab-menu-btn, .tab-switch-map { display: none; }
+/* "Directories": a heading in the phone menu; on wide screens a thin divider before the lists */
+.topbar .tabs .tab-group-head { width: 1px; height: 20px; margin: 0 6px; background: var(--border); font-size: 0; overflow: hidden; }
 
 /* ---------- Main layout ---------- */
 .main {
@@ -1668,7 +1670,7 @@ body {
   .topbar .tabs .tab { height: 44px; text-align: left; padding: 0 14px; border-radius: 8px; }
   .topbar .tabs .tab.active { background: var(--bg-elev-2); }
   .topbar .tabs .tab.active::after { left: 0; right: auto; top: 10px; bottom: 10px; width: 3px; height: auto; }
-  .topbar .tabs .tab-switch-map { display: block; border-top: 1px solid var(--border); border-radius: 0 0 8px 8px; color: var(--text-dim); }
+  .topbar .tabs .tab-group-head { width: auto; height: auto; margin: 6px 0 0; padding: 10px 14px 4px; background: none; border-top: 1px solid var(--border); font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); }
   /* Sidebar opens as an overlay; the map always keeps the full width. */
   .view.map,
   .view.map.sidebar-collapsed {
@@ -2089,6 +2091,7 @@ text.sat-more { fill: var(--text-dim); }
 
 .reset-map-btn { appearance:none; border:1px solid var(--border); border-radius:999px; background:var(--bg-elev); color:var(--text-dim); font:inherit; font-size:12px; padding:6px 12px; cursor:pointer; align-self:flex-start; }
 .reset-map-btn:hover { color:var(--text); }
+.reset-map-btn.reset-bottom { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 4; align-self: auto; min-height: 34px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); }
 .node-org.member-ring, .node-org.member-ring.partner { opacity: 1; }
 /* An organization's coalitions and partner groups, gathered on the outer orbit when it is opened: present but quiet */
 .node-coalition.member-ring, .node-coalition.member-ring.partner { opacity: 0.8; }
@@ -3012,7 +3015,7 @@ html, body { overflow-x: clip; max-width: 100%; }
      the page menu shows its current page without pushing past the edge. */
   .topbar { gap: 6px; }
   /* The page name matters more than the title here: the title wraps onto two short lines instead of cutting the page name. */
-  .topbar .brand { flex: 0 1 auto; min-width: 0; max-width: 92px; white-space: normal; font-size: 13px; line-height: 1.1; margin-right: auto; }
+  .topbar .brand { flex: 0 1 auto; min-width: 0; max-width: 190px; white-space: normal; font-size: 14px; line-height: 1.15; margin-right: auto; }
   .lp-btn { flex: none; margin-left: 0; padding: 4px 8px; gap: 5px; min-height: 40px; }
   .lp-btn .lp-word { font-size: 11px; line-height: 1.1; white-space: normal; max-width: 5.2em; text-align: left; }
   .tab-menu-btn { flex: 0 0 auto; min-width: 0; max-width: none; min-height: 40px; padding: 6px 10px; }
@@ -3132,9 +3135,10 @@ html, body { overflow-x: clip; max-width: 100%; }
   .cr-bar.foldable.folded { padding: 4px 12px; }
   .geo-panel.foldable.folded { background: transparent; box-shadow: none; }
 }
-/* Map name: full on wide screens, the short name ("MA Climate Orgs") where the top bar is tight */
+/* Map name: the full title everywhere (Oct 29: the phone top bar has room for it now, on up to two lines); only the
+   narrowest phones use the short name, "MA Climate Map" */
 .brand .brand-short { display: none; }
-@media (max-width: 1150px) {
+@media (max-width: 350px) {
   .brand .brand-long { display: none; }
   .brand .brand-short { display: inline; }
 }

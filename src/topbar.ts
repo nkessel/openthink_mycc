@@ -70,14 +70,16 @@ export function createTopbar(
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
   window.addEventListener("resize", closeMenu);
 
-  const tabs: { id: TopTab; label: string; disabled?: boolean }[] = [
+  // Order (Oct 29): the three views, then the lists under "Directories" (a heading in the phone menu, a divider on
+  // wide screens).
+  const tabs: { id: TopTab; label: string; disabled?: boolean; group?: "dir" }[] = [
     { id: "map", label: "Map" },
     { id: "geo", label: "Geographic" },
-    { id: "orgs", label: "Organizations" },
-    { id: "events", label: "Events" },
-    { id: "projects", label: "Projects" },
-    { id: "actions", label: "Actions" },
     { id: "topics", label: "Topics" },
+    { id: "orgs", label: "Organizations", group: "dir" },
+    { id: "events", label: "Events", group: "dir" },
+    { id: "projects", label: "Projects", group: "dir" },
+    { id: "actions", label: "Actions", group: "dir" },
   ];
   const buttons = new Map<TopTab, HTMLElement>();
   // On a phone the tabs don't fit: they fold into a menu opened from a button showing the current tab.
@@ -93,7 +95,12 @@ export function createTopbar(
   document.addEventListener("click", (e) => { if (!nav.contains(e.target as Node)) setOpen(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
 
+  let dirHead = false;
   for (const t of tabs) {
+    if (t.group === "dir" && !dirHead) {
+      dirHead = true;
+      nav.appendChild(h("div", { class: "tab-group-head", role: "presentation" }, "Directories"));
+    }
     const btn = h(
       "button",
       {
@@ -114,10 +121,7 @@ export function createTopbar(
     buttons.set(t.id, btn);
     nav.appendChild(btn);
   }
-  // In the phone menu, the map switcher is a plain item (long-pressing the title is hard to discover).
-  const switchItem = h("button", { class: "tab tab-switch-map", type: "button" }, "Switch map\u2026");
-  switchItem.addEventListener("click", (e) => { e.stopPropagation(); setOpen(false); openMenu(); });
-  nav.appendChild(switchItem);
+  // (No "Switch map…" item: the other maps stay a quiet extra, reached by long-pressing or right-clicking the title.)
   bar.appendChild(nav);
   bar.appendChild(accessibilityButton());
   bar.appendChild(menuBtn);

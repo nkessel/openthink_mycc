@@ -36,9 +36,9 @@ export const MAPS: Record<MapId, MapDef> = {
     id: "ma",
     name: "Massachusetts",
     // Named at the 10/15 meeting: "MA Climate Organization Map", not "climate map" (that means something else).
-    // Short name on phones: "MA Climate Orgs" (Oct 28: replaces "MACOM").
+    // Short name, only where even two lines of the full title will not fit (Oct 29, Nathan: "MA Climate Map").
     title: "MA Climate Organization Map",
-    short: "MA Climate Orgs",
+    short: "MA Climate Map",
     fullTitle: "MA Climate Organization Map",
     sources: [LIVE_DATA_URL, SNAPSHOT_URL].filter(Boolean),
     editable: true,
