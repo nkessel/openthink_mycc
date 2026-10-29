@@ -71,8 +71,8 @@ export function createSidebar(
   const linksBlock = h("div", { class: "links-block" });
   const filtersBlock = h("div", { class: "filters-block" });
   const controlsBlock = h("div", { class: "controls-block" });
-  // Coalitions fold open and closed (Oct 29), remembered in this browser. Inside, the All / None buttons and the
-  // "Groups that work together" switch come first, then the list.
+  // Coalitions fold open and closed (Oct 29), remembered in this browser. Inside, the "Groups that work together"
+  // switch comes first, then the list.
   const COAL_KEY = "openthink.coalitionsOpen";
   let coalOpen = true;
   try { coalOpen = localStorage.getItem(COAL_KEY) !== "0"; } catch { /* ignore */ }
@@ -124,23 +124,7 @@ export function createSidebar(
       coalitionsBlock.appendChild(row);
     }
 
-    const actions = h("div", { class: "actions" });
-    const allBtn = h("button", {}, "All");
-    const noneBtn = h("button", {}, "None");
-    allBtn.addEventListener("click", () => {
-      visible = new Set(data.coalitions.map((c) => c.id));
-      renderCoalitions();
-      cb.onChange(new Set(visible));
-    });
-    noneBtn.addEventListener("click", () => {
-      visible = new Set();
-      renderCoalitions();
-      cb.onChange(new Set(visible));
-    });
-    actions.appendChild(h("span", { class: "coalitions-tools-label" }, "Show:"));
-    actions.appendChild(allBtn);
-    actions.appendChild(noneBtn);
-    coalTools.appendChild(actions);
+    // (No All / None buttons, Oct 29: Nathan took them out.)
   }
 
   renderCoalitions();
