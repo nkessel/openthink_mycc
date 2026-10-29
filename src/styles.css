@@ -1287,6 +1287,10 @@ body {
 .link.org-link.highlight {
   stroke: rgba(251, 191, 36, 0.95);
 }
+/* Oct 29: named by both groups = solid and easy to see; named by one = dotted, with an arrow to the group named */
+.link.org-link.mutual { stroke: rgba(251, 191, 36, 0.9); }
+.link.org-link.one-way { stroke-dasharray: 3 4; stroke-linecap: round; }
+.org-arrow-head { fill: rgba(251, 191, 36, 0.8); }
 
 /* ---------- search box (graph, geographic, orgs list) ---------- */
 .graph-overlay {
@@ -2187,6 +2191,9 @@ text.sat-more { fill: var(--text-dim); }
 .map-legend .swatch { display: inline-block; border-radius: 999px; background: var(--bg-elev-2); border: 1px solid var(--text-faint); flex: none; }
 .map-legend .line { display: inline-block; width: 20px; height: 0; border-top: 1px solid rgba(255, 255, 255, 0.35); flex: none; }
 .map-legend .line.org { border-top: 2px solid rgba(251, 191, 36, 0.7); }
+.map-legend .line.org.mutual-key { border-top: 3px solid rgba(251, 191, 36, 0.9); margin-left: 12px; width: 18px; }
+.map-legend .line.org.one-way-key { border-top: 2px dotted rgba(251, 191, 36, 0.8); margin-left: 12px; width: 18px; position: relative; }
+.map-legend .line.org.one-way-key::after { content: ""; position: absolute; right: -4px; top: -5px; border: 4px solid transparent; border-left: 5px solid rgba(251, 191, 36, 0.8); }
 @media (max-width: 720px) {
   .map-legend { bottom: 12px; }
   .map-legend:not(.open) { min-width: 0; }
@@ -3243,3 +3250,42 @@ html, body { overflow-x: clip; max-width: 100%; }
 .coalitions-section .coalitions-tools .actions { margin: 2px 0 6px; align-items: center; }
 .coalitions-section .coalitions-tools-label { font-size: 12px; color: var(--text-dim); margin-right: 2px; }
 .coalitions-section .links-block { margin: 8px 0 4px; }
+
+/* Development note at the top of the map (Oct 29): beside the search box, or under it on narrow screens */
+.dev-note {
+  position: absolute;
+  top: 12px;
+  left: 364px;
+  right: 12px;
+  margin-right: auto;
+  width: fit-content;
+  max-width: 620px;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 8px 7px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elev);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: var(--shadow);
+}
+.dev-note a { color: var(--accent); text-decoration: underline; font-weight: 600; }
+.dev-note-x {
+  flex: none;
+  background: none;
+  border: 0;
+  color: var(--text-dim, inherit);
+  opacity: 0.7;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.dev-note-x:hover { opacity: 1; }
+@media (max-width: 900px) {
+  .dev-note { top: 58px; left: 12px; max-width: none; font-size: 12px; }
+}

@@ -883,3 +883,9 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - Oct 29 (Nathan: satellites way too small when you open an org): satellites (its coalitions and partner groups, or a coalition's members) are drawn 1.8× bigger by default, with spacing to match; new slider Bubble size weighting → "Its partner groups" (0.6–3×), right under "Opened group".
 - Oct 29 (checked in the browser): partner orgs were still ~37 px next to a ~390 px opened group. Partner groups are no longer drawn at 0.75×, and the default "Its partner groups" size is 2.5× (about 70 px there).
 - Oct 29: partner groups default 4× (slider 1–7×); coalitions around an opened org are capped at 80% of the opened group so they never outgrow it.
+
+## 2026-10-29 — one-way vs. mutual org links; development note (branch claude/one-way-links)
+- Audited the Connections tab against the Organization Info Form responses: all 34 rows match; removed a test row, cleared made-up frequencies (the form never asked), added MOF's Springfield Climate Justice Coalition membership.
+- Org links now keep direction (reported_by). Named by both groups = solid, brighter, thicker line; named by one = dotted line with an arrow to the group named. Legend rows added.
+- Code.gs: the connections import keeps one row per direction and leaves frequency blank when unknown; buildDataFile_ accepts a blank frequency (weight 1). Tests updated.
+- Added a note at the top of the map ("This map is currently in development…") linking "please let us know" to the feedback form; × hides it for the visit.

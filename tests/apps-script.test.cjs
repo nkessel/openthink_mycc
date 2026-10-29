@@ -608,7 +608,16 @@ console.log("second round trip (org-owned items, locations, links) OK");
     ["a","mpf","","coalition","member"], ["b","mpf","","coalition","already"]];
   const t = { orgs: [{ id: "a", coalition_ids: "" }, { id: "b", coalition_ids: "mpf" }, { id: "c" }], coalitions: [{ id: "mpf" }], connections: [{ from_org: "c", to_org: "a" }] };
   const out = J(G("connectionsToAdd_")(rows, t));
-  assert.deepEqual(out.links, [{ from_org: "a", to_org: "b", frequency: "few_per_year" }], "reversed duplicate and existing pair skipped");
+  // each group that named the other gets its own row (so "both named each other" can be shown); only exact repeats
+  // are skipped (c → a is already there, a → c is new); a blank frequency stays blank (the form didn't ask)
+  assert.deepEqual(out.links, [{ from_org: "a", to_org: "b", frequency: "few_per_year" }, { from_org: "b", to_org: "a", frequency: "weekly" }, { from_org: "a", to_org: "c", frequency: "" }], "one row per direction");
+  {
+    // both directions → one link reported by both; one direction → reported by one
+    const d2 = G("buildDataFile_")({ coalitions: [], orgs: [{ id: "a", name: "A", lat: 0, lng: 0 }, { id: "b", name: "B", lat: 0, lng: 0 }, { id: "c", name: "C", lat: 0, lng: 0 }], projects: [], events: [], actions: [],
+      connections: [{ from_org: "a", to_org: "b", frequency: "" }, { from_org: "b", to_org: "a", frequency: "" }, { from_org: "c", to_org: "a", frequency: "" }] }, "x");
+    const links = J(d2.org_links);
+    assert.deepEqual(links.map((l) => [l.source, l.target, l.reported_by.sort().join("+"), l.weight]), [["a", "b", "a+b", 1], ["a", "c", "c", 1]]);
+  }
   assert.deepEqual(out.memberships, [{ org: "a", coalition: "mpf" }]);
   assert.equal(out.skipped.length, 1);
   console.log("reviewed connections import OK");
