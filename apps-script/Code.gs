@@ -275,6 +275,7 @@ function onOpen() {
     .addItem('Re-check event and project pins (wrong town or outside ' + REGION.stateName + ')', 'fixPinsOutsideMa')
     .addItem('Apply the source check (hide events, projects and actions with no page that names them)', 'applySourceCheck')
     .addItem('Link the social justice spreadsheet', 'linkSocialJusticeSheet')
+    .addItem('Make confirmation links (one private link per group)', 'makeConfirmationLinks')
     .addToUi();
 }
 
@@ -2346,6 +2347,7 @@ function logChange_(email, form, status, flag, type, id, name, changes) {
 /** Deploy → New deployment → Web app (Execute as: me, Who has access: Anyone). */
 function doGet(e) {
   var p = (e && e.parameter) || {};
+  if (p.confirm) return confirmPage_(String(p.confirm)); // a group's confirmation screen (Confirm.gs)
   if (p.verify) {
     return HtmlService.createHtmlOutput('<p style="font:16px system-ui;max-width:520px;margin:48px auto">' +
       confirmVerification_(String(p.verify)).replace(/[<>&]/g, '') + '</p>').setTitle(REGION.title);

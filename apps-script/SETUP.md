@@ -123,3 +123,13 @@ Use this when the repo has new events/projects/actions (from `node scripts/apply
 4. **Connect the site.** On **Start Here**, copy the JSON in the row "For the site: paste into src/forms.config.ts" and send it over (or paste it over `FORMS` in `src/forms.config.ts`). The `action` entry makes the "Update this action" link on the site open the new form.
 
 Anything a point person edits through a form clears that item's "needs more information" notice.
+
+## Group Confirmation Screen (Oct 29)
+
+Each group gets its own private link to a page that shows everything the map has for it: its details, events, projects and actions. The point person enters their name and email, then for each card chooses **Edit**, **Approve** or **Remove**. **Save for later** keeps their work; **Finalize and Submit** puts it on the map (approved items are marked verified, removed ones hidden, edits written in, every change in Change Log) and adds them as a point person (up to three per group, pending until they open the email confirmation link). If two people open the same card, the second sees who is editing it and can ask them to hand it over.
+
+1. In Apps Script, add a second file: **+ → Script**, name it `Confirm`, and paste in [`Confirm.gs`](Confirm.gs). Save, then deploy a new version of the web app.
+2. In the sheet: **menu → Make confirmation links (one private link per group)**. It makes a separate spreadsheet, shared only with the admins, with one row and link per group. Running it again only adds rows for new groups.
+3. Send each group its link (column `link`). The `status` column shows not sent → opened → saved for later → submitted.
+
+Anyone with a group's link can change that group's information, so send it only to the group. To cut off a link, delete its row (or change its token) in the links spreadsheet.

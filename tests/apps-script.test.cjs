@@ -45,10 +45,12 @@ function sheet(name) {
 const ssObj = { getSheetByName: sheet, getUrl: () => "https://sheet", toast: () => {} };
 const props = { ADMIN_EMAILS: "admin1@example.org, admin2@example.org, admin3@example.org" };
 const mail = [];
+const cache = {};
 const ctx = {
   console, Math, Date, JSON, String, Number, Array, Object, RegExp, isNaN,
   SpreadsheetApp: { getActiveSpreadsheet: () => ssObj, openById: () => ssObj, getActive: () => ssObj },
   PropertiesService: { getScriptProperties: () => ({ getProperty: (k) => props[k] || null, setProperty: (k, v) => (props[k] = v), deleteProperty: (k) => delete props[k] }) },
+  CacheService: { getScriptCache: () => ({ get: (k) => cache[k] || null, put: (k, v) => (cache[k] = v), remove: (k) => delete cache[k] }) },
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   Session: { getScriptTimeZone: () => "America/New_York", getActiveUser: () => ({ getEmail: () => "" }) },
   MailApp: { sendEmail: (to, subject, body) => mail.push({ to, subject, body }) },
@@ -56,6 +58,7 @@ const ctx = {
 };
 vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/Code.gs"), "utf8"), ctx);
+vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/Confirm.gs"), "utf8"), ctx);
 const G = (name) => vm.runInContext(name, ctx);
 const Q = G("Q"), COLS = G("COLS");
 const orig = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data.json"), "utf8"));
@@ -673,4 +676,78 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.ok(Array.isArray(sj.coalitions) && Array.isArray(sj.organizations) && Array.isArray(sj.edges));
   delete props.SJ_SHEET_ID;
   console.log("social justice feed OK");
+}
+{
+  // Group Confirmation Screen (Oct 29): one private link per group; approve / edit / remove; point people (max 3); holds.
+  const LC = G("LINK_COLS");
+  book["Links"] = [LC.slice()];
+  props.LINKS_SHEET_ID = "links-sheet"; // the fake opens the same workbook
+  const t0 = ctx.readAll_();
+  const added = G("addConfirmationLinks_")(ssObj, t0, "https://script/exec");
+  assert.ok(added > 50, "a link per visible org");
+  assert.equal(G("addConfirmationLinks_")(ssObj, ctx.readAll_(), "https://script/exec"), 0, "running again adds nothing");
+  const linkRows = () => book["Links"].slice(1).map((r) => Object.fromEntries(LC.map((c, i) => [c, r[i]])));
+  // a group with events
+  const evs = ctx.readAll_().events.filter((e) => e.host_org_id && !ctx.isTrue_(e.hidden));
+  const orgId = evs[0].host_org_id;
+  const L = linkRows().find((r) => r.org_id === orgId);
+  assert.match(L.token, /^[0-9a-f]{32}$/);
+  assert.equal(L.link, "https://script/exec?confirm=" + L.token);
+  assert.equal(G("linkRow_")("deadbeef"), null);
+  const data = G("confirmData_")(G("linkRow_")(L.token).rec, ctx.readAll_());
+  assert.equal(data.org.id, orgId);
+  assert.ok(data.items.some((i) => i.id === evs[0].id && i.kind === "event"));
+  assert.ok(data.items.every((i) => i.id), "items have ids");
+  assert.equal(G("maskEmail_")("nathan@example.org"), "na•••@example.org");
+  // save for later keeps the state
+  const who = { name: "Pat Point", email: "Pat@Example.org" };
+  G("confirmSave")(L.token, { who, items: { [evs[0].id]: { kind: "event", decision: "approve", fields: {} } } });
+  assert.equal(linkRows().find((r) => r.org_id === orgId).status, "saved for later");
+  assert.equal(JSON.parse(linkRows().find((r) => r.org_id === orgId).draft).who.name, "Pat Point");
+  // holds: one person at a time; the second can ask; the first sees the request and hands it over
+  assert.deepEqual(J(G("confirmHold")(L.token, evs[0].id, who)), { ok: true });
+  const other = { name: "Sam Second", email: "sam@example.org" };
+  const busy = G("confirmHold")(L.token, evs[0].id, other);
+  assert.equal(busy.ok, false); assert.equal(busy.heldBy, "Pat Point");
+  G("confirmAsk")(L.token, evs[0].id, other);
+  assert.deepEqual(J(G("confirmPing")(L.token, who, [evs[0].id]).holds[evs[0].id]), { mine: true, requests: ["Sam Second"] });
+  assert.deepEqual(J(G("confirmPing")(L.token, other, [evs[0].id]).holds[evs[0].id]), { heldBy: "Pat Point" });
+  G("confirmRelease")(L.token, evs[0].id, who);
+  assert.equal(G("confirmHold")(L.token, evs[0].id, other).ok, true);
+  G("confirmRelease")(L.token, evs[0].id, other);
+  // submit: approve one event with an edit, remove another (if any), edit the org; someone else's item is ignored
+  const second = evs.find((e) => e.host_org_id === orgId && e.id !== evs[0].id);
+  const foreign = evs.find((e) => e.host_org_id !== orgId);
+  const items = {
+    [evs[0].id]: { kind: "event", decision: "approve", fields: { name: "Renamed by the group", date: "2026-11-20T18:30", link: "example.org/x", hidden: "TRUE" } },
+    [foreign.id]: { kind: "event", decision: "remove" },
+  };
+  if (second) items[second.id] = { kind: "event", decision: "remove" };
+  const before = mail.length;
+  const res = G("confirmSubmit")(L.token, { who, org: { decision: "approve", fields: { description: "Checked by the group" } }, items });
+  const ev = () => ctx.readAll_().events;
+  const e0 = ev().find((e) => e.id === evs[0].id);
+  assert.equal(e0.name, "Renamed by the group");
+  assert.equal(e0.date, "2026-11-20T18:30:00");
+  assert.equal(e0.link, "https://example.org/x");
+  assert.ok(ctx.isTrue_(e0.verified)); assert.ok(!ctx.isTrue_(e0.hidden), "only listed fields can change");
+  assert.ok(!ctx.isTrue_(ev().find((e) => e.id === foreign.id).hidden), "another group's item is untouched");
+  if (second) assert.ok(ctx.isTrue_(ev().find((e) => e.id === second.id).hidden));
+  assert.equal(ctx.readAll_().orgs.find((o) => o.id === orgId).description, "Checked by the group");
+  assert.equal(linkRows().find((r) => r.org_id === orgId).status, "submitted");
+  assert.equal(linkRows().find((r) => r.org_id === orgId).draft, "");
+  assert.ok(log().some((l) => l.form === "Confirmation screen" && l.record_id === evs[0].id));
+  // the submitter is now a pending point person, sent a confirmation email; admins were told
+  const ed = ctx.readAll_().editors.find((r) => String(r.email).toLowerCase() === "pat@example.org");
+  assert.ok(ed && ctx.isPending_(ed) && ctx.list_(ed.org_ids).includes(orgId));
+  assert.ok(mail.slice(before).some((m) => m.to === "pat@example.org"));
+  assert.ok(mail.slice(before).some((m) => /checked their information/.test(m.subject)));
+  assert.match(res.summary, /approved/);
+  // at most three point people per group
+  for (const n of [2, 3, 4]) G("confirmSubmit")(L.token, { who: { name: "P" + n, email: "p" + n + "@example.org" }, items: {} });
+  const pps = G("pointPeopleOf_")(orgId, ctx.readAll_().editors).map((p) => p.email);
+  assert.ok(pps.length <= 3 && !pps.includes("p4@example.org"), "no fourth point person");
+  assert.throws(() => G("confirmSubmit")(L.token, { who: { name: "", email: "x@example.org" } }), /name/);
+  delete props.LINKS_SHEET_ID;
+  console.log("confirmation screen OK");
 }
