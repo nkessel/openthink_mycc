@@ -72,20 +72,22 @@ export function createTopbar(
 
   // Order (Oct 29): the three views, then the lists under "Directories" (a heading in the phone menu, a divider on
   // wide screens).
-  const tabs: { id: TopTab; label: string; disabled?: boolean; group?: "dir" }[] = [
-    { id: "map", label: "Map" },
-    { id: "geo", label: "Geographic" },
-    { id: "topics", label: "Topics" },
-    { id: "orgs", label: "Organizations", group: "dir" },
-    { id: "events", label: "Events", group: "dir" },
-    { id: "projects", label: "Projects", group: "dir" },
-    { id: "actions", label: "Actions", group: "dir" },
+  // Each page has a one-line hint (Oct 29: "make the menu more self-explanatory"): a second line in the phone menu,
+  // a tooltip on wide screens.
+  const tabs: { id: TopTab; label: string; hint: string; disabled?: boolean; group?: "dir" }[] = [
+    { id: "map", label: "Map", hint: "Groups and coalitions, and who works with whom" },
+    { id: "geo", label: "Geographic", hint: "Where groups and events are, on a map" },
+    { id: "topics", label: "Topics", hint: "What groups are working on" },
+    { id: "orgs", label: "Organizations", hint: "Every group, with its links and contacts", group: "dir" },
+    { id: "events", label: "Events", hint: "Upcoming events you can go to", group: "dir" },
+    { id: "projects", label: "Projects", hint: "Ongoing work you can join", group: "dir" },
+    { id: "actions", label: "Actions", hint: "Things to do now, and volunteer roles", group: "dir" },
   ];
   const buttons = new Map<TopTab, HTMLElement>();
   // On a phone the tabs don't fit: they fold into a menu opened from a button showing the current tab.
   const nav = h("nav", { class: "tabs", id: "top-tabs", "aria-label": "Pages" });
   const menuLabel = h("span", { class: "tab-menu-label" }, tabs.find((t) => t.id === active)?.label ?? "Menu");
-  const menuBtn = h("button", { class: "tab-menu-btn", type: "button", "aria-haspopup": "true", "aria-expanded": "false", "aria-controls": "top-tabs" },
+  const menuBtn = h("button", { class: "tab-menu-btn", type: "button", title: "Pages: map, topics and lists", "aria-label": "Menu of pages", "aria-haspopup": "true", "aria-expanded": "false", "aria-controls": "top-tabs" },
     menuLabel, h("span", { class: "tab-menu-icon", "aria-hidden": "true" }, "\u2630"));
   const setOpen = (open: boolean) => {
     bar.classList.toggle("menu-open", open);
@@ -99,15 +101,17 @@ export function createTopbar(
   for (const t of tabs) {
     if (t.group === "dir" && !dirHead) {
       dirHead = true;
-      nav.appendChild(h("div", { class: "tab-group-head", role: "presentation" }, "Directories"));
+      nav.appendChild(h("div", { class: "tab-group-head", role: "presentation" }, "Directories: lists you can search"));
     }
     const btn = h(
       "button",
       {
         class: `tab ${t.id === active ? "active" : ""} ${t.disabled ? "disabled" : ""}`,
         "data-tab": t.id,
+        title: t.hint,
       },
-      t.label,
+      h("span", { class: "tab-label" }, t.label),
+      h("span", { class: "tab-hint" }, t.hint),
     );
     if (!t.disabled) {
       btn.addEventListener("click", () => {

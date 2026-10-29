@@ -111,6 +111,7 @@ body {
 
 .topbar .tabs { display: flex; align-items: center; gap: 4px; }
 .tab-menu-btn, .tab-switch-map { display: none; }
+.tab .tab-hint { display: none; } /* wide screens: the hint is the tooltip */
 /* "Directories": a heading in the phone menu; on wide screens a thin divider before the lists */
 .topbar .tabs .tab-group-head { width: 1px; height: 20px; margin: 0 6px; background: var(--border); font-size: 0; overflow: hidden; }
 
@@ -1671,7 +1672,8 @@ body {
     background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow);
   }
   .topbar.menu-open .tabs { display: flex; }
-  .topbar .tabs .tab { height: 44px; text-align: left; padding: 0 14px; border-radius: 8px; }
+  .topbar .tabs .tab { height: auto; min-height: 44px; text-align: left; padding: 7px 14px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; gap: 1px; }
+  .topbar .tabs .tab .tab-hint { display: block; font-size: 12px; font-weight: 400; color: var(--text-dim); line-height: 1.3; white-space: normal; }
   .topbar .tabs .tab.active { background: var(--bg-elev-2); }
   .topbar .tabs .tab.active::after { left: 0; right: auto; top: 10px; bottom: 10px; width: 3px; height: auto; }
   .topbar .tabs .tab-group-head { width: auto; height: auto; margin: 6px 0 0; padding: 10px 14px 4px; background: none; border-top: 1px solid var(--border); font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); }
@@ -3273,6 +3275,8 @@ html, body { overflow-x: clip; max-width: 100%; }
   line-height: 1.4;
   box-shadow: var(--shadow);
 }
+.dev-note { cursor: grab; touch-action: none; user-select: none; }
+.dev-note.dragging { cursor: grabbing; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
 .dev-note a { color: var(--accent); text-decoration: underline; font-weight: 600; }
 .dev-note-x {
   flex: none;
