@@ -21,7 +21,7 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 - `npm run test:apps-script` tests the sheet script in Node (no Google needed).
 
 ## Waiting on a person
-1. **Deploy the new sheet script (web app version 7+)**: the repo's `Code.gs` and `Confirm.gs` are newer than what's live. Needs someone signed in to the sheet's Google account. Before deploying, add the script property `ADMIN_EMAILS` (Project settings → Script properties; the core team's emails, comma-separated). Then run the sheet menu "Make confirmation links".
+1. **Switch on the confirmation screen**: web app version 7 (Code.gs + Confirm.gs, Oct 29) is deployed. Left for Nathan: in the sheet, menu → "Make confirmation links" (Google asks to approve new permissions once), and optionally add the script property `ADMIN_EMAILS` (Editors rows with role admin already count as admins).
 2. **Default branch** on GitHub (`development_branch` vs `main`): Nathan's call.
 3. **Full event descriptions**: event pages couldn't be opened from the cloud session. Options: approve the sites in a browser session, a sheet menu that fetches each page's summary, or let groups rewrite them on the confirmation screen.
 4. **Name for the "Map" tab**: ideas given: Network (suggested), Connections, Constellation, Ecosystem, Who works with whom, Relationships, Coalitions.
