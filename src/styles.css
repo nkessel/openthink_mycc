@@ -2659,7 +2659,7 @@ a.feedback-bid:hover { background: rgba(56, 189, 248, 0.16); border-color: rgba(
    so they never float loose while it moves into place). Coalitions are drawn big, so they read as bigger than
    groups even when they spill past the edges; partner groups are a little smaller and quieter. */
 .node-coalition.linked > * { transform: scale(calc(1.5 * var(--ss, 1))); }
-.node-org.linked > * { transform: scale(calc(0.75 * var(--ss, 1))); }
+.node-org.linked > * { transform: scale(var(--ss, 1)); }
 /* an opened group's satellites are drawn --ss times bigger (Map settings → Partner groups) */
 .node-org.member-ring:not(.linked) > :not(.sats), .node-coalition.member-ring:not(.linked) > :not(.sats) { transform: scale(var(--ss, 1)); }
 .node-coalition.linked { opacity: 0.9; }

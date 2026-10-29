@@ -108,7 +108,7 @@ export const DEFAULT_GRAPH_SETTINGS: GraphSettings = {
   focusSize: 1,
   focusSpace: 1,
   focusRowGap: 1,
-  focusSatSize: 1.8, // Oct 29: partners were too small next to the bigger opened group
+  focusSatSize: 2.5, // Oct 29: partners were too small next to the bigger opened group
 };
 
 export interface Graph {
@@ -1736,7 +1736,7 @@ export function createGraph(
       if (pinnedMembers.length) {
         // as drawn: an opened org's coalitions are scaled up to 1.5× but never past ~70% of the opened org
         // (a big coalition used to crowd out the group you opened), its partner groups 0.75× (styles.css .linked)
-        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5, (0.7 * nodeR) / nodeRadiusOf(o)) : 0.75);
+        const linkScale = (o: GraphNode) => (o.kind === "coalition" ? Math.min(1.5, (0.7 * nodeR) / nodeRadiusOf(o)) : 1); // partner groups no longer drawn smaller than usual (Oct 29)
         // Satellites are drawn bigger too (Map settings → Bubble size weighting → Partner groups, CSS --ss).
         const ss = settings.focusSatSize;
         nodeLayer.style("--ss", String(ss));
