@@ -205,16 +205,15 @@ export function createControls(
   const showRow = makeToggle("Show events, projects, actions, and volunteer roles", previewsOn, (v) => {
     window.dispatchEvent(new CustomEvent("openthink:setpreviews", { detail: { on: v } }));
   });
-  showRow.classList.add("show-text-row");
   const showSwitch = showRow.querySelector<HTMLElement>(".switch")!;
-  parent.appendChild(showRow);
   // Past items: only offered while the items are shown (each group's details always list them under "Past").
   const pastRow = makeToggle("Show past events, projects and actions", showPast(), (v) => setShowPast(v));
-  pastRow.classList.add("show-text-row", "sub-row");
+  pastRow.classList.add("sub-row");
   pastRow.title = "Finished projects, events that have happened and actions whose deadline has passed. Each group's details always list them under Past.";
-  parent.appendChild(pastRow);
 
+  // These two switches open the "Events, projects & actions" section (Oct 29), above which kinds to show.
   const { section: sizeSection, body: sizeBody } = makeSection("Events, projects & actions");
+  sizeBody.append(showRow, pastRow);
 
   // 2. Which kinds to show (the legend's Show / Hide buttons drive the same switches).
   const kindBox = h("div", { class: "kind-toggles" });

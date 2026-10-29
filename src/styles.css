@@ -3240,4 +3240,4 @@ html, body { overflow-x: clip; max-width: 100%; }
 /* Coalitions as a folding section (Oct 29): All / None and "Groups that work together" first, then the list */
 .coalitions-section .coalitions-tools .actions { margin: 2px 0 6px; align-items: center; }
 .coalitions-section .coalitions-tools-label { font-size: 12px; color: var(--text-dim); margin-right: 2px; }
-.coalitions-section .links-block { margin: 0 0 8px; }
+.coalitions-section .links-block { margin: 8px 0 4px; }
