@@ -274,13 +274,6 @@ export function createControls(
   const { section: bubbleSection, body: bubbleBody } = makeSection("Bubble size weighting");
   bubbleBody.appendChild(h("div", { class: "ctrl-hint section-lead" }, "Change how big the circles on the map are, and what makes one bigger than another."));
   bubbleBody.appendChild(
-    makeSlider("All bubbles", state.settings.nodeSize, (v) => {
-      state.settings.nodeSize = v;
-      cb.onSettingsChange({ nodeSize: v });
-      saveState(state);
-    }, { min: 0.4, max: 2.5, step: 0.05, hint: "Smaller ← → bigger. Every coalition and organization at once." }),
-  );
-  bubbleBody.appendChild(
     makeSlider("Coalitions with more members", state.settings.weightConnections, (v) => {
       state.settings.weightConnections = v;
       cb.onSettingsChange({ weightConnections: v });
@@ -300,24 +293,21 @@ export function createControls(
     );
   }
   bubbleBody.appendChild(sliderBox);
-  // When you open a group (Oct 26): how big it is drawn, and how much room its activity and partners get.
-  const focusBox = h("div", { class: "weight-sliders" });
-  focusBox.appendChild(h("div", { class: "ctrl-label weight-head" }, "When you open a group"));
-  focusBox.appendChild(h("div", { class: "ctrl-hint" }, "The zoomed-in view after you click a group. Middle = the site's default."));
-  for (const [label, key, hint] of [
-    ["Opened group size", "focusSize", "Smaller ← → bigger: the group you clicked."],
-    ["Room around its activity", "focusSpace", "Closer ← → further: how far its partner groups sit from its events, projects and actions."],
-    ["Space between partner rows", "focusRowGap", "Tighter ← → looser: the rings of coalitions and partner groups around it."],
-  ] as const) {
-    focusBox.appendChild(
-      makeSlider(label, state.settings[key], (v) => {
-        state.settings[key] = v;
-        cb.onSettingsChange({ [key]: v });
-        saveState(state);
-      }, { min: 0.4, max: 1.6, step: 0.05, hint }),
-    );
-  }
-  bubbleBody.appendChild(focusBox);
+  // The opened group's size (Oct 26), then "All bubbles" last (Oct 29).
+  bubbleBody.appendChild(
+    makeSlider("Opened group", state.settings.focusSize, (v) => {
+      state.settings.focusSize = v;
+      cb.onSettingsChange({ focusSize: v });
+      saveState(state);
+    }, { min: 0.4, max: 1.6, step: 0.05, hint: "Smaller ← → bigger: the group you click, in the zoomed-in view. Middle = the site's default." }),
+  );
+  bubbleBody.appendChild(
+    makeSlider("All bubbles", state.settings.nodeSize, (v) => {
+      state.settings.nodeSize = v;
+      cb.onSettingsChange({ nodeSize: v });
+      saveState(state);
+    }, { min: 0.4, max: 2.5, step: 0.05, hint: "Smaller ← → bigger. Every coalition and organization at once." }),
+  );
   // Order (Oct 24): "Events, projects & actions", then Bubble size weighting, then Coalition forces.
   parent.insertBefore(bubbleSection, sizeSection.nextSibling);
 
@@ -328,48 +318,60 @@ export function createControls(
   advBody.appendChild(advExtras);
   const subHead = (t: string) => h("div", { class: "adv-subhead" }, t);
 
-  // ---- Forces: the general ones stay in Advanced ----
-  const forcesBody = h("div", { class: "adv-group" });
-  advBody.appendChild(subHead("Forces"));
-  advBody.appendChild(forcesBody);
-  forcesBody.appendChild(
-    makeSlider("Pull to the middle", state.settings.centerForce, (v) => {
+  // ---- Coalition forces: their own section, right under Bubble size weighting ----
+  // One section for everything that spreads the map out or draws it together (Oct 29): the general pulls and pushes
+  // (from Advanced), the coalition ones, and the spacing in a group's zoomed-in view. Named so anyone can tell.
+  const { section: coalSection, body: coalBody } = makeSection("How spread out the map is", false);
+  coalBody.appendChild(h("div", { class: "ctrl-hint section-lead" }, "Groups gently push and pull on each other, like magnets. These sliders change how close together or spread out they sit."));
+  coalBody.appendChild(
+    makeSlider("Pull toward the middle", state.settings.centerForce, (v) => {
       state.settings.centerForce = v;
       cb.onSettingsChange({ centerForce: v });
       saveState(state);
-    }, { hint: "Draws everything toward the centre. Higher = a tighter, rounder map." }),
+    }, { hint: "Loose ← → tight: how strongly everything gathers in the centre of the map." }),
   );
-  forcesBody.appendChild(
-    makeSlider("Push organizations apart", state.settings.repelForce, (v) => {
+  coalBody.appendChild(
+    makeSlider("Space between organizations", state.settings.repelForce, (v) => {
       state.settings.repelForce = v;
       cb.onSettingsChange({ repelForce: v });
       saveState(state);
-    }, { hint: "How hard organizations push each other away. Lower = organizations sit closer together." }),
+    }, { hint: "Closer ← → further apart: how much room organizations keep from each other." }),
   );
-
-  // ---- Coalition forces: their own section, right under Bubble size weighting ----
-  const { section: coalSection, body: coalBody } = makeSection("Coalition forces", false);
   coalBody.appendChild(
-    makeSlider("Push coalitions apart", state.settings.coalitionRepel, (v) => {
+    makeSlider("Space between coalitions", state.settings.coalitionRepel, (v) => {
       state.settings.coalitionRepel = v;
       cb.onSettingsChange({ coalitionRepel: v });
       saveState(state);
-    }, { hint: "How hard coalitions push away from each other and everything else. Higher = coalitions spread further apart." }),
+    }, { hint: "Closer ← → further apart: how much room the big coalition bubbles keep from each other and everything else." }),
   );
   coalBody.appendChild(
-    makeSlider("Pull to their coalition", state.settings.linkForce, (v) => {
+    makeSlider("How tightly members cluster", state.settings.linkForce, (v) => {
       state.settings.linkForce = v;
       cb.onSettingsChange({ linkForce: v });
       saveState(state);
-    }, { hint: "How strongly each organization is pulled toward the coalitions it belongs to. Higher = tighter clusters." }),
+    }, { hint: "Loose ← → tight: how strongly each organization is drawn to the coalitions it belongs to." }),
   );
   coalBody.appendChild(
-    makeSlider("Distance from their coalition", state.settings.linkDistance, (v) => {
+    makeSlider("How far members sit from their coalition", state.settings.linkDistance, (v) => {
       state.settings.linkDistance = v;
       cb.onSettingsChange({ linkDistance: v });
       saveState(state);
-    }, { hint: "How far members like to sit from their coalition. Lower = members gather closer around it." }),
+    }, { hint: "Closer ← → further: the distance between a coalition and its member groups." }),
   );
+  // the zoomed-in view after you click a group (Oct 26 sliders, moved here Oct 29)
+  coalBody.appendChild(h("div", { class: "ctrl-label weight-head" }, "When you open a group"));
+  for (const [label, key, hint] of [
+    ["Room around its activity", "focusSpace", "Closer ← → further: how far its partner groups sit from its events, projects and actions."],
+    ["Space between partner rows", "focusRowGap", "Tighter ← → looser: the rings of coalitions and partner groups around it."],
+  ] as const) {
+    coalBody.appendChild(
+      makeSlider(label, state.settings[key], (v) => {
+        state.settings[key] = v;
+        cb.onSettingsChange({ [key]: v });
+        saveState(state);
+      }, { min: 0.4, max: 1.6, step: 0.05, hint }),
+    );
+  }
   parent.insertBefore(coalSection, bubbleSection.nextSibling); // right under Bubble size weighting
 
   // ---- Group types ----
