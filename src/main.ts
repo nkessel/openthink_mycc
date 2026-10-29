@@ -311,6 +311,8 @@ async function main() {
     onGroupsChange: (rules) => graphApi!.setGroups(rules),
     onAnimate: () => graphApi!.kickSimulation(),
   });
+  // While a group is open, its size sliders float on the map, open by default (Oct 29).
+  graphContainer.appendChild(controls.focusPanel());
   // The org-to-org connections switch sits right under the coalitions list.
   sidebar.linksContainer().appendChild(graphApi.orgLinkToggle());
   // Money & opposition (maps with money data only), right under the connections switch.
