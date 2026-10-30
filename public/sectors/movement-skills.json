@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-02T12:00:00.000Z",
+ "generated_at": "2026-10-30T14:14:23.884Z",
  "sector": "movement-skills",
- "source": "JVP Western Mass newsletter, 2026-10-02 (public parts; see research/sectors/palestinian-rights/SOURCE.md)",
+ "source": "Social justice sheet (nightly backup)",
  "coalitions": [
   {
    "id": "sector_movement_skills",
@@ -13,7 +13,7 @@
    ],
    "geographic_scope": "Western Massachusetts",
    "color": "#be185d",
-   "lat": 42.375099999999996,
+   "lat": 42.3751,
    "lng": -72.6412,
    "member_ids": [],
    "member_count": 0,
@@ -22,12 +22,12 @@
     {
      "id": "ms_e_songleading",
      "name": "Songleading for Protests (online)",
-     "date": "2026-10-06T19:00:00",
-     "end": "2026-10-06T20:30:00",
+     "date": "2026-10-06T15:00:00",
      "location": "Online (Zoom)",
-     "online": true,
+     "end": "2026-10-06T16:30:00",
      "description": "Free workshop by Moon Mayo and Mare Berger: using songs for de-escalation, showing the melody with your arms, leading with intention and emotion, and rhythmic techniques for songleading.",
-     "rsvp_link": "https://truthschool.org/event/songleading-for-protests-4/"
+     "rsvp_link": "https://truthschool.org/event/songleading-for-protests-4/",
+     "online": true
     }
    ],
    "actions": [],
@@ -35,6 +35,5 @@
   }
  ],
  "organizations": [],
- "edges": [],
- "org_links": []
+ "edges": []
 }
