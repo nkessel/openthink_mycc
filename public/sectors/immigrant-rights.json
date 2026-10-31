@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-02T12:00:00.000Z",
+ "generated_at": "2026-10-31T13:40:50.492Z",
  "sector": "immigrant-rights",
- "source": "JVP Western Mass newsletter, 2026-10-02 (public parts; see research/sectors/palestinian-rights/SOURCE.md)",
+ "source": "Social justice sheet (nightly backup)",
  "coalitions": [
   {
    "id": "sector_immigrant_rights",
@@ -25,30 +25,30 @@
    "actions": [
     {
      "id": "imm_a_milkweed",
-     "name": "Operation Milkweed: give directly to families facing ICE enforcement",
-     "link": "https://operationmilkweed.org/",
-     "description": "Direct support for Massachusetts families facing ICE enforcement: choose your city and give to families who need help now.",
      "kind": "action",
+     "name": "Operation Milkweed: give directly to families facing ICE enforcement",
      "skills_needed": [],
-     "deadline": null
+     "deadline": null,
+     "description": "Direct support for Massachusetts families facing ICE enforcement: choose your city and give to families who need help now.",
+     "link": "https://operationmilkweed.org/"
     },
     {
      "id": "imm_a_isc",
-     "name": "Donate to the Immigrant Solidarity Collective",
-     "link": "https://secure.anedot.com/arisespringfield/immigrant_solidarity_collective",
-     "description": "Raises funds to support Western Massachusetts immigrant community members.",
      "kind": "action",
+     "name": "Donate to the Immigrant Solidarity Collective",
      "skills_needed": [],
-     "deadline": null
+     "deadline": null,
+     "description": "Raises funds to support Western Massachusetts immigrant community members.",
+     "link": "https://secure.anedot.com/arisespringfield/immigrant_solidarity_collective"
     },
     {
      "id": "imm_a_asylum",
-     "name": "Donate to the Western Massachusetts Asylum Support Network",
-     "link": "https://www.mightycause.com/story/Western-Mass-Asylum-Support",
-     "description": "All donations go directly to people seeking asylum.",
      "kind": "action",
+     "name": "Donate to the Western Massachusetts Asylum Support Network",
      "skills_needed": [],
-     "deadline": null
+     "deadline": null,
+     "description": "All donations go directly to people seeking asylum.",
+     "link": "https://www.mightycause.com/story/Western-Mass-Asylum-Support"
     }
    ],
    "last_activity": "2026-10-02T12:00:00.000Z"
@@ -56,84 +56,79 @@
  ],
  "organizations": [
   {
+   "id": "jewish_activists_for_immigration_justice",
+   "name": "Jewish Activists for Immigration Justice",
    "type": "unknown",
+   "geographic_focus": "Western Massachusetts",
+   "description": "Jewish activists in Western Massachusetts standing with their immigrant neighbors.",
    "coalition_ids": [
     "sector_immigrant_rights"
    ],
+   "lat": 42.3732,
+   "lng": -72.5199,
    "last_activity": "2026-10-02T12:00:00.000Z",
+   "abbrev": "JAIJ",
    "profile": {
     "geo_precision": "approx"
    },
-   "sector": "immigrant-rights",
    "events": [
     {
      "id": "imm_jaij_e1",
      "name": "Casting Away Fear, Building Shelter for All",
-     "date": "2026-10-04T13:30:00",
-     "end": "2026-10-04T15:30:00",
+     "date": "2026-10-04T09:30:00",
      "location": "Groff Park, Amherst, MA",
+     "end": "2026-10-04T11:30:00",
      "description": "An afternoon of reflection and spiritual renewal focused on standing with immigrant neighbors: singing, then a short walk to the Mill River for a Tashlich ceremony. Light refreshments; bring something to share if you like.",
+     "host_org_id": "jewish_activists_for_immigration_justice",
      "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSflvOyOfDgq-sB2ESBaFglOARHgJQTsBJpCHPsme0CtmztslA/viewform",
      "lat": 42.3732,
-     "lng": -72.5199,
-     "host_org_id": "jewish_activists_for_immigration_justice"
+     "lng": -72.5199
     }
-   ],
-   "projects": [],
-   "actions": [],
-   "id": "jewish_activists_for_immigration_justice",
-   "name": "Jewish Activists for Immigration Justice",
-   "abbrev": "JAIJ",
-   "geographic_focus": "Western Massachusetts",
-   "description": "Jewish activists in Western Massachusetts standing with their immigrant neighbors.",
-   "lat": 42.3732,
-   "lng": -72.5199
+   ]
   },
   {
+   "id": "luce_franklin_county",
+   "name": "LUCE (Franklin County hub)",
    "type": "unknown",
+   "geographic_focus": "Franklin County",
+   "description": "Franklin County hub of LUCE, which runs an ICE hotline staffed by volunteers who send verifiers to document reported ICE activity.",
    "coalition_ids": [
     "sector_immigrant_rights"
    ],
+   "lat": 42.5876,
+   "lng": -72.5995,
    "last_activity": "2026-10-02T12:00:00.000Z",
+   "abbrev": "LUCE",
+   "website": "https://www.lucemass.org/",
    "profile": {
     "geo_precision": "approx"
    },
-   "sector": "immigrant-rights",
    "events": [
     {
      "id": "imm_luce_e1",
      "name": "Stone Soup Solidarity Workshop Series",
-     "date": "2026-10-06T18:00:00",
-     "end": "2026-10-06T20:00:00",
+     "date": "2026-10-06T14:00:00",
      "location": "Stone Soup Cafe, 399 Main St, Greenfield, MA",
+     "end": "2026-10-06T16:00:00",
      "description": "The Franklin County LUCE hub's workshop series, a good way for new people to get involved. Dinner and childcare provided.",
+     "host_org_id": "luce_franklin_county",
      "rsvp_link": "https://docs.google.com/forms/d/e/1FAIpQLSc-SIfildJlNl2326yMeY-xhXg-qCgvI5weOYRDA4HfH5rVuQ/viewform",
      "lat": 42.5876,
-     "lng": -72.5995,
-     "host_org_id": "luce_franklin_county"
+     "lng": -72.5995
     }
    ],
-   "projects": [],
    "actions": [
     {
      "id": "imm_luce_a1",
-     "name": "Donate to the LUCE ICE hotline",
-     "link": "https://www.lucemass.org/",
-     "description": "Supports the volunteer-staffed hotline that verifies and documents reported ICE activity.",
      "kind": "action",
+     "name": "Donate to the LUCE ICE hotline",
      "skills_needed": [],
      "deadline": null,
+     "description": "Supports the volunteer-staffed hotline that verifies and documents reported ICE activity.",
+     "link": "https://www.lucemass.org/",
      "host_org_id": "luce_franklin_county"
     }
-   ],
-   "id": "luce_franklin_county",
-   "name": "LUCE (Franklin County hub)",
-   "abbrev": "LUCE",
-   "geographic_focus": "Franklin County",
-   "website": "https://www.lucemass.org/",
-   "description": "Franklin County hub of LUCE, which runs an ICE hotline staffed by volunteers who send verifiers to document reported ICE activity.",
-   "lat": 42.5876,
-   "lng": -72.5995
+   ]
   }
  ],
  "edges": [
@@ -145,6 +140,5 @@
    "source": "sector_immigrant_rights",
    "target": "luce_franklin_county"
   }
- ],
- "org_links": []
+ ]
 }
