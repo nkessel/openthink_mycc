@@ -297,7 +297,7 @@ function confirmPing_(link, token, sid, b) {
   if (!h && b.draftAt !== undefined && b.draftAt !== null && str_(b.draftAt) !== draftAt) return others('', '', true);
   takeLock_(token, sid, b.name, h);
   var out = { ok: true, editor: true };
-  if (b.state !== undefined && b.state !== null) out.savedAt = saveDraft_(link, b.state).savedAt;
+  if (b.state !== undefined && b.state !== null) out.savedAt = saveDraft_(link, b.state, true).savedAt;
   return out;
 }
 
@@ -374,7 +374,7 @@ function confirmOthers_(state) {
 }
 
 /** Writes the page's state on the Links row. The shared draft never holds personal details (each browser keeps its own). */
-function saveDraft_(link, state) {
+function saveDraft_(link, state, auto) {
   if (!state || typeof state !== 'object') throw new Error('There is nothing to save yet.');
   var copy = JSON.parse(JSON.stringify(state));
   var savedBy = copy.who ? String(copy.who.email || '').trim().toLowerCase() : '';
@@ -382,7 +382,12 @@ function saveDraft_(link, state) {
   var json = JSON.stringify(copy);
   if (json.length > 45000) throw new Error('That is too much to save at once. Please submit what you have.');
   var at = nowIso_();
-  setLinkFields_(link, { draft: json, saved_at: at, status: str_(link.rec.submitted_at) ? link.rec.status : 'saved for later', notes: savedBy ? 'last saved by ' + savedBy : str_(link.rec.notes) });
+  if (auto) {
+    // Autosave touches only the draft: notes may hold an admin's own text or the submitter's name.
+    setLinkFields_(link, { draft: json, saved_at: at, status: str_(link.rec.submitted_at) ? link.rec.status : 'in progress' });
+  } else {
+    setLinkFields_(link, { draft: json, saved_at: at, status: str_(link.rec.submitted_at) ? link.rec.status : 'saved for later', notes: savedBy ? 'last saved by ' + savedBy : str_(link.rec.notes) });
+  }
   return { savedAt: at };
 }
 

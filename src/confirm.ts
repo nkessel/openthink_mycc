@@ -138,7 +138,8 @@ function start(DATA: Obj, token: string) {
 
   let editor = false, submitted = false, busy = false;
   let draftAt: string = DATA.draftAt || "";
-  let baseSubmittedAt: string = DATA.submittedAt || "";
+  const baseSubmittedAt: string = DATA.submittedAt || ""; // set once from the GET data; only a reload changes it
+  let stale = false;
   let lastAutosave = "";
   let rev = 0, savedRev = 0; // rev changes with every edit; savedRev is what the server has
   const editing: Record<string, boolean> = {};
@@ -353,9 +354,32 @@ function start(DATA: Obj, token: string) {
     showBanner(null);
     if (r.draft) { st = r.draft; st.org = st.org || { decision: "", fields: {} }; st.items = st.items || {}; }
     if (r.draftAt !== undefined) draftAt = r.draftAt || "";
-    if (r.submittedAt !== undefined) baseSubmittedAt = r.submittedAt || "";
     savedRev = rev;
     render();
+    checkStale(r);
+  }
+  /** Someone else submitted since this page loaded: stop everything, keep the page readable. */
+  function checkStale(r: Obj): boolean {
+    if (r.submittedAt === undefined || (r.submittedAt || "") === baseSubmittedAt) return false;
+    becomeStale(r.submittedAt || "");
+    return true;
+  }
+  function becomeStale(at: string) {
+    stale = true;
+    editor = false;
+    Object.keys(editing).forEach((k) => delete editing[k]);
+    const b = $("banner");
+    b.innerHTML = "";
+    b.className = "banner";
+    b.setAttribute("role", "status");
+    const span = document.createElement("span");
+    span.textContent = `Someone else submitted this page${at ? " at " + timeOf(at) : ""}, so what you see is out of date. Reload to see what's on the map now.`;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = "Reload";
+    btn.addEventListener("click", () => location.reload());
+    b.append(span, btn);
+    applyLock();
   }
   async function takeover(_: string) {
     if (!confirm(`${holder} may lose their last few seconds of changes. Take over?`)) return;
@@ -374,11 +398,11 @@ function start(DATA: Obj, token: string) {
       const r = await call({ action: "claim", token, sid, name: myName() });
       if (!r.ok) { render(); return msg(String(r.error || "Something went wrong."), true); }
       if (r.editor) becomeEditor(r);
-      else becomeViewer(r.heldBy, r.since);
+      else { becomeViewer(r.heldBy, r.since); checkStale(r); }
     } catch (e) { render(); applyLock(); msg((e as Error).message, true); }
   }
   async function ping() {
-    if (busy || submitted) return;
+    if (busy || submitted || stale) return;
     busy = true;
     const sentRev = rev;
     try {
@@ -387,7 +411,7 @@ function start(DATA: Obj, token: string) {
       if (sendState) body.state = buildState();
       const r = await call(body);
       if (!r.ok) { if (r.gone) { showBanner(null); msgPage(String(r.error || "This link doesn't work.")); } return; }
-      if (r.submittedAt !== undefined) baseSubmittedAt = r.submittedAt || "";
+      if (checkStale(r)) return;
       if (r.editor) {
         if (!editor) { editor = true; showBanner(null); if (r.draftAt !== undefined) draftAt = r.draftAt || ""; render(); }
         if (sendState) {
@@ -410,7 +434,7 @@ function start(DATA: Obj, token: string) {
   setInterval(() => void ping(), pingMs);
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") void ping(); });
   window.addEventListener("pagehide", () => {
-    if (!editor || submitted) return;
+    if ((!editor && !stale) || submitted) return;
     try { navigator.sendBeacon(BASE, new Blob([JSON.stringify({ action: "release", token, sid })], { type: "text/plain;charset=utf-8" })); } catch { /* ignore */ }
   });
   window.addEventListener("beforeunload", (e) => { if (editor && dirty() && !submitted) { e.preventDefault(); e.returnValue = ""; } });
