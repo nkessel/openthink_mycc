@@ -275,7 +275,8 @@ function onOpen() {
     .addItem('Re-check event and project pins (wrong town or outside ' + REGION.stateName + ')', 'fixPinsOutsideMa')
     .addItem('Apply the source check (hide events, projects and actions with no page that names them)', 'applySourceCheck')
     .addItem('Link the social justice spreadsheet', 'linkSocialJusticeSheet')
-    .addItem('Make confirmation links (one private link per group)', 'makeConfirmationLinks')
+    .addItem('Make confirmation links (one private link per group and coalition)', 'makeConfirmationLinks')
+    .addItem('Update confirmation link addresses (new page address, coalitions)', 'updateConfirmationLinkAddresses')
     .addToUi();
 }
 
@@ -1844,6 +1845,9 @@ function addEditorOrg_(email, orgId) {
  * confirm (doGet ?verify=…). Pending rows grant nothing until the link is opened.
  */
 function savePointPerson_(orgId, a, submitter) {
+  // The confirmation screen also adds coalition point people (a.groupKind 'coalition': Editors → coalition_ids), and
+  // a.keepDetails stops it from overwriting a person who is already on file (their own details win).
+  var idCol = a.groupKind === 'coalition' ? 'coalition_ids' : 'org_ids';
   var email = String(a[Q.pointEmail] || '').trim().toLowerCase();
   if (!email || email.indexOf('@') === -1) return;
   var name = String(a[Q.pointName] || '').trim();
@@ -1856,9 +1860,9 @@ function savePointPerson_(orgId, a, submitter) {
   // Contact details stay on the private Editors tab (never in the public feed), in notes: "phone: …; best way to reach: …"
   var fresh = [phone ? 'phone: ' + phone : '', best ? 'best way to reach: ' + best : ''].filter(Boolean);
   if (row) {
-    var up = { org_ids: uniq_(list_(row.org_ids).concat([orgId])).join(', ') };
-    if (name) up.name = name;
-    if (fresh.length) {
+    var up = {}; up[idCol] = uniq_(list_(row[idCol]).concat([orgId])).join(', ');
+    if (name && !a.keepDetails) up.name = name;
+    if (fresh.length && !a.keepDetails) {
       var rest = str_(row.notes).split(/;\s*/).filter(function (x) {
         return x && !(phone && x.indexOf('phone: ') === 0) && !(best && x.indexOf('best way to reach: ') === 0);
       });
@@ -1868,10 +1872,12 @@ function savePointPerson_(orgId, a, submitter) {
     writeFields_(sheet, table.headers, row._row, up);
   } else {
     var how = a.via || 'the org form';
-    appendObject_(sheet, { email: email, role: verified ? 'editor' : PENDING_ROLE, org_ids: orgId, name: name,
-      notes: fresh.concat([verified ? 'point person from ' + how : 'point person from ' + how + '; waiting for them to confirm their email']).join('; ') });
+    var fresh2 = { email: email, role: verified ? 'editor' : PENDING_ROLE, name: name,
+      notes: fresh.concat([verified ? 'point person from ' + how : 'point person from ' + how + '; waiting for them to confirm their email']).join('; ') };
+    fresh2[idCol] = orgId;
+    appendObject_(sheet, fresh2);
   }
-  if (!verified) sendVerification_(email, orgId, name);
+  if (!verified) sendVerification_(email, orgId, name, a.groupKind);
 }
 
 /** Editors rows waiting for their email to be confirmed: listed, but allowed nothing. */
@@ -1879,14 +1885,14 @@ var PENDING_ROLE = 'pending';
 function isPending_(r) { return /^pending/i.test(str_(r.role)); }
 
 /** Email a point person a one-time link that confirms the address (doGet ?verify=token). */
-function sendVerification_(email, orgId, name) {
+function sendVerification_(email, orgId, name, groupKind) {
   var token = '';
   for (var i = 0; i < 4; i++) token += Math.floor(Math.random() * 0x100000000).toString(16);
-  PropertiesService.getScriptProperties().setProperty('VERIFY_' + token, JSON.stringify({ email: email, org: orgId, at: nowIso_() }));
-  var url = '';
-  try { url = ScriptApp.getService().getUrl(); } catch (e) { /* not deployed as a web app (tests) */ }
-  url = (url || PropertiesService.getScriptProperties().getProperty('WEB_APP_URL') || '') + '?verify=' + token;
-  var label = (LABEL_INDEX_ && LABEL_INDEX_.byId.org[orgId]) || orgId;
+  var kind = groupKind === 'coalition' ? 'coalition' : 'org';
+  PropertiesService.getScriptProperties().setProperty('VERIFY_' + token, JSON.stringify({ email: email, org: orgId, kind: kind, at: nowIso_() }));
+  // The link opens the static confirmation page (it asks the web app to confirm); the old web app address also still works.
+  var url = confirmPageUrl_() + '?verify=' + token;
+  var label = (LABEL_INDEX_ && LABEL_INDEX_.byId[kind] && LABEL_INDEX_.byId[kind][orgId]) || orgId;
   logChange_('', FORM_NAMES.org, 'verification sent', 'PENDING', 'editor', orgId, label, 'point person ' + email + ' asked to confirm their email');
   try {
     MailApp.sendEmail(email, REGION.title + ': please confirm your email',
@@ -2352,7 +2358,8 @@ function logChange_(email, form, status, flag, type, id, name, changes) {
 /** Deploy → New deployment → Web app (Execute as: me, Who has access: Anyone). */
 function doGet(e) {
   var p = (e && e.parameter) || {};
-  if (p.confirm) return confirmPage_(String(p.confirm)); // a group's confirmation screen (Confirm.gs)
+  if (p.api === 'confirm') return jsonOut_(confirmApiGet_(String(p.t || ''))); // the static confirmation page's data (Confirm.gs)
+  if (p.confirm) return confirmMovedPage_(String(p.confirm)); // old links: the page moved to the static site
   if (p.verify) {
     return HtmlService.createHtmlOutput('<p style="font:16px system-ui;max-width:520px;margin:48px auto">' +
       confirmVerification_(String(p.verify)).replace(/[<>&]/g, '') + '</p>').setTitle(REGION.title);
@@ -2360,6 +2367,11 @@ function doGet(e) {
   // The social justice groups live in their own spreadsheet and are only fetched when someone switches them on.
   var data = p.feed === 'social-justice' ? socialJusticeData_() : buildDataFile_(readAll_(), nowIso_());
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+
+/** The static confirmation page's writes (claim, takeover, ping, release, save, submit, verify): see Confirm.gs. Never throws. */
+function doPost(e) {
+  return jsonOut_(confirmPost_(e));
 }
 
 /**

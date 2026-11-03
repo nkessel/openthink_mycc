@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Check your information</title>
+  </head>
+  <body>
+    <div id="banner" role="region" aria-label="Editing status"></div>
+    <div class="wrap" id="app"><p class="lead">Loading…</p></div>
+    <div class="bar" id="bar" role="region" aria-label="Save or submit" hidden>
+      <button type="button" id="save">Save for later</button>
+      <span class="status" id="status" role="status" aria-live="polite"></span>
+      <button type="button" id="reload" hidden>Reload</button>
+      <button type="button" class="primary" id="submit">Finalize and Submit</button>
+    </div>
+    <script type="module" src="/src/confirm.ts"></script>
+  </body>
+</html>
