@@ -340,13 +340,23 @@ function start(DATA: Obj, token: string) {
     b.setAttribute("role", "status");
   }
   let holder = "Someone";
+  let vArgs = { since: "", lost: false, tookAt: "" };
+  const viewerText = () => vArgs.lost
+    ? `${holder} took over editing${vArgs.tookAt ? " at " + timeOf(vArgs.tookAt) : ""}. Your changes ${lastAutosave ? "up to " + lastAutosave : "up to the last automatic save"} were kept.`
+    : `${holder} is editing this page right now${vArgs.since ? " (since " + timeOf(vArgs.since) + ")" : ""}. You can look, or take over.`;
+  /** The editor typed their name (or changed): refresh the banner text without redrawing the page. */
+  function holderNow(name: string) {
+    const h = name || "Someone";
+    if (h === holder) return;
+    holder = h;
+    if (!editor && !stale) showBanner(viewerText());
+  }
   function becomeViewer(heldBy: string, since: string, lost = false, tookAt = "") {
     editor = false;
     holder = heldBy || "Someone";
+    vArgs = { since, lost, tookAt };
     Object.keys(editing).forEach((k) => delete editing[k]);
-    showBanner(lost
-      ? `${holder} took over editing${tookAt ? " at " + timeOf(tookAt) : ""}. Your changes ${lastAutosave ? "up to " + lastAutosave : "up to the last automatic save"} were kept.`
-      : `${holder} is editing this page right now${since ? " (since " + timeOf(since) + ")" : ""}. You can look, or take over.`);
+    showBanner(viewerText());
     render();
   }
   function becomeEditor(r: Obj) {
@@ -406,7 +416,7 @@ function start(DATA: Obj, token: string) {
     busy = true;
     const sentRev = rev;
     try {
-      const body: Obj = { action: "ping", token, sid, name: myName(), draftAt };
+      const body: Obj = { action: "ping", token, sid, name: myName(), draftAt, baseSubmittedAt };
       const sendState = editor && dirty();
       if (sendState) body.state = buildState();
       const r = await call(body);
@@ -425,8 +435,8 @@ function start(DATA: Obj, token: string) {
         if (r.draftAt !== undefined) draftAt = r.draftAt || draftAt;
         if (r.draft) { st = r.draft; st.org = st.org || { decision: "", fields: {} }; st.items = st.items || {}; }
         if (wasEditor || r.lost) becomeViewer(r.heldBy, r.since, !!r.lost, r.since);
-        else if (r.draft) { holder = r.heldBy || holder; render(); }
-        else { holder = r.heldBy || holder; }
+        else if (r.draft) { holderNow(r.heldBy); render(); }
+        else holderNow(r.heldBy);
       }
     } catch { /* quiet: next ping will retry */ }
     finally { busy = false; }

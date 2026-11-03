@@ -295,6 +295,8 @@ function confirmPing_(link, token, sid, b) {
   if (h && h.sid !== sid) return others(h.name, h.since, (h.replaced || []).indexOf(sid) !== -1);
   // The lock ran out: take it back quietly, but only if nobody saved in between (otherwise their work would be overwritten).
   if (!h && b.draftAt !== undefined && b.draftAt !== null && str_(b.draftAt) !== draftAt) return others('', '', true);
+  // Someone submitted since this page loaded: don't hand the lock back to an out-of-date page, tell it so.
+  if (b.baseSubmittedAt !== undefined && b.baseSubmittedAt !== null && str_(b.baseSubmittedAt) !== str_(rec.submitted_at)) return others('', '', true);
   takeLock_(token, sid, b.name, h);
   var out = { ok: true, editor: true };
   if (b.state !== undefined && b.state !== null) out.savedAt = saveDraft_(link, b.state, true).savedAt;

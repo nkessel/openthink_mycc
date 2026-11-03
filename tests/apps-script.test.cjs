@@ -877,6 +877,10 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.ok(!mail.slice(before2).some((m) => m.to === "una@example.org"));
   assert.ok(log().some((l) => l.email === "una@example.org" && l.status === "not added" && l.flag === "FULL"));
   assert.ok(log().some((l) => l.email === "sam@example.org" && l.status === "skipped"));
+  // an out-of-date page whose lock ran out is not handed the lock back: it is told the page was submitted
+  delete cache["lock:" + L.token];
+  const staleP = post({ action: "ping", token: L.token, sid: A, name: "Ann", draftAt: "", baseSubmittedAt: "" });
+  assert.equal(staleP.editor, false); assert.equal(staleP.submittedAt, res2.submittedAt); assert.equal(cache["lock:" + L.token], undefined, "no lock for a stale page");
   // the verification link works through the page's API
   const tok = /\?verify=([0-9a-f]+)/.exec(mail.find((m) => m.to === "tina@example.org" && /confirm your email/.test(m.subject)).body)[1];
   const vr = post({ action: "verify", verify: tok });
