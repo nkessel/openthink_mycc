@@ -1,0 +1,9 @@
+# LLM work log (GitHub: turibiusrozario-tutorials)
+
+## 2026-11-03 — confirmation links: multi-account fix, coalitions, one editor at a time, extra point people (branch claude/pensive-curie-slxv45)
+- Request (5 items): links fail with 2+ Google accounts; coalitions need links; warn/take over when two people edit; two more point people; best way to reach off without a phone.
+- Why the page moved: script.google.com web-app pages show "Sorry, unable to open the file at this time" when several Google accounts are signed in (a long-standing Google bug the script can't fix). The page is now `confirm.html` on the map site and calls the same web app with fetch and `credentials: "omit"`, so Google sign-in state doesn't matter (the map's live data already loads this way).
+- Decisions (asked first): move to the map site; one editor + autosave + first submit wins (replaces per-card holds); a coalition's page shows every item tagged with it; keep the cap of 3 point people.
+- Built by sub-agents against one written contract (back end: Confirm.gs/Code.gs/tests/SETUP.md; front end: confirm.html/src/confirm.ts/vite.config.ts), then reviewed: fixed a stale-page hole in first-submit-wins and autosave overwriting the Links notes.
+- Links spreadsheet (private): link column now points to confirm.html?t=<token> (formula of the token until the menu "Update confirmation link addresses" is run), new "kind" column, 8 coalition rows added with new tokens. No tokens or emails in the repo.
+- Not testable from here: the real Google CORS path for POST (the GET path is confirmed: 302 with Access-Control-Allow-Origin: *). Check one link after deploying.
