@@ -1,5 +1,6 @@
 import { defineConfig, type Plugin } from "vite";
 import { execSync } from "node:child_process";
+import { resolve } from "node:path";
 
 /** Each build writes dist/version.json: the release tag (e.g. v1.2.0, or the commit when there is no tag yet),
  *  the commit and when it was built, so anyone can tell which version is live (<site>/version.json). */
@@ -30,6 +31,11 @@ export default defineConfig({
   // Relative base so the built site works on GitHub Pages (served from /<repo>/)
   base: "./",
   plugins: [versionFile()],
+  build: {
+    rollupOptions: {
+      input: { main: resolve(__dirname, "index.html"), confirm: resolve(__dirname, "confirm.html") },
+    },
+  },
   server: {
     port: 5173,
     strictPort: false,

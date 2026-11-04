@@ -124,12 +124,22 @@ Use this when the repo has new events/projects/actions (from `node scripts/apply
 
 Anything a point person edits through a form clears that item's "needs more information" notice.
 
-## Group Confirmation Screen (Oct 29)
+## Group Confirmation Screen (Oct 29, moved Nov 3)
 
-Each group gets its own private link to a page that shows everything the map has for it: its details, events, projects and actions. The point person enters their name and email, then for each card chooses **Edit**, **Approve** or **Remove**. **Save for later** keeps their work; **Finalize and Submit** puts it on the map (approved items are marked verified, removed ones hidden, edits written in, every change in Change Log) and adds them as a point person (up to three per group, pending until they open the email confirmation link). If two people open the same card, the second sees who is editing it and can ask them to hand it over.
+Each organization and each coalition gets its own private link to a page that shows everything the map has for it: its details, events, projects and actions (a coalition's items are the ones tagged with it). The point person enters their name and email, then for each card chooses **Edit**, **Approve** or **Remove**. **Finalize and Submit** puts it on the map (approved items are marked verified, removed ones hidden, edits written in, every change in Change Log) and adds them as a point person.
 
-1. In Apps Script, add a second file: **+ → Script**, name it `Confirm`, and paste in [`Confirm.gs`](Confirm.gs). Save, then deploy a new version of the web app.
-2. In the sheet: **menu → Make confirmation links (one private link per group)**. It makes a separate spreadsheet, shared only with the admins, with one row and link per group. Running it again only adds rows for new groups.
-3. Send each group its link (column `link`). The `status` column shows not sent → opened → saved for later → submitted.
+- **The page lives on the map's site** (`confirm.html`), not on Google. It asks this web app for the data, so it works when the browser is signed into several Google accounts (the old Google-hosted page failed with "Sorry, unable to open the file"). Links already sent (`...exec?confirm=...`) show "This page has moved" with a link to the new page.
+- **One editor at a time.** Whoever opens a link first can edit; anyone else sees who is editing and can press **Take over** (the new editor continues from the latest autosaved work). The editor's page checks in every 15 seconds; after 2 1/2 minutes of silence the page is free again.
+- **Autosave.** The page saves as people type (names, emails and phone numbers are never saved in the shared draft). **Save for later** still works.
+- **First submit wins.** If two people submit, the second is told who submitted first and asked to reload, so nobody's changes are silently overwritten.
+- **Extra point people.** The person submitting can add up to two more. Up to three per group (confirmed plus waiting). Each new one is pending and gets the confirmation email; anyone already on file is left as they are. "Best way to reach" is only kept when a phone number is given.
+- **Coalition point people** are the Editors rows that list the coalition in `coalition_ids`.
+
+Setup:
+1. In Apps Script, add a second file: **+ → Script**, name it `Confirm`, and paste in [`Confirm.gs`](Confirm.gs) (and the new `Code.gs`). Save, then **Deploy → Manage deployments → ✏️ → New version → Deploy** (same address; "Who has access: Anyone").
+2. The page address is the script property `CONFIRM_PAGE_URL` (Project settings → Script properties). Leave it unset to use `https://ma.climateorgmap.earth/confirm.html`.
+3. In the sheet: **menu → Make confirmation links (one private link per group and coalition)**. It makes a separate spreadsheet, shared only with the admins, with one row and link per group. Running it again only adds rows for new groups and coalitions.
+4. Links made before Nov 3: **menu → Update confirmation link addresses (new page address, coalitions)** rewrites every link to the new page address (the secret part stays the same, so links already sent keep working) and fills the new `kind` column. Run "Make confirmation links" after it to add the coalitions.
+5. Send each group its link (column `link`). The `status` column shows not sent → opened → in progress (autosaved) → saved for later → submitted.
 
 Anyone with a group's link can change that group's information, so send it only to the group. To cut off a link, delete its row (or change its token) in the links spreadsheet.

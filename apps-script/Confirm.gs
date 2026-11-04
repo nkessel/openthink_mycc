@@ -1,36 +1,52 @@
 /**
- * Group Confirmation Screen (10/29 meeting): each organization gets its own private link. The link opens a page
- * with everything the map has for that group (its details, events, projects and actions). The point person
- * enters their name and email, then for each card: Edit, Approve or Remove. "Save for later" keeps their work;
- * "Finalize and Submit" puts it on the map: approved items are marked verified, removed items are hidden, edits
- * are written in, and every change goes in Change Log. The point person is added to the Editors tab (up to three
- * per group), pending until they open the email confirmation link.
+ * Group Confirmation Screen (10/29 meeting): each organization and coalition gets its own private link. The link
+ * opens a page with everything the map has for that group (its details, events, projects and actions). The point
+ * person enters their name and email, then for each card: Edit, Approve or Remove. "Save for later" keeps their
+ * work (and the page autosaves as they type); "Finalize and Submit" puts it on the map: approved items are marked
+ * verified, removed items are hidden, edits are written in, and every change goes in Change Log. The point person
+ * (plus up to two others they name) is added to the Editors tab (up to three per group), pending until they open
+ * the email confirmation link.
+ *
+ * The page itself is static (confirm.html on the map's site, address in CONFIRM_PAGE_URL). It talks to this web
+ * app with plain requests and no cookies (Nov 3: Apps Script's own pages fail with "Sorry, unable to open the file"
+ * when the browser is signed into several Google accounts). GET ?api=confirm&t=TOKEN returns the page's data; POST
+ * (doPost in Code.gs → confirmPost_) takes claim, takeover, ping, release, save, submit and verify.
  *
  * The links live in their own spreadsheet, shared only with the core team (not in the repo, not in the public
  * data): menu → "Make confirmation links". Its id is the script property LINKS_SHEET_ID.
  *
- * Two people editing the same card at once: the first one holds it; the second sees who is editing and can ask
- * for it. The first person sees the request and can hand it over. Holds last 10 minutes without activity.
+ * One editor at a time per link: whoever claims the page holds a lock (CacheService, LOCK_SECONDS) that their open
+ * page keeps alive with a ping every few seconds. Anyone else can look, and press "Take over". The first
+ * "Finalize and Submit" wins: a submit that was started from an older version of the page is refused.
  *
  * Paste this file next to Code.gs in Apps Script (+ → Script → "Confirm"). It uses Code.gs's helpers.
  */
 
 var LINK_TAB = 'Links';
-var LINK_COLS = ['org_id', 'org_name', 'link', 'status', 'point_people', 'opened_at', 'saved_at', 'submitted_at', 'notes', 'token', 'draft'];
+var LINK_COLS = ['org_id', 'org_name', 'link', 'status', 'point_people', 'opened_at', 'saved_at', 'submitted_at', 'notes', 'token', 'draft', 'kind'];
 var MAX_POINT_PEOPLE = 3;
-var HOLD_SECONDS = 600;
+/** The page lock lasts this long without a ping (longer than a background tab's throttled timer, about 60 s). */
+var LOCK_SECONDS = 150;
+var PING_SECONDS = 15;
 /** Fields a point person can change on each kind of card (sheet column names). */
 var CONFIRM_FIELDS = {
   org: ['name', 'description', 'website', 'geographic_focus', 'public_contact'],
+  coalition: ['name', 'description', 'website', 'geographic_scope'],
   event: ['name', 'date', 'end', 'location', 'online', 'description', 'link', 'rsvp_link'],
   project: ['name', 'description', 'status', 'location', 'online', 'link'],
   action: ['name', 'description', 'deadline', 'link'],
 };
 var CONFIRM_FORM = 'Confirmation screen';
+/** Where the static confirmation page lives (override with the script property CONFIRM_PAGE_URL). */
+var DEFAULT_CONFIRM_PAGE_URL = 'https://ma.climateorgmap.earth/confirm.html';
+
+function confirmPageUrl_() {
+  return PropertiesService.getScriptProperties().getProperty('CONFIRM_PAGE_URL') || DEFAULT_CONFIRM_PAGE_URL;
+}
 
 // ---------------------------------------------------------------- links spreadsheet (admins)
 
-/** Menu: makes (or tops up) the private links spreadsheet: one row and one link per organization on the map. */
+/** Menu: makes (or tops up) the private links spreadsheet: one row and one link per organization and coalition. */
 function makeConfirmationLinks() {
   var props = PropertiesService.getScriptProperties();
   var id = props.getProperty('LINKS_SHEET_ID');
@@ -40,47 +56,79 @@ function makeConfirmationLinks() {
     props.setProperty('LINKS_SHEET_ID', ss.getId());
     adminEmails_().forEach(function (e) { try { ss.addEditor(e); } catch (err) { /* share by hand */ } });
   }
-  var added = addConfirmationLinks_(ss, readAll_(), webAppUrl_());
+  var added = addConfirmationLinks_(ss, readAll_(), confirmPageUrl_());
   var msg = 'Confirmation links: ' + added + ' new row(s). The spreadsheet: ' + ss.getUrl() +
     '\nIt is shared only with the admins. Send each group its own link (column "link").';
   try { SpreadsheetApp.getUi().alert(msg); } catch (e) { /* run from the editor */ }
   return msg;
 }
 
-function webAppUrl_() {
-  // Run from the editor, getUrl() gives the editors-only /dev address (Oct 29: the first links had it), so the
-  // public /exec address is taken from the script property WEB_APP_URL, or from the live site's LIVE_DATA_URL.
-  var url = '';
-  try { url = ScriptApp.getService().getUrl() || ''; } catch (e) { /* not deployed yet */ }
-  if (/\/dev$/.test(url)) url = '';
-  return url || PropertiesService.getScriptProperties().getProperty('WEB_APP_URL') || DEFAULT_WEB_APP_URL;
+/**
+ * Menu: points every existing link at the current confirmation page address (CONFIRM_PAGE_URL) and marks the
+ * rows made before coalitions had links as organizations. Tokens never change, so links already sent keep working.
+ */
+function updateConfirmationLinkAddresses() {
+  var sheet = linksSheet_();
+  var msg;
+  if (!sheet) msg = 'There is no links spreadsheet yet: run "Make confirmation links" first.';
+  else {
+    addMissingColumns_(sheet, LINK_COLS);
+    var table = readTable_(sheet);
+    var page = confirmPageUrl_();
+    var n = Math.max(0, sheet.getLastRow() - 1);
+    var linkCol = table.headers.indexOf('link') + 1, kindCol = table.headers.indexOf('kind') + 1;
+    var links = n ? sheet.getRange(2, linkCol, n, 1).getValues() : [];
+    var kinds = n ? sheet.getRange(2, kindCol, n, 1).getValues() : [];
+    var changed = 0;
+    table.rows.forEach(function (r) {
+      var i = r._row - 2, token = str_(r.token);
+      if (!token || i < 0 || i >= n) return;
+      var want = page + '?t=' + token;
+      if (str_(links[i][0]) !== want) { links[i][0] = want; changed++; }
+      if (!str_(kinds[i][0])) kinds[i][0] = 'organization';
+    });
+    if (n) {
+      sheet.getRange(2, linkCol, n, 1).setValues(links);
+      sheet.getRange(2, kindCol, n, 1).setValues(kinds);
+    }
+    msg = 'Confirmation links: ' + changed + ' link(s) now point to ' + page + '.';
+  }
+  try { SpreadsheetApp.getUi().alert(msg); } catch (e) { /* run from the editor */ }
+  return msg;
 }
-/** The deployed web app (the same address as LIVE_DATA_URL in src/data.config.ts). */
-var DEFAULT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwj2109KXf2Ndv-0ZCHp0a6MH3aVSejxkqofBOfOFHRSvMi61DXjkeIe25OlsHNbs5S/exec';
 
-/** Adds a row (with a new secret token) for every visible organization that has none yet. Returns how many. */
-function addConfirmationLinks_(ss, t, baseUrl) {
+/** Adds a row (with a new secret token) for every visible organization and every coalition that has none yet. Returns how many. */
+function addConfirmationLinks_(ss, t, pageUrl) {
   var sheet = ss.getSheetByName(LINK_TAB);
   if (!sheet) {
     sheet = ss.getSheets && ss.getSheets().length === 1 && ss.getSheets()[0].getLastRow() === 0 ? ss.getSheets()[0].setName(LINK_TAB) : ss.insertSheet(LINK_TAB);
     sheet.getRange(1, 1, 1, LINK_COLS.length).setValues([LINK_COLS]);
     try { sheet.setFrozenRows(1); sheet.hideColumns(LINK_COLS.indexOf('token') + 1, 2); } catch (e) { /* fake sheet in tests */ }
+  } else {
+    addMissingColumns_(sheet, LINK_COLS); // sheets made before coalitions had links get the kind column
   }
   var have = {};
-  readTable_(sheet).rows.forEach(function (r) { have[str_(r.org_id)] = true; });
+  readTable_(sheet).rows.forEach(function (r) { have[linkKind_(r) + ':' + str_(r.org_id)] = true; });
   var editors = t.editors || [];
   var n = 0;
-  t.orgs.filter(function (o) { return o.id && !isTrue_(o.hidden); }).sort(byName_).forEach(function (o) {
-    if (have[o.id]) return;
+  var add = function (kind, g) {
+    if (have[kind + ':' + g.id]) return;
     var token = newToken_();
     appendObject_(sheet, {
-      org_id: o.id, org_name: str_(o.name), token: token, link: baseUrl ? baseUrl + '?confirm=' + token : '(deploy the web app, then run this again)',
-      status: 'not sent', point_people: pointPeopleOf_(o.id, editors).map(function (p) { return p.email; }).join(', '),
+      org_id: g.id, org_name: str_(g.name), kind: kind, token: token,
+      link: pageUrl ? pageUrl + '?t=' + token : '(set CONFIRM_PAGE_URL, then run "Update confirmation link addresses")',
+      status: 'not sent', point_people: pointPeopleOf_(g.id, editors, kind).map(function (p) { return p.email; }).join(', '),
     });
+    have[kind + ':' + g.id] = true;
     n++;
-  });
+  };
+  t.orgs.filter(function (o) { return o.id && !isTrue_(o.hidden); }).sort(byName_).forEach(function (o) { add('organization', o); });
+  (t.coalitions || []).filter(function (c) { return c.id && !isTrue_(c.hidden); }).sort(byName_).forEach(function (c) { add('coalition', c); });
   return n;
 }
+
+/** "organization" or "coalition" (rows made before coalitions had links have no kind: organizations). */
+function linkKind_(rec) { return str_(rec.kind).toLowerCase() === 'coalition' ? 'coalition' : 'organization'; }
 
 function newToken_() {
   var s = '';
@@ -110,54 +158,189 @@ function linkRow_(token) {
 
 function setLinkFields_(link, fields) { writeFields_(link.sheet, link.headers, link.rec._row, fields); }
 
-/** Confirmed and pending point people (Editors rows naming this org; admins and "*" rows don't count). */
-function pointPeopleOf_(orgId, editors) {
+/**
+ * Confirmed and pending point people (Editors rows naming this group; admins and "*" rows don't count).
+ * kind 'coalition' looks at coalition_ids, anything else at org_ids (so the forms' calls stay as they were).
+ */
+function pointPeopleOf_(id, editors, kind) {
+  var col = kind === 'coalition' ? 'coalition_ids' : 'org_ids';
   return (editors || []).filter(function (r) {
-    return r.email && !/^admin$/i.test(str_(r.role)) && list_(r.org_ids).indexOf(orgId) !== -1;
+    return r.email && !/^admin$/i.test(str_(r.role)) && list_(r[col]).indexOf(id) !== -1;
   }).map(function (r) { return { email: String(r.email).trim().toLowerCase(), name: str_(r.name), pending: isPending_(r) }; });
 }
 
-// ---------------------------------------------------------------- the page
+// ---------------------------------------------------------------- the web app's JSON (doGet / doPost)
 
-/** doGet(?confirm=token): the confirmation page, or a short message when the link is wrong. */
-function confirmPage_(token) {
-  var link = linkRow_(token);
-  if (!link) {
-    return HtmlService.createHtmlOutput('<p style="font:17px system-ui;max-width:520px;margin:48px auto;padding:0 16px">' +
-      'This link doesn\'t work. Please ask the ' + REGION.title.replace(/[<>&]/g, '') + ' team for a new one.</p>').setTitle(REGION.title);
-  }
-  var data = confirmData_(link.rec, readAll_());
-  if (!str_(link.rec.opened_at)) setLinkFields_(link, { opened_at: nowIso_(), status: str_(link.rec.status) === 'not sent' || !str_(link.rec.status) ? 'opened' : link.rec.status });
-  var json = JSON.stringify(data).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
-  return HtmlService.createHtmlOutput(CONFIRM_HTML.replace('__DATA__', json).replace(/__TITLE__/g, REGION.title.replace(/[<>&]/g, '')))
-    .setTitle(REGION.title + ': check your information')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+function jsonOut_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
+
+function badLinkMessage_() {
+  return 'This link doesn\'t work. Please ask the ' + REGION.title + ' team for a new one.';
+}
+
+/** doGet(?confirm=token): links already sent point here; the page now lives on the map's site. */
+function confirmMovedPage_(token) {
+  var ok = /^[0-9a-f]{32}$/.test(String(token || ''));
+  var body = ok
+    ? 'This page has moved. <a target="_top" href="' + confirmPageUrl_().replace(/[<>&"]/g, '') + '?t=' + token + '">Open your group\'s page here</a>.'
+    : badLinkMessage_().replace(/[<>&]/g, '');
+  return HtmlService.createHtmlOutput('<p style="font:17px system-ui;max-width:520px;margin:48px auto;padding:0 16px">' + body + '</p>')
+    .setTitle(REGION.title);
+}
+
+/** doGet(?api=confirm&t=token): everything the page shows, or { ok: false, error }. */
+function confirmApiGet_(token) {
+  try {
+    var link = linkRow_(token);
+    if (!link) return { ok: false, error: badLinkMessage_() };
+    var data = confirmData_(link.rec, readAll_());
+    if (!str_(link.rec.opened_at)) setLinkFields_(link, { opened_at: nowIso_(), status: str_(link.rec.status) === 'not sent' || !str_(link.rec.status) ? 'opened' : link.rec.status });
+    return { ok: true, data: data };
+  } catch (err) {
+    return { ok: false, error: friendlyError_(err) };
+  }
+}
+
+/** doPost: body is JSON { action, token, sid, ... }. Never throws. */
+function confirmPost_(e) {
+  try {
+    var b = null;
+    try { b = JSON.parse((e && e.postData && e.postData.contents) || ''); } catch (x) { b = null; }
+    if (!b || typeof b !== 'object' || Array.isArray(b)) return { ok: false, error: 'That request could not be read. Please reload the page and try again.' };
+    var action = String(b.action || '');
+    if (action === 'verify') return { ok: true, message: confirmVerification_(String(b.verify || '')) };
+    if (['claim', 'takeover', 'ping', 'release', 'save', 'submit'].indexOf(action) === -1) return { ok: false, error: 'Please reload the page and try again.' };
+    var token = String(b.token || '');
+    if (!/^[0-9a-f]{32}$/.test(token)) return action === 'ping' ? { ok: false, gone: true, error: badLinkMessage_() } : { ok: false, error: badLinkMessage_() };
+    var sid = String(b.sid || '');
+    if (!/^[0-9a-f]{32}$/.test(sid)) return { ok: false, error: 'Please reload the page and try again.' };
+    if (action === 'release') return confirmRelease_(token, sid);
+    return withScriptLock_(function () {
+      var link = linkRow_(token);
+      if (!link) return action === 'ping' ? { ok: false, gone: true, error: badLinkMessage_() } : { ok: false, error: badLinkMessage_() };
+      if (action === 'claim') return confirmClaim_(link, token, sid, b, false);
+      if (action === 'takeover') return confirmClaim_(link, token, sid, b, true);
+      if (action === 'ping') return confirmPing_(link, token, sid, b);
+      if (action === 'save') return confirmSave_(link, token, sid, b);
+      return confirmSubmit_(link, token, sid, b);
+    });
+  } catch (err) {
+    return { ok: false, error: friendlyError_(err) };
+  }
+}
+
+/** Plain messages we wrote are shown as they are; anything else (Google service errors, bugs) is not. */
+function friendlyError_(err) {
+  var m = err && err.message ? String(err.message) : '';
+  if (err && err.name === 'Error' && m && !/^Exception/.test(m)) return m;
+  try { console.error(err && err.stack ? err.stack : String(err)); } catch (x) { /* no console */ }
+  return 'Something went wrong. Please try again in a moment.';
+}
+
+function withScriptLock_(fn) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try { return fn(); } finally { lock.releaseLock(); }
+}
+
+// ---- the page lock: one editor at a time
+
+function lockKey_(token) { return 'lock:' + token; }
+function readLock_(token) { try { return JSON.parse(CacheService.getScriptCache().get(lockKey_(token)) || 'null'); } catch (e) { return null; } }
+/** sid, name, since (when this person took it), at (last ping); replaced = sids that were taken over, so they hear "lost". */
+function putLock_(token, h) { CacheService.getScriptCache().put(lockKey_(token), JSON.stringify(h), LOCK_SECONDS); }
+function personName_(n) { return String(n || '').replace(/[<>]/g, '').trim().slice(0, 60) || 'Someone'; }
+
+/** Takes the lock for sid (keeps `since` when it already had it). h = the lock as it was. */
+function takeLock_(token, sid, name, h) {
+  var now = nowIso_();
+  var replaced = ((h && h.replaced) || []).filter(function (x) { return x !== sid; });
+  if (h && h.sid !== sid) replaced.unshift(h.sid);
+  putLock_(token, { sid: sid, name: personName_(name), since: h && h.sid === sid ? h.since : now, at: now, replaced: replaced.slice(0, 5) });
+}
+
+function holderMessage_(h) { return (h ? h.name : 'Someone') + ' is editing this page now. Press Take over to edit.'; }
+
+function draftOf_(rec) {
+  var draft = null;
+  try { draft = str_(rec.draft) ? JSON.parse(str_(rec.draft)) : null; } catch (e) { draft = null; }
+  if (draft) { delete draft.who; delete draft.others; } // never show one person's details to the next
+  return draft;
+}
+
+function editorState_(rec) {
+  return { ok: true, editor: true, draft: draftOf_(rec), draftAt: str_(rec.saved_at), submittedAt: str_(rec.submitted_at) };
+}
+
+function confirmClaim_(link, token, sid, b, takeover) {
+  var h = readLock_(token);
+  if (h && h.sid !== sid && !takeover) return { ok: true, editor: false, heldBy: h.name, since: h.since };
+  takeLock_(token, sid, b.name, h);
+  if (takeover && h && h.sid !== sid) {
+    setLinkFields_(link, { notes: 'taken over by ' + personName_(b.name) + ' at ' + nowIso_() });
+  }
+  return editorState_(link.rec);
+}
+
+/** Every ~15 s from an open page: keeps the lock alive, autosaves a changed page, tells viewers what the editor did. */
+function confirmPing_(link, token, sid, b) {
+  var rec = link.rec, h = readLock_(token);
+  var draftAt = str_(rec.saved_at);
+  var others = function (heldBy, since, lost) {
+    var out = { ok: true, editor: false, heldBy: heldBy, since: since, lost: lost, draftAt: draftAt, submittedAt: str_(rec.submitted_at) };
+    if (str_(b.draftAt) !== draftAt) out.draft = draftOf_(rec); // viewers see the editor's work without reloading
+    return out;
+  };
+  if (h && h.sid !== sid) return others(h.name, h.since, (h.replaced || []).indexOf(sid) !== -1);
+  // The lock ran out: take it back quietly, but only if nobody saved in between (otherwise their work would be overwritten).
+  if (!h && b.draftAt !== undefined && b.draftAt !== null && str_(b.draftAt) !== draftAt) return others('', '', true);
+  // Someone submitted since this page loaded: don't hand the lock back to an out-of-date page, tell it so.
+  if (b.baseSubmittedAt !== undefined && b.baseSubmittedAt !== null && str_(b.baseSubmittedAt) !== str_(rec.submitted_at)) return others('', '', true);
+  takeLock_(token, sid, b.name, h);
+  var out = { ok: true, editor: true };
+  if (b.state !== undefined && b.state !== null) out.savedAt = saveDraft_(link, b.state, true).savedAt;
+  return out;
+}
+
+function confirmRelease_(token, sid) {
+  var h = readLock_(token);
+  if (h && h.sid === sid) CacheService.getScriptCache().remove(lockKey_(token));
+  return { ok: true };
+}
+
+// ---- the group's data
 
 /** Everything the page shows for one group: its details, its items, its point people and any saved draft. */
 function confirmData_(rec, t) {
-  var orgId = str_(rec.org_id);
-  var o = findById_(t.orgs, orgId) || { id: orgId, name: rec.org_name };
-  var pick = function (row, kind) {
-    var out = { id: str_(row.id), kind: kind };
-    CONFIRM_FIELDS[kind].forEach(function (k) { out[k] = k === 'online' ? isTrue_(row[k]) : str_(row[k]); });
-    if (kind !== 'org') { out.verified = isTrue_(row.verified); out.needs_info = isTrue_(row.needs_info); }
+  var id = str_(rec.org_id);
+  var kind = linkKind_(rec);
+  var coalition = kind === 'coalition';
+  var o = findById_(coalition ? t.coalitions : t.orgs, id) || { id: id, name: rec.org_name };
+  var pick = function (row, k) {
+    var out = { id: str_(row.id), kind: k };
+    CONFIRM_FIELDS[k].forEach(function (f) { out[f] = f === 'online' ? isTrue_(row[f]) : str_(row[f]); });
+    if (k !== 'org' && k !== 'coalition') { out.verified = isTrue_(row.verified); out.needs_info = isTrue_(row.needs_info); }
     return out;
   };
-  var mine = function (rows, kind) {
-    return rows.filter(function (r) { return r.id && !isTrue_(r.hidden) && str_(r.host_org_id) === orgId; })
-      .map(function (r) { return pick(r, kind); });
+  // An organization's items are the ones it hosts; a coalition's are the ones tagged with it (member orgs' too).
+  var mine = function (rows, k) {
+    return rows.filter(function (r) { return r.id && !isTrue_(r.hidden) && ownsItem_(kind, id, r); })
+      .map(function (r) { return pick(r, k); });
   };
-  var draft = null;
-  try { draft = str_(rec.draft) ? JSON.parse(str_(rec.draft)) : null; } catch (e) { draft = null; }
-  if (draft) delete draft.who; // never show one person's details to the next
   return {
-    token: str_(rec.token), title: REGION.title, submittedAt: str_(rec.submitted_at),
-    org: pick(o, 'org'),
+    token: str_(rec.token), title: REGION.title, kind: kind, submittedAt: str_(rec.submitted_at),
+    org: pick(o, coalition ? 'coalition' : 'org'),
     items: mine(t.events, 'event').concat(mine(t.projects, 'project'), mine(t.actions, 'action')),
-    pointPeople: pointPeopleOf_(orgId, t.editors).map(function (p) { return { name: p.name, pending: p.pending, email: maskEmail_(p.email) }; }),
-    maxPointPeople: MAX_POINT_PEOPLE, draft: draft, holdSeconds: HOLD_SECONDS,
+    fields: CONFIRM_FIELDS,
+    pointPeople: pointPeopleOf_(id, t.editors, kind).map(function (p) { return { name: p.name, pending: p.pending, email: maskEmail_(p.email) }; }),
+    maxPointPeople: MAX_POINT_PEOPLE, draft: draftOf_(rec), draftAt: str_(rec.saved_at),
+    lockSeconds: LOCK_SECONDS, pingSeconds: PING_SECONDS,
   };
+}
+
+function ownsItem_(kind, id, row) {
+  return kind === 'coalition' ? str_(row.coalition_id) === id : str_(row.host_org_id) === id;
 }
 
 /** "na•••@gmail.com": enough to recognise yourself, not enough to harvest addresses from a forwarded link. */
@@ -166,95 +349,129 @@ function maskEmail_(e) {
   return m ? m[1] + '•••' + m[2] : '';
 }
 
-// ---------------------------------------------------------------- called from the page (google.script.run)
+// ---------------------------------------------------------------- saving and submitting
 
-function confirmWho_(who) {
+/**
+ * Checks a person's details. `other` = one of the extra point people (the messages then talk about "them").
+ * "Best way to reach" only means something with a phone number, so it is cleared without one.
+ */
+function confirmWho_(who, other) {
   var email = String((who && who.email) || '').trim().toLowerCase();
   var name = String((who && who.name) || '').trim().slice(0, 120);
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('Please enter your email address at the top of the page.');
-  if (!name) throw new Error('Please enter your name at the top of the page.');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error(other ? 'Please check the email address of the other point person.' : 'Please enter your email address at the top of the page.');
+  if (!name) throw new Error(other ? 'Please enter the name of the other point person (' + email + ').' : 'Please enter your name at the top of the page.');
   var phone = String((who && who.phone) || '').trim().slice(0, 40);
-  if (phone && !/^[0-9+().\-\s x ext]{7,40}$/i.test(phone)) throw new Error('Please check the phone number (digits, spaces, dashes and + only).');
+  if (phone && !/^[0-9+().\-\s x ext]{7,40}$/i.test(phone)) throw new Error('Please check the phone number' + (other ? ' for ' + name : '') + ' (digits, spaces, dashes and + only).');
   var best = String((who && who.best) || '').trim();
-  if (['', 'Email', 'Text', 'Phone call', 'Any'].indexOf(best) === -1) best = '';
+  if (!phone || ['', 'Email', 'Text', 'Phone call', 'Any'].indexOf(best) === -1) best = '';
   return { email: email, name: name, phone: phone, best: best };
 }
 
-/** Save for later: keeps the page's state on the Links row. */
-function confirmSave(token, state) {
-  var link = linkRow_(token);
-  if (!link) throw new Error('This link no longer works.');
-  // The draft is shared by everyone with this group's link, so no personal details go in it (each browser keeps its own).
-  var copy = JSON.parse(JSON.stringify(state || {}));
-  var savedBy = copy.who ? String(copy.who.email || '').trim().toLowerCase() : '';
-  delete copy.who;
-  var json = JSON.stringify(copy);
-  if (json.length > 45000) throw new Error('That is too much to save at once. Please submit what you have.');
-  setLinkFields_(link, { draft: json, saved_at: nowIso_(), status: str_(link.rec.submitted_at) ? link.rec.status : 'saved for later', notes: savedBy ? 'last saved by ' + savedBy : str_(link.rec.notes) });
-  return { savedAt: nowIso_() };
+/** The extra point people on the page: blank rows are skipped, the rest must be complete. At most two. */
+function confirmOthers_(state) {
+  var rows = state && Array.isArray(state.others) ? state.others.slice(0, 2) : [];
+  return rows.filter(function (w) {
+    return w && (String(w.name || '').trim() || String(w.email || '').trim() || String(w.phone || '').trim());
+  }).map(function (w) { return confirmWho_(w, true); });
 }
 
-/** Finalize and Submit: applies the page's decisions to the main sheet. */
-function confirmSubmit(token, state) {
-  var lock = LockService.getScriptLock();
-  lock.waitLock(20000);
-  try {
-    var link = linkRow_(token);
-    if (!link) throw new Error('This link no longer works.');
-    var who = confirmWho_(state && state.who);
-    var t = readAll_();
-    var result = confirmApply_(str_(link.rec.org_id), state, who, t);
-    setLinkFields_(link, {
-      status: 'submitted', submitted_at: nowIso_(), draft: '',
-      point_people: pointPeopleOf_(str_(link.rec.org_id), readAll_().editors).map(function (p) { return p.email + (p.pending ? ' (pending)' : ''); }).join(', '),
-      notes: 'submitted by ' + who.email + ': ' + result.summary,
-    });
-    var to = alertEmails_();
-    if (to.length) {
-      try {
-        MailApp.sendEmail(to.join(','), REGION.title + ': ' + str_(link.rec.org_name) + ' checked their information',
-          who.name + ' (' + who.email + ') submitted the confirmation screen for ' + str_(link.rec.org_name) + '.\n\n' + result.lines.join('\n') +
-          '\n\nEvery change is in Change Log: ' + ss_().getUrl());
-      } catch (e) { /* quota */ }
-    }
-    return result;
-  } finally {
-    lock.releaseLock();
+/** Writes the page's state on the Links row. The shared draft never holds personal details (each browser keeps its own). */
+function saveDraft_(link, state, auto) {
+  if (!state || typeof state !== 'object') throw new Error('There is nothing to save yet.');
+  var copy = JSON.parse(JSON.stringify(state));
+  var savedBy = copy.who ? String(copy.who.email || '').trim().toLowerCase() : '';
+  delete copy.who; delete copy.others;
+  var json = JSON.stringify(copy);
+  if (json.length > 45000) throw new Error('That is too much to save at once. Please submit what you have.');
+  var at = nowIso_();
+  if (auto) {
+    // Autosave touches only the draft: notes may hold an admin's own text or the submitter's name.
+    setLinkFields_(link, { draft: json, saved_at: at, status: str_(link.rec.submitted_at) ? link.rec.status : 'in progress' });
+  } else {
+    setLinkFields_(link, { draft: json, saved_at: at, status: str_(link.rec.submitted_at) ? link.rec.status : 'saved for later', notes: savedBy ? 'last saved by ' + savedBy : str_(link.rec.notes) });
   }
+  return { savedAt: at };
+}
+
+/** Save for later: only the person editing (or anyone, when nobody is). */
+function confirmSave_(link, token, sid, b) {
+  var h = readLock_(token);
+  if (h && h.sid !== sid) return { ok: false, error: holderMessage_(h) };
+  var r = saveDraft_(link, b.state);
+  takeLock_(token, sid, b.name, h);
+  return { ok: true, savedAt: r.savedAt };
+}
+
+/** Finalize and Submit: applies the page's decisions to the main sheet. The first one to submit wins. */
+function confirmSubmit_(link, token, sid, b) {
+  var h = readLock_(token);
+  if (h && h.sid !== sid) return { ok: false, error: holderMessage_(h) };
+  var was = str_(link.rec.submitted_at);
+  if (was !== str_(b.baseSubmittedAt)) {
+    var m = /^submitted by (.*?) \(/.exec(str_(link.rec.notes));
+    return { ok: false, conflict: true, error: (m ? m[1] : 'Someone') + ' already submitted this page at ' + was.slice(0, 16).replace('T', ' ') +
+      ' UTC. Reload to see what\'s on the map now.' };
+  }
+  var state = b.state;
+  var who = confirmWho_(state && state.who);
+  var others = confirmOthers_(state);
+  var id = str_(link.rec.org_id), kind = linkKind_(link.rec);
+  var result = confirmApply_(id, state, who, readAll_(), kind, others);
+  var at = nowIso_();
+  setLinkFields_(link, {
+    status: 'submitted', submitted_at: at, draft: '',
+    point_people: pointPeopleOf_(id, readAll_().editors, kind).map(function (p) { return p.email + (p.pending ? ' (pending)' : ''); }).join(', '),
+    notes: 'submitted by ' + who.name.replace(/[()]/g, '') + ' (' + who.email + '): ' + result.summary,
+  });
+  CacheService.getScriptCache().remove(lockKey_(token));
+  var to = alertEmails_();
+  if (to.length) {
+    try {
+      MailApp.sendEmail(to.join(','), REGION.title + ': ' + str_(link.rec.org_name) + ' checked their information',
+        who.name + ' (' + who.email + ') submitted the confirmation screen for ' + str_(link.rec.org_name) + '.\n\n' + result.lines.join('\n') +
+        '\n\nEvery change is in Change Log: ' + ss_().getUrl());
+    } catch (e) { /* quota */ }
+  }
+  result.ok = true;
+  result.submittedAt = at;
+  return result;
 }
 
 /**
- * Applies one submission. state = { who, org: { decision, fields }, items: { <id>: { kind, decision, fields } } }
+ * Applies one submission. state = { who, others, org: { decision, fields }, items: { <id>: { kind, decision, fields } } }
  * decision: 'approve' (as it is, or with the edits in fields) | 'remove' | anything else = left alone.
- * Only the group's own items, and only the fields in CONFIRM_FIELDS, can be changed.
+ * Only the group's own items, and only the fields in CONFIRM_FIELDS, can be changed. kind is 'organization' (the
+ * default) or 'coalition'; others = extra point people, already checked by confirmWho_.
  */
-function confirmApply_(orgId, state, who, t) {
+function confirmApply_(orgId, state, who, t, kind, others) {
+  var coalition = kind === 'coalition';
+  var cardKind = coalition ? 'coalition' : 'org';
   var lines = [], counts = { approved: 0, removed: 0, edited: 0 };
   var tabs = { event: [TAB.events, t.events], project: [TAB.projects, t.projects], action: [TAB.actions, t.actions] };
-  var clean = function (kind, fields) {
+  var clean = function (k, fields) {
     var out = {};
-    CONFIRM_FIELDS[kind].forEach(function (k) {
-      if (!fields || fields[k] === undefined || fields[k] === null) return;
-      var v = k === 'online' ? (fields[k] === true || isTrue_(fields[k]) ? 'TRUE' : 'FALSE') : String(fields[k]).trim().slice(0, 4000);
-      if (k === 'name' && !v) return; // a card can't lose its name
-      if ((k === 'date' || k === 'end') && v && !/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?)?$/.test(v)) return;
-      if ((k === 'date' || k === 'end') && /T\d{2}:\d{2}$/.test(v)) v += ':00';
-      if ((k === 'link' || k === 'rsvp_link' || k === 'website') && v && !/^https?:\/\//i.test(v)) v = 'https://' + v;
-      out[k] = v;
+    CONFIRM_FIELDS[k].forEach(function (f) {
+      if (!fields || fields[f] === undefined || fields[f] === null) return;
+      var v = f === 'online' ? (fields[f] === true || isTrue_(fields[f]) ? 'TRUE' : 'FALSE') : String(fields[f]).trim().slice(0, 4000);
+      if (f === 'name' && !v) return; // a card can't lose its name
+      if ((f === 'date' || f === 'end') && v && !/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?)?$/.test(v)) return;
+      if ((f === 'date' || f === 'end') && /T\d{2}:\d{2}$/.test(v)) v += ':00';
+      if ((f === 'link' || f === 'rsvp_link' || f === 'website') && v && !/^https?:\/\//i.test(v)) v = 'https://' + v;
+      out[f] = v;
     });
     return out;
   };
-  var record = function (r, kind) {
-    logChange_(who.email, CONFIRM_FORM, 'applied', '', kind, r.id, r.name, r.changes);
-    lines.push('- ' + r.name + ' (' + kind + '): ' + r.action);
+  var record = function (r, type) {
+    logChange_(who.email, CONFIRM_FORM, 'applied', '', type, r.id, r.name, r.changes);
+    lines.push('- ' + r.name + ' (' + type + '): ' + r.action);
   };
 
   var o = state && state.org;
-  if (o && o.decision === 'approve' && findById_(t.orgs, orgId)) {
-    var op = clean('org', o.fields);
-    var r = upsert_(TAB.orgs, 'organization', '[' + orgId + ']', '', op);
+  if (o && o.decision === 'approve' && findById_(coalition ? t.coalitions : t.orgs, orgId)) {
+    var op = clean(cardKind, o.fields);
+    var r = upsert_(coalition ? TAB.coalitions : TAB.orgs, coalition ? 'coalition' : 'organization', '[' + orgId + ']', '', op);
     if (r.changes) counts.edited++;
-    record(r, 'organization');
+    record(r, coalition ? 'coalition' : 'organization');
   }
 
   var items = (state && state.items) || {};
@@ -263,7 +480,7 @@ function confirmApply_(orgId, state, who, t) {
     var tab = tabs[it.kind];
     if (!tab || (it.decision !== 'approve' && it.decision !== 'remove')) return;
     var row = findById_(tab[1], id);
-    if (!row || str_(row.host_org_id) !== orgId) return; // not this group's
+    if (!row || !ownsItem_(coalition ? 'coalition' : 'organization', orgId, row)) return; // not this group's
     var patch;
     if (it.decision === 'remove') { patch = { hidden: 'TRUE' }; counts.removed++; }
     else {
@@ -277,173 +494,35 @@ function confirmApply_(orgId, state, who, t) {
     record(upsert_(tab[0], it.kind, '[' + id + ']', '', patch), it.kind);
   });
 
-  // The person filling it in becomes a point person (pending until they confirm their email), up to three per group.
-  var people = pointPeopleOf_(orgId, t.editors);
-  var known = people.some(function (p) { return p.email === who.email; });
-  if (known || people.length < MAX_POINT_PEOPLE) {
-    var a = { bestContact: who.best, via: 'the confirmation screen' }; a[Q.pointEmail] = who.email; a[Q.pointName] = who.name; a[Q.pointPhone] = who.phone;
+  // Point people (pending until they confirm their email), up to three per group: first the person filling it in,
+  // then anyone they named. Someone already on file is skipped, so nobody can overwrite another person's details.
+  var people = function () { return pointPeopleOf_(orgId, readTable_(ss_().getSheetByName(TAB.editors)).rows, kind); };
+  var addPerson = function (w, label, keepDetails) {
+    var now = people();
+    var known = now.some(function (p) { return p.email === w.email; });
+    if (known) {
+      lines.push('- ' + w.email + ' (already a point person' + (keepDetails ? ': their details were not changed' : '') + ')');
+      if (keepDetails) logChange_(w.email, CONFIRM_FORM, 'skipped', 'ON FILE', 'editor', orgId, orgId, label + ' is already a point person; details not changed');
+      if (!keepDetails) {
+        var a0 = { bestContact: w.best, via: 'the confirmation screen', groupKind: cardKind }; a0[Q.pointEmail] = w.email; a0[Q.pointName] = w.name; a0[Q.pointPhone] = w.phone;
+        savePointPerson_(orgId, a0, '');
+      }
+      return;
+    }
+    if (now.length >= MAX_POINT_PEOPLE) {
+      lines.push('- ' + w.email + ' not added as a point person: the group already has ' + MAX_POINT_PEOPLE);
+      logChange_(w.email, CONFIRM_FORM, 'not added', 'FULL', 'editor', orgId, orgId, 'already ' + MAX_POINT_PEOPLE + ' point people');
+      return;
+    }
+    var a = { bestContact: w.best, via: 'the confirmation screen', groupKind: cardKind, keepDetails: keepDetails }; a[Q.pointEmail] = w.email; a[Q.pointName] = w.name; a[Q.pointPhone] = w.phone;
     savePointPerson_(orgId, a, '');
-    lines.push('- ' + who.email + (known ? ' (already a point person)' : ' added as a point person (asked to confirm their email)'));
-  } else {
-    lines.push('- ' + who.email + ' not added as a point person: the group already has ' + MAX_POINT_PEOPLE);
-    logChange_(who.email, CONFIRM_FORM, 'not added', 'FULL', 'editor', orgId, orgId, 'already ' + MAX_POINT_PEOPLE + ' point people');
-  }
+    var added = people().filter(function (p) { return p.email === w.email; })[0];
+    lines.push('- ' + w.email + ' added as ' + label + (added && !added.pending ? '' : ' (asked to confirm their email)'));
+    if (keepDetails) logChange_(w.email, CONFIRM_FORM, 'added', 'PENDING', 'editor', orgId, orgId, label + ' named by ' + who.email);
+  };
+  addPerson(who, 'a point person', false);
+  (others || []).forEach(function (w) { addPerson(w, 'another point person', true); });
+
   var summary = counts.approved + ' approved, ' + counts.removed + ' removed, ' + counts.edited + ' edited';
   return { summary: summary, lines: lines, counts: counts };
 }
-
-// ---- holds: one person edits a card at a time
-
-function holdKey_(token, itemId) { return 'hold:' + token + ':' + itemId; }
-function readHold_(cache, key) { try { return JSON.parse(cache.get(key) || 'null'); } catch (e) { return null; } }
-
-/** Start editing a card. Returns { ok: true } or { ok: false, heldBy: name, since } when someone else has it. */
-function confirmHold(token, itemId, who) {
-  if (!linkRow_(token)) throw new Error('This link no longer works.');
-  who = confirmWho_(who);
-  var lock = LockService.getScriptLock();
-  lock.waitLock(10000);
-  try {
-    var cache = CacheService.getScriptCache(), key = holdKey_(token, itemId);
-    var h = readHold_(cache, key);
-    if (h && h.email !== who.email) return { ok: false, heldBy: h.name, since: h.since };
-    cache.put(key, JSON.stringify({ email: who.email, name: who.name, since: (h && h.since) || nowIso_(), requests: (h && h.requests) || [] }), HOLD_SECONDS);
-    return { ok: true };
-  } finally { lock.releaseLock(); }
-}
-
-/** Done editing a card (or handing it over). */
-function confirmRelease(token, itemId, who) {
-  who = confirmWho_(who);
-  var cache = CacheService.getScriptCache(), key = holdKey_(token, itemId);
-  var h = readHold_(cache, key);
-  if (h && h.email === who.email) cache.remove(key);
-  return { ok: true };
-}
-
-/** The second person asks the one editing a card to hand it over. */
-function confirmAsk(token, itemId, who) {
-  who = confirmWho_(who);
-  var cache = CacheService.getScriptCache(), key = holdKey_(token, itemId);
-  var h = readHold_(cache, key);
-  if (!h) return { free: true };
-  if (!h.requests.some(function (r) { return r.email === who.email; })) h.requests.push({ email: who.email, name: who.name });
-  cache.put(key, JSON.stringify(h), HOLD_SECONDS);
-  return { asked: true };
-}
-
-/** Every 30 s while the page is open: keeps this person's holds alive and reports others' holds and requests. */
-function confirmPing(token, who, itemIds) {
-  if (!linkRow_(token)) return { gone: true };
-  var email = String((who && who.email) || '').trim().toLowerCase();
-  var cache = CacheService.getScriptCache();
-  var out = {};
-  (itemIds || []).slice(0, 200).forEach(function (id) {
-    var key = holdKey_(token, id), h = readHold_(cache, key);
-    if (!h) return;
-    if (h.email === email) {
-      cache.put(key, JSON.stringify(h), HOLD_SECONDS);
-      if (h.requests.length) out[id] = { mine: true, requests: h.requests.map(function (r) { return r.name; }) };
-    } else out[id] = { heldBy: h.name };
-  });
-  return { holds: out };
-}
-
-// ---------------------------------------------------------------- page HTML (served by confirmPage_)
-var CONFIRM_HTML = [
-  '<!doctype html><html lang="en"><head><meta charset="utf-8"><base target="_top">',
-  '<style>',
-  ':root{--bg:#f6f7f9;--card:#fff;--text:#16202a;--dim:#55616e;--line:#d9dee4;--accent:#0b6e4f;--accent-soft:#e2f3eb;--warn:#8a5a00;--warn-soft:#fff3d6;--bad:#a12a2a;--bad-soft:#fbe4e4}',
-  '@media (prefers-color-scheme:dark){:root{--bg:#10151b;--card:#18202a;--text:#e6ebf0;--dim:#a3aeb9;--line:#2b3540;--accent:#5fd3a6;--accent-soft:#173329;--warn:#f2c46b;--warn-soft:#3a2f17;--bad:#ff8f8f;--bad-soft:#3d1f22}}',
-  '*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}',
-  '.wrap{max-width:760px;margin:0 auto;padding:20px 16px 120px}h1{font-size:1.5em;margin:.2em 0}h2{font-size:1.1em;margin:28px 0 8px}',
-  '.lead{color:var(--dim);margin:0 0 16px}.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}',
-  'label{display:block;font-size:.85em;color:var(--dim);margin:8px 0 2px}input,textarea,select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text)}',
-  'textarea{min-height:90px;resize:vertical}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:560px){.row2{grid-template-columns:1fr}}',
-  '.card{position:relative}.card .kind{font-size:.75em;text-transform:uppercase;letter-spacing:.06em;color:var(--dim)}.card h3{margin:2px 92px 4px 0;font-size:1.05em}',
-  '.card .meta{color:var(--dim);font-size:.9em}.card .desc{margin:6px 0 0;white-space:pre-wrap}.card .edit-btn{position:absolute;top:12px;right:12px}',
-  'button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:7px 14px}',
-  'button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}',
-  'button.primary{background:var(--accent);border-color:var(--accent);color:#fff}@media(prefers-color-scheme:dark){button.primary{color:#0b1a14}}',
-  '.decide{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.decide button[aria-pressed="true"].ok{background:var(--accent-soft);border-color:var(--accent);font-weight:600}',
-  '.decide button[aria-pressed="true"].rm{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);font-weight:600}',
-  '.card.removed h3,.card.removed .desc{text-decoration:line-through;opacity:.6}.held{background:var(--warn-soft);border-left:4px solid var(--warn);padding:8px 10px;border-radius:6px;margin-top:10px;font-size:.92em}',
-  '.edited-tag{font-size:.75em;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:1px 8px;margin-left:6px}',
-  '.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}',
-  '.status{font-size:.9em;color:var(--dim);min-width:12em;text-align:center}.err{color:var(--bad)}.done{background:var(--accent-soft);border-color:var(--accent)}',
-  '.empty{color:var(--dim);font-style:italic}.pp{font-size:.9em;color:var(--dim)}',
-  '</style></head><body><div class="wrap" id="app"></div>',
-  '<div class="bar" role="region" aria-label="Save or submit"><button type="button" id="save">Save for later</button><span class="status" id="status" aria-live="polite"></span><button type="button" class="primary" id="submit">Finalize and Submit</button></div>',
-  '<script>var DATA=__DATA__;</script>',
-  '<script>',
-  '(function(){',
-  'var KIND={org:"Your organization",event:"Event",project:"Project",action:"Action or volunteer role"};',
-  'var LABEL={name:"Name",description:"Description",website:"Website",geographic_focus:"Where you work (towns or region)",public_contact:"Public contact (email or phone people can use)",date:"Starts",end:"Ends",location:"Where",online:"Online",link:"Web page",rsvp_link:"Sign-up / RSVP link",status:"Status",deadline:"Deadline"};',
-  'var FIELDS=' + JSON.stringify(CONFIRM_FIELDS) + ';',
-  'var cards=[DATA.org].concat(DATA.items);',
-  'var st=DATA.draft||{org:{decision:"",fields:{}},items:{}};st.who={name:"",email:"",phone:"",best:""};try{var mem=JSON.parse(localStorage.getItem("confirm.me")||"null");if(mem)st.who=mem;}catch(e){}st.org=st.org||{decision:"",fields:{}};st.items=st.items||{};',
-  'var editing={},holds={},dirty=false;',
-  'function S(id){return cards[0].id===id?st.org:(st.items[id]=st.items[id]||{kind:find(id).kind,decision:"",fields:{}});}',
-  'function find(id){for(var i=0;i<cards.length;i++)if(cards[i].id===id)return cards[i];}',
-  'function val(c,k){var s=S(c.id);return s.fields&&s.fields[k]!==undefined?s.fields[k]:c[k];}',
-  'function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(ch){return{"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;"}[ch];});}',
-  'function when(c){var d=val(c,"date");if(!d)return"";try{var x=new Date(d);return x.toLocaleString(undefined,{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});}catch(e){return d;}}',
-  'function el(h){var t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstChild;}',
-  'function msg(t,bad){var s=document.getElementById("status");s.textContent=t;s.className="status"+(bad?" err":"");}',
-  'function remember(w){try{localStorage.setItem("confirm.me",JSON.stringify(w));}catch(e){}}function who(){return{name:document.getElementById("pname").value.trim(),email:document.getElementById("pemail").value.trim(),phone:document.getElementById("pphone").value.trim(),best:document.getElementById("pbest").value};}',
-  'function render(){',
-  ' var app=document.getElementById("app");app.innerHTML="";',
-  ' app.appendChild(el("<div><h1>Check "+esc(DATA.org.name)+"\\u2019s information</h1><p class=\\"lead\\">This is what the "+esc(DATA.title)+" shows for your group. For each card, choose <b>Approve</b> (it\\u2019s right, or right after your edits) or <b>Remove</b> (it shouldn\\u2019t be on the map). Nothing changes until you press <b>Finalize and Submit</b>; <b>Save for later</b> keeps your work.</p></div>"));',
-  ' if(DATA.submittedAt)app.appendChild(el("<div class=\\"box done\\">Thank you: this was submitted on "+esc(new Date(DATA.submittedAt).toLocaleDateString())+". You can check it again and submit any changes.</div>"));',
-  ' var pp=DATA.pointPeople.length?"Point people on file: "+DATA.pointPeople.map(function(p){return esc(p.name||p.email)+(p.pending?" (waiting for email confirmation)":"");}).join(", ")+".":"No point person on file yet.";',
-  ' var me=el("<div class=\\"box\\"><h2 style=\\"margin-top:0\\">You</h2><div class=\\"row2\\"><div><label for=\\"pname\\">Your name</label><input id=\\"pname\\" autocomplete=\\"name\\"></div><div><label for=\\"pemail\\">Your email</label><input id=\\"pemail\\" type=\\"email\\" autocomplete=\\"email\\"></div><div><label for=\\"pphone\\">Phone (optional)</label><input id=\\"pphone\\" type=\\"tel\\" autocomplete=\\"tel\\"></div><div><label for=\\"pbest\\">Best way to reach you</label><select id=\\"pbest\\"><option value=\\"\\">No preference</option><option>Email</option><option>Text</option><option>Phone call</option></select></div></div><p class=\\"pp\\">"+pp+" You\\u2019ll be added as a point person (up to "+DATA.maxPointPeople+" per group); we\\u2019ll email you a link to confirm your address. Your phone and email are only seen by the map\\u2019s core team, never shown on the map.</p></div>");',
-  ' app.appendChild(me);document.getElementById("pname").value=st.who.name||"";document.getElementById("pemail").value=st.who.email||"";document.getElementById("pphone").value=st.who.phone||"";document.getElementById("pbest").value=st.who.best||"";',
-  ' ["pname","pemail","pphone","pbest"].forEach(function(id){document.getElementById(id).addEventListener(id==="pbest"?"change":"input",function(){st.who=who();remember(st.who);dirty=true;});});',
-  ' app.appendChild(el("<h2>Your organization</h2>"));app.appendChild(card(DATA.org));',
-  ' app.appendChild(el("<h2>Events, projects and actions ("+DATA.items.length+")</h2>"));',
-  ' if(!DATA.items.length)app.appendChild(el("<p class=\\"empty\\">The map has no events, projects or actions for your group yet. You can add them with the + button on the map.</p>"));',
-  ' DATA.items.forEach(function(c){app.appendChild(card(c));});',
-  '}',
-  'function card(c){',
-  ' var s=S(c.id),ed=!!editing[c.id],k=c.kind,edited=s.fields&&Object.keys(s.fields).length;',
-  ' var box=el("<div class=\\"box card"+(s.decision==="remove"?" removed":"")+"\\" id=\\"card-"+esc(c.id)+"\\"></div>");',
-  ' var head="<div class=\\"kind\\">"+KIND[k]+(edited?"<span class=\\"edited-tag\\">edited</span>":"")+"</div><h3>"+esc(val(c,"name")||"(no name)")+"</h3>";',
-  ' var meta=[when(c),val(c,"location"),val(c,"online")===true||val(c,"online")==="TRUE"?"online":"",val(c,"status"),val(c,"deadline")?"deadline "+val(c,"deadline"):"",val(c,"geographic_focus"),val(c,"website")||val(c,"link")].filter(Boolean).map(esc).join(" \\u00b7 ");',
-  ' if(!ed){box.innerHTML=head+(meta?"<div class=\\"meta\\">"+meta+"</div>":"")+(val(c,"description")?"<p class=\\"desc\\">"+esc(val(c,"description"))+"</p>":"<p class=\\"desc empty\\">No description yet.</p>")+"<button type=\\"button\\" class=\\"edit-btn\\">Edit</button>";}',
-  ' else{var f="";FIELDS[k].forEach(function(key){var v=val(c,key),id="f-"+c.id+"-"+key;',
-  '   if(key==="description")f+="<label for=\\""+id+"\\">"+LABEL[key]+"</label><textarea id=\\""+id+"\\" data-k=\\""+key+"\\">"+esc(v)+"</textarea>";',
-  '   else if(key==="online")f+="<label><input type=\\"checkbox\\" style=\\"width:auto\\" data-k=\\"online\\""+(v===true||v==="TRUE"?" checked":"")+"> Online</label>";',
-  '   else if(key==="status")f+="<label for=\\""+id+"\\">"+LABEL[key]+"</label><select id=\\""+id+"\\" data-k=\\"status\\">"+["active","planning","paused","done"].map(function(o){return"<option"+(o===v?" selected":"")+">"+o+"</option>";}).join("")+"</select>";',
-  '   else{var type=key==="date"||key==="end"?"datetime-local":key==="deadline"?"date":"text";var vv=type==="datetime-local"?String(v||"").slice(0,16):type==="date"?String(v||"").slice(0,10):v;f+="<label for=\\""+id+"\\">"+LABEL[key]+"</label><input id=\\""+id+"\\" type=\\""+type+"\\" data-k=\\""+key+"\\" value=\\""+esc(vv)+"\\">";}});',
-  '  box.innerHTML="<div class=\\"kind\\">"+KIND[k]+" \\u00b7 editing</div>"+f+"<div class=\\"decide\\"><button type=\\"button\\" class=\\"primary done-btn\\">Done editing</button><button type=\\"button\\" class=\\"cancel-btn\\">Cancel</button></div>";}',
-  ' var n=notice(c);if(n)box.appendChild(n);',
-  ' if(!ed){var d=el("<div class=\\"decide\\" role=\\"group\\" aria-label=\\"Decision\\"><button type=\\"button\\" class=\\"ok\\" aria-pressed=\\""+(s.decision==="approve")+"\\">\\u2713 Approve</button>"+(k==="org"?"":"<button type=\\"button\\" class=\\"rm\\" aria-pressed=\\""+(s.decision==="remove")+"\\">Remove</button>")+"</div>");box.appendChild(d);}',
-  ' box.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;',
-  '  if(b.classList.contains("edit-btn"))return startEdit(c);',
-  '  if(b.classList.contains("done-btn")){var fs={};box.querySelectorAll("[data-k]").forEach(function(i){var key=i.getAttribute("data-k"),v=i.type==="checkbox"?i.checked:i.value.trim();var orig=c[key];if(i.type==="checkbox"?(v!==(orig===true||orig==="TRUE")):String(v)!==String(orig||"").slice(0,i.type==="datetime-local"?16:i.type==="date"?10:9999))fs[key]=v;});s.fields=fs;s.decision="approve";dirty=true;return endEdit(c);}',
-  '  if(b.classList.contains("cancel-btn"))return endEdit(c);',
-  '  if(b.classList.contains("ok")){s.decision=s.decision==="approve"?"":"approve";dirty=true;return rerender(c);}',
-  '  if(b.classList.contains("rm")){s.decision=s.decision==="remove"?"":"remove";dirty=true;return rerender(c);}',
-  '  if(b.classList.contains("ask-btn")){if(!ready())return;google.script.run.withSuccessHandler(function(r){msg(r&&r.free?"It\\u2019s free now: press Edit.":"Asked. You\\u2019ll be able to edit it once it\\u2019s handed over.");if(r&&r.free){delete holds[c.id];rerender(c);}}).withFailureHandler(fail).confirmAsk(DATA.token,c.id,who());}',
-  '  if(b.classList.contains("give-btn")){editing[c.id]=false;delete holds[c.id];rerender(c);google.script.run.withSuccessHandler(function(){delete holds[c.id];rerender(c);}).withFailureHandler(fail).confirmRelease(DATA.token,c.id,who());}',
-  ' });',
-  ' return box;',
-  '}',
-  'function notice(c){var h=holds[c.id];if(h&&h.heldBy)return el("<div class=\\"held\\">"+esc(h.heldBy)+" is editing this right now. <button type=\\"button\\" class=\\"ask-btn\\">Ask for it</button></div>");if(h&&h.mine&&h.requests&&h.requests.length)return el("<div class=\\"held\\">"+esc(h.requests.join(", "))+" would like to edit this. <button type=\\"button\\" class=\\"give-btn\\">Hand it over</button></div>");return null;}',
-  // an open card keeps what is being typed: only its notice changes
-  'function rerender(c,soft){var old=document.getElementById("card-"+c.id);if(!old)return;if(soft&&editing[c.id]){var o=old.querySelector(".held");if(o)o.remove();var n=notice(c);if(n)old.appendChild(n);return;}old.replaceWith(card(c));}',
-  'function ready(){st.who=who();if(!st.who.name||!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(st.who.email)){msg("Please enter your name and email at the top first.",true);document.getElementById(st.who.name?"pemail":"pname").focus();return false;}return true;}',
-  'function startEdit(c){if(!ready())return;msg("Opening\\u2026");google.script.run.withSuccessHandler(function(r){if(r.ok){editing[c.id]=true;delete holds[c.id];msg("");rerender(c);var f=document.querySelector("#card-"+CSS.escape(c.id)+" [data-k]");if(f)f.focus();}else{holds[c.id]={heldBy:r.heldBy};msg("");rerender(c);}}).withFailureHandler(fail).confirmHold(DATA.token,c.id,who());}',
-  'function endEdit(c){editing[c.id]=false;rerender(c);google.script.run.withFailureHandler(function(){}).confirmRelease(DATA.token,c.id,who());}',
-  'function fail(e){msg((e&&e.message)||"Something went wrong. Please try again.",true);}',
-  'document.getElementById("save").addEventListener("click",function(){st.who=who();msg("Saving\\u2026");google.script.run.withSuccessHandler(function(){dirty=false;msg("Saved. Open this same link to pick up where you left off.");}).withFailureHandler(fail).confirmSave(DATA.token,st);});',
-  'document.getElementById("submit").addEventListener("click",function(){if(!ready())return;if(Object.keys(editing).some(function(k){return editing[k];})){msg("Press \\u201cDone editing\\u201d on the open card first.",true);return;}',
-  ' var n=cards.filter(function(c){return !S(c.id).decision;}).length;if(n&&!confirm(n+" card(s) have no decision yet and will be left as they are. Submit anyway?"))return;',
-  ' msg("Submitting\\u2026");document.getElementById("submit").disabled=true;',
-  ' google.script.run.withSuccessHandler(function(r){dirty=false;document.getElementById("app").innerHTML="<div class=\\"box done\\"><h1>Thank you!</h1><p>Your changes are on the map ("+esc(r.summary)+"). Check your email for a link to confirm your address as a point person.</p><p>You can open this link again any time to make more changes.</p></div>";document.querySelector(".bar").remove();}).withFailureHandler(function(e){document.getElementById("submit").disabled=false;fail(e);}).confirmSubmit(DATA.token,st);});',
-  'window.addEventListener("beforeunload",function(e){if(dirty){e.preventDefault();e.returnValue="";}});',
-  'setInterval(function(){var w=who();if(!w.email)return;google.script.run.withSuccessHandler(function(r){if(!r||!r.holds)return;cards.forEach(function(c){var nh=r.holds[c.id]||null,oh=holds[c.id]||null;if(JSON.stringify(nh)===JSON.stringify(oh))return;if(nh)holds[c.id]=nh;else delete holds[c.id];rerender(c,true);});}).confirmPing(DATA.token,w,cards.map(function(c){return c.id;}));},30000);',
- 'render();',
-  '})();',
-  '</script></body></html>',
-].join('\n');
