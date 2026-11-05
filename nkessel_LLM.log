@@ -911,3 +911,5 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 - HANDOFF.md: running notes any account/session reads first (linked from CLAUDE.md) and updates at the end.
 - Oct 29 afternoon: made the 150 confirmation links (fixed /dev → /exec; code now avoids /dev); rewrote 25 event descriptions from their pages (fetched with a temporary editor-only function, removed after); explainer doc simplified (hosting, cost, security).
 - Main tab renamed "Network map" (Nathan, Oct 29).
+
+2026-11-04 (Claude, for Nathan): merged PR #114 (confirmation page on the map site) after CI passed; pasted Code.gs + Confirm.gs from a3ce970 into the sheet's Apps Script and deployed Version 8 on the same web-app URL; ran "Update confirmation link addresses" (0 changed, cells now plain text); tested the 350 Central Mass link (loads, Save for later works) and reset that row. Why: step 2.02 from Turibius's PR notes, so links work before Wave 1. Updated HANDOFF.md.
