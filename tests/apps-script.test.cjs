@@ -9,6 +9,7 @@ const fs = require("fs");
 const vm = require("vm");
 const path = require("path");
 const assert = require("assert");
+const crypto = require("crypto");
 const ROOT = path.resolve(__dirname, "..");
 const J = (x) => JSON.parse(JSON.stringify(x));
 
@@ -52,6 +53,7 @@ const props = { ADMIN_EMAILS: "admin1@example.org, admin2@example.org, admin3@ex
 const mail = [];
 const cache = {};
 const cacheTtl = {};
+const signed = (buf) => Array.from(buf, (b) => (b > 127 ? b - 256 : b));
 const ctx = {
   console, Math, Date, JSON, String, Number, Array, Object, RegExp, isNaN,
   SpreadsheetApp: { getActiveSpreadsheet: () => ssObj, openById: () => ssObj, getActive: () => ssObj },
@@ -61,12 +63,22 @@ const ctx = {
   HtmlService: { createHtmlOutput: (h) => ({ html: h, setTitle() { return this; }, addMetaTag() { return this; } }) },
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   Session: { getScriptTimeZone: () => "America/New_York", getActiveUser: () => ({ getEmail: () => "" }) },
-  MailApp: { sendEmail: (to, subject, body) => mail.push({ to, subject, body }) },
+  MailApp: { sendEmail: (to, subject, body, opts) => mail.push({ to, subject, body, opts }) },
+  // Apps Script's Utilities, backed by Node's crypto (bytes come back signed, as in Apps Script)
+  Utilities: {
+    sleep: () => {},
+    getUuid: () => crypto.randomUUID(),
+    computeHmacSha256Signature: (v, k) => signed(crypto.createHmac("sha256", k).update(v, "utf8").digest()),
+    base64EncodeWebSafe: (x) => (typeof x === "string" ? Buffer.from(x, "utf8") : Buffer.from(x)).toString("base64").replace(/\+/g, "-").replace(/\//g, "_"),
+    base64DecodeWebSafe: (x) => signed(Buffer.from(x.replace(/-/g, "+").replace(/_/g, "/"), "base64")),
+    newBlob: (bytes) => ({ getDataAsString: () => Buffer.from(bytes).toString("utf8") }),
+  },
   Maps: { newGeocoder: () => ({ setRegion() { return this; }, geocode: (q) => ({ status: "OK", results: [{ geometry: { location: /Natick/.test(q) ? { lat: 42.2834, lng: -71.3495 } : { lat: 42.36, lng: -71.06 } } }] }) }) },
 };
 vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/Code.gs"), "utf8"), ctx);
 vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/Confirm.gs"), "utf8"), ctx);
+vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/SignIn.gs"), "utf8"), ctx);
 const G = (name) => vm.runInContext(name, ctx);
 const Q = G("Q"), COLS = G("COLS");
 const orig = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data.json"), "utf8"));
@@ -499,7 +511,6 @@ console.log("second round trip (org-owned items, locations, links) OK");
   };
   let flaky = 2;
   ctx.FormApp = { ItemType: T, openById: (id) => { if (id === "e" && flaky-- > 0) throw new Error("Unexpected error while getting the method or property openById on object FormApp."); return forms[id]; } };
-  ctx.Utilities = { sleep: () => {} };
   Object.assign(props, { FORM_ORG: "o", FORM_EVENT: "e", FORM_PROJECT: "p", FORM_ACTION: "a", FORM_FEEDBACK: "f" });
   const cfg = J(G("siteFormConfig_")());
   assert.match(cfg.org.orgEntry, /^entry\.\d+$/);
@@ -924,4 +935,117 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(post({ action: "verify", verify: "zz" }).ok, true);
   delete props.LINKS_SHEET_ID;
   console.log("confirmation screen OK");
+}
+
+// 10) sign-in on the map (SignIn.gs): Google, "Confirm with email" login links, sessions, the sender setting
+{
+  const post = (b) => JSON.parse(ctx.doPost({ postData: { contents: JSON.stringify(b) } }).getContent());
+  const exp = String(Math.floor(Date.now() / 1000) + 3600);
+  const cred = (c) => c.repeat(120);
+  const infos = {
+    [cred("a")]: { aud: "cid.apps.googleusercontent.com", iss: "https://accounts.google.com", email: "Point@BLS.org", email_verified: "true", exp },
+    [cred("b")]: { aud: "someone-else", iss: "https://accounts.google.com", email: "point@bls.org", email_verified: "true", exp },
+    [cred("c")]: { aud: "cid.apps.googleusercontent.com", iss: "https://accounts.google.com", email: "point@bls.org", email_verified: "false", exp },
+    [cred("d")]: { aud: "cid.apps.googleusercontent.com", iss: "https://evil.example", email: "point@bls.org", email_verified: "true", exp },
+  };
+  ctx.UrlFetchApp = { fetch: (url) => {
+    const info = infos[decodeURIComponent(url.split("id_token=")[1])];
+    return { getResponseCode: () => (info ? 200 : 400), getContentText: () => JSON.stringify(info || { error: "invalid_token" }) };
+  } };
+  delete props.GOOGLE_CLIENT_ID;
+  assert.match(post({ action: "google", credential: cred("a") }).error, /isn't set up/);
+  props.GOOGLE_CLIENT_ID = "cid.apps.googleusercontent.com";
+  for (const c of ["b", "c", "d", "z"]) assert.equal(post({ action: "google", credential: cred(c) }).ok, false, "rejected token " + c);
+  assert.equal(post({ action: "google", credential: "short" }).ok, false);
+  const g = post({ action: "google", credential: cred("a") });
+  assert.ok(g.ok); assert.equal(g.email, "point@bls.org"); assert.equal(g.how, "google");
+  assert.ok(Date.parse(g.expires) - Date.now() > 29.9 * 864e5, "30-day session");
+  assert.ok(props.SESSION_SECRET, "secret made on first use");
+
+  // signed in, own group: saved straight away, Change Log says it came from the map
+  const ev = (name, host) => ({ [Q.whichEvent]: NEW_EVENT, [Q.hostOrg]: host, [Q.eventName]: name, [Q.eventDate]: "2026-12-01" });
+  let r = post({ action: "submitForm", session: g.session, kind: "event", answers: ev("Signed-in event", BLS) });
+  assert.ok(r.ok); assert.equal(r.status, "live");
+  assert.ok(ctx.readAll_().events.some((e) => e.name === "Signed-in event" && e.host_org_id === "boston_latin_school_youthcan"));
+  assert.ok(log().some((l) => l.record_name === "Signed-in event" && /on the map, Google sign-in/.test(l.form)));
+  // another group: Needs Review, and the site is told this email isn't that group's point person
+  const other = orig.organizations.find((o) => o.id !== "boston_latin_school_youthcan" && orig.organizations.filter((x) => x.name === o.name).length === 1);
+  r = post({ action: "submitForm", session: g.session, kind: "event", answers: ev("Not my group event", other.name) });
+  assert.ok(r.ok); assert.equal(r.status, "review"); assert.equal(r.notOnFile, true);
+  assert.match(r.message, /isn't registered with a point person for this group/);
+  assert.match(review().slice(-1)[0].reason, /^UNAUTHORIZED/); assert.match(review().slice(-1)[0].form, /on the map/);
+  assert.ok(!ctx.readAll_().events.some((e) => e.name === "Not my group event"));
+  // the script's own internal fields can't be set from the site
+  const mycc0 = J(ctx.readAll_().coalitions.find((c) => c.id === "mycc"));
+  r = post({ action: "submitForm", session: g.session, kind: "org", answers: { [Q.whichOrg]: BLS, __coalition_id: "mycc", groupKind: "coalition", [Q.orgDesc]: "Edited while signed in" } });
+  assert.equal(r.status, "live");
+  assert.equal(ctx.readAll_().orgs.find((o) => o.id === "boston_latin_school_youthcan").description, "Edited while signed in");
+  assert.deepStrictEqual(J(ctx.readAll_().coalitions.find((c) => c.id === "mycc")), mycc0);
+  assert.equal(post({ action: "submitForm", session: g.session, kind: "feedback", answers: { [Q.fbMessage]: "x" } }).ok, false);
+  assert.equal(post({ action: "submitForm", session: g.session, kind: "event", answers: { [Q.eventName]: "no which" } }).ok, false);
+  // altered or expired sessions are refused
+  const sig = g.session.split(".")[1];
+  const forged = Buffer.from(JSON.stringify({ e: "admin1@example.org", x: Date.now() + 1e9, h: "google" })).toString("base64url") + "." + sig;
+  assert.equal(post({ action: "submitForm", session: forged, kind: "event", answers: ev("Forged", BLS) }).signedOut, true);
+  const oldPayload = ctx.b64_(JSON.stringify({ e: "point@bls.org", x: Date.now() - 1000, h: "google" }));
+  assert.equal(post({ action: "submitForm", session: oldPayload + "." + ctx.signature_(oldPayload), kind: "event", answers: ev("Expired", BLS) }).signedOut, true);
+  assert.equal(post({ action: "submitForm", kind: "event", answers: ev("No session", BLS) }).signedOut, true);
+  assert.ok(!ctx.readAll_().events.some((e) => /^(Forged|Expired|No session)$/.test(e.name)));
+
+  // "Confirm with email", on file: a 15-minute link to the map; pressing Log in signs in and sends the waiting form
+  mail.length = 0;
+  r = post({ action: "emailLink", email: " Lead@MYCC.org ", kind: "event", answers: { [Q.whichEvent]: NEW_EVENT, [Q.coalition]: MYCC, [Q.eventName]: "Emailed event", [Q.eventDate]: "2026-12-02" } });
+  assert.ok(r.ok); assert.match(r.message, /If lead@mycc\.org belongs to a point person/);
+  const m = mail.find((x) => x.to === "lead@mycc.org");
+  assert.ok(m && m.body.includes("https://ma.climateorgmap.earth/?login="), "link to the map's home page");
+  assert.equal(m.opts.name, G("REGION").title);
+  const tok = /\?login=([0-9a-f]{32})/.exec(m.body)[1];
+  assert.equal(cacheTtl["LOGIN_" + tok], 900, "15 minutes");
+  assert.ok(!ctx.readAll_().events.some((e) => e.name === "Emailed event"), "nothing saved before the link is used");
+  const li = post({ action: "login", token: tok });
+  assert.ok(li.ok); assert.equal(li.email, "lead@mycc.org"); assert.equal(li.how, "email"); assert.equal(li.result.status, "live");
+  assert.ok(ctx.readAll_().events.some((e) => e.name === "Emailed event" && e.coalition_id === "mycc"));
+  assert.ok(log().some((l) => l.record_name === "Emailed event" && /on the map, email link/.test(l.form)));
+  assert.match(post({ action: "login", token: tok }).error, /expired or was already used/, "one use");
+  assert.equal(post({ action: "login", token: "nope" }).ok, false);
+  // sign in only (top right): no form waiting
+  mail.length = 0;
+  assert.ok(post({ action: "emailLink", email: "point@bls.org" }).ok);
+  const tok2 = /\?login=([0-9a-f]{32})/.exec(mail.find((x) => x.to === "point@bls.org").body)[1];
+  const li2 = post({ action: "login", token: tok2 });
+  assert.ok(li2.ok && li2.session && !li2.result);
+  // an expired link
+  mail.length = 0;
+  post({ action: "emailLink", email: "admin1@example.org" });
+  const tok3 = /\?login=([0-9a-f]{32})/.exec(mail.find((x) => x.to === "admin1@example.org").body)[1];
+  cache["LOGIN_" + tok3] = JSON.stringify({ ...JSON.parse(cache["LOGIN_" + tok3]), exp: Date.now() - 1 });
+  assert.equal(post({ action: "login", token: tok3 }).ok, false);
+
+  // not on file: the same message, no email to that address, held in Needs Review with no email attached
+  mail.length = 0;
+  r = post({ action: "emailLink", email: "stranger@yahoo.com", kind: "event", answers: ev("Stranger event", BLS) });
+  assert.ok(r.ok); assert.match(r.message, /If stranger@yahoo\.com belongs to a point person/);
+  assert.equal(mail.filter((x) => x.to === "stranger@yahoo.com").length, 0);
+  const held = review().slice(-1)[0];
+  assert.equal(held.email, ""); assert.equal(JSON.parse(held.payload).email, "", "never applied automatically for that address");
+  assert.match(held.reason, /typed email \(not confirmed\): stranger@yahoo\.com/);
+  assert.ok(!ctx.readAll_().events.some((e) => e.name === "Stranger event"));
+  // at most 3 links per address per 15 minutes; a bad address is refused
+  assert.ok(post({ action: "emailLink", email: "stranger@yahoo.com" }).ok);
+  assert.ok(post({ action: "emailLink", email: "stranger@yahoo.com" }).ok);
+  assert.match(post({ action: "emailLink", email: "stranger@yahoo.com" }).error, /already sent/);
+  assert.match(post({ action: "emailLink", email: "not-an-email" }).error, /valid email/);
+  assert.equal(post({ action: "emailLink", email: "x@example.org", kind: "event", answers: "junk" }).ok, false);
+
+  // the sender (MAIL_FROM): a verified "Send mail as" address of the deploying account, else replies go to it
+  const gmail = [];
+  ctx.GmailApp = { getAliases: () => ["Team@Example.org"], sendEmail: (to, subject, body, opts) => gmail.push({ to, opts }) };
+  props.MAIL_FROM = "team@example.org"; props.MAIL_NAME = "MA Climate Map team";
+  ctx.sendMail_("x@example.org", "s", "b");
+  assert.equal(gmail[0].opts.from, "team@example.org"); assert.equal(gmail[0].opts.name, "MA Climate Map team"); assert.equal(gmail[0].opts.replyTo, "team@example.org");
+  mail.length = 0; props.MAIL_FROM = "not-an-alias@example.org";
+  ctx.sendMail_("x@example.org", "s", "b");
+  assert.equal(gmail.length, 1); assert.equal(mail[0].opts.replyTo, "not-an-alias@example.org"); assert.ok(!mail[0].opts.from);
+  delete props.MAIL_FROM; delete props.MAIL_NAME; delete ctx.GmailApp;
+  console.log("sign-in OK");
 }

@@ -1,5 +1,6 @@
 import { accessibilityButton } from "./display";
 import { h } from "./dom";
+import { accountButton } from "./auth";
 import { currentMap, MAPS, switchMap, type MapId } from "./maps";
 
 export type TopTab = "map" | "geo" | "orgs" | "events" | "projects" | "actions" | "topics";
@@ -128,6 +129,8 @@ export function createTopbar(
   // (No "Switch map…" item: the other maps stay a quiet extra, reached by long-pressing or right-clicking the title.)
   bar.appendChild(nav);
   bar.appendChild(accessibilityButton());
+  // Sign in (point people): only the map with its own sheet + forms takes submissions
+  if (currentMap.editable) bar.appendChild(accountButton());
   bar.appendChild(menuBtn);
 
   return {

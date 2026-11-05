@@ -143,3 +143,47 @@ Setup:
 5. Send each group its link (column `link`). The `status` column shows not sent → opened → in progress (autosaved) → saved for later → submitted.
 
 Anyone with a group's link can change that group's information, so send it only to the group. To cut off a link, delete its row (or change its token) in the links spreadsheet.
+
+## Sign-in on the map (Nov 5)
+
+Point people can send the + menu's forms (organization, event, project, action) straight from the map, with no Google Form step, once they're signed in:
+- **Sign in with Google** (top right, or in the form).
+- **Confirm with email** (for Yahoo, Hotmail, …): they type their email and press Send. If the email is on **Editors** (or `ADMIN_EMAILS`), they get a login link that works for 15 minutes. The link opens the map and asks them to press **Log in**, so email link scanners can't use it up. Logging in sends the form they filled in. An email that isn't on file gets no email, and its form goes to **Needs Review** marked "typed email (not confirmed)", with no email attached, so it can never be applied for someone else's address. The site shows the same message either way, so nobody can use it to find out whose email is on file.
+- Either way they stay signed in on that device for 30 days. **Sign out** is in the top-right menu.
+- Every submission still gets the same check as the forms: the point person of the group picked in the form saves straight away. Anyone else's goes to Needs Review, and the site says "This email isn't registered with a point person for this group". Change Log and Needs Review show "(on the map, Google sign-in)" or "(on the map, email link)".
+- Removing someone from Editors takes away their access straight away, even while they're signed in. To sign **everyone** out, delete the script property `SESSION_SECRET` (a new one is made automatically).
+- The Google Form stays as a backup ("Continue to the Google Form", "or open the empty form").
+
+### 1. Add the script
+1. In Apps Script: **+ → Script**, name it `SignIn`, paste in [`SignIn.gs`](SignIn.gs). Save.
+2. **Deploy → Manage deployments → ✏️ → New version → Deploy** (same URL). Approve the new permission: it lets the script ask Google whether a sign-in is real.
+
+Until steps 2–3 are done, "Confirm with email" already works (mail comes from whoever deployed the script), and the Google button stays hidden.
+
+### 2. Who the emails come from (the shared team account)
+Every automated email (login links, confirmations, review alerts, notes to submitters) is sent by the account that deployed the web app. Two ways to make it the team account:
+- **A. "Send mail as" (no new deployment):**
+  1. In the deploying account's Gmail, go to **Settings → Accounts → Send mail as → Add another email address**, add the team address and confirm the code Google sends it.
+  2. In Apps Script, go to **Project settings → Script properties** and add `MAIL_FROM` = the team address.
+  3. Optionally add `MAIL_NAME`, the sender name people see (default: the map's title), and `MAIL_REPLY_TO` (default: `MAIL_FROM`).
+  4. Run any menu item once and approve the new Gmail permission.
+
+  If `MAIL_FROM` isn't a verified "Send mail as" address, mail still goes out from the deploying account, with replies going to `MAIL_FROM`.
+- **B. The team account deploys:**
+  1. Share the sheet with the team account.
+  2. Signed in as the team account, open Apps Script and make a **New deployment** (Web app, execute as Me, access Anyone).
+  3. That gives a **new URL**: update `LIVE_DATA_URL` in `src/data.config.ts`, the GitHub Actions variable `OPENTHINK_DATA_URL`, and the script property `WEB_APP_URL` if it's set.
+  4. Leave `MAIL_FROM` blank.
+
+Limits: a regular Gmail account can email about 100 people a day from a script, and every automated email counts. Each address can ask for at most 3 login links per 15 minutes, and at most 20 forms an hour from emails that aren't on file reach Needs Review.
+
+### 3. Turn on "Sign in with Google"
+Use the team account:
+1. Go to [console.cloud.google.com](https://console.cloud.google.com) and create a new project (e.g. "MA Climate Organization Map").
+2. Go to **APIs & Services → OAuth consent screen**:
+   - Choose **External**.
+   - Fill in the app name, the support email (team address) and the developer contact.
+   - Add no extra scopes (the basic email and profile scopes need no Google review).
+   - Then **Publish app** ("In production"), so anyone can sign in, not only test users.
+3. Go to **Credentials → Create credentials → OAuth client ID → Web application**. Under **Authorized JavaScript origins**, add `https://ma.climateorgmap.earth` (and `http://localhost:5173` for local testing). No redirect URIs are needed. Copy the **Client ID**. It isn't a secret.
+4. Add it as the script property `GOOGLE_CLIENT_ID`, and in a small PR set `GOOGLE_CLIENT_ID` in [`src/signin.config.ts`](../src/signin.config.ts). The Google button appears once that PR is live.

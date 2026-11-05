@@ -19,6 +19,7 @@ import { checkSources } from "./sourcecheck";
 import { lazyPage, preloadWhenQuiet } from "./lazypage";
 import { atFallback, geoCanLocate } from "./placed";
 import { setQuickFormData } from "./quickform";
+import { handleLoginLink } from "./auth";
 import { setupSidebarToggle, createMapLegend, captureLandText } from "./sidebar";
 
 captureLandText(); // before the loading screen goes away
@@ -631,4 +632,7 @@ async function attachThoughts(data: DataFile): Promise<void> {
   }
 }
 
-main().finally(() => requestAnimationFrame(() => requestAnimationFrame(hideBoot)));
+main().finally(() => requestAnimationFrame(() => requestAnimationFrame(() => {
+  hideBoot();
+  handleLoginLink(); // a login link from "Confirm with email" (src/auth.ts)
+})));

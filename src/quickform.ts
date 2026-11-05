@@ -1,12 +1,14 @@
-// Fill it in on the map, send it with the Google Form (10/15 meeting): the + menu opens a short form here, with
-// the group picked from a list as you type, and "Continue" opens the real Google Form with every answer already
-// filled in, so the last step is just Submit. Nothing is sent from the site itself; sign-in, access checks and the
-// review queue stay exactly as they are (Google Forms + apps-script/Code.gs).
+// Fill it in on the map (10/15 meeting): the + menu opens a short form here, with the group picked from a list as
+// you type. Signed in (Nov 5, src/auth.ts: Google or a login link by email), Submit sends it straight to the sheet
+// script, which runs the same access checks and review queue as the Google Forms (apps-script/SignIn.gs). Not
+// signed in: "Confirm with email" emails a login link that sends the form, or "Continue" opens the real Google
+// Form with every answer already filled in.
 import FIELDS from "./forms.fields.json";
 import type { DataFile, GraphNode } from "./types";
 import { FORMS } from "./forms.config";
 import { coalitionLabel, orgLabel } from "./fab";
 import { h } from "./dom";
+import { emailBox, googleButton, googleEnabled, onSessionChange, session, signOut, submitSignedIn, type Answers } from "./auth";
 
 type Field = { entry: string; type: number; choices?: string[] };
 const forms = FIELDS as Record<string, Record<string, Field>>;
@@ -84,19 +86,84 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
     inputs.push({ title, f, get });
   }
 
-  const note = h("p", { class: "qf-note" }, "Only what you fill in is sent; blanks keep what's already on the map. You'll sign in with Google and press Submit on the last page.");
-  const go = h("button", { type: "button", class: "qf-go" }, "Continue to the Google Form →") as HTMLButtonElement;
+  // Answers by question title, the way the sheet script reads a Google Form response (apps-script/SignIn.gs).
+  const answers = (): Answers => {
+    const out: Answers = {};
+    for (const { title, f, get } of inputs) {
+      const vals = get().filter(Boolean);
+      if (vals.length) out[title] = f.type === 4 ? vals : vals[0];
+    }
+    return out;
+  };
+  const whichMissing = () => !Object.keys(answers()).some((t) => /^Which /.test(t));
+
+  const note = h("p", { class: "qf-note" });
+  const extra = h("div", { class: "qf-email" });
+  extra.hidden = true;
+  const status = h("p", { class: "qf-status", role: "status", "aria-live": "polite" });
+  const foot = h("div", { class: "qf-foot" });
   const cancel = h("button", { type: "button", class: "qf-cancel" }, "Cancel");
   const direct = h("a", { class: "qf-direct", href: base, target: "_blank", rel: "noopener" }, "or open the empty form");
+  const toGoogle = h("button", { type: "button", class: "qf-alt" }, "Continue to the Google Form →") as HTMLButtonElement;
+  const confirm = h("button", { type: "button", class: "qf-go" }, "Confirm with email") as HTMLButtonElement;
+  const submit = h("button", { type: "button", class: "qf-go" }, "Submit") as HTMLButtonElement;
+  const done = h("button", { type: "button", class: "qf-go" }, "Close") as HTMLButtonElement;
+  let finished = false;
+
+  // Signed in (src/auth.ts): Submit sends it straight to the map. Not signed in: "Confirm with email" (or Google
+  // sign-in), with the Google Form kept as a backup.
+  function renderFoot() {
+    if (finished) { note.replaceChildren(); extra.hidden = true; foot.replaceChildren(done); done.focus(); return; }
+    const s = session();
+    if (s) {
+      const out = h("button", { type: "button", class: "qf-link" }, "Sign out");
+      out.addEventListener("click", () => signOut());
+      note.replaceChildren(`Signed in as ${s.email} (`, out, "). Only what you fill in is sent; blanks keep what's already on the map. If you're a point person for this group it goes straight on the map; otherwise the map team checks it first.");
+      extra.hidden = true;
+      foot.replaceChildren(cancel, direct, submit);
+    } else {
+      note.textContent = "Only what you fill in is sent; blanks keep what's already on the map. Point people: confirm with your email to send it straight to the map, or continue in the Google Form.";
+      foot.replaceChildren(cancel, direct, toGoogle, confirm);
+    }
+  }
+
   const dialog = h("div", { class: "qf", role: "dialog", "aria-modal": "true", "aria-label": TITLES[kind] },
-    h("div", { class: "qf-head" }, h("h2", {}, TITLES[kind])), body, note,
-    h("div", { class: "qf-foot" }, cancel, direct, go));
+    h("div", { class: "qf-head" }, h("h2", {}, TITLES[kind])), body, note, extra, status, foot);
   const shade = h("div", { class: "qf-shade" }, dialog);
-  const close = () => shade.remove();
+  const stopWatching = onSessionChange(renderFoot);
+  const close = () => { stopWatching(); shade.remove(); };
   cancel.addEventListener("click", close);
+  done.addEventListener("click", close);
   shade.addEventListener("click", (e) => { if (e.target === shade) close(); });
   shade.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Escape") close(); });
-  go.addEventListener("click", async () => {
+
+  confirm.addEventListener("click", () => {
+    if (whichMissing()) { status.textContent = "Please fill in which organization this is about first."; return; }
+    status.textContent = "";
+    if (!extra.childElementCount) {
+      const gbox = h("div", { class: "acct-google" });
+      googleButton(gbox, (r) => { status.textContent = r.ok ? "" : r.error || "Google sign-in didn't work."; });
+      extra.append(
+        h("p", { class: "qf-note" }, "We'll email you a link. Open it and press Log in within 15 minutes: that sends this form and keeps you signed in on that device for 30 days."),
+        emailBox(status, () => ({ kind, answers: answers() }), () => { finished = true; renderFoot(); }),
+        ...(googleEnabled() ? [h("span", { class: "acct-label" }, "Or sign in with Google, then press Submit"), gbox] : []),
+      );
+    }
+    extra.hidden = false;
+    (extra.querySelector("input") as HTMLInputElement | null)?.focus();
+  });
+
+  submit.addEventListener("click", async () => {
+    if (whichMissing()) { status.textContent = "Please fill in which organization this is about first."; return; }
+    submit.disabled = true;
+    status.textContent = "Sending…";
+    const r = await submitSignedIn(kind, answers());
+    submit.disabled = false;
+    status.textContent = r.ok ? r.message : r.error || "That didn't work. Please try again.";
+    if (r.ok) { finished = true; renderFoot(); }
+  });
+
+  toGoogle.addEventListener("click", async () => {
     const params = new URLSearchParams();
     const tooLong: string[] = [];
     for (const { title, f, get } of inputs) {
@@ -116,6 +183,7 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
     window.open(`${base}${base.includes("?") ? "&" : "?"}${params.toString()}`, "_blank", "noopener");
     close();
   });
+  renderFoot();
   document.body.appendChild(shade);
   (body.querySelector("input:not([type=hidden]), textarea, select") as HTMLElement | null)?.focus();
   return true;
