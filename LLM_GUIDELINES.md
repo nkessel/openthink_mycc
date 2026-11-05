@@ -19,6 +19,6 @@ Shared rules for anyone (human or AI) using an LLM — Claude Code, ChatGPT, Cop
 10. We work on `development_branch`, not `main`.
 11. Log what you did and why in `<username>_LLM.log` (e.g. `nkessel_LLM.log`).
 12. Consider mechanisms to save tokens while retaining accuracy. Example strategies:
-   1.  Have Sonnet sub-agents do grunt work, with you as the orchestrator.
-   2.  Do not read large documents, websites, or databases in full. Use tools to search for keywords and extract information from surrounding area. If the task is extraction, then skim to see how information is organized, and write scripts that do the extraction for you.
-   3.  Use pre-existing well known guidelines for UI, UX, accessibility, and others.
+   1. Have Sonnet sub-agents do grunt work, with you as the orchestrator.
+   2. Do not read large documents, websites, or databases in full. Use tools to search for keywords and extract information from surrounding area. If the task is extraction, then skim to see how information is organized, and write scripts that do the extraction for you.
+   3. Use pre-existing well known guidelines for UI, UX, accessibility, and others.
