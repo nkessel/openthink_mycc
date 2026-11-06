@@ -164,12 +164,16 @@ function sendLoginLink_(b) {
       var url = siteUrl_() + '?login=' + token;
       logChange_(email, 'Sign-in', 'login link sent', '', 'sign-in', '', '', form ? 'waiting to send: ' + FORM_NAMES[form.kind] : '');
       try {
-        sendMail_(email, REGION.title + ': your login link',
-          'Hi,\n\nSomeone (hopefully you) asked to log in to the ' + REGION.title + ' with this email' +
-          (form ? ' and send changes to "' + FORM_NAMES[form.kind] + '"' : '') + '.\n\n' +
-          'Open this link and press "Log in" within ' + LOGIN_LINK_MINUTES + ' minutes:\n\n' + url + '\n\n' +
-          'You\'ll stay logged in on that device for ' + SESSION_DAYS + ' days' + (form ? ', and your changes are sent when you log in' : '') + '.\n' +
-          'If this wasn\'t you, ignore this email: nothing changes until the link is used.\n\n— ' + REGION.title);
+        // Wording chosen by the team (Nov 6). Signed with MAIL_NAME (the sender name) when it's set.
+        var signOff = String(PropertiesService.getScriptProperties().getProperty('MAIL_NAME') || '').trim() || REGION.title;
+        sendMail_(email, 'Your link to update the ' + REGION.title,
+          'Hi! Here\'s your login link for the ' + REGION.title + ':\n\n' + url + '\n\n' +
+          'Tap it, then press "Log in" (it works for ' + LOGIN_LINK_MINUTES + ' minutes). ' +
+          'You\'ll stay logged in on this device for ' + SESSION_DAYS + ' days.' +
+          (form ? ' Your changes to "' + FORM_NAMES[form.kind] + '" are sent when you log in.' : '') + '\n\n' +
+          'It\'s a secure personal link, so please don\'t forward it. Teammates who need edit access can be added as point people.\n\n' +
+          'Thanks for keeping the map accurate!\n' +
+          'Didn\'t ask for this? You can ignore it; nothing changes.\n\n— ' + signOff);
       } catch (e) {
         return { ok: false, error: 'We couldn\'t send the email right now. Please try again later, or use the Google Form.' };
       }
