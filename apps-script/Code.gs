@@ -45,6 +45,33 @@ function adminEmails_() {
   var raw = PropertiesService.getScriptProperties().getProperty('ADMIN_EMAILS') || '';
   return raw.split(/[,;\s]+/).map(function (e) { return e.trim().toLowerCase(); }).filter(function (e) { return /@/.test(e); });
 }
+/**
+ * Every automated email (login links, confirmations, review alerts, notes to submitters) goes through here.
+ * Who it comes from (Script properties, Project settings → Script properties; all optional):
+ *  - MAIL_FROM: the address to send from. Gmail only allows an address the deploying account has set up and
+ *    verified under Gmail → Settings → Accounts → "Send mail as" (e.g. the shared team account). If it isn't one
+ *    of those, the email still goes out, from the deploying account, with replies going to MAIL_FROM.
+ *  - MAIL_NAME: the sender name people see (default: the map's title).
+ *  - MAIL_REPLY_TO: where replies go (default: MAIL_FROM).
+ * If the shared team account itself deploys the web app, leave MAIL_FROM blank: mail already comes from it.
+ */
+function sendMail_(to, subject, body) {
+  var p = PropertiesService.getScriptProperties();
+  var from = String(p.getProperty('MAIL_FROM') || '').trim().toLowerCase();
+  var replyTo = String(p.getProperty('MAIL_REPLY_TO') || '').trim() || from;
+  var opts = { name: String(p.getProperty('MAIL_NAME') || '').trim() || REGION.title };
+  if (replyTo) opts.replyTo = replyTo;
+  if (from && typeof GmailApp !== 'undefined') {
+    var aliases = [];
+    try { aliases = GmailApp.getAliases().map(function (a) { return String(a).toLowerCase(); }); } catch (e) { /* no Gmail access */ }
+    if (aliases.indexOf(from) !== -1) {
+      opts.from = from;
+      GmailApp.sendEmail(to, subject, body, opts);
+      return;
+    }
+  }
+  MailApp.sendEmail(to, subject, body, opts);
+}
 /** Everyone who gets review alerts: the ADMIN_EMAILS property plus confirmed Editors rows with role "admin". */
 function alertEmails_() {
   var out = adminEmails_();
@@ -1895,7 +1922,7 @@ function sendVerification_(email, orgId, name, groupKind) {
   var label = (LABEL_INDEX_ && LABEL_INDEX_.byId[kind] && LABEL_INDEX_.byId[kind][orgId]) || orgId;
   logChange_('', FORM_NAMES.org, 'verification sent', 'PENDING', 'editor', orgId, label, 'point person ' + email + ' asked to confirm their email');
   try {
-    MailApp.sendEmail(email, REGION.title + ': please confirm your email',
+    sendMail_(email, REGION.title + ': please confirm your email',
       'Hi' + (name ? ' ' + name : '') + ',\n\nSomeone named you as the point person for ' + label + ' on the ' + REGION.title + '. ' +
       'Open this link to confirm your email, so you can keep the organization\'s information up to date:\n\n' + url +
       '\n\nIf this wasn\'t you, ignore this email: nothing changes until the link is opened.');
@@ -1922,14 +1949,16 @@ function confirmVerification_(token) {
 }
 
 function queueForReview_(kind, a, email, target, reason) {
+  if (NOTE_) reason += ' · ' + NOTE_;
   if (RECHECK_) { RECHECK_.queued = reason; return; } // re-checking a held submission: don't queue it twice
+  if (OUTCOME_) OUTCOME_.queued = reason; // sent from the map (SignIn.gs): tell the site it is waiting for review
   notifySubmitter_(email, submitterMessage_('held', kind, target && (target.label || target.id)));
   var sheet = ss_().getSheetByName(TAB.review);
   var summary = Object.keys(a).filter(function (k) {
     var v = a[k]; return v !== '' && v !== null && !(Array.isArray(v) && !v.length);
   }).map(function (k) { return k + ': ' + (Array.isArray(a[k]) ? a[k].join(', ') : a[k]); }).join('\n');
   appendObject_(sheet, {
-    submitted_at: nowIso_(), email: email, form: FORM_NAMES[kind], record_type: kind,
+    submitted_at: nowIso_(), email: email, form: FORM_NAMES[kind] + (VIA_ ? ' (on the map, ' + VIA_ + ')' : ''), record_type: kind,
     record: target.label, reason: reason, summary: summary, status: 'waiting', reviewed_at: '',
     payload: JSON.stringify({ kind: kind, answers: a, email: email }),
   });
@@ -1939,7 +1968,7 @@ function queueForReview_(kind, a, email, target, reason) {
   if (ALERT_ADMINS) {
     try {
       var to = alertEmails_();
-      if (to.length) MailApp.sendEmail(to.join(','), REGION.title + ': submission needs review (' + reason.split(' — ')[0] + ')',
+      if (to.length) sendMail_(to.join(','), REGION.title + ': submission needs review (' + reason.split(' — ')[0] + ')',
         'From: ' + (email || 'unknown') + '\nForm: ' + FORM_NAMES[kind] + '\nAbout: ' + target.label +
         '\nWhy: ' + reason + '\n\n' + summary + '\n\nReview it on the "Needs Review" tab: ' + ss_().getUrl());
     } catch (err) { /* email quota; the Change Log still has it */ }
@@ -1965,12 +1994,20 @@ function notifySubmitter_(email, msg) {
   if (!email || !msg) return;
   try {
     if (PropertiesService.getScriptProperties().getProperty('NOTIFY_SUBMITTERS') === 'off') return;
-    MailApp.sendEmail(email, msg.subject, msg.body);
+    sendMail_(email, msg.subject, msg.body);
   } catch (e) { /* quota or bad address: the change itself is already saved */ }
 }
 
 /** Set while held submissions are re-checked (see recheckWaiting_). @type {{ queued?: string } | null} */
 var RECHECK_ = null;
+/**
+ * Set while a submission sent from the map itself is processed (SignIn.gs): OUTCOME_.queued gets the review
+ * reason, VIA_ says how the person signed in (shown in Change Log / Needs Review), NOTE_ is added to the reason.
+ * @type {{ queued?: string } | null}
+ */
+var OUTCOME_ = null;
+var VIA_ = '';
+var NOTE_ = '';
 
 /**
  * Someone was added to (or changed on) the Editors tab: every submission still "waiting" is checked again, and
@@ -2345,7 +2382,7 @@ function upsert_(tabName, recordType, selection, newLabel, patch) {
 function logChange_(email, form, status, flag, type, id, name, changes) {
   var sheet = ss_().getSheetByName(TAB.log);
   appendObject_(sheet, {
-    timestamp: nowIso_(), email: email || '', form: form, status: status, flag: flag || '',
+    timestamp: nowIso_(), email: email || '', form: form + (VIA_ && FORM_NAMES[CUR_.kind] === form ? ' (on the map, ' + VIA_ + ')' : ''), status: status, flag: flag || '',
     record_type: type, record_id: id || '', record_name: name || '', changes: changes || '',
   });
   if (flag && /^(UNAUTHORIZED|NO EMAIL)/.test(flag)) {
@@ -2369,7 +2406,10 @@ function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
 }
 
-/** The static confirmation page's writes (claim, takeover, ping, release, save, submit, verify): see Confirm.gs. Never throws. */
+/**
+ * The static site's writes. Confirmation page: claim, takeover, ping, release, save, submit, verify (Confirm.gs).
+ * On-map forms: google, emailLink, login, submitForm (SignIn.gs). Never throws.
+ */
 function doPost(e) {
   return jsonOut_(confirmPost_(e));
 }

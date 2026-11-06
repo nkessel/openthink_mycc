@@ -210,6 +210,8 @@ function confirmPost_(e) {
     if (!b || typeof b !== 'object' || Array.isArray(b)) return { ok: false, error: 'That request could not be read. Please reload the page and try again.' };
     var action = String(b.action || '');
     if (action === 'verify') return { ok: true, message: confirmVerification_(String(b.verify || '')) };
+    // Sign-in for the on-map forms (SignIn.gs, pasted as its own file next to this one)
+    if (typeof SIGNIN_ACTIONS !== 'undefined' && SIGNIN_ACTIONS.indexOf(action) !== -1) return signInPost_(action, b);
     if (['claim', 'takeover', 'ping', 'release', 'save', 'submit'].indexOf(action) === -1) return { ok: false, error: 'Please reload the page and try again.' };
     var token = String(b.token || '');
     if (!/^[0-9a-f]{32}$/.test(token)) return action === 'ping' ? { ok: false, gone: true, error: badLinkMessage_() } : { ok: false, error: badLinkMessage_() };
@@ -427,7 +429,7 @@ function confirmSubmit_(link, token, sid, b) {
   var to = alertEmails_();
   if (to.length) {
     try {
-      MailApp.sendEmail(to.join(','), REGION.title + ': ' + str_(link.rec.org_name) + ' checked their information',
+      sendMail_(to.join(','), REGION.title + ': ' + str_(link.rec.org_name) + ' checked their information',
         who.name + ' (' + who.email + ') submitted the confirmation screen for ' + str_(link.rec.org_name) + '.\n\n' + result.lines.join('\n') +
         '\n\nEvery change is in Change Log: ' + ss_().getUrl());
     } catch (e) { /* quota */ }
