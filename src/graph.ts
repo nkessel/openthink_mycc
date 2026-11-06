@@ -14,7 +14,7 @@ import type {
 import { itemButtons } from "./links";
 import { h } from "./dom";
 import { shown as shownNow } from "./past";
-import { typeIcon, VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS } from "./icons";
+import { typeIcon, PATHS as ICON_PATHS } from "./icons";
 import { staleNotice } from "./notice";
 import { sectorById } from "./sectors";
 import { money as fmtMoney, moneyFlows } from "./money";
@@ -1622,8 +1622,8 @@ export function createGraph(
       ic.append("path").attr("d", "M0 3 C-8 3 -10 -3 -10 -6 C-4 -6 0 -3 0 3");
       ic.append("path").attr("d", "M0 -1 C0 -7 4 -11 10 -11 C10 -5 6 -1 0 -1");
     } else if (kind === "volunteer") {
-      // a person (head and shoulders) with one hand raised: "I'll help"
-      for (const d of [VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS]) ic.append("path").attr("d", d);
+      // the volunteer icon chosen in kinds.config.ts (default: a raised open hand, "count me in")
+      for (const d of ICON_PATHS.volunteer) ic.append("path").attr("d", d);
     } else if (kind === "action") {
       ic.append("path").attr("class", "check").attr("d", "M-7 0.5 L-2.2 5.5 L7.5 -5");
     }
