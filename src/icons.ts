@@ -1,4 +1,5 @@
 // Small inline icons for each kind of item, shared by the header card and legends.
+import { KIND_STYLE, VOLUNTEER_ICONS } from "./kinds.config";
 const NS = "http://www.w3.org/2000/svg";
 
 // Shared with the map bubbles (graph.ts) so the volunteer icon looks the same everywhere.
@@ -15,8 +16,8 @@ export const PATHS: Record<string, string[]> = {
   project: ["M-8 9H8", "M0 9V-1", "M0 3C-8 3-10-3-10-6C-4-6 0-3 0 3", "M0-1C0-7 4-11 10-11C10-5 6-1 0-1"],
   // checkmark
   action: ["M-7 0.5L-2.2 5.5L7.5-5"],
-  // a person (head and shoulders) raising an open hand
-  volunteer: [VOL_HEAD, VOL_BODY, VOL_ARM, VOL_FINGERS],
+  // set in kinds.config.ts (default: a raised open hand)
+  volunteer: [...VOLUNTEER_ICONS[KIND_STYLE.volunteer.icon]],
 };
 
 export type IconKind = "event" | "project" | "action" | "volunteer";

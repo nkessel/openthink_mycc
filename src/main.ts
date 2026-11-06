@@ -12,6 +12,8 @@ import { findItem, showItemCard, setCardActions } from "./itemcard";
 import { createControls } from "./controls";
 import { h, clear } from "./dom";
 import { FORMS } from "./forms.config";
+import { applyKindStyle } from "./kinds.config";
+applyKindStyle(); // item-type colours from kinds.config.ts
 import { webLogo } from "./weblogos";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
@@ -203,7 +205,7 @@ async function main() {
     style: "position:relative;overflow:hidden",
   });
   mapView.appendChild(graphContainer);
-  // Note at the top of the map (Nathan, Oct 29). The × hides it for this visit; drag it anywhere out of the way.
+  // Note on the map (Nathan, Oct 29): at the bottom, just above the legend and Reset view (Nov 6). The × hides it for this visit; drag it anywhere out of the way.
   let noteHidden = false;
   try { noteHidden = sessionStorage.getItem("openthink.devnote") === "1"; } catch { /* ignore */ }
   if (!noteHidden) {
@@ -235,7 +237,7 @@ async function main() {
       const w = note.offsetWidth, hh = note.offsetHeight;
       const x = Math.min(Math.max(0, e.clientX - box.left - drag.dx), Math.max(0, box.width - w));
       const y = Math.min(Math.max(0, e.clientY - box.top - drag.dy), Math.max(0, box.height - hh));
-      Object.assign(note.style, { left: `${x}px`, top: `${y}px`, right: "auto", width: `${w}px`, maxWidth: "none", transform: "none" });
+      Object.assign(note.style, { left: `${x}px`, top: `${y}px`, right: "auto", bottom: "auto", width: `${w}px`, maxWidth: "none", transform: "none" });
     });
     const drop = (e: PointerEvent) => {
       if (!drag || e.pointerId !== drag.id) return;
