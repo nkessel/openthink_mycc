@@ -45,6 +45,36 @@
   "notes": "general 'contact us to join' page; page text only 167 chars, no specific opportunity"
  },
  {
+  "group_id": "350ma_central_mass",
+  "group_name": "350 Massachusetts Central Massachusetts",
+  "item_type": "project",
+  "item_id": "",
+  "current_name": "",
+  "verdict": "add",
+  "proposed_name": "Fix the Grid",
+  "proposed_description": "Grassroots campaign in six Northeast states pushing regional energy regulators to speed a just transition to a renewable electric grid.",
+  "proposed_link": "https://fix-the-grid.org",
+  "proposed_date": "",
+  "evidence_url": "https://www.350centralmass.org/",
+  "evidence_quote": "We need YOU to help",
+  "notes": "coalition campaign (Fix the Grid) the site asks people to support; learn more at fix-the-grid.org"
+ },
+ {
+  "group_id": "350ma_central_mass",
+  "group_name": "350 Massachusetts Central Massachusetts",
+  "item_type": "project",
+  "item_id": "",
+  "current_name": "",
+  "verdict": "add",
+  "proposed_name": "Fossil-Fuel Divestment",
+  "proposed_description": "Campaign pressing local banks, insurers and educational institutions to divest from fossil fuels.",
+  "proposed_link": "https://www.350centralmass.org/divestment",
+  "proposed_date": "",
+  "evidence_url": "https://www.350centralmass.org/divestment",
+  "evidence_quote": "350 Central Mass is working diligently to convince local institutions to divest.",
+  "notes": "divestment campaign; page says Join us in this cause"
+ },
+ {
   "group_id": "charles_river_watershed_association",
   "group_name": "Charles River Watershed Association",
   "item_type": "group",
