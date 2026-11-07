@@ -585,7 +585,7 @@
     "item_type": "event",
     "name": "Sierra Club Forest Protection Team Monthly Meeting",
     "flags": [
-     "recurring; stored date is past"
+     "recurring; stored date is past (the map rolls it forward)"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -607,7 +607,7 @@
     "item_type": "event",
     "name": "Racism, White Supremacy and Climate Justice Working Group Meeting",
     "flags": [
-     "recurring; stored date is past; no later date found on site"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -627,7 +627,7 @@
     "item_type": "event",
     "name": "Wildlands Campaign Working Group Meeting",
     "flags": [
-     "recurring; stored date is past"
+     "recurring; stored date is past (the map rolls it forward)"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -651,7 +651,7 @@
     "item_type": "event",
     "name": "Monthly Gathering - 4th Monday",
     "flags": [
-     "recurring; stored date is past; no later date found on site"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -671,7 +671,7 @@
     "item_type": "event",
     "name": "MA Pollinator Network monthly session",
     "flags": [
-     "recurring; stored date is past"
+     "recurring; stored date is past (the map rolls it forward)"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -706,7 +706,7 @@
     "item_type": "event",
     "name": "Boston Chapter Meeting, Massachusetts Senior Action Council",
     "flags": [
-     "recurring; stored date is past; no later date found on site"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -727,7 +727,7 @@
     "item_type": "event",
     "name": "North Shore Chapter Meeting, Massachusetts Senior Action Council",
     "flags": [
-     "recurring; stored date is past; no later date found on site"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -748,7 +748,7 @@
     "item_type": "event",
     "name": "Cambridge/Somerville Chapter Meeting, Massachusetts Senior Action Council",
     "flags": [
-     "recurring; stored date is past; no later date found on site"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -769,7 +769,7 @@
     "item_type": "event",
     "name": "Greater Springfield Chapter Meeting, Massachusetts Senior Action Council",
     "flags": [
-     "recurring; stored date is past; no later date found on site"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -790,7 +790,7 @@
     "item_type": "event",
     "name": "Metro-North Chapter Meeting, Massachusetts Senior Action Council",
     "flags": [
-     "recurring; stored date is past; no later date found on site"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,

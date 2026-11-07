@@ -36,7 +36,7 @@ def main():
     print("agents_agree:", dict(collections.Counter(r.get("agents_agree") for r in rows)))
     by = collections.defaultdict(lambda: [0, 0])
     for r in rows:
-        if r.get("verdict") != "add":
+        if r.get("item_id"):  # existing items and groups only (add rows have no item_id)
             by[r["item_type"]][0] += r["script_could_decide"] == "yes"
             by[r["item_type"]][1] += 1
     print("script_could_decide (existing rows):", {k: f"{a}/{b}" for k, (a, b) in by.items()})

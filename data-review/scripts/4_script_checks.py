@@ -89,7 +89,8 @@ def main():
                                   and sim(f["name"], it["name"]) >= 0.4})
                     r["next_occurrences_found"] = nxt[:3]
                     if last and last < TODAY:
-                        r["flags"].append("recurring; stored date is past" + ("" if nxt else "; no later date found on site"))
+                        # not an error by itself: the site rolls recurring dates forward (src/recurrence.ts)
+                        r["flags"].append("recurring; stored date is past (the map rolls it forward)" + ("" if nxt else "; no later date found on site"))
                 elif last and last < TODAY:
                     r["flags"].append("past event")
                     r["script_verdict"] = "remove"
