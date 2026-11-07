@@ -47,8 +47,12 @@ proposed_link, proposed_date, evidence_url, evidence_quote, notes`.
 - Wrong type (an "event" that is really an ongoing project, etc.): verdict fix, and say "wrong type: should be
   <type>" in notes.
 - Add: campaigns, working groups, upcoming events, actions or roles the site names that are missing from the
-  map. At most 5 add rows per group: pick the most clearly climate-related, most current ones. Only things
-  the group itself runs or co-hosts. Skip past events.
+  map. At most 5 add rows per group: pick the most clearly climate-related, most current ones. The team's
+  project rule decides: the group's site must directly name it as a working group, campaign or project. That
+  includes a campaign run with a coalition that the group's site names and asks people to join or support;
+  it excludes things only mentioned in news, resource lists or partner links. Skip past events.
+  (Corrected after the first pass: an earlier version said "only things the group itself runs or co-hosts",
+  which is stricter than the team's rule.)
 - Couldn't check: the page is blocked, needs a login, came back (nearly) empty because it loads with
   JavaScript, or is a scanned PDF. Only Facebook/Instagram: couldn't check, notes "social only". Don't guess.
 

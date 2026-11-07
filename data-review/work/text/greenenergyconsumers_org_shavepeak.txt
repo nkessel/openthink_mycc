@@ -1,0 +1,131 @@
+URL: https://www.greenenergyconsumers.org/shavepeak
+FINAL URL: https://www.greenenergyconsumers.org/shavepeak
+FETCHED: 2026-11-07T20:06:18
+
+Shave the Peak | Green Energy Consumers Alliance
+Skip to main content
+Shave the Peak
+Save energy when it matters most.
+Read our blog to learn more
+Read our blog to learn more
+Sign up for text or email alerts
+Sign up for text or email alerts
+Real-time demand with ISO to Go
+Real-time demand with ISO to Go
+rgb(255,255,255)
+No Current #ShaveThePeak Alerts
+Sign up for text or email notifications for timely updates!
+rgba(0,102,72,1)
+Updates for 2026
+Blog: Shave the Peak Kickoff
+ISO New England, operator of the region’s electric grid, projects consumer demand will peak at 25,228 megawatts (MW) under normal weather conditions. Very hot and humid weather could drive demand to 26,473 MW.
+How does Shave the Peak work?
+Consumer action is a better, cleaner, and cheaper way to meet electric demand on peak days.
+Shave the Peak empowers people to use less electricity when it matters most. Become a member of a growing community committed to reducing electricity use at home on days when skyrocketing overall demand is met by the dirtiest and most expensive fossil fuels. These are called “peak days.”
+Our collective actions advocate forward-thinking policies that can transform our electric grid.
+Sign up to receive conservation alerts on peak days, learn more about the electric grid, and support our advocacy efforts to clean up the New England power system.
+Sign up for Shave the Peak alerts to receive text or email alerts about peak events. We’ll let you know when a peak day is coming up and send you some suggestions for cutting down on electricity use during peak hours.
+After signing up, you’ll be able to manage and change your alert preferences or opt out at any time.
+Engage with us! Let us know how you’re shaving the peak by emailing us or tagging your efforts with #ShaveThePeak on social media.
+Sign up for electricity peak alerts
+About peak electric demand
+Peak days, which occur on just a few days ever year, drastically impact the affordability and sustainability of the electric grid. So what’s going on?
+To see what happens to the grid on a peak day with very high power demand, we can look at Tuesday, July 16th, 2024, which was the highest electricity demand day of 2024 and a particularly hot day in the summer. Across the region, temperatures reached 94 degrees, prompting New Englanders to crank up their air conditioners. As the afternoon wore on and people got home from work, they started cooking, ran the laundry. As the sun went down, lights came on. Electric demand peaked at about 25,000 MW—almost twice the normal electric system load.
+Note: Data for our graphs was taken from historic data sources released by ISO-New England, the non-profit Independent System Operator with a responsibility to maintain reliable electricity to the six New England states. ISO-New England uses different methodologies to calculate peak values depending on what they are being used for, accounting for the discrepancy we see in the fuel mix peak below.
+To meet the extreme demand, the grid operator—ISO-New England—turned to “peaker plants,” the power generators of last resort. These power plants are generally the dirtiest and most expensive, running on gas and oil and selling their power at extremely high rates. Peaker plants are only necessary for the highest demand hours, about 2 – 7% of the year in full. In the graph above, you can see how the grid ramps up power from oil and gas peaker plants as electric demand grows.
+As demand grows, price skyrockets. At the price peak on July 16th, 2024, wholesale electric prices per MWh reached about $280 (28 cents per kWh). Peak hours have such a big impact on our electricity costs that just 1% of the hours in the year account for 8% of the costs, and 10% account for 40%. These are the hours we are targeting with our Shave the Peak program – not all the hours in a year and not just the highest single peak in a year. We want to raise awareness about 1-10% of the hours in a year.
+As society moves towards electrification to meet our climate goals, New England could become a winter-peaking region in a decade or so. This past winter was very cold, so we caught a glimpse of what the future could hold if we are not more pro-active about meeting peak winter days with clean energy resources. On a peak day this past January, oil and natural gas accounted for 65% of the morning peak and 67% of the afternoon peaks fuel mix.
+In contrast to the two graphs depicting fuel mix on a peak day, the graph below illustrates the fuel mix on a typical summer day. Data for our Typical Summer Day graph was taken on July 2, 2025, a partly cloudy day with temperatures reaching a comfortable 83 degrees. The yellow line indicates the actual system load, including estimated behind-the-meter solar (usually rooftop). In other words, the duck curve represents the impact of behind-the-meter solar generation on reducing demand for grid power. Note how the most polluting fuel sources, coal and oil, are barely visible on a typical summer day. This reality highlights the importance of shaving the peak on days with extreme temperatures. Collective action and the transition to more renewable sources of energy can keep the dirtiest resources out of the fuel mix.
+The two graphs below show the total CO2 emission on July 2, 2025 (our typical day), and June 24, 2024(our peak day). The red line is the total emissions while the blue line indicates emissions from natural gas. The grey line you see spiking between 4:00 and 11:00 PM on June 24th is the emissions from burning oil. The peak emissions on this peak day clocked in at 152.09 metric tons of CO2, occurring at 8:21 PM. There is no visible grey line on July 2nd affirming our narrative of dirty fuels coming into use on high peaking days. On this typical summer day, the peak of emissions was 98.78 metric tons, occurring at 8:07 PM.
+On a peak day demand can be twice as high, but prices can be TEN times as high.
+Peak days are expensive and dirty—but we can help. We can usually predict when peak events will occur a few days in advance, so we can plan to reduce demand during the hours of highest electric use. Sign up for Shave the Peak alerts to receive peak event notifications and suggestions for how to cut down on electricity use.
+Ways to conserve
+The most effective way to save energy during summer peak events is by turning the air conditioning up a few degrees, or off.
+If you cool with a heat pump, don’t turn it off, just adjust the temperature 2 – 3 degrees.
+Use fans whenever possible, because they use far less electricity.
+Avoid using large appliances (like washers, dryers, and dishwashers) in the afternoon and evening.
+Take a break from TV, computers, and other electronic devices for the afternoon—or charge portable devices beforehand and run them off of battery during the peak.
+If you have an electric car, make sure that you charge it before or after the peak, not during.
+Conserve energy all year round—not just during peaks. Learn more about energy efficiency
+here
+.
+Renewable Energy
+Green Powered Program
+About the Program
+Terms Of Service
+How It Works
+Our Impact
+Tax Receipts
+Your Solar Options
+EnergySage
+Solar Bank
+Community Solar
+Plug-in Solar
+Incentives & Rebates
+FAQs
+Green Municipal Aggregation
+Local Sources
+FAQs
+Electric Vehicles
+EV Finder
+Drive Green Program
+Learn About Electric Cars
+Introduction to EVs
+Charging & Driving
+Fuel & Maintenance Costs
+Incentives & Rebates
+Pre-Owned EVs
+Environment & Health
+Get Involved
+Subscribe to Newsletter
+Attend an Event
+Become an EV Ambassador
+Drive Green Community Group
+Electric Bikes
+Incentives
+FAQs
+Heat Pumps
+Heat Pump Program
+Learn More
+Find Installers & Advice
+Rebates & Incentives
+Heating System Replacement
+FAQs
+Energy Efficiency
+Shave the Peak Program
+Sign up for Shave the Peak
+Tips for Renters
+Top Tips to Save
+Heating System Replacement
+Other Resources
+Heating Oil
+Heating Oil Service
+Membership
+How membership works
+Become a Member
+Order Oil Online
+Frequently Asked Questions
+Membership Frequently Asked Questions (FAQs)
+Emergency Oil
+Heating System Replacement
+Contact
+About
+About Us
+Staff & Board
+Accountability
+Strategic Plan
+Privacy Policy
+Jobs
+Advocacy
+Events
+Blog
+News
+Podcast
+Programs
+Green Municipal Aggregation
+Green Powered
+Solar
+Drive Green
+Heat Pumps
+Shave the Peak
+Heating Oil
