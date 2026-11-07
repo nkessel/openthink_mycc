@@ -165,7 +165,8 @@ function sendLoginLink_(b) {
       logChange_(email, 'Sign-in', 'login link sent', '', 'sign-in', '', '', form ? 'waiting to send: ' + FORM_NAMES[form.kind] : '');
       try {
         // Wording chosen by the team (Nov 6). Signed with MAIL_NAME (the sender name) when it's set.
-        var signOff = String(PropertiesService.getScriptProperties().getProperty('MAIL_NAME') || '').trim() || REGION.title;
+        var signOff = String(PropertiesService.getScriptProperties().getProperty('MAIL_NAME') || '').trim() || (REGION.title + ' Team');
+        if (!/^the /i.test(signOff)) signOff = 'The ' + signOff; // "— The MA Climate Organization Map Team" (Nathan, Nov 6)
         sendMail_(email, 'Your link to update the ' + REGION.title,
           'Hi! Here\'s your login link for the ' + REGION.title + ':\n\n' + url + '\n\n' +
           'Tap it, then press "Log in" (it works for ' + LOGIN_LINK_MINUTES + ' minutes). ' +
