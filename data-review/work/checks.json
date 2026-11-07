@@ -1,0 +1,1170 @@
+{
+ "350ma_central_mass": {
+  "group": {
+   "website": "",
+   "site_used": "https://www.350centralmass.org/",
+   "site_source": "website column blank: most common item-link site",
+   "description_empty": true,
+   "flags": [
+    "website blank",
+    "description empty"
+   ],
+   "script_verdict": "fix",
+   "proposed_link": "https://www.350centralmass.org/"
+  },
+  "items": [
+   {
+    "id": "350ma_central_mass_p1",
+    "item_type": "project",
+    "name": "350 Central Mass priorities",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.350centralmass.org/",
+    "text_chars": 4095,
+    "name_on_page": false,
+    "best_heading_match": "Who We Are"
+   },
+   {
+    "id": "350ma_central_mass_a1",
+    "item_type": "action",
+    "name": "Join 350 Central Mass",
+    "flags": [
+     "page nearly empty (loads with JavaScript?)"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.350centralmass.org/get-involved",
+    "text_chars": 167,
+    "name_on_page": false,
+    "best_heading_match": "GET INVOLVED"
+   }
+  ]
+ },
+ "charles_river_watershed_association": {
+  "group": {
+   "website": "https://www.crwa.org/",
+   "site_used": "https://www.crwa.org/",
+   "site_source": "website column",
+   "description_empty": false,
+   "flags": [],
+   "script_verdict": ""
+  },
+  "items": [
+   {
+    "id": "charles_river_watershed_asso_p1",
+    "item_type": "project",
+    "name": "Cut the Crap: Sewage-Free Charles Campaign",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings",
+    "text_chars": 1564,
+    "name_on_page": false,
+    "best_heading_match": "Release: “Cut The Crap”, Water Advocates Rally For Sewage-Free Rivers"
+   },
+   {
+    "id": "charles_river_watershed_asso_p2",
+    "item_type": "project",
+    "name": "Meet Your Watershed Event Series",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/events",
+    "text_chars": 11143,
+    "name_on_page": true
+   },
+   {
+    "id": "charles_river_watershed_asso_e1",
+    "item_type": "event",
+    "name": "Combined Sewer Overflow Control Plan Public Hearing #3",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
+    "text_chars": 1008,
+    "name_on_page": true,
+    "date": "2026-10-28T18:00:00",
+    "end": "2026-10-28T20:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "charles_river_watershed_asso_e2",
+    "item_type": "event",
+    "name": "Clean Charles Convening",
+    "flags": [],
+    "script_verdict": "ok",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/events/clean-charles-convening-2026",
+    "text_chars": 886,
+    "name_on_page": true,
+    "date": "2026-11-19T08:00:00",
+    "end": "2026-11-19T16:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "charles_river_watershed_asso_e3",
+    "item_type": "event",
+    "name": "Run of the Charles Paddle Race",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/rotc",
+    "text_chars": 1408,
+    "name_on_page": true,
+    "date": "2027-04-25",
+    "end": "",
+    "recurrence": "Annually, last Sunday of April",
+    "date_on_page": false,
+    "next_occurrences_found": []
+   },
+   {
+    "id": "charles_river_watershed_asso_a1",
+    "item_type": "role",
+    "name": "Become a Volunteer Monthly Monitor",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/vmm",
+    "text_chars": 3507,
+    "name_on_page": true
+   },
+   {
+    "id": "charles_river_watershed_asso_a2",
+    "item_type": "role",
+    "name": "Volunteer for Invasive Plant Removals",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/invasive-species/volunteer",
+    "text_chars": 4146,
+    "name_on_page": false,
+    "best_heading_match": "Volunteer for Invasive Species Removals!"
+   },
+   {
+    "id": "charles_river_watershed_asso_a3",
+    "item_type": "role",
+    "name": "Become a Cyanobacteria Visual Monitor",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/cyano-monitoring",
+    "text_chars": 1741,
+    "name_on_page": true
+   },
+   {
+    "id": "charles_river_watershed_asso_a4",
+    "item_type": "role",
+    "name": "Volunteer as a Biological Monitor",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/volunteer",
+    "text_chars": 1856,
+    "name_on_page": false,
+    "best_heading_match": "CYANOBACTERIA MONITOR"
+   },
+   {
+    "id": "charles_river_watershed_asso_a5",
+    "item_type": "role",
+    "name": "Volunteer Photographer for CRWA",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/volunteer",
+    "text_chars": 1856,
+    "name_on_page": false,
+    "best_heading_match": "VOLUNTEER PHOTOGRAPHERS"
+   },
+   {
+    "id": "charles_river_watershed_asso_a6",
+    "item_type": "action",
+    "name": "Submit a Public Comment on the CSO Plan",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings",
+    "text_chars": 1564,
+    "name_on_page": false,
+    "best_heading_match": "Show up for clean water! Upcoming CSO Hearings"
+   }
+  ]
+ },
+ "green_energy_consumers_alliance": {
+  "group": {
+   "website": "https://www.greenenergyconsumers.org/",
+   "site_used": "https://www.greenenergyconsumers.org/",
+   "site_source": "website column",
+   "description_empty": false,
+   "flags": [],
+   "script_verdict": ""
+  },
+  "items": [
+   {
+    "id": "green_energy_consumers_allia_p1",
+    "item_type": "project",
+    "name": "Shave the Peak",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/shavepeak",
+    "text_chars": 8293,
+    "name_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_p2",
+    "item_type": "project",
+    "name": "Heat pump program",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/getadviceheatpumps",
+    "text_chars": 3204,
+    "name_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_p3",
+    "item_type": "project",
+    "name": "Green Powered, Solar and Drive Green programs",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/programs",
+    "text_chars": 2399,
+    "name_on_page": false,
+    "best_heading_match": "Drive Green"
+   },
+   {
+    "id": "green_energy_consumers_allia_e2",
+    "item_type": "event",
+    "name": "Shave the Peak: Save Energy When It Matters Most (webinar)",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
+    "text_chars": 2217,
+    "name_on_page": false,
+    "best_heading_match": "Shave the Peak: Save Energy When It Matters Most",
+    "rsvp_status": 200,
+    "date": "2026-10-02T12:00:00",
+    "end": "2026-10-02T13:00:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e3",
+    "item_type": "event",
+    "name": "Everything You Need to Know About Charging Adaptors",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors",
+    "text_chars": 1850,
+    "name_on_page": true,
+    "rsvp_status": 200,
+    "date": "2026-10-09T12:00:00",
+    "end": "",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e5",
+    "item_type": "event",
+    "name": "Harvest Your Energy Festival (Medford)",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/harvestfestival0",
+    "text_chars": 2046,
+    "name_on_page": false,
+    "best_heading_match": "Harvest Your Energy Festival",
+    "date": "2026-10-17T12:00:00",
+    "end": "2026-10-17T15:00:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e6",
+    "item_type": "event",
+    "name": "Heat Pumps & Time-Varying Rates",
+    "flags": [
+     "link moved",
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/heatpumptimevaryingrates",
+    "text_chars": 2196,
+    "proposed_link": "https://www.greenenergyconsumers.org/event/heatpumptimevaryingrates",
+    "name_on_page": false,
+    "best_heading_match": "Heat Pump & Time-Varying Rates",
+    "rsvp_status": 200,
+    "date": "2026-10-28T12:00:00",
+    "end": "",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e7",
+    "item_type": "event",
+    "name": "Emerging Clean Energy Technologies",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/emergingcleantechnologies",
+    "text_chars": 1917,
+    "name_on_page": true,
+    "rsvp_status": 200,
+    "date": "2026-11-03T12:00:00",
+    "end": "",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e8",
+    "item_type": "event",
+    "name": "How to Use Online Tools to Plan an Electric Road Trip",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
+    "text_chars": 2071,
+    "name_on_page": true,
+    "rsvp_status": 200,
+    "date": "2026-11-04T12:00:00",
+    "end": "",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e9",
+    "item_type": "event",
+    "name": "Annual Fall Meeting",
+    "flags": [],
+    "script_verdict": "ok",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
+    "text_chars": 1706,
+    "name_on_page": true,
+    "rsvp_status": 200,
+    "date": "2026-11-09T17:00:00",
+    "end": "",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e10",
+    "item_type": "event",
+    "name": "Winter Driving in an Electric Car",
+    "flags": [],
+    "script_verdict": "ok",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/winterdrivingelectriccar",
+    "text_chars": 1775,
+    "name_on_page": true,
+    "rsvp_status": 200,
+    "date": "2026-12-03T12:00:00",
+    "end": "",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_e11",
+    "item_type": "event",
+    "name": "Electric Vehicle Battery Health",
+    "flags": [],
+    "script_verdict": "ok",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/event/electricvehiclebatteryhealth",
+    "text_chars": 1864,
+    "name_on_page": true,
+    "rsvp_status": 200,
+    "date": "2026-12-16T12:00:00",
+    "end": "",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_a1",
+    "item_type": "role",
+    "name": "Become an EV Ambassador",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/evambassador",
+    "text_chars": 1694,
+    "name_on_page": true
+   },
+   {
+    "id": "green_energy_consumers_allia_a2",
+    "item_type": "action",
+    "name": "Sign up for Shave the Peak alerts",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.greenenergyconsumers.org/shavepeak",
+    "text_chars": 8293,
+    "name_on_page": true
+   }
+  ]
+ },
+ "climate_action_now_western_ma": {
+  "group": {
+   "website": "https://climateactionnowma.org/",
+   "site_used": "https://climateactionnowma.org/",
+   "site_source": "website column",
+   "description_empty": false,
+   "flags": [],
+   "script_verdict": ""
+  },
+  "items": [
+   {
+    "id": "can_p_create",
+    "item_type": "project",
+    "name": "CREATE farmer mutual aid",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org",
+    "text_chars": 2637,
+    "name_on_page": false,
+    "best_heading_match": "The CAN CREATE group is having a Farmer & Community Gathering"
+   },
+   {
+    "id": "can_p_miyawaki",
+    "item_type": "project",
+    "name": "Miyawaki mini-forest group",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org",
+    "text_chars": 2637,
+    "name_on_page": false,
+    "best_heading_match": "Take action for forest protection in state owned land in Massachusetts!"
+   },
+   {
+    "id": "can_p_no_clearcut",
+    "item_type": "project",
+    "name": "No Clearcut for Profit (Eversource tree clearing)",
+    "flags": [
+     "link moved"
+    ],
+    "script_verdict": "fix",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://sites.google.com/view/responsiblegrid/eversource",
+    "text_chars": 2231,
+    "proposed_link": "https://sites.google.com/view/responsiblegrid/eversource",
+    "name_on_page": false,
+    "best_heading_match": "No Clearcut for Profit"
+   },
+   {
+    "id": "climate_action_now_western_m_p1",
+    "item_type": "project",
+    "name": "A Climate Justice Plan for Springfield",
+    "flags": [
+     "link moved"
+    ],
+    "script_verdict": "fix",
+    "needs_info": true,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org/a-climate-justice-plan-for-springfield/",
+    "text_chars": 4930,
+    "proposed_link": "https://climateactionnowma.org/a-climate-justice-plan-for-springfield/",
+    "name_on_page": true
+   },
+   {
+    "id": "climate_action_now_western_m_p2",
+    "item_type": "project",
+    "name": "Mutual Aid",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": true,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org/mutual-aid/",
+    "text_chars": 4284,
+    "name_on_page": true
+   },
+   {
+    "id": "can_e_fall_gathering",
+    "item_type": "event",
+    "name": "Fall Gathering: Nurturing biodiversity in a time of ecological chaos",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org",
+    "text_chars": 2637,
+    "name_on_page": false,
+    "best_heading_match": "The CAN CREATE group is having a Farmer & Community Gathering",
+    "date": "2026-09-29T17:30:00",
+    "end": "2026-09-29T19:30:00",
+    "recurrence": "",
+    "date_on_page": false
+   },
+   {
+    "id": "ev_can_1",
+    "item_type": "event",
+    "name": "Sierra Club Forest Protection Team Monthly Meeting",
+    "flags": [
+     "recurring; stored date is past"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
+    "text_chars": 627,
+    "name_on_page": true,
+    "date": "2026-10-08T19:00:00",
+    "end": "2026-10-08T20:30:00",
+    "recurrence": "Second Thursday of each month, 7:00-8:30 PM",
+    "date_on_page": true,
+    "next_occurrences_found": [
+     "2026-11-12T19:00"
+    ]
+   },
+   {
+    "id": "ev_can_2",
+    "item_type": "event",
+    "name": "Racism, White Supremacy and Climate Justice Working Group Meeting",
+    "flags": [
+     "recurring; stored date is past; no later date found on site"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
+    "text_chars": 389,
+    "name_on_page": true,
+    "date": "2026-10-12T18:00:00",
+    "end": "2026-10-12T19:30:00",
+    "recurrence": "Second Monday of each month, 6:00-7:30 PM",
+    "date_on_page": true,
+    "next_occurrences_found": []
+   },
+   {
+    "id": "ev_can_3",
+    "item_type": "event",
+    "name": "Wildlands Campaign Working Group Meeting",
+    "flags": [
+     "recurring; stored date is past"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
+    "text_chars": 414,
+    "name_on_page": true,
+    "date": "2026-10-14T19:00:00",
+    "end": "2026-10-14T20:30:00",
+    "recurrence": "Second Wednesday of each month, 7:00-8:30 PM",
+    "date_on_page": true,
+    "next_occurrences_found": [
+     "2026-11-11T19:00",
+     "2026-12-09T19:00",
+     "2027-01-13T19:00"
+    ]
+   },
+   {
+    "id": "ev_can_4",
+    "item_type": "event",
+    "name": "Monthly Gathering - 4th Monday",
+    "flags": [
+     "recurring; stored date is past; no later date found on site"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org/event/monthly-gathering-4th-monday/2026-10-26/",
+    "text_chars": 291,
+    "name_on_page": true,
+    "date": "2026-10-26T19:00:00",
+    "end": "2026-10-26T20:30:00",
+    "recurrence": "Fourth Monday of each month, 7:00-8:30 PM",
+    "date_on_page": true,
+    "next_occurrences_found": []
+   },
+   {
+    "id": "ev_can_5",
+    "item_type": "event",
+    "name": "MA Pollinator Network monthly session",
+    "flags": [
+     "recurring; stored date is past"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
+    "text_chars": 732,
+    "name_on_page": false,
+    "best_heading_match": "MA Pollinator Network",
+    "date": "2026-10-27T19:00:00",
+    "end": "2026-10-27T20:00:00",
+    "recurrence": "Last Tuesday of each month, 7:00-8:00 PM",
+    "date_on_page": true,
+    "next_occurrences_found": [
+     "2026-11-24T19:00"
+    ]
+   }
+  ]
+ },
+ "ma_senior_action": {
+  "group": {
+   "website": "https://www.masssenioraction.org/",
+   "site_used": "https://www.masssenioraction.org/",
+   "site_source": "website column",
+   "description_empty": false,
+   "flags": [],
+   "script_verdict": ""
+  },
+  "items": [
+   {
+    "id": "ma_senior_action_e1",
+    "item_type": "event",
+    "name": "Boston Chapter Meeting, Massachusetts Senior Action Council",
+    "flags": [
+     "recurring; stored date is past; no later date found on site"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.masssenioraction.org/where-we-work",
+    "text_chars": 1061,
+    "name_on_page": false,
+    "best_heading_match": "Massachusetts Senior Action Council",
+    "date": "2026-10-08T12:30:00",
+    "end": "2026-10-08T14:30:00",
+    "recurrence": "Second Thursday of each month, 12:30-2:30 PM",
+    "date_on_page": false,
+    "next_occurrences_found": []
+   },
+   {
+    "id": "ma_senior_action_e2",
+    "item_type": "event",
+    "name": "North Shore Chapter Meeting, Massachusetts Senior Action Council",
+    "flags": [
+     "recurring; stored date is past; no later date found on site"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.masssenioraction.org/where-we-work",
+    "text_chars": 1061,
+    "name_on_page": false,
+    "best_heading_match": "Massachusetts Senior Action Council",
+    "date": "2026-10-21T10:00:00",
+    "end": "2026-10-21T11:30:00",
+    "recurrence": "Third Wednesday of each month, 10:00-11:30 AM",
+    "date_on_page": false,
+    "next_occurrences_found": []
+   },
+   {
+    "id": "ma_senior_action_e3",
+    "item_type": "event",
+    "name": "Cambridge/Somerville Chapter Meeting, Massachusetts Senior Action Council",
+    "flags": [
+     "recurring; stored date is past; no later date found on site"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.masssenioraction.org/where-we-work",
+    "text_chars": 1061,
+    "name_on_page": false,
+    "best_heading_match": "Massachusetts Senior Action Council",
+    "date": "2026-10-26T11:00:00",
+    "end": "2026-10-26T12:30:00",
+    "recurrence": "Fourth Monday of each month, 11:00 AM-12:30 PM",
+    "date_on_page": false,
+    "next_occurrences_found": []
+   },
+   {
+    "id": "ma_senior_action_e4",
+    "item_type": "event",
+    "name": "Greater Springfield Chapter Meeting, Massachusetts Senior Action Council",
+    "flags": [
+     "recurring; stored date is past; no later date found on site"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.masssenioraction.org/where-we-work",
+    "text_chars": 1061,
+    "name_on_page": false,
+    "best_heading_match": "Massachusetts Senior Action Council",
+    "date": "2026-10-28T13:00:00",
+    "end": "",
+    "recurrence": "Fourth Wednesday of each month, 1:00 PM",
+    "date_on_page": false,
+    "next_occurrences_found": []
+   },
+   {
+    "id": "ma_senior_action_e5",
+    "item_type": "event",
+    "name": "Metro-North Chapter Meeting, Massachusetts Senior Action Council",
+    "flags": [
+     "recurring; stored date is past; no later date found on site"
+    ],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.masssenioraction.org/where-we-work",
+    "text_chars": 1061,
+    "name_on_page": false,
+    "best_heading_match": "Massachusetts Senior Action Council",
+    "date": "2026-10-28T13:00:00",
+    "end": "2026-10-28T14:30:00",
+    "recurrence": "Fourth Wednesday of each month, 1:00-2:30 PM",
+    "date_on_page": false,
+    "next_occurrences_found": []
+   }
+  ]
+ },
+ "neighbor_to_neighbor_massachusetts": {
+  "group": {
+   "website": "https://n2nma.org/",
+   "site_used": "https://n2nma.org/",
+   "site_source": "website column",
+   "description_empty": false,
+   "flags": [],
+   "script_verdict": ""
+  },
+  "items": [
+   {
+    "id": "neighbor_to_neighbor_massach_p1",
+    "item_type": "project",
+    "name": "Dwight Street Garden",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://n2nma.org/campaigns/dwight-street-garden/",
+    "text_chars": 1312,
+    "name_on_page": true
+   },
+   {
+    "id": "neighbor_to_neighbor_massach_p2",
+    "item_type": "project",
+    "name": "Housing for All campaign",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://n2nma.org/campaigns/housing-for-all/",
+    "text_chars": 975,
+    "name_on_page": false,
+    "best_heading_match": "Take Action"
+   },
+   {
+    "id": "neighbor_to_neighbor_massach_a1",
+    "item_type": "action",
+    "name": "Letter campaign: support the Clean Slate Act",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://n2nma.org/take-action/",
+    "text_chars": 813,
+    "name_on_page": false,
+    "best_heading_match": ""
+   },
+   {
+    "id": "neighbor_to_neighbor_massach_a2",
+    "item_type": "role",
+    "name": "Become a Neighbor to Neighbor member",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://n2nma.org/take-action/",
+    "text_chars": 813,
+    "name_on_page": false,
+    "best_heading_match": ""
+   },
+   {
+    "id": "neighbor_to_neighbor_massach_a3",
+    "item_type": "role",
+    "name": "Sign up to be a LUCE verifier",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://n2nma.org/take-action/",
+    "text_chars": 813,
+    "name_on_page": true
+   }
+  ]
+ },
+ "tree_boston": {
+  "group": {
+   "website": "",
+   "site_used": "https://treeboston.org/",
+   "site_source": "website column blank: most common item-link site",
+   "description_empty": false,
+   "flags": [
+    "website blank"
+   ],
+   "script_verdict": "fix",
+   "proposed_link": "https://treeboston.org/"
+  },
+  "items": [
+   {
+    "id": "tree_boston_p1",
+    "item_type": "project",
+    "name": "NeighborWoods Tree Plantings",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/get-involved/neighborwoods/",
+    "text_chars": 2092,
+    "name_on_page": true
+   },
+   {
+    "id": "tree_boston_p2",
+    "item_type": "project",
+    "name": "Boston Tree Giveaways",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/get-involved/tree-giveaway-program/",
+    "text_chars": 3005,
+    "name_on_page": true
+   },
+   {
+    "id": "tree_boston_p3",
+    "item_type": "project",
+    "name": "Teen Urban Tree Corps",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/get-involved/tutc/",
+    "text_chars": 3143,
+    "name_on_page": true
+   },
+   {
+    "id": "tree_boston_e1",
+    "item_type": "event",
+    "name": "Tree Planting at Malcolm X Park - Roxbury",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/",
+    "text_chars": 674,
+    "name_on_page": true,
+    "date": "2026-10-03T11:00:00",
+    "end": "2026-10-03T14:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "tree_boston_e3",
+    "item_type": "event",
+    "name": "Annual Fall Benefit: Branching Out 2026",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/events/event/branchingout2026/",
+    "text_chars": 1326,
+    "name_on_page": true,
+    "date": "2026-10-07T18:00:00",
+    "end": "2026-10-07T20:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "tree_boston_e5",
+    "item_type": "event",
+    "name": "Tree Giveaway at The Urban Farming Institute",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/",
+    "text_chars": 1156,
+    "name_on_page": true,
+    "date": "2026-10-10T10:00:00",
+    "end": "2026-10-10T14:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "tree_boston_e7",
+    "item_type": "event",
+    "name": "Climb for the Canopy",
+    "flags": [
+     "broken link (404)",
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 404,
+    "final_url": "https://treeboston.org/events/event/climb4thecanopy/",
+    "text_chars": 0,
+    "name_on_page": false,
+    "date": "2026-10-23T07:00:00",
+    "end": "2026-10-23T09:00",
+    "recurrence": "",
+    "date_on_page": false
+   },
+   {
+    "id": "tree_boston_e8",
+    "item_type": "event",
+    "name": "Free Tree Giveaway - Hyde Park Public Library",
+    "flags": [
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": true,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/",
+    "text_chars": 1106,
+    "name_on_page": true,
+    "date": "2026-10-24T10:00:00",
+    "end": "2026-10-24T14:00",
+    "recurrence": "",
+    "date_on_page": true
+   },
+   {
+    "id": "tree_boston_a1",
+    "item_type": "role",
+    "name": "Volunteer with Tree Boston",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://treeboston.org/get-involved/voluntreers-program/",
+    "text_chars": 1620,
+    "name_on_page": false,
+    "best_heading_match": "What’s it like to volunteer?"
+   }
+  ]
+ },
+ "sunrise_boston": {
+  "group": {
+   "website": "https://www.sunrisemovement.org/",
+   "site_used": "https://www.sunrisemovement.org/",
+   "site_source": "website column",
+   "description_empty": true,
+   "flags": [
+    "description empty"
+   ],
+   "script_verdict": ""
+  },
+  "items": [
+   {
+    "id": "sunrise_boston_p1",
+    "item_type": "project",
+    "name": "ICE Out For Good",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.sunrisemovement.org/campaign/ice-out/",
+    "text_chars": 6786,
+    "name_on_page": true
+   },
+   {
+    "id": "sunrise_boston_p2",
+    "item_type": "project",
+    "name": "Green New Deal for Communities",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": true,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
+    "text_chars": 5640,
+    "name_on_page": true
+   },
+   {
+    "id": "sunrise_boston_e1",
+    "item_type": "event",
+    "name": "Climate Standout in Beverly, MA",
+    "flags": [
+     "page nearly empty (loads with JavaScript?)",
+     "past event"
+    ],
+    "script_verdict": "remove",
+    "needs_info": false,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.mobilize.us/sunrisemovement/event/976143/",
+    "text_chars": 62,
+    "name_on_page": false,
+    "best_heading_match": "",
+    "rsvp_status": 200,
+    "date": "2026-10-17T11:00:00",
+    "end": "2026-10-17T12:30:00",
+    "recurrence": "",
+    "date_on_page": true
+   }
+  ]
+ },
+ "boston_latin_school_youthcan": {
+  "group": {
+   "website": "https://www.bostonlatinschoolyouthcan.org/about.html",
+   "site_used": "https://www.bostonlatinschoolyouthcan.org/",
+   "site_source": "website column",
+   "description_empty": false,
+   "flags": [],
+   "script_verdict": ""
+  },
+  "items": [
+   {
+    "id": "boston_latin_school_youthcan_p1",
+    "item_type": "project",
+    "name": "Annual BLS Trash Dash",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": true,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.bostonlatinschoolyouthcan.org/events.html",
+    "text_chars": 1802,
+    "name_on_page": false,
+    "best_heading_match": "BLS Trash Dash!"
+   },
+   {
+    "id": "boston_latin_school_youthcan_p2",
+    "item_type": "project",
+    "name": "Annual Climate & Sustainability Youth Summit",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": true,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.bostonlatinschoolyouthcan.org/events.html",
+    "text_chars": 1802,
+    "name_on_page": false,
+    "best_heading_match": "Annual Climate Summits"
+   },
+   {
+    "id": "boston_latin_school_youthcan_p3",
+    "item_type": "project",
+    "name": "Education for Sustainability campaign",
+    "flags": [],
+    "script_verdict": "",
+    "needs_info": true,
+    "verified": false,
+    "link_status": 200,
+    "final_url": "https://www.bostonlatinschoolyouthcan.org/about.html",
+    "text_chars": 4373,
+    "name_on_page": true
+   }
+  ]
+ }
+}

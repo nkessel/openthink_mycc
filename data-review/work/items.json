@@ -1,0 +1,892 @@
+{
+ "source": "https://script.google.com/macros/s/AKfycbwj2109KXf2Ndv-0ZCHp0a6MH3aVSejxkqofBOfOFHRSvMi61DXjkeIe25OlsHNbs5S/exec",
+ "generated_at": "2026-11-07T20:05:19.176Z",
+ "today": "2026-11-07",
+ "groups": [
+  {
+   "id": "350ma_central_mass",
+   "name": "350 Massachusetts Central Massachusetts",
+   "website": null,
+   "description": "",
+   "abbrev": "350MA Central Mass",
+   "type": "unknown",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "350ma_central_mass_p1",
+     "name": "350 Central Mass priorities",
+     "description": "All-volunteer 350 Mass affiliate working on ending fossil fuel dependence, electrifying everything and environmental justice in Central Massachusetts, including support for the Fix the Grid campaign.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "350ma_central_mass",
+     "link": "https://www.350centralmass.org/"
+    },
+    {
+     "item_type": "action",
+     "id": "350ma_central_mass_a1",
+     "kind": "task",
+     "name": "Join 350 Central Mass",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join the volunteer group; meetings are held on Zoom and all are welcome. Contact the group through its website for the link.",
+     "link": "https://www.350centralmass.org/get-involved",
+     "host_org_id": "350ma_central_mass"
+    }
+   ]
+  },
+  {
+   "id": "charles_river_watershed_association",
+   "name": "Charles River Watershed Association",
+   "website": "https://www.crwa.org/",
+   "description": "Nonprofit founded in 1965 that uses science, advocacy and the law to protect and restore the Charles River, including work on stormwater and climate resilience across the watershed.",
+   "abbrev": "CRWA",
+   "type": "unknown",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "charles_river_watershed_asso_p1",
+     "name": "Cut the Crap: Sewage-Free Charles Campaign",
+     "description": "CRWA campaign urging regulators to reject the draft Combined Sewer Overflow Long-Term Control Plan and pursue a sewage-free Charles River. Public comment is open through October 30 and includes public hearings.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "charles_river_watershed_association",
+     "link": "https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings"
+    },
+    {
+     "item_type": "project",
+     "id": "charles_river_watershed_asso_p2",
+     "name": "Meet Your Watershed Event Series",
+     "description": "CRWA event series introducing people to places across the Charles River watershed through walks, paddles, and other outings. No upcoming dates are currently listed.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "charles_river_watershed_association",
+     "link": "https://www.crwa.org/events"
+    },
+    {
+     "item_type": "event",
+     "id": "charles_river_watershed_asso_e1",
+     "name": "Combined Sewer Overflow Control Plan Public Hearing #3",
+     "date": "2026-10-28T18:00:00",
+     "location": "Somerville City Hall, Council Chambers, 93 Highland Ave, Somerville",
+     "end": "2026-10-28T20:00",
+     "description": "Public hearing to comment for a sewage-free Charles.",
+     "verified": true,
+     "host_org_id": "charles_river_watershed_association",
+     "link": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
+     "lat": 42.387177,
+     "lng": -71.09813
+    },
+    {
+     "item_type": "event",
+     "id": "charles_river_watershed_asso_e2",
+     "name": "Clean Charles Convening",
+     "date": "2026-11-19T08:00:00",
+     "location": "Cabral Center, Northeastern University, 40 Leon St, Boston",
+     "end": "2026-11-19T16:00",
+     "description": "Inaugural convening on making the Charles River swimmable: scientists, resource managers and advocates discuss what it would take to go from one or two swim events a year to beaches on the Lower Charles. All day at Northeastern's Cabral Center; registration required.",
+     "verified": true,
+     "host_org_id": "charles_river_watershed_association",
+     "link": "https://www.crwa.org/events/clean-charles-convening-2026",
+     "lat": 42.337289,
+     "lng": -71.091287
+    },
+    {
+     "item_type": "event",
+     "id": "charles_river_watershed_asso_e3",
+     "name": "Run of the Charles Paddle Race",
+     "date": "2027-04-25",
+     "location": "Charles River, Boston/Cambridge area (Herter Park finish)",
+     "description": "Boston's annual paddle race since 1983, hosted by Charles River Watershed Association with Paddle Boston on the last Sunday of April. Kayaks, canoes and paddleboards choose a 3-, 6-, 9- or 14-mile relay course, then the Finish Line RiverFest (food trucks, live music). All skill levels; register as an individual or group.",
+     "recurrence": "Annually, last Sunday of April",
+     "host_org_id": "charles_river_watershed_association",
+     "link": "https://www.crwa.org/rotc",
+     "lat": 42.366604,
+     "lng": -71.105692
+    },
+    {
+     "item_type": "role",
+     "id": "charles_river_watershed_asso_a1",
+     "kind": "role",
+     "name": "Become a Volunteer Monthly Monitor",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Apply to sample E. coli and record river conditions at a Charles River site at 6 AM each month; open sites include the New Charles River Dam, Medfield, and Bellingham. One-year commitment requested.",
+     "link": "https://www.crwa.org/vmm",
+     "host_org_id": "charles_river_watershed_association"
+    },
+    {
+     "item_type": "role",
+     "id": "charles_river_watershed_asso_a2",
+     "kind": "role",
+     "name": "Volunteer for Invasive Plant Removals",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join CRWA volunteer events removing invasive plants such as bittersweet and water chestnut along the Charles River; group events are also available. Registration is first-come, first-served.",
+     "link": "https://www.crwa.org/invasive-species/volunteer",
+     "host_org_id": "charles_river_watershed_association"
+    },
+    {
+     "item_type": "role",
+     "id": "charles_river_watershed_asso_a3",
+     "kind": "role",
+     "name": "Become a Cyanobacteria Visual Monitor",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Photograph and report possible cyanobacteria blooms along the Charles River using CRWA's submission form; observations feed EPA's BloomWatch program.",
+     "link": "https://www.crwa.org/cyano-monitoring",
+     "host_org_id": "charles_river_watershed_association"
+    },
+    {
+     "item_type": "role",
+     "id": "charles_river_watershed_asso_a4",
+     "kind": "role",
+     "name": "Volunteer as a Biological Monitor",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Help assess the health of Charles River tributaries and streams by sampling aquatic life with CRWA.",
+     "link": "https://www.crwa.org/volunteer",
+     "host_org_id": "charles_river_watershed_association"
+    },
+    {
+     "item_type": "role",
+     "id": "charles_river_watershed_asso_a5",
+     "kind": "role",
+     "name": "Volunteer Photographer for CRWA",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join CRWA's community of volunteer photographers documenting nature, wildlife, and people enjoying the Charles River.",
+     "link": "https://www.crwa.org/volunteer",
+     "host_org_id": "charles_river_watershed_association"
+    },
+    {
+     "item_type": "action",
+     "id": "charles_river_watershed_asso_a6",
+     "kind": "task",
+     "name": "Submit a Public Comment on the CSO Plan",
+     "skills_needed": [],
+     "deadline": "2026-10-30",
+     "description": "Urge regulators to reject the draft plan that would continue sewage discharges into the Charles River, by submitting public comment before the deadline.",
+     "link": "https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings",
+     "host_org_id": "charles_river_watershed_association"
+    }
+   ]
+  },
+  {
+   "id": "green_energy_consumers_alliance",
+   "name": "Green Energy Consumers Alliance",
+   "website": "https://www.greenenergyconsumers.org/",
+   "description": "Cambridge-based consumer nonprofit that educates and organizes households to switch to clean energy through programs for green power, electric vehicles, solar, heat pumps and efficiency, and advocates for climate policy.",
+   "abbrev": null,
+   "type": "501c3",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "green_energy_consumers_allia_p1",
+     "name": "Shave the Peak",
+     "description": "Program that sends text or email alerts on peak electricity demand days so households can cut use, and supports advocacy for a cleaner grid.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/shavepeak"
+    },
+    {
+     "item_type": "project",
+     "id": "green_energy_consumers_allia_p2",
+     "name": "Heat pump program",
+     "description": "Advice, installer referrals and rebate information to help households install heat pumps.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/getadviceheatpumps"
+    },
+    {
+     "item_type": "project",
+     "id": "green_energy_consumers_allia_p3",
+     "name": "Green Powered, Solar and Drive Green programs",
+     "description": "Consumer programs for renewable electricity, solar options and electric vehicle adoption in Massachusetts and Rhode Island.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/programs"
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e2",
+     "name": "Shave the Peak: Save Energy When It Matters Most (webinar)",
+     "date": "2026-10-02T12:00:00",
+     "location": "Online",
+     "end": "2026-10-02T13:00:00",
+     "description": "Webinar on what peak electricity demand is, how it affects affordability, and what households can do to reduce it.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_WkagQhN9RcmCgQZhNdc1fw",
+     "online": true
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e3",
+     "name": "Everything You Need to Know About Charging Adaptors",
+     "date": "2026-10-09T12:00:00",
+     "location": "Online",
+     "description": "Webinar on EV charging adaptors.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_fq7m_wHXTtiQvE8_8Y2inw",
+     "online": true
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e5",
+     "name": "Harvest Your Energy Festival (Medford)",
+     "date": "2026-10-17T12:00:00",
+     "location": "Riverbend Park, Freedom Way, Medford, MA",
+     "end": "2026-10-17T15:00:00",
+     "description": "Green Energy Consumers Alliance participates in the City of Medford festival with exhibits, art, food, live music and wind turbine tours.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/harvestfestival0",
+     "lat": 42.408254,
+     "lng": -71.098889
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e6",
+     "name": "Heat Pumps & Time-Varying Rates",
+     "date": "2026-10-28T12:00:00",
+     "location": "Online",
+     "description": "Overview of heat pump rates in MA with DOER.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/heatpumpstimevaryingrates",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_nNcxKAsERNyNLzbJlqHwSA",
+     "online": true
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e7",
+     "name": "Emerging Clean Energy Technologies",
+     "date": "2026-11-03T12:00:00",
+     "location": "Online",
+     "description": "One-hour webinar on emerging clean energy technology for households (smart thermostats, window heat pumps, portable batteries, plug-in solar): how it works and how it can lower bills and support a cleaner grid. RSVP online.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/emergingcleantechnologies",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_g39im1dzSQyV1KQRFd_GrA",
+     "online": true
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e8",
+     "name": "How to Use Online Tools to Plan an Electric Road Trip",
+     "date": "2026-11-04T12:00:00",
+     "location": "Online",
+     "description": "Half-hour webinar on planning an electric-vehicle road trip, with demos of PlugShare and A Better Route Planner and time for questions. RSVP online.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_F0cBDW9IQDWqBr-ZEpxVZw",
+     "online": true
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e9",
+     "name": "Annual Fall Meeting",
+     "date": "2026-11-09T17:00:00",
+     "location": "Artists for Humanity, 100 West 2nd St, Boston, MA",
+     "description": "Green Energy Consumers Alliance's annual Fall Meeting at Artists for Humanity in Boston: an evening of networking and clean energy conversation. Tickets on sale; more details to come.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
+     "rsvp_link": "https://www.eventbrite.com/e/green-energy-consumers-annual-fall-meeting-tickets-2001889844414",
+     "lat": 42.342977,
+     "lng": -71.053608
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e10",
+     "name": "Winter Driving in an Electric Car",
+     "date": "2026-12-03T12:00:00",
+     "location": "Online",
+     "description": "One-hour webinar on how cold weather affects electric vehicles, with tips for driving electric through a New England winter and time for Q&A. RSVP online.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/winterdrivingelectriccar",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_-i5Utq1BQaedL7kwKraILw",
+     "online": true
+    },
+    {
+     "item_type": "event",
+     "id": "green_energy_consumers_allia_e11",
+     "name": "Electric Vehicle Battery Health",
+     "date": "2026-12-16T12:00:00",
+     "location": "Online",
+     "description": "Half-hour webinar on long-term EV battery health: the latest science, what affects a battery's life, and how to check a particular EV's battery. Q&A included; RSVP online.",
+     "verified": true,
+     "host_org_id": "green_energy_consumers_alliance",
+     "link": "https://www.greenenergyconsumers.org/event/electricvehiclebatteryhealth",
+     "rsvp_link": "https://us06web.zoom.us/webinar/register/WN_bzvXot2bST68BWwiX_I-rQ",
+     "online": true
+    },
+    {
+     "item_type": "role",
+     "id": "green_energy_consumers_allia_a1",
+     "kind": "role",
+     "name": "Become an EV Ambassador",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Sign up to be contacted about EV showcase events where you can bring your electric car and share your experience with prospective buyers.",
+     "link": "https://www.greenenergyconsumers.org/drivegreen/takeaction/evambassador",
+     "host_org_id": "green_energy_consumers_alliance"
+    },
+    {
+     "item_type": "action",
+     "id": "green_energy_consumers_allia_a2",
+     "kind": "task",
+     "name": "Sign up for Shave the Peak alerts",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Sign up for text or email alerts on peak electricity demand days with tips to reduce use.",
+     "link": "https://www.greenenergyconsumers.org/shavepeak",
+     "host_org_id": "green_energy_consumers_alliance"
+    }
+   ]
+  },
+  {
+   "id": "climate_action_now_western_ma",
+   "name": "Climate Action Now Western Massachusetts",
+   "website": "https://climateactionnowma.org/",
+   "description": "Grassroots volunteer group in Western Massachusetts focused on climate justice organizing and public education; its youth wing is Youth Climate Action Now.",
+   "abbrev": "CAN Western MA",
+   "type": "unknown",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "can_p_create",
+     "name": "CREATE farmer mutual aid",
+     "description": "Cultivating Relationships: Education | Action | Tending Earth. Volunteers join local farmers for work shifts through the season; sign-up form required.",
+     "status": "active",
+     "skills_needed": [
+      "farm labor"
+     ],
+     "host_org_id": "climate_action_now_western_ma",
+     "topic_tags": [
+      "agriculture",
+      "community_organizing"
+     ],
+     "link": "https://climateactionnowma.org",
+     "location": "Western Massachusetts",
+     "lat": 42.345358,
+     "lng": -72.898807
+    },
+    {
+     "item_type": "project",
+     "id": "can_p_miyawaki",
+     "name": "Miyawaki mini-forest group",
+     "description": "Climate Action Now's working group on Miyawaki-method mini-forests and local biodiversity.",
+     "status": "active",
+     "skills_needed": [
+      "ecology",
+      "gardening"
+     ],
+     "host_org_id": "climate_action_now_western_ma",
+     "topic_tags": [
+      "biodiversity",
+      "reforestation"
+     ],
+     "link": "https://climateactionnowma.org",
+     "location": "Western Massachusetts",
+     "lat": 42.345358,
+     "lng": -72.898807
+    },
+    {
+     "item_type": "project",
+     "id": "can_p_no_clearcut",
+     "name": "No Clearcut for Profit (Eversource tree clearing)",
+     "description": "Campaign led by Western Mass Towns for a Responsible Grid, promoted by Climate Action Now: a petition asking the Governor to limit Eversource's tree clearing across 11 towns, ahead of Eversource's Final Environmental Impact Statement (around December).",
+     "status": "active",
+     "skills_needed": [
+      "advocacy",
+      "community organizing"
+     ],
+     "host_org_id": "climate_action_now_western_ma",
+     "topic_tags": [
+      "forests",
+      "energy",
+      "climate_policy"
+     ],
+     "link": "http://noclearcutforprofit.org",
+     "location": "Northfield to Ludlow, Western Massachusetts",
+     "lat": 42.160094,
+     "lng": -72.475919
+    },
+    {
+     "item_type": "project",
+     "id": "climate_action_now_western_m_p1",
+     "name": "A Climate Justice Plan for Springfield",
+     "description": "",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "climate_action_now_western_ma",
+     "link": "https://climateactionnowma.org/our-campaigns/a-climate-justice-plan-for-springfield/",
+     "needs_info": true
+    },
+    {
+     "item_type": "project",
+     "id": "climate_action_now_western_m_p2",
+     "name": "Mutual Aid",
+     "description": "",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "climate_action_now_western_ma",
+     "link": "https://climateactionnowma.org/mutual-aid/",
+     "needs_info": true
+    },
+    {
+     "item_type": "event",
+     "id": "can_e_fall_gathering",
+     "name": "Fall Gathering: Nurturing biodiversity in a time of ecological chaos",
+     "date": "2026-09-29T17:30:00",
+     "location": "Arcadia Wildlife Sanctuary, Easthampton",
+     "end": "2026-09-29T19:30:00",
+     "description": "Potluck and connection at 5:30 pm; interactive program 6–7:30 pm with Owen Wormser and Matt Verson, hosted by the Miyawaki Forest Group. RSVP appreciated.",
+     "host_org_id": "climate_action_now_western_ma",
+     "topic_tags": [
+      "biodiversity",
+      "community_organizing"
+     ],
+     "link": "https://climateactionnowma.org",
+     "lat": 42.2668,
+     "lng": -72.669
+    },
+    {
+     "item_type": "event",
+     "id": "ev_can_1",
+     "name": "Sierra Club Forest Protection Team Monthly Meeting",
+     "date": "2026-10-08T19:00:00",
+     "location": "Virtual (Zoom)",
+     "end": "2026-10-08T20:30:00",
+     "description": "Monthly meeting of the Sierra Club Massachusetts Forest Protection Team, second Thursday 7–8:30 pm on Zoom. The Zoom link is on the event page.",
+     "recurrence": "Second Thursday of each month, 7:00-8:30 PM",
+     "verified": true,
+     "host_org_id": "climate_action_now_western_ma",
+     "link": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
+     "lat": 42.345358,
+     "lng": -72.898807
+    },
+    {
+     "item_type": "event",
+     "id": "ev_can_2",
+     "name": "Racism, White Supremacy and Climate Justice Working Group Meeting",
+     "date": "2026-10-12T18:00:00",
+     "location": "Virtual (Zoom)",
+     "end": "2026-10-12T19:30:00",
+     "description": "Monthly meeting of Climate Action Now's Racism, White Supremacy and Climate Justice working group, on Zoom. Email the organizer listed on the event page for the link.",
+     "recurrence": "Second Monday of each month, 6:00-7:30 PM",
+     "verified": true,
+     "host_org_id": "climate_action_now_western_ma",
+     "link": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
+     "lat": 42.345358,
+     "lng": -72.898807
+    },
+    {
+     "item_type": "event",
+     "id": "ev_can_3",
+     "name": "Wildlands Campaign Working Group Meeting",
+     "date": "2026-10-14T19:00:00",
+     "location": "Virtual (Zoom)",
+     "end": "2026-10-14T20:30:00",
+     "description": "Monthly meeting of the Wildlands Campaign working group (forest protection and natural climate solutions), 7–8:30 pm. Register through the link on the event page.",
+     "recurrence": "Second Wednesday of each month, 7:00-8:30 PM",
+     "verified": true,
+     "host_org_id": "climate_action_now_western_ma",
+     "link": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
+     "lat": 42.345358,
+     "lng": -72.898807
+    },
+    {
+     "item_type": "event",
+     "id": "ev_can_4",
+     "name": "Monthly Gathering - 4th Monday",
+     "date": "2026-10-26T19:00:00",
+     "location": "Virtual (Zoom)",
+     "end": "2026-10-26T20:30:00",
+     "description": "Climate Action Now's monthly gathering, fourth Monday 7–8:30 pm on Zoom. The registration link and details come in the newsletter.",
+     "recurrence": "Fourth Monday of each month, 7:00-8:30 PM",
+     "verified": true,
+     "host_org_id": "climate_action_now_western_ma",
+     "link": "https://climateactionnowma.org/event/monthly-gathering-4th-monday/2026-10-26/",
+     "lat": 42.345358,
+     "lng": -72.898807
+    },
+    {
+     "item_type": "event",
+     "id": "ev_can_5",
+     "name": "MA Pollinator Network monthly session",
+     "date": "2026-10-27T19:00:00",
+     "location": "Virtual (Zoom)",
+     "end": "2026-10-27T20:00:00",
+     "description": "Monthly MA Pollinator Network session: an expert talk on pollinators and how to support them, last Tuesday 7–8 pm on Zoom. Open to everyone, from home gardeners to researchers; talks are recorded for YouTube. Register for the link.",
+     "recurrence": "Last Tuesday of each month, 7:00-8:00 PM",
+     "verified": true,
+     "host_org_id": "climate_action_now_western_ma",
+     "link": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
+     "lat": 42.345358,
+     "lng": -72.898807
+    }
+   ]
+  },
+  {
+   "id": "ma_senior_action",
+   "name": "Massachusetts Senior Action Council",
+   "website": "https://www.masssenioraction.org/",
+   "description": "Statewide, senior-led grassroots group founded in 1981 that organizes older adults on health care, economic security, housing, transportation and racial justice.",
+   "abbrev": "MA Senior Action",
+   "type": "unknown",
+   "items": [
+    {
+     "item_type": "event",
+     "id": "ma_senior_action_e1",
+     "name": "Boston Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-08T12:30:00",
+     "location": "Charles St. AME Church, 551 Warren St, Roxbury",
+     "end": "2026-10-08T14:30:00",
+     "description": "Monthly in-person chapter meeting (most have a Zoom option) to discuss local and statewide issues and outreach. All are welcome.",
+     "recurrence": "Second Thursday of each month, 12:30-2:30 PM",
+     "host_org_id": "ma_senior_action",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "lat": 42.312786,
+     "lng": -71.083887
+    },
+    {
+     "item_type": "event",
+     "id": "ma_senior_action_e2",
+     "name": "North Shore Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-21T10:00:00",
+     "location": "10 Church St, Lynn",
+     "end": "2026-10-21T11:30:00",
+     "description": "Monthly in-person chapter meeting (most have a Zoom option) to discuss local and statewide issues and outreach. All are welcome.",
+     "recurrence": "Third Wednesday of each month, 10:00-11:30 AM",
+     "host_org_id": "ma_senior_action",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "lat": 42.461875,
+     "lng": -70.952957
+    },
+    {
+     "item_type": "event",
+     "id": "ma_senior_action_e3",
+     "name": "Cambridge/Somerville Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-26T11:00:00",
+     "location": "Central Sq. Senior Center, 806 Mass Ave, Cambridge",
+     "end": "2026-10-26T12:30:00",
+     "description": "Monthly in-person chapter meeting (most have a Zoom option) to discuss local and statewide issues and outreach. All are welcome.",
+     "recurrence": "Fourth Monday of each month, 11:00 AM-12:30 PM",
+     "host_org_id": "ma_senior_action",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "lat": 42.366671,
+     "lng": -71.106381
+    },
+    {
+     "item_type": "event",
+     "id": "ma_senior_action_e4",
+     "name": "Greater Springfield Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-28T13:00:00",
+     "location": "Greater Springfield (contact the office for location)",
+     "description": "Monthly in-person chapter meeting (most have a Zoom option) to discuss local and statewide issues and outreach. All are welcome.",
+     "recurrence": "Fourth Wednesday of each month, 1:00 PM",
+     "host_org_id": "ma_senior_action",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "lat": 42.10131,
+     "lng": -72.589274
+    },
+    {
+     "item_type": "event",
+     "id": "ma_senior_action_e5",
+     "name": "Metro-North Chapter Meeting, Massachusetts Senior Action Council",
+     "date": "2026-10-28T13:00:00",
+     "location": "7 Washington St, Malden",
+     "end": "2026-10-28T14:30:00",
+     "description": "Monthly in-person chapter meeting (most have a Zoom option) to discuss local and statewide issues and outreach. All are welcome.",
+     "recurrence": "Fourth Wednesday of each month, 1:00-2:30 PM",
+     "host_org_id": "ma_senior_action",
+     "link": "https://www.masssenioraction.org/where-we-work",
+     "lat": 42.42749,
+     "lng": -71.070313
+    }
+   ]
+  },
+  {
+   "id": "neighbor_to_neighbor_massachusetts",
+   "name": "Neighbor to Neighbor Massachusetts",
+   "website": "https://n2nma.org/",
+   "description": "Statewide organizing group that advocates on economic, racial and environmental justice, with a climate justice field program and environmental justice campaigns.",
+   "abbrev": "N2N",
+   "type": "501c3,501c4",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "neighbor_to_neighbor_massach_p1",
+     "name": "Dwight Street Garden",
+     "description": "Neighborhood garden in Holyoke started by Neighbor to Neighbor on a vacant lot, producing food, sharing it and hosting organizing meetings.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "neighbor_to_neighbor_massachusetts",
+     "link": "https://n2nma.org/campaigns/dwight-street-garden/"
+    },
+    {
+     "item_type": "project",
+     "id": "neighbor_to_neighbor_massach_p2",
+     "name": "Housing for All campaign",
+     "description": "Statewide Neighbor to Neighbor campaign for affordable, stable housing and rent regulation.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "neighbor_to_neighbor_massachusetts",
+     "link": "https://n2nma.org/campaigns/housing-for-all/"
+    },
+    {
+     "item_type": "action",
+     "id": "neighbor_to_neighbor_massach_a1",
+     "kind": "task",
+     "name": "Letter campaign: support the Clean Slate Act",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Send a letter asking legislators to support the Clean Slate Act to automatically seal old criminal records.",
+     "link": "https://n2nma.org/take-action/",
+     "host_org_id": "neighbor_to_neighbor_massachusetts"
+    },
+    {
+     "item_type": "role",
+     "id": "neighbor_to_neighbor_massach_a2",
+     "kind": "role",
+     "name": "Become a Neighbor to Neighbor member",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Join Neighbor to Neighbor as a member in Holyoke, Lynn, Springfield, Worcester or statewide.",
+     "link": "https://n2nma.org/take-action/",
+     "host_org_id": "neighbor_to_neighbor_massachusetts"
+    },
+    {
+     "item_type": "role",
+     "id": "neighbor_to_neighbor_massach_a3",
+     "kind": "role",
+     "name": "Sign up to be a LUCE verifier",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Interest form to become a verifier in the community rapid-response network to protect neighbors from ICE.",
+     "link": "https://n2nma.org/take-action/",
+     "host_org_id": "neighbor_to_neighbor_massachusetts"
+    }
+   ]
+  },
+  {
+   "id": "tree_boston",
+   "name": "Tree Boston",
+   "website": null,
+   "description": "Dorchester-based nonprofit (formerly Speak for the Trees) that plants and cares for trees and advocates for tree equity in Boston neighborhoods, including a teen urban tree corps.",
+   "abbrev": null,
+   "type": "501c3",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "tree_boston_p1",
+     "name": "NeighborWoods Tree Plantings",
+     "description": "Free shade trees planted at homes and businesses in Dorchester, Hyde Park, Roxbury and Mattapan each spring and fall; residents apply online.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/get-involved/neighborwoods/"
+    },
+    {
+     "item_type": "project",
+     "id": "tree_boston_p2",
+     "name": "Boston Tree Giveaways",
+     "description": "Two or three free tree giveaway events each spring and fall for Boston residents.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/get-involved/tree-giveaway-program/"
+    },
+    {
+     "item_type": "project",
+     "id": "tree_boston_p3",
+     "name": "Teen Urban Tree Corps",
+     "description": "Paid summer and school-year program for Boston teens ages 14-18 covering tree care, field trips and green career exposure.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/get-involved/tutc/"
+    },
+    {
+     "item_type": "event",
+     "id": "tree_boston_e1",
+     "name": "Tree Planting at Malcolm X Park - Roxbury",
+     "date": "2026-10-03T11:00:00",
+     "location": "Roxbury, Boston, MA",
+     "end": "2026-10-03T14:00",
+     "description": "Volunteer tree planting event.",
+     "verified": true,
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/",
+     "lat": 42.328638,
+     "lng": -71.083454
+    },
+    {
+     "item_type": "event",
+     "id": "tree_boston_e3",
+     "name": "Annual Fall Benefit: Branching Out 2026",
+     "date": "2026-10-07T18:00:00",
+     "location": "Southline Boston, 135 Morrissey Blvd, Dorchester, MA",
+     "end": "2026-10-07T20:00",
+     "description": "Food, drink and tree-themed activities to support Tree Equity in Boston.",
+     "verified": true,
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/events/event/branchingout2026/",
+     "lat": 42.315918,
+     "lng": -71.049347
+    },
+    {
+     "item_type": "event",
+     "id": "tree_boston_e5",
+     "name": "Tree Giveaway at The Urban Farming Institute",
+     "date": "2026-10-10T10:00:00",
+     "location": "Urban Farming Institute, 487 Norfolk St, Mattapan, MA",
+     "end": "2026-10-10T14:00",
+     "description": "Free tree giveaway.",
+     "verified": true,
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/",
+     "lat": 42.280046,
+     "lng": -71.089115
+    },
+    {
+     "item_type": "event",
+     "id": "tree_boston_e7",
+     "name": "Climb for the Canopy",
+     "date": "2026-10-23T07:00:00",
+     "location": "Harvard Stadium, 79 N Harvard St, Allston, MA",
+     "end": "2026-10-23T09:00",
+     "description": "Stadium-climb fundraiser; Tree Boston is first nonprofit partner for the Reach Green Stadium Challenge.",
+     "verified": true,
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/events/event/climb4thecanopy/",
+     "lat": 42.366348,
+     "lng": -71.126581
+    },
+    {
+     "item_type": "event",
+     "id": "tree_boston_e8",
+     "name": "Free Tree Giveaway - Hyde Park Public Library",
+     "date": "2026-10-24T10:00:00",
+     "location": "Hyde Park Branch, Boston Public Library, 35 Harvard Ave, Hyde Park, MA",
+     "end": "2026-10-24T14:00",
+     "description": "Free tree giveaway.",
+     "verified": true,
+     "host_org_id": "tree_boston",
+     "link": "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/",
+     "lat": 42.256997,
+     "lng": -71.122083
+    },
+    {
+     "item_type": "role",
+     "id": "tree_boston_a1",
+     "kind": "role",
+     "name": "Volunteer with Tree Boston",
+     "skills_needed": [],
+     "deadline": null,
+     "description": "Sign up to water and mulch street trees, collect tree data, engage tree recipients, or help with outreach and events.",
+     "link": "https://treeboston.org/get-involved/voluntreers-program/",
+     "host_org_id": "tree_boston"
+    }
+   ]
+  },
+  {
+   "id": "sunrise_boston",
+   "name": "Sunrise Boston",
+   "website": "https://www.sunrisemovement.org/",
+   "description": "",
+   "abbrev": null,
+   "type": "unknown",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "sunrise_boston_p1",
+     "name": "ICE Out For Good",
+     "description": "Sunrise Movement national campaign encouraging people to press hotels, rental car agencies and restaurants not to serve ICE operations in their cities.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "sunrise_boston",
+     "link": "https://www.sunrisemovement.org/campaign/ice-out/"
+    },
+    {
+     "item_type": "project",
+     "id": "sunrise_boston_p2",
+     "name": "Green New Deal for Communities",
+     "description": "Sunrise Movement national campaign pushing cities and towns to adopt local Green New Deal policies on housing, transit and public power.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "sunrise_boston",
+     "link": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
+     "needs_info": true
+    },
+    {
+     "item_type": "event",
+     "id": "sunrise_boston_e1",
+     "name": "Climate Standout in Beverly, MA",
+     "date": "2026-10-17T11:00:00",
+     "location": "Odell Veterans Memorial Park, 56-98 Broadway, Beverly, MA",
+     "end": "2026-10-17T12:30:00",
+     "description": "Volunteer-hosted climate standout at Odell Veterans Memorial Park, listed on the Sunrise Movement events feed.",
+     "host_org_id": "sunrise_boston",
+     "link": "https://www.mobilize.us/sunrisemovement/event/976143/",
+     "rsvp_link": "https://www.mobilize.us/sunrisemovement/event/976143/",
+     "lat": 42.547134,
+     "lng": -70.884667
+    }
+   ]
+  },
+  {
+   "id": "boston_latin_school_youthcan",
+   "name": "Boston Latin School Youth Climate Action Network",
+   "website": "https://www.bostonlatinschoolyouthcan.org/about.html",
+   "description": "After-school climate club at Boston Latin School that runs a youth climate summit, campaigns for sustainability education in grades 7-12 and coordinates a network of youth climate groups at other Massachusetts schools.",
+   "abbrev": "BLS YouthCAN",
+   "type": "school_club",
+   "items": [
+    {
+     "item_type": "project",
+     "id": "boston_latin_school_youthcan_p1",
+     "name": "Annual BLS Trash Dash",
+     "description": "Annual October student team competition to collect trash and recyclables on the Boston Latin School campus and Longwood area.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "boston_latin_school_youthcan",
+     "link": "https://www.bostonlatinschoolyouthcan.org/events.html",
+     "needs_info": true
+    },
+    {
+     "item_type": "project",
+     "id": "boston_latin_school_youthcan_p2",
+     "name": "Annual Climate & Sustainability Youth Summit",
+     "description": "Yearly free statewide student climate summit hosted by BLS YouthCAN.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "boston_latin_school_youthcan",
+     "link": "https://www.bostonlatinschoolyouthcan.org/events.html",
+     "needs_info": true
+    },
+    {
+     "item_type": "project",
+     "id": "boston_latin_school_youthcan_p3",
+     "name": "Education for Sustainability campaign",
+     "description": "BLS YouthCAN statewide campaign to incorporate sustainability lessons across subjects in grades 7-12.",
+     "status": "active",
+     "skills_needed": [],
+     "host_org_id": "boston_latin_school_youthcan",
+     "link": "https://www.bostonlatinschoolyouthcan.org/about.html",
+     "needs_info": true
+    }
+   ]
+  }
+ ]
+}
