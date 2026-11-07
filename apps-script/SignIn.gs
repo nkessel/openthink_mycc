@@ -171,7 +171,7 @@ function sendLoginLink_(b) {
           'Tap it, then press "Log in" (it works for ' + LOGIN_LINK_MINUTES + ' minutes). ' +
           'You\'ll stay logged in on this device for ' + SESSION_DAYS + ' days.' +
           (form ? ' Your changes to "' + FORM_NAMES[form.kind] + '" are sent when you log in.' : '') + '\n\n' +
-          'It\'s a secure personal link, so please don\'t forward it. Teammates who need edit access can be added as point people.\n\n' +
+          'It\'s a secure personal link, so please don\'t forward it. Teammates who need edit access can be added as point people using the link.\n\n' +
           'Thanks for keeping the map accurate!\n' +
           'Didn\'t ask for this? You can ignore it; nothing changes.\n\n— ' + signOff);
       } catch (e) {
