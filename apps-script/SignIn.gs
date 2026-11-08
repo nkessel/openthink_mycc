@@ -162,10 +162,10 @@ function loginEmailBody_(email, t, url, form) {
          : 'Here\u2019s your personal login link for the ' + REGION.title + ':') + '\n' + url + '\n\n' +
     'Tap it, then press \u201cLog in\u201d within ' + LOGIN_LINK_MINUTES + ' minutes. You\u2019ll stay logged in on this device for ' + SESSION_DAYS + ' days.' +
     (form ? ' Your changes to \u201c' + FORM_NAMES[form.kind] + '\u201d are sent when you log in.' : '') + '\n\n' +
-    'This link is just for you, so please keep it private. You can invite teammates as point people when you update your ' + (groups.length > 1 ? 'groups\u2019' : 'group\u2019s') + ' information.\n\n' +
+    'This link is just for you, so please keep it private. You can invite additional teammates as point people when you update your ' + (groups.length > 1 ? 'groups\u2019' : 'group\u2019s') + ' information.\n\n' +
     thanks + (groups.length ? ' We\u2019re glad to be building this map with you.' : ' We\u2019re glad to be building it with you.') + '\n\n' +
     'Didn\u2019t ask for this? You can ignore this email; nothing changes.\n\n' +
-    'Warmly,\n' + signOff;
+    'In solidarity and gratitude,\n' + signOff;
 }
 
 /** Sends a login link (with the filled-in form waiting for it) to an email that's on file. */
