@@ -149,8 +149,7 @@ function loginEmailBody_(email, t, url, form) {
   orgIds.forEach(function (id) { var o = (t.orgs || []).filter(function (x) { return String(x.id) === id; })[0]; if (o && str_(o.name)) groups.push(str_(o.name)); });
   coalIds.forEach(function (id) { var c = (t.coalitions || []).filter(function (x) { return String(x.id) === id; })[0]; if (c && str_(c.name)) groups.push(str_(c.name)); });
   var who = groups.length === 0 ? '' : groups.length === 1 ? groups[0]
-    : groups.length === 2 ? groups[0] + ' and ' + groups[1]
-    : groups[0] + ' and ' + (groups.length - 1) + ' other groups';
+    : groups.slice(0, -1).join(', ') + ' and ' + groups[groups.length - 1]; // every group they can edit (Nathan, Nov 7)
   var possessive = function (g) { return /s$/i.test(g) ? g + '\u2019' : g + '\u2019s'; };
   var signOff = String(PropertiesService.getScriptProperties().getProperty('MAIL_NAME') || '').trim() || (REGION.title + ' Team');
   if (!/^the /i.test(signOff)) signOff = 'The ' + signOff;
