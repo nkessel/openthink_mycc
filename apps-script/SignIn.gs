@@ -134,6 +134,40 @@ function cleanForm_(kind, answers) {
   return out;
 }
 
+/** The login-link email (Nathan, Nov 7). Uses the person's first name and the groups they're point person for
+ *  (Editors tab), with plain fallbacks when either is missing. Signed with MAIL_NAME when it's set. */
+function loginEmailBody_(email, t, url, form) {
+  var name = '';
+  var orgIds = [], coalIds = [];
+  (t.editors || []).forEach(function (r) {
+    if (String(r.email || '').trim().toLowerCase() !== email || isPending_(r)) return;
+    if (!name) name = String(r.name || '').trim().split(/\s+/)[0] || '';
+    list_(r.org_ids).forEach(function (id) { if (id !== '*' && orgIds.indexOf(id) === -1) orgIds.push(id); });
+    list_(r.coalition_ids).forEach(function (id) { if (id !== '*' && coalIds.indexOf(id) === -1) coalIds.push(id); });
+  });
+  var groups = [];
+  orgIds.forEach(function (id) { var o = (t.orgs || []).filter(function (x) { return String(x.id) === id; })[0]; if (o && str_(o.name)) groups.push(str_(o.name)); });
+  coalIds.forEach(function (id) { var c = (t.coalitions || []).filter(function (x) { return String(x.id) === id; })[0]; if (c && str_(c.name)) groups.push(str_(c.name)); });
+  var who = groups.length === 0 ? '' : groups.length === 1 ? groups[0]
+    : groups.slice(0, -1).join(', ') + ' and ' + groups[groups.length - 1]; // every group they can edit (Nathan, Nov 7)
+  var possessive = function (g) { return /s$/i.test(g) ? g + '\u2019' : g + '\u2019s'; };
+  var signOff = String(PropertiesService.getScriptProperties().getProperty('MAIL_NAME') || '').trim() || (REGION.title + ' Team');
+  if (!/^the /i.test(signOff)) signOff = 'The ' + signOff;
+  var thanks = groups.length === 0 ? 'Thank you for being part of the map.'
+    : groups.length === 1 ? 'Thank you for being ' + possessive(who) + ' point person.'
+    : 'Thank you for being the point person for ' + who + '.';
+  return 'Hi ' + (name || 'there') + ',\n\n' +
+    (who ? 'Here\u2019s your personal login link to update ' + who + ' on the ' + REGION.title + ':'
+         : 'Here\u2019s your personal login link for the ' + REGION.title + ':') + '\n' + url + '\n\n' +
+    'Tap it, then press \u201cLog in\u201d within ' + LOGIN_LINK_MINUTES + ' minutes. You\u2019ll stay logged in on this device for ' + SESSION_DAYS + ' days.' +
+    (form ? ' Your changes to \u201c' + FORM_NAMES[form.kind] + '\u201d are sent when you log in.' : '') + '\n\n' +
+    'This link is just for you, so please keep it private. You can invite additional teammates as point people when you update your ' + (groups.length > 1 ? 'groups\u2019' : 'group\u2019s') + ' information.\n\n' +
+    (groups.length !== 1 ? 'Thank you for building this map with us.' // several groups or none (Nathan, Nov 7)
+      : thanks + (groups.length ? ' We\u2019re glad to be building this map with you.' : ' We\u2019re glad to be building it with you.')) + '\n\n' +
+    'Didn\u2019t ask for this? You can ignore this email; nothing changes.\n\n' +
+    'In solidarity and gratitude,\n' + signOff;
+}
+
 /** Sends a login link (with the filled-in form waiting for it) to an email that's on file. */
 function sendLoginLink_(b) {
   var email = String(b.email || '').trim().toLowerCase();
@@ -164,17 +198,8 @@ function sendLoginLink_(b) {
       var url = siteUrl_() + '?login=' + token;
       logChange_(email, 'Sign-in', 'login link sent', '', 'sign-in', '', '', form ? 'waiting to send: ' + FORM_NAMES[form.kind] : '');
       try {
-        // Wording chosen by the team (Nov 6). Signed with MAIL_NAME (the sender name) when it's set.
-        var signOff = String(PropertiesService.getScriptProperties().getProperty('MAIL_NAME') || '').trim() || (REGION.title + ' Team');
-        if (!/^the /i.test(signOff)) signOff = 'The ' + signOff; // "— The MA Climate Organization Map Team" (Nathan, Nov 6)
-        sendMail_(email, 'Your link to update the ' + REGION.title,
-          'Hi! Here\'s your login link for the ' + REGION.title + ':\n\n' + url + '\n\n' +
-          'Tap it, then press "Log in" (it works for ' + LOGIN_LINK_MINUTES + ' minutes). ' +
-          'You\'ll stay logged in on this device for ' + SESSION_DAYS + ' days.' +
-          (form ? ' Your changes to "' + FORM_NAMES[form.kind] + '" are sent when you log in.' : '') + '\n\n' +
-          'It\'s a secure personal link, so please don\'t forward it. Teammates who need edit access can be added as point people (via the link).\n\n' +
-          'Thanks for keeping the map accurate!\n' +
-          'Didn\'t ask for this? You can ignore it; nothing changes.\n\n— ' + signOff);
+        // Wording chosen by the team (Nov 6–7): personal (first name, group names), thanks near the end.
+        sendMail_(email, 'Your personal login link for the ' + REGION.title, loginEmailBody_(email, t, url, form));
       } catch (e) {
         return { ok: false, error: 'We couldn\'t send the email right now. Please try again later, or use the Google Form.' };
       }
