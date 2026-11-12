@@ -16,3 +16,18 @@
 - `sendMail_` in Code.gs now sends every automated email: `MAIL_FROM` (must be a verified "Send mail as" address of the deployer, checked with GmailApp.getAliases, else reply-to), `MAIL_NAME`, `MAIL_REPLY_TO`. Note: using GmailApp adds a Gmail permission to the script.
 - Did it myself rather than with a Sonnet sub-agent: the work was mostly security-sensitive glue across files I already had in context; a sub-agent would have had to re-read Code.gs (2.7k lines) and I'd have re-reviewed it anyway.
 - Tests: new "sign-in OK" block in tests/apps-script.test.cjs (fake Utilities/UrlFetchApp/GmailApp). Site checked in Playwright with the web app mocked (forms, login page over the loading screen, phone width). Not testable here: real Google sign-in, real email delivery to Hotmail/Yahoo, tokeninfo from Apps Script.
+
+## 2026-11-07 — item check against group websites, 9 trial groups (branch claude/focused-cannon-637xl4)
+- Request: COM-Team Requests doc, tab "2026-11-06 Item check against group websites". Read-only; output data-review/2026-11-item-check.csv, scripts in data-review/scripts/, results in the doc subtab "1 LLM Response".
+- Data: the sheet's public JSON (LIVE_DATA_URL, generated 2026-11-07; hidden rows already left out) instead of the 5-week-old public/data.json. No access to the Sheet itself.
+- Scripts first (no AI): fetch homepage + up to 9 linked pages + every item link; extract events/projects/roles from JSON-LD, Squarespace event lists, Mobilize's public API and listing links; settle past events, moved/broken links and blank websites. Page text saved (emails/phones redacted) so agents and the team read the same copy.
+- Agents: two Sonnet agents checked every row separately against the saved pages only; a third compared them (compare_agents.py). 5_check_quotes.py confirms every quote is on its page, word for word.
+- Correction mid-run: my add-rule wording ("only things the group runs or co-hosts") was stricter than the team's rule, so both agents missed Fix the Grid (the prompt's own example). Fixed the wording and had both re-check their add rows; both then found it.
+- Why Sonnet subagents: LLM_GUIDELINES 12.1; the work is per-row reading against short pages, and the quote checker catches made-up evidence.
+
+## 2026-11-12 — item check trial, update from the team's answers (same branch, PR #124)
+- Request: subtab "1 LLM Response" answers (Q1-Q6, Additional inputs): update the trial CSV with no new fetching, report in "2 LLM Response".
+- Scripts: 10-page cap per group (homepage, item links, other pages: shallow hub pages first), past one-off events skipped, re-run from the cache only with today = 2026-11-12; 7_apply_team_answers.py applies each answer (table in the script, one line per rule); compare_v2.py merges.
+- Re-check: two fresh Sonnet agents re-judged the 8 Climate Action Now rows whose evidence page fell outside the cap, and added "part of" ties; the comparison this time is a script (mechanical: same verdict / same project).
+- Result: 94 -> 67 rows (15 past events and 12 add rows dropped); agents agree on 57 of 67.
+- Why the cap matters: Climate Action Now's 9 item links (5 of them past occurrences of recurring meetings) used 9 of its 10 pages, so its Get Involved page, where its projects are named, was cut.

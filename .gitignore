@@ -14,3 +14,6 @@ context/
 research/logos/*.png
 research/logos/up/*.png
 __pycache__/
+
+# item-check scripts: raw fetched HTML (data-review/work/text keeps the trimmed text)
+data-review/work/cache/
