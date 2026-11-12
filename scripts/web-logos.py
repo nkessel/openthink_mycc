@@ -8,9 +8,14 @@ from PIL import Image
 SRC, OUT = "public/logos", "public/logos/web"
 MAX = 640          # px: the opened group's bubble on a sharp (2x) screen
 QUALITY = 88       # WebP quality: no visible change on logos
+# Nov 12: a second, tiny copy (public/logos/web/s/) for the small bubbles of the first view. The map shows it first
+# and swaps in the larger copy only for bubbles that are big on screen (zoomed in, or the opened group).
+SMALL_OUT, SMALL_MAX, SMALL_QUALITY = "public/logos/web/s", 64, 80
 
 os.makedirs(OUT, exist_ok=True)
+os.makedirs(SMALL_OUT, exist_ok=True)
 names, before, after = [], 0, 0
+small, small_bytes = [], 0
 for f in sorted(os.listdir(SRC)):
     p = os.path.join(SRC, f)
     base, ext = os.path.splitext(f)
@@ -22,6 +27,14 @@ for f in sorted(os.listdir(SRC)):
         im = im.convert("RGBA")
     except Exception:
         continue
+    tiny = im.copy()
+    tiny.thumbnail((SMALL_MAX, SMALL_MAX), Image.LANCZOS)
+    tb = io.BytesIO()
+    tiny.save(tb, "WEBP", quality=SMALL_QUALITY, method=6)
+    with open(os.path.join(SMALL_OUT, base + ".webp"), "wb") as fh:
+        fh.write(tb.getvalue())
+    small.append(base)
+    small_bytes += len(tb.getvalue())
     if max(im.size) > MAX:
         im.thumbnail((MAX, MAX), Image.LANCZOS)
     b = io.BytesIO()
@@ -38,7 +51,14 @@ keep = {os.path.splitext(n)[0] + ".webp" for n in names}
 for f in os.listdir(OUT):
     if f.endswith(".webp") and f not in keep:
         os.remove(os.path.join(OUT, f))
+for f in os.listdir(SMALL_OUT):
+    if f.endswith(".webp") and os.path.splitext(f)[0] not in set(small):
+        os.remove(os.path.join(SMALL_OUT, f))
+with open("src/logos.small.json", "w") as fh:
+    json.dump(small, fh, indent=0)
+    fh.write("\n")
 with open("src/logos.web.json", "w") as fh:
     json.dump(names, fh, indent=0)
     fh.write("\n")
 print(f"{len(names)} WebP logos: {before // 1024} KB -> {after // 1024} KB")
+print(f"{len(small)} small logos ({SMALL_MAX}px): {small_bytes // 1024} KB")

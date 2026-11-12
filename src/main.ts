@@ -14,7 +14,7 @@ import { h, clear } from "./dom";
 import { FORMS } from "./forms.config";
 import { applyKindStyle } from "./kinds.config";
 applyKindStyle(); // item-type colours from kinds.config.ts
-import { webLogo } from "./weblogos";
+import { webLogo, smallLogo } from "./weblogos";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkSources } from "./sourcecheck";
@@ -159,7 +159,8 @@ async function main() {
   // a different order each visit, so a quick load still shows something new
   for (let i = facts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [facts[i], facts[j]] = [facts[j], facts[i]]; }
   for (const f of facts) bootDetail(f);
-  const logosReady = preloadLogos(groups.map((g) => g.logo));
+  // The map's first view uses the tiny copies for groups (graph.ts sharpens the big ones later); coalitions are few and large.
+  const logosReady = preloadLogos([...data.coalitions.map((c) => c.logo), ...data.organizations.map((o) => smallLogo(o.logo))]);
 
   let activeTab: TopTab = "map";
 
@@ -544,8 +545,9 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), data: d })); } catch { /* full */ }
       return d;
     });
-    // Wait a little for the live sheet even with a saved copy, so the newest data shows straight away most of the time.
-    const inTime = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), cached ? 3000 : 2500))]).catch(() => null);
+    // With a saved copy there is no wait (Nov 12): the sheet takes 4 to 6 s, so a 3 s wait almost never won and only
+    // held the loading screen. The newer data still arrives by itself (applyLateUpdate). A first visit waits as before.
+    const inTime = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), cached ? 0 : 2500))]).catch(() => null);
     if (inTime) return inTime;
     let first: DataFile | null = cached;
     if (!first) {

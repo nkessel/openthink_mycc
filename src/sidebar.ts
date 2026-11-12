@@ -169,11 +169,17 @@ export function createMapLegend(
   // Open on wide screens; folded on phones, where it would cover a third of the map.
   const startOpen = !window.matchMedia("(max-width: 720px)").matches;
   const legend = h("div", { class: startOpen ? "map-legend open" : "map-legend" });
-  const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": String(startOpen) }, "Legend");
+  // While open, the title row carries a visible "Hide" pill (Nov 12: the small arrow alone wasn't a clear way out).
+  const head = h("button", { class: "map-legend-head", type: "button", "aria-expanded": String(startOpen) },
+    h("span", { class: "map-legend-title" }, "Legend"),
+    h("span", { class: "map-legend-close", "aria-hidden": "true" }, "Hide \u2715"));
+  const label = (open: boolean) => head.setAttribute("aria-label", open ? "Hide the legend" : "Show the legend");
+  label(startOpen);
   head.addEventListener("click", () => {
     const open = !legend.classList.contains("open");
     legend.classList.toggle("open", open);
     head.setAttribute("aria-expanded", String(open));
+    label(open);
   });
   const row = (mark: HTMLElement, text: string) => h("div", { class: "row" }, mark, h("span", {}, text));
   legend.append(
