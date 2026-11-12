@@ -24,3 +24,10 @@
 - Agents: two Sonnet agents checked every row separately against the saved pages only; a third compared them (compare_agents.py). 5_check_quotes.py confirms every quote is on its page, word for word.
 - Correction mid-run: my add-rule wording ("only things the group runs or co-hosts") was stricter than the team's rule, so both agents missed Fix the Grid (the prompt's own example). Fixed the wording and had both re-check their add rows; both then found it.
 - Why Sonnet subagents: LLM_GUIDELINES 12.1; the work is per-row reading against short pages, and the quote checker catches made-up evidence.
+
+## 2026-11-12 — item check trial, update from the team's answers (same branch, PR #124)
+- Request: subtab "1 LLM Response" answers (Q1-Q6, Additional inputs): update the trial CSV with no new fetching, report in "2 LLM Response".
+- Scripts: 10-page cap per group (homepage, item links, other pages: shallow hub pages first), past one-off events skipped, re-run from the cache only with today = 2026-11-12; 7_apply_team_answers.py applies each answer (table in the script, one line per rule); compare_v2.py merges.
+- Re-check: two fresh Sonnet agents re-judged the 8 Climate Action Now rows whose evidence page fell outside the cap, and added "part of" ties; the comparison this time is a script (mechanical: same verdict / same project).
+- Result: 94 -> 67 rows (15 past events and 12 add rows dropped); agents agree on 57 of 67.
+- Why the cap matters: Climate Action Now's 9 item links (5 of them past occurrences of recurring meetings) used 9 of its 10 pages, so its Get Involved page, where its projects are named, was cut.
