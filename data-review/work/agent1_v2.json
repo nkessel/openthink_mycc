@@ -1,0 +1,147 @@
+{
+ "rows": [
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "project",
+   "item_id": "can_p_create",
+   "current_name": "CREATE farmer mutual aid",
+   "verdict": "ok",
+   "proposed_name": "",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "https://climateactionnowma.org/",
+   "evidence_quote": "The CAN CREATE group is having a Farmer & Community Gathering",
+   "notes": "homepage names the CAN CREATE group (blog post); work shifts and sign-up form not on saved pages; get-involved page outside page cap; unsure"
+  },
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "project",
+   "item_id": "can_p_miyawaki",
+   "current_name": "Miyawaki mini-forest group",
+   "verdict": "couldn't check",
+   "proposed_name": "",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "https://climateactionnowma.org/",
+   "evidence_quote": "Current Campaigns",
+   "notes": "page cap: no saved page names the Miyawaki group; item link is the homepage, which does not mention it"
+  },
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "project",
+   "item_id": "can_p_no_clearcut",
+   "current_name": "No Clearcut for Profit (Eversource tree clearing)",
+   "verdict": "remove",
+   "proposed_name": "",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "http://noclearcutforprofit.org",
+   "evidence_quote": "No Clearcut for Profit",
+   "notes": "no saved CAN page names or links this campaign; link goes to a Responsible Grid Google Site (third party); unsure"
+  },
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "event",
+   "item_id": "ev_can_1",
+   "current_name": "Sierra Club Forest Protection Team Monthly Meeting",
+   "verdict": "ok",
+   "proposed_name": "",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-10-08/",
+   "evidence_quote": "Monthly on the second Thursday 7:00 - 8:30pm.",
+   "notes": "verified=TRUE; recurring, site states the series; stored date past, map rolls forward (Q1)"
+  },
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "event",
+   "item_id": "ev_can_2",
+   "current_name": "Racism, White Supremacy and Climate Justice Working Group Meeting",
+   "verdict": "remove",
+   "proposed_name": "",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "https://climateactionnowma.org/event/racism-white-supremacy-and-climate-justice-working-group-meeting-2-2/2026-10-12/",
+   "evidence_quote": "Racism, White Supremacy and Climate Justice Working Group Meeting",
+   "notes": "verified=TRUE; recurring but no saved page shows the series (event page is a single Oct 12 instance, no schedule; homepage calendar has no named Nov entry); unsure, get-involved page outside page cap (Q1)"
+  },
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "event",
+   "item_id": "ev_can_3",
+   "current_name": "Wildlands Campaign Working Group Meeting",
+   "verdict": "ok",
+   "proposed_name": "",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
+   "evidence_quote": "for the monthly Wildlands meeting.",
+   "notes": "verified=TRUE; page calls it the monthly Wildlands meeting; stored date past, map rolls forward (Q1); part of: Wildlands Campaign"
+  },
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "event",
+   "item_id": "ev_can_4",
+   "current_name": "Monthly Gathering - 4th Monday",
+   "verdict": "fix",
+   "proposed_name": "Monthly Gathering",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "https://climateactionnowma.org/",
+   "evidence_quote": "Our Next Monthly Gathering",
+   "notes": "verified=TRUE; event page titled 4th Monday but homepage shows next monthly gathering on Nov 15 (a Sunday); 4th Monday schedule not confirmed; unsure"
+  },
+  {
+   "group_id": "climate_action_now_western_ma",
+   "group_name": "Climate Action Now Western Massachusetts",
+   "item_type": "event",
+   "item_id": "ev_can_5",
+   "current_name": "MA Pollinator Network monthly session",
+   "verdict": "ok",
+   "proposed_name": "",
+   "proposed_description": "",
+   "proposed_link": "",
+   "proposed_date": "",
+   "evidence_url": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
+   "evidence_quote": "MAPN hosts a network meeting monthly on the last Tuesday from 7-8pm.",
+   "notes": "verified=TRUE; recurring, site states the series; stored date past, map rolls forward (Q1)"
+  }
+ ],
+ "part_of": [
+  {
+   "group_id": "climate_action_now_western_ma",
+   "item_key": "ev_can_3",
+   "project": "Wildlands Campaign",
+   "evidence_url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-10-14/",
+   "evidence_quote": "Wildlands campaign"
+  },
+  {
+   "group_id": "charles_river_watershed_association",
+   "item_key": "charles_river_watershed_asso_a6",
+   "project": "Cut the Crap: Sewage-Free Charles Campaign",
+   "evidence_url": "https://www.crwa.org/events",
+   "evidence_quote": "It’s time to cut the crap! Join the CSO Long-Term Control Plan public hearing"
+  },
+  {
+   "group_id": "green_energy_consumers_alliance",
+   "item_key": "green_energy_consumers_allia_a2",
+   "project": "Shave the Peak",
+   "evidence_url": "https://www.greenenergyconsumers.org/shavepeak",
+   "evidence_quote": "Sign up for Shave the Peak alerts to receive text or email alerts"
+  }
+ ]
+}
