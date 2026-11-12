@@ -13,18 +13,22 @@ export function webLogo(url: string | undefined): string | undefined {
   return `${m[1]}logos/web/${m[2].replace(/\.[a-z]+$/i, "")}.webp`;
 }
 
-// Nov 12: tiny 64px copies (public/logos/web/s/, same script) for the small bubbles of the first view: about a sixth
-// of the download again. The map swaps in the larger copy for a bubble once it is big on screen.
+// Nov 12: two much smaller copies from the same script, for the small bubbles of the first view: 32px
+// (public/logos/web/t/), painted first, and 64px (public/logos/web/s/), swapped in when the browser is idle.
+// The map moves a bubble up to the larger copy above only once it is big on screen.
 import SMALL from "./logos.small.json";
 
 const HAVE_SMALL = new Set<string>(SMALL as string[]);
-/** Longest side of the small copies, in image pixels. */
+export const TINY_LOGO_PX = 32;
 export const SMALL_LOGO_PX = 64;
 
-/** "logos/x.png" or "logos/web/x.webp" → "logos/web/s/x.webp" when that copy exists; anything else unchanged. */
-export function smallLogo(url: string | undefined): string | undefined {
+function sized(url: string | undefined, dir: "s" | "t"): string | undefined {
   if (!url) return url;
   const m = /^(\.?\/?)logos\/(?:web\/)?([^/?#]+)\.[a-z]+$/i.exec(url);
   if (!m || !HAVE_SMALL.has(m[2])) return url;
-  return `${m[1]}logos/web/s/${m[2]}.webp`;
+  return `${m[1]}logos/web/${dir}/${m[2]}.webp`;
 }
+/** "logos/x.png" or "logos/web/x.webp" → the 64px copy when there is one; anything else unchanged. */
+export const smallLogo = (url: string | undefined) => sized(url, "s");
+/** The same, for the 32px copy. */
+export const tinyLogo = (url: string | undefined) => sized(url, "t");

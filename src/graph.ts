@@ -1,5 +1,5 @@
 import { attachDoubleTapDragZoom } from "./doubletapzoom";
-import { smallLogo, SMALL_LOGO_PX } from "./weblogos";
+import { smallLogo, tinyLogo, SMALL_LOGO_PX, TINY_LOGO_PX } from "./weblogos";
 import * as d3 from "d3";
 import { largePrint, onDisplayChange, lowPower, weakDevice } from "./display";
 import type {
@@ -618,25 +618,36 @@ export function createGraph(
     const step = () => {
       for (const [img, url] of logoQueue.splice(0, 24)) if (!img.getAttribute("href")) img.setAttribute("href", url);
       if (logoQueue.length) { if (idle) idle(step, { timeout: 500 }); else setTimeout(step, 60); }
-      else { logoTimer = 0; sharpenLogos(); }
+      else { logoTimer = 0; sharpenWhenIdle(); }
     };
     step();
   }
-  // Groups start with a tiny copy of their logo (weblogos.ts: about a sixth of the download). A bubble that is drawn
-  // bigger than the tiny copy can fill sharply (zoomed in, a sharp screen, or the opened group) gets the larger one.
-  const sharper = new Map<string, { img: SVGImageElement; full: string; r: number }>();
+  // Groups start with a 32px copy of their logo (weblogos.ts), so the first view downloads very little. Each bubble
+  // then moves up only as far as its size on screen needs: to the 64px copy when the browser has a quiet moment, and
+  // to the large copy once it is big on screen (zoomed in, or the opened group).
+  const FULL_LOGO = 1e9;
+  const sharper = new Map<string, { img: SVGImageElement; full: string; r: number; have: number }>();
   function sharpenLogos(openId?: string) {
     if (!sharper.size) return;
     const dpr = Math.min(3, window.devicePixelRatio || 1);
     const k = currentTransform.k;
     for (const [id, s] of sharper) {
       const n = nodeById.get(id);
-      if (!n || !(id === openId || (2 * s.r * k * dpr > SMALL_LOGO_PX * 1.1 && onScreen(n)))) continue;
-      sharper.delete(id);
+      if (!n || !(id === openId || onScreen(n))) continue;
+      const need = id === openId ? FULL_LOGO : 2 * s.r * k * dpr; // the bubble's width in screen pixels
+      const want = need <= TINY_LOGO_PX * 1.15 ? TINY_LOGO_PX : need <= SMALL_LOGO_PX * 1.15 ? SMALL_LOGO_PX : FULL_LOGO;
+      if (want <= s.have) continue;
+      s.have = want;
+      if (want === FULL_LOGO) sharper.delete(id);
+      const url = want === SMALL_LOGO_PX ? smallLogo(s.full)! : s.full;
       const pre = new Image(); // fetched first, so the bubble never blanks while the larger copy loads
-      pre.onload = () => s.img.setAttribute("href", s.full);
-      pre.src = s.full;
+      pre.onload = () => { if (s.have === want) s.img.setAttribute("href", url); };
+      pre.src = url;
     }
+  }
+  function sharpenWhenIdle() {
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+    window.setTimeout(() => { if (idle) idle(() => sharpenLogos(), { timeout: 3000 }); else sharpenLogos(); }, 1500);
   }
   // Structure per node: <circle.halo> (groups), <circle.ring> (main), <text.node-label>, <text.node-name>.
   nodeSel.each(function (this: SVGGElement, d) {
@@ -719,8 +730,8 @@ export function createGraph(
             sel.classed("has-logo", true); // sector rings keep their colour but get a white fill behind the logo
           })
           .on("error", function () { d3.select(this).remove(); });
-        const tiny = smallLogo(d.logo)!;
-        if (tiny !== d.logo) sharper.set(d.id, { img: img.node()!, full: d.logo, r });
+        const tiny = tinyLogo(d.logo)!;
+        if (tiny !== d.logo) sharper.set(d.id, { img: img.node()!, full: d.logo, r, have: TINY_LOGO_PX });
         queueLogo(img.node()!, tiny);
       }
       sel

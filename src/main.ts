@@ -14,7 +14,7 @@ import { h, clear } from "./dom";
 import { FORMS } from "./forms.config";
 import { applyKindStyle } from "./kinds.config";
 applyKindStyle(); // item-type colours from kinds.config.ts
-import { webLogo, smallLogo } from "./weblogos";
+import { webLogo, tinyLogo } from "./weblogos";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkSources } from "./sourcecheck";
@@ -159,8 +159,8 @@ async function main() {
   // a different order each visit, so a quick load still shows something new
   for (let i = facts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [facts[i], facts[j]] = [facts[j], facts[i]]; }
   for (const f of facts) bootDetail(f);
-  // The map's first view uses the tiny copies for groups (graph.ts sharpens the big ones later); coalitions are few and large.
-  const logosReady = preloadLogos([...data.coalitions.map((c) => c.logo), ...data.organizations.map((o) => smallLogo(o.logo))]);
+  // The map's first view uses the 32px copies for groups (graph.ts sharpens them later); coalitions are few and large.
+  const logosReady = preloadLogos([...data.coalitions.map((c) => c.logo), ...data.organizations.map((o) => tinyLogo(o.logo))]);
 
   let activeTab: TopTab = "map";
 

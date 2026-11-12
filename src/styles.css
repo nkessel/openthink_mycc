@@ -1665,7 +1665,9 @@ body {
     appearance: none; font: inherit; font-size: 14px; color: var(--text);
     background: var(--bg-elev); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; cursor: pointer;
   }
-  .tab-menu-icon { font-size: 15px; line-height: 1; color: var(--text-dim); }
+  .tab-menu-icon { display: inline-flex; color: var(--text-dim); transition: transform 0.15s ease; }
+  .topbar.menu-open .tab-menu-icon { transform: rotate(180deg); }
+  .tab-menu-btn.hinting { border-color: #67e8f9; box-shadow: 0 0 0 2px rgba(103, 232, 249, 0.35); }
   .topbar .tabs {
     display: none; position: fixed; top: var(--topbar-h); right: 8px; z-index: 1000;
     flex-direction: column; align-items: stretch; gap: 0; min-width: 200px; padding: 6px;
@@ -3350,3 +3352,8 @@ html, body { overflow-x: clip; max-width: 100%; }
   .focus-sizes { top: auto; bottom: 64px; right: 8px; width: min(240px, calc(100% - 16px)); }
 }
 .ctrl-subhead { margin: 14px 0 2px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); }
+
+/* One-time hint under the phone's page button (topbar.ts, Nov 12). */
+.pages-hint { position: fixed; right: 8px; z-index: 2100; width: min(250px, calc(100vw - 16px)); box-sizing: border-box; padding: 12px 14px; border-radius: 12px; background: #67e8f9; color: #0b0b12; font-size: 14px; font-weight: 600; line-height: 1.35; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 8px; }
+.pages-hint-arrow { position: absolute; top: -6px; width: 14px; height: 14px; background: #67e8f9; transform: rotate(45deg); }
+.pages-hint-ok { align-self: flex-end; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: #0b0b12; color: #e5e7eb; font: inherit; font-size: 13px; cursor: pointer; }

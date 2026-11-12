@@ -11,9 +11,12 @@ QUALITY = 88       # WebP quality: no visible change on logos
 # Nov 12: a second, tiny copy (public/logos/web/s/) for the small bubbles of the first view. The map shows it first
 # and swaps in the larger copy only for bubbles that are big on screen (zoomed in, or the opened group).
 SMALL_OUT, SMALL_MAX, SMALL_QUALITY = "public/logos/web/s", 64, 80
+# ...and a 32px one (public/logos/web/t/) that the map paints first; the 64px copy follows when the browser is idle.
+TINY_OUT, TINY_MAX = "public/logos/web/t", 32
 
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(SMALL_OUT, exist_ok=True)
+os.makedirs(TINY_OUT, exist_ok=True)
 names, before, after = [], 0, 0
 small, small_bytes = [], 0
 for f in sorted(os.listdir(SRC)):
@@ -35,6 +38,8 @@ for f in sorted(os.listdir(SRC)):
         fh.write(tb.getvalue())
     small.append(base)
     small_bytes += len(tb.getvalue())
+    tiny.thumbnail((TINY_MAX, TINY_MAX), Image.LANCZOS)
+    tiny.save(os.path.join(TINY_OUT, base + ".webp"), "WEBP", quality=SMALL_QUALITY, method=6)
     if max(im.size) > MAX:
         im.thumbnail((MAX, MAX), Image.LANCZOS)
     b = io.BytesIO()
@@ -51,9 +56,10 @@ keep = {os.path.splitext(n)[0] + ".webp" for n in names}
 for f in os.listdir(OUT):
     if f.endswith(".webp") and f not in keep:
         os.remove(os.path.join(OUT, f))
-for f in os.listdir(SMALL_OUT):
-    if f.endswith(".webp") and os.path.splitext(f)[0] not in set(small):
-        os.remove(os.path.join(SMALL_OUT, f))
+for d in (SMALL_OUT, TINY_OUT):
+    for f in os.listdir(d):
+        if f.endswith(".webp") and os.path.splitext(f)[0] not in set(small):
+            os.remove(os.path.join(d, f))
 with open("src/logos.small.json", "w") as fh:
     json.dump(small, fh, indent=0)
     fh.write("\n")
