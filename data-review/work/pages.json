@@ -19,15 +19,18 @@
     "builder": "wix"
    },
    {
-    "url": "https://www.350centralmass.org/events",
-    "final_url": "https://www.350centralmass.org/events",
+    "url": "https://www.350centralmass.org/get-involved",
+    "final_url": "https://www.350centralmass.org/get-involved",
     "status": 200,
     "ctype": "text/html; charset=UTF-8",
     "error": "",
-    "fetched_at": "2026-11-07T20:05:47",
-    "bytes": 391518,
-    "kind": "discovery",
-    "text_chars": 52,
+    "fetched_at": "2026-11-07T20:05:50",
+    "bytes": 440151,
+    "kind": "item_link",
+    "item_ids": [
+     "350ma_central_mass_a1"
+    ],
+    "text_chars": 167,
     "builder": "wix"
    },
    {
@@ -40,6 +43,18 @@
     "bytes": 400811,
     "kind": "discovery",
     "text_chars": 676,
+    "builder": "wix"
+   },
+   {
+    "url": "https://www.350centralmass.org/events",
+    "final_url": "https://www.350centralmass.org/events",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:05:47",
+    "bytes": 391518,
+    "kind": "discovery",
+    "text_chars": 52,
     "builder": "wix"
    },
    {
@@ -113,31 +128,6 @@
     "kind": "discovery",
     "text_chars": 13112,
     "builder": "wix"
-   },
-   {
-    "url": "https://www.350centralmass.org/resources",
-    "final_url": "https://www.350centralmass.org/resources",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:09:17",
-    "bytes": 470026,
-    "kind": "discovery",
-    "text_chars": 3493,
-    "builder": "wix"
-   },
-   {
-    "url": "https://www.350centralmass.org/get-involved",
-    "final_url": "https://www.350centralmass.org/get-involved",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:50",
-    "bytes": 440151,
-    "kind": "item_link",
-    "item_id": "350ma_central_mass_a1",
-    "text_chars": 167,
-    "builder": "wix"
    }
   ],
   "sitemap": [
@@ -155,7 +145,11 @@
    "https://www.350centralmass.org/about-us",
    "https://www.350centralmass.org/news"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "charles_river_watershed_association": {
   "site": "https://www.crwa.org/",
@@ -174,102 +168,6 @@
     "builder": "squarespace"
    },
    {
-    "url": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "final_url": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:52",
-    "bytes": 229767,
-    "kind": "discovery",
-    "text_chars": 1095,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "final_url": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:53",
-    "bytes": 513899,
-    "kind": "discovery",
-    "text_chars": 1270,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/get-involved",
-    "final_url": "https://www.crwa.org/get-involved",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:54",
-    "bytes": 731896,
-    "kind": "discovery",
-    "text_chars": 1024,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/get-involved-1",
-    "final_url": "https://www.crwa.org/employment",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:55",
-    "bytes": 733194,
-    "kind": "discovery",
-    "text_chars": 3329,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/river-current/join-crwas-young-professionals-board",
-    "final_url": "https://www.crwa.org/river-current/join-crwas-young-professionals-board",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:56",
-    "bytes": 454368,
-    "kind": "discovery",
-    "text_chars": 946,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/river-current/join-the-first-metro-boston-restoration-partnership-meeting-on-november-16",
-    "final_url": "https://www.crwa.org/river-current/join-the-first-metro-boston-restoration-partnership-meeting-on-november-16",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:56",
-    "bytes": 680098,
-    "kind": "discovery",
-    "text_chars": 1000,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/river-current/release-question-6-the-protect-water-and-nature-ballot-initiative-passes-overwhelmingly",
-    "final_url": "https://www.crwa.org/river-current/release-question-6-the-protect-water-and-nature-ballot-initiative-passes-overwhelmingly",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:57",
-    "bytes": 407363,
-    "kind": "discovery",
-    "text_chars": 7365,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/staff-and-board",
-    "final_url": "https://www.crwa.org/staff-and-board",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:05:58",
-    "bytes": 405164,
-    "kind": "discovery",
-    "text_chars": 2574,
-    "builder": "squarespace"
-   },
-   {
     "url": "https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings",
     "final_url": "https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings",
     "status": 200,
@@ -278,8 +176,8 @@
     "fetched_at": "2026-11-07T20:05:59",
     "bytes": 355800,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_p1",
     "item_ids": [
+     "charles_river_watershed_asso_p1",
      "charles_river_watershed_asso_a6"
     ],
     "text_chars": 1564,
@@ -294,21 +192,10 @@
     "fetched_at": "2026-11-07T20:06:00",
     "bytes": 471477,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_p2",
+    "item_ids": [
+     "charles_river_watershed_asso_p2"
+    ],
     "text_chars": 11143,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
-    "final_url": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:00",
-    "bytes": 526027,
-    "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_e1",
-    "text_chars": 1008,
     "builder": "squarespace"
    },
    {
@@ -320,7 +207,9 @@
     "fetched_at": "2026-11-07T20:06:02",
     "bytes": 263713,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_e2",
+    "item_ids": [
+     "charles_river_watershed_asso_e2"
+    ],
     "text_chars": 886,
     "builder": "squarespace"
    },
@@ -333,7 +222,9 @@
     "fetched_at": "2026-11-07T20:06:02",
     "bytes": 861099,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_e3",
+    "item_ids": [
+     "charles_river_watershed_asso_e3"
+    ],
     "text_chars": 1408,
     "builder": "squarespace"
    },
@@ -346,7 +237,9 @@
     "fetched_at": "2026-11-07T20:06:03",
     "bytes": 743063,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_a1",
+    "item_ids": [
+     "charles_river_watershed_asso_a1"
+    ],
     "text_chars": 3507,
     "builder": "squarespace"
    },
@@ -359,7 +252,9 @@
     "fetched_at": "2026-11-07T20:06:04",
     "bytes": 323883,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_a2",
+    "item_ids": [
+     "charles_river_watershed_asso_a2"
+    ],
     "text_chars": 4146,
     "builder": "squarespace"
    },
@@ -372,7 +267,9 @@
     "fetched_at": "2026-11-07T20:06:05",
     "bytes": 943206,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_a3",
+    "item_ids": [
+     "charles_river_watershed_asso_a3"
+    ],
     "text_chars": 1741,
     "builder": "squarespace"
    },
@@ -385,11 +282,23 @@
     "fetched_at": "2026-11-07T20:06:06",
     "bytes": 647506,
     "kind": "item_link",
-    "item_id": "charles_river_watershed_asso_a4",
     "item_ids": [
+     "charles_river_watershed_asso_a4",
      "charles_river_watershed_asso_a5"
     ],
     "text_chars": 1856,
+    "builder": "squarespace"
+   },
+   {
+    "url": "https://www.crwa.org/get-involved",
+    "final_url": "https://www.crwa.org/get-involved",
+    "status": 200,
+    "ctype": "text/html;charset=utf-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:05:54",
+    "bytes": 731896,
+    "kind": "discovery",
+    "text_chars": 1024,
     "builder": "squarespace"
    }
   ],
@@ -1299,7 +1208,13 @@
    "https://www.crwa.org/2024-calendar",
    "https://www.crwa.org/2024-calendar/p/2024-charles-river-watershed-association-calendar"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [
+   "charles_river_watershed_asso_e1"
+  ],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "green_energy_consumers_alliance": {
   "site": "https://www.greenenergyconsumers.org/",
@@ -1318,114 +1233,6 @@
     "builder": ""
    },
    {
-    "url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/events",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/events",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:09",
-    "bytes": 168047,
-    "kind": "discovery",
-    "text_chars": 1513,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/drivegreen/takeaction",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:10",
-    "bytes": 87796,
-    "kind": "discovery",
-    "text_chars": 2325,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/subscribe",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/subscribe",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:11",
-    "bytes": 83255,
-    "kind": "discovery",
-    "text_chars": 1538,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/events",
-    "final_url": "https://www.greenenergyconsumers.org/events",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:12",
-    "bytes": 276204,
-    "kind": "discovery",
-    "text_chars": 2599,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/drivegreen",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:13",
-    "bytes": 103487,
-    "kind": "discovery",
-    "text_chars": 3348,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/efficientsolutionstenantslandlordshomeowners",
-    "final_url": "https://www.greenenergyconsumers.org/event/efficientsolutionstenantslandlordshomeowners",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:14",
-    "bytes": 87751,
-    "kind": "discovery",
-    "text_chars": 3109,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/howsaveelectricvehiclemassachusetts0",
-    "final_url": "https://www.greenenergyconsumers.org/event/howsaveelectricvehiclemassachusetts0",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:15",
-    "bytes": 86940,
-    "kind": "discovery",
-    "text_chars": 2089,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/greenpowered",
-    "final_url": "https://www.greenenergyconsumers.org/greenpowered",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:16",
-    "bytes": 107452,
-    "kind": "discovery",
-    "text_chars": 5025,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/greenpowered/learnmore",
-    "final_url": "https://www.greenenergyconsumers.org/greenpowered/learnmore",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:17",
-    "bytes": 87701,
-    "kind": "discovery",
-    "text_chars": 1970,
-    "builder": ""
-   },
-   {
     "url": "https://www.greenenergyconsumers.org/shavepeak",
     "final_url": "https://www.greenenergyconsumers.org/shavepeak",
     "status": 200,
@@ -1434,8 +1241,8 @@
     "fetched_at": "2026-11-07T20:06:18",
     "bytes": 103964,
     "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_p1",
     "item_ids": [
+     "green_energy_consumers_allia_p1",
      "green_energy_consumers_allia_a2"
     ],
     "text_chars": 8293,
@@ -1450,7 +1257,9 @@
     "fetched_at": "2026-11-07T20:06:19",
     "bytes": 88747,
     "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_p2",
+    "item_ids": [
+     "green_energy_consumers_allia_p2"
+    ],
     "text_chars": 3204,
     "builder": ""
    },
@@ -1463,177 +1272,10 @@
     "fetched_at": "2026-11-07T20:06:20",
     "bytes": 85085,
     "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_p3",
+    "item_ids": [
+     "green_energy_consumers_allia_p3"
+    ],
     "text_chars": 2399,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
-    "final_url": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:21",
-    "bytes": 86974,
-    "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e2",
-    "text_chars": 2217,
-    "builder": ""
-   },
-   {
-    "url": "https://us06web.zoom.us/webinar/register/WN_WkagQhN9RcmCgQZhNdc1fw",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_WkagQhN9RcmCgQZhNdc1fw",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:22",
-    "bytes": 36780,
-    "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e2",
-    "text_chars": 375,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors",
-    "final_url": "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:23",
-    "bytes": 86677,
-    "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e3",
-    "text_chars": 1850,
-    "builder": ""
-   },
-   {
-    "url": "https://us06web.zoom.us/webinar/register/WN_fq7m_wHXTtiQvE8_8Y2inw",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_fq7m_wHXTtiQvE8_8Y2inw",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:24",
-    "bytes": 36415,
-    "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e3",
-    "text_chars": 375,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/harvestfestival0",
-    "final_url": "https://www.greenenergyconsumers.org/event/harvestfestival0",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:24",
-    "bytes": 86067,
-    "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e5",
-    "text_chars": 2046,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/heatpumpstimevaryingrates",
-    "final_url": "https://www.greenenergyconsumers.org/event/heatpumptimevaryingrates",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:25",
-    "bytes": 87761,
-    "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e6",
-    "text_chars": 2196,
-    "builder": ""
-   },
-   {
-    "url": "https://us06web.zoom.us/webinar/register/WN_nNcxKAsERNyNLzbJlqHwSA",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_nNcxKAsERNyNLzbJlqHwSA",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:27",
-    "bytes": 36798,
-    "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e6",
-    "text_chars": 375,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/emergingcleantechnologies",
-    "final_url": "https://www.greenenergyconsumers.org/event/emergingcleantechnologies",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:27",
-    "bytes": 88994,
-    "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e7",
-    "text_chars": 1917,
-    "builder": ""
-   },
-   {
-    "url": "https://us06web.zoom.us/webinar/register/WN_g39im1dzSQyV1KQRFd_GrA",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_g39im1dzSQyV1KQRFd_GrA",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:28",
-    "bytes": 36473,
-    "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e7",
-    "text_chars": 375,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
-    "final_url": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:29",
-    "bytes": 86852,
-    "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e8",
-    "text_chars": 2071,
-    "builder": ""
-   },
-   {
-    "url": "https://us06web.zoom.us/webinar/register/WN_F0cBDW9IQDWqBr-ZEpxVZw",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_F0cBDW9IQDWqBr-ZEpxVZw",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:30",
-    "bytes": 36631,
-    "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e8",
-    "text_chars": 375,
-    "builder": ""
-   },
-   {
-    "url": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
-    "final_url": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:31",
-    "bytes": 85728,
-    "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e9",
-    "text_chars": 1706,
-    "builder": ""
-   },
-   {
-    "url": "https://www.eventbrite.com/e/green-energy-consumers-annual-fall-meeting-tickets-2001889844414",
-    "final_url": "https://www.eventbrite.com/e/green-energy-consumers-fall-meeting-tickets-2001889844414",
-    "status": 200,
-    "ctype": "text/html; charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:31",
-    "bytes": 194669,
-    "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e9",
-    "text_chars": 1797,
     "builder": ""
    },
    {
@@ -1645,7 +1287,9 @@
     "fetched_at": "2026-11-07T20:06:33",
     "bytes": 86498,
     "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e10",
+    "item_ids": [
+     "green_energy_consumers_allia_e10"
+    ],
     "text_chars": 1775,
     "builder": ""
    },
@@ -1658,7 +1302,9 @@
     "fetched_at": "2026-11-07T20:06:34",
     "bytes": 44377,
     "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e10",
+    "item_ids": [
+     "green_energy_consumers_allia_e10"
+    ],
     "text_chars": 375,
     "builder": ""
    },
@@ -1671,7 +1317,9 @@
     "fetched_at": "2026-11-07T20:06:35",
     "bytes": 86830,
     "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_e11",
+    "item_ids": [
+     "green_energy_consumers_allia_e11"
+    ],
     "text_chars": 1864,
     "builder": ""
    },
@@ -1684,7 +1332,9 @@
     "fetched_at": "2026-11-07T20:06:36",
     "bytes": 44670,
     "kind": "item_rsvp_link",
-    "item_id": "green_energy_consumers_allia_e11",
+    "item_ids": [
+     "green_energy_consumers_allia_e11"
+    ],
     "text_chars": 375,
     "builder": ""
    },
@@ -1697,13 +1347,39 @@
     "fetched_at": "2026-11-07T20:06:37",
     "bytes": 83053,
     "kind": "item_link",
-    "item_id": "green_energy_consumers_allia_a1",
+    "item_ids": [
+     "green_energy_consumers_allia_a1"
+    ],
     "text_chars": 1694,
+    "builder": ""
+   },
+   {
+    "url": "https://www.greenenergyconsumers.org/events",
+    "final_url": "https://www.greenenergyconsumers.org/events",
+    "status": 200,
+    "ctype": "text/html; charset=utf-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:06:12",
+    "bytes": 276204,
+    "kind": "discovery",
+    "text_chars": 2599,
     "builder": ""
    }
   ],
   "sitemap": [],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [
+   "green_energy_consumers_allia_e2",
+   "green_energy_consumers_allia_e3",
+   "green_energy_consumers_allia_e5",
+   "green_energy_consumers_allia_e6",
+   "green_energy_consumers_allia_e7",
+   "green_energy_consumers_allia_e8",
+   "green_energy_consumers_allia_e9"
+  ],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "climate_action_now_western_ma": {
   "site": "https://climateactionnowma.org/",
@@ -1718,130 +1394,9 @@
     "fetched_at": "2026-11-07T20:06:38",
     "bytes": 189390,
     "kind": "homepage",
-    "text_chars": 2637,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/",
-    "final_url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:45",
-    "bytes": 135864,
-    "kind": "discovery",
-    "text_chars": 392,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/",
-    "final_url": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:47",
-    "bytes": 139183,
-    "kind": "discovery",
-    "text_chars": 606,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/events/",
-    "final_url": "https://climateactionnowma.org/events/",
-    "status": 403,
-    "ctype": "",
-    "error": "HTTP 403",
-    "fetched_at": "2026-11-07T20:06:49",
-    "bytes": 5700,
-    "kind": "discovery",
-    "text_chars": 0,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/events/month/",
-    "final_url": "https://climateactionnowma.org/events/month/",
-    "status": 403,
-    "ctype": "",
-    "error": "HTTP 403",
-    "fetched_at": "2026-11-07T20:06:50",
-    "bytes": 5718,
-    "kind": "discovery",
-    "text_chars": 0,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/get-involved/",
-    "final_url": "https://climateactionnowma.org/get-involved/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:51",
-    "bytes": 138808,
-    "kind": "discovery",
-    "text_chars": 5909,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/",
-    "final_url": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:52",
-    "bytes": 181110,
-    "kind": "discovery",
-    "text_chars": 408,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/campaign-to-protect-wildlands-in-massachusetts/",
-    "final_url": "https://climateactionnowma.org/campaign-to-protect-wildlands-in-massachusetts/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:54",
-    "bytes": 133983,
-    "kind": "discovery",
-    "text_chars": 10148,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/event/create-farmer-community-gathering/",
-    "final_url": "https://climateactionnowma.org/event/create-farmer-community-gathering/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:55",
-    "bytes": 143972,
-    "kind": "discovery",
-    "text_chars": 958,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/",
-    "final_url": "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:56",
-    "bytes": 138797,
-    "kind": "discovery",
-    "text_chars": 710,
-    "builder": ""
-   },
-   {
-    "url": "https://climateactionnowma.org",
-    "final_url": "https://climateactionnowma.org",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:06:59",
-    "bytes": 189390,
-    "kind": "item_link",
-    "item_id": "can_p_create",
     "item_ids": [
-     "can_p_miyawaki",
-     "can_e_fall_gathering"
+     "can_p_create",
+     "can_p_miyawaki"
     ],
     "text_chars": 2637,
     "builder": ""
@@ -1855,7 +1410,9 @@
     "fetched_at": "2026-11-07T20:07:00",
     "bytes": 184081,
     "kind": "item_link",
-    "item_id": "can_p_no_clearcut",
+    "item_ids": [
+     "can_p_no_clearcut"
+    ],
     "text_chars": 2231,
     "builder": ""
    },
@@ -1868,7 +1425,9 @@
     "fetched_at": "2026-11-07T20:07:01",
     "bytes": 137495,
     "kind": "item_link",
-    "item_id": "climate_action_now_western_m_p1",
+    "item_ids": [
+     "climate_action_now_western_m_p1"
+    ],
     "text_chars": 4930,
     "builder": ""
    },
@@ -1881,7 +1440,9 @@
     "fetched_at": "2026-11-07T20:07:03",
     "bytes": 136016,
     "kind": "item_link",
-    "item_id": "climate_action_now_western_m_p2",
+    "item_ids": [
+     "climate_action_now_western_m_p2"
+    ],
     "text_chars": 4284,
     "builder": ""
    },
@@ -1894,7 +1455,9 @@
     "fetched_at": "2026-11-07T20:07:04",
     "bytes": 139638,
     "kind": "item_link",
-    "item_id": "ev_can_1",
+    "item_ids": [
+     "ev_can_1"
+    ],
     "text_chars": 627,
     "builder": ""
    },
@@ -1907,7 +1470,9 @@
     "fetched_at": "2026-11-07T20:07:05",
     "bytes": 139308,
     "kind": "item_link",
-    "item_id": "ev_can_2",
+    "item_ids": [
+     "ev_can_2"
+    ],
     "text_chars": 389,
     "builder": ""
    },
@@ -1920,7 +1485,9 @@
     "fetched_at": "2026-11-07T20:07:07",
     "bytes": 136253,
     "kind": "item_link",
-    "item_id": "ev_can_3",
+    "item_ids": [
+     "ev_can_3"
+    ],
     "text_chars": 414,
     "builder": ""
    },
@@ -1933,7 +1500,9 @@
     "fetched_at": "2026-11-07T20:07:08",
     "bytes": 132406,
     "kind": "item_link",
-    "item_id": "ev_can_4",
+    "item_ids": [
+     "ev_can_4"
+    ],
     "text_chars": 291,
     "builder": ""
    },
@@ -1946,8 +1515,22 @@
     "fetched_at": "2026-11-07T20:07:10",
     "bytes": 139281,
     "kind": "item_link",
-    "item_id": "ev_can_5",
+    "item_ids": [
+     "ev_can_5"
+    ],
     "text_chars": 732,
+    "builder": ""
+   },
+   {
+    "url": "https://climateactionnowma.org/events/",
+    "final_url": "https://climateactionnowma.org/events/",
+    "status": 403,
+    "ctype": "",
+    "error": "HTTP 403",
+    "fetched_at": "2026-11-07T20:06:49",
+    "bytes": 5700,
+    "kind": "discovery",
+    "text_chars": 0,
     "builder": ""
    }
   ],
@@ -2709,7 +2292,13 @@
    "https://climateactionnowma.org/organizer/treespg/",
    "https://climateactionnowma.org/organizer/create-cultivating-relationships-tending-earth/"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [
+   "can_e_fall_gathering"
+  ],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "ma_senior_action": {
   "site": "https://www.masssenioraction.org/",
@@ -2725,6 +2314,25 @@
     "bytes": 124768,
     "kind": "homepage",
     "text_chars": 1192,
+    "builder": "squarespace"
+   },
+   {
+    "url": "https://www.masssenioraction.org/where-we-work",
+    "final_url": "https://www.masssenioraction.org/where-we-work",
+    "status": 200,
+    "ctype": "text/html;charset=utf-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:07:23",
+    "bytes": 82161,
+    "kind": "item_link",
+    "item_ids": [
+     "ma_senior_action_e1",
+     "ma_senior_action_e2",
+     "ma_senior_action_e3",
+     "ma_senior_action_e4",
+     "ma_senior_action_e5"
+    ],
+    "text_chars": 1061,
     "builder": "squarespace"
    },
    {
@@ -2822,37 +2430,6 @@
     "kind": "discovery",
     "text_chars": 2158,
     "builder": "squarespace"
-   },
-   {
-    "url": "https://www.masssenioraction.org/housing-tenants-rights",
-    "final_url": "https://www.masssenioraction.org/housing-tenants-rights",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:22",
-    "bytes": 87259,
-    "kind": "discovery",
-    "text_chars": 2270,
-    "builder": "squarespace"
-   },
-   {
-    "url": "https://www.masssenioraction.org/where-we-work",
-    "final_url": "https://www.masssenioraction.org/where-we-work",
-    "status": 200,
-    "ctype": "text/html;charset=utf-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:23",
-    "bytes": 82161,
-    "kind": "item_link",
-    "item_id": "ma_senior_action_e1",
-    "item_ids": [
-     "ma_senior_action_e2",
-     "ma_senior_action_e3",
-     "ma_senior_action_e4",
-     "ma_senior_action_e5"
-    ],
-    "text_chars": 1061,
-    "builder": "squarespace"
    }
   ],
   "sitemap": [
@@ -2943,7 +2520,11 @@
    "https://www.masssenioraction.org/2026ballot-questions",
    "https://www.masssenioraction.org/store"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "neighbor_to_neighbor_massachusetts": {
   "site": "https://n2nma.org/",
@@ -2959,6 +2540,65 @@
     "bytes": 81214,
     "kind": "homepage",
     "text_chars": 1047,
+    "builder": ""
+   },
+   {
+    "url": "https://n2nma.org/campaigns/dwight-street-garden/",
+    "final_url": "https://n2nma.org/campaigns/dwight-street-garden/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:07:38",
+    "bytes": 59038,
+    "kind": "item_link",
+    "item_ids": [
+     "neighbor_to_neighbor_massach_p1"
+    ],
+    "text_chars": 1312,
+    "builder": ""
+   },
+   {
+    "url": "https://n2nma.org/campaigns/housing-for-all/",
+    "final_url": "https://n2nma.org/campaigns/housing-for-all/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:07:39",
+    "bytes": 56508,
+    "kind": "item_link",
+    "item_ids": [
+     "neighbor_to_neighbor_massach_p2"
+    ],
+    "text_chars": 975,
+    "builder": ""
+   },
+   {
+    "url": "https://n2nma.org/take-action/",
+    "final_url": "https://n2nma.org/take-action/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:07:40",
+    "bytes": 55248,
+    "kind": "item_link",
+    "item_ids": [
+     "neighbor_to_neighbor_massach_a1",
+     "neighbor_to_neighbor_massach_a2",
+     "neighbor_to_neighbor_massach_a3"
+    ],
+    "text_chars": 813,
+    "builder": ""
+   },
+   {
+    "url": "https://n2nma.org/what-we-do/",
+    "final_url": "https://n2nma.org/what-we-do/campaigns/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:07:34",
+    "bytes": 49514,
+    "kind": "discovery",
+    "text_chars": 1270,
     "builder": ""
    },
    {
@@ -3010,18 +2650,6 @@
     "builder": ""
    },
    {
-    "url": "https://n2nma.org/what-we-do/",
-    "final_url": "https://n2nma.org/what-we-do/campaigns/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:34",
-    "bytes": 49514,
-    "kind": "discovery",
-    "text_chars": 1270,
-    "builder": ""
-   },
-   {
     "url": "https://n2nma.org/what-we-do/victories/",
     "final_url": "https://n2nma.org/what-we-do/victories/",
     "status": 200,
@@ -3031,61 +2659,6 @@
     "bytes": 61805,
     "kind": "discovery",
     "text_chars": 4608,
-    "builder": ""
-   },
-   {
-    "url": "https://n2nma.org/who-we-are/team/",
-    "final_url": "https://n2nma.org/who-we-are/team/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:37",
-    "bytes": 58967,
-    "kind": "discovery",
-    "text_chars": 1131,
-    "builder": ""
-   },
-   {
-    "url": "https://n2nma.org/campaigns/dwight-street-garden/",
-    "final_url": "https://n2nma.org/campaigns/dwight-street-garden/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:38",
-    "bytes": 59038,
-    "kind": "item_link",
-    "item_id": "neighbor_to_neighbor_massach_p1",
-    "text_chars": 1312,
-    "builder": ""
-   },
-   {
-    "url": "https://n2nma.org/campaigns/housing-for-all/",
-    "final_url": "https://n2nma.org/campaigns/housing-for-all/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:39",
-    "bytes": 56508,
-    "kind": "item_link",
-    "item_id": "neighbor_to_neighbor_massach_p2",
-    "text_chars": 975,
-    "builder": ""
-   },
-   {
-    "url": "https://n2nma.org/take-action/",
-    "final_url": "https://n2nma.org/take-action/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:40",
-    "bytes": 55248,
-    "kind": "item_link",
-    "item_id": "neighbor_to_neighbor_massach_a1",
-    "item_ids": [
-     "neighbor_to_neighbor_massach_a2",
-     "neighbor_to_neighbor_massach_a3"
-    ],
-    "text_chars": 813,
     "builder": ""
    }
   ],
@@ -3648,7 +3221,11 @@
    "https://n2nma.org/untitled-design-2-2/",
    "https://n2nma.org/organizing-for-the-long-haul-n2n-takes-the-stage-on-infocus-30-years-on/"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "tree_boston": {
   "site": "https://treeboston.org/",
@@ -3664,6 +3241,66 @@
     "bytes": 83805,
     "kind": "homepage",
     "text_chars": 983,
+    "builder": ""
+   },
+   {
+    "url": "https://treeboston.org/get-involved/neighborwoods/",
+    "final_url": "https://treeboston.org/get-involved/neighborwoods/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:08",
+    "bytes": 81225,
+    "kind": "item_link",
+    "item_ids": [
+     "tree_boston_p1"
+    ],
+    "text_chars": 2092,
+    "builder": ""
+   },
+   {
+    "url": "https://treeboston.org/get-involved/tree-giveaway-program/",
+    "final_url": "https://treeboston.org/get-involved/tree-giveaway-program/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:09",
+    "bytes": 78080,
+    "kind": "item_link",
+    "item_ids": [
+     "tree_boston_p2"
+    ],
+    "text_chars": 3005,
+    "builder": ""
+   },
+   {
+    "url": "https://treeboston.org/get-involved/tutc/",
+    "final_url": "https://treeboston.org/get-involved/tutc/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:11",
+    "bytes": 81052,
+    "kind": "item_link",
+    "item_ids": [
+     "tree_boston_p3"
+    ],
+    "text_chars": 3143,
+    "builder": ""
+   },
+   {
+    "url": "https://treeboston.org/get-involved/voluntreers-program/",
+    "final_url": "https://treeboston.org/get-involved/voluntreers-program/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:20",
+    "bytes": 319348,
+    "kind": "item_link",
+    "item_ids": [
+     "tree_boston_a1"
+    ],
+    "text_chars": 1620,
     "builder": ""
    },
    {
@@ -3691,42 +3328,6 @@
     "builder": ""
    },
    {
-    "url": "https://treeboston.org/get-involved/education-outreach/",
-    "final_url": "https://treeboston.org/get-involved/education-outreach/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:58",
-    "bytes": 72572,
-    "kind": "discovery",
-    "text_chars": 1801,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/get-involved/opportunities/",
-    "final_url": "https://treeboston.org/get-involved/opportunities/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:07:59",
-    "bytes": 70122,
-    "kind": "discovery",
-    "text_chars": 1200,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/get-involved/resource/",
-    "final_url": "https://treeboston.org/get-involved/resource/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:01",
-    "bytes": 78439,
-    "kind": "discovery",
-    "text_chars": 3591,
-    "builder": ""
-   },
-   {
     "url": "https://treeboston.org/our-team/",
     "final_url": "https://treeboston.org/our-team/",
     "status": 200,
@@ -3751,132 +3352,15 @@
     "builder": ""
    },
    {
-    "url": "https://treeboston.org/programs/treekeepers/",
-    "final_url": "https://treeboston.org/programs/treekeepers/",
+    "url": "https://treeboston.org/get-involved/education-outreach/",
+    "final_url": "https://treeboston.org/get-involved/education-outreach/",
     "status": 200,
     "ctype": "text/html; charset=UTF-8",
     "error": "",
-    "fetched_at": "2026-11-07T20:08:06",
-    "bytes": 133402,
+    "fetched_at": "2026-11-07T20:07:58",
+    "bytes": 72572,
     "kind": "discovery",
-    "text_chars": 1596,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/get-involved/neighborwoods/",
-    "final_url": "https://treeboston.org/get-involved/neighborwoods/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:08",
-    "bytes": 81225,
-    "kind": "item_link",
-    "item_id": "tree_boston_p1",
-    "text_chars": 2092,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/get-involved/tree-giveaway-program/",
-    "final_url": "https://treeboston.org/get-involved/tree-giveaway-program/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:09",
-    "bytes": 78080,
-    "kind": "item_link",
-    "item_id": "tree_boston_p2",
-    "text_chars": 3005,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/get-involved/tutc/",
-    "final_url": "https://treeboston.org/get-involved/tutc/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:11",
-    "bytes": 81052,
-    "kind": "item_link",
-    "item_id": "tree_boston_p3",
-    "text_chars": 3143,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/",
-    "final_url": "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:12",
-    "bytes": 289800,
-    "kind": "item_link",
-    "item_id": "tree_boston_e1",
-    "text_chars": 674,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/events/event/branchingout2026/",
-    "final_url": "https://treeboston.org/events/event/branchingout2026/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:14",
-    "bytes": 77375,
-    "kind": "item_link",
-    "item_id": "tree_boston_e3",
-    "text_chars": 1326,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/",
-    "final_url": "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:16",
-    "bytes": 302491,
-    "kind": "item_link",
-    "item_id": "tree_boston_e5",
-    "text_chars": 1156,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/events/event/climb4thecanopy/",
-    "final_url": "https://treeboston.org/events/event/climb4thecanopy/",
-    "status": 404,
-    "ctype": "",
-    "error": "HTTP 404",
-    "fetched_at": "2026-11-07T20:08:17",
-    "bytes": 62065,
-    "kind": "item_link",
-    "item_id": "tree_boston_e7",
-    "text_chars": 0,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/",
-    "final_url": "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:19",
-    "bytes": 302341,
-    "kind": "item_link",
-    "item_id": "tree_boston_e8",
-    "text_chars": 1106,
-    "builder": ""
-   },
-   {
-    "url": "https://treeboston.org/get-involved/voluntreers-program/",
-    "final_url": "https://treeboston.org/get-involved/voluntreers-program/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:20",
-    "bytes": 319348,
-    "kind": "item_link",
-    "item_id": "tree_boston_a1",
-    "text_chars": 1620,
+    "text_chars": 1801,
     "builder": ""
    }
   ],
@@ -4228,7 +3712,17 @@
    "https://treeboston.org/3d-flip-book/2024-buff-symposium-report/",
    "https://treeboston.org/3d-flip-book/summer-2025-tutc-report/"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [
+   "tree_boston_e1",
+   "tree_boston_e3",
+   "tree_boston_e5",
+   "tree_boston_e7",
+   "tree_boston_e8"
+  ],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "sunrise_boston": {
   "site": "https://www.sunrisemovement.org/",
@@ -4247,15 +3741,33 @@
     "builder": ""
    },
    {
-    "url": "https://www.sunrisemovement.org/campaign/project-rise-up/",
-    "final_url": "https://docs.google.com/document/d/1TaZrvJDR-4eX8EBJ-82IiKlt4xSnZ2mYQC-FOjKoIok/edit?tab=t.0",
+    "url": "https://www.sunrisemovement.org/campaign/ice-out/",
+    "final_url": "https://www.sunrisemovement.org/campaign/ice-out/",
     "status": 200,
-    "ctype": "text/html; charset=utf-8",
+    "ctype": "text/html; charset=UTF-8",
     "error": "",
-    "fetched_at": "2026-11-07T20:08:29",
-    "bytes": 425727,
-    "kind": "discovery",
-    "text_chars": 119,
+    "fetched_at": "2026-11-07T20:08:33",
+    "bytes": 132975,
+    "kind": "item_link",
+    "item_ids": [
+     "sunrise_boston_p1"
+    ],
+    "text_chars": 6786,
+    "builder": ""
+   },
+   {
+    "url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
+    "final_url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:34",
+    "bytes": 148021,
+    "kind": "item_link",
+    "item_ids": [
+     "sunrise_boston_p2"
+    ],
+    "text_chars": 5640,
     "builder": ""
    },
    {
@@ -4283,18 +3795,6 @@
     "builder": ""
    },
    {
-    "url": "https://www.sunrisemovement.org/campaign/endorsements/",
-    "final_url": "https://www.sunrisemovement.org/campaign/endorsements/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:31",
-    "bytes": 155883,
-    "kind": "discovery",
-    "text_chars": 6241,
-    "builder": ""
-   },
-   {
     "url": "https://www.sunrisemovement.org/campaigns/",
     "final_url": "https://www.sunrisemovement.org/campaigns/",
     "status": 200,
@@ -4307,45 +3807,27 @@
     "builder": ""
    },
    {
-    "url": "https://www.sunrisemovement.org/campaign/ice-out/",
-    "final_url": "https://www.sunrisemovement.org/campaign/ice-out/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:33",
-    "bytes": 132975,
-    "kind": "item_link",
-    "item_id": "sunrise_boston_p1",
-    "text_chars": 6786,
-    "builder": ""
-   },
-   {
-    "url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
-    "final_url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:34",
-    "bytes": 148021,
-    "kind": "item_link",
-    "item_id": "sunrise_boston_p2",
-    "text_chars": 5640,
-    "builder": ""
-   },
-   {
-    "url": "https://www.mobilize.us/sunrisemovement/event/976143/",
-    "final_url": "https://www.mobilize.us/sunrisemovement/event/976143/",
+    "url": "https://www.sunrisemovement.org/campaign/project-rise-up/",
+    "final_url": "https://docs.google.com/document/d/1TaZrvJDR-4eX8EBJ-82IiKlt4xSnZ2mYQC-FOjKoIok/edit?tab=t.0",
     "status": 200,
     "ctype": "text/html; charset=utf-8",
     "error": "",
-    "fetched_at": "2026-11-07T20:08:35",
-    "bytes": 36797,
-    "kind": "item_link",
-    "item_id": "sunrise_boston_e1",
-    "item_ids": [
-     "sunrise_boston_e1"
-    ],
-    "text_chars": 62,
+    "fetched_at": "2026-11-07T20:08:29",
+    "bytes": 425727,
+    "kind": "discovery",
+    "text_chars": 119,
+    "builder": ""
+   },
+   {
+    "url": "https://www.sunrisemovement.org/campaign/endorsements/",
+    "final_url": "https://www.sunrisemovement.org/campaign/endorsements/",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:31",
+    "bytes": 155883,
+    "kind": "discovery",
+    "text_chars": 6241,
     "builder": ""
    }
   ],
@@ -4540,7 +4022,13 @@
    "https://www.sunrisemovement.org/past-action/2018-pelosi-sit-in/",
    "https://www.sunrisemovement.org/past-action/good-jobs-for-all/"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [
+   "sunrise_boston_e1"
+  ],
+  "page_cap_items": [],
+  "not_in_cache": []
  },
  "boston_latin_school_youthcan": {
   "site": "https://www.bostonlatinschoolyouthcan.org/",
@@ -4556,6 +4044,37 @@
     "bytes": 94105,
     "kind": "homepage",
     "text_chars": 2231,
+    "builder": ""
+   },
+   {
+    "url": "https://www.bostonlatinschoolyouthcan.org/events.html",
+    "final_url": "https://www.bostonlatinschoolyouthcan.org/events.html",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:38",
+    "bytes": 91111,
+    "kind": "item_link",
+    "item_ids": [
+     "boston_latin_school_youthcan_p1",
+     "boston_latin_school_youthcan_p2"
+    ],
+    "text_chars": 1802,
+    "builder": ""
+   },
+   {
+    "url": "https://www.bostonlatinschoolyouthcan.org/about.html",
+    "final_url": "https://www.bostonlatinschoolyouthcan.org/about.html",
+    "status": 200,
+    "ctype": "text/html; charset=UTF-8",
+    "error": "",
+    "fetched_at": "2026-11-07T20:08:39",
+    "bytes": 93573,
+    "kind": "item_link",
+    "item_ids": [
+     "boston_latin_school_youthcan_p3"
+    ],
+    "text_chars": 4373,
     "builder": ""
    },
    {
@@ -4641,59 +4160,6 @@
     "kind": "discovery",
     "text_chars": 3902,
     "builder": ""
-   },
-   {
-    "url": "https://www.bostonlatinschoolyouthcan.org/index.html",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/index.html",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:09:24",
-    "bytes": 94105,
-    "kind": "discovery",
-    "text_chars": 2231,
-    "builder": ""
-   },
-   {
-    "url": "https://www.bostonlatinschoolyouthcan.org/news.html",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/news.html",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:09:24",
-    "bytes": 126515,
-    "kind": "discovery",
-    "text_chars": 28813,
-    "builder": ""
-   },
-   {
-    "url": "https://www.bostonlatinschoolyouthcan.org/events.html",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/events.html",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:38",
-    "bytes": 91111,
-    "kind": "item_link",
-    "item_id": "boston_latin_school_youthcan_p1",
-    "item_ids": [
-     "boston_latin_school_youthcan_p2"
-    ],
-    "text_chars": 1802,
-    "builder": ""
-   },
-   {
-    "url": "https://www.bostonlatinschoolyouthcan.org/about.html",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/about.html",
-    "status": 200,
-    "ctype": "text/html; charset=UTF-8",
-    "error": "",
-    "fetched_at": "2026-11-07T20:08:39",
-    "bytes": 93573,
-    "kind": "item_link",
-    "item_id": "boston_latin_school_youthcan_p3",
-    "text_chars": 4373,
-    "builder": ""
    }
   ],
   "sitemap": [
@@ -4720,6 +4186,10 @@
    "https://www.bostonlatinschoolyouthcan.org/store/c1/Featured_Products.html",
    "https://www.bostonlatinschoolyouthcan.org/store/c3/Past_Events.html"
   ],
-  "social_only": false
+  "social_only": false,
+  "cap": 10,
+  "past_events_skipped": [],
+  "page_cap_items": [],
+  "not_in_cache": []
  }
 }

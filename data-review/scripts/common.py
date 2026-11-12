@@ -25,6 +25,21 @@ SOCIAL = ("facebook.com", "instagram.com", "twitter.com", "x.com", "linktr.ee", 
 EVENT_HOSTS = ("actionnetwork.org", "mobilize.us", "eventbrite.com", "zoom.us", "everyaction.com", "lu.ma", "meetup.com")
 
 
+MAX_PAGES = 10  # per group, everything counted (team answer Q2, Nov 2026)
+
+
+def past_one_off(it, today=None):
+    """Past one-off events are skipped: the map already hides them by date (team answer Q6)."""
+    if it.get("item_type") != "event" or (it.get("recurrence") or "").strip():
+        return False
+    last = (it.get("end") or it.get("date") or "")[:10]
+    return bool(last) and last < (today or TODAY)
+
+
+def cached(url):
+    return (CACHE / f"{key(url)}.json").exists()
+
+
 def key(url):
     return hashlib.sha1(url.encode()).hexdigest()[:16]
 

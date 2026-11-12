@@ -1,7 +1,8 @@
 """Step 6: write data-review/2026-11-item-check.csv from Agent 3's work/final.json and the script checks.
 
-script_could_decide = yes when 4_script_checks.py reached the same verdict on its own (no AI): past events,
+script_could_decide = yes when 4_script_checks.py reached the same verdict on its own (no AI): page cap,
 moved links, blank websites, events whose exact name and date are on their own page. Everything else = no.
+Usage: ITEMCHECK_FINAL=final_v2.json python3 6_build_csv.py   (default: final.json, the first trial pass)
 Also prints counts by verdict and script_could_decide by item type (for the response tab).
 """
 import collections, csv
@@ -14,7 +15,7 @@ ORDER = {"group": 0, "project": 1, "event": 2, "action": 3, "role": 4}
 
 
 def main():
-    rows, checks = load_json("final.json"), load_json("checks.json")
+    rows, checks = load_json(os.environ.get("ITEMCHECK_FINAL", "final.json")), load_json("checks.json")
     sv = {}
     for gid, c in checks.items():
         sv[(gid, gid, "group")] = c["group"]["script_verdict"]

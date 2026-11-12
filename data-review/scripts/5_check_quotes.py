@@ -1,5 +1,5 @@
 """Step 5 (guard against made-up evidence): every row's evidence_quote must appear word for word in the
-saved text of its evidence_url (work/text/), be under 15 words, and the evidence_url must be a page that was
+saved text of its evidence_url (work/text/; two bits may be joined with " … "), be under 15 words, and the evidence_url must be a page that was
 actually fetched. Also checks verdict values and the 5-adds-per-group limit.
 
 Usage: python3 5_check_quotes.py work/agent1.json   (a JSON list of rows, CSV column names as keys)
@@ -48,8 +48,11 @@ def check(rows):
             continue
         if q and len(q.split()) >= 15:
             problems.append(f"{tag}: quote has {len(q.split())} words (limit: under 15)")
-        if q and flat(q).strip(" .\"'…") not in t:
-            problems.append(f"{tag}: quote not found on page: {q!r}")
+        # A quote may join two short bits of the same page with " … " (e.g. an event's name and its date on a
+        # list page, team answer Q5). Each bit must be on the page; the whole stays under 15 words.
+        for part in (q.split("…") if q else []):
+            if flat(part).strip(" .\"'") and flat(part).strip(" .\"'") not in t:
+                problems.append(f"{tag}: quote not found on page: {part.strip()!r}")
         if not q and v != "couldn't check":
             problems.append(f"{tag}: no quote")
     for g, n in adds.items():

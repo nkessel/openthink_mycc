@@ -4,8 +4,10 @@ Per item: link status (broken / moved), page empty because it loads with JavaScr
 name on its page, the event's date on its page, past events (date or end before today, no recurrence),
 and for recurring events the next dated occurrence found on the site.
 Per group: website blank, description empty, website host vs the host most item links use.
-A "script_verdict" is set only for clear-cut cases: past event -> remove; link moved -> fix (new link);
-event with its exact name and date on its own page, upcoming -> ok; website blank -> fix.
+Past one-off events are left out (the map hides them by date; team answer Q6); the count is in group.
+A "script_verdict" is set only for clear-cut cases: item page over the 10-page cap -> couldn't check;
+link moved -> fix (new link); event with its exact name and date on its own page, upcoming -> ok;
+website blank -> fix.
 Output: work/checks.json
 """
 import datetime as dt, re
@@ -35,7 +37,7 @@ def main():
     out = {}
     for g in items["groups"]:
         gid = g["id"]
-        meta = {p["url"]: p for p in pages[gid]["pages"]}
+        meta = {norm_url(p["url"]).rstrip("/"): p for p in pages[gid]["pages"]}
         found = ext[gid]["found"]
         grow = {"website": g.get("website") or "", "site_used": pages[gid]["site"], "site_source": pages[gid]["site_source"],
                 "description_empty": not (g.get("description") or "").strip(), "flags": [], "script_verdict": ""}
@@ -49,16 +51,24 @@ def main():
         if grow["description_empty"]:
             grow["flags"].append("description empty")
         rows = []
+        capped = {c["item_id"] for c in pages[gid].get("page_cap_items", []) if c["field"] == "link"}
+        grow["past_events_skipped"] = pages[gid].get("past_events_skipped", [])
         for it in g["items"]:
+            if past_one_off(it):
+                continue  # left out of the check: the map already hides past one-off events (team answer Q6)
             r = {"id": it["id"], "item_type": it["item_type"], "name": it["name"], "flags": [], "script_verdict": "",
                  "needs_info": bool(it.get("needs_info")), "verified": bool(it.get("verified"))}
             link = it.get("link") or ""
-            m = meta.get(link, {})
+            m = meta.get(norm_url(link).rstrip("/"), {})
+            link = m.get("url", link)  # the fetched spelling (with or without the trailing slash)
             r["link_status"] = m.get("status")
             r["final_url"] = m.get("final_url", "")
             text = page_text(link) if m.get("status") == 200 else ""
             r["text_chars"] = len(text)
-            if not link:
+            if it["id"] in capped:
+                r["flags"].append("page cap")
+                r["script_verdict"] = "couldn't check"
+            elif not link:
                 r["flags"].append("no link")
             elif m.get("status") != 200:
                 r["flags"].append(f"broken link ({m.get('status') or m.get('error')})")
@@ -74,7 +84,7 @@ def main():
             if it["item_type"] == "event":
                 rsvp = it.get("rsvp_link") or ""
                 if rsvp:
-                    rm = meta.get(rsvp, {})
+                    rm = meta.get(norm_url(rsvp).rstrip("/"), {})
                     r["rsvp_status"] = rm.get("status")
                     if rm.get("status") != 200:
                         r["flags"].append(f"rsvp link broken ({rm.get('status') or rm.get('error')})")
@@ -91,9 +101,6 @@ def main():
                     if last and last < TODAY:
                         # not an error by itself: the site rolls recurring dates forward (src/recurrence.ts)
                         r["flags"].append("recurring; stored date is past (the map rolls it forward)" + ("" if nxt else "; no later date found on site"))
-                elif last and last < TODAY:
-                    r["flags"].append("past event")
-                    r["script_verdict"] = "remove"
                 elif r["name_on_page"] and r["date_on_page"] and m.get("status") == 200:
                     r["script_verdict"] = r["script_verdict"] or "ok"
             rows.append(r)

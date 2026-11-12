@@ -10,7 +10,8 @@
     "description empty"
    ],
    "script_verdict": "fix",
-   "proposed_link": "https://www.350centralmass.org/"
+   "proposed_link": "https://www.350centralmass.org/",
+   "past_events_skipped": []
   },
   "items": [
    {
@@ -52,7 +53,10 @@
    "site_source": "website column",
    "description_empty": false,
    "flags": [],
-   "script_verdict": ""
+   "script_verdict": "",
+   "past_events_skipped": [
+    "charles_river_watershed_asso_e1"
+   ]
   },
   "items": [
    {
@@ -81,25 +85,6 @@
     "final_url": "https://www.crwa.org/events",
     "text_chars": 11143,
     "name_on_page": true
-   },
-   {
-    "id": "charles_river_watershed_asso_e1",
-    "item_type": "event",
-    "name": "Combined Sewer Overflow Control Plan Public Hearing #3",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
-    "text_chars": 1008,
-    "name_on_page": true,
-    "date": "2026-10-28T18:00:00",
-    "end": "2026-10-28T20:00",
-    "recurrence": "",
-    "date_on_page": true
    },
    {
     "id": "charles_river_watershed_asso_e2",
@@ -227,7 +212,16 @@
    "site_source": "website column",
    "description_empty": false,
    "flags": [],
-   "script_verdict": ""
+   "script_verdict": "",
+   "past_events_skipped": [
+    "green_energy_consumers_allia_e2",
+    "green_energy_consumers_allia_e3",
+    "green_energy_consumers_allia_e5",
+    "green_energy_consumers_allia_e6",
+    "green_energy_consumers_allia_e7",
+    "green_energy_consumers_allia_e8",
+    "green_energy_consumers_allia_e9"
+   ]
   },
   "items": [
    {
@@ -269,148 +263,6 @@
     "text_chars": 2399,
     "name_on_page": false,
     "best_heading_match": "Drive Green"
-   },
-   {
-    "id": "green_energy_consumers_allia_e2",
-    "item_type": "event",
-    "name": "Shave the Peak: Save Energy When It Matters Most (webinar)",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
-    "text_chars": 2217,
-    "name_on_page": false,
-    "best_heading_match": "Shave the Peak: Save Energy When It Matters Most",
-    "rsvp_status": 200,
-    "date": "2026-10-02T12:00:00",
-    "end": "2026-10-02T13:00:00",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "green_energy_consumers_allia_e3",
-    "item_type": "event",
-    "name": "Everything You Need to Know About Charging Adaptors",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors",
-    "text_chars": 1850,
-    "name_on_page": true,
-    "rsvp_status": 200,
-    "date": "2026-10-09T12:00:00",
-    "end": "",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "green_energy_consumers_allia_e5",
-    "item_type": "event",
-    "name": "Harvest Your Energy Festival (Medford)",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.greenenergyconsumers.org/event/harvestfestival0",
-    "text_chars": 2046,
-    "name_on_page": false,
-    "best_heading_match": "Harvest Your Energy Festival",
-    "date": "2026-10-17T12:00:00",
-    "end": "2026-10-17T15:00:00",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "green_energy_consumers_allia_e6",
-    "item_type": "event",
-    "name": "Heat Pumps & Time-Varying Rates",
-    "flags": [
-     "link moved",
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.greenenergyconsumers.org/event/heatpumptimevaryingrates",
-    "text_chars": 2196,
-    "proposed_link": "https://www.greenenergyconsumers.org/event/heatpumptimevaryingrates",
-    "name_on_page": false,
-    "best_heading_match": "Heat Pump & Time-Varying Rates",
-    "rsvp_status": 200,
-    "date": "2026-10-28T12:00:00",
-    "end": "",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "green_energy_consumers_allia_e7",
-    "item_type": "event",
-    "name": "Emerging Clean Energy Technologies",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.greenenergyconsumers.org/event/emergingcleantechnologies",
-    "text_chars": 1917,
-    "name_on_page": true,
-    "rsvp_status": 200,
-    "date": "2026-11-03T12:00:00",
-    "end": "",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "green_energy_consumers_allia_e8",
-    "item_type": "event",
-    "name": "How to Use Online Tools to Plan an Electric Road Trip",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
-    "text_chars": 2071,
-    "name_on_page": true,
-    "rsvp_status": 200,
-    "date": "2026-11-04T12:00:00",
-    "end": "",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "green_energy_consumers_allia_e9",
-    "item_type": "event",
-    "name": "Annual Fall Meeting",
-    "flags": [],
-    "script_verdict": "ok",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
-    "text_chars": 1706,
-    "name_on_page": true,
-    "rsvp_status": 200,
-    "date": "2026-11-09T17:00:00",
-    "end": "",
-    "recurrence": "",
-    "date_on_page": true
    },
    {
     "id": "green_energy_consumers_allia_e10",
@@ -483,7 +335,10 @@
    "site_source": "website column",
    "description_empty": false,
    "flags": [],
-   "script_verdict": ""
+   "script_verdict": "",
+   "past_events_skipped": [
+    "can_e_fall_gathering"
+   ]
   },
   "items": [
    {
@@ -495,7 +350,7 @@
     "needs_info": false,
     "verified": false,
     "link_status": 200,
-    "final_url": "https://climateactionnowma.org",
+    "final_url": "https://climateactionnowma.org/",
     "text_chars": 2637,
     "name_on_page": false,
     "best_heading_match": "The CAN CREATE group is having a Farmer & Community Gathering"
@@ -509,7 +364,7 @@
     "needs_info": false,
     "verified": false,
     "link_status": 200,
-    "final_url": "https://climateactionnowma.org",
+    "final_url": "https://climateactionnowma.org/",
     "text_chars": 2637,
     "name_on_page": false,
     "best_heading_match": "Take action for forest protection in state owned land in Massachusetts!"
@@ -561,31 +416,11 @@
     "name_on_page": true
    },
    {
-    "id": "can_e_fall_gathering",
-    "item_type": "event",
-    "name": "Fall Gathering: Nurturing biodiversity in a time of ecological chaos",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": false,
-    "link_status": 200,
-    "final_url": "https://climateactionnowma.org",
-    "text_chars": 2637,
-    "name_on_page": false,
-    "best_heading_match": "The CAN CREATE group is having a Farmer & Community Gathering",
-    "date": "2026-09-29T17:30:00",
-    "end": "2026-09-29T19:30:00",
-    "recurrence": "",
-    "date_on_page": false
-   },
-   {
     "id": "ev_can_1",
     "item_type": "event",
     "name": "Sierra Club Forest Protection Team Monthly Meeting",
     "flags": [
-     "recurring; stored date is past (the map rolls it forward)"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -598,9 +433,7 @@
     "end": "2026-10-08T20:30:00",
     "recurrence": "Second Thursday of each month, 7:00-8:30 PM",
     "date_on_page": true,
-    "next_occurrences_found": [
-     "2026-11-12T19:00"
-    ]
+    "next_occurrences_found": []
    },
    {
     "id": "ev_can_2",
@@ -627,7 +460,7 @@
     "item_type": "event",
     "name": "Wildlands Campaign Working Group Meeting",
     "flags": [
-     "recurring; stored date is past (the map rolls it forward)"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -640,11 +473,7 @@
     "end": "2026-10-14T20:30:00",
     "recurrence": "Second Wednesday of each month, 7:00-8:30 PM",
     "date_on_page": true,
-    "next_occurrences_found": [
-     "2026-11-11T19:00",
-     "2026-12-09T19:00",
-     "2027-01-13T19:00"
-    ]
+    "next_occurrences_found": []
    },
    {
     "id": "ev_can_4",
@@ -671,7 +500,7 @@
     "item_type": "event",
     "name": "MA Pollinator Network monthly session",
     "flags": [
-     "recurring; stored date is past (the map rolls it forward)"
+     "recurring; stored date is past (the map rolls it forward); no later date found on site"
     ],
     "script_verdict": "",
     "needs_info": false,
@@ -685,9 +514,7 @@
     "end": "2026-10-27T20:00:00",
     "recurrence": "Last Tuesday of each month, 7:00-8:00 PM",
     "date_on_page": true,
-    "next_occurrences_found": [
-     "2026-11-24T19:00"
-    ]
+    "next_occurrences_found": []
    }
   ]
  },
@@ -698,7 +525,8 @@
    "site_source": "website column",
    "description_empty": false,
    "flags": [],
-   "script_verdict": ""
+   "script_verdict": "",
+   "past_events_skipped": []
   },
   "items": [
    {
@@ -815,7 +643,8 @@
    "site_source": "website column",
    "description_empty": false,
    "flags": [],
-   "script_verdict": ""
+   "script_verdict": "",
+   "past_events_skipped": []
   },
   "items": [
    {
@@ -898,7 +727,14 @@
     "website blank"
    ],
    "script_verdict": "fix",
-   "proposed_link": "https://treeboston.org/"
+   "proposed_link": "https://treeboston.org/",
+   "past_events_skipped": [
+    "tree_boston_e1",
+    "tree_boston_e3",
+    "tree_boston_e5",
+    "tree_boston_e7",
+    "tree_boston_e8"
+   ]
   },
   "items": [
    {
@@ -941,102 +777,6 @@
     "name_on_page": true
    },
    {
-    "id": "tree_boston_e1",
-    "item_type": "event",
-    "name": "Tree Planting at Malcolm X Park - Roxbury",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/",
-    "text_chars": 674,
-    "name_on_page": true,
-    "date": "2026-10-03T11:00:00",
-    "end": "2026-10-03T14:00",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "tree_boston_e3",
-    "item_type": "event",
-    "name": "Annual Fall Benefit: Branching Out 2026",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://treeboston.org/events/event/branchingout2026/",
-    "text_chars": 1326,
-    "name_on_page": true,
-    "date": "2026-10-07T18:00:00",
-    "end": "2026-10-07T20:00",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "tree_boston_e5",
-    "item_type": "event",
-    "name": "Tree Giveaway at The Urban Farming Institute",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/",
-    "text_chars": 1156,
-    "name_on_page": true,
-    "date": "2026-10-10T10:00:00",
-    "end": "2026-10-10T14:00",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
-    "id": "tree_boston_e7",
-    "item_type": "event",
-    "name": "Climb for the Canopy",
-    "flags": [
-     "broken link (404)",
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 404,
-    "final_url": "https://treeboston.org/events/event/climb4thecanopy/",
-    "text_chars": 0,
-    "name_on_page": false,
-    "date": "2026-10-23T07:00:00",
-    "end": "2026-10-23T09:00",
-    "recurrence": "",
-    "date_on_page": false
-   },
-   {
-    "id": "tree_boston_e8",
-    "item_type": "event",
-    "name": "Free Tree Giveaway - Hyde Park Public Library",
-    "flags": [
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": true,
-    "link_status": 200,
-    "final_url": "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/",
-    "text_chars": 1106,
-    "name_on_page": true,
-    "date": "2026-10-24T10:00:00",
-    "end": "2026-10-24T14:00",
-    "recurrence": "",
-    "date_on_page": true
-   },
-   {
     "id": "tree_boston_a1",
     "item_type": "role",
     "name": "Volunteer with Tree Boston",
@@ -1061,7 +801,10 @@
    "flags": [
     "description empty"
    ],
-   "script_verdict": ""
+   "script_verdict": "",
+   "past_events_skipped": [
+    "sunrise_boston_e1"
+   ]
   },
   "items": [
    {
@@ -1089,28 +832,6 @@
     "final_url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
     "text_chars": 5640,
     "name_on_page": true
-   },
-   {
-    "id": "sunrise_boston_e1",
-    "item_type": "event",
-    "name": "Climate Standout in Beverly, MA",
-    "flags": [
-     "page nearly empty (loads with JavaScript?)",
-     "past event"
-    ],
-    "script_verdict": "remove",
-    "needs_info": false,
-    "verified": false,
-    "link_status": 200,
-    "final_url": "https://www.mobilize.us/sunrisemovement/event/976143/",
-    "text_chars": 62,
-    "name_on_page": false,
-    "best_heading_match": "",
-    "rsvp_status": 200,
-    "date": "2026-10-17T11:00:00",
-    "end": "2026-10-17T12:30:00",
-    "recurrence": "",
-    "date_on_page": true
    }
   ]
  },
@@ -1121,7 +842,8 @@
    "site_source": "website column",
    "description_empty": false,
    "flags": [],
-   "script_verdict": ""
+   "script_verdict": "",
+   "past_events_skipped": []
   },
   "items": [
    {

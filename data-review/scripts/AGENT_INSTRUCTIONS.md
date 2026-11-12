@@ -72,3 +72,34 @@ they describe (same link, or clearly the same thing). For each matched row:
 - Different verdict, or an add row only one agent made: `agents_agree` no, `verdict` blank, and notes
   `A1: <verdict> - <reason> / A2: <verdict> - <reason>`, keeping the evidence of one of them.
 Write `work/final.json` (same keys plus `agents_agree`), then run `5_check_quotes.py` on it.
+
+## Update pass (Nov 12): the team's answers
+
+The team answered the trial's questions (doc subtab "1 LLM Response"). These rules now apply, on top of the
+ones above, and win where they differ:
+- Q1. A recurring event whose stored date is past is **ok** if the site still lists the series (the map moves
+  the date forward itself). If the site no longer shows the series, remove.
+- Q2. At most 10 pages per group, everything counted: homepage, then item links, then other pages. Only those
+  pages are in `work/text/` now. An item whose page wasn't fetched is "couldn't check" with "page cap" in notes.
+- Q3. National campaigns on a chapter: ok, "national campaign" in notes.
+- Q4. A named series of several events is a project. A single event that repeats yearly is a recurring event,
+  not a project. "Join us" or membership items are not actions or volunteer roles: if the group's site gives
+  a meeting schedule, verdict fix (change it to a recurring event, schedule quoted); if not, remove. A role
+  that appears only on a general volunteer page is ok.
+- Q5. Link an event to a list page only when that page shows its name and date (quote both, joined with
+  " … ", and write "list page" in notes). A coalition campaign with its own website plus its own meetings or
+  events is an org: item_type group, verdict add, "collaborates with <group_id>" in notes.
+- Q6. Past one-off events are left out entirely (the scripts skip them).
+- Additional input: if an event or action belongs to a campaign, write "part of: <project name>" in notes.
+
+Update-pass task (agents 1 and 2, separately, from the saved pages only):
+1. Re-judge every row in `work/recheck_rows.json` (its evidence page fell outside the 10-page cap). Use only
+   pages now in `work/text/`; write full rows as before. Ignore the old verdict and notes in that file except
+   for needs_info / verified.
+2. For every event, action and role row in `work/final_v2_base.json` and `work/recheck_rows.json`, decide
+   whether a saved page ties it to a named project or campaign of the same group. Write an entry only when a
+   page shows it: `{"group_id", "item_key" (item_id, or proposed_name for add rows), "project", "evidence_url",
+   "evidence_quote"}`.
+Write `work/agent<N>_v2.json` as `{"rows": [...], "part_of": [...]}`. Check both lists' quotes with
+`python3 5_check_quotes.py` (save each list to a temporary JSON file first; part_of entries need
+`"verdict": "ok"` added for the check).

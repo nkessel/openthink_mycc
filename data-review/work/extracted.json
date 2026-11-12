@@ -13,13 +13,15 @@
     "final_url": "https://www.350centralmass.org/",
     "builder": "wix"
    },
-   "https://www.350centralmass.org/events": {
-    "title": "EVENTS | 350-central-mass",
-    "headings": [],
+   "https://www.350centralmass.org/get-involved": {
+    "title": "GET INVOLVED | 350-central-mass",
+    "headings": [
+     "GET INVOLVED"
+    ],
     "dates_with_year": [],
-    "text_chars": 52,
-    "text_file": "text/350centralmass_org_events.txt",
-    "final_url": "https://www.350centralmass.org/events",
+    "text_chars": 167,
+    "text_file": "text/350centralmass_org_get_involved.txt",
+    "final_url": "https://www.350centralmass.org/get-involved",
     "builder": "wix"
    },
    "https://www.350centralmass.org/copy-of-get-involved": {
@@ -33,6 +35,15 @@
     "text_chars": 676,
     "text_file": "text/350centralmass_org_copy_of_get_involved.txt",
     "final_url": "https://www.350centralmass.org/copy-of-get-involved",
+    "builder": "wix"
+   },
+   "https://www.350centralmass.org/events": {
+    "title": "EVENTS | 350-central-mass",
+    "headings": [],
+    "dates_with_year": [],
+    "text_chars": 52,
+    "text_file": "text/350centralmass_org_events.txt",
+    "final_url": "https://www.350centralmass.org/events",
     "builder": "wix"
    },
    "https://www.350centralmass.org/about-us": {
@@ -92,26 +103,6 @@
     "text_file": "text/350centralmass_org_news.txt",
     "final_url": "https://www.350centralmass.org/news",
     "builder": "wix"
-   },
-   "https://www.350centralmass.org/resources": {
-    "title": "RESOURCES | 350-central-mass",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 3493,
-    "text_file": "text/350centralmass_org_resources.txt",
-    "final_url": "https://www.350centralmass.org/resources",
-    "builder": "wix"
-   },
-   "https://www.350centralmass.org/get-involved": {
-    "title": "GET INVOLVED | 350-central-mass",
-    "headings": [
-     "GET INVOLVED"
-    ],
-    "dates_with_year": [],
-    "text_chars": 167,
-    "text_file": "text/350centralmass_org_get_involved.txt",
-    "final_url": "https://www.350centralmass.org/get-involved",
-    "builder": "wix"
    }
   },
   "found": [
@@ -124,16 +115,6 @@
     "how": "listing link",
     "found_on": "https://www.350centralmass.org/copy-of-get-involved",
     "external": true
-   },
-   {
-    "type": "role/action",
-    "name": "We Should All Take Action to Reduce Climate Change Impact",
-    "url": "https://www.350centralmass.org/_files/ugd/47e9e4_6ee8b85ca4b44ddda929ca1859ac646a.pdf",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.350centralmass.org/resources",
-    "external": false
    }
   ]
  },
@@ -165,122 +146,6 @@
     "text_chars": 7964,
     "text_file": "text/crwa_org_.txt",
     "final_url": "https://www.crwa.org/",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan": {
-    "title": "Invasive Species Management: Moving Beyond the Five-Year Plan — Charles River Watershed Association",
-    "headings": [
-     "Invasive Species Management: Moving Beyond the Five-Year Plan",
-     "Meet Your Watershed: Halloween Run Club with Patagonia",
-     "Young Professionals Board Information Session"
-    ],
-    "dates_with_year": [
-     "2026-11-06"
-    ],
-    "text_chars": 1095,
-    "text_file": "text/crwa_org_events_invasive_species_management_moving_beyond_the_five_year_plan.txt",
-    "final_url": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/events/young-professionals-board-information-session-1": {
-    "title": "Young Professionals Board Information Session — Charles River Watershed Association",
-    "headings": [
-     "Young Professionals Board Information Session",
-     "Invasive Species Management: Moving Beyond the Five-Year Plan",
-     "Clean Charles Convening"
-    ],
-    "dates_with_year": [
-     "2026-11-10"
-    ],
-    "text_chars": 1270,
-    "text_file": "text/crwa_org_events_young_professionals_board_information_session_1.txt",
-    "final_url": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/get-involved": {
-    "title": "Get Involved | Support River Conservation — Charles River Watershed Association",
-    "headings": [
-     "GET INVOLVED",
-     "You make the difference for our river!",
-     "MAKE A GIFT",
-     "VOLUNTEER",
-     "ADVOCACY CENTER",
-     "UPCOMING EVENTS"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1024,
-    "text_file": "text/crwa_org_get_involved.txt",
-    "final_url": "https://www.crwa.org/get-involved",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/get-involved-1": {
-    "title": "EMPLOYMENT & INTERNSHIPS — Charles River Watershed Association",
-    "headings": [
-     "WORK WITH US",
-     "Explore our opportunities.",
-     "Join Our Team.",
-     "Internships"
-    ],
-    "dates_with_year": [],
-    "text_chars": 3329,
-    "text_file": "text/crwa_org_get_involved_1.txt",
-    "final_url": "https://www.crwa.org/employment",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/river-current/join-crwas-young-professionals-board": {
-    "title": "Join CRWA’s Young Professionals Board — Charles River Watershed Association",
-    "headings": [
-     "Join CRWA’s Young Professionals Board",
-     "Biological Monitoring with MassBay and CRWA",
-     "New Drought-Resilient Landscape Designs To Help Watershed Municipalities & Residents Combat Drought"
-    ],
-    "dates_with_year": [],
-    "text_chars": 946,
-    "text_file": "text/crwa_org_river_current_join_crwas_young_professionals_board.txt",
-    "final_url": "https://www.crwa.org/river-current/join-crwas-young-professionals-board",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/river-current/join-the-first-metro-boston-restoration-partnership-meeting-on-november-16": {
-    "title": "Join the first Metro Boston Restoration Partnership Meeting on November 16! — Charles River Watershed Association",
-    "headings": [
-     "Join the first Metro Boston Restoration Partnership Meeting on November 16!",
-     "Release: Question 6, the Protect Water and Nature Ballot Initiative, Passes Overwhelmingly",
-     "Happy Halloween from CRWA!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1000,
-    "text_file": "text/crwa_org_river_current_join_the_first_metro_boston_restoration_partnership_meeting_on_november_16.txt",
-    "final_url": "https://www.crwa.org/river-current/join-the-first-metro-boston-restoration-partnership-meeting-on-november-16",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/river-current/release-question-6-the-protect-water-and-nature-ballot-initiative-passes-overwhelmingly": {
-    "title": "Release: Question 6, the Protect Water and Nature Ballot Initiative, Passes Overwhelmingly — Charles River Watershed Association",
-    "headings": [
-     "Release: Question 6, the Protect Water and Nature Ballot Initiative, Passes Overwhelmingly",
-     "Question 6, the Protect Water and Nature Ballot Initiative, Passes Overwhelmingly",
-     "Join the first Metro Boston Restoration Partnership Meeting on November 16!"
-    ],
-    "dates_with_year": [
-     "2026-11-03"
-    ],
-    "text_chars": 7365,
-    "text_file": "text/crwa_org_river_current_release_question_6_the_protect_water_and_nature_ballot_initiative_passes_overwhelmingly.txt",
-    "final_url": "https://www.crwa.org/river-current/release-question-6-the-protect-water-and-nature-ballot-initiative-passes-overwhelmingly",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/staff-and-board": {
-    "title": "Staff and Board — Charles River Watershed Association",
-    "headings": [
-     "MEET THE TEAM",
-     "Working together for a clean, resilient Charles.",
-     "Board of Directors.",
-     "Board of Advisors.",
-     "Work with us!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2574,
-    "text_file": "text/crwa_org_staff_and_board.txt",
-    "final_url": "https://www.crwa.org/staff-and-board",
     "builder": "squarespace"
    },
    "https://www.crwa.org/river-current/show-up-for-clean-water-upcoming-cso-hearings": {
@@ -370,21 +235,6 @@
     "text_chars": 11143,
     "text_file": "text/crwa_org_events.txt",
     "final_url": "https://www.crwa.org/events",
-    "builder": "squarespace"
-   },
-   "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3": {
-    "title": "Combined Sewer Overflow Control Plan Public Hearing #3 — Charles River Watershed Association",
-    "headings": [
-     "Combined Sewer Overflow Control Plan Public Hearing #3",
-     "Community Bittersweet Removal",
-     "Meet Your Watershed: Halloween Run Club with Patagonia"
-    ],
-    "dates_with_year": [
-     "2026-10-28"
-    ],
-    "text_chars": 1008,
-    "text_file": "text/crwa_org_events_combined_sewer_overflow_control_plan_public_hearing_3.txt",
-    "final_url": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
     "builder": "squarespace"
    },
    "https://www.crwa.org/events/clean-charles-convening-2026": {
@@ -496,6 +346,22 @@
     "text_file": "text/crwa_org_volunteer.txt",
     "final_url": "https://www.crwa.org/volunteer",
     "builder": "squarespace"
+   },
+   "https://www.crwa.org/get-involved": {
+    "title": "Get Involved | Support River Conservation — Charles River Watershed Association",
+    "headings": [
+     "GET INVOLVED",
+     "You make the difference for our river!",
+     "MAKE A GIFT",
+     "VOLUNTEER",
+     "ADVOCACY CENTER",
+     "UPCOMING EVENTS"
+    ],
+    "dates_with_year": [],
+    "text_chars": 1024,
+    "text_file": "text/crwa_org_get_involved.txt",
+    "final_url": "https://www.crwa.org/get-involved",
+    "builder": "squarespace"
    }
   },
   "found": [
@@ -597,134 +463,6 @@
     "date_text": "",
     "how": "listing link",
     "found_on": "https://www.crwa.org/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Invasive Species Management: Moving Beyond the Five-Year Plan — Charles River Watershed Association",
-    "date": "2026-11-06T12:00:00-0500",
-    "end": "2026-11-06T13:00:00-0500",
-    "url": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "how": "json-ld",
-    "found_on": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan"
-   },
-   {
-    "type": "event",
-    "name": "ICS",
-    "url": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan?format=ical",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Previous Previous October 31 Meet Your Watershed: Halloween Run Club with Patagonia",
-    "url": "https://www.crwa.org/events/meet-your-watershed-halloween-run-club-with-patagonia",
-    "date": "2026-11-06",
-    "date_text": "Friday, November 6, 2026",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Next Next November 10 Young Professionals Board Information Session",
-    "url": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "date": "2026-11-06",
-    "date_text": "Friday, November 6, 2026",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Young Professionals Board Information Session — Charles River Watershed Association",
-    "date": "2026-11-10T18:30:00-0500",
-    "end": "2026-11-10T19:30:00-0500",
-    "url": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "how": "json-ld",
-    "found_on": "https://www.crwa.org/events/young-professionals-board-information-session-1"
-   },
-   {
-    "type": "event",
-    "name": "ICS",
-    "url": "https://www.crwa.org/events/young-professionals-board-information-session-1?format=ical",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Register Now!",
-    "url": "https://www.eventbrite.com/e/young-professionals-board-information-session-tickets-2003986669073",
-    "date": "2026-11-10",
-    "date_text": "Tuesday, November 10, 2026",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "external": true
-   },
-   {
-    "type": "event",
-    "name": "Previous Previous November 6 Invasive Species Management: Moving Beyond the Five-Year Plan",
-    "url": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan",
-    "date": "2026-11-10",
-    "date_text": "Tuesday, November 10, 2026",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Next Next November 19 Clean Charles Convening",
-    "url": "https://www.crwa.org/events/clean-charles-convening-2026",
-    "date": "2026-11-10",
-    "date_text": "Tuesday, November 10, 2026",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/young-professionals-board-information-session-1",
-    "external": false
-   },
-   {
-    "type": "role/action",
-    "name": "VOLUNTEER",
-    "url": "https://www.crwa.org/volunteer",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/get-involved",
-    "external": false
-   },
-   {
-    "type": "role/action",
-    "name": "TAKE ACTION",
-    "url": "https://www.crwa.org/advocacy-center",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/get-involved",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Join us on November 10th to learn more!",
-    "url": "https://www.eventbrite.com/e/young-professionals-board-information-session-tickets-2003986669073?aff=oddtdtcreator",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/river-current/join-crwas-young-professionals-board",
-    "external": true
-   },
-   {
-    "type": "role/action",
-    "name": "Next Next Join the first Metro Boston Restoration Partnership Meeting on November 16!",
-    "url": "https://www.crwa.org/river-current/join-the-first-metro-boston-restoration-partnership-meeting-on-november-16",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/river-current/release-question-6-the-protect-water-and-nature-ballot-initiative-passes-overwhelmingly",
     "external": false
    },
    {
@@ -1101,6 +839,16 @@
    },
    {
     "type": "event",
+    "name": "ICS",
+    "url": "https://www.crwa.org/events/young-professionals-board-information-session-1?format=ical",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://www.crwa.org/events",
+    "external": false
+   },
+   {
+    "type": "event",
     "name": "View Event →",
     "url": "https://www.crwa.org/events/young-professionals-board-information-session-1",
     "date": "2026-11-10",
@@ -1125,6 +873,16 @@
     "url": "https://www.crwa.org/events/clean-charles-convening-2026",
     "date": "2026-11-19",
     "date_text": "Thursday, November 19, 2026",
+    "how": "listing link",
+    "found_on": "https://www.crwa.org/events",
+    "external": false
+   },
+   {
+    "type": "event",
+    "name": "ICS",
+    "url": "https://www.crwa.org/events/invasive-species-management-moving-beyond-the-five-year-plan?format=ical",
+    "date": "",
+    "date_text": "",
     "how": "listing link",
     "found_on": "https://www.crwa.org/events",
     "external": false
@@ -1731,35 +1489,6 @@
    },
    {
     "type": "event",
-    "name": "Combined Sewer Overflow Control Plan Public Hearing #3 — Charles River Watershed Association",
-    "date": "2026-10-28T18:00:00-0400",
-    "end": "2026-10-28T20:00:00-0400",
-    "url": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
-    "how": "json-ld",
-    "found_on": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3"
-   },
-   {
-    "type": "event",
-    "name": "Previous Previous October 24 Community Bittersweet Removal",
-    "url": "https://www.crwa.org/events/tgsxp9ya1yj7tvvhxdcdxxjnivow4a",
-    "date": "2026-10-28",
-    "date_text": "Wednesday, October 28, 2026",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Next Next October 31 Meet Your Watershed: Halloween Run Club with Patagonia",
-    "url": "https://www.crwa.org/events/meet-your-watershed-halloween-run-club-with-patagonia",
-    "date": "2026-10-28",
-    "date_text": "Wednesday, October 28, 2026",
-    "how": "listing link",
-    "found_on": "https://www.crwa.org/events/combined-sewer-overflow-control-plan-public-hearing-3",
-    "external": false
-   },
-   {
-    "type": "event",
     "name": "Clean Charles Convening — Charles River Watershed Association",
     "date": "2026-11-19T08:00:00-0500",
     "end": "2026-11-19T16:00:00-0500",
@@ -1826,6 +1555,26 @@
     "how": "listing link",
     "found_on": "https://www.crwa.org/volunteer",
     "external": true
+   },
+   {
+    "type": "role/action",
+    "name": "VOLUNTEER",
+    "url": "https://www.crwa.org/volunteer",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://www.crwa.org/get-involved",
+    "external": false
+   },
+   {
+    "type": "role/action",
+    "name": "TAKE ACTION",
+    "url": "https://www.crwa.org/advocacy-center",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://www.crwa.org/get-involved",
+    "external": false
    }
   ]
  },
@@ -1869,211 +1618,6 @@
     "text_chars": 4397,
     "text_file": "text/greenenergyconsumers_org_.txt",
     "final_url": "https://www.greenenergyconsumers.org/",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/drivegreen/takeaction/events": {
-    "title": "Events | Green Energy Consumers Alliance",
-    "headings": [
-     "Events",
-     "How to Save on an Electric Vehicle in Massachusetts"
-    ],
-    "dates_with_year": [
-     "2026-11-18"
-    ],
-    "text_chars": 1513,
-    "text_file": "text/greenenergyconsumers_org_drivegreen_takeaction_events.txt",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/events",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/drivegreen/takeaction": {
-    "title": "Get Involved | Green Energy Consumers Alliance",
-    "headings": [
-     "Drive Green",
-     "Get Involved",
-     "Subscribe to Newsletter",
-     "Join us at an Event",
-     "Become an EV Ambassador",
-     "Drive Green Community Group",
-     "Testimonials",
-     "Lisa T.",
-     "Nicole C.",
-     "Aliou N."
-    ],
-    "dates_with_year": [],
-    "text_chars": 2325,
-    "text_file": "text/greenenergyconsumers_org_drivegreen_takeaction.txt",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/drivegreen/takeaction/subscribe": {
-    "title": "Subscribe: Drive Green News | Green Energy Consumers Alliance",
-    "headings": [
-     "Subscribe: Drive Green News"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1538,
-    "text_file": "text/greenenergyconsumers_org_drivegreen_takeaction_subscribe.txt",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/subscribe",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/events": {
-    "title": "Events & Webinars | Green Energy Consumers Alliance",
-    "headings": [
-     "Events & Webinars",
-     "Annual Fall Meeting",
-     "Energy Efficient Solutions for Tenants, Landlords & Homeowners",
-     "How to Save on an Electric Vehicle in Massachusetts",
-     "Energy Efficient Heating for the Berkshires",
-     "Winter Driving in an Electric Car",
-     "Electric Vehicle Battery Health"
-    ],
-    "dates_with_year": [
-     "2026-11-09",
-     "2026-11-17",
-     "2026-11-18",
-     "2026-11-19",
-     "2026-12-03",
-     "2026-12-16"
-    ],
-    "text_chars": 2599,
-    "text_file": "text/greenenergyconsumers_org_events.txt",
-    "final_url": "https://www.greenenergyconsumers.org/events",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/drivegreen": {
-    "title": "Drive Green | Green Energy Consumers Alliance",
-    "headings": [
-     "Drive Green",
-     "Learn more Expand Secondary Navigation Menu",
-     "Introduction to EVs Expand Secondary Navigation Menu",
-     "What is an EV?",
-     "Common Misconceptions",
-     "Watch our Webinars!",
-     "Charging & Driving Expand Secondary Navigation Menu",
-     "Charging Basics",
-     "Charging At Home & On The Go",
-     "Winter Driving",
-     "Costs Expand Secondary Navigation Menu",
-     "Fuel Costs",
-     "Maintenance",
-     "Incentives & Rebates Expand Secondary Navigation Menu",
-     "Incentives To Install Charging",
-     "Purchase & Lease Incentives",
-     "Pre-Owned EVs",
-     "Environment & Health Expand Secondary Navigation Menu",
-     "Climate Impacts",
-     "Public Health",
-     "EV Finder",
-     "Get involved Expand Secondary Navigation Menu",
-     "Subscribe to Newsletter",
-     "Join us at an Event",
-     "Become an EV Ambassador",
-     "Drive Green Community Group",
-     "FAQs",
-     "Compare EVs, navigate incentives, and connect with expert insights.",
-     "Testimonials",
-     "Lisa T.",
-     "Nicole C.",
-     "Aliou N."
-    ],
-    "dates_with_year": [],
-    "text_chars": 3348,
-    "text_file": "text/greenenergyconsumers_org_drivegreen.txt",
-    "final_url": "https://www.greenenergyconsumers.org/drivegreen",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/efficientsolutionstenantslandlordshomeowners": {
-    "title": "Energy Efficient Solutions for Tenants, Landlords & Homeowners | Green Energy Consumers Alliance",
-    "headings": [
-     "Energy Efficient Solutions for Tenants, Landlords & Homeowners"
-    ],
-    "dates_with_year": [],
-    "text_chars": 3109,
-    "text_file": "text/greenenergyconsumers_org_event_efficientsolutionstenantslandlordshomeowners.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/efficientsolutionstenantslandlordshomeowners",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/howsaveelectricvehiclemassachusetts0": {
-    "title": "How to Save on an Electric Vehicle in Massachusetts | Green Energy Consumers Alliance",
-    "headings": [
-     "How to Save on an Electric Vehicle in Massachusetts",
-     "Anna Vanderspek"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2089,
-    "text_file": "text/greenenergyconsumers_org_event_howsaveelectricvehiclemassachusetts0.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/howsaveelectricvehiclemassachusetts0",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/greenpowered": {
-    "title": "Green Powered | Green Energy Consumers Alliance",
-    "headings": [
-     "Green Powered",
-     "You switch to green electricity. We all get a cleaner grid.",
-     "Learn More Expand Secondary Navigation Menu",
-     "How Green Powered works",
-     "Community Choice Electricity Expand Secondary Navigation Menu",
-     "How it Works",
-     "Participating Communities",
-     "Get Involved",
-     "Our impact",
-     "Renewable energy tours",
-     "Terms of Service",
-     "Other renewable options Expand Secondary Navigation Menu",
-     "Clean energy advocacy",
-     "The New England Wind Fund",
-     "Solar",
-     "Make the Switch",
-     "FAQs Expand Secondary Navigation Menu",
-     "FAQs",
-     "Where the energy comes from",
-     "Cost calculator",
-     "Tax Receipts",
-     "Green Powered is Endorsed By",
-     "Video: Green Powered's impact",
-     "How it works",
-     "Enroll online",
-     "Pay monthly & we buy Class 1 or \"new\" clean energy for you and thousands of others",
-     "We collectively add more renewables to the New England power grid",
-     "How much it costs",
-     "Green Powered 100%",
-     "Green Powered 25%",
-     "Green Powered Subscription",
-     "Community Choice Electricity",
-     "Tax benefit",
-     "2025 Tax Receipts"
-    ],
-    "dates_with_year": [
-     "2026-01-31"
-    ],
-    "text_chars": 5025,
-    "text_file": "text/greenenergyconsumers_org_greenpowered.txt",
-    "final_url": "https://www.greenenergyconsumers.org/greenpowered",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/greenpowered/learnmore": {
-    "title": "Learn more | Green Energy Consumers Alliance",
-    "headings": [
-     "Green Powered",
-     "You switch to green electricity. We all get a cleaner grid.",
-     "Learn more",
-     "How Green Powered works",
-     "Community Choice Electricity Expand Secondary Navigation Menu",
-     "How it Works",
-     "Participating Communities",
-     "Get Involved",
-     "Our impact",
-     "Renewable energy tours",
-     "Terms of Service",
-     "Other renewable options Expand Secondary Navigation Menu",
-     "Clean energy advocacy",
-     "The New England Wind Fund",
-     "Solar"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1970,
-    "text_file": "text/greenenergyconsumers_org_greenpowered_learnmore.txt",
-    "final_url": "https://www.greenenergyconsumers.org/greenpowered/learnmore",
     "builder": ""
    },
    "https://www.greenenergyconsumers.org/shavepeak": {
@@ -2139,162 +1683,6 @@
     "final_url": "https://www.greenenergyconsumers.org/programs",
     "builder": ""
    },
-   "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost": {
-    "title": "Shave the Peak: Save Energy When It Matters Most | Green Energy Consumers Alliance",
-    "headings": [
-     "Shave the Peak: Save Energy When It Matters Most",
-     "Amanda Barker",
-     "Becca Miller"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2217,
-    "text_file": "text/greenenergyconsumers_org_event_shavepeaksavewhenitmattersmost.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/shavepeaksavewhenitmattersmost",
-    "builder": ""
-   },
-   "https://us06web.zoom.us/webinar/register/WN_WkagQhN9RcmCgQZhNdc1fw": {
-    "title": "Webinar Registration - Zoom",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 375,
-    "text_file": "text/us06web_zoom_us_webinar_register_WN_WkagQhN9RcmCgQZhNdc1fw.txt",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_WkagQhN9RcmCgQZhNdc1fw",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors": {
-    "title": "Everything You Need to Know About Charging Adaptors | Green Energy Consumers Alliance",
-    "headings": [
-     "Everything You Need to Know About Charging Adaptors",
-     "Melissa Cintron",
-     "Anna Vanderspek"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1850,
-    "text_file": "text/greenenergyconsumers_org_event_everythingyouneedknowaboutchargingadaptors.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/everythingyouneedknowaboutchargingadaptors",
-    "builder": ""
-   },
-   "https://us06web.zoom.us/webinar/register/WN_fq7m_wHXTtiQvE8_8Y2inw": {
-    "title": "Webinar Registration - Zoom",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 375,
-    "text_file": "text/us06web_zoom_us_webinar_register_WN_fq7m_wHXTtiQvE8_8Y2inw.txt",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_fq7m_wHXTtiQvE8_8Y2inw",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/harvestfestival0": {
-    "title": "Harvest Your Energy Festival | Green Energy Consumers Alliance",
-    "headings": [
-     "Harvest Your Energy Festival"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2046,
-    "text_file": "text/greenenergyconsumers_org_event_harvestfestival0.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/harvestfestival0",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/heatpumpstimevaryingrates": {
-    "title": "Heat Pump & Time-Varying Rates | Green Energy Consumers Alliance",
-    "headings": [
-     "Heat Pump & Time-Varying Rates",
-     "Amanda Barker",
-     "Becca Miller",
-     "Suriya Selvakumar",
-     "Chris Connolly, DOER"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2196,
-    "text_file": "text/greenenergyconsumers_org_event_heatpumpstimevaryingrates.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/heatpumptimevaryingrates",
-    "builder": ""
-   },
-   "https://us06web.zoom.us/webinar/register/WN_nNcxKAsERNyNLzbJlqHwSA": {
-    "title": "Webinar Registration - Zoom",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 375,
-    "text_file": "text/us06web_zoom_us_webinar_register_WN_nNcxKAsERNyNLzbJlqHwSA.txt",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_nNcxKAsERNyNLzbJlqHwSA",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/emergingcleantechnologies": {
-    "title": "Emerging Clean Energy Technologies | Green Energy Consumers Alliance",
-    "headings": [
-     "Emerging Clean Energy Technologies",
-     "Amanda Barker",
-     "Chika Chukwu",
-     "Becca Miller",
-     "Suriya Selvakumar"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1917,
-    "text_file": "text/greenenergyconsumers_org_event_emergingcleantechnologies.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/emergingcleantechnologies",
-    "builder": ""
-   },
-   "https://us06web.zoom.us/webinar/register/WN_g39im1dzSQyV1KQRFd_GrA": {
-    "title": "Webinar Registration - Zoom",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 375,
-    "text_file": "text/us06web_zoom_us_webinar_register_WN_g39im1dzSQyV1KQRFd_GrA.txt",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_g39im1dzSQyV1KQRFd_GrA",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip": {
-    "title": "How to Use Online Tools to Plan an Electric Road Trip | Green Energy Consumers Alliance",
-    "headings": [
-     "How to Use Online Tools to Plan an Electric Road Trip",
-     "Melissa Cintron",
-     "Anna Vanderspek"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2071,
-    "text_file": "text/greenenergyconsumers_org_event_howuseonlinetoolsplanelectricroadtrip.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/howuseonlinetoolsplanelectricroadtrip",
-    "builder": ""
-   },
-   "https://us06web.zoom.us/webinar/register/WN_F0cBDW9IQDWqBr-ZEpxVZw": {
-    "title": "Webinar Registration - Zoom",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 375,
-    "text_file": "text/us06web_zoom_us_webinar_register_WN_F0cBDW9IQDWqBr_ZEpxVZw.txt",
-    "final_url": "https://us06web.zoom.us/webinar/register/WN_F0cBDW9IQDWqBr-ZEpxVZw",
-    "builder": ""
-   },
-   "https://www.greenenergyconsumers.org/event/annualfallmeeting": {
-    "title": "Annual Fall Meeting | Green Energy Consumers Alliance",
-    "headings": [
-     "Annual Fall Meeting"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1706,
-    "text_file": "text/greenenergyconsumers_org_event_annualfallmeeting.txt",
-    "final_url": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
-    "builder": ""
-   },
-   "https://www.eventbrite.com/e/green-energy-consumers-annual-fall-meeting-tickets-2001889844414": {
-    "title": "Green Energy Consumers Fall Meeting Tickets, Monday, November 9  •  5 PM - 8 PM | Eventbrite",
-    "headings": [
-     "Green Energy Consumers Fall Meeting",
-     "Good to know",
-     "Location",
-     "Artists For Humanity",
-     "More events from Green Energy Consumers Alliance",
-     "Discover more events from Green Energy Consumers Alliance, from Business to other experiences you might love.",
-     "You might also like...",
-     "Browse more events with different dates, prices, and formats to find your next great experience.",
-     "Still looking for the right event?",
-     "Explore all events in Boston and filter by date, category, and more to find the perfect fit."
-    ],
-    "dates_with_year": [],
-    "text_chars": 1797,
-    "text_file": "text/eventbrite_com_e_green_energy_consumers_annual_fall_meeting_tickets_2001889844414.txt",
-    "final_url": "https://www.eventbrite.com/e/green-energy-consumers-fall-meeting-tickets-2001889844414",
-    "builder": ""
-   },
    "https://www.greenenergyconsumers.org/event/winterdrivingelectriccar": {
     "title": "Winter Driving in an Electric Car | Green Energy Consumers Alliance",
     "headings": [
@@ -2349,6 +1737,30 @@
     "text_chars": 1694,
     "text_file": "text/greenenergyconsumers_org_drivegreen_takeaction_evambassador.txt",
     "final_url": "https://www.greenenergyconsumers.org/drivegreen/takeaction/evambassador",
+    "builder": ""
+   },
+   "https://www.greenenergyconsumers.org/events": {
+    "title": "Events & Webinars | Green Energy Consumers Alliance",
+    "headings": [
+     "Events & Webinars",
+     "Annual Fall Meeting",
+     "Energy Efficient Solutions for Tenants, Landlords & Homeowners",
+     "How to Save on an Electric Vehicle in Massachusetts",
+     "Energy Efficient Heating for the Berkshires",
+     "Winter Driving in an Electric Car",
+     "Electric Vehicle Battery Health"
+    ],
+    "dates_with_year": [
+     "2026-11-09",
+     "2026-11-17",
+     "2026-11-18",
+     "2026-11-19",
+     "2026-12-03",
+     "2026-12-16"
+    ],
+    "text_chars": 2599,
+    "text_file": "text/greenenergyconsumers_org_events.txt",
+    "final_url": "https://www.greenenergyconsumers.org/events",
     "builder": ""
    }
   },
@@ -2424,13 +1836,23 @@
     "external": false
    },
    {
-    "type": "event",
-    "name": "Learn more & RSVP now",
-    "url": "https://www.greenenergyconsumers.org/event/howsaveelectricvehiclemassachusetts0",
-    "date": "2026-11-18",
-    "date_text": "Wednesday, November 18 2026",
+    "type": "role/action",
+    "name": "Sign up for text or email alerts",
+    "url": "https://www.greenenergyconsumers.org/shavepeak/signup",
+    "date": "",
+    "date_text": "",
     "how": "listing link",
-    "found_on": "https://www.greenenergyconsumers.org/drivegreen/takeaction/events",
+    "found_on": "https://www.greenenergyconsumers.org/shavepeak",
+    "external": false
+   },
+   {
+    "type": "role/action",
+    "name": "Sign up for electricity peak alerts",
+    "url": "https://www.greenenergyconsumers.org/shavepeak/signup",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://www.greenenergyconsumers.org/shavepeak",
     "external": false
    },
    {
@@ -2492,46 +1914,6 @@
     "how": "listing link",
     "found_on": "https://www.greenenergyconsumers.org/events",
     "external": false
-   },
-   {
-    "type": "event",
-    "name": "RSVP Now",
-    "url": "https://www.eventbrite.com/e/energy-efficient-solutions-for-tenants-landlords-homeowners-tickets-2003781910635?aff=oddtdtcreator&keep_tld=true",
-    "date": "2026-11-17",
-    "date_text": "Tuesday, November 17",
-    "how": "listing link",
-    "found_on": "https://www.greenenergyconsumers.org/event/efficientsolutionstenantslandlordshomeowners",
-    "external": true
-   },
-   {
-    "type": "role/action",
-    "name": "Sign up for text or email alerts",
-    "url": "https://www.greenenergyconsumers.org/shavepeak/signup",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.greenenergyconsumers.org/shavepeak",
-    "external": false
-   },
-   {
-    "type": "role/action",
-    "name": "Sign up for electricity peak alerts",
-    "url": "https://www.greenenergyconsumers.org/shavepeak/signup",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.greenenergyconsumers.org/shavepeak",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "RSVP Now",
-    "url": "https://www.eventbrite.com/e/green-energy-consumers-annual-fall-meeting-tickets-2001889844414?aff=oddtdtcreator",
-    "date": "2026-11-09",
-    "date_text": "Monday, November 9",
-    "how": "listing link",
-    "found_on": "https://www.greenenergyconsumers.org/event/annualfallmeeting",
-    "external": true
    }
   ]
  },
@@ -2561,150 +1943,6 @@
     "text_chars": 2637,
     "text_file": "text/climateactionnowma_org_.txt",
     "final_url": "https://climateactionnowma.org/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/": {
-    "title": "Wildlands Campaign working group meeting - Climate Action Now",
-    "headings": [
-     "Wildlands Campaign working group meeting",
-     "Categories:"
-    ],
-    "dates_with_year": [],
-    "text_chars": 392,
-    "text_file": "text/climateactionnowma_org_event_wildlands_campaign_working_group_meeting_2026_11_11_.txt",
-    "final_url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/": {
-    "title": "Sierra Club Forest Protection team monthly meeting - Climate Action Now",
-    "headings": [
-     "Sierra Club Forest Protection team monthly meeting",
-     "Categories:"
-    ],
-    "dates_with_year": [],
-    "text_chars": 606,
-    "text_file": "text/climateactionnowma_org_event_sierra_club_forest_protection_team_monthly_meeting_2026_11_12_.txt",
-    "final_url": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org/events/": {
-    "status": 403,
-    "error": "HTTP 403"
-   },
-   "https://climateactionnowma.org/events/month/": {
-    "status": 403,
-    "error": "HTTP 403"
-   },
-   "https://climateactionnowma.org/get-involved/": {
-    "title": "Get Involved - Climate Action Now",
-    "headings": [
-     "Get Involved",
-     "ways to get involved with Climate Action Now",
-     "Current Projects And Campaigns",
-     "Newsletter sign-up",
-     "Attend Our Gatherings"
-    ],
-    "dates_with_year": [],
-    "text_chars": 5909,
-    "text_file": "text/climateactionnowma_org_get_involved_.txt",
-    "final_url": "https://climateactionnowma.org/get-involved/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/": {
-    "title": "Wildlands Campaign working group meeting - Climate Action Now",
-    "headings": [
-     "Wildlands Campaign working group meeting",
-     "Nov 2026",
-     "Wed 11",
-     "Dec 2026",
-     "Wed 9",
-     "Jan 2027",
-     "Wed 13",
-     "Feb 2027",
-     "Wed 10",
-     "Mar 2027",
-     "Wed 10",
-     "Apr 2027",
-     "Wed 14",
-     "May 2027",
-     "Wed 12",
-     "Jun 2027",
-     "Wed 9",
-     "Jul 2027",
-     "Wed 14",
-     "Aug 2027",
-     "Wed 11"
-    ],
-    "dates_with_year": [],
-    "text_chars": 408,
-    "text_file": "text/climateactionnowma_org_series_wildlands_campaign_working_group_meeting_.txt",
-    "final_url": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org/campaign-to-protect-wildlands-in-massachusetts/": {
-    "title": "Campaign to Protect Wildlands in Massachusetts - Climate Action Now",
-    "headings": [
-     "Campaign to Protect Wildlands in Massachusetts",
-     "Our Campaign",
-     "Frequently Asked Questions",
-     "Resources for the Campaign"
-    ],
-    "dates_with_year": [],
-    "text_chars": 10148,
-    "text_file": "text/climateactionnowma_org_campaign_to_protect_wildlands_in_massachusetts_.txt",
-    "final_url": "https://climateactionnowma.org/campaign-to-protect-wildlands-in-massachusetts/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org/event/create-farmer-community-gathering/": {
-    "title": "CREATE Farmer & Community Gathering - Climate Action Now",
-    "headings": [
-     "CREATE Farmer & Community Gathering",
-     "Stone Soup Farm – Hadley",
-     "Categories:",
-     "Organizer",
-     "CREATE – Cultivating Relationships Tending Earth"
-    ],
-    "dates_with_year": [],
-    "text_chars": 958,
-    "text_file": "text/climateactionnowma_org_event_create_farmer_community_gathering_.txt",
-    "final_url": "https://climateactionnowma.org/event/create-farmer-community-gathering/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/": {
-    "title": "MA Pollinator Network - Climate Action Now",
-    "headings": [
-     "MA Pollinator Network",
-     "Categories:"
-    ],
-    "dates_with_year": [],
-    "text_chars": 710,
-    "text_file": "text/climateactionnowma_org_event_mapn_monthly_2026_11_24_.txt",
-    "final_url": "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/",
-    "builder": ""
-   },
-   "https://climateactionnowma.org": {
-    "title": "Home - Climate Action Now",
-    "headings": [
-     "Welcome to",
-     "Climate Action Now!",
-     "Join the Global Grassroots Movement.",
-     "Climate Justice",
-     "Supporting Natural Solutions",
-     "Just Transition to Clean Renewable Energy",
-     "Grassroots Movement Building",
-     "Our Next Monthly Gathering",
-     "Upcoming Actions and Events",
-     "Latest Blog Posts",
-     "NEWSLETTER: Farmer + Community Solidarity Gathering, Action Alert for the Quabbin, Listening Session in Shutesbury on new Energy Facilities Siting Law and more!",
-     "The CAN CREATE group is having a Farmer & Community Gathering",
-     "Take action for forest protection in state owned land in Massachusetts!",
-     "What We Need Is Here: an Earth Day Celebration!",
-     "Get Involved!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2637,
-    "text_file": "text/climateactionnowma_org.txt",
-    "final_url": "https://climateactionnowma.org",
     "builder": ""
    },
    "http://noclearcutforprofit.org": {
@@ -2815,6 +2053,10 @@
     "text_file": "text/climateactionnowma_org_event_mapn_monthly_2026_10_27_.txt",
     "final_url": "https://climateactionnowma.org/event/mapn-monthly/2026-10-27/",
     "builder": ""
+   },
+   "https://climateactionnowma.org/events/": {
+    "status": 403,
+    "error": "HTTP 403"
    }
   },
   "found": [
@@ -2826,233 +2068,6 @@
     "date_text": "",
     "how": "listing link",
     "found_on": "https://climateactionnowma.org/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2026-11-11T19:00:00-05:00",
-    "end": "2026-11-11T20:30:00-05:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/"
-   },
-   {
-    "type": "event",
-    "name": "iCalendar",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/?ical=1",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-11-11/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Sierra Club Forest Protection team monthly meeting",
-    "date": "2026-11-12T19:00:00-05:00",
-    "end": "2026-11-12T20:30:00-05:00",
-    "url": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/"
-   },
-   {
-    "type": "event",
-    "name": "iCalendar",
-    "url": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/?ical=1",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/event/sierra-club-forest-protection-team-monthly-meeting/2026-11-12/",
-    "external": false
-   },
-   {
-    "type": "role/action",
-    "name": "Sign up for our Newsletter here",
-    "url": "https://climateactionnowma.us9.list-manage.com/subscribe?u=e296a8ea584166df5b5a3e410&id=1c03b8b061",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/get-involved/",
-    "external": true
-   },
-   {
-    "type": "role/action",
-    "name": "SIGN UP",
-    "url": "https://climateactionnowma.org/newsletter/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/get-involved/",
-    "external": false
-   },
-   {
-    "type": "role/action",
-    "name": "Sign Up Now!",
-    "url": "https://climateactionnowma.us9.list-manage.com/subscribe?u=e296a8ea584166df5b5a3e410&id=1c03b8b061",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/get-involved/",
-    "external": true
-   },
-   {
-    "type": "role/action",
-    "name": "Click here to join the nationwide campaign to defend our privacy and stop Palantir.",
-    "url": "https://purgepalantir.com/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/get-involved/",
-    "external": true
-   },
-   {
-    "type": "role/action",
-    "name": "Join Our Wildlands Campaign",
-    "url": "https://climateactionnowma.org/campaign-to-protect-wildlands-in-massachusetts/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/get-involved/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-08-11T19:00:00-04:00",
-    "end": "2027-08-11T20:30:00-04:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-08-11/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-07-14T19:00:00-04:00",
-    "end": "2027-07-14T20:30:00-04:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-07-14/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-06-09T19:00:00-04:00",
-    "end": "2027-06-09T20:30:00-04:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-06-09/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-05-12T19:00:00-04:00",
-    "end": "2027-05-12T20:30:00-04:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-05-12/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-04-14T19:00:00-04:00",
-    "end": "2027-04-14T20:30:00-04:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-04-14/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-03-10T19:00:00-05:00",
-    "end": "2027-03-10T20:30:00-05:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-03-10/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-02-10T19:00:00-05:00",
-    "end": "2027-02-10T20:30:00-05:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-02-10/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2027-01-13T19:00:00-05:00",
-    "end": "2027-01-13T20:30:00-05:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2027-01-13/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Wildlands Campaign working group meeting",
-    "date": "2026-12-09T19:00:00-05:00",
-    "end": "2026-12-09T20:30:00-05:00",
-    "url": "https://climateactionnowma.org/event/wildlands-campaign-working-group-meeting/2026-12-09/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/"
-   },
-   {
-    "type": "event",
-    "name": "Export .ics file",
-    "url": "https://climateactionnowma.org/events/summary/?related_series=15626&ical=1",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Export Outlook .ics file",
-    "url": "https://climateactionnowma.org/events/summary/?related_series=15626&outlook-ical=1",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/series/wildlands-campaign-working-group-meeting/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "CREATE Farmer &#038; Community Gathering",
-    "date": "2026-11-15T13:00:00-05:00",
-    "end": "2026-11-15T15:00:00-05:00",
-    "url": "https://climateactionnowma.org/event/create-farmer-community-gathering/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/event/create-farmer-community-gathering/"
-   },
-   {
-    "type": "event",
-    "name": "iCalendar",
-    "url": "https://climateactionnowma.org/event/create-farmer-community-gathering/?ical=1",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/event/create-farmer-community-gathering/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "MA Pollinator Network",
-    "date": "2026-11-24T19:00:00-05:00",
-    "end": "2026-11-24T20:00:00-05:00",
-    "url": "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/",
-    "how": "json-ld",
-    "found_on": "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/"
-   },
-   {
-    "type": "event",
-    "name": "iCalendar",
-    "url": "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/?ical=1",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://climateactionnowma.org/event/mapn-monthly/2026-11-24/",
     "external": false
    },
    {
@@ -3191,6 +2206,25 @@
     "final_url": "https://www.masssenioraction.org/",
     "builder": "squarespace"
    },
+   "https://www.masssenioraction.org/where-we-work": {
+    "title": "Where We Work — Mass Senior Action Council",
+    "headings": [
+     "Boston Chapter",
+     "Cambridge/Somerville Chapter",
+     "Greater Springfield Chapter",
+     "Metro-North Chapter",
+     "North Shore Chapter",
+     "Massachusetts Senior Action Council",
+     "108 Myrtle St. Suite 112, Quincy MA 02171",
+     "Email: info@MaSeniorAction.org",
+     "Phone: 617-284-1275"
+    ],
+    "dates_with_year": [],
+    "text_chars": 1061,
+    "text_file": "text/masssenioraction_org_where_we_work.txt",
+    "final_url": "https://www.masssenioraction.org/where-we-work",
+    "builder": "squarespace"
+   },
    "https://www.masssenioraction.org/2026ballot-questions": {
     "title": "2026 Ballot Questions — Mass Senior Action Council",
     "headings": [
@@ -3325,41 +2359,6 @@
     "text_file": "text/masssenioraction_org_food_insecurity.txt",
     "final_url": "https://www.masssenioraction.org/food-insecurity",
     "builder": "squarespace"
-   },
-   "https://www.masssenioraction.org/housing-tenants-rights": {
-    "title": "Housing — Mass Senior Action Council",
-    "headings": [
-     "Thousands of people depend on affordable housing, while thousands more Americans are on the edge of being homeless. msac will fight for decent, safe, and sanitary housing for all at a price that people can afford and, to some degree, control.",
-     "OUR VICTORIES",
-     "Massachusetts Senior Action Council",
-     "108 Myrtle St. Suite 112, Quincy MA 02171",
-     "Email: info@MaSeniorAction.org",
-     "Phone: 617-284-1275"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2270,
-    "text_file": "text/masssenioraction_org_housing_tenants_rights.txt",
-    "final_url": "https://www.masssenioraction.org/housing-tenants-rights",
-    "builder": "squarespace"
-   },
-   "https://www.masssenioraction.org/where-we-work": {
-    "title": "Where We Work — Mass Senior Action Council",
-    "headings": [
-     "Boston Chapter",
-     "Cambridge/Somerville Chapter",
-     "Greater Springfield Chapter",
-     "Metro-North Chapter",
-     "North Shore Chapter",
-     "Massachusetts Senior Action Council",
-     "108 Myrtle St. Suite 112, Quincy MA 02171",
-     "Email: info@MaSeniorAction.org",
-     "Phone: 617-284-1275"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1061,
-    "text_file": "text/masssenioraction_org_where_we_work.txt",
-    "final_url": "https://www.masssenioraction.org/where-we-work",
-    "builder": "squarespace"
    }
   },
   "found": [
@@ -3388,6 +2387,44 @@
     "text_chars": 1047,
     "text_file": "text/n2nma_org_.txt",
     "final_url": "https://n2nma.org/",
+    "builder": ""
+   },
+   "https://n2nma.org/campaigns/dwight-street-garden/": {
+    "title": "Dwight Street Garden - Neighbor to Neighbor Massachusetts",
+    "headings": [],
+    "dates_with_year": [],
+    "text_chars": 1312,
+    "text_file": "text/n2nma_org_campaigns_dwight_street_garden_.txt",
+    "final_url": "https://n2nma.org/campaigns/dwight-street-garden/",
+    "builder": ""
+   },
+   "https://n2nma.org/campaigns/housing-for-all/": {
+    "title": "Housing for All - Neighbor to Neighbor Massachusetts",
+    "headings": [
+     "Take Action"
+    ],
+    "dates_with_year": [],
+    "text_chars": 975,
+    "text_file": "text/n2nma_org_campaigns_housing_for_all_.txt",
+    "final_url": "https://n2nma.org/campaigns/housing-for-all/",
+    "builder": ""
+   },
+   "https://n2nma.org/take-action/": {
+    "title": "Take Action - Neighbor to Neighbor Massachusetts",
+    "headings": [],
+    "dates_with_year": [],
+    "text_chars": 813,
+    "text_file": "text/n2nma_org_take_action_.txt",
+    "final_url": "https://n2nma.org/take-action/",
+    "builder": ""
+   },
+   "https://n2nma.org/what-we-do/": {
+    "title": "Campaigns - Neighbor to Neighbor Massachusetts",
+    "headings": [],
+    "dates_with_year": [],
+    "text_chars": 1270,
+    "text_file": "text/n2nma_org_what_we_do_.txt",
+    "final_url": "https://n2nma.org/what-we-do/campaigns/",
     "builder": ""
    },
    "https://n2nma.org/what-we-do/actionfund/": {
@@ -3430,15 +2467,6 @@
     "final_url": "https://n2nma.org/who-we-are/jobs/",
     "builder": ""
    },
-   "https://n2nma.org/what-we-do/": {
-    "title": "Campaigns - Neighbor to Neighbor Massachusetts",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 1270,
-    "text_file": "text/n2nma_org_what_we_do_.txt",
-    "final_url": "https://n2nma.org/what-we-do/campaigns/",
-    "builder": ""
-   },
    "https://n2nma.org/what-we-do/victories/": {
     "title": "Victories - Neighbor to Neighbor Massachusetts",
     "headings": [],
@@ -3446,46 +2474,6 @@
     "text_chars": 4608,
     "text_file": "text/n2nma_org_what_we_do_victories_.txt",
     "final_url": "https://n2nma.org/what-we-do/victories/",
-    "builder": ""
-   },
-   "https://n2nma.org/who-we-are/team/": {
-    "title": "Team - Neighbor to Neighbor Massachusetts",
-    "headings": [
-     "Staff"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1131,
-    "text_file": "text/n2nma_org_who_we_are_team_.txt",
-    "final_url": "https://n2nma.org/who-we-are/team/",
-    "builder": ""
-   },
-   "https://n2nma.org/campaigns/dwight-street-garden/": {
-    "title": "Dwight Street Garden - Neighbor to Neighbor Massachusetts",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 1312,
-    "text_file": "text/n2nma_org_campaigns_dwight_street_garden_.txt",
-    "final_url": "https://n2nma.org/campaigns/dwight-street-garden/",
-    "builder": ""
-   },
-   "https://n2nma.org/campaigns/housing-for-all/": {
-    "title": "Housing for All - Neighbor to Neighbor Massachusetts",
-    "headings": [
-     "Take Action"
-    ],
-    "dates_with_year": [],
-    "text_chars": 975,
-    "text_file": "text/n2nma_org_campaigns_housing_for_all_.txt",
-    "final_url": "https://n2nma.org/campaigns/housing-for-all/",
-    "builder": ""
-   },
-   "https://n2nma.org/take-action/": {
-    "title": "Take Action - Neighbor to Neighbor Massachusetts",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 813,
-    "text_file": "text/n2nma_org_take_action_.txt",
-    "final_url": "https://n2nma.org/take-action/",
     "builder": ""
    }
   },
@@ -3509,56 +2497,6 @@
     "how": "listing link",
     "found_on": "https://n2nma.org/",
     "external": true
-   },
-   {
-    "type": "project",
-    "name": "Take Action for Clean Slate",
-    "url": "https://n2nma.org/campaigns/take-action-for-clean-slate/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://n2nma.org/what-we-do/campaigns/",
-    "external": false
-   },
-   {
-    "type": "project",
-    "name": "Criminal Justice Reform",
-    "url": "https://n2nma.org/campaigns/criminal-justice-reform/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://n2nma.org/what-we-do/campaigns/",
-    "external": false
-   },
-   {
-    "type": "project",
-    "name": "Housing for All",
-    "url": "https://n2nma.org/campaigns/housing-for-all/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://n2nma.org/what-we-do/campaigns/",
-    "external": false
-   },
-   {
-    "type": "project",
-    "name": "Environmental Justice",
-    "url": "https://n2nma.org/campaigns/environmental-justice/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://n2nma.org/what-we-do/campaigns/",
-    "external": false
-   },
-   {
-    "type": "project",
-    "name": "Dwight Street Garden",
-    "url": "https://n2nma.org/campaigns/dwight-street-garden/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://n2nma.org/what-we-do/campaigns/",
-    "external": false
    },
    {
     "type": "project",
@@ -3629,6 +2567,56 @@
     "how": "listing link",
     "found_on": "https://n2nma.org/take-action/",
     "external": false
+   },
+   {
+    "type": "project",
+    "name": "Take Action for Clean Slate",
+    "url": "https://n2nma.org/campaigns/take-action-for-clean-slate/",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://n2nma.org/what-we-do/",
+    "external": false
+   },
+   {
+    "type": "project",
+    "name": "Criminal Justice Reform",
+    "url": "https://n2nma.org/campaigns/criminal-justice-reform/",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://n2nma.org/what-we-do/",
+    "external": false
+   },
+   {
+    "type": "project",
+    "name": "Housing for All",
+    "url": "https://n2nma.org/campaigns/housing-for-all/",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://n2nma.org/what-we-do/",
+    "external": false
+   },
+   {
+    "type": "project",
+    "name": "Environmental Justice",
+    "url": "https://n2nma.org/campaigns/environmental-justice/",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://n2nma.org/what-we-do/",
+    "external": false
+   },
+   {
+    "type": "project",
+    "name": "Dwight Street Garden",
+    "url": "https://n2nma.org/campaigns/dwight-street-garden/",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://n2nma.org/what-we-do/",
+    "external": false
    }
   ]
  },
@@ -3650,6 +2638,81 @@
     "text_chars": 983,
     "text_file": "text/treeboston_org_.txt",
     "final_url": "https://treeboston.org/",
+    "builder": ""
+   },
+   "https://treeboston.org/get-involved/neighborwoods/": {
+    "title": "NeighborWoods Tree Plantings - Tree Boston",
+    "headings": [
+     "Every spring and fall we plant trees in private yards—for free!",
+     "How NeighborWoods Works",
+     "Apply Below",
+     "Received a tree from us?",
+     "Learn more about urban trees with these resources:",
+     "Thank you for caring for Boston's trees!"
+    ],
+    "dates_with_year": [],
+    "text_chars": 2092,
+    "text_file": "text/treeboston_org_get_involved_neighborwoods_.txt",
+    "final_url": "https://treeboston.org/get-involved/neighborwoods/",
+    "builder": ""
+   },
+   "https://treeboston.org/get-involved/tree-giveaway-program/": {
+    "title": "Tree Giveaways - Tree Boston",
+    "headings": [
+     "Tree Giveaways: Growing our urban canopy one tree at a time",
+     "How Do Trees Do This?",
+     "See Where Our Trees Have Gone",
+     "What to Expect at Our Tree Giveaway Events",
+     "How to Get Involved",
+     "Mark your calendars, spread the word, and come on out to our next Boston tree giveaway event",
+     "A special thank you to our sponsors…",
+     "… and to our community partners",
+     "As the 250+ trees we're giving away in 2024 grow, they will save residents over $1,000,000 through",
+     "Thank you for caring for Boston's trees!"
+    ],
+    "dates_with_year": [],
+    "text_chars": 3005,
+    "text_file": "text/treeboston_org_get_involved_tree_giveaway_program_.txt",
+    "final_url": "https://treeboston.org/get-involved/tree-giveaway-program/",
+    "builder": ""
+   },
+   "https://treeboston.org/get-involved/tutc/": {
+    "title": "Teen Urban Tree Corps - Tree Boston",
+    "headings": [
+     "The Next Generation Caring for Boston’s Urban Forest",
+     "Learn more about our Summer Program",
+     "Learn more about our School-Year Program",
+     "Some Examples of Past Programs",
+     "Teen Tree Summit: April 2026",
+     "Summer 2025",
+     "In Their Words",
+     "Past Summer Programs",
+     "Thank you for caring for Boston's trees!"
+    ],
+    "dates_with_year": [
+     "2026-04-12"
+    ],
+    "text_chars": 3143,
+    "text_file": "text/treeboston_org_get_involved_tutc_.txt",
+    "final_url": "https://treeboston.org/get-involved/tutc/",
+    "builder": ""
+   },
+   "https://treeboston.org/get-involved/voluntreers-program/": {
+    "title": "Volunteer Opportunities - Tree Boston",
+    "headings": [
+     "Interested in learning about and supporting your local trees? We’re always on the lookout for residents and community partners.",
+     "There’s a lot to do!",
+     "What’s it like to volunteer?",
+     "How to get involved",
+     "Fill out this form to sign up as a volunteer",
+     "Browse our calendar for upcoming events, webinars, and more",
+     "Sign up for our Newsletter",
+     "Thank you for caring for Boston's trees!"
+    ],
+    "dates_with_year": [],
+    "text_chars": 1620,
+    "text_file": "text/treeboston_org_get_involved_voluntreers_program_.txt",
+    "final_url": "https://treeboston.org/get-involved/voluntreers-program/",
     "builder": ""
    },
    "https://treeboston.org/events/": {
@@ -3688,58 +2751,6 @@
     "text_chars": 2335,
     "text_file": "text/treeboston_org_get_involved_.txt",
     "final_url": "https://treeboston.org/get-involved/",
-    "builder": ""
-   },
-   "https://treeboston.org/get-involved/education-outreach/": {
-    "title": "Education & Outreach - Tree Boston",
-    "headings": [
-     "Education and Outreach Programs",
-     "Classroom Lessons",
-     "Learning Opportunities Offered by Our Staff",
-     "Community Tree Walks",
-     "Tree Equity Matters",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1801,
-    "text_file": "text/treeboston_org_get_involved_education_outreach_.txt",
-    "final_url": "https://treeboston.org/get-involved/education-outreach/",
-    "builder": ""
-   },
-   "https://treeboston.org/get-involved/opportunities/": {
-    "title": "Jobs & Opportunities - Tree Boston",
-    "headings": [
-     "Current Job Openings",
-     "MassCEC Internships",
-     "Board Member Openings",
-     "Current Opportunities",
-     "Tree planting",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1200,
-    "text_file": "text/treeboston_org_get_involved_opportunities_.txt",
-    "final_url": "https://treeboston.org/get-involved/opportunities/",
-    "builder": ""
-   },
-   "https://treeboston.org/get-involved/resource/": {
-    "title": "Tree Resource Hub - Tree Boston",
-    "headings": [
-     "Table of contents",
-     "Identifying Trees",
-     "Learn About the Benefits of Trees",
-     "How to Site your Tree",
-     "How to Select your Tree",
-     "How To Plant Your Tree",
-     "Learn How to Care for your Tree",
-     "Some Local Tree Resources",
-     "Some National Resources",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 3591,
-    "text_file": "text/treeboston_org_get_involved_resource_.txt",
-    "final_url": "https://treeboston.org/get-involved/resource/",
     "builder": ""
    },
    "https://treeboston.org/our-team/": {
@@ -3812,156 +2823,20 @@
     "final_url": "https://treeboston.org/our-work/",
     "builder": ""
    },
-   "https://treeboston.org/programs/treekeepers/": {
-    "title": "Community TreeKeepers - Tree Boston",
+   "https://treeboston.org/get-involved/education-outreach/": {
+    "title": "Education & Outreach - Tree Boston",
     "headings": [
-     "Learn to Care for Trees in Your Community",
-     "Stay informed about future Community TreeKeeper Sessions",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [
-     "2026-03-28"
-    ],
-    "text_chars": 1596,
-    "text_file": "text/treeboston_org_programs_treekeepers_.txt",
-    "final_url": "https://treeboston.org/programs/treekeepers/",
-    "builder": ""
-   },
-   "https://treeboston.org/get-involved/neighborwoods/": {
-    "title": "NeighborWoods Tree Plantings - Tree Boston",
-    "headings": [
-     "Every spring and fall we plant trees in private yards—for free!",
-     "How NeighborWoods Works",
-     "Apply Below",
-     "Received a tree from us?",
-     "Learn more about urban trees with these resources:",
+     "Education and Outreach Programs",
+     "Classroom Lessons",
+     "Learning Opportunities Offered by Our Staff",
+     "Community Tree Walks",
+     "Tree Equity Matters",
      "Thank you for caring for Boston's trees!"
     ],
     "dates_with_year": [],
-    "text_chars": 2092,
-    "text_file": "text/treeboston_org_get_involved_neighborwoods_.txt",
-    "final_url": "https://treeboston.org/get-involved/neighborwoods/",
-    "builder": ""
-   },
-   "https://treeboston.org/get-involved/tree-giveaway-program/": {
-    "title": "Tree Giveaways - Tree Boston",
-    "headings": [
-     "Tree Giveaways: Growing our urban canopy one tree at a time",
-     "How Do Trees Do This?",
-     "See Where Our Trees Have Gone",
-     "What to Expect at Our Tree Giveaway Events",
-     "How to Get Involved",
-     "Mark your calendars, spread the word, and come on out to our next Boston tree giveaway event",
-     "A special thank you to our sponsors…",
-     "… and to our community partners",
-     "As the 250+ trees we're giving away in 2024 grow, they will save residents over $1,000,000 through",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 3005,
-    "text_file": "text/treeboston_org_get_involved_tree_giveaway_program_.txt",
-    "final_url": "https://treeboston.org/get-involved/tree-giveaway-program/",
-    "builder": ""
-   },
-   "https://treeboston.org/get-involved/tutc/": {
-    "title": "Teen Urban Tree Corps - Tree Boston",
-    "headings": [
-     "The Next Generation Caring for Boston’s Urban Forest",
-     "Learn more about our Summer Program",
-     "Learn more about our School-Year Program",
-     "Some Examples of Past Programs",
-     "Teen Tree Summit: April 2026",
-     "Summer 2025",
-     "In Their Words",
-     "Past Summer Programs",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [
-     "2026-04-12"
-    ],
-    "text_chars": 3143,
-    "text_file": "text/treeboston_org_get_involved_tutc_.txt",
-    "final_url": "https://treeboston.org/get-involved/tutc/",
-    "builder": ""
-   },
-   "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/": {
-    "title": "Tree Planting At Malcolm X Park - Roxbury - Tree Boston",
-    "headings": [
-     "Details",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [
-     "2026-10-03"
-    ],
-    "text_chars": 674,
-    "text_file": "text/treeboston_org_events_event_tree_planting_at_malcolm_x_park_roxbury_.txt",
-    "final_url": "https://treeboston.org/events/event/tree-planting-at-malcolm-x-park-roxbury/",
-    "builder": ""
-   },
-   "https://treeboston.org/events/event/branchingout2026/": {
-    "title": "Annual Fall Benefit: Branching Out 2026 - Tree Boston",
-    "headings": [
-     "Let’s celebrate the people & plants of Boston’s urban forest!",
-     "Thank you event supporters!",
-     "Details",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [
-     "2026-10-07"
-    ],
-    "text_chars": 1326,
-    "text_file": "text/treeboston_org_events_event_branchingout2026_.txt",
-    "final_url": "https://treeboston.org/events/event/branchingout2026/",
-    "builder": ""
-   },
-   "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/": {
-    "title": "Tree Giveaway at The Urban Farming Institute - Tree Boston",
-    "headings": [
-     "Details",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [
-     "2026-10-10"
-    ],
-    "text_chars": 1156,
-    "text_file": "text/treeboston_org_events_event_tree_giveaway_at_the_urban_farming_institute_2_.txt",
-    "final_url": "https://treeboston.org/events/event/tree-giveaway-at-the-urban-farming-institute-2/",
-    "builder": ""
-   },
-   "https://treeboston.org/events/event/climb4thecanopy/": {
-    "status": 404,
-    "error": "HTTP 404"
-   },
-   "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/": {
-    "title": "Free Tree Giveaway - Hyde Park Public Library - Tree Boston",
-    "headings": [
-     "Details",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [
-     "2026-10-24"
-    ],
-    "text_chars": 1106,
-    "text_file": "text/treeboston_org_events_event_free_tree_giveaway_hyde_park_public_library_.txt",
-    "final_url": "https://treeboston.org/events/event/free-tree-giveaway-hyde-park-public-library/",
-    "builder": ""
-   },
-   "https://treeboston.org/get-involved/voluntreers-program/": {
-    "title": "Volunteer Opportunities - Tree Boston",
-    "headings": [
-     "Interested in learning about and supporting your local trees? We’re always on the lookout for residents and community partners.",
-     "There’s a lot to do!",
-     "What’s it like to volunteer?",
-     "How to get involved",
-     "Fill out this form to sign up as a volunteer",
-     "Browse our calendar for upcoming events, webinars, and more",
-     "Sign up for our Newsletter",
-     "Thank you for caring for Boston's trees!"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1620,
-    "text_file": "text/treeboston_org_get_involved_voluntreers_program_.txt",
-    "final_url": "https://treeboston.org/get-involved/voluntreers-program/",
+    "text_chars": 1801,
+    "text_file": "text/treeboston_org_get_involved_education_outreach_.txt",
+    "final_url": "https://treeboston.org/get-involved/education-outreach/",
     "builder": ""
    }
   },
@@ -3987,26 +2862,6 @@
     "external": false
    },
    {
-    "type": "project",
-    "name": "Alliance for Community Trees",
-    "url": "https://www.arborday.org/programs/alliance-for-community-trees/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/get-involved/resource/",
-    "external": true
-   },
-   {
-    "type": "project",
-    "name": "Table of contents",
-    "url": "https://www.arborday.org/programs/alliance-for-community-trees/directory.cfm",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/get-involved/resource/",
-    "external": true
-   },
-   {
     "type": "role/action",
     "name": "Sign up for our newsletter",
     "url": "https://treeboston.org/signup",
@@ -4024,66 +2879,6 @@
     "date_text": "",
     "how": "listing link",
     "found_on": "https://treeboston.org/our-work/",
-    "external": false
-   },
-   {
-    "type": "project",
-    "name": "Facebook share link",
-    "url": "https://www.facebook.com/sharer/sharer.php?u=https://treeboston.org/programs/treekeepers/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/programs/treekeepers/",
-    "external": true
-   },
-   {
-    "type": "project",
-    "name": "Linkedin share link",
-    "url": "http://www.linkedin.com/shareArticle?url=https://treeboston.org/programs/treekeepers/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/programs/treekeepers/",
-    "external": true
-   },
-   {
-    "type": "event",
-    "name": "Sign up for the second session on March 28, 2026",
-    "url": "https://treeboston.org/events/event/community-treekeepers-second-session/",
-    "date": "2026-03-28",
-    "date_text": "March 28, 2026",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/programs/treekeepers/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "We invite you to",
-    "url": "https://treeboston.org/civicrm/event/register/?reset=1&id=363",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/events/event/branchingout2026/",
-    "external": false
-   },
-   {
-    "type": "event",
-    "name": "Purchase your tickets today",
-    "url": "https://treeboston.org/civicrm/event/register/?reset=1&id=363",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/events/event/branchingout2026/",
-    "external": false
-   },
-   {
-    "type": "role/action",
-    "name": "Become a sponsor",
-    "url": "https://treeboston.org/support/2026benefit_sponsorship/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://treeboston.org/events/event/branchingout2026/",
     "external": false
    }
   ]
@@ -4117,117 +2912,6 @@
     "text_chars": 4057,
     "text_file": "text/sunrisemovement_org_.txt",
     "final_url": "https://www.sunrisemovement.org/",
-    "builder": ""
-   },
-   "https://www.sunrisemovement.org/campaign/project-rise-up/": {
-    "title": "Schools Rise Up On May Day - Google Docs",
-    "headings": [],
-    "dates_with_year": [],
-    "text_chars": 119,
-    "text_file": "text/sunrisemovement_org_campaign_project_rise_up_.txt",
-    "final_url": "https://docs.google.com/document/d/1TaZrvJDR-4eX8EBJ-82IiKlt4xSnZ2mYQC-FOjKoIok/edit?tab=t.0",
-    "builder": ""
-   },
-   "https://www.sunrisemovement.org/take-action/": {
-    "title": "Take Action - Sunrise Movement",
-    "headings": [
-     "FIND YOUR PLACE IN THE MOVEMENT",
-     "WELCOME TO THE MOVEMENT",
-     "Elect Progressive ChampionS",
-     "organize your community",
-     "Welcome Call",
-     "Become a Member",
-     "FIND YOUR LOCAL SUNRISE HUB",
-     "SUNRISE events",
-     "How to Make a Change: An Actions Training for Students of Color",
-     "Sunrise Chicago New Member Introduction",
-     "Sunrise Chicago November Chapter Meeting",
-     "Resources",
-     "Students Rise Up Guidebook",
-     "Hilton Action Guide",
-     "Sunrise 35+ Supporter Guidelines"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2139,
-    "text_file": "text/sunrisemovement_org_take_action_.txt",
-    "final_url": "https://www.sunrisemovement.org/take-action/",
-    "builder": ""
-   },
-   "https://www.sunrisemovement.org/become-a-member/": {
-    "title": "Become a Member - Sunrise Movement",
-    "headings": [
-     "BECOME A sunrise MEMBER",
-     "sunrise movement",
-     "SUNRISE membership",
-     "Membership Dues",
-     "hubS or chapters",
-     "central organiziNg budget",
-     "Principle Six Program",
-     "MEMBERSHIP FAQ",
-     "Why Dues?",
-     "How much are dues?",
-     "I already organize with Sunrise movement. Do I still have to sign up to become a member?"
-    ],
-    "dates_with_year": [],
-    "text_chars": 3724,
-    "text_file": "text/sunrisemovement_org_become_a_member_.txt",
-    "final_url": "https://www.sunrisemovement.org/become-a-member/",
-    "builder": ""
-   },
-   "https://www.sunrisemovement.org/campaign/endorsements/": {
-    "title": "Electoral Organizing - Sunrise Movement",
-    "headings": [
-     "ELECTORAL ORGANIZING",
-     "our Goals in 2026",
-     "movement wins",
-     "2022 Elections",
-     "2020 Climate Mandate",
-     "State and Local Elections",
-     "Green New Deal Champions",
-     "ENDORSEMENTS",
-     "Brad Lander",
-     "Claire Valdez",
-     "Adam Hamawy",
-     "Darializa Avila Chevalier",
-     "Ed Markey",
-     "Zohran Mamdani",
-     "Donate today"
-    ],
-    "dates_with_year": [],
-    "text_chars": 6241,
-    "text_file": "text/sunrisemovement_org_campaign_endorsements_.txt",
-    "final_url": "https://www.sunrisemovement.org/campaign/endorsements/",
-    "builder": ""
-   },
-   "https://www.sunrisemovement.org/campaigns/": {
-    "title": "Our Campaigns - Sunrise Movement",
-    "headings": [
-     "Our Fight For A Green New Deal",
-     "OUR ACTIONS",
-     "ICE OUT FOR GOOD",
-     "Project Rise Up",
-     "Electoral Organizing",
-     "Green New Deal for Communities",
-     "PREVIOUS CAMPAIGNS",
-     "We’re Fighting F*cking Fascism: 2022 Midterms Strategy",
-     "Sunrise Binghamton Wins the First Victory Squad Cup",
-     "September 20th: National Day of Action",
-     "July 15th: National Day of Action",
-     "We are at the White House: No Compromises, No Excuses Biden",
-     "Sunrise Youth Activists Begin 266 Mile March in Support of the Civilian Climate Corps",
-     "Good Jobs For All",
-     "January 21st, 2021 Movement Wide Day of Action",
-     "Get involved",
-     "Getting involved for the first time",
-     "Looking to take action right now",
-     "Ready to organize your community?"
-    ],
-    "dates_with_year": [
-     "2021-01-21"
-    ],
-    "text_chars": 2748,
-    "text_file": "text/sunrisemovement_org_campaigns_.txt",
-    "final_url": "https://www.sunrisemovement.org/campaigns/",
     "builder": ""
    },
    "https://www.sunrisemovement.org/campaign/ice-out/": {
@@ -4277,13 +2961,115 @@
     "final_url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
     "builder": ""
    },
-   "https://www.mobilize.us/sunrisemovement/event/976143/": {
-    "title": "[BEVERLY MA] Climate Standout Against Trump · Sunrise Movement",
+   "https://www.sunrisemovement.org/take-action/": {
+    "title": "Take Action - Sunrise Movement",
+    "headings": [
+     "FIND YOUR PLACE IN THE MOVEMENT",
+     "WELCOME TO THE MOVEMENT",
+     "Elect Progressive ChampionS",
+     "organize your community",
+     "Welcome Call",
+     "Become a Member",
+     "FIND YOUR LOCAL SUNRISE HUB",
+     "SUNRISE events",
+     "How to Make a Change: An Actions Training for Students of Color",
+     "Sunrise Chicago New Member Introduction",
+     "Sunrise Chicago November Chapter Meeting",
+     "Resources",
+     "Students Rise Up Guidebook",
+     "Hilton Action Guide",
+     "Sunrise 35+ Supporter Guidelines"
+    ],
+    "dates_with_year": [],
+    "text_chars": 2139,
+    "text_file": "text/sunrisemovement_org_take_action_.txt",
+    "final_url": "https://www.sunrisemovement.org/take-action/",
+    "builder": ""
+   },
+   "https://www.sunrisemovement.org/become-a-member/": {
+    "title": "Become a Member - Sunrise Movement",
+    "headings": [
+     "BECOME A sunrise MEMBER",
+     "sunrise movement",
+     "SUNRISE membership",
+     "Membership Dues",
+     "hubS or chapters",
+     "central organiziNg budget",
+     "Principle Six Program",
+     "MEMBERSHIP FAQ",
+     "Why Dues?",
+     "How much are dues?",
+     "I already organize with Sunrise movement. Do I still have to sign up to become a member?"
+    ],
+    "dates_with_year": [],
+    "text_chars": 3724,
+    "text_file": "text/sunrisemovement_org_become_a_member_.txt",
+    "final_url": "https://www.sunrisemovement.org/become-a-member/",
+    "builder": ""
+   },
+   "https://www.sunrisemovement.org/campaigns/": {
+    "title": "Our Campaigns - Sunrise Movement",
+    "headings": [
+     "Our Fight For A Green New Deal",
+     "OUR ACTIONS",
+     "ICE OUT FOR GOOD",
+     "Project Rise Up",
+     "Electoral Organizing",
+     "Green New Deal for Communities",
+     "PREVIOUS CAMPAIGNS",
+     "We’re Fighting F*cking Fascism: 2022 Midterms Strategy",
+     "Sunrise Binghamton Wins the First Victory Squad Cup",
+     "September 20th: National Day of Action",
+     "July 15th: National Day of Action",
+     "We are at the White House: No Compromises, No Excuses Biden",
+     "Sunrise Youth Activists Begin 266 Mile March in Support of the Civilian Climate Corps",
+     "Good Jobs For All",
+     "January 21st, 2021 Movement Wide Day of Action",
+     "Get involved",
+     "Getting involved for the first time",
+     "Looking to take action right now",
+     "Ready to organize your community?"
+    ],
+    "dates_with_year": [
+     "2021-01-21"
+    ],
+    "text_chars": 2748,
+    "text_file": "text/sunrisemovement_org_campaigns_.txt",
+    "final_url": "https://www.sunrisemovement.org/campaigns/",
+    "builder": ""
+   },
+   "https://www.sunrisemovement.org/campaign/project-rise-up/": {
+    "title": "Schools Rise Up On May Day - Google Docs",
     "headings": [],
     "dates_with_year": [],
-    "text_chars": 62,
-    "text_file": "text/mobilize_us_sunrisemovement_event_976143_.txt",
-    "final_url": "https://www.mobilize.us/sunrisemovement/event/976143/",
+    "text_chars": 119,
+    "text_file": "text/sunrisemovement_org_campaign_project_rise_up_.txt",
+    "final_url": "https://docs.google.com/document/d/1TaZrvJDR-4eX8EBJ-82IiKlt4xSnZ2mYQC-FOjKoIok/edit?tab=t.0",
+    "builder": ""
+   },
+   "https://www.sunrisemovement.org/campaign/endorsements/": {
+    "title": "Electoral Organizing - Sunrise Movement",
+    "headings": [
+     "ELECTORAL ORGANIZING",
+     "our Goals in 2026",
+     "movement wins",
+     "2022 Elections",
+     "2020 Climate Mandate",
+     "State and Local Elections",
+     "Green New Deal Champions",
+     "ENDORSEMENTS",
+     "Brad Lander",
+     "Claire Valdez",
+     "Adam Hamawy",
+     "Darializa Avila Chevalier",
+     "Ed Markey",
+     "Zohran Mamdani",
+     "Donate today"
+    ],
+    "dates_with_year": [],
+    "text_chars": 6241,
+    "text_file": "text/sunrisemovement_org_campaign_endorsements_.txt",
+    "final_url": "https://www.sunrisemovement.org/campaign/endorsements/",
     "builder": ""
    }
   },
@@ -4316,6 +3102,26 @@
     "date_text": "",
     "how": "listing link",
     "found_on": "https://www.sunrisemovement.org/",
+    "external": false
+   },
+   {
+    "type": "role/action",
+    "name": "Sign up for a training near you",
+    "url": "https://action.sunrisemovement.org/a/eosoftrainings",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://www.sunrisemovement.org/campaign/ice-out/",
+    "external": true
+   },
+   {
+    "type": "project",
+    "name": "LEARN MORE",
+    "url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-schools/",
+    "date": "",
+    "date_text": "",
+    "how": "listing link",
+    "found_on": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
     "external": false
    },
    {
@@ -4380,16 +3186,6 @@
    },
    {
     "type": "project",
-    "name": "LEARN MORE",
-    "url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.sunrisemovement.org/campaign/endorsements/",
-    "external": false
-   },
-   {
-    "type": "project",
     "name": "Read more : Electoral Organizing",
     "url": "https://www.sunrisemovement.org/campaign/endorsements/",
     "date": "",
@@ -4419,35 +3215,14 @@
     "external": true
    },
    {
-    "type": "role/action",
-    "name": "Sign up for a training near you",
-    "url": "https://action.sunrisemovement.org/a/eosoftrainings",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.sunrisemovement.org/campaign/ice-out/",
-    "external": true
-   },
-   {
     "type": "project",
-    "name": "LEARN MORE",
-    "url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-schools/",
+    "name": "Learn more",
+    "url": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
     "date": "",
     "date_text": "",
     "how": "listing link",
-    "found_on": "https://www.sunrisemovement.org/campaign/green-new-deal-for-communities/",
+    "found_on": "https://www.sunrisemovement.org/campaigns/",
     "external": false
-   },
-   {
-    "type": "event",
-    "name": "[BEVERLY MA] Climate Standout Against Trump",
-    "date": "2026-10-17T11:00",
-    "end": "2026-10-17T12:30",
-    "url": "https://www.mobilize.us/sunrisemovement/event/976143/",
-    "location": "Beverly",
-    "sponsor": "Sunrise Movement",
-    "how": "mobilize public API (https://api.mobilize.us/v1/events/976143); local time, DST approximated by month",
-    "found_on": "https://www.mobilize.us/sunrisemovement/event/976143/"
    }
   ]
  },
@@ -4470,6 +3245,36 @@
     "text_chars": 2231,
     "text_file": "text/bostonlatinschoolyouthcan_org_.txt",
     "final_url": "https://www.bostonlatinschoolyouthcan.org/",
+    "builder": ""
+   },
+   "https://www.bostonlatinschoolyouthcan.org/events.html": {
+    "title": "Events",
+    "headings": [
+     "Events",
+     "Annual Climate Summits",
+     "Cleaning our Rooftop Garden",
+     "BLS Trash Dash!",
+     "Annual Sixie Assembly",
+     "Our Location:",
+     "Our Mission:"
+    ],
+    "dates_with_year": [],
+    "text_chars": 1802,
+    "text_file": "text/bostonlatinschoolyouthcan_org_events_html.txt",
+    "final_url": "https://www.bostonlatinschoolyouthcan.org/events.html",
+    "builder": ""
+   },
+   "https://www.bostonlatinschoolyouthcan.org/about.html": {
+    "title": "About",
+    "headings": [
+     "About",
+     "Our Location:",
+     "Our Mission:"
+    ],
+    "dates_with_year": [],
+    "text_chars": 4373,
+    "text_file": "text/bostonlatinschoolyouthcan_org_about_html.txt",
+    "final_url": "https://www.bostonlatinschoolyouthcan.org/about.html",
     "builder": ""
    },
    "https://www.bostonlatinschoolyouthcan.org/sustainability-initiatives.html": {
@@ -4575,126 +3380,8 @@
     "text_file": "text/bostonlatinschoolyouthcan_org_educating_for_sustainability_html.txt",
     "final_url": "https://www.bostonlatinschoolyouthcan.org/educating-for-sustainability.html",
     "builder": ""
-   },
-   "https://www.bostonlatinschoolyouthcan.org/index.html": {
-    "title": "Home",
-    "headings": [
-     "Boston Latin School Youth Climate Action Network",
-     "Our Mission",
-     "Get Involved! Take Action!",
-     "Check out our Instagram!",
-     "Address",
-     "Contact Us",
-     "Our Location:",
-     "Our Mission:"
-    ],
-    "dates_with_year": [],
-    "text_chars": 2231,
-    "text_file": "text/bostonlatinschoolyouthcan_org_index_html.txt",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/index.html",
-    "builder": ""
-   },
-   "https://www.bostonlatinschoolyouthcan.org/news.html": {
-    "title": "News",
-    "headings": [
-     "News",
-     "Current News & Events",
-     "Lobby Week Coming Up!",
-     "2024 YouthCAN Summit!",
-     "Volunteer to be a Compost Champion!",
-     "Sustainability room coming soon!",
-     "Past News & Events",
-     "2023 YouthCAN Summit",
-     "2022 YouthCAN Summit",
-     "YouthCAN Activists!",
-     "A group of YouthCANers went to Boston Commons to participate in a Climate Rally. Our very own YouthCAN Co-President Maya Nelson gave an amazing speech highlighting the importance of climate regulations and youth activism.",
-     "MLK Day Workshop 2022",
-     "YouthCAN members held a workshop about the intersectional impact of climate change to the upper grades of BLS.",
-     "2022 Rooftop gardening!",
-     "YouthCAN members weeded and cleaned up our rooftop garden!",
-     "Trash Dash 2021",
-     "YouthCAN held our annual trash dash where we clean up the BLS campus.",
-     "Chase Bank and Liberty Mutual Indigenous Rights Protest October, 2021",
-     "A group of YouthCANers and BLS students went downtown to protest financial institutions' investments in fossil fuel corporations that hurt the environment and promote oil pipelines, which specifically impact indigenous communities.",
-     "Virtual Earth Day 2020 Bingo",
-     "YouthCAN Summit Cancelled",
-     "Boston Globe Interview of the BLS Freight Farm",
-     "Beta Testing: USGBC's Arc Platform!",
-     "West Roxbury \"Road Diet\" Proposal",
-     "YouthCAN Podcast",
-     "Friday, Sept. 20: Boston Climate Strike",
-     "Monday, Oct. 21: Sustainability Tour with Simmons University Students",
-     "Saturday, Oct. 20: YouthCAN at MassArt's Greenfest!",
-     "Friday, Oct. 19: Annual YouthCAN Trash Dash!",
-     "Sign Up for YouthCAN 2018-19!",
-     "YouthCAN Goes to DC!",
-     "2018 Summit on Climate Change and Sustainability",
-     "Climate Legacy Time Capsule - Day of Dedication",
-     "GreenBuild Tour & Conference",
-     "Arc Platform Piloting",
-     "2017 Summit on Climate Change and Sustainability",
-     "Our Location:",
-     "Our Mission:"
-    ],
-    "dates_with_year": [
-     "2017-03-21",
-     "2017-05-13",
-     "2017-11-18",
-     "2018-05-19",
-     "2018-06-25",
-     "2018-09-28",
-     "2018-10-19",
-     "2018-10-20",
-     "2018-10-21",
-     "2019-01-23"
-    ],
-    "text_chars": 28813,
-    "text_file": "text/bostonlatinschoolyouthcan_org_news_html.txt",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/news.html",
-    "builder": ""
-   },
-   "https://www.bostonlatinschoolyouthcan.org/events.html": {
-    "title": "Events",
-    "headings": [
-     "Events",
-     "Annual Climate Summits",
-     "Cleaning our Rooftop Garden",
-     "BLS Trash Dash!",
-     "Annual Sixie Assembly",
-     "Our Location:",
-     "Our Mission:"
-    ],
-    "dates_with_year": [],
-    "text_chars": 1802,
-    "text_file": "text/bostonlatinschoolyouthcan_org_events_html.txt",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/events.html",
-    "builder": ""
-   },
-   "https://www.bostonlatinschoolyouthcan.org/about.html": {
-    "title": "About",
-    "headings": [
-     "About",
-     "Our Location:",
-     "Our Mission:"
-    ],
-    "dates_with_year": [],
-    "text_chars": 4373,
-    "text_file": "text/bostonlatinschoolyouthcan_org_about_html.txt",
-    "final_url": "https://www.bostonlatinschoolyouthcan.org/about.html",
-    "builder": ""
    }
   },
-  "found": [
-   {
-    "type": "role/action",
-    "name": "Volunteer here",
-    "url": "https://docs.google.com/forms/d/1izFe7Xgmt1Pxhgw0o9l0fAn6Dz3pPHO8ehJlLzk_H3g/edit",
-    "date": "",
-    "date_text": "",
-    "how": "listing link",
-    "found_on": "https://www.bostonlatinschoolyouthcan.org/news.html",
-    "external": true
-   }
-  ]
+  "found": []
  }
 }

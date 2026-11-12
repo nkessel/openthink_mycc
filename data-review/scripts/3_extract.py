@@ -149,6 +149,8 @@ def text_file(url):
 
 def main():
     pages = load_json("pages.json")
+    import shutil
+    shutil.rmtree(WORK / "text", ignore_errors=True)  # only pages fetched in this run (under the cap)
     (WORK / "text").mkdir(parents=True, exist_ok=True)
     year = int(TODAY[:4])
     out = {}
