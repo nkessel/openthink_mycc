@@ -31,7 +31,7 @@ import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
 import type { Tooltip } from "./tooltip";
-import { createNodeSearch, allNodesForSearch } from "./search";
+import { createNodeSearch, mapSearchItems } from "./search";
 
 export interface GraphCallbacks {
   onNodeClick(node: GraphNode): void;
@@ -122,6 +122,8 @@ export interface Graph {
   /** Center on any node (coalition or org). */
   focusOnNode(id: string): void;
   setSelectedNode(node: GraphNode | null): void;
+  /** Open a group and zoom to one of its events, projects or actions, with that item's card under it. */
+  focusOnItem(ownerId: string, itemId: string): void;
   focusOnCoalition(id: string): void;
   /** Zoom into a node: its projects, events and public thinking float around it as bubbles. */
   enterFocus(id: string): void;
@@ -211,13 +213,15 @@ export function createGraph(
   overlay.className = "graph-overlay";
   wrap.appendChild(overlay);
   overlay.appendChild(
-    createNodeSearch(allNodesForSearch(data), (id) => {
+    // "Search the map" (Nov 12): groups and coalitions, and their events, projects, actions and volunteer roles.
+    createNodeSearch(mapSearchItems(data), (id, item) => {
+      if (item.ownerId) { api.focusOnItem(item.ownerId, id); return; }
       const n = nodeById.get(id);
       if (!n) return;
       api.focusOnNode(id);
       cb.onNodeClick(n);
       api.setSelectedNode(n);
-    }),
+    }, { placeholder: "Search the map\u2026" }),
   );
   // (Hiding the events / actions / projects around each group is a switch at the top of the settings panel.)
   const resetBtn = document.createElement("button");
@@ -1098,6 +1102,7 @@ export function createGraph(
         event.stopPropagation();
         const cb2 = (inner.select("circle").node() as SVGCircleElement).getBoundingClientRect();
         const wb = wrap.getBoundingClientRect();
+        if (b.kind !== "thought") { if (!dragBlocked()) zoomToItem(b, n, inner.select("circle").node() as SVGCircleElement); return; }
         showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 }, n);
       });
     });
@@ -1546,15 +1551,130 @@ export function createGraph(
     return ids;
   }
 
-  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode) {
-    if (dragBlocked()) return;
+  /**
+   * An item was clicked (or picked in the search): bring it to the upper middle of the map, a little closer, and
+   * open its card right under it (Nov 12). The card has the way back: to its group, or to the whole map.
+   */
+  let itemZoomToken = 0;
+  function zoomToItem(b: Bubble, owner: GraphNode, circle: SVGCircleElement) {
+    const token = ++itemZoomToken;
+    focusCard.style.display = "none";
+    // Where the item is, in map coordinates (the same whatever the zoom).
+    const where = (): DOMPoint | null => {
+      const ctm = (root.node() as SVGGElement).getScreenCTM();
+      const cr = circle.getBoundingClientRect();
+      return ctm && cr.width ? new DOMPoint(cr.left + cr.width / 2, cr.top + cr.height / 2).matrixTransform(ctm.inverse()) : null;
+    };
+    // A group that has just opened is still spreading its moons out: wait until this one has stopped moving.
+    let last = where();
+    let tries = 0;
+    const settle = () => {
+      if (token !== itemZoomToken) return;
+      const now = where();
+      const still = !!last && !!now && Math.hypot(now.x - last.x, now.y - last.y) < 0.6;
+      last = now;
+      if (still || ++tries > 30) fly(now);
+      else window.setTimeout(settle, 90);
+    };
+    window.setTimeout(settle, 90);
+    const fly = (g: DOMPoint | null) => {
+    if (!g) { showCard(b, undefined, owner, true); return; }
+    const { h: vh } = dimensions();
+    const k = Math.max(currentTransform.k, Math.min(2.2, currentTransform.k * 1.5));
+    const oy = -vh * 0.22; // above the middle, so the card fits below
+    const t = d3.zoomIdentity.translate(-g.x * k, oy - g.y * k).scale(k);
+    const done = () => {
+      if (token !== itemZoomToken) return;
+      const wb = wrap.getBoundingClientRect();
+      const now = circle.isConnected ? circle.getBoundingClientRect() : null;
+      const anchor = now && now.width
+        ? { x: now.left - wb.left + now.width / 2, y: now.top - wb.top + now.height / 2, r: now.width / 2 }
+        : { x: wb.width / 2, y: wb.height / 2 + oy, r: 18 };
+      showCard(b, anchor, owner, true);
+      // The map may still be drawing the new zoom (and the moons shifting with it): keep the card under the item for a moment.
+      let n = 0;
+      const follow = () => {
+        if (token !== itemZoomToken || focusCard.style.display === "none" || !circle.isConnected) return;
+        const c = circle.getBoundingClientRect();
+        const w = wrap.getBoundingClientRect();
+        if (c.width) placeCard({ x: c.left - w.left + c.width / 2, y: c.top - w.top + c.height / 2, r: c.width / 2 });
+        if (++n < 8) window.setTimeout(follow, 160);
+      };
+      window.setTimeout(follow, 160);
+    };
+    if (lowPower()) { svg.call(zoom.transform, t); window.setTimeout(done, 120); }
+    else svg.transition().duration(450).call(zoom.transform, t).on("end", done).on("interrupt", () => { /* the user took over */ });
+    };
+  }
+  /** The item's moon around the opened group, by item id (filled in by enterFocus). */
+  const moonById = new Map<string, { b: Bubble; circle: SVGCircleElement }>();
+  let focusHome: d3.ZoomTransform | null = null;
+  function focusOnItem(ownerId: string, itemId: string) {
+    const owner = nodeById.get(ownerId);
+    if (!owner) return;
+    const viaPane = () => {
+      // not drawn as a moon (a past item, a kind switched off, or the classic view): its details pane instead
+      const b = bubblesFor(owner).find((x) => x.id === itemId) ?? allItemBubble(owner, itemId);
+      if (b && b.kind !== "thought" && cb.onItemClick) cb.onItemClick(b.kind, b.item as Project | CoalitionEvent | Action, owner);
+      else cb.onNodeClick(owner);
+    };
+    const go = () => {
+      const m = moonById.get(itemId);
+      if (!m || focusId !== ownerId) { viaPane(); return; }
+      zoomToItem(m.b, owner, m.circle);
+    };
+    if (focusId === ownerId && moonById.has(itemId)) { go(); return; }
+    enterFocus(ownerId);
+    api.setSelectedNode(owner);
+    if (!settings.showBubbles) { viaPane(); return; }
+    window.setTimeout(go, 700); // once the group has opened; zoomToItem then waits for the moon to stop moving
+  }
+  /** An item of this group whether or not it is currently drawn (past items included). */
+  function allItemBubble(owner: GraphNode, itemId: string): Bubble | undefined {
+    const lists: [BubbleKind, { id: string; name: string }[]][] = [
+      ["project", owner.kind === "org" ? orgProjects(data, owner) : owner.projects],
+      ["event", owner.kind === "org" ? orgEvents(data, owner) : owner.events],
+      ["action", owner.kind === "org" ? orgActions(data, owner) : owner.actions || []],
+    ];
+    for (const [kind, xs] of lists) {
+      const x = xs.find((i) => i.id === itemId);
+      if (x) return { id: x.id, kind, label: x.name, glyph: "", r: BUBBLE_R, item: x as Project | CoalitionEvent | Action };
+    }
+    return undefined;
+  }
+
+  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode, onMap = false) {
+    if (dragBlocked() && !onMap) return;
     const owner = ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null);
-    if (b.kind !== "thought" && owner && cb.onItemClick) {
+    if (b.kind !== "thought" && owner && cb.onItemClick && !onMap) {
       focusCard.style.display = "none";
       cb.onItemClick(b.kind, b.item as Project | CoalitionEvent | Action, owner);
       return;
     }
     while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
+    focusCard.classList.toggle("item-card", onMap);
+    if (onMap && owner) {
+      // The way back: to the group this belongs to, or out to the whole map.
+      const short = (owner as { abbrev?: string }).abbrev || shorten(owner.name, 22);
+      const toGroup = h("button", { class: "focus-card-nav", type: "button", title: `Back to ${owner.name}` }, `\u2190 ${short}`);
+      toGroup.addEventListener("click", (e) => {
+        e.stopPropagation();
+        itemZoomToken++;
+        focusCard.style.display = "none";
+        if (focusId === owner.id && focusHome) svg.transition().duration(450).call(zoom.transform, focusHome);
+        else { enterFocus(owner.id); api.setSelectedNode(owner); }
+      });
+      const toMap = h("button", { class: "focus-card-nav", type: "button" }, "Whole map");
+      toMap.addEventListener("click", (e) => {
+        e.stopPropagation();
+        itemZoomToken++;
+        focusCard.style.display = "none";
+        beforeFocus = null;
+        if (focusId) { exitFocus(); cb.onNodeDeselect?.(owner); }
+        else fitToView(true);
+      });
+      focusCard.appendChild(h("div", { class: "focus-card-navrow" }, toGroup, toMap));
+    }
     const it = b.item as Thought & Project & CoalitionEvent & Action;
     const kindLabel =
       b.kind === "thought" ? { topic: "Thinking · topic", decision: "Thinking · decision", question: "Thinking · open question", update: "Thinking · update" }[(it as Thought).kind] || "Thinking"
@@ -1581,6 +1701,18 @@ export function createGraph(
     if (b.kind !== "thought") {
       const btns = itemButtons(b.kind, it as { rsvp_link?: string; link?: string });
       if (btns) focusCard.appendChild(btns);
+    }
+    if (onMap && owner && b.kind !== "thought") {
+      focusCard.insertBefore(h("div", { class: "focus-card-owner" }, owner.name), focusCard.querySelector(".focus-card-meta, .focus-card-text, .item-buttons"));
+      if (cb.onItemClick) {
+        const more = h("button", { class: "focus-card-more", type: "button" }, "Full details \u203a");
+        more.addEventListener("click", (e) => {
+          e.stopPropagation();
+          focusCard.style.display = "none";
+          cb.onItemClick!(b.kind as "event" | "project" | "action", b.item as Project | CoalitionEvent | Action, owner);
+        });
+        focusCard.appendChild(more);
+      }
     }
     if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified, b.item as never));
     focusCard.style.visibility = "hidden";
@@ -1913,6 +2045,7 @@ export function createGraph(
     lastPos.delete(id);
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
+    moonById.clear();
     const bubbleEls: SVGGElement[] = [];
     const bubbleAngles: number[] = [];
     const bubbleLines: SVGLineElement[] = [];
@@ -1940,9 +2073,13 @@ export function createGraph(
       // Beside the moon: its full name and one line of when / what, reading away from the planet.
       bubbleLabels.push(radialLabel(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, a, b.r + 6, fullName(b), itemMeta(b), 11, 24)
         .attr("class", `moon-label k-${b.kind}`).node()!);
+      const moonCircle = g.select("circle").node() as SVGCircleElement;
+      if (b.kind !== "thought") moonById.set(b.id, { b, circle: moonCircle });
       outer.on("click", (event: Event) => {
         event.stopPropagation();
-        const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
+        if (dragBlocked()) return;
+        if (b.kind !== "thought") { zoomToItem(b, n, moonCircle); return; }
+        const cb2 = moonCircle.getBoundingClientRect();
         const wb = wrap.getBoundingClientRect();
         showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 });
       });
@@ -2149,6 +2286,7 @@ export function createGraph(
       const vcx = ((left + right) / 2 - (wr.left + wr.width / 2)) * sx;
       const vcy = ((top + bottom) / 2 - (wr.top + wr.height / 2)) * sy;
       const t = d3.zoomIdentity.translate(vcx - cx * scale, vcy - cy * scale).scale(scale);
+      focusHome = t; // an item card's "back to the group" returns here
       svg.transition().duration(600).call(zoom.transform, t);
     };
     // after this click has opened (or not) the details panel
@@ -2158,6 +2296,8 @@ export function createGraph(
 
   function exitFocus(fit = true) {
     if (!focusId) return;
+    moonById.clear();
+    focusHome = null;
     const n = nodeById.get(focusId);
     if (n) {
       n.fx = null;
@@ -2227,6 +2367,9 @@ export function createGraph(
     },
     focusOnNode(id) {
       enterFocus(id);
+    },
+    focusOnItem(ownerId, itemId) {
+      focusOnItem(ownerId, itemId);
     },
     focusOnCoalition(id) {
       enterFocus(id);
