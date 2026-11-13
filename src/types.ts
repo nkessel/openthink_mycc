@@ -124,6 +124,8 @@ export interface Coalition {
   thoughts?: Thought[];
   /** Sector layer id (src/sectors.ts) when this came from a sector file rather than the climate map. */
   sector?: string;
+  /** The coalition's own social media accounts: links, separated by commas or new lines. */
+  social_links?: string;
 }
 
 export interface Organization {
@@ -144,6 +146,8 @@ export interface Organization {
   /** No public location: listed, but no pin on the geographic map. */
   remote?: boolean;
   public_contact?: string;
+  /** The group's own social media accounts: links (or @handles), separated by commas or new lines. */
+  social_links?: string;
   topic_tags?: string[];
   profile?: OrgProfile;
   /** Strength of each coalition tie (1–4), keyed by coalition id. */

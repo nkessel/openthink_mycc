@@ -90,7 +90,7 @@ async function boot(token: string) {
 
 const KIND_BASE: Obj = { event: "Event", project: "Project", action: "Action or volunteer role" };
 const LABEL: Obj = {
-  name: "Name", description: "Description", website: "Website", geographic_focus: "Where you work (towns or region)",
+  name: "Name", description: "Description", website: "Website", social_links: "Social media (links to your group's own accounts, separated by commas)", geographic_focus: "Where you work (towns or region)",
   geographic_scope: "Geographic scope", public_contact: "Public contact (email or phone people can use)", date: "Starts",
   end: "Ends", location: "Where", online: "Online", link: "Web page", rsvp_link: "Sign-up / RSVP link", status: "Status", deadline: "Deadline",
 };
@@ -263,7 +263,7 @@ function start(DATA: Obj, token: string) {
     const edited = s.fields && Object.keys(s.fields).length;
     const box = el(`<div class="box card${s.decision === "remove" ? " removed" : ""}" id="card-${esc(c.id)}"></div>`);
     const head = `<div class="kind">${esc(KIND[k])}${edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
-    const meta = [when(c), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link")].filter(Boolean).map(esc).join(" · ");
+    const meta = [when(c), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "social_links")].filter(Boolean).map(esc).join(" · ");
     if (!ed) {
       box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc">${esc(val(c, "description"))}</p>` : `<p class="desc empty">No description yet.</p>`) + `<button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button>`;
     } else {

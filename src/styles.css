@@ -3346,3 +3346,9 @@ html, body { overflow-x: clip; max-width: 100%; }
   .focus-sizes { top: auto; bottom: 64px; right: 8px; width: min(240px, calc(100% - 16px)); }
 }
 .ctrl-subhead { margin: 14px 0 2px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); }
+
+/* A group's social media accounts in its details (links.ts socialLinks, Nov 13). */
+.social-links { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.social-links .social-link { padding: 3px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; color: var(--text); }
+.social-links a.social-link { color: #7dd3fc; text-decoration: none; }
+.social-links a.social-link:hover { border-color: #7dd3fc; }

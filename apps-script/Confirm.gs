@@ -30,8 +30,8 @@ var LOCK_SECONDS = 150;
 var PING_SECONDS = 15;
 /** Fields a point person can change on each kind of card (sheet column names). */
 var CONFIRM_FIELDS = {
-  org: ['name', 'description', 'website', 'geographic_focus', 'public_contact'],
-  coalition: ['name', 'description', 'website', 'geographic_scope'],
+  org: ['name', 'description', 'website', 'social_links', 'geographic_focus', 'public_contact'],
+  coalition: ['name', 'description', 'website', 'social_links', 'geographic_scope'],
   event: ['name', 'date', 'end', 'location', 'online', 'description', 'link', 'rsvp_link'],
   project: ['name', 'description', 'status', 'location', 'online', 'link'],
   action: ['name', 'description', 'deadline', 'link'],
@@ -471,6 +471,8 @@ function confirmApply_(orgId, state, who, t, kind, others) {
   var o = state && state.org;
   if (o && o.decision === 'approve' && findById_(coalition ? t.coalitions : t.orgs, orgId)) {
     var op = clean(cardKind, o.fields);
+    // Sheets made before a field existed (social_links, Nov 13) get its column here; upsert_ skips unknown columns.
+    addMissingColumns_(ss_().getSheetByName(coalition ? TAB.coalitions : TAB.orgs), COLS[coalition ? TAB.coalitions : TAB.orgs]);
     var r = upsert_(coalition ? TAB.coalitions : TAB.orgs, coalition ? 'coalition' : 'organization', '[' + orgId + ']', '', op);
     if (r.changes) counts.edited++;
     record(r, coalition ? 'coalition' : 'organization');

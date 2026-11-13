@@ -238,10 +238,11 @@ var PROFILE_COLS = PROFILE_BOOL.concat(PROFILE_NUM, PROFILE_STR);
 
 var COLS = {
   'Coalitions': ['id', 'name', 'abbrev', 'description', 'focus_tags', 'geographic_scope', 'color', 'lat', 'lng', 'last_activity',
-    'logo', 'website'],
+    'logo', 'website', 'social_links'],
+  // social_links (Nov 13): the group's own social media accounts, as links, separated by commas or new lines.
   'Organizations': ['id', 'name', 'abbrev', 'type', 'geographic_focus', 'description', 'coalition_ids', 'topic_tags',
     'website', 'logo', 'public_contact', 'hq_address', 'remote', 'lat', 'lng', 'last_activity', 'hidden',
-    'coalition_weights'].concat(PROFILE_COLS),
+    'coalition_weights'].concat(PROFILE_COLS).concat(['social_links']),
   'Connections': ['from_org', 'to_org', 'frequency', 'updated_at', 'reported_by'],
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
     'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info', 'verified',
@@ -2443,7 +2444,7 @@ function buildDataFile_(t, generatedAt) {
       description: str(o.description),
       coalition_ids: list_(o.coalition_ids).filter(function (id) { return coalitionIds[id]; }),
       lat: Number(o.lat), lng: Number(o.lng), last_activity: str(o.last_activity),
-    }, o, ['abbrev', 'website', 'logo', 'public_contact', 'topic_tags', 'remote']);
+    }, o, ['abbrev', 'website', 'logo', 'public_contact', 'topic_tags', 'remote', 'social_links']);
     var prof = {};
     PROFILE_BOOL.forEach(function (k) { if (str(o[k])) prof[k] = isTrue_(o[k]); });
     PROFILE_NUM.forEach(function (k) { if (str(o[k]) && !isNaN(Number(o[k]))) prof[k] = Number(o[k]); });
@@ -2502,6 +2503,7 @@ function buildDataFile_(t, generatedAt) {
       projects: projects['c:' + c.id] || [], events: events['c:' + c.id] || [], actions: actions['c:' + c.id] || [],
       last_activity: str(c.last_activity),
       logo: str(c.logo) || undefined, website: str(c.website) || undefined,
+      social_links: str(c.social_links) || undefined,
     };
   });
 
