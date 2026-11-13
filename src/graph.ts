@@ -1354,19 +1354,31 @@ export function createGraph(
     trailItems();
   });
 
-  // Auto-fit once the simulation has settled enough
+  // Keep the whole map in view while the layout unfolds, then once more when it has settled. (Nov 13: the fit used to
+  // happen only at the end, hidden behind the loading screen; now that the map shows sooner, phones saw it start far
+  // zoomed in and then jump out.) It stops as soon as the visitor moves the map themselves.
   let didInitialFit = false;
+  let visitorMoved = false;
+  for (const type of ["wheel", "pointerdown", "touchstart"]) {
+    svg.node()!.addEventListener(type, () => { visitorMoved = true; }, { capture: true, passive: true, once: true });
+  }
+  let fitTicks = 0;
+  sim.on("tick.fit", () => {
+    if (didInitialFit || visitorMoved || focusId) return;
+    if (fitTicks++ % 6 === 0) fitToView(false);
+  });
+  fitToView(false); // and once right now, so even the very first frame shows everything
   sim.on("end", () => {
     if (largePrint()) scheduleNameCull();
     if (didInitialFit) return;
     didInitialFit = true;
-    fitToView(false);
+    if (!visitorMoved && !focusId) fitToView(false);
   });
   // Fallback in case "end" doesn't fire in time (large graphs)
   setTimeout(() => {
     if (didInitialFit) return;
     didInitialFit = true;
-    fitToView(false);
+    if (!visitorMoved && !focusId) fitToView(false);
   }, 2500);
 
   /** If nothing is on screen (panned away, zoomed past everything, or the pane was hidden), reset the view. */
