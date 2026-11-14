@@ -89,11 +89,51 @@ export function createTopbar(
   const nav = h("nav", { class: "tabs", id: "top-tabs", "aria-label": "Pages" });
   const menuLabel = h("span", { class: "tab-menu-label" }, tabs.find((t) => t.id === active)?.label ?? "Menu");
   const menuBtn = h("button", { class: "tab-menu-btn", type: "button", title: "Pages: map, topics and lists", "aria-label": "Menu of pages", "aria-haspopup": "true", "aria-expanded": "false", "aria-controls": "top-tabs" },
-    menuLabel, h("span", { class: "tab-menu-icon", "aria-hidden": "true" }, "\u2630"));
+    menuLabel, h("span", { class: "tab-menu-icon", "aria-hidden": "true" }));
+  // Nov 12: a down arrow instead of the three lines (next to a page name it reads as "switch page", where the three
+  // lines read as "settings"), and a one-time hint on a phone's first visit.
+  (menuBtn.lastElementChild as HTMLElement).innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+  let dropHint: () => void = () => {};
   const setOpen = (open: boolean) => {
     bar.classList.toggle("menu-open", open);
     menuBtn.setAttribute("aria-expanded", String(open));
+    if (open) dropHint();
   };
+  const HINT_KEY = "openthink.pagesHint";
+  const hintSeen = () => { try { return localStorage.getItem(HINT_KEY) === "1"; } catch { return true; } };
+  if (!hintSeen()) {
+    let tries = 0;
+    const wait = window.setInterval(() => {
+      const boot = document.getElementById("boot");
+      const ready = !boot || boot.classList.contains("done");
+      if (++tries > 80 || hintSeen()) { window.clearInterval(wait); return; }
+      if (!ready) return;
+      window.clearInterval(wait);
+      if (menuBtn.offsetParent === null) return; // wide screen: the pages are already in the bar
+      const tip = h("div", { class: "pages-hint", role: "status" },
+        h("span", { class: "pages-hint-arrow", "aria-hidden": "true" }),
+        h("div", {}, "Tap here for other pages: a geographic map, topics, and lists of events and projects."));
+      const ok = h("button", { type: "button", class: "pages-hint-ok" }, "Got it");
+      tip.appendChild(ok);
+      const place = () => {
+        const r = menuBtn.getBoundingClientRect();
+        tip.style.top = `${Math.round(r.bottom + 10)}px`;
+        (tip.firstElementChild as HTMLElement).style.right = `${Math.max(14, Math.round(window.innerWidth - 8 - (r.left + r.width / 2) - 7))}px`;
+      };
+      dropHint = () => {
+        dropHint = () => {};
+        try { localStorage.setItem(HINT_KEY, "1"); } catch { /* private mode: it shows again next time */ }
+        window.removeEventListener("resize", place);
+        menuBtn.classList.remove("hinting");
+        tip.remove();
+      };
+      ok.addEventListener("click", (e) => { e.stopPropagation(); dropHint(); });
+      window.addEventListener("resize", place);
+      document.body.appendChild(tip);
+      menuBtn.classList.add("hinting");
+      place();
+    }, 500);
+  }
   menuBtn.addEventListener("click", (e) => { e.stopPropagation(); setOpen(!bar.classList.contains("menu-open")); });
   document.addEventListener("click", (e) => { if (!nav.contains(e.target as Node)) setOpen(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });

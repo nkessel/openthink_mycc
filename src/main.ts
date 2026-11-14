@@ -14,7 +14,7 @@ import { h, clear } from "./dom";
 import { FORMS } from "./forms.config";
 import { applyKindStyle } from "./kinds.config";
 applyKindStyle(); // item-type colours from kinds.config.ts
-import { webLogo } from "./weblogos";
+import { webLogo, tinyLogo } from "./weblogos";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkSources } from "./sourcecheck";
@@ -159,7 +159,8 @@ async function main() {
   // a different order each visit, so a quick load still shows something new
   for (let i = facts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [facts[i], facts[j]] = [facts[j], facts[i]]; }
   for (const f of facts) bootDetail(f);
-  const logosReady = preloadLogos(groups.map((g) => g.logo));
+  // The map's first view uses the 32px copies for groups (graph.ts sharpens them later); coalitions are few and large.
+  const logosReady = preloadLogos([...data.coalitions.map((c) => c.logo), ...data.organizations.map((o) => tinyLogo(o.logo))]);
 
   let activeTab: TopTab = "map";
 
@@ -544,14 +545,27 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), data: d })); } catch { /* full */ }
       return d;
     });
-    // Wait a little for the live sheet even with a saved copy, so the newest data shows straight away most of the time.
-    const inTime = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), cached ? 3000 : 2500))]).catch(() => null);
-    if (inTime) return inTime;
-    let first: DataFile | null = cached;
-    if (!first) {
+    // With a saved copy there is no wait (Nov 12): the sheet takes 4 to 6 s, so a 3 s wait almost never won and only
+    // held the loading screen. The newer data still arrives by itself (applyLateUpdate).
+    // A first visit fetches the nightly snapshot at the same time (Nov 13): when it is under two days old it is shown
+    // straight away; otherwise the sheet gets up to 2.5 s as before.
+    const early = cached ? null : (async () => {
       for (const u of map.sources.filter((x) => x !== liveUrl)) {
-        try { first = await get(u, 8000); break; } catch (err) { lastErrBg = err; }
+        try { return await get(u, 8000); } catch (err) { lastErrBg = err; }
       }
+      return null;
+    })();
+    const recent = (d: DataFile | null) => !!d && Date.now() - Date.parse(d.generated_at || "") < 2 * 86400000;
+    const never = new Promise<never>(() => { /* stays pending */ });
+    const won = await Promise.race([
+      live.then((d) => ({ d, live: true })),
+      early ? early.then((d) => (recent(d) ? { d: d!, live: false } : never)) : never,
+      new Promise<null>((r) => setTimeout(() => r(null), cached ? 0 : 2500)),
+    ]).catch(() => null);
+    if (won?.live) return won.d;
+    let first: DataFile | null = won?.d ?? cached;
+    if (!first) {
+      first = early ? await early : null;
       if (!first) return live; // nothing else to show: wait for the sheet after all
     }
     const shownKey = strip(first);
