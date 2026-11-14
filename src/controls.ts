@@ -156,12 +156,17 @@ export function createControls(
   // The opened-group size sliders appear twice (Map settings, and the panel on the map while a group is open):
   // both copies stay in step.
   const focusInputs = new Map<string, HTMLInputElement[]>();
-  type FocusKey = "focusSize" | "focusMoonSize" | "focusCoalSize" | "focusSatSize";
+  type FocusKey = "focusSize" | "focusMoonSize" | "focusCoalSize" | "focusSatSize" | "focusSpace" | "focusRowGap";
   const FOCUS_SLIDERS: [FocusKey, string, number, number, number, string][] = [
     ["focusSize", "This group", 0.4, 1.6, 0.05, "The group you clicked"],
     ["focusMoonSize", "Its events, projects & actions", 0.4, 2.5, 0.05, "The small circles right around it"],
     ["focusCoalSize", "Its coalitions", 0.3, 2, 0.05, "The coalitions it belongs to"],
     ["focusSatSize", "Partner groups", 1, 7, 0.25, "Groups it works with"],
+  ];
+  // ...and its spacing (Nov 13: these were only in Map settings, so the panel on the map had no way to spread things out)
+  const FOCUS_SPACING: [FocusKey, string, number, number, number, string][] = [
+    ["focusSpace", "Room around its activity", 0.4, 1.6, 0.05, "How far its partner groups sit from its events, projects and actions"],
+    ["focusRowGap", "Space between partner rows", 0.4, 1.6, 0.05, "The rings of coalitions and partner groups around it"],
   ];
   function focusSlider(key: FocusKey, label: string, min: number, max: number, step: number, hint: string): HTMLElement {
     const el = makeSlider(label, state.settings[key], (v) => {
@@ -379,18 +384,7 @@ export function createControls(
   );
   // the zoomed-in view after you click a group (Oct 26 sliders, moved here Oct 29)
   coalBody.appendChild(h("div", { class: "ctrl-label weight-head" }, "When you open a group"));
-  for (const [label, key, hint] of [
-    ["Room around its activity", "focusSpace", "Closer ← → further: how far its partner groups sit from its events, projects and actions."],
-    ["Space between partner rows", "focusRowGap", "Tighter ← → looser: the rings of coalitions and partner groups around it."],
-  ] as const) {
-    coalBody.appendChild(
-      makeSlider(label, state.settings[key], (v) => {
-        state.settings[key] = v;
-        cb.onSettingsChange({ [key]: v });
-        saveState(state);
-      }, { min: 0.4, max: 1.6, step: 0.05, hint }),
-    );
-  }
+  for (const [k, label, min, max, step, hint] of FOCUS_SPACING) coalBody.appendChild(focusSlider(k, label, min, max, step, hint));
   parent.insertBefore(coalSection, bubbleSection.nextSibling); // right under Bubble size weighting
 
   // ---- Group types ----
@@ -493,14 +487,19 @@ export function createControls(
     },
     focusPanel() {
       const KEY = "openthink.sizes.closed";
-      let closed = false;
-      try { closed = localStorage.getItem(KEY) === "1"; } catch { /* ignore */ }
+      const BOX = "openthink.sizes.box";
+      // Starts folded (Nov 13: it opened by itself over the map on phones); opening it is remembered on this device.
+      let closed = true;
+      try { closed = localStorage.getItem(KEY) !== "0"; } catch { /* ignore */ }
       const body = h("div", { class: "fsp-body", id: "fsp-body" });
+      body.appendChild(h("div", { class: "fsp-sub" }, "Sizes"));
       for (const [k, label, min, max, step, hint] of FOCUS_SLIDERS) body.appendChild(focusSlider(k, label, min, max, step, hint));
-      const reset = h("button", { type: "button", class: "fsp-reset" }, "Back to default sizes");
+      body.appendChild(h("div", { class: "fsp-sub" }, "Spacing"));
+      for (const [k, label, min, max, step, hint] of FOCUS_SPACING) body.appendChild(focusSlider(k, label, min, max, step, hint));
+      const reset = h("button", { type: "button", class: "fsp-reset" }, "Back to defaults");
       reset.addEventListener("click", () => {
         const d: Partial<Record<FocusKey, number>> = {};
-        for (const [k] of FOCUS_SLIDERS) {
+        for (const [k] of [...FOCUS_SLIDERS, ...FOCUS_SPACING]) {
           state.settings[k] = DEFAULT_GRAPH_SETTINGS[k];
           d[k] = DEFAULT_GRAPH_SETTINGS[k];
           for (const i of focusInputs.get(k) || []) i.value = String(DEFAULT_GRAPH_SETTINGS[k]);
@@ -509,16 +508,86 @@ export function createControls(
         saveState(state);
       });
       body.appendChild(reset);
-      const toggle = h("button", { type: "button", class: "fsp-head", "aria-expanded": String(!closed), "aria-controls": "fsp-body" },
-        h("span", {}, "Sizes in this view"), h("span", { class: "fsp-chev", "aria-hidden": "true" }, "\u25be"));
-      const panel = h("div", { class: `focus-sizes${closed ? " closed" : ""}`, role: "region", "aria-label": "Sizes in this view" }, toggle, body);
-      toggle.addEventListener("click", () => {
+      const grip = h("span", { class: "fsp-grip", "aria-hidden": "true" });
+      grip.innerHTML = '<svg viewBox="0 0 10 16" width="10" height="16" fill="currentColor"><circle cx="2" cy="3" r="1.5"/><circle cx="8" cy="3" r="1.5"/><circle cx="2" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="2" cy="13" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>';
+      const toggle = h("button", { type: "button", class: "fsp-head", "aria-expanded": String(!closed), "aria-controls": "fsp-body", title: "Tap to open or close; drag to move" },
+        grip, h("span", { class: "fsp-title" }, "Sizes and spacing"), h("span", { class: "fsp-chev", "aria-hidden": "true" }, "\u25be"));
+      const sizer = h("span", { class: "fsp-resize", "aria-hidden": "true", title: "Drag to resize" });
+      const panel = h("div", { class: `focus-sizes${closed ? " closed" : ""}`, role: "region", "aria-label": "Sizes and spacing in this view" }, toggle, body, sizer);
+
+      // Move it by its title bar and resize it by its corner (Nov 13), with a mouse or a finger. Where it was put, and
+      // its size, are remembered on this device; it is always kept inside the map.
+      // Positions are worked out from the numbers set here, never read back from the page: in low-power mode every
+      // style change eases over a millisecond, so a read right after a write still sees the old place.
+      const host = () => panel.parentElement;
+      let size: { w?: number; h?: number } = {};
+      const place = (l: number, t: number) => {
+        const p = host()?.getBoundingClientRect();
+        if (!p || p.width < 50) return;
+        if (size.w !== undefined) { size.w = Math.max(200, Math.min(size.w, p.width - 8)); panel.style.width = `${Math.round(size.w)}px`; }
+        if (size.h !== undefined) { size.h = Math.max(120, Math.min(size.h, p.height - 8)); panel.style.height = `${Math.round(size.h)}px`; }
+        const w = size.w ?? panel.offsetWidth;
+        const h = Math.min(panel.classList.contains("closed") ? panel.offsetHeight : size.h ?? panel.offsetHeight, p.height - 8);
+        Object.assign(panel.style, {
+          left: `${Math.round(Math.max(4, Math.min(l, p.width - w - 4)))}px`,
+          top: `${Math.round(Math.max(4, Math.min(t, p.height - h - 4)))}px`,
+          right: "auto", bottom: "auto",
+        });
+      };
+      const where = () => { // the panel's place in the map, from the stylesheet's corner position the first time
+        if (panel.style.left) return { l: parseFloat(panel.style.left), t: parseFloat(panel.style.top) };
+        const p = host()!.getBoundingClientRect(), r = panel.getBoundingClientRect();
+        return { l: r.left - p.left, t: r.top - p.top };
+      };
+      const keepInside = () => { if (panel.style.left && panel.offsetParent !== null) { const w = where(); place(w.l, w.t); } };
+      const save = () => { try { localStorage.setItem(BOX, JSON.stringify({ l: panel.style.left, t: panel.style.top, w: size.w, h: size.h })); } catch { /* ignore */ } };
+      try {
+        const b = JSON.parse(localStorage.getItem(BOX) || "null") as { l?: string; t?: string; w?: number; h?: number } | null;
+        if (typeof b?.w === "number") { size.w = b.w; panel.style.width = `${b.w}px`; }
+        if (typeof b?.h === "number") { size.h = b.h; panel.style.height = `${b.h}px`; }
+        if (b?.l && b.t) Object.assign(panel.style, { left: b.l, top: b.t, right: "auto", bottom: "auto" });
+      } catch { /* ignore */ }
+      new ResizeObserver(() => keepInside()).observe(panel); // also runs when the panel appears
+      window.addEventListener("resize", () => keepInside());
+
+      let suppressClick = false;
+      const track = (handle: HTMLElement, onMove: (dx: number, dy: number, from: { l: number; t: number; w: number; h: number }) => void, needs = 6) => {
+        let start: { x: number; y: number; id: number; from: { l: number; t: number; w: number; h: number }; moving: boolean } | null = null;
+        handle.addEventListener("pointerdown", (e) => {
+          if (e.button !== 0) return;
+          start = { x: e.clientX, y: e.clientY, id: e.pointerId, from: { ...where(), w: size.w ?? panel.offsetWidth, h: size.h ?? panel.offsetHeight }, moving: false };
+        });
+        handle.addEventListener("pointermove", (e) => {
+          if (!start || e.pointerId !== start.id) return;
+          const dx = e.clientX - start.x, dy = e.clientY - start.y;
+          if (!start.moving) {
+            if (Math.hypot(dx, dy) < needs) return;
+            start.moving = true;
+            handle.setPointerCapture(e.pointerId);
+            panel.classList.add("moving");
+          }
+          e.preventDefault();
+          onMove(dx, dy, start.from);
+        });
+        const end = () => {
+          if (start?.moving) { panel.classList.remove("moving"); save(); if (handle === toggle) suppressClick = true; }
+          start = null;
+        };
+        handle.addEventListener("pointerup", end);
+        handle.addEventListener("pointercancel", end);
+      };
+      track(toggle, (dx, dy, f) => place(f.l + dx, f.t + dy));
+      track(sizer, (dx, dy, f) => { size = { w: f.w + dx, h: f.h + dy }; place(f.l, f.t); }, 1);
+
+      toggle.addEventListener("click", (e) => {
+        if (suppressClick) { suppressClick = false; e.preventDefault(); return; } // that was a drag, not a tap
         closed = !panel.classList.toggle("closed") ? false : true;
         toggle.setAttribute("aria-expanded", String(!closed));
         try { localStorage.setItem(KEY, closed ? "1" : "0"); } catch { /* ignore */ }
+        requestAnimationFrame(() => keepInside());
       });
       // stop map drags/zooms starting on the panel
-      for (const ev of ["pointerdown", "wheel", "dblclick"]) panel.addEventListener(ev, (e) => e.stopPropagation());
+      for (const ev of ["pointerdown", "wheel", "dblclick", "touchstart"]) panel.addEventListener(ev, (e) => e.stopPropagation());
       return panel;
     },
     advancedContainer() {

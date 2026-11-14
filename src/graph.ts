@@ -1359,32 +1359,79 @@ export function createGraph(
     trailItems();
   });
 
-  // Keep the whole map in view while the layout unfolds, then once more when it has settled. (Nov 13: the fit used to
-  // happen only at the end, hidden behind the loading screen; now that the map shows sooner, phones saw it start far
-  // zoomed in and then jump out.) It stops as soon as the visitor moves the map themselves.
+  // A still first view (Nov 13). The layout used to unfold on screen for several seconds, and the page reloads once
+  // when newer data arrives from the sheet, which laid everything out again. Now:
+  //  - when this device has seen the map with the same settings, each group starts where it settled last time, so
+  //    the map hardly moves (also across that reload);
+  //  - otherwise the layout is worked out ahead, behind the loading screen, for up to half a second;
+  //  - the view is fitted once, then again (smoothly) only if the map ended up noticeably bigger or smaller.
+  // The fitting stops as soon as the visitor moves the map themselves.
+  const layoutSig = [settings.showBubbles, allNodes.filter((n) => n.sector).length, settings.repelForce, settings.coalitionRepel,
+    settings.centerForce, settings.linkForce, settings.linkDistance, settings.nodeSize].join("|");
+  let mapHash = 0;
+  for (const ch of data.coalitions.map((c) => c.id).sort().join(",")) mapHash = (mapHash * 31 + ch.charCodeAt(0)) | 0;
+  const LAYOUT_KEY = `openthink.layout.${location.pathname}.${mapHash}`;
+  let restored = 0;
+  try {
+    const saved = JSON.parse(localStorage.getItem(LAYOUT_KEY) || "null") as { at: number; sig: string; pos: Record<string, [number, number]> } | null;
+    if (saved && saved.sig === layoutSig && Date.now() - saved.at < 30 * 86400000) {
+      for (const n of allNodes) {
+        const p = saved.pos[n.id];
+        if (p) { n.x = p[0]; n.y = p[1]; n.vx = 0; n.vy = 0; restored++; }
+      }
+      if (restored && restored < allNodes.length) {
+        // a group that is new since then starts next to a group it is linked to
+        const has = new Set(allNodes.filter((n) => saved.pos[n.id]).map((n) => n.id));
+        for (const l of allLinks) {
+          const a = l.source as GraphNode, b = l.target as GraphNode;
+          if (typeof a !== "object" || typeof b !== "object") continue;
+          const [from, to] = has.has(a.id) && !has.has(b.id) ? [a, b] : has.has(b.id) && !has.has(a.id) ? [b, a] : [null, null];
+          if (!from || !to) continue;
+          to.x = (from.x ?? 0) + (Math.random() - 0.5) * 80; to.y = (from.y ?? 0) + (Math.random() - 0.5) * 80;
+          has.add(to.id);
+        }
+      }
+    }
+  } catch { /* private mode: lay out from scratch */ }
+  if (restored >= allNodes.length * 0.7) {
+    sim.alpha(restored === allNodes.length ? 0.03 : 0.1); // a nudge only
+  } else {
+    const until = performance.now() + (lowPower() || weakDevice() ? 250 : 500);
+    while (sim.alpha() > 0.05 && performance.now() < until) sim.tick();
+  }
+  const saveLayout = () => {
+    if (focusId || !allNodes.length) return; // an opened group moves the others aside
+    const pos: Record<string, [number, number]> = {};
+    for (const n of allNodes) if (n.x !== undefined && n.y !== undefined) pos[n.id] = [Math.round(n.x), Math.round(n.y)];
+    try { localStorage.setItem(LAYOUT_KEY, JSON.stringify({ at: Date.now(), sig: layoutSig, pos })); } catch { /* full */ }
+  };
+  window.addEventListener("pagehide", saveLayout);
+
   let didInitialFit = false;
   let visitorMoved = false;
   for (const type of ["wheel", "pointerdown", "touchstart"]) {
     svg.node()!.addEventListener(type, () => { visitorMoved = true; }, { capture: true, passive: true, once: true });
   }
-  let fitTicks = 0;
-  sim.on("tick.fit", () => {
-    if (didInitialFit || visitorMoved || focusId) return;
-    if (fitTicks++ % 6 === 0) fitToView(false);
-  });
-  fitToView(false); // and once right now, so even the very first frame shows everything
+  fitToView(false); // the very first frame already shows everything
+  const lastFit = () => {
+    if (didInitialFit) return;
+    didInitialFit = true;
+    if (visitorMoved || focusId) return;
+    const before = currentTransform;
+    const t = fitTransform();
+    if (!t) return;
+    const { w, h } = dimensions();
+    const off = Math.abs(t.k / before.k - 1) > 0.08 || Math.abs(t.x - before.x) > w * 0.06 || Math.abs(t.y - before.y) > h * 0.06;
+    if (off) fitToView(true);
+  };
   sim.on("end", () => {
     if (largePrint()) scheduleNameCull();
-    if (didInitialFit) return;
-    didInitialFit = true;
-    if (!visitorMoved && !focusId) fitToView(false);
+    if (layoutSig === [settings.showBubbles, allNodes.filter((n) => n.sector).length, settings.repelForce, settings.coalitionRepel,
+      settings.centerForce, settings.linkForce, settings.linkDistance, settings.nodeSize].join("|")) saveLayout();
+    lastFit();
   });
   // Fallback in case "end" doesn't fire in time (large graphs)
-  setTimeout(() => {
-    if (didInitialFit) return;
-    didInitialFit = true;
-    if (!visitorMoved && !focusId) fitToView(false);
-  }, 2500);
+  setTimeout(lastFit, 4000);
 
   /** If nothing is on screen (panned away, zoomed past everything, or the pane was hidden), reset the view. */
   function ensureInView() {
@@ -1400,6 +1447,13 @@ export function createGraph(
   window.addEventListener("resize", () => setTimeout(ensureInView, 200));
 
   function fitToView(animate = true) {
+    const t = fitTransform();
+    if (!t) return;
+    const target = animate ? svg.transition().duration(600) : svg;
+    target.call(zoom.transform, t);
+  }
+  /** The view that shows the whole map (its main cluster), or null when nothing is placed yet. */
+  function fitTransform(): d3.ZoomTransform | null {
     let xs: number[] = [];
     let ys: number[] = [];
     const keep: number[][] = []; // the money layer's groups are always in the first view, never trimmed as strays
@@ -1417,7 +1471,7 @@ export function createGraph(
       ys.push(n.y - r - 14, n.y + r + 14);
       if (n.sector === "opposition" || n.sector === "money-hub") keep.push([n.x - r, n.x + r, n.y - r - 14, n.y + r + 14]);
     });
-    if (!xs.length) return;
+    if (!xs.length) return null;
     // Fit the main cluster: a few unconnected orgs drift far out and would otherwise shrink
     // everything (tiny on phones). They stay reachable by panning or zooming out.
     const q = (arr: number[], p: number) => {
@@ -1439,9 +1493,7 @@ export function createGraph(
     const scale = Math.min(w / bw, h / bh, 1.6);
     const cx = (minX + maxX) / 2;
     const cy = (minY + maxY) / 2;
-    const t = d3.zoomIdentity.translate(-cx * scale, -cy * scale).scale(scale);
-    const target = animate ? svg.transition().duration(600) : svg;
-    target.call(zoom.transform, t);
+    return d3.zoomIdentity.translate(-cx * scale, -cy * scale).scale(scale);
   }
 
   // ----- Visibility filtering -----

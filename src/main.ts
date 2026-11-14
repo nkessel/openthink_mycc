@@ -546,14 +546,26 @@ async function loadData(map: MapDef = currentMap): Promise<DataFile> {
       return d;
     });
     // With a saved copy there is no wait (Nov 12): the sheet takes 4 to 6 s, so a 3 s wait almost never won and only
-    // held the loading screen. The newer data still arrives by itself (applyLateUpdate). A first visit waits as before.
-    const inTime = await Promise.race([live, new Promise<null>((r) => setTimeout(() => r(null), cached ? 0 : 2500))]).catch(() => null);
-    if (inTime) return inTime;
-    let first: DataFile | null = cached;
-    if (!first) {
+    // held the loading screen. The newer data still arrives by itself (applyLateUpdate).
+    // A first visit fetches the nightly snapshot at the same time (Nov 13): when it is under two days old it is shown
+    // straight away; otherwise the sheet gets up to 2.5 s as before.
+    const early = cached ? null : (async () => {
       for (const u of map.sources.filter((x) => x !== liveUrl)) {
-        try { first = await get(u, 8000); break; } catch (err) { lastErrBg = err; }
+        try { return await get(u, 8000); } catch (err) { lastErrBg = err; }
       }
+      return null;
+    })();
+    const recent = (d: DataFile | null) => !!d && Date.now() - Date.parse(d.generated_at || "") < 2 * 86400000;
+    const never = new Promise<never>(() => { /* stays pending */ });
+    const won = await Promise.race([
+      live.then((d) => ({ d, live: true })),
+      early ? early.then((d) => (recent(d) ? { d: d!, live: false } : never)) : never,
+      new Promise<null>((r) => setTimeout(() => r(null), cached ? 0 : 2500)),
+    ]).catch(() => null);
+    if (won?.live) return won.d;
+    let first: DataFile | null = won?.d ?? cached;
+    if (!first) {
+      first = early ? await early : null;
       if (!first) return live; // nothing else to show: wait for the sheet after all
     }
     const shownKey = strip(first);
