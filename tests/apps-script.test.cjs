@@ -647,6 +647,21 @@ console.log("second round trip (org-owned items, locations, links) OK");
   console.log("reviewed connections import OK");
 }
 {
+  // social media links from the website check (Nov 14): only empty cells, only rows without a note, one cell per group
+  const rows = [["group_id","group_name","site_used","site_source","platform","handle","url","found_on","note"],
+    ["a","A","","website","instagram","a1","https://www.instagram.com/a1","",""],
+    ["a","A","","website","facebook","a1","https://www.facebook.com/a1","",""],
+    ["a","A","","website","instagram","a1","https://www.instagram.com/a1","x",""],
+    ["b","B","","website","instagram","nat","https://www.instagram.com/nat","","probably a national account"],
+    ["c","C","","website","instagram","c","https://www.instagram.com/c","",""],
+    ["mpf","MPF","","website","x","mpf","https://x.com/mpf","",""],
+    ["zz","ZZ","","website","x","zz","https://x.com/zz","",""], ["a","A","","","","","","","no social links on the site"]];
+  const t = { orgs: [{ id: "a" }, { id: "b" }, { id: "c", social_links: "https://bsky.app/profile/c" }], coalitions: [{ id: "mpf" }] };
+  const out = J(G("socialLinksToFill_")(rows, t));
+  assert.deepEqual(out, [{ tab: "org", id: "a", links: "https://www.instagram.com/a1, https://www.facebook.com/a1" }, { tab: "coalition", id: "mpf", links: "https://x.com/mpf" }]);
+  console.log("social links from the website check OK");
+}
+{
   // The org form update keeps the typed "works with" box and removes the old grid (it used to add it back).
   const T = { TEXT: "TEXT", PARAGRAPH_TEXT: "P", CHECKBOX: "CB", GRID: "GRID", PAGE_BREAK: "PB" };
   let items = [
@@ -756,7 +771,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const LCo = linkOf("mycc", "coalition");
   const gc = get(LCo.token).data;
   assert.equal(gc.kind, "coalition"); assert.equal(gc.org.kind, "coalition"); assert.equal(gc.org.id, "mycc");
-  assert.deepEqual(Object.keys(gc.org).sort(), ["description", "geographic_scope", "id", "kind", "name", "website"]);
+  assert.deepEqual(Object.keys(gc.org).sort(), ["description", "geographic_scope", "id", "kind", "name", "social_links", "website"]);
   assert.ok(gc.items.some((i) => i.id === "mycc_e_call_1004" && i.kind === "event"), "coalition-tagged events are its items");
   assert.ok(gc.items.every((i) => ctx.readAll_().events.concat(ctx.readAll_().projects, ctx.readAll_().actions).find((r) => r.id === i.id).coalition_id === "mycc"));
   assert.equal(gc.pointPeople.length, 1, "the coalition's existing point person (Editors coalition_ids)");
@@ -835,7 +850,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
     [foreign.id]: { kind: "event", decision: "remove" },
   };
   const st = {
-    who, org: { decision: "approve", fields: { description: "Checked by the group" } }, items,
+    who, org: { decision: "approve", fields: { description: "Checked by the group", social_links: "https://www.instagram.com/example_group, bsky.app/profile/example.bsky.social" } }, items,
     others: [{ name: "Sam Second", email: "Sam@Example.org", phone: "", best: "Email" }, { name: "Tina Third", email: "tina@example.org", phone: "617-555-0143", best: "Phone call" }, { name: "", email: "", phone: "" }],
   };
   // an incomplete extra person stops everything (nothing half-applied)
@@ -850,6 +865,9 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.ok(ctx.isTrue_(e0.verified)); assert.ok(!ctx.isTrue_(e0.hidden), "only listed fields can change");
   assert.ok(!ctx.isTrue_(ctx.readAll_().events.find((e) => e.id === foreign.id).hidden), "another group's item is untouched");
   assert.equal(ctx.readAll_().orgs.find((o) => o.id === orgId).description, "Checked by the group");
+  // social media links (Nov 13): saved to the group's row and sent to the map
+  assert.equal(ctx.readAll_().orgs.find((o) => o.id === orgId).social_links, "https://www.instagram.com/example_group, bsky.app/profile/example.bsky.social");
+  assert.equal(JSON.parse(ctx.doGet({ parameter: {} }).getContent()).organizations.find((o) => o.id === orgId).social_links, "https://www.instagram.com/example_group, bsky.app/profile/example.bsky.social");
   assert.equal(linkOf(orgId).status, "submitted"); assert.equal(linkOf(orgId).draft, ""); assert.equal(linkOf(orgId).submitted_at, res.submittedAt);
   assert.equal(readLockFor(L.token), null, "submit frees the lock");
   function readLockFor(t) { return cache["lock:" + t] || null; }

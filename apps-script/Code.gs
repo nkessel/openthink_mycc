@@ -238,10 +238,11 @@ var PROFILE_COLS = PROFILE_BOOL.concat(PROFILE_NUM, PROFILE_STR);
 
 var COLS = {
   'Coalitions': ['id', 'name', 'abbrev', 'description', 'focus_tags', 'geographic_scope', 'color', 'lat', 'lng', 'last_activity',
-    'logo', 'website'],
+    'logo', 'website', 'social_links'],
+  // social_links (Nov 13): the group's own social media accounts, as links, separated by commas or new lines.
   'Organizations': ['id', 'name', 'abbrev', 'type', 'geographic_focus', 'description', 'coalition_ids', 'topic_tags',
     'website', 'logo', 'public_contact', 'hq_address', 'remote', 'lat', 'lng', 'last_activity', 'hidden',
-    'coalition_weights'].concat(PROFILE_COLS),
+    'coalition_weights'].concat(PROFILE_COLS).concat(['social_links']),
   'Connections': ['from_org', 'to_org', 'frequency', 'updated_at', 'reported_by'],
   'Projects': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'status', 'skills_needed', 'topic_tags', 'link',
     'public_contact', 'location', 'online', 'lat', 'lng', 'last_activity', 'hidden', 'needs_info', 'verified',
@@ -297,6 +298,7 @@ function onOpen() {
     .addItem('Go back to group-based topics on the forms', 'useGroupTopicsOnForms')
     .addItem('Add reviewed aliases from Unmatched Input (monthly topic review)', 'addReviewedAliases')
     .addItem('Add connections from the Organization Info Form (reviewed list on GitHub)', 'importReviewedConnections')
+    .addItem('Fill in social media links found on groups\' websites (only where empty)', 'fillSocialLinksFromWebsiteCheck')
     .addItem('Update the forms (feedback areas, mission statement, next-step links)', 'updateForms')
     .addItem('Make key questions required (online?, free food, who can come, help wanted)', 'requireKeyQuestions')
     .addItem('Re-check event and project pins (wrong town or outside ' + REGION.stateName + ')', 'fixPinsOutsideMa')
@@ -591,6 +593,52 @@ function importReviewedConnections() {
   logChange_('', 'Menu', 'applied', '', 'connections', '', 'Organization Info Form',
     add.links.length + ' connection(s) added; ' + add.memberships.length + ' coalition membership(s) added' + (add.skipped.length ? '; skipped: ' + add.skipped.join(', ') : ''));
   ss.toast(add.links.length + ' connection(s) and ' + add.memberships.length + ' coalition membership(s) added. See Change Log.');
+}
+
+// ---------------------------------------------------------------- social media links found on groups' own websites (Nov 14)
+var SOCIAL_CHECK_URL = 'https://raw.githubusercontent.com/nkessel/openthink_mycc/development_branch/data-review/2026-11-social-handles.csv';
+
+/**
+ * Pure: rows of the website check (data-review/2026-11-social-handles.csv) → [{ tab: 'org' | 'coalition', id, links }]
+ * for groups whose social_links cell is still empty. A row with a note is left out: the note marks an account that is
+ * probably a host's or a national group's rather than the group's own. Point people confirm or fix the rest on their
+ * confirmation page, so nothing a group or the team typed is ever replaced.
+ */
+function socialLinksToFill_(rows, t) {
+  var head = rows[0].map(function (h) { return String(h).trim(); });
+  var c = function (n) { return head.indexOf(n); };
+  var orgs = {}, coalitions = {};
+  t.orgs.forEach(function (o) { orgs[str_(o.id)] = o; });
+  (t.coalitions || []).forEach(function (x) { coalitions[str_(x.id)] = x; });
+  var found = {}, order = [];
+  rows.slice(1).forEach(function (r) {
+    var id = str_(r[c('group_id')]), url = str_(r[c('url')]);
+    if (!id || !/^https:\/\/\S+$/.test(url) || str_(r[c('note')])) return;
+    var rec = orgs[id] || coalitions[id];
+    if (!rec || str_(rec.social_links)) return;
+    if (!found[id]) { found[id] = []; order.push(id); }
+    if (found[id].indexOf(url) === -1) found[id].push(url);
+  });
+  return order.map(function (id) { return { tab: orgs[id] ? 'org' : 'coalition', id: id, links: found[id].join(', ') }; });
+}
+
+/** Menu: fill empty social_links cells from the website check on GitHub. Safe to run again. */
+function fillSocialLinksFromWebsiteCheck() {
+  var rows = Utilities.parseCsv(UrlFetchApp.fetch(SOCIAL_CHECK_URL).getContentText());
+  var ss = ss_();
+  addMissingColumns_(ss.getSheetByName(TAB.orgs), COLS[TAB.orgs]);
+  addMissingColumns_(ss.getSheetByName(TAB.coalitions), COLS[TAB.coalitions]);
+  var t = readAll_();
+  var fill = socialLinksToFill_(rows, t);
+  var tables = { org: readTable_(ss.getSheetByName(TAB.orgs)), coalition: readTable_(ss.getSheetByName(TAB.coalitions)) };
+  var sheets = { org: ss.getSheetByName(TAB.orgs), coalition: ss.getSheetByName(TAB.coalitions) };
+  fill.forEach(function (f) {
+    var rec = findById_(tables[f.tab].rows, f.id);
+    if (rec) writeFields_(sheets[f.tab], tables[f.tab].headers, rec._row, { social_links: f.links });
+  });
+  logChange_('', 'Menu', 'applied', '', 'social_links', '', 'Website check (data-review/2026-11-social-handles.csv)',
+    fill.length + ' group(s) given social media links: ' + fill.map(function (f) { return f.id; }).join(', '));
+  ss.toast(fill.length + ' group(s) given social media links. See Change Log.');
 }
 
 /** Menu: bring the existing forms up to date without rebuilding them (safe to run again). */
@@ -2443,7 +2491,7 @@ function buildDataFile_(t, generatedAt) {
       description: str(o.description),
       coalition_ids: list_(o.coalition_ids).filter(function (id) { return coalitionIds[id]; }),
       lat: Number(o.lat), lng: Number(o.lng), last_activity: str(o.last_activity),
-    }, o, ['abbrev', 'website', 'logo', 'public_contact', 'topic_tags', 'remote']);
+    }, o, ['abbrev', 'website', 'logo', 'public_contact', 'topic_tags', 'remote', 'social_links']);
     var prof = {};
     PROFILE_BOOL.forEach(function (k) { if (str(o[k])) prof[k] = isTrue_(o[k]); });
     PROFILE_NUM.forEach(function (k) { if (str(o[k]) && !isNaN(Number(o[k]))) prof[k] = Number(o[k]); });
@@ -2502,6 +2550,7 @@ function buildDataFile_(t, generatedAt) {
       projects: projects['c:' + c.id] || [], events: events['c:' + c.id] || [], actions: actions['c:' + c.id] || [],
       last_activity: str(c.last_activity),
       logo: str(c.logo) || undefined, website: str(c.website) || undefined,
+      social_links: str(c.social_links) || undefined,
     };
   });
 

@@ -3381,3 +3381,8 @@ html, body { overflow-x: clip; max-width: 100%; }
 .focus-card-more { appearance: none; display: block; margin-top: 10px; padding: 0; border: 0; background: none; font: inherit; font-size: 13px; font-weight: 600; color: var(--accent); cursor: pointer; }
 /* While the search is in use it sits above an opened group's title bar, which covered the results (Nov 12). */
 .graph-overlay:focus-within { z-index: 7; }
+/* A group's social media accounts in its details (links.ts socialLinks, Nov 13). */
+.social-links { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.social-links .social-link { padding: 3px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; color: var(--text); }
+.social-links a.social-link { color: #7dd3fc; text-decoration: none; }
+.social-links a.social-link:hover { border-color: #7dd3fc; }

@@ -88,3 +88,26 @@ export function joinLine(item: { public_contact?: string; link?: string }, owner
   if (!j) return h("div", { class: "join-line none" }, "How to join: not listed yet. Ask the group, or suggest a contact with the + button.");
   return h("div", { class: "join-line" }, h("strong", {}, "How to join: "), j.via === "group" ? `contact ${owner.name}, ` : "", contactLinks(j.text));
 }
+
+const SOCIAL_SITES: [RegExp, string][] = [
+  [/(^|\.)instagram\.com$/, "Instagram"], [/(^|\.)facebook\.com$/, "Facebook"], [/(^|\.)(twitter|x)\.com$/, "X"],
+  [/(^|\.)bsky\.app$/, "Bluesky"], [/(^|\.)linkedin\.com$/, "LinkedIn"], [/(^|\.)youtube\.com$/, "YouTube"],
+  [/(^|\.)tiktok\.com$/, "TikTok"], [/(^|\.)threads\.(net|com)$/, "Threads"], [/(^|\.)linktr\.ee$/, "Linktree"],
+];
+
+/** A group's social_links text as named links ("Instagram @name"); a bare @handle with no site stays plain text. */
+export function socialLinks(text: string): HTMLElement {
+  const out = h("span", { class: "social-links" });
+  for (const raw of text.split(/[\s,;]+/).map((t) => t.trim()).filter(Boolean)) {
+    let url: URL | null = null;
+    try { url = new URL(/^https?:\/\//i.test(raw) ? raw : /^[\w-]+(\.[\w-]+)+\//.test(raw) ? `https://${raw}` : "x:"); } catch { url = null; }
+    const site = url && /^https?:$/.test(url.protocol) ? SOCIAL_SITES.find(([re]) => re.test(url!.hostname.toLowerCase())) : undefined;
+    if (!url || !/^https?:$/.test(url.protocol)) { out.append(h("span", { class: "social-link" }, raw)); continue; }
+    const tail = url.pathname.replace(/^\/(profile\/|company\/|channel\/|c\/|user\/)?/, "").replace(/\/$/, "");
+    const label = site ? `${site[1]}${tail ? ` ${tail.startsWith("@") || /^(Facebook|LinkedIn)$/.test(site[1]) ? "" : "@"}${decodeURIComponent(tail)}` : ""}` : url.hostname.replace(/^www\./, "") + (tail ? `/${tail}` : "");
+    const a = h("a", { class: "social-link", href: url.href, target: "_blank", rel: "noopener noreferrer" }, label);
+    a.addEventListener("click", (ev) => ev.stopPropagation());
+    out.append(a);
+  }
+  return out;
+}

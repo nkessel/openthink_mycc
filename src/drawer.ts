@@ -10,7 +10,7 @@ import type {
   DataFile,
 } from "./types";
 import { initials, relTime, fmtEventTime, shownType } from "./util";
-import { contactLinks, itemButtons, joinLine } from "./links";
+import { contactLinks, itemButtons, joinLine, socialLinks } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
@@ -488,6 +488,7 @@ export function createDrawer(
     row("Geographic scope", c.geographic_scope ? c.geographic_scope[0].toUpperCase() + c.geographic_scope.slice(1) : "");
     row("Description", c.description);
     row("Website", c.website ? h("a", { class: "org-website", href: c.website, target: "_blank", rel: "noopener noreferrer" }, c.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
+    row("Social media", c.social_links ? socialLinks(c.social_links) : undefined);
     row("Focus", c.focus_tags.length ? c.focus_tags.map(prettifyTag).join(", ") : "");
     const members = c.member_ids.map((id) => data.organizations.find((o) => o.id === id)).filter((o): o is Organization => !!o)
       .sort((a, b) => a.name.localeCompare(b.name));
@@ -511,6 +512,7 @@ export function createDrawer(
     row("Geographic focus", org.geographic_focus);
     row("Description", org.description);
     row("Website", org.website ? h("a", { class: "org-website", href: org.website, target: "_blank", rel: "noopener noreferrer" }, org.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")) : undefined);
+    row("Social media", org.social_links ? socialLinks(org.social_links) : undefined);
     row("Contact", org.public_contact ? contactLinks(org.public_contact) : undefined);
     row("Active membership", p.membership_size);
     row("EJ / frontline focus", score(p.ej_focus));
