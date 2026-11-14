@@ -7,6 +7,7 @@
 // for the group or topic you hover or pick.
 // Calm by design: one stream per organization → main topic until you zoom or click, a fixed particle budget
 // drawn on canvas, slow speeds, low opacity, additive glow, and static flows for prefers-reduced-motion.
+import { attachDoubleTapDragZoom } from "./doubletapzoom";
 import * as d3 from "d3";
 import { reportFrame, fxBudget, onFxChange, stillPicture } from "./perf";
 import { onDisplayChange } from "./display";
@@ -1396,13 +1397,16 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
       if (updateZoomOpen()) relayout(true);
     }
     kick();
-  }).on("end", () => {
+  }).on("end", () => { if (!oneFingerZoom) zoomEnded(); });
+  /** True during a double-tap-and-drag zoom, which reports an "end" on every move (doubletapzoom.ts). */
+  let oneFingerZoom = false;
+  function zoomEnded() {
     // panned or zoomed onto another main topic: that one splits instead
     if (zoomLevel > 0 && updateZoomOpen()) relayout(true);
     paintSvg();
     baseDirty = true;
     kick();
-  });
+  }
   /** Where a topic is on screen: itself, or the middle of its finer topics while it is split. */
   function screenPos(p: Problem): [number, number] | null {
     if (p.visible && Number.isFinite(p.x)) return [tr.applyX(p.x), tr.applyY(p.y)];
@@ -1444,6 +1448,12 @@ export function createCommandRoom(ctx: CommandRoomCtx): { el: HTMLElement; updat
     return true;
   }
   svg.call(zoom).on("dblclick.zoom", null);
+  // Phones: double tap, hold and drag to zoom with one finger.
+  attachDoubleTapDragZoom(svg.node()!, {
+    getScale: () => tr.k,
+    zoomTo: (k, at) => { svg.call(zoom.scaleTo as never, k, at); },
+    onActive: (on) => { oneFingerZoom = on; if (!on) zoomEnded(); },
+  });
   function resetZoom() {
     if (tr.k === 1 && tr.x === 0 && tr.y === 0) return;
     svg.call(zoom.transform, d3.zoomIdentity);

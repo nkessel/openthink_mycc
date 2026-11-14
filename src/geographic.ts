@@ -1,4 +1,5 @@
 import L from "leaflet";
+import { attachDoubleTapDragZoom } from "./doubletapzoom";
 import "leaflet/dist/leaflet.css";
 import type { Coalition, DataFile, GraphNode, Organization } from "./types";
 import { currentMap } from "./maps";
@@ -495,6 +496,13 @@ export function createGeographicView(data: DataFile, cb: GeoCallbacks): Geograph
     // Any zoom level (no snapping), half-level buttons, and a wheel/trackpad that glides (smoothzoom.ts).
     map = L.map(mapEl, { zoomControl: true, attributionControl: true, zoomSnap: 0, zoomDelta: 0.5, scrollWheelZoom: false });
     smoothWheelZoom(map);
+    // Phones: double tap, hold and drag to zoom with one finger (doubletapzoom.ts).
+    const m = map;
+    attachDoubleTapDragZoom(mapEl, {
+      getScale: () => Math.pow(2, m.getZoom()),
+      zoomTo: (k, at) => { m.setZoomAround(L.point(at[0], at[1]), Math.log2(k), { animate: false }); },
+      onActive: (on) => { if (on) m.dragging.disable(); else m.dragging.enable(); },
+    });
     mapEl.appendChild(backBtn);
     (mapEl as unknown as { __map?: L.Map }).__map = map; // for automated checks
     map.fitBounds(startBounds(), { padding: [20, 20] });

@@ -6,6 +6,7 @@
 // training, individual action, research) go to the solution. "Every item both ways" sends the full weight to both.
 // Calm by design: comets and seeds are launched at a slow, steady rate (each problem is hit about 1–3 times every
 // few seconds), drawn on canvas with additive glow; prefers-reduced-motion shows a still picture.
+import { attachDoubleTapDragZoom } from "./doubletapzoom";
 import * as d3 from "d3";
 import { reportFrame, fxBudget, onFxChange, stillPicture } from "./perf";
 import { onDisplayChange } from "./display";
@@ -2078,13 +2079,24 @@ export function createBattle(ctx: BattleCtx): { el: HTMLElement; update(): void;
     }
     kick();
   }).on("end", () => {
+    if (oneFingerZoom) return; // a double-tap-and-drag zoom reports an "end" on every move; the real one comes from zoomEnded()
+    zoomEnded();
+  });
+  let oneFingerZoom = false;
+  const zoomEnded = () => {
     if (zoomSplit && updateZoomOpen()) relayout(true); // panned onto another one: that one splits instead
     paintSvg();
     declutterItems();
     baseDirty = true;
     kick();
-  });
+  };
   svg.call(zoom).on("dblclick.zoom", null);
+  // Phones: double tap, hold and drag to zoom with one finger (doubletapzoom.ts).
+  attachDoubleTapDragZoom(svg.node()!, {
+    getScale: () => tr.k,
+    zoomTo: (k, at) => { svg.call(zoom.scaleTo as never, k, at); },
+    onActive: (on) => { oneFingerZoom = on; if (!on) zoomEnded(); },
+  });
   /** Where a problem or solution is on screen: itself, or the middle of its finer ones while it is split. */
   function screenPos(t: Target): [number, number] | null {
     if (t.visible && Number.isFinite(t.x)) return [tr.applyX(t.x), tr.applyY(t.y)];

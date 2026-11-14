@@ -81,7 +81,9 @@ vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/Confirm.gs"), "utf8
 vm.runInContext(fs.readFileSync(path.join(ROOT, "apps-script/SignIn.gs"), "utf8"), ctx);
 const G = (name) => vm.runInContext(name, ctx);
 const Q = G("Q"), COLS = G("COLS");
-const orig = JSON.parse(fs.readFileSync(path.join(ROOT, "public/data.json"), "utf8"));
+// A fixed copy of the map's data (the Oct 1 snapshot): public/data.json is refreshed from the live sheet, and the
+// checks below expect this exact starting point (Nov 14).
+const orig = JSON.parse(fs.readFileSync(path.join(ROOT, "tests/fixtures/data.json"), "utf8"));
 // A coalition event for the edit tests below (the real MYCC call left the map in the Oct 18 event check: no page).
 const myccCo = orig.coalitions.find((c) => c.id === "mycc");
 if (!myccCo.events.some((e) => e.id === "mycc_e_call_1004")) myccCo.events.push({ id: "mycc_e_call_1004", name: "MYCC full-coalition call",

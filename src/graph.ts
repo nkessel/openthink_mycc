@@ -1,3 +1,5 @@
+import { attachDoubleTapDragZoom } from "./doubletapzoom";
+import { smallLogo, tinyLogo, SMALL_LOGO_PX, TINY_LOGO_PX } from "./weblogos";
 import * as d3 from "d3";
 import { largePrint, onDisplayChange, lowPower, weakDevice } from "./display";
 import type {
@@ -29,7 +31,7 @@ import { orgProjects, orgEvents, orgActions } from "./owners";
 import { fmtEventTime, fmtDate, parseEventDate } from "./util";
 import { coalitionRadius, orgRadius, initials } from "./util";
 import type { Tooltip } from "./tooltip";
-import { createNodeSearch, allNodesForSearch } from "./search";
+import { createNodeSearch, mapSearchItems } from "./search";
 
 export interface GraphCallbacks {
   onNodeClick(node: GraphNode): void;
@@ -120,6 +122,8 @@ export interface Graph {
   /** Center on any node (coalition or org). */
   focusOnNode(id: string): void;
   setSelectedNode(node: GraphNode | null): void;
+  /** Open a group and zoom to one of its events, projects or actions, with that item's card under it. */
+  focusOnItem(ownerId: string, itemId: string): void;
   focusOnCoalition(id: string): void;
   /** Zoom into a node: its projects, events and public thinking float around it as bubbles. */
   enterFocus(id: string): void;
@@ -184,7 +188,10 @@ export function createGraph(
       }),
   ];
   const orgLinkCount = allLinks.filter((l) => l.kind === "org").length;
-  let showOrgLinks = true;
+  // Group-to-group lines start hidden (Nov 12: they crowd the first view); the choice is remembered on this device.
+  const ORG_LINKS_KEY = "openthink.orgLinks";
+  let showOrgLinks = false;
+  try { showOrgLinks = localStorage.getItem(ORG_LINKS_KEY) === "1"; } catch { /* private mode */ }
 
   let visibleCoalitions = new Set(data.coalitions.map((c) => c.id));
   let selectedId: string | null = null;
@@ -206,13 +213,15 @@ export function createGraph(
   overlay.className = "graph-overlay";
   wrap.appendChild(overlay);
   overlay.appendChild(
-    createNodeSearch(allNodesForSearch(data), (id) => {
+    // "Search the map" (Nov 12): groups and coalitions, and their events, projects, actions and volunteer roles.
+    createNodeSearch(mapSearchItems(data), (id, item) => {
+      if (item.ownerId) { api.focusOnItem(item.ownerId, id); return; }
       const n = nodeById.get(id);
       if (!n) return;
       api.focusOnNode(id);
       cb.onNodeClick(n);
       api.setSelectedNode(n);
-    }),
+    }, { placeholder: "Search the map\u2026" }),
   );
   // (Hiding the events / actions / projects around each group is a switch at the top of the settings panel.)
   const resetBtn = document.createElement("button");
@@ -259,6 +268,7 @@ export function createGraph(
   box.checked = showOrgLinks;
   box.addEventListener("change", () => {
     showOrgLinks = box.checked;
+    try { localStorage.setItem(ORG_LINKS_KEY, showOrgLinks ? "1" : "0"); } catch { /* private mode */ }
     linkForce.strength(linkStrengthFor);
     applyVisibility();
   });
@@ -306,7 +316,10 @@ export function createGraph(
       tooltip.hide();
       if (event.sourceEvent) focusCard.style.display = "none";
     })
-    .on("end", () => { queueDetail(); ensureInView(); if (largePrint()) scheduleNameCull(); });
+    .on("end", () => { if (!oneFingerZoom) zoomEnded(); });
+  /** True during a double-tap-and-drag zoom, which reports an "end" on every move: the after-zoom work waits for the real end. */
+  let oneFingerZoom = false;
+  function zoomEnded() { queueDetail(); ensureInView(); if (largePrint()) scheduleNameCull(); sharpenLogos(); }
 
   let currentZoomScale = 1;
   let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
@@ -337,6 +350,12 @@ export function createGraph(
   }
 
   svg.call(zoom);
+  // Phones: double tap, hold and drag to zoom with one finger (doubletapzoom.ts).
+  attachDoubleTapDragZoom(svg.node()!, {
+    getScale: () => currentZoomScale,
+    zoomTo: (k, at) => { svg.call(zoom.scaleTo, k, at); },
+    onActive: (on) => { oneFingerZoom = on; if (!on) zoomEnded(); },
+  });
 
   // Size + center based on container
   function dimensions(): { w: number; h: number } {
@@ -601,11 +620,38 @@ export function createGraph(
   function loadLogos() {
     const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
     const step = () => {
-      for (const [img, url] of logoQueue.splice(0, 24)) img.setAttribute("href", url);
+      for (const [img, url] of logoQueue.splice(0, 24)) if (!img.getAttribute("href")) img.setAttribute("href", url);
       if (logoQueue.length) { if (idle) idle(step, { timeout: 500 }); else setTimeout(step, 60); }
-      else logoTimer = 0;
+      else { logoTimer = 0; sharpenWhenIdle(); }
     };
     step();
+  }
+  // Groups start with a 32px copy of their logo (weblogos.ts), so the first view downloads very little. Each bubble
+  // then moves up only as far as its size on screen needs: to the 64px copy when the browser has a quiet moment, and
+  // to the large copy once it is big on screen (zoomed in, or the opened group).
+  const FULL_LOGO = 1e9;
+  const sharper = new Map<string, { img: SVGImageElement; full: string; r: number; have: number }>();
+  function sharpenLogos(openId?: string) {
+    if (!sharper.size) return;
+    const dpr = Math.min(3, window.devicePixelRatio || 1);
+    const k = currentTransform.k;
+    for (const [id, s] of sharper) {
+      const n = nodeById.get(id);
+      if (!n || !(id === openId || onScreen(n))) continue;
+      const need = id === openId ? FULL_LOGO : 2 * s.r * k * dpr; // the bubble's width in screen pixels
+      const want = need <= TINY_LOGO_PX * 1.15 ? TINY_LOGO_PX : need <= SMALL_LOGO_PX * 1.15 ? SMALL_LOGO_PX : FULL_LOGO;
+      if (want <= s.have) continue;
+      s.have = want;
+      if (want === FULL_LOGO) sharper.delete(id);
+      const url = want === SMALL_LOGO_PX ? smallLogo(s.full)! : s.full;
+      const pre = new Image(); // fetched first, so the bubble never blanks while the larger copy loads
+      pre.onload = () => { if (s.have === want) s.img.setAttribute("href", url); };
+      pre.src = url;
+    }
+  }
+  function sharpenWhenIdle() {
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+    window.setTimeout(() => { if (idle) idle(() => sharpenLogos(), { timeout: 3000 }); else sharpenLogos(); }, 1500);
   }
   // Structure per node: <circle.halo> (groups), <circle.ring> (main), <text.node-label>, <text.node-name>.
   nodeSel.each(function (this: SVGGElement, d) {
@@ -688,7 +734,9 @@ export function createGraph(
             sel.classed("has-logo", true); // sector rings keep their colour but get a white fill behind the logo
           })
           .on("error", function () { d3.select(this).remove(); });
-        queueLogo(img.node()!, d.logo);
+        const tiny = tinyLogo(d.logo)!;
+        if (tiny !== d.logo) sharper.set(d.id, { img: img.node()!, full: d.logo, r, have: TINY_LOGO_PX });
+        queueLogo(img.node()!, tiny);
       }
       sel
         .append("text")
@@ -1054,6 +1102,7 @@ export function createGraph(
         event.stopPropagation();
         const cb2 = (inner.select("circle").node() as SVGCircleElement).getBoundingClientRect();
         const wb = wrap.getBoundingClientRect();
+        if (b.kind !== "thought") { if (!dragBlocked()) zoomToItem(b, n, inner.select("circle").node() as SVGCircleElement); return; }
         showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 }, n);
       });
     });
@@ -1310,20 +1359,79 @@ export function createGraph(
     trailItems();
   });
 
-  // Auto-fit once the simulation has settled enough
+  // A still first view (Nov 13). The layout used to unfold on screen for several seconds, and the page reloads once
+  // when newer data arrives from the sheet, which laid everything out again. Now:
+  //  - when this device has seen the map with the same settings, each group starts where it settled last time, so
+  //    the map hardly moves (also across that reload);
+  //  - otherwise the layout is worked out ahead, behind the loading screen, for up to half a second;
+  //  - the view is fitted once, then again (smoothly) only if the map ended up noticeably bigger or smaller.
+  // The fitting stops as soon as the visitor moves the map themselves.
+  const layoutSig = [settings.showBubbles, allNodes.filter((n) => n.sector).length, settings.repelForce, settings.coalitionRepel,
+    settings.centerForce, settings.linkForce, settings.linkDistance, settings.nodeSize].join("|");
+  let mapHash = 0;
+  for (const ch of data.coalitions.map((c) => c.id).sort().join(",")) mapHash = (mapHash * 31 + ch.charCodeAt(0)) | 0;
+  const LAYOUT_KEY = `openthink.layout.${location.pathname}.${mapHash}`;
+  let restored = 0;
+  try {
+    const saved = JSON.parse(localStorage.getItem(LAYOUT_KEY) || "null") as { at: number; sig: string; pos: Record<string, [number, number]> } | null;
+    if (saved && saved.sig === layoutSig && Date.now() - saved.at < 30 * 86400000) {
+      for (const n of allNodes) {
+        const p = saved.pos[n.id];
+        if (p) { n.x = p[0]; n.y = p[1]; n.vx = 0; n.vy = 0; restored++; }
+      }
+      if (restored && restored < allNodes.length) {
+        // a group that is new since then starts next to a group it is linked to
+        const has = new Set(allNodes.filter((n) => saved.pos[n.id]).map((n) => n.id));
+        for (const l of allLinks) {
+          const a = l.source as GraphNode, b = l.target as GraphNode;
+          if (typeof a !== "object" || typeof b !== "object") continue;
+          const [from, to] = has.has(a.id) && !has.has(b.id) ? [a, b] : has.has(b.id) && !has.has(a.id) ? [b, a] : [null, null];
+          if (!from || !to) continue;
+          to.x = (from.x ?? 0) + (Math.random() - 0.5) * 80; to.y = (from.y ?? 0) + (Math.random() - 0.5) * 80;
+          has.add(to.id);
+        }
+      }
+    }
+  } catch { /* private mode: lay out from scratch */ }
+  if (restored >= allNodes.length * 0.7) {
+    sim.alpha(restored === allNodes.length ? 0.03 : 0.1); // a nudge only
+  } else {
+    const until = performance.now() + (lowPower() || weakDevice() ? 250 : 500);
+    while (sim.alpha() > 0.05 && performance.now() < until) sim.tick();
+  }
+  const saveLayout = () => {
+    if (focusId || !allNodes.length) return; // an opened group moves the others aside
+    const pos: Record<string, [number, number]> = {};
+    for (const n of allNodes) if (n.x !== undefined && n.y !== undefined) pos[n.id] = [Math.round(n.x), Math.round(n.y)];
+    try { localStorage.setItem(LAYOUT_KEY, JSON.stringify({ at: Date.now(), sig: layoutSig, pos })); } catch { /* full */ }
+  };
+  window.addEventListener("pagehide", saveLayout);
+
   let didInitialFit = false;
+  let visitorMoved = false;
+  for (const type of ["wheel", "pointerdown", "touchstart"]) {
+    svg.node()!.addEventListener(type, () => { visitorMoved = true; }, { capture: true, passive: true, once: true });
+  }
+  fitToView(false); // the very first frame already shows everything
+  const lastFit = () => {
+    if (didInitialFit) return;
+    didInitialFit = true;
+    if (visitorMoved || focusId) return;
+    const before = currentTransform;
+    const t = fitTransform();
+    if (!t) return;
+    const { w, h } = dimensions();
+    const off = Math.abs(t.k / before.k - 1) > 0.08 || Math.abs(t.x - before.x) > w * 0.06 || Math.abs(t.y - before.y) > h * 0.06;
+    if (off) fitToView(true);
+  };
   sim.on("end", () => {
     if (largePrint()) scheduleNameCull();
-    if (didInitialFit) return;
-    didInitialFit = true;
-    fitToView(false);
+    if (layoutSig === [settings.showBubbles, allNodes.filter((n) => n.sector).length, settings.repelForce, settings.coalitionRepel,
+      settings.centerForce, settings.linkForce, settings.linkDistance, settings.nodeSize].join("|")) saveLayout();
+    lastFit();
   });
   // Fallback in case "end" doesn't fire in time (large graphs)
-  setTimeout(() => {
-    if (didInitialFit) return;
-    didInitialFit = true;
-    fitToView(false);
-  }, 2500);
+  setTimeout(lastFit, 4000);
 
   /** If nothing is on screen (panned away, zoomed past everything, or the pane was hidden), reset the view. */
   function ensureInView() {
@@ -1339,6 +1447,13 @@ export function createGraph(
   window.addEventListener("resize", () => setTimeout(ensureInView, 200));
 
   function fitToView(animate = true) {
+    const t = fitTransform();
+    if (!t) return;
+    const target = animate ? svg.transition().duration(600) : svg;
+    target.call(zoom.transform, t);
+  }
+  /** The view that shows the whole map (its main cluster), or null when nothing is placed yet. */
+  function fitTransform(): d3.ZoomTransform | null {
     let xs: number[] = [];
     let ys: number[] = [];
     const keep: number[][] = []; // the money layer's groups are always in the first view, never trimmed as strays
@@ -1356,7 +1471,7 @@ export function createGraph(
       ys.push(n.y - r - 14, n.y + r + 14);
       if (n.sector === "opposition" || n.sector === "money-hub") keep.push([n.x - r, n.x + r, n.y - r - 14, n.y + r + 14]);
     });
-    if (!xs.length) return;
+    if (!xs.length) return null;
     // Fit the main cluster: a few unconnected orgs drift far out and would otherwise shrink
     // everything (tiny on phones). They stay reachable by panning or zooming out.
     const q = (arr: number[], p: number) => {
@@ -1378,9 +1493,7 @@ export function createGraph(
     const scale = Math.min(w / bw, h / bh, 1.6);
     const cx = (minX + maxX) / 2;
     const cy = (minY + maxY) / 2;
-    const t = d3.zoomIdentity.translate(-cx * scale, -cy * scale).scale(scale);
-    const target = animate ? svg.transition().duration(600) : svg;
-    target.call(zoom.transform, t);
+    return d3.zoomIdentity.translate(-cx * scale, -cy * scale).scale(scale);
   }
 
   // ----- Visibility filtering -----
@@ -1502,15 +1615,130 @@ export function createGraph(
     return ids;
   }
 
-  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode) {
-    if (dragBlocked()) return;
+  /**
+   * An item was clicked (or picked in the search): bring it to the upper middle of the map, a little closer, and
+   * open its card right under it (Nov 12). The card has the way back: to its group, or to the whole map.
+   */
+  let itemZoomToken = 0;
+  function zoomToItem(b: Bubble, owner: GraphNode, circle: SVGCircleElement) {
+    const token = ++itemZoomToken;
+    focusCard.style.display = "none";
+    // Where the item is, in map coordinates (the same whatever the zoom).
+    const where = (): DOMPoint | null => {
+      const ctm = (root.node() as SVGGElement).getScreenCTM();
+      const cr = circle.getBoundingClientRect();
+      return ctm && cr.width ? new DOMPoint(cr.left + cr.width / 2, cr.top + cr.height / 2).matrixTransform(ctm.inverse()) : null;
+    };
+    // A group that has just opened is still spreading its moons out: wait until this one has stopped moving.
+    let last = where();
+    let tries = 0;
+    const settle = () => {
+      if (token !== itemZoomToken) return;
+      const now = where();
+      const still = !!last && !!now && Math.hypot(now.x - last.x, now.y - last.y) < 0.6;
+      last = now;
+      if (still || ++tries > 30) fly(now);
+      else window.setTimeout(settle, 90);
+    };
+    window.setTimeout(settle, 90);
+    const fly = (g: DOMPoint | null) => {
+    if (!g) { showCard(b, undefined, owner, true); return; }
+    const { h: vh } = dimensions();
+    const k = Math.max(currentTransform.k, Math.min(2.2, currentTransform.k * 1.5));
+    const oy = -vh * 0.22; // above the middle, so the card fits below
+    const t = d3.zoomIdentity.translate(-g.x * k, oy - g.y * k).scale(k);
+    const done = () => {
+      if (token !== itemZoomToken) return;
+      const wb = wrap.getBoundingClientRect();
+      const now = circle.isConnected ? circle.getBoundingClientRect() : null;
+      const anchor = now && now.width
+        ? { x: now.left - wb.left + now.width / 2, y: now.top - wb.top + now.height / 2, r: now.width / 2 }
+        : { x: wb.width / 2, y: wb.height / 2 + oy, r: 18 };
+      showCard(b, anchor, owner, true);
+      // The map may still be drawing the new zoom (and the moons shifting with it): keep the card under the item for a moment.
+      let n = 0;
+      const follow = () => {
+        if (token !== itemZoomToken || focusCard.style.display === "none" || !circle.isConnected) return;
+        const c = circle.getBoundingClientRect();
+        const w = wrap.getBoundingClientRect();
+        if (c.width) placeCard({ x: c.left - w.left + c.width / 2, y: c.top - w.top + c.height / 2, r: c.width / 2 });
+        if (++n < 8) window.setTimeout(follow, 160);
+      };
+      window.setTimeout(follow, 160);
+    };
+    if (lowPower()) { svg.call(zoom.transform, t); window.setTimeout(done, 120); }
+    else svg.transition().duration(450).call(zoom.transform, t).on("end", done).on("interrupt", () => { /* the user took over */ });
+    };
+  }
+  /** The item's moon around the opened group, by item id (filled in by enterFocus). */
+  const moonById = new Map<string, { b: Bubble; circle: SVGCircleElement }>();
+  let focusHome: d3.ZoomTransform | null = null;
+  function focusOnItem(ownerId: string, itemId: string) {
+    const owner = nodeById.get(ownerId);
+    if (!owner) return;
+    const viaPane = () => {
+      // not drawn as a moon (a past item, a kind switched off, or the classic view): its details pane instead
+      const b = bubblesFor(owner).find((x) => x.id === itemId) ?? allItemBubble(owner, itemId);
+      if (b && b.kind !== "thought" && cb.onItemClick) cb.onItemClick(b.kind, b.item as Project | CoalitionEvent | Action, owner);
+      else cb.onNodeClick(owner);
+    };
+    const go = () => {
+      const m = moonById.get(itemId);
+      if (!m || focusId !== ownerId) { viaPane(); return; }
+      zoomToItem(m.b, owner, m.circle);
+    };
+    if (focusId === ownerId && moonById.has(itemId)) { go(); return; }
+    enterFocus(ownerId);
+    api.setSelectedNode(owner);
+    if (!settings.showBubbles) { viaPane(); return; }
+    window.setTimeout(go, 700); // once the group has opened; zoomToItem then waits for the moon to stop moving
+  }
+  /** An item of this group whether or not it is currently drawn (past items included). */
+  function allItemBubble(owner: GraphNode, itemId: string): Bubble | undefined {
+    const lists: [BubbleKind, { id: string; name: string }[]][] = [
+      ["project", owner.kind === "org" ? orgProjects(data, owner) : owner.projects],
+      ["event", owner.kind === "org" ? orgEvents(data, owner) : owner.events],
+      ["action", owner.kind === "org" ? orgActions(data, owner) : owner.actions || []],
+    ];
+    for (const [kind, xs] of lists) {
+      const x = xs.find((i) => i.id === itemId);
+      if (x) return { id: x.id, kind, label: x.name, glyph: "", r: BUBBLE_R, item: x as Project | CoalitionEvent | Action };
+    }
+    return undefined;
+  }
+
+  function showCard(b: Bubble, anchor?: { x: number; y: number; r: number }, ownerNode?: GraphNode, onMap = false) {
+    if (dragBlocked() && !onMap) return;
     const owner = ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null);
-    if (b.kind !== "thought" && owner && cb.onItemClick) {
+    if (b.kind !== "thought" && owner && cb.onItemClick && !onMap) {
       focusCard.style.display = "none";
       cb.onItemClick(b.kind, b.item as Project | CoalitionEvent | Action, owner);
       return;
     }
     while (focusCard.firstChild) focusCard.removeChild(focusCard.firstChild);
+    focusCard.classList.toggle("item-card", onMap);
+    if (onMap && owner) {
+      // The way back: to the group this belongs to, or out to the whole map.
+      const short = (owner as { abbrev?: string }).abbrev || shorten(owner.name, 22);
+      const toGroup = h("button", { class: "focus-card-nav", type: "button", title: `Back to ${owner.name}` }, `\u2190 ${short}`);
+      toGroup.addEventListener("click", (e) => {
+        e.stopPropagation();
+        itemZoomToken++;
+        focusCard.style.display = "none";
+        if (focusId === owner.id && focusHome) svg.transition().duration(450).call(zoom.transform, focusHome);
+        else { enterFocus(owner.id); api.setSelectedNode(owner); }
+      });
+      const toMap = h("button", { class: "focus-card-nav", type: "button" }, "Whole map");
+      toMap.addEventListener("click", (e) => {
+        e.stopPropagation();
+        itemZoomToken++;
+        focusCard.style.display = "none";
+        beforeFocus = null;
+        if (focusId) { exitFocus(); cb.onNodeDeselect?.(owner); }
+        else fitToView(true);
+      });
+      focusCard.appendChild(h("div", { class: "focus-card-navrow" }, toGroup, toMap));
+    }
     const it = b.item as Thought & Project & CoalitionEvent & Action;
     const kindLabel =
       b.kind === "thought" ? { topic: "Thinking · topic", decision: "Thinking · decision", question: "Thinking · open question", update: "Thinking · update" }[(it as Thought).kind] || "Thinking"
@@ -1537,6 +1765,18 @@ export function createGraph(
     if (b.kind !== "thought") {
       const btns = itemButtons(b.kind, it as { rsvp_link?: string; link?: string });
       if (btns) focusCard.appendChild(btns);
+    }
+    if (onMap && owner && b.kind !== "thought") {
+      focusCard.insertBefore(h("div", { class: "focus-card-owner" }, owner.name), focusCard.querySelector(".focus-card-meta, .focus-card-text, .item-buttons"));
+      if (cb.onItemClick) {
+        const more = h("button", { class: "focus-card-more", type: "button" }, "Full details \u203a");
+        more.addEventListener("click", (e) => {
+          e.stopPropagation();
+          focusCard.style.display = "none";
+          cb.onItemClick!(b.kind as "event" | "project" | "action", b.item as Project | CoalitionEvent | Action, owner);
+        });
+        focusCard.appendChild(more);
+      }
     }
     if (b.kind !== "thought") focusCard.appendChild(staleNotice(b.kind, ownerNode ?? (focusId ? nodeById.get(focusId) ?? null : null), (b.item as { needs_info?: boolean }).needs_info, (b.item as { verified?: boolean }).verified, b.item as never));
     focusCard.style.visibility = "hidden";
@@ -1713,6 +1953,7 @@ export function createGraph(
 
   function enterFocus(id: string) {
     parent.classList.add("focus-on"); // shows the "Sizes in this view" panel (controls.ts)
+    sharpenLogos(id);
     const n = nodeById.get(id);
     if (!n) return;
     if (!settings.showBubbles) {
@@ -1868,6 +2109,7 @@ export function createGraph(
     lastPos.delete(id);
     focusGroup.selectAll("*").remove();
     focusGroup.attr("transform", `translate(${cx},${cy})`);
+    moonById.clear();
     const bubbleEls: SVGGElement[] = [];
     const bubbleAngles: number[] = [];
     const bubbleLines: SVGLineElement[] = [];
@@ -1895,9 +2137,13 @@ export function createGraph(
       // Beside the moon: its full name and one line of when / what, reading away from the planet.
       bubbleLabels.push(radialLabel(g as unknown as d3.Selection<SVGGElement, unknown, null, undefined>, a, b.r + 6, fullName(b), itemMeta(b), 11, 24)
         .attr("class", `moon-label k-${b.kind}`).node()!);
+      const moonCircle = g.select("circle").node() as SVGCircleElement;
+      if (b.kind !== "thought") moonById.set(b.id, { b, circle: moonCircle });
       outer.on("click", (event: Event) => {
         event.stopPropagation();
-        const cb2 = (g.select("circle").node() as SVGCircleElement).getBoundingClientRect();
+        if (dragBlocked()) return;
+        if (b.kind !== "thought") { zoomToItem(b, n, moonCircle); return; }
+        const cb2 = moonCircle.getBoundingClientRect();
         const wb = wrap.getBoundingClientRect();
         showCard(b, { x: cb2.left - wb.left + cb2.width / 2, y: cb2.top - wb.top + cb2.height / 2, r: cb2.width / 2 });
       });
@@ -2104,6 +2350,7 @@ export function createGraph(
       const vcx = ((left + right) / 2 - (wr.left + wr.width / 2)) * sx;
       const vcy = ((top + bottom) / 2 - (wr.top + wr.height / 2)) * sy;
       const t = d3.zoomIdentity.translate(vcx - cx * scale, vcy - cy * scale).scale(scale);
+      focusHome = t; // an item card's "back to the group" returns here
       svg.transition().duration(600).call(zoom.transform, t);
     };
     // after this click has opened (or not) the details panel
@@ -2113,6 +2360,8 @@ export function createGraph(
 
   function exitFocus(fit = true) {
     if (!focusId) return;
+    moonById.clear();
+    focusHome = null;
     const n = nodeById.get(focusId);
     if (n) {
       n.fx = null;
@@ -2182,6 +2431,9 @@ export function createGraph(
     },
     focusOnNode(id) {
       enterFocus(id);
+    },
+    focusOnItem(ownerId, itemId) {
+      focusOnItem(ownerId, itemId);
     },
     focusOnCoalition(id) {
       enterFocus(id);
