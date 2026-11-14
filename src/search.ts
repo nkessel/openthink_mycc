@@ -2,13 +2,13 @@
 // the geographic map, and the Organizations list).
 import { currentMap } from "./maps";
 import type { DataFile } from "./types";
-import { allEvents, allProjects } from "./owners";
+import { allActions, allEvents, allProjects } from "./owners";
 import { sectorById } from "./sectors";
 
 /** "Palestinian rights · " in front of a sector layer's results, so they read as part of that layer. */
 const sec = (x: { sector?: string }) => { const s = sectorById(x.sector); return s ? `${s.label} · ` : ""; };
 
-export type SearchKind = "coalition" | "org" | "event" | "project" | "place";
+export type SearchKind = "coalition" | "org" | "event" | "project" | "action" | "place";
 
 export interface SearchItem {
   id: string;
@@ -17,6 +17,8 @@ export interface SearchItem {
   sub: string;
   /** Extra words that should match (abbreviations, tags, locations). */
   keywords: string;
+  /** For an event, project or action: the group or coalition it belongs to. */
+  ownerId?: string;
   lat?: number;
   lng?: number;
 }
@@ -26,6 +28,7 @@ const KIND_LABEL: Record<SearchKind, string> = {
   org: "Organization",
   event: "Event",
   project: "Project",
+  action: "Action",
   place: "Place",
 };
 
@@ -47,13 +50,25 @@ export function everythingForSearch(data: DataFile): SearchItem[] {
   return [
     ...allNodesForSearch(data),
     ...allEvents(data).map(({ event: e, owner }) => ({
-      id: e.id, kind: "event" as const, label: e.name, sub: `${sec(e)}${owner.abbrev} · ${e.date.slice(0, 10)} · ${e.location || ""}`,
+      id: e.id, kind: "event" as const, ownerId: owner.node.id, label: e.name, sub: `${sec(e)}${owner.abbrev} · ${e.date.slice(0, 10)} · ${e.location || ""}`,
       keywords: `${e.location || ""} ${owner.name}`, lat: e.online ? undefined : e.lat, lng: e.online ? undefined : e.lng,
     })),
     ...allProjects(data).map(({ project: p, owner }) => ({
-      id: p.id, kind: "project" as const, label: p.name, sub: `${sec(p)}${owner.abbrev} · ${p.status}`,
+      id: p.id, kind: "project" as const, ownerId: owner.node.id, label: p.name, sub: `${sec(p)}${owner.abbrev} · ${p.status}`,
       keywords: `${p.location || ""} ${owner.name} ${p.skills_needed.join(" ")}`,
       lat: p.online ? undefined : p.lat, lng: p.online ? undefined : p.lng,
+    })),
+  ];
+}
+
+/** Everything on the network map: groups, coalitions, events, projects, actions and volunteer roles (Nov 12: "Search the map"). */
+export function mapSearchItems(data: DataFile): SearchItem[] {
+  return [
+    ...everythingForSearch(data),
+    ...allActions(data).map(({ action: a, owner }) => ({
+      id: a.id, kind: "action" as const, ownerId: owner.node.id, label: a.name,
+      sub: `${sec(a as { sector?: string })}${a.kind === "role" ? "Volunteer role · " : ""}${owner.abbrev}`,
+      keywords: `${owner.name} ${a.kind === "role" ? "volunteer role" : ""}`,
     })),
   ];
 }
