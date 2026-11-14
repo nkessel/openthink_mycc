@@ -1,3 +1,5 @@
+import { attachDoubleTapDragZoom } from "./doubletapzoom";
+import { smallLogo, tinyLogo, SMALL_LOGO_PX, TINY_LOGO_PX } from "./weblogos";
 import * as d3 from "d3";
 import { largePrint, onDisplayChange, lowPower, weakDevice } from "./display";
 import type {
@@ -184,7 +186,10 @@ export function createGraph(
       }),
   ];
   const orgLinkCount = allLinks.filter((l) => l.kind === "org").length;
-  let showOrgLinks = true;
+  // Group-to-group lines start hidden (Nov 12: they crowd the first view); the choice is remembered on this device.
+  const ORG_LINKS_KEY = "openthink.orgLinks";
+  let showOrgLinks = false;
+  try { showOrgLinks = localStorage.getItem(ORG_LINKS_KEY) === "1"; } catch { /* private mode */ }
 
   let visibleCoalitions = new Set(data.coalitions.map((c) => c.id));
   let selectedId: string | null = null;
@@ -259,6 +264,7 @@ export function createGraph(
   box.checked = showOrgLinks;
   box.addEventListener("change", () => {
     showOrgLinks = box.checked;
+    try { localStorage.setItem(ORG_LINKS_KEY, showOrgLinks ? "1" : "0"); } catch { /* private mode */ }
     linkForce.strength(linkStrengthFor);
     applyVisibility();
   });
@@ -306,7 +312,10 @@ export function createGraph(
       tooltip.hide();
       if (event.sourceEvent) focusCard.style.display = "none";
     })
-    .on("end", () => { queueDetail(); ensureInView(); if (largePrint()) scheduleNameCull(); });
+    .on("end", () => { if (!oneFingerZoom) zoomEnded(); });
+  /** True during a double-tap-and-drag zoom, which reports an "end" on every move: the after-zoom work waits for the real end. */
+  let oneFingerZoom = false;
+  function zoomEnded() { queueDetail(); ensureInView(); if (largePrint()) scheduleNameCull(); sharpenLogos(); }
 
   let currentZoomScale = 1;
   let currentTransform: d3.ZoomTransform = d3.zoomIdentity;
@@ -337,6 +346,12 @@ export function createGraph(
   }
 
   svg.call(zoom);
+  // Phones: double tap, hold and drag to zoom with one finger (doubletapzoom.ts).
+  attachDoubleTapDragZoom(svg.node()!, {
+    getScale: () => currentZoomScale,
+    zoomTo: (k, at) => { svg.call(zoom.scaleTo, k, at); },
+    onActive: (on) => { oneFingerZoom = on; if (!on) zoomEnded(); },
+  });
 
   // Size + center based on container
   function dimensions(): { w: number; h: number } {
@@ -601,11 +616,38 @@ export function createGraph(
   function loadLogos() {
     const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
     const step = () => {
-      for (const [img, url] of logoQueue.splice(0, 24)) img.setAttribute("href", url);
+      for (const [img, url] of logoQueue.splice(0, 24)) if (!img.getAttribute("href")) img.setAttribute("href", url);
       if (logoQueue.length) { if (idle) idle(step, { timeout: 500 }); else setTimeout(step, 60); }
-      else logoTimer = 0;
+      else { logoTimer = 0; sharpenWhenIdle(); }
     };
     step();
+  }
+  // Groups start with a 32px copy of their logo (weblogos.ts), so the first view downloads very little. Each bubble
+  // then moves up only as far as its size on screen needs: to the 64px copy when the browser has a quiet moment, and
+  // to the large copy once it is big on screen (zoomed in, or the opened group).
+  const FULL_LOGO = 1e9;
+  const sharper = new Map<string, { img: SVGImageElement; full: string; r: number; have: number }>();
+  function sharpenLogos(openId?: string) {
+    if (!sharper.size) return;
+    const dpr = Math.min(3, window.devicePixelRatio || 1);
+    const k = currentTransform.k;
+    for (const [id, s] of sharper) {
+      const n = nodeById.get(id);
+      if (!n || !(id === openId || onScreen(n))) continue;
+      const need = id === openId ? FULL_LOGO : 2 * s.r * k * dpr; // the bubble's width in screen pixels
+      const want = need <= TINY_LOGO_PX * 1.15 ? TINY_LOGO_PX : need <= SMALL_LOGO_PX * 1.15 ? SMALL_LOGO_PX : FULL_LOGO;
+      if (want <= s.have) continue;
+      s.have = want;
+      if (want === FULL_LOGO) sharper.delete(id);
+      const url = want === SMALL_LOGO_PX ? smallLogo(s.full)! : s.full;
+      const pre = new Image(); // fetched first, so the bubble never blanks while the larger copy loads
+      pre.onload = () => { if (s.have === want) s.img.setAttribute("href", url); };
+      pre.src = url;
+    }
+  }
+  function sharpenWhenIdle() {
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+    window.setTimeout(() => { if (idle) idle(() => sharpenLogos(), { timeout: 3000 }); else sharpenLogos(); }, 1500);
   }
   // Structure per node: <circle.halo> (groups), <circle.ring> (main), <text.node-label>, <text.node-name>.
   nodeSel.each(function (this: SVGGElement, d) {
@@ -688,7 +730,9 @@ export function createGraph(
             sel.classed("has-logo", true); // sector rings keep their colour but get a white fill behind the logo
           })
           .on("error", function () { d3.select(this).remove(); });
-        queueLogo(img.node()!, d.logo);
+        const tiny = tinyLogo(d.logo)!;
+        if (tiny !== d.logo) sharper.set(d.id, { img: img.node()!, full: d.logo, r, have: TINY_LOGO_PX });
+        queueLogo(img.node()!, tiny);
       }
       sel
         .append("text")
@@ -1310,19 +1354,31 @@ export function createGraph(
     trailItems();
   });
 
-  // Auto-fit once the simulation has settled enough
+  // Keep the whole map in view while the layout unfolds, then once more when it has settled. (Nov 13: the fit used to
+  // happen only at the end, hidden behind the loading screen; now that the map shows sooner, phones saw it start far
+  // zoomed in and then jump out.) It stops as soon as the visitor moves the map themselves.
   let didInitialFit = false;
+  let visitorMoved = false;
+  for (const type of ["wheel", "pointerdown", "touchstart"]) {
+    svg.node()!.addEventListener(type, () => { visitorMoved = true; }, { capture: true, passive: true, once: true });
+  }
+  let fitTicks = 0;
+  sim.on("tick.fit", () => {
+    if (didInitialFit || visitorMoved || focusId) return;
+    if (fitTicks++ % 6 === 0) fitToView(false);
+  });
+  fitToView(false); // and once right now, so even the very first frame shows everything
   sim.on("end", () => {
     if (largePrint()) scheduleNameCull();
     if (didInitialFit) return;
     didInitialFit = true;
-    fitToView(false);
+    if (!visitorMoved && !focusId) fitToView(false);
   });
   // Fallback in case "end" doesn't fire in time (large graphs)
   setTimeout(() => {
     if (didInitialFit) return;
     didInitialFit = true;
-    fitToView(false);
+    if (!visitorMoved && !focusId) fitToView(false);
   }, 2500);
 
   /** If nothing is on screen (panned away, zoomed past everything, or the pane was hidden), reset the view. */
@@ -1713,6 +1769,7 @@ export function createGraph(
 
   function enterFocus(id: string) {
     parent.classList.add("focus-on"); // shows the "Sizes in this view" panel (controls.ts)
+    sharpenLogos(id);
     const n = nodeById.get(id);
     if (!n) return;
     if (!settings.showBubbles) {

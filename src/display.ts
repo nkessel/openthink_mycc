@@ -153,11 +153,16 @@ export function accessibilityButton(): HTMLElement {
   const place = () => {
     const r = b.getBoundingClientRect();
     panel.style.top = `${Math.round(r.bottom + 8)}px`;
-    panel.style.right = `${Math.max(12, Math.round(window.innerWidth - r.right))}px`;
+    // Under the button, but always fully on screen (Nov 12 bug: on a phone the button sits mid-bar, so a panel
+    // lined up with its right edge ran off the left side).
+    const w = panel.offsetWidth || 300;
+    const right = Math.min(Math.round(window.innerWidth - r.right), window.innerWidth - w - 8);
+    panel.style.right = `${Math.max(8, right)}px`;
+    panel.style.maxHeight = `${Math.max(120, window.innerHeight - Math.round(r.bottom) - 16)}px`;
   };
   const set = (open: boolean) => {
+    panel.hidden = !open; // shown first, so place() can measure it
     if (open) place();
-    panel.hidden = !open;
     b.setAttribute("aria-expanded", String(open));
   };
   window.addEventListener("resize", () => { if (!panel.hidden) place(); });
