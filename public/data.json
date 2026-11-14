@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T02:35:37.881Z",
+  "generated_at": "2026-11-14T02:55:33.077Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -162,7 +162,8 @@
       "actions": [],
       "last_activity": "2026-05-16T19:42:02.323Z",
       "logo": "logos/coalition_mpf.png",
-      "website": "https://www.mapowerforward.com/"
+      "website": "https://www.mapowerforward.com/",
+      "social_links": "https://www.facebook.com/mapowerforward, https://twitter.com/mapowerforward"
     },
     {
       "id": "mycc",
@@ -880,6 +881,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://fourriverscharter.org/",
       "logo": "logos/four_rivers_climate_club.png",
+      "social_links": "https://www.facebook.com/groups/fourriverscommunity, https://facebook.com/frcps, https://instagram.com/fourriverspubliccharter",
       "profile": {
         "geo_precision": "exact"
       },
@@ -1093,6 +1095,7 @@
       "abbrev": "MassCOSH TLAW",
       "website": "https://masscosh.org/",
       "logo": "logos/masscosh_tlaw_climate_change_and_environmental_justice_team.png",
+      "social_links": "https://www.facebook.com/Masscosh, https://www.instagram.com/masscosh, https://www.linkedin.com/company/masscosh, https://linktr.ee/masscoshsocials, https://twitter.com/MassCOSH",
       "profile": {
         "geo_precision": "exact"
       },
@@ -1182,6 +1185,7 @@
       "lng": -71.055953,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "logo": "logos/tree_boston.png",
+      "social_links": "https://bsky.app/profile/treeboston.bsky.social, https://www.facebook.com/TreesBoston, https://www.instagram.com/trees_boston, https://www.linkedin.com/company/treeboston, https://www.youtube.com/@tree_boston",
       "profile": {
         "geo_precision": "exact"
       },
@@ -1572,6 +1576,7 @@
       "abbrev": "VietAID",
       "website": "https://vietaid.org/",
       "logo": "logos/vietaid.png",
+      "social_links": "https://www.facebook.com/VietAID, https://www.instagram.com/vietaid, https://twitter.com/vietaid",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -1601,6 +1606,7 @@
       "abbrev": "MOF",
       "website": "https://mothersoutfront.org/",
       "logo": "logos/mothers_out_front.png",
+      "social_links": "https://www.facebook.com/mothersoutfront, https://www.instagram.com/Mothers.Out.Front, https://www.linkedin.com/company/mothers-out-front",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -1627,6 +1633,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "http://www.citizensinaction.org/",
+      "social_links": "https://www.facebook.com/pages/HealthLink/49335502985",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -1655,6 +1662,7 @@
       "abbrev": "JCAN",
       "website": "https://jewishclimate.org/",
       "logo": "logos/jewish_climate_action_network.png",
+      "social_links": "https://www.facebook.com/jewishclimate, https://www.instagram.com/jewishclimateactionnetwork, https://www.youtube.com/@JewishClimateActionNetwork",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -1797,6 +1805,7 @@
       "abbrev": "MassIPL",
       "website": "https://www.massipl.org/",
       "logo": "logos/massachusetts_interfaith_power_and_light.png",
+      "social_links": "https://www.facebook.com/MassIPL, https://www.instagram.com/mass_ipl, https://www.linkedin.com/company/massipl, https://www.youtube.com/channel/UCqwJXxUMJP2tBa0wBxl1xVw",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -1900,6 +1909,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "http://envirosho.blogspot.com/",
       "logo": "logos/the_enviro_show_on_wxoj_lp_103_3_fm.png",
+      "social_links": "https://www.facebook.com/newmooninthevalley, https://www.instagram.com/enviroshow",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -2075,6 +2085,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "CXC",
       "logo": "logos/climate_xchange.png",
+      "social_links": "https://www.facebook.com/ClimateXChange, https://www.instagram.com/climate_xchange, https://twitter.com/_ClimateXChange, https://twitter.com/ClimateXChngeMA",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -2358,6 +2369,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.sustainablemilton.org/",
       "logo": "logos/sustainable_milton.png",
+      "social_links": "https://www.facebook.com/groups/294052982958, https://www.instagram.com/sustainablemiltonma, https://x.com/miltonsustain",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -2496,6 +2508,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "ECA Mass",
       "logo": "logos/elders_climate_action_mass.png",
+      "social_links": "https://www.facebook.com/ecamasschapter",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3089,6 +3102,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "logo": "logos/environment_massachusetts.png",
+      "social_links": "https://www.facebook.com/EnvironmentAmerica, https://www.instagram.com/enviroam, https://www.linkedin.com/company/environment-america, https://www.twitter.com/envam",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3362,6 +3376,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "CSJ",
       "logo": "logos/coalition_for_social_justice.png",
+      "social_links": "https://www.facebook.com/coalitionforsocialjustice, https://www.instagram.com/coalitionforsocialjustice, https://twitter.com/PeopleforCSJ",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3400,6 +3415,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "FRRACS",
       "logo": "logos/fore_river_residents_against_the_compressor_station.png",
+      "social_links": "https://bsky.app/profile/frracs.bsky.social, https://www.facebook.com/ForeRiverResidentsAgainstCompressorStation, https://www.facebook.com/Back-River-Watershed-Association-345912222170505, https://www.facebook.com/Idlewell-Education-Improvement-Association-1421111418123245, https://www.facebook.com/sustainablebraintree, https://www.instagram.com/frracs",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3506,6 +3522,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "NAICOB",
       "logo": "logos/north_american_indian_center_of_boston.png",
+      "social_links": "https://facebook.com/naicob, https://instagram.com/naicob91, https://twitter.com/naicob91",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3553,6 +3570,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "logo": "logos/slingshot.png",
+      "social_links": "https://www.facebook.com/slingshotaction, https://www.instagram.com/slingshotaction, https://mobile.twitter.com/slingshotaction",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3685,6 +3703,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "350MA Central Mass",
       "logo": "logos/350ma_central_mass.png",
+      "social_links": "https://www.facebook.com/350-Central-Mass-472347592844271, https://www.instagram.com/350_central_mass, https://twitter.com/350CentralMass",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3893,6 +3912,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "CLF",
       "logo": "logos/conservation_law_foundation.png",
+      "social_links": "https://www.facebook.com/EngagingNetworks, https://www.linkedin.com/company/engaging-networks, https://twitter.com/engagingnetwork, https://www.youtube.com/channel/UCqBM6ELz6JXX3OnzC56xYcw",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -3992,6 +4012,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "FWW",
       "logo": "logos/food_and_water_watch.png",
+      "social_links": "https://www.facebook.com/FoodandWaterWatch, https://www.instagram.com/foodandwaterwatch, https://twitter.com/foodandwater",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4055,6 +4076,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "JALSA",
       "logo": "logos/jewish_alliance_for_law_and_social_action.png",
+      "social_links": "https://bsky.app/profile/jalsaboston.bsky.social, https://www.facebook.com/JALSABoston, https://www.instagram.com/jalsa_boston, https://linkedin.com/company/jewish-alliance-for-law-and-social-action, https://www.tiktok.com/@jalsaboston",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4103,6 +4125,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "PFPI",
       "logo": "logos/partnership_for_policy_integrity.png",
+      "social_links": "https://www.facebook.com/PartnershipForPolicyIntegrity",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4310,6 +4333,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.bodhisara.org/",
+      "social_links": "https://www.facebook.com/Bodhisara-Dharma-Community-104393674868176, https://www.youtube.com/channel/UC7EJk-VzESs8dZIK3Cs30YA",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4376,6 +4400,7 @@
       "abbrev": "BostonCAN",
       "website": "https://bostonclimateaction.org/",
       "logo": "logos/boston_climate_action_network.png",
+      "social_links": "https://facebook.com/bostoncan, https://instagram.com/bostonclimateaction, https://www.linkedin.com/company/the-boston-climate-action-network, https://twitter.com/bostonclimate",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4466,6 +4491,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.capedownwinders.net",
       "logo": "logos/cape_downwinders.png",
+      "social_links": "https://www.facebook.com/capedownwinders.info",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4502,6 +4528,7 @@
       "abbrev": "CERO Co-op",
       "website": "https://www.cero.coop/",
       "logo": "logos/cero_cooperative.png",
+      "social_links": "https://www.facebook.com/cerocoop, https://www.instagram.com/cero.coop, https://www.linkedin.com/company/cero-cooperative-inc, https://twitter.com/cerocoop, https://www.youtube.com/channel/UCnlCSoCieqZ9xjdao-CsNRA",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4539,6 +4566,7 @@
       "abbrev": "CRWA",
       "website": "https://www.crwa.org/",
       "logo": "logos/charles_river_watershed_association.png",
+      "social_links": "https://www.facebook.com/CharlesRiverWatershed, https://www.instagram.com/charlesriverwatershed, https://www.linkedin.com/company/charles-river-watershed-association, https://www.tiktok.com/@charlesriverwatershed, https://www.youtube.com/user/CRWA2",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -4774,6 +4802,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.climaterealityboston.org/",
       "logo": "logos/the_climate_reality_project_boston_metro_chapter.png",
+      "social_links": "https://www.facebook.com/groups/ClimateRealityBostonMetroChapter",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -5038,6 +5067,7 @@
       "abbrev": "ELM",
       "website": "https://www.environmentalleague.org/",
       "logo": "logos/environmental_league_of_ma.png",
+      "social_links": "https://bsky.app/profile/enviroleaguema.bsky.social, https://www.facebook.com/EnvironmentalLeagueOfMassachusetts, https://www.instagram.com/elmactionfund, https://www.linkedin.com/company/environmental-league-of-massachusetts, https://twitter.com/EnviroLeagueMA, https://www.youtube.com/channel/UC4Z0y4HcQgPcutNuC393vDQ",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -5209,6 +5239,7 @@
       "abbrev": "Greater Boston PSR",
       "website": "https://gbpsr.org/",
       "logo": "logos/greater_boston_physicians_for_social_responsibility.png",
+      "social_links": "https://www.facebook.com/gbpsr, https://www.instagram.com/greaterbostonpsr, https://twitter.com/gb_psr",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -5272,6 +5303,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.greencambridge.org/",
       "logo": "logos/green_cambridge.png",
+      "social_links": "https://facebook.com/greencambridge, https://www.instagram.com/greencambridge, https://www.youtube.com/channel/UCk7aQyZ-OAscjjzfsJ43olA",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -5366,6 +5398,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.greenenergyconsumers.org/",
       "logo": "logos/green_energy_consumers_alliance.png",
+      "social_links": "https://bsky.app/profile/geconsumers.bsky.social, https://www.facebook.com/greenenergyconsumers, https://www.linkedin.com/company/mass-energy-consumer-alliance, https://www.youtube.com/user/MassEnergy1982",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -5556,6 +5589,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://greennewton.org/",
       "logo": "logos/green_newton.png",
+      "social_links": "https://www.facebook.com/GreenNewtonMA, https://www.instagram.com/green.newton, https://www.linkedin.com/company/green-newton/posts",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -5604,6 +5638,7 @@
       "abbrev": "ISCBCC",
       "website": "https://isbcc.org/",
       "logo": "logos/islamic_society_of_boston_cultural_center.png",
+      "social_links": "https://www.facebook.com/ISBCC.org, https://instagram.com/isbcc, https://twitter.com/isbcc",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6003,6 +6038,7 @@
       "abbrev": "Mount Grace",
       "website": "https://www.mountgrace.org/",
       "logo": "logos/mount_grace_land_conservation_trust.png",
+      "social_links": "https://www.facebook.com/MountGraceLCT, https://www.instagram.com/mountgracelct, https://www.youtube.com/@mountgracelandtrust8901",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6200,6 +6236,7 @@
       "abbrev": "PHMass",
       "website": "https://phmass.org/",
       "logo": "logos/passive_house_massachusetts.png",
+      "social_links": "https://bsky.app/profile/phmass.bsky.social, https://www.linkedin.com/company/phmass, https://www.youtube.com/@passivehousemassachusetts",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6268,6 +6305,7 @@
       "lng": -70.676802,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "logo": "logos/pilgrim_coalition.png",
+      "social_links": "https://www.facebook.com/TheGrassrootsFund, https://www.linkedin.com/company/grassrootsfund, https://twitter.com/GrassrootsFund_",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6340,6 +6378,7 @@
       "abbrev": "PDM",
       "website": "https://www.progressivedemsofmass.org/",
       "logo": "logos/progressive_democrats_of_mass.png",
+      "social_links": "https://www.facebook.com/groups/pdemsMA, https://www.instagram.com/progressivedems, https://twitter.com/ProgDemsofMA",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6378,6 +6417,7 @@
       "abbrev": "QCAN",
       "website": "https://quincycan.org/",
       "logo": "logos/quincy_climate_action_network.png",
+      "social_links": "https://www.facebook.com/QuincyClimateActionNetwork, https://www.youtube.com/channel/UCycZjnnJt4rymLN9ok9_Egw/featured",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6427,6 +6467,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.resonant.energy/",
       "logo": "logos/resonant_energy.png",
+      "social_links": "https://www.facebook.com/resonantenergyllc, https://www.instagram.com/resonant.energy, https://www.linkedin.com/company/resonant.energy, https://twitter.com/Resonant_Energy",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6462,6 +6503,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.restore.org/",
       "logo": "logos/restore_the_north_woods.png",
+      "social_links": "https://www.facebook.com/RESTOREtheNorthWoods, https://www.instagram.com/restorethenorthwoods",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6537,6 +6579,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://solardesign.com/",
       "logo": "logos/solar_design_associates.png",
+      "social_links": "https://www.facebook.com/pages/Solar-Design-Associates/158984054122416, https://www.linkedin.com/company/1815082",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6561,6 +6604,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://solstice.us/",
       "logo": "logos/solstice_initiative.png",
+      "social_links": "https://www.facebook.com/solarforgood, https://www.instagram.com/solarforgood, https://www.linkedin.com/company/solstice-initiative, https://x.com/solarforgood, https://www.youtube.com/channel/UCjxMbusGnWU2UsGHZhvJNQQ/featured",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6633,6 +6677,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.sunwealth.com/",
       "logo": "logos/sunwealth.png",
+      "social_links": "https://www.linkedin.com/company/sunwealth",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6739,6 +6784,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.sustainablesudbury.org/",
       "logo": "logos/sustainable_sudbury.png",
+      "social_links": "https://www.facebook.com/sustainablesudbury",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6856,6 +6902,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.vineyardpower.org/",
       "logo": "logos/vineyard_power_cooperative.png",
+      "social_links": "https://www.facebook.com/vineyardpower, https://www.instagram.com/vineyardpower, https://www.linkedin.com/company/vineyard-power/posts",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6913,6 +6960,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://watertowncitizens.org/",
       "logo": "logos/watertown_citizens_for_peace_justice_and_the_environment.png",
+      "social_links": "https://www.facebook.com/WatertownCitizensPJE, https://www.facebook.com/groups/2522520031139497, https://twitter.com/WCPJE",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -6980,6 +7028,7 @@
       "abbrev": "WSFA",
       "website": "https://www.wendellforest.org/",
       "logo": "logos/wendell_state_forest_alliance.png",
+      "social_links": "https://www.facebook.com/groups/WendellStateForestAlliance, https://www.youtube.com/channel/UCz-VOFhAQ0cgz2QSSf3972A, https://www.youtube.com/@wendellforestalliance",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7179,6 +7228,7 @@
       "abbrev": "LWVMA",
       "website": "https://lwvma.org/",
       "logo": "logos/league_of_women_voters_of_massachusetts.png",
+      "social_links": "https://www.facebook.com/lwvmass, https://www.instagram.com/lwvma, https://www.linkedin.com/company/league-of-women-voters-of-massachusetts, https://twitter.com/LWVMA, https://www.youtube.com/channel/UC-lQnNw9E4P74J8LDbQnbKg, https://www.youtube.com/@lwvma",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7219,6 +7269,7 @@
       "abbrev": "N2N",
       "website": "https://n2nma.org/",
       "logo": "logos/neighbor_to_neighbor_massachusetts.png",
+      "social_links": "https://www.facebook.com/N2NMA, https://www.instagram.com/n2nma, https://twitter.com/N2Nma",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7300,6 +7351,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://communityactionworks.org/",
       "logo": "logos/community_action_works.svg",
+      "social_links": "https://www.facebook.com/ComActionWorks, https://www.instagram.com/comactionworks, https://twitter.com/comactionworks",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7356,6 +7408,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://www.21csf.org/",
+      "social_links": "https://www.facebook.com/21csf, https://twitter.com/21csf",
       "profile": {
         "geo_precision": "approx"
       }
@@ -7372,6 +7425,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://acadiacenter.org/",
       "logo": "logos/acadia_center.svg",
+      "social_links": "https://www.facebook.com/AcadiaCtr, https://www.instagram.com/acadia_center, https://www.linkedin.com/company/acadia-center, https://x.com/AcadiaCtr, https://www.youtube.com/@acadiacenter",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7417,6 +7471,7 @@
       "abbrev": "AFT-Mass",
       "website": "https://ma.aft.org/",
       "logo": "logos/aft_mass.png",
+      "social_links": "https://www.instagram.com/pem_union",
       "profile": {
         "geo_precision": "approx"
       },
@@ -7513,6 +7568,7 @@
       "abbrev": "CPA",
       "website": "https://cpaboston.org/",
       "logo": "logos/chinese_progressive_association.png",
+      "social_links": "https://www.facebook.com/cpaboston, https://www.instagram.com/cpajustice, https://x.com/CPAJustice",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7702,6 +7758,7 @@
       "abbrev": "CHPS",
       "website": "https://chps.net/",
       "logo": "logos/collaborative_for_high_performance_schools.png",
+      "social_links": "https://www.facebook.com/CHPSNews, https://www.instagram.com/chpsnews, https://www.linkedin.com/company/the-collaborative-for-high-performance-schools, https://x.com/CHPSNews",
       "profile": {
         "geo_precision": "approx"
       }
@@ -7718,6 +7775,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://coolercommunities.org/",
       "logo": "logos/cooler_communities.png",
+      "social_links": "https://www.facebook.com/CoolerCommunities, https://www.instagram.com/coolercommunities",
       "profile": {
         "geo_precision": "approx"
       },
@@ -7746,6 +7804,7 @@
       "abbrev": "FRCOG CHIP",
       "website": "https://frcog.org/",
       "logo": "logos/franklin_county_and_north_quabbin_community_health_improveme.png",
+      "social_links": "https://www.facebook.com/FranklinRegionalCouncilofGovernments, https://twitter.com/FranklinCOG, https://www.youtube.com/channel/UCseMmca1wVygR2Qthpr1mHw",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7777,6 +7836,7 @@
       "last_activity": "2026-09-25T13:38:29.000Z",
       "website": "https://greenweymouth.com/",
       "logo": "logos/green_weymouth.png",
+      "social_links": "https://twitter.com/@green_weymouth",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7800,6 +7860,7 @@
       "abbrev": "MA Senior Action",
       "website": "https://www.masssenioraction.org/",
       "logo": "logos/ma_senior_action.png",
+      "social_links": "https://www.facebook.com/MassSeniorAction",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7889,6 +7950,7 @@
       "abbrev": "MFAA",
       "website": "https://massfacilities.com/",
       "logo": "logos/mass_facilities_administrators_association.png",
+      "social_links": "https://www.youtube.com/channel/UCncOFzwXobp4mtJPFc6GOWg",
       "profile": {
         "geo_precision": "approx"
       }
@@ -7908,6 +7970,7 @@
       "abbrev": "Mass JWJ",
       "website": "https://www.massjwj.net/",
       "logo": "logos/massachusetts_jobs_with_justice.png",
+      "social_links": "https://www.facebook.com/massjwj, https://www.instagram.com/massjobswithjustice",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -7945,6 +8008,7 @@
       "abbrev": "MAPC",
       "website": "https://www.mapc.org/",
       "logo": "logos/metropolitan_area_planning_council.png",
+      "social_links": "https://www.facebook.com/pages/Metropolitan-Area-Planning-Council-MAPC/127159693987749, https://www.instagram.com/mapcmetroboston, https://www.linkedin.com/company/metropolitan-area-planning-council, https://www.youtube.com/user/MAPCMetroBoston",
       "profile": {
         "geo_precision": "exact"
       }
@@ -7962,6 +8026,7 @@
       "abbrev": "MTACAN",
       "website": "https://massteacher.org/",
       "logo": "logos/mtacan.png",
+      "social_links": "https://bsky.app/profile/massteacher.bsky.social, https://www.facebook.com/massteacher, https://www.instagram.com/massteacher",
       "profile": {
         "youth_serving": false,
         "school_club": false,
@@ -8080,6 +8145,7 @@
       "abbrev": "SBN",
       "website": "https://www.sbnmass.org/",
       "logo": "logos/sustainable_business_network_of_massachusetts.png",
+      "social_links": "https://www.facebook.com/sbnmass, https://www.instagram.com/sbnmass, https://www.linkedin.com/company/sbnmass, https://twitter.com/sbnmass",
       "profile": {
         "youth_serving": false,
         "school_club": false,
