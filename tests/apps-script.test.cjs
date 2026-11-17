@@ -858,8 +858,14 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(badOther.ok, false); assert.match(badOther.error, /name of the other point person/);
   assert.ok(!ctx.readAll_().events.find((e) => e.id === second.id).verified || ctx.readAll_().events.find((e) => e.id === second.id).name !== "Renamed by the group");
   const before = mail.length;
-  const res = post({ action: "submit", token: L.token, sid: A, state: st, baseSubmittedAt: "" });
+  const res = post({ action: "submit", token: L.token, sid: A, state: { ...st, feedback: "  A filter for youth groups would help us.  " }, baseSubmittedAt: "" });
   assert.equal(res.ok, true); assert.match(res.summary, /approved/); assert.ok(res.submittedAt);
+  // ideas or comments (Nov 17): one Feedback row, and the team's alert email quotes it
+  const fbRows = ctx.ss_().getSheetByName("Feedback").getDataRange().getValues();
+  const fbHead = fbRows[0], fbLast = fbRows[fbRows.length - 1];
+  assert.equal(fbLast[fbHead.indexOf("type")], "Confirmation page");
+  assert.equal(fbLast[fbHead.indexOf("message")], "A filter for youth groups would help us.");
+  assert.ok(mail.slice(before).some((m) => /A filter for youth groups/.test(JSON.stringify(m))), "alert email includes the feedback");
   const e0 = ctx.readAll_().events.find((e) => e.id === second.id);
   assert.equal(e0.name, "Renamed by the group"); assert.equal(e0.date, "2026-11-20T18:30:00"); assert.equal(e0.link, "https://example.org/x");
   assert.ok(ctx.isTrue_(e0.verified)); assert.ok(!ctx.isTrue_(e0.hidden), "only listed fields can change");

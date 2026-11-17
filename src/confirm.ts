@@ -219,6 +219,13 @@ function start(DATA: Obj, token: string) {
     app.appendChild(el(`<h2>Events, projects and actions (${DATA.items.length})</h2>`));
     if (!DATA.items.length) app.appendChild(el(`<p class="empty">The map has no events, projects or actions for your ${groupWord} yet. You can add them with the + button on the map.</p>`));
     (DATA.items as Card[]).forEach((c) => app.appendChild(card(c)));
+    // Feedback for the map team (Nathan, Nov 17): sent with Finalize and Submit, saved with the draft.
+    app.appendChild(el(`<div class="box"><h2 style="margin-top:0"><label for="fb">Ideas or comments for us (optional)</label></h2>
+      <p class="pp">What would make the map most useful for ${esc(DATA.org.name)}? Anything else you’d like to share with the map’s team? We read every note.</p>
+      <textarea id="fb" rows="4" maxlength="3000"></textarea></div>`));
+    const fb = $("fb") as HTMLTextAreaElement;
+    fb.value = String(st.feedback || "");
+    fb.addEventListener("input", () => { st.feedback = fb.value; touch(); });
     applyLock();
   }
   const bestOptions = () => `<option value="">No preference</option>` + BESTS.map((b) => `<option>${b}</option>`).join("");

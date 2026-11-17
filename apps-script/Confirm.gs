@@ -426,11 +426,24 @@ function confirmSubmit_(link, token, sid, b) {
     notes: 'submitted by ' + who.name.replace(/[()]/g, '') + ' (' + who.email + '): ' + result.summary,
   });
   CacheService.getScriptCache().remove(lockKey_(token));
+  var feedback = String((state && state.feedback) || '').trim().slice(0, 3000);
+  if (feedback) {
+    // Ideas or comments from the confirmation page (Nov 17) go to the Feedback tab with the rest of the feedback.
+    try {
+      var fsheet = ss_().getSheetByName(TAB.feedback);
+      if (fsheet) {
+        addMissingColumns_(fsheet, COLS[TAB.feedback]);
+        appendObject_(fsheet, { submitted_at: at, type: 'Confirmation page', area: str_(link.rec.org_name), message: feedback,
+          name: who.name, email: who.email, phone: '', ok_to_follow_up: 'Yes', status: 'new', notes: '' });
+      }
+    } catch (e) { /* never block a submission over feedback */ }
+  }
   var to = alertEmails_();
   if (to.length) {
     try {
       sendMail_(to.join(','), REGION.title + ': ' + str_(link.rec.org_name) + ' checked their information',
         who.name + ' (' + who.email + ') submitted the confirmation screen for ' + str_(link.rec.org_name) + '.\n\n' + result.lines.join('\n') +
+        (feedback ? '\n\nTheir ideas or comments for the team (also in the Feedback tab):\n' + feedback : '') +
         '\n\nEvery change is in Change Log: ' + ss_().getUrl());
     } catch (e) { /* quota */ }
   }
