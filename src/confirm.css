@@ -24,3 +24,6 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}@m
 .banner[hidden]{display:none}
 .other{border-top:1px solid var(--line);margin-top:10px;padding-top:4px}.other.off{opacity:.7}
 .msgpage{max-width:520px;margin:48px auto;padding:0 16px;font-size:1.05em}
+
+/* Approve all (Nov 17) */
+.approve-all{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.approve-all .hint{flex:1;min-width:200px;margin:0}
