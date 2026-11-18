@@ -251,7 +251,8 @@ var COLS = {
     'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info', 'verified', 'rsvp_link', 'free_food', 'affiliated_only'],
   'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden', 'host_org_id',
     'description', 'link', 'needs_info', 'verified'],
-  'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes'],
+  // item_ids (Nov 17): point people for one event, project or action only (the confirmation page's item point people).
+  'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes', 'item_ids'],
   // The master topic list (any length). People type topics on the forms; typed text is matched against name + aliases.
   'Topics': ['name', 'aliases', 'notes', 'qid', 'seed'],
   // Typed organization or topic names that matched nothing. Add the right alias on Topics (or fix the org) and mark it resolved.
@@ -1875,8 +1876,10 @@ function authorize_(email, kind, a, target, t) {
   }
   if (!target.isNew) {
     if (!target.record) return { ok: false, reason: 'NOT FOUND — ' + target.label };
-    if (!manages(target.owners)) return { ok: false, reason: 'UNAUTHORIZED — ' + email + ' does not manage the owner of ' + target.id };
     var moving = target.newOwners.orgs.length || target.newOwners.coalitions.length;
+    // A point person for just this item (Editors → item_ids) may edit it, but not move it to another group.
+    if (perms.items[target.id] && !moving) return { ok: true };
+    if (!manages(target.owners)) return { ok: false, reason: 'UNAUTHORIZED — ' + email + ' does not manage the owner of ' + target.id };
     if (moving && !manages(target.newOwners)) return { ok: false, reason: 'UNAUTHORIZED — ' + email + ' cannot move it to an org/coalition they do not manage' };
     return { ok: true };
   }
@@ -1887,7 +1890,7 @@ function authorize_(email, kind, a, target, t) {
 }
 
 function permissionsFor_(email, editors) {
-  var p = { known: false, admin: false, all: false, orgs: {}, coalitions: {} };
+  var p = { known: false, admin: false, all: false, orgs: {}, coalitions: {}, items: {} };
   email = String(email || '').toLowerCase();
   if (email && adminEmails_().indexOf(email) !== -1) { p.known = p.admin = true; }
   (editors || []).forEach(function (r) {
@@ -1897,6 +1900,7 @@ function permissionsFor_(email, editors) {
     if (/^admin$/i.test(str_(r.role))) p.admin = true;
     list_(r.org_ids).forEach(function (id) { if (id === '*') p.all = true; p.orgs[id] = true; });
     list_(r.coalition_ids).forEach(function (id) { if (id === '*') p.all = true; p.coalitions[id] = true; });
+    list_(r.item_ids).forEach(function (id) { p.items[id] = true; });
   });
   return p;
 }
@@ -1922,7 +1926,8 @@ function addEditorOrg_(email, orgId) {
 function savePointPerson_(orgId, a, submitter) {
   // The confirmation screen also adds coalition point people (a.groupKind 'coalition': Editors → coalition_ids), and
   // a.keepDetails stops it from overwriting a person who is already on file (their own details win).
-  var idCol = a.groupKind === 'coalition' ? 'coalition_ids' : 'org_ids';
+  // a.groupKind 'item' (Nov 17): a point person for one event, project or action (Editors → item_ids).
+  var idCol = a.groupKind === 'coalition' ? 'coalition_ids' : a.groupKind === 'item' ? 'item_ids' : 'org_ids';
   var email = String(a[Q.pointEmail] || '').trim().toLowerCase();
   if (!email || email.indexOf('@') === -1) return;
   var name = String(a[Q.pointName] || '').trim();
@@ -1952,7 +1957,7 @@ function savePointPerson_(orgId, a, submitter) {
     fresh2[idCol] = orgId;
     appendObject_(sheet, fresh2);
   }
-  if (!verified) sendVerification_(email, orgId, name, a.groupKind);
+  if (!verified) sendVerification_(email, orgId, name, a.groupKind, a.label);
 }
 
 /** Editors rows waiting for their email to be confirmed: listed, but allowed nothing. */
@@ -1960,19 +1965,19 @@ var PENDING_ROLE = 'pending';
 function isPending_(r) { return /^pending/i.test(str_(r.role)); }
 
 /** Email a point person a one-time link that confirms the address (doGet ?verify=token). */
-function sendVerification_(email, orgId, name, groupKind) {
+function sendVerification_(email, orgId, name, groupKind, labelOverride) {
   var token = '';
   for (var i = 0; i < 4; i++) token += Math.floor(Math.random() * 0x100000000).toString(16);
-  var kind = groupKind === 'coalition' ? 'coalition' : 'org';
+  var kind = groupKind === 'coalition' ? 'coalition' : groupKind === 'item' ? 'item' : 'org';
   PropertiesService.getScriptProperties().setProperty('VERIFY_' + token, JSON.stringify({ email: email, org: orgId, kind: kind, at: nowIso_() }));
   // The link opens the static confirmation page (it asks the web app to confirm); the old web app address also still works.
   var url = confirmPageUrl_() + '?verify=' + token;
-  var label = (LABEL_INDEX_ && LABEL_INDEX_.byId[kind] && LABEL_INDEX_.byId[kind][orgId]) || orgId;
+  var label = labelOverride || (LABEL_INDEX_ && LABEL_INDEX_.byId[kind] && LABEL_INDEX_.byId[kind][orgId]) || orgId;
   logChange_('', FORM_NAMES.org, 'verification sent', 'PENDING', 'editor', orgId, label, 'point person ' + email + ' asked to confirm their email');
   try {
     sendMail_(email, REGION.title + ': please confirm your email',
       'Hi' + (name ? ' ' + name : '') + ',\n\nSomeone named you as the point person for ' + label + ' on the ' + REGION.title + '. ' +
-      'Open this link to confirm your email, so you can keep the organization\'s information up to date:\n\n' + url +
+      'Open this link to confirm your email, so you can keep ' + (kind === 'item' ? 'its' : 'the organization\'s') + ' information up to date:\n\n' + url +
       '\n\nIf this wasn\'t you, ignore this email: nothing changes until the link is opened.');
   } catch (e) { /* quota: the Change Log and Editors tab still show the pending row */ }
 }

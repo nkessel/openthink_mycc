@@ -771,7 +771,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const LCo = linkOf("mycc", "coalition");
   const gc = get(LCo.token).data;
   assert.equal(gc.kind, "coalition"); assert.equal(gc.org.kind, "coalition"); assert.equal(gc.org.id, "mycc");
-  assert.deepEqual(Object.keys(gc.org).sort(), ["description", "geographic_scope", "id", "kind", "name", "social_links", "website"]);
+  assert.deepEqual(Object.keys(gc.org).sort(), ["description", "geographic_scope", "id", "kind", "name", "social_links", "topic_tags", "website"]);
   assert.ok(gc.items.some((i) => i.id === "mycc_e_call_1004" && i.kind === "event"), "coalition-tagged events are its items");
   assert.ok(gc.items.every((i) => ctx.readAll_().events.concat(ctx.readAll_().projects, ctx.readAll_().actions).find((r) => r.id === i.id).coalition_id === "mycc"));
   assert.equal(gc.pointPeople.length, 1, "the coalition's existing point person (Editors coalition_ids)");
@@ -936,6 +936,48 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const vr = post({ action: "verify", verify: tok });
   assert.equal(vr.ok, true); assert.match(vr.message, /confirmed/);
   assert.equal(ctx.readAll_().editors.find((r) => r.email === "tina@example.org").role, "editor");
+
+  // round 3 (Nov 17): change type with the tag, and point people for one item
+  {
+    const all0 = ctx.readAll_();
+    const ev = all0.events.find((e) => e.host_org_id === orgId && !ctx.isTrue_(e.hidden) && e.name !== "Brand new teach-in");
+    const role = all0.actions.find((a) => a.name === "Volunteer photographer");
+    const r3 = post({ action: "submit", token: L.token, sid: C, baseSubmittedAt: res2.submittedAt, state: {
+      who: { name: "Pat Point", email: "pat@example.org" }, others: [],
+      items: {
+        [ev.id]: { kind: "event", decision: "approve", newType: "project", fields: { description: "Really an ongoing campaign" } },
+        [role.id]: { kind: "action", decision: "approve", newType: "action", fields: {} },
+        new_1: { kind: "event", decision: "approve", fields: { name: "Winter teach-in" } },
+      },
+      itemPeople: {
+        new_1: [{ name: "Ivy Item", email: "ivy@example.org", phone: "", best: "", scope: "item" }],
+        [role.id]: [{ name: "Ivy Item", email: "ivy@example.org", scope: "item" }, { name: "Gus Group", email: "gus@example.org", scope: "group" }],
+      },
+    } });
+    assert.equal(r3.ok, true, JSON.stringify(r3)); assert.match(r3.summary, /1 moved to another type/);
+    const all1 = ctx.readAll_();
+    assert.ok(ctx.isTrue_(all1.events.find((e) => e.id === ev.id).hidden), "old event row hidden");
+    const np = all1.projects.find((x) => x.name === ev.name && x.host_org_id === orgId);
+    assert.ok(np && np.description === "Really an ongoing campaign" && ctx.isTrue_(np.verified) && np.status === "active", "moved to Projects");
+    assert.equal(all1.actions.find((a) => a.id === role.id).kind, "task", "volunteer role → action is the kind column");
+    const winter = all1.events.find((e) => e.name === "Winter teach-in");
+    const ivy = all1.editors.find((r) => r.email === "ivy@example.org");
+    assert.ok(ivy && ctx.isPending_(ivy) && ctx.list_(ivy.item_ids).includes(winter.id) && ctx.list_(ivy.item_ids).includes(role.id) && !String(ivy.org_ids || ""), "item point person, pending, items only");
+    assert.ok(mail.some((m) => m.to === "ivy@example.org" && /Winter teach-in|Volunteer photographer/.test(m.body)), "verification names the item");
+    assert.ok(!all1.editors.some((r) => r.email === "gus@example.org"), "group full: Gus not added");
+    assert.ok(r3.lines.some((l) => /gus@example.org not added/.test(l)));
+    // the page shows item point people (masked); item people never go into the shared draft
+    assert.ok(get(L.token).data.items.some((i) => i.id === role.id && i.pointPeople.some((p) => p.name === "Ivy Item" && p.pending && !p.email.includes("ivy@"))));
+    G("saveDraft_")(ctx.linkRow_(L.token), { org: {}, items: {}, itemPeople: { x: [{ email: "secret@example.org" }] } });
+    assert.ok(!linkOf(orgId).draft.includes("secret@example.org"));
+    // once confirmed, an item point person may edit that item, but nothing else
+    ctx.writeFields_(ctx.ss_().getSheetByName("Editors"), ctx.readTable_(ctx.ss_().getSheetByName("Editors")).headers, ivy._row, { role: "editor" });
+    const perms = ctx.permissionsFor_("ivy@example.org", ctx.readAll_().editors);
+    assert.ok(perms.items[winter.id] && !perms.orgs[orgId]);
+    const tgt = (id) => ({ isNew: false, id, record: {}, owners: { orgs: [orgId], coalitions: [] }, newOwners: { orgs: [], coalitions: [] } });
+    assert.equal(ctx.authorize_("ivy@example.org", "event", {}, tgt(winter.id), ctx.readAll_()).ok, true);
+    assert.equal(ctx.authorize_("ivy@example.org", "event", {}, tgt(ev.id), ctx.readAll_()).ok, false);    res2.submittedAt = r3.submittedAt; // later checks build on the latest submission
+  }
 
   // a coalition: its card and its tagged items, not another coalition's
   const cstate = (extra) => ({ who: { name: "Cora Coalition", email: "cora@example.org" }, org: { decision: "approve", fields: { description: "A coalition of youth groups", website: "mycc.example.org", geographic_scope: "Statewide", hidden: "TRUE" } }, items: extra, others: [] });
