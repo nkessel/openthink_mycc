@@ -190,8 +190,6 @@ function start(DATA: Obj, token: string) {
     app.innerHTML = "";
     app.appendChild(el(`<div><h1>Check ${esc(DATA.org.name)}’s information</h1><p class="lead">This is what the ${esc(DATA.title)} shows for your group. For each card, choose <b>Approve</b> (it’s right, or right after your edits) or <b>Remove</b> (it shouldn’t be on the map). Nothing changes until you press <b>Finalize and Submit</b>; <b>Save for later</b> keeps your work.</p></div>`));
     if (baseSubmittedAt) app.appendChild(el(`<div class="box done">Thank you: this was submitted on ${esc(new Date(baseSubmittedAt).toLocaleDateString())}. You can check it again and submit any changes.</div>`));
-    // Approve all (Nathan, Nov 17): one click marks every card approved, except ones already marked Remove.
-    app.appendChild(el(`<div class="box approve-all"><button type="button" class="primary" id="approve-all">✓ Approve all</button><p class="hint">Approves every card below that you haven’t marked Remove. You can still change any card before you press <b>Finalize and Submit</b>.</p></div>`));
     const pp = pointPeople.length
       ? "Point people on file: " + pointPeople.map((p) => esc(p.name || p.email) + (p.pending ? " (waiting for email confirmation)" : "")).join(", ") + "."
       : "No point person on file yet.";
@@ -204,13 +202,6 @@ function start(DATA: Obj, token: string) {
     app.appendChild(el(`<div class="box"><h2 style="margin-top:0">Other point people (optional)</h2>
       <p class="pp">Each person you add gets an email asking them to confirm their address. Their details are only seen by the map’s core team.</p>
       <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}</div>`));
-    $("approve-all").addEventListener("click", () => {
-      if (!editor) return;
-      cards.forEach((c) => { const s = S(c.id); if (s.decision !== "remove") s.decision = "approve"; });
-      touch();
-      cards.forEach(rerender);
-      msg(`Approved ${cards.filter((c) => S(c.id).decision === "approve").length} card(s). Review anything you like, then press Finalize and Submit.`);
-    });
     wirePerson("p", () => who, (p) => { who = p; });
     [0, 1].forEach((i) => wirePerson("o" + i, () => others[i], (p) => { others[i] = p; }));
     syncOthers();
@@ -219,6 +210,15 @@ function start(DATA: Obj, token: string) {
     app.appendChild(el(`<h2>Events, projects and actions (${DATA.items.length})</h2>`));
     if (!DATA.items.length) app.appendChild(el(`<p class="empty">The map has no events, projects or actions for your ${groupWord} yet. You can add them with the + button on the map.</p>`));
     (DATA.items as Card[]).forEach((c) => app.appendChild(card(c)));
+    // Approve all (Nathan, Nov 17): under the last cards that ask for approval. Marks every card approved, except ones marked Remove.
+    app.appendChild(el(`<div class="box approve-all"><button type="button" class="primary" id="approve-all">✓ Approve all</button><p class="hint">Approves every card above that you haven’t marked Remove. You can still change any card before you press <b>Finalize and Submit</b>.</p></div>`));
+    $("approve-all").addEventListener("click", () => {
+      if (!editor) return;
+      cards.forEach((c) => { const s = S(c.id); if (s.decision !== "remove") s.decision = "approve"; });
+      touch();
+      cards.forEach(rerender);
+      msg(`Approved ${cards.filter((c) => S(c.id).decision === "approve").length} card(s). Review anything you like, then press Finalize and Submit.`);
+    });
     // Feedback for the map team (Nathan, Nov 17): sent with Finalize and Submit, saved with the draft.
     app.appendChild(el(`<div class="box"><h2 style="margin-top:0"><label for="fb">Ideas or comments for us (optional)</label></h2>
       <p class="pp">What would make the map most useful for ${esc(DATA.org.name)}? Anything else you’d like to share with the map’s team? We read every note.</p>
