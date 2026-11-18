@@ -133,7 +133,17 @@ function start(DATA: Obj, token: string) {
     cards = [DATA.org as Card, ...(DATA.items as Card[]), ...added];
   }
   /** Which section a card belongs to: actions split into actions and volunteer roles. */
-  const sectionOf = (c: Card): IconKind => (c.kind === "action" ? (c.role ? "volunteer" : "action") : c.kind) as IconKind;
+  const sectionOf = (c: Card): IconKind => {
+    const t = st.items[c.id] && st.items[c.id].newType; // changed with the tag ▾ (round 3)
+    if (t) return t as IconKind;
+    return (c.kind === "action" ? (c.role ? "volunteer" : "action") : c.kind) as IconKind;
+  };
+  const kindOfSec = (sec: IconKind) => (sec === "volunteer" ? "action" : sec);
+  /** Point people for one item (round 3): kept in this browser like the other point people, sent with Submit only. */
+  interface ItemPerson { name: string; email: string; phone: string; best: string; scope: "item" | "group" }
+  let itemPeople: Record<string, ItemPerson[]> = {};
+  try { itemPeople = JSON.parse(localStorage.getItem("confirm.itempeople." + token) || "{}") || {}; } catch { /* ignore */ }
+  const saveItemPeople = () => { try { localStorage.setItem("confirm.itempeople." + token, JSON.stringify(itemPeople)); } catch { /* ignore */ } };
   applyKindStyle();
   const pointPeople: Obj[] = DATA.pointPeople || [];
   const MAXPP: number = DATA.maxPointPeople || 3;
@@ -227,14 +237,15 @@ function start(DATA: Obj, token: string) {
       <div><label for="pphone">Phone (optional)</label><input id="pphone" type="tel" autocomplete="tel"></div>
       <div><label for="pbest">Best way to reach you</label><select id="pbest">${bestOptions()}</select><p class="hint" id="pbest-hint"></p></div>
       </div><p class="pp">${pp} You’ll be added as a point person (up to ${MAXPP} per group); we’ll email you a link to confirm your address. Your phone and email are only seen by the map’s core team, never shown on the map.</p></div>`));
-    app.appendChild(el(`<div class="box"><h2 style="margin-top:0">Other point people (optional)</h2>
-      <p class="pp">Each person you add gets an email asking them to confirm their address. Their details are only seen by the map’s core team.</p>
-      <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}</div>`));
     wirePerson("p", () => who, (p) => { who = p; });
-    [0, 1].forEach((i) => wirePerson("o" + i, () => others[i], (p) => { others[i] = p; }));
-    syncOthers();
     app.appendChild(el(`<h2>Your ${coalition ? "coalition" : "organization"}</h2>`));
     app.appendChild(card(DATA.org as Card));
+    app.appendChild(el(`<div class="box"><h2 style="margin-top:0">Add point people for the whole group (optional)</h2>
+      <p class="pp">Each person you add gets an email asking them to confirm their address. Their details are only seen by the map’s core team.</p>
+      <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}</div>`));
+    [0, 1].forEach((i) => wirePerson("o" + i, () => others[i], (p) => { others[i] = p; }));
+    syncOthers();
+    app.appendChild(el(`<p class="hint typehint">To change an item’s type, click its type tag (▾).</p>`));
     // One section per type, each with a + button (round 3, option A: a round button next to the count).
     SECTIONS.forEach((sec) => {
       const list = cards.slice(1).filter((c) => sectionOf(c) === sec.key);
@@ -330,14 +341,23 @@ function start(DATA: Obj, token: string) {
     const sec = k === "org" ? null : sectionOf(c);
     const one = k === "org" ? "group information" : SECTIONS.find((x) => x.key === sec)!.one;
     const fresh = isNew(c.id);
-    const keys: string[] = k === "org" ? orgFields : FIELDS[k] || [];
+    const keys: string[] = k === "org" ? orgFields : FIELDS[kindOfSec(sec!)] || [];
     const edited = !fresh && s.fields && Object.keys(s.fields).length;
     const box = el(`<div class="box card${sec ? " k-" + sec : ""}${s.decision === "remove" ? " removed" : ""}" id="card-${esc(c.id)}"></div>`);
-    const tag = sec ? `<span class="tag">${esc(KIND_BASE[sec])}</span>` : `<span class="kind">${esc(KIND.org)}</span>`;
+    const moved = sec && !fresh && s.newType ? `<span class="edited-tag">type changed</span>` : "";
+    const tag = sec
+      ? `<span class="tagwrap"><button type="button" class="tag tagbtn" aria-haspopup="true" aria-expanded="false" aria-label="Type: ${esc(KIND_BASE[sec])}. Change type">${esc(KIND_BASE[sec])} <span aria-hidden="true">▾</span></button><span class="typemenu" role="menu" hidden>${SECTIONS.map((x) => `<button type="button" role="menuitem" class="typeopt k-${x.key}" data-type="${x.key}"${x.key === sec ? ' aria-current="true"' : ""}>${esc(KIND_BASE[x.key])}</button>`).join("")}</span></span>${moved}`
+      : `<span class="kind">${esc(KIND.org)}</span>`;
     const head = `<div class="tagrow">${tag}${fresh ? '<span class="edited-tag">new</span>' : edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
     const meta = [when(c), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "social_links")].filter(Boolean).map(esc).join(" · ");
+    const topics = String(c.topic_tags || "").split(/[,;]\s*/).filter(Boolean);
+    const people = k === "org"
+      ? pointPeople.map((p) => esc(p.name || p.email) + (p.pending ? " (waiting to confirm)" : ""))
+      : [...(c.pointPeople || []).map((p: Obj) => esc(p.name || p.email) + (p.pending ? " (waiting to confirm)" : "")), ...(itemPeople[c.id] || []).map((p) => esc(p.name) + " (new" + (p.scope === "group" ? ", whole group" : "") + ")")];
     if (!ed) {
-      box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc">${esc(val(c, "description"))}</p>` : `<p class="desc empty">No description yet.</p>`);
+      box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc">${esc(val(c, "description"))}</p>` : `<p class="desc empty">No description yet.</p>`)
+        + (topics.length ? `<div class="topics">${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}</div>` : "")
+        + (people.length ? `<p class="who">${k === "org" ? "Point people (can edit everything for this group)" : "Point people"}: ${people.join(", ")}</p>` : "");
     } else {
       let f = "";
       keys.forEach((key) => {
@@ -352,17 +372,77 @@ function start(DATA: Obj, token: string) {
         }
       });
       const title = fresh ? `New ${one}` : `${k === "org" ? "Group information" : KIND_BASE[sec!]} · editing`;
+      if (sec) {
+        const pid = esc(c.id);
+        f += `<fieldset class="ipp"><legend>Point people for this ${esc(one)}</legend>
+          <p class="hint">If someone else looks after this ${esc(one)}, add them to give them edit access. We’ll email them to confirm. Their email and phone are only seen by the map’s core team.</p>
+          <ul class="ipp-list"></ul>
+          <div class="ipp-add"><div class="row2"><div><label for="ip-${pid}-name">Name</label><input id="ip-${pid}-name" autocomplete="off"></div>
+          <div><label for="ip-${pid}-email">Email</label><input id="ip-${pid}-email" type="email" autocomplete="off"></div>
+          <div><label for="ip-${pid}-phone">Phone (optional)</label><input id="ip-${pid}-phone" type="tel" autocomplete="off"></div></div>
+          <fieldset class="scope"><legend>What can they edit?</legend>
+          <label><input type="radio" name="ip-${pid}-scope" value="item" checked> Just this ${esc(one)} <span class="hint">(recommended)</span></label>
+          <label><input type="radio" name="ip-${pid}-scope" value="group"> Everything for ${esc(DATA.org.name)} <span class="hint">(makes them a point person for the whole group)</span></label></fieldset>
+          <button type="button" class="ipp-btn">Add point person</button></div></fieldset>`;
+      }
       box.innerHTML = `<div class="tagrow">${sec ? `<span class="tag">${esc(title)}</span>` : `<span class="kind">${esc(title)}</span>`}</div>${f}<div class="decide"><button type="button" class="primary done-btn">${fresh ? `Add ${esc(one)}` : "Done editing"}</button><button type="button" class="cancel-btn">Cancel</button></div>`;
     }
     if (sec) box.querySelector(".tag")!.prepend(typeIcon(sec, 15));
+    const ippList = () => {
+      const ul = box.querySelector(".ipp-list");
+      if (!ul) return;
+      const on = (c.pointPeople || []).map((p: Obj) => `<li>${esc(p.name || p.email)}${p.pending ? " (waiting to confirm)" : ""}</li>`);
+      const mine = (itemPeople[c.id] || []).map((p, i) => `<li>${esc(p.name)} · ${esc(p.email)} · ${p.scope === "group" ? "whole group" : "just this " + esc(one)} <button type="button" class="ipp-rm" data-i="${i}" aria-label="Remove ${esc(p.name)}">Remove</button></li>`);
+      ul.innerHTML = on.concat(mine).join("") || `<li class="hint">No point person for this ${esc(one)} yet.</li>`;
+    };
+    ippList();
     if (!ed) {
       const approved = s.decision === "approve";
       box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="ok" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
     }
-    const drop = () => { delete st.items[c.id]; delete editing[c.id]; syncNewCards(); touch(); render(); };
+    box.addEventListener("keydown", (e) => {
+      const m = box.querySelector(".typemenu") as HTMLElement | null;
+      if (e.key === "Escape" && m && !m.hidden) { m.hidden = true; const t = box.querySelector(".tagbtn") as HTMLElement; t.setAttribute("aria-expanded", "false"); t.focus(); }
+    });
+    const drop = () => { delete st.items[c.id]; delete editing[c.id]; delete itemPeople[c.id]; saveItemPeople(); syncNewCards(); touch(); render(); };
     box.addEventListener("click", (e) => {
       const b = (e.target as HTMLElement).closest("button");
       if (!b || !editor) return;
+      if (b.classList.contains("tagbtn")) {
+        const m = box.querySelector(".typemenu") as HTMLElement, open = m.hidden;
+        m.hidden = !open; b.setAttribute("aria-expanded", String(open));
+        if (open) (m.querySelector("[aria-current]") as HTMLElement | null)?.focus();
+        return;
+      }
+      if (b.classList.contains("typeopt")) {
+        const t = b.getAttribute("data-type") as IconKind, orig = (c.kind === "action" ? (c.role ? "volunteer" : "action") : c.kind) as IconKind;
+        if (fresh) { s.kind = kindOfSec(t); s.role = t === "volunteer"; delete s.newType; }
+        else if (t === orig) delete s.newType;
+        else s.newType = t;
+        touch(); render();
+        const title = SECTIONS.find((x) => x.key === t)!.title;
+        msg(t === orig || fresh ? `Moved to ${title}.` : `Moved to ${title}. The type changes on the map when you press Finalize and Submit.`);
+        (document.querySelector(`#card-${CSS.escape(c.id)} .tagbtn`) as HTMLElement | null)?.focus();
+        return;
+      }
+      if (b.classList.contains("ipp-btn")) {
+        const g = (x: string) => (box.querySelector(`#ip-${CSS.escape(c.id)}-${x}`) as HTMLInputElement);
+        const name = g("name").value.trim(), email = g("email").value.trim(), phone = g("phone").value.trim();
+        const scope = ((box.querySelector(`input[name="ip-${CSS.escape(c.id)}-scope"]:checked`) as HTMLInputElement | null)?.value || "item") as "item" | "group";
+        if (!name || !EMAIL_RE.test(email)) { msg("Please enter the point person’s name and email.", true); (name ? g("email") : g("name")).focus(); return; }
+        if (phone && digits(phone) < 7) { msg("Please check the phone number.", true); g("phone").focus(); return; }
+        const list = (itemPeople[c.id] = itemPeople[c.id] || []);
+        if (list.length + (c.pointPeople || []).length >= MAXPP) { msg(`Up to ${MAXPP} point people per ${one}.`, true); return; }
+        list.push({ name, email, phone, best: "", scope });
+        saveItemPeople(); touch(); ippList();
+        g("name").value = g("email").value = g("phone").value = "";
+        msg(`${name} will be added when you press Finalize and Submit; we’ll email them to confirm.`);
+        return;
+      }
+      if (b.classList.contains("ipp-rm")) {
+        (itemPeople[c.id] || []).splice(Number(b.getAttribute("data-i")), 1);
+        saveItemPeople(); touch(); ippList(); return;
+      }
       if (b.classList.contains("edit-btn")) { editing[c.id] = true; rerender(c); const i = document.querySelector(`#card-${CSS.escape(c.id)} [data-k]`) as HTMLElement | null; i?.focus(); return; }
       if (b.classList.contains("done-btn")) {
         const fs: Obj = {};
@@ -534,6 +614,7 @@ function start(DATA: Obj, token: string) {
       others: others.slice(0, 2).filter((o, i) => i < free && EMAIL_RE.test(o.email)).map((o) => ({ ...o, best: digits(o.phone) >= 7 ? o.best : "" })),
       org: st.org,
       items: st.items,
+      itemPeople: Object.fromEntries(Object.entries(itemPeople).filter(([id, l]) => l.length && cards.some((c) => c.id === id) && S(id).decision !== "remove")),
     };
   }
   function ready(): boolean {
@@ -576,6 +657,7 @@ function start(DATA: Obj, token: string) {
         return;
       }
       submitted = true;
+      itemPeople = {}; saveItemPeople();
       savedRev = rev;
       showBanner(null);
       $("app").innerHTML = `<div class="box done"><h1>Thank you!</h1><p>Your changes are on the map (${esc(r.summary)}). Check your email for a link to confirm your address as a point person.</p><p>You can open this link again any time to make more changes.</p></div>`;

@@ -40,6 +40,9 @@ var CONFIRM_FORM = 'Confirmation screen';
 /** New items one submission can add (the + buttons by each section, Nov 17). */
 var MAX_NEW_ITEMS = 25;
 var NEW_ITEM_ = '(new from the confirmation screen)';
+/** Types the page's tag ▾ can pick (round 3): volunteer roles are actions with kind = role. */
+var TYPE_OF_ = { event: { kind: 'event', label: 'event' }, project: { kind: 'project', label: 'project' },
+  action: { kind: 'action', role: false, label: 'action' }, volunteer: { kind: 'action', role: true, label: 'volunteer role' } };
 /** Where the static confirmation page lives (override with the script property CONFIRM_PAGE_URL). */
 var DEFAULT_CONFIRM_PAGE_URL = 'https://ma.climateorgmap.earth/confirm.html';
 
@@ -327,7 +330,9 @@ function confirmData_(rec, t) {
     CONFIRM_FIELDS[k].forEach(function (f) { out[f] = f === 'online' ? isTrue_(row[f]) : str_(row[f]); });
     if (k !== 'org' && k !== 'coalition') { out.verified = isTrue_(row.verified); out.needs_info = isTrue_(row.needs_info); }
     if (k === 'action') out.role = str_(row.kind).toLowerCase() === 'role'; // volunteer roles get their own section
-
+    // Shown, not edited here (round 3: every card shows all its info).
+    out.topic_tags = str_(row.topic_tags || row.focus_tags);
+    if (k !== 'org' && k !== 'coalition') out.pointPeople = itemPointPeople_(out.id, t.editors).map(function (p) { return { name: p.name, pending: p.pending, email: maskEmail_(p.email) }; });
     return out;
   };
   // An organization's items are the ones it hosts; a coalition's are the ones tagged with it (member orgs' too).
@@ -344,6 +349,12 @@ function confirmData_(rec, t) {
     maxPointPeople: MAX_POINT_PEOPLE, draft: draftOf_(rec), draftAt: str_(rec.saved_at),
     lockSeconds: LOCK_SECONDS, pingSeconds: PING_SECONDS,
   };
+}
+
+/** Point people for one item only (Editors → item_ids, Nov 17). */
+function itemPointPeople_(id, editors) {
+  return (editors || []).filter(function (r) { return r.email && list_(r.item_ids).indexOf(id) !== -1; })
+    .map(function (r) { return { email: String(r.email).trim().toLowerCase(), name: str_(r.name), pending: isPending_(r) }; });
 }
 
 function ownsItem_(kind, id, row) {
@@ -387,7 +398,7 @@ function saveDraft_(link, state, auto) {
   if (!state || typeof state !== 'object') throw new Error('There is nothing to save yet.');
   var copy = JSON.parse(JSON.stringify(state));
   var savedBy = copy.who ? String(copy.who.email || '').trim().toLowerCase() : '';
-  delete copy.who; delete copy.others;
+  delete copy.who; delete copy.others; delete copy.itemPeople;
   var json = JSON.stringify(copy);
   if (json.length > 45000) throw new Error('That is too much to save at once. Please submit what you have.');
   var at = nowIso_();
@@ -422,6 +433,7 @@ function confirmSubmit_(link, token, sid, b) {
   var state = b.state;
   var who = confirmWho_(state && state.who);
   var others = confirmOthers_(state);
+  Object.keys((state && state.itemPeople) || {}).forEach(function (k) { (state.itemPeople[k] || []).forEach(function (w) { confirmWho_(w, true); }); });
   var id = str_(link.rec.org_id), kind = linkKind_(link.rec);
   var result = confirmApply_(id, state, who, readAll_(), kind, others);
   var at = nowIso_();
@@ -498,7 +510,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
 
   var items = (state && state.items) || {};
   // New items added on the page (Nov 17 redesign): ids "new_<n>". Created on this group's own tab rows, already checked.
-  var added = 0;
+  var added = 0, createdIds = {};
   Object.keys(items).forEach(function (id) {
     if (!/^new_\d{1,4}$/.test(id)) return;
     var it = items[id] || {};
@@ -513,6 +525,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     addMissingColumns_(ss_().getSheetByName(tab[0]), COLS[tab[0]]);
     var r = upsert_(tab[0], it.kind, NEW_ITEM_, NEW_ITEM_, patch);
     r.action = 'added';
+    createdIds[id] = r.id;
     record(r, it.kind === 'action' && it.role ? 'volunteer role' : it.kind);
     added++;
   });
@@ -525,6 +538,36 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     var row = findById_(tab[1], id);
     if (!row || !ownsItem_(coalition ? 'coalition' : 'organization', orgId, row)) return; // not this group's
     var patch;
+    var to = TYPE_OF_[it.newType];
+    if (it.decision === 'approve' && to && (to.kind !== it.kind || (to.kind === 'action' && to.role !== (str_(row.kind).toLowerCase() === 'role')))) {
+      // Type changed with the tag ▾ (round 3). Between actions and volunteer roles it's the kind column; anything else
+      // moves the item: a new row on the other tab (shared fields + the page's edits), the old row hidden.
+      if (to.kind === it.kind) {
+        patch = clean(it.kind, it.fields); patch.kind = to.role ? 'role' : 'task';
+      } else {
+        var moved = {};
+        ['name', 'description', 'link', 'location', 'online', 'topic_tags', 'public_contact', 'host_org_id', 'coalition_id', 'free_food', 'affiliated_only']
+          .forEach(function (f) { if (str_(row[f]) && COLS[tabs[to.kind][0]].indexOf(f) !== -1) moved[f] = str_(row[f]); });
+        var edits = clean(to.kind, it.fields);
+        Object.keys(edits).forEach(function (f) { moved[f] = edits[f]; });
+        if (to.kind === 'action') moved.kind = to.role ? 'role' : 'task';
+        if (to.kind === 'project' && !moved.status) moved.status = 'active';
+        moved.verified = 'TRUE'; moved.needs_info = 'FALSE';
+        addMissingColumns_(ss_().getSheetByName(tabs[to.kind][0]), COLS[tabs[to.kind][0]]);
+        var nr = upsert_(tabs[to.kind][0], to.kind, NEW_ITEM_, NEW_ITEM_, moved);
+        nr.action = 'moved here from ' + it.kind + ' ' + id;
+        record(nr, to.label);
+        createdIds[id] = nr.id;
+        addMissingColumns_(ss_().getSheetByName(tab[0]), COLS[tab[0]]);
+        record(upsert_(tab[0], it.kind, '[' + id + ']', '', { hidden: 'TRUE', needs_info: 'FALSE' }), it.kind + ' (moved to ' + to.label + ' ' + nr.id + ')');
+        counts.approved++; counts.moved = (counts.moved || 0) + 1;
+        return;
+      }
+      patch.verified = 'TRUE'; patch.needs_info = 'FALSE'; counts.approved++; counts.edited++;
+      addMissingColumns_(ss_().getSheetByName(tab[0]), COLS[tab[0]]);
+      record(upsert_(tab[0], it.kind, '[' + id + ']', '', patch), to.label);
+      return;
+    }
     if (it.decision === 'remove') { patch = { hidden: 'TRUE' }; counts.removed++; }
     else {
       patch = clean(it.kind, it.fields);
@@ -566,6 +609,30 @@ function confirmApply_(orgId, state, who, t, kind, others) {
   addPerson(who, 'a point person', false);
   (others || []).forEach(function (w) { addPerson(w, 'another point person', true); });
 
-  var summary = counts.approved + ' approved, ' + counts.removed + ' removed, ' + counts.edited + ' edited' + (added ? ', ' + added + ' added' : '');
+  // Point people for one item (round 3): "just this item" → Editors item_ids; "the whole group" → a group point person.
+  var itemPeople = (state && state.itemPeople) || {};
+  Object.keys(itemPeople).slice(0, 60).forEach(function (pageId) {
+    var realId = createdIds[pageId] || pageId;
+    var owned = ['event', 'project', 'action'].some(function (k) {
+      var r0 = findById_(readAll_()[k === 'event' ? 'events' : k === 'project' ? 'projects' : 'actions'], realId);
+      return r0 && ownsItem_(coalition ? 'coalition' : 'organization', orgId, r0) && !isTrue_(r0.hidden);
+    });
+    if (!owned) return;
+    var itemName = (function () { var all = readAll_(); var r1 = findById_(all.events, realId) || findById_(all.projects, realId) || findById_(all.actions, realId); return r1 ? str_(r1.name) : realId; })();
+    (Array.isArray(itemPeople[pageId]) ? itemPeople[pageId] : []).slice(0, MAX_POINT_PEOPLE).forEach(function (raw) {
+      var w = confirmWho_(raw, true);
+      if (raw && raw.scope === 'group') return addPerson(w, 'another point person', true);
+      var nowItem = itemPointPeople_(realId, readTable_(ss_().getSheetByName(TAB.editors)).rows);
+      if (nowItem.some(function (p) { return p.email === w.email; })) { lines.push('- ' + w.email + ' (already a point person for ' + itemName + ')'); return; }
+      if (nowItem.length >= MAX_POINT_PEOPLE) { lines.push('- ' + w.email + ' not added: ' + itemName + ' already has ' + MAX_POINT_PEOPLE + ' point people'); return; }
+      var a = { bestContact: w.best, via: 'the confirmation screen', groupKind: 'item', keepDetails: true, label: itemName }; a[Q.pointEmail] = w.email; a[Q.pointName] = w.name; a[Q.pointPhone] = w.phone;
+      addMissingColumns_(ss_().getSheetByName(TAB.editors), COLS[TAB.editors]);
+      savePointPerson_(realId, a, '');
+      lines.push('- ' + w.email + ' added as a point person for ' + itemName + ' (asked to confirm their email)');
+      logChange_(w.email, CONFIRM_FORM, 'added', 'PENDING', 'editor', realId, itemName, 'item point person named by ' + who.email);
+    });
+  });
+
+  var summary = counts.approved + ' approved, ' + counts.removed + ' removed, ' + counts.edited + ' edited' + (added ? ', ' + added + ' added' : '') + (counts.moved ? ', ' + counts.moved + ' moved to another type' : '');
   return { summary: summary, lines: lines, counts: counts };
 }

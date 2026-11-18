@@ -1,5 +1,5 @@
-:root{--bg:#f6f7f9;--card:#fff;--text:#16202a;--dim:#55616e;--line:#d9dee4;--accent:#0b6e4f;--accent-soft:#e2f3eb;--warn:#8a5a00;--warn-soft:#fff3d6;--bad:#a12a2a;--bad-soft:#fbe4e4}
-@media (prefers-color-scheme:dark){:root{--bg:#10151b;--card:#18202a;--text:#e6ebf0;--dim:#a3aeb9;--line:#2b3540;--accent:#5fd3a6;--accent-soft:#173329;--warn:#f2c46b;--warn-soft:#3a2f17;--bad:#ff8f8f;--bad-soft:#3d1f22}}
+/* The map's dark theme (round 3 mockups, Nov 6) */
+:root{color-scheme:dark;--bg:#0a0a0f;--card:#15151c;--text:#e5e7eb;--dim:#a1a8b3;--line:#2f2f3c;--accent:#34d399;--accent-soft:#10322a;--warn:#f2c46b;--warn-soft:#3a2f17;--bad:#ff8f8f;--bad-soft:#3d1f22}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:760px;margin:0 auto;padding:20px 16px 120px}h1{font-size:1.5em;margin:.2em 0}h2{font-size:1.1em;margin:28px 0 8px}
 .lead{color:var(--dim);margin:0 0 16px}.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}
@@ -11,7 +11,7 @@ textarea{min-height:90px;resize:vertical}.row2{display:grid;grid-template-column
 button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:7px 14px}
 button:disabled{opacity:.55;cursor:not-allowed}
 button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-button.primary{background:var(--accent);border-color:var(--accent);color:#fff}@media(prefers-color-scheme:dark){button.primary{color:#0b1a14}}
+button.primary{background:var(--accent);border-color:var(--accent);color:#0a0a0f;font-weight:600}
 .decide{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.decide button[aria-pressed="true"].ok{background:var(--accent-soft);border-color:var(--accent);font-weight:600}
 .decide button[aria-pressed="true"].rm{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);font-weight:600}
 .card.removed h3,.card.removed .desc{text-decoration:line-through;opacity:.6}
@@ -42,3 +42,20 @@ h2.sec .count{color:var(--dim);font-weight:500}
 .tag{display:inline-flex;align-items:center;gap:5px;font-size:.78em;font-weight:600;border:1.5px solid var(--kc);border-radius:999px;padding:1px 9px 1px 6px}
 .tag svg{color:var(--kc)}
 .card h3{margin:4px 0}
+
+/* Round 3, rest (Nov 17): type tag menu, topics, point people per item */
+.tagwrap{position:relative;display:inline-flex}
+.tagbtn{cursor:pointer;background:transparent;color:var(--text);font:inherit;font-size:.78em;font-weight:600;padding:2px 9px 2px 6px;min-height:28px}
+.tagbtn:disabled{cursor:default;opacity:1}
+.typemenu{position:absolute;z-index:6;top:32px;left:0;min-width:180px;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.6);padding:6px;display:flex;flex-direction:column;gap:2px}
+.typemenu[hidden]{display:none}
+.typeopt{text-align:left;border:0;border-left:4px solid var(--kc);border-radius:6px;background:transparent;min-height:40px}
+.typeopt:hover,.typeopt:focus-visible{background:var(--accent-soft)}.typeopt[aria-current]{font-weight:700}
+.topics{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.tpill{font-size:.8em;border:1px solid #38bdf8;color:#7dd3fc;border-radius:999px;padding:1px 10px}
+.who{margin:8px 0 0;font-size:.9em;color:var(--dim)}
+.typehint{margin:18px 0 0}
+fieldset.ipp{border:1px solid var(--line);border-radius:10px;margin:14px 0 4px;padding:8px 12px 12px}fieldset.ipp legend{font-weight:700;padding:0 4px}
+.ipp-list{margin:6px 0;padding-left:18px}.ipp-list li{margin:3px 0}.ipp-list button{padding:2px 8px;font-size:.85em;margin-left:6px}
+fieldset.scope{border:0;padding:0;margin:8px 0}fieldset.scope legend{font-size:.85em;color:var(--dim);padding:0}
+fieldset.scope label{display:flex;gap:8px;align-items:baseline;color:var(--text);font-size:.95em}fieldset.scope input{width:auto}
+.ipp-btn{margin-top:6px}
