@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T02:55:33.077Z",
+  "generated_at": "2026-11-18T16:29:14.187Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -225,9 +225,10 @@
         "sunrise_amherst",
         "mit_sea",
         "boston_climate_action_network",
-        "citizens_climate_lobby_north_shore_chapter"
+        "citizens_climate_lobby_north_shore_chapter",
+        "wayland_high_school_green_team"
       ],
-      "member_count": 46,
+      "member_count": 47,
       "projects": [
         {
           "id": "mycc_p_map",
@@ -374,20 +375,6 @@
           "location": "George Sherman Hall, UMass Boston, Boston",
           "lat": 42.314248,
           "lng": -71.037496
-        },
-        {
-          "id": "pr_some_other_project_to_see_if_this_ema",
-          "name": "Some other project to see if this email gets blocked",
-          "description": "",
-          "status": "active",
-          "skills_needed": [
-            "outreach"
-          ],
-          "topic_tags": [
-            "forests"
-          ],
-          "verified": true,
-          "online": true
         }
       ],
       "events": [],
@@ -8044,7 +8031,7 @@
       "lat": 42.3736,
       "lng": -71.1097,
       "last_activity": "2026-09-25T13:38:29.000Z",
-      "abbrev": "CJ-JT Collaborative",
+      "abbrev": "the Collaborative",
       "website": "https://www.umb.edu/ssl/",
       "logo": "logos/northeast_climate_justice_research_collaborative.svg",
       "profile": {
@@ -8209,6 +8196,91 @@
           "link": "https://www.undauntedk12.org"
         }
       ]
+    },
+    {
+      "id": "mit_cate",
+      "name": "MIT Climate Action Through Education",
+      "type": "university",
+      "geographic_focus": "Statewide",
+      "description": "MIT program, based at the MIT Center for Energy and Environmental Policy Research, that provides an interdisciplinary climate action curriculum and teaching materials for K-12 educators.",
+      "coalition_ids": [],
+      "lat": 42.3601,
+      "lng": -71.0942,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "MIT CATE",
+      "website": "https://cate.mit.edu/",
+      "profile": {
+        "youth_serving": true
+      }
+    },
+    {
+      "id": "winsor_conserve_our_world",
+      "name": "Winsor Conserve Our World",
+      "type": "school_club",
+      "geographic_focus": "Boston",
+      "description": "Student sustainability club at the Winsor School that holds film screenings and school-wide assemblies on topics such as fast fashion, encouraging students to buy less and buy better.",
+      "coalition_ids": [],
+      "lat": 42.3398,
+      "lng": -71.1035,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "Winsor COW",
+      "website": "https://www.winsor.edu/community-life/student-clubs/",
+      "profile": {
+        "youth_serving": true,
+        "school_club": true
+      }
+    },
+    {
+      "id": "wayland_high_school_green_team",
+      "name": "Wayland High School Green Team",
+      "type": "school_club",
+      "geographic_focus": "Wayland",
+      "description": "Student environmental club at Wayland High School that runs lunch composting, school gardens, a monthly Walk/Ride/Carpool Day and an annual town clean-up, and speaks at Wayland Town Meeting on climate issues.",
+      "coalition_ids": [
+        "mycc"
+      ],
+      "lat": 42.3626,
+      "lng": -71.3615,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "WHS Green Team",
+      "website": "https://sites.google.com/student.wayland.k12.ma.us/whsgreenteam-website/our-initiatives",
+      "profile": {
+        "youth_serving": true,
+        "school_club": true
+      },
+      "coalition_weights": {
+        "mycc": 1
+      }
+    },
+    {
+      "id": "commonwealth_school_environmental_club",
+      "name": "Commonwealth School Environmental Club",
+      "type": "school_club",
+      "geographic_focus": "Boston",
+      "description": "Student club at Commonwealth School in Boston that organizes the school's Earth Day Assembly and helps students engage with environmentalism.",
+      "coalition_ids": [],
+      "lat": 42.3519,
+      "lng": -71.0786,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "website": "https://www.commschool.org/",
+      "profile": {
+        "youth_serving": true,
+        "school_club": true
+      }
+    },
+    {
+      "id": "solar_united_neighbors",
+      "name": "Solar United Neighbors",
+      "type": "501c3",
+      "geographic_focus": "Statewide",
+      "description": "National nonprofit dedicated to helping people go solar. In Massachusetts it runs the free Energy Champion Program, which trains local leaders to explain clean energy to their neighbors and advance energy justice.",
+      "coalition_ids": [],
+      "lat": 42.3601,
+      "lng": -71.0589,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "SUN",
+      "website": "https://solarunitedneighbors.org/massachusetts-energy-champion-program/",
+      "remote": true
     }
   ],
   "edges": [
@@ -8811,6 +8883,10 @@
     {
       "source": "mycc",
       "target": "citizens_climate_lobby_north_shore_chapter"
+    },
+    {
+      "source": "mycc",
+      "target": "wayland_high_school_green_team"
     },
     {
       "source": "ejlt",
