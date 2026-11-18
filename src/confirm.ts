@@ -2,6 +2,8 @@
 // no matter how many Google accounts the browser is signed into. See the API contract in the PR description.
 import "./confirm.css";
 import { LIVE_DATA_URL } from "./data.config";
+import { applyKindStyle } from "./kinds.config";
+import { typeIcon, type IconKind } from "./icons";
 
 type Obj = Record<string, any>;
 interface Person { name: string; email: string; phone: string; best: string }
@@ -88,13 +90,21 @@ async function boot(token: string) {
   start(data, token);
 }
 
-const KIND_BASE: Obj = { event: "Event", project: "Project", action: "Action or volunteer role" };
+const KIND_BASE: Obj = { event: "Event", project: "Project", action: "Action", volunteer: "Volunteer role" };
+/** Sections of the review page (Nov 6 round 3 design, built Nov 17): one per type, each with its own + button. */
+const SECTIONS: { key: IconKind; title: string; one: string; add: string }[] = [
+  { key: "event", title: "Events", one: "event", add: "Add an event" },
+  { key: "project", title: "Projects", one: "project", add: "Add a project" },
+  { key: "action", title: "Actions", one: "action", add: "Add an action" },
+  { key: "volunteer", title: "Volunteer roles", one: "volunteer role", add: "Add a volunteer role" },
+];
 const LABEL: Obj = {
   name: "Name", description: "Description", website: "Website", social_links: "Social media (links to your group's own accounts, separated by commas)", geographic_focus: "Where you work (towns or region)",
   geographic_scope: "Geographic scope", public_contact: "Public contact (email or phone people can use)", date: "Starts",
   end: "Ends", location: "Where", online: "Online", link: "Web page", rsvp_link: "Sign-up / RSVP link", status: "Status", deadline: "Deadline",
 };
 const BESTS = ["Email", "Text", "Phone call", "Any"];
+const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
 function sessionId(): string {
   try {
@@ -115,7 +125,16 @@ function start(DATA: Obj, token: string) {
   const KIND: Obj = { ...KIND_BASE, org: coalition ? "Your coalition" : "Your organization" };
   const FIELDS: Obj = DATA.fields || {};
   const orgFields: string[] = (coalition ? FIELDS.coalition : FIELDS.org) || [];
-  const cards: Card[] = [DATA.org as Card, ...(DATA.items as Card[])];
+  let cards: Card[] = [DATA.org as Card, ...(DATA.items as Card[])];
+  /** New items added with the + buttons live in the draft as items "new_<n>" until submitted. */
+  const isNew = (id: string) => /^new_\d+$/.test(id);
+  function syncNewCards() {
+    const added = Object.keys(st.items).filter(isNew).map((id) => ({ id, kind: st.items[id].kind, role: !!st.items[id].role, isNew: true } as Card));
+    cards = [DATA.org as Card, ...(DATA.items as Card[]), ...added];
+  }
+  /** Which section a card belongs to: actions split into actions and volunteer roles. */
+  const sectionOf = (c: Card): IconKind => (c.kind === "action" ? (c.role ? "volunteer" : "action") : c.kind) as IconKind;
+  applyKindStyle();
   const pointPeople: Obj[] = DATA.pointPeople || [];
   const MAXPP: number = DATA.maxPointPeople || 3;
   const pingMs = (DATA.pingSeconds || 15) * 1000;
@@ -145,7 +164,7 @@ function start(DATA: Obj, token: string) {
   const editing: Record<string, boolean> = {};
 
   const dirty = () => rev !== savedRev;
-  const touch = () => { rev++; };
+  const touch = () => { rev++; showProgress(); };
   function msg(t: string, bad = false) {
     const s = $("status");
     s.textContent = t;
@@ -163,6 +182,13 @@ function start(DATA: Obj, token: string) {
   function S(id: string): Obj {
     if (cards[0].id === id) return st.org;
     return (st.items[id] = st.items[id] || { kind: find(id).kind, decision: "", fields: {} });
+  }
+  function showProgress() {
+    const p = document.getElementById("progress");
+    if (!p) return;
+    const n = cards.length, a = cards.filter((c) => S(c.id).decision === "approve").length;
+    p.querySelector("b")!.textContent = `${a} of ${n} approved`;
+    (p.querySelector(".pbar span") as HTMLElement).style.width = n ? `${Math.round((100 * a) / n)}%` : "0";
   }
   function val(c: Card, k: string) {
     const s = S(c.id);
@@ -186,12 +212,12 @@ function start(DATA: Obj, token: string) {
 
   // ---- rendering
   function render() {
+    syncNewCards();
     const app = $("app");
     app.innerHTML = "";
-    app.appendChild(el(`<div><h1>Check ${esc(DATA.org.name)}’s information</h1><p class="lead">This is what the ${esc(DATA.title)} shows for your group. For each card, choose <b>Approve</b> (it’s right, or right after your edits) or <b>Remove</b> (it shouldn’t be on the map). Nothing changes until you press <b>Finalize and Submit</b>; <b>Save for later</b> keeps your work.</p></div>`));
+    app.appendChild(el(`<div><h1>Check ${esc(DATA.org.name)}’s information</h1><p class="lead">All of this group information was retrieved from online sources. Approve what’s right, edit what isn’t, and add anything we missed with the <b>+</b> buttons. Approved information goes live when you press <b>Finalize and Submit</b> (at the end of the page); <b>Save for later</b> keeps your work.</p></div>`));
     if (baseSubmittedAt) app.appendChild(el(`<div class="box done">Thank you: this was submitted on ${esc(new Date(baseSubmittedAt).toLocaleDateString())}. You can check it again and submit any changes.</div>`));
-    // Approve all (Nathan, Nov 17): one click marks every card approved, except ones already marked Remove.
-    app.appendChild(el(`<div class="box approve-all"><button type="button" class="primary" id="approve-all">✓ Approve all</button><p class="hint">Approves every card below that you haven’t marked Remove. You can still change any card before you press <b>Finalize and Submit</b>.</p></div>`));
+    app.appendChild(el(`<div class="progress" id="progress"><b></b><div class="pbar" aria-hidden="true"><span></span></div></div>`));
     const pp = pointPeople.length
       ? "Point people on file: " + pointPeople.map((p) => esc(p.name || p.email) + (p.pending ? " (waiting for email confirmation)" : "")).join(", ") + "."
       : "No point person on file yet.";
@@ -204,21 +230,31 @@ function start(DATA: Obj, token: string) {
     app.appendChild(el(`<div class="box"><h2 style="margin-top:0">Other point people (optional)</h2>
       <p class="pp">Each person you add gets an email asking them to confirm their address. Their details are only seen by the map’s core team.</p>
       <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}</div>`));
-    $("approve-all").addEventListener("click", () => {
-      if (!editor) return;
-      cards.forEach((c) => { const s = S(c.id); if (s.decision !== "remove") s.decision = "approve"; });
-      touch();
-      cards.forEach(rerender);
-      msg(`Approved ${cards.filter((c) => S(c.id).decision === "approve").length} card(s). Review anything you like, then press Finalize and Submit.`);
-    });
     wirePerson("p", () => who, (p) => { who = p; });
     [0, 1].forEach((i) => wirePerson("o" + i, () => others[i], (p) => { others[i] = p; }));
     syncOthers();
     app.appendChild(el(`<h2>Your ${coalition ? "coalition" : "organization"}</h2>`));
     app.appendChild(card(DATA.org as Card));
-    app.appendChild(el(`<h2>Events, projects and actions (${DATA.items.length})</h2>`));
-    if (!DATA.items.length) app.appendChild(el(`<p class="empty">The map has no events, projects or actions for your ${groupWord} yet. You can add them with the + button on the map.</p>`));
-    (DATA.items as Card[]).forEach((c) => app.appendChild(card(c)));
+    // One section per type, each with a + button (round 3, option A: a round button next to the count).
+    SECTIONS.forEach((sec) => {
+      const list = cards.slice(1).filter((c) => sectionOf(c) === sec.key);
+      const h = el(`<h2 class="sec sec-${sec.key}" id="sec-${sec.key}"><span class="sec-icon"></span>${sec.title} <span class="count">(${list.length})</span><button type="button" class="plus" aria-label="${sec.add}" title="${sec.add}">+</button></h2>`);
+      h.querySelector(".sec-icon")!.appendChild(typeIcon(sec.key, 20));
+      h.querySelector(".plus")!.addEventListener("click", () => addItem(sec.key));
+      app.appendChild(h);
+      if (!list.length) app.appendChild(el(`<p class="empty" id="empty-${sec.key}">None on the map yet. Press <b>+</b> to add one.</p>`));
+      list.forEach((c) => app.appendChild(card(c)));
+    });
+    // Approve all (Nathan, Nov 17): under the last cards that ask for approval. Marks every card approved, except ones marked Remove.
+    app.appendChild(el(`<div class="box approve-all"><button type="button" class="primary" id="approve-all">✓ Approve all</button><p class="hint">Approves every card above that you haven’t marked Remove. You can still change any card before you press <b>Finalize and Submit</b>.</p></div>`));
+    $("approve-all").addEventListener("click", () => {
+      if (!editor) return;
+      if (Object.values(editing).some(Boolean)) return msg("Press “Done editing” on the open card first.", true);
+      cards.forEach((c) => { const s = S(c.id); if (s.decision !== "remove") s.decision = "approve"; });
+      touch();
+      cards.forEach(rerender);
+      msg(`Approved ${cards.filter((c) => S(c.id).decision === "approve").length} card(s). Review anything you like, then press Finalize and Submit.`);
+    });
     // Feedback for the map team (Nathan, Nov 17): sent with Finalize and Submit, saved with the draft.
     app.appendChild(el(`<div class="box"><h2 style="margin-top:0"><label for="fb">Ideas or comments for us (optional)</label></h2>
       <p class="pp">What would make the map most useful for ${esc(DATA.org.name)}? Anything else you’d like to share with the map’s team? We read every note.</p>
@@ -226,7 +262,23 @@ function start(DATA: Obj, token: string) {
     const fb = $("fb") as HTMLTextAreaElement;
     fb.value = String(st.feedback || "");
     fb.addEventListener("input", () => { st.feedback = fb.value; touch(); });
+    showProgress();
     applyLock();
+  }
+  /** + button: a new, empty card of that type, open for editing. It's added to the map only if approved and named. */
+  function addItem(sec: IconKind) {
+    if (!editor) return;
+    if (Object.values(editing).some(Boolean)) return msg("Press “Done editing” on the open card first.", true);
+    let n = 1;
+    while (st.items["new_" + n]) n++;
+    const id = "new_" + n;
+    st.items[id] = { kind: sec === "volunteer" ? "action" : sec, role: sec === "volunteer", decision: "", fields: {}, isNew: true };
+    editing[id] = true;
+    touch();
+    render();
+    const box = document.getElementById("card-" + id);
+    box?.scrollIntoView({ block: "center" });
+    (box?.querySelector("[data-k]") as HTMLElement | null)?.focus();
   }
   const bestOptions = () => `<option value="">No preference</option>` + BESTS.map((b) => `<option>${b}</option>`).join("");
   function otherRow(i: number) {
@@ -275,31 +327,39 @@ function start(DATA: Obj, token: string) {
 
   function card(c: Card): HTMLElement {
     const s = S(c.id), ed = !!editing[c.id], k = c.kind === "org" || c.kind === "coalition" ? "org" : c.kind;
+    const sec = k === "org" ? null : sectionOf(c);
+    const one = k === "org" ? "group information" : SECTIONS.find((x) => x.key === sec)!.one;
+    const fresh = isNew(c.id);
     const keys: string[] = k === "org" ? orgFields : FIELDS[k] || [];
-    const edited = s.fields && Object.keys(s.fields).length;
-    const box = el(`<div class="box card${s.decision === "remove" ? " removed" : ""}" id="card-${esc(c.id)}"></div>`);
-    const head = `<div class="kind">${esc(KIND[k])}${edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
+    const edited = !fresh && s.fields && Object.keys(s.fields).length;
+    const box = el(`<div class="box card${sec ? " k-" + sec : ""}${s.decision === "remove" ? " removed" : ""}" id="card-${esc(c.id)}"></div>`);
+    const tag = sec ? `<span class="tag">${esc(KIND_BASE[sec])}</span>` : `<span class="kind">${esc(KIND.org)}</span>`;
+    const head = `<div class="tagrow">${tag}${fresh ? '<span class="edited-tag">new</span>' : edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
     const meta = [when(c), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "social_links")].filter(Boolean).map(esc).join(" · ");
     if (!ed) {
-      box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc">${esc(val(c, "description"))}</p>` : `<p class="desc empty">No description yet.</p>`) + `<button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button>`;
+      box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc">${esc(val(c, "description"))}</p>` : `<p class="desc empty">No description yet.</p>`);
     } else {
       let f = "";
       keys.forEach((key) => {
         const v = val(c, key), id = `f-${esc(c.id)}-${key}`;
         if (key === "description") f += `<label for="${id}">${LABEL[key]}</label><textarea id="${id}" data-k="${key}">${esc(v)}</textarea>`;
         else if (key === "online") f += `<label><input type="checkbox" style="width:auto" data-k="online"${isOn(v) ? " checked" : ""}> Online</label>`;
-        else if (key === "status") f += `<label for="${id}">${LABEL[key]}</label><select id="${id}" data-k="status">${["active", "planning", "paused", "done"].map((o) => `<option${o === v ? " selected" : ""}>${o}</option>`).join("")}</select>`;
+        else if (key === "status") f += `<label for="${id}">${LABEL[key]}</label><select id="${id}" data-k="status">${["active", "planning", "paused", "done"].map((o) => `<option${o === (v || "active") ? " selected" : ""}>${o}</option>`).join("")}</select>`;
         else {
           const type = key === "date" || key === "end" ? "datetime-local" : key === "deadline" ? "date" : "text";
           const vv = type === "datetime-local" ? String(v || "").slice(0, 16) : type === "date" ? String(v || "").slice(0, 10) : v;
-          f += `<label for="${id}">${LABEL[key] || esc(key)}</label><input id="${id}" type="${type}" data-k="${key}" value="${esc(vv)}">`;
+          f += `<label for="${id}">${LABEL[key] || esc(key)}${key === "name" && fresh ? " (required)" : ""}</label><input id="${id}" type="${type}" data-k="${key}" value="${esc(vv)}">`;
         }
       });
-      box.innerHTML = `<div class="kind">${esc(KIND[k])} · editing</div>${f}<div class="decide"><button type="button" class="primary done-btn">Done editing</button><button type="button" class="cancel-btn">Cancel</button></div>`;
+      const title = fresh ? `New ${one}` : `${k === "org" ? "Group information" : KIND_BASE[sec!]} · editing`;
+      box.innerHTML = `<div class="tagrow">${sec ? `<span class="tag">${esc(title)}</span>` : `<span class="kind">${esc(title)}</span>`}</div>${f}<div class="decide"><button type="button" class="primary done-btn">${fresh ? `Add ${esc(one)}` : "Done editing"}</button><button type="button" class="cancel-btn">Cancel</button></div>`;
     }
+    if (sec) box.querySelector(".tag")!.prepend(typeIcon(sec, 15));
     if (!ed) {
-      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="ok" aria-pressed="${s.decision === "approve"}">✓ Approve</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">Remove</button>`}</div>`));
+      const approved = s.decision === "approve";
+      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="ok" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
     }
+    const drop = () => { delete st.items[c.id]; delete editing[c.id]; syncNewCards(); touch(); render(); };
     box.addEventListener("click", (e) => {
       const b = (e.target as HTMLElement).closest("button");
       if (!b || !editor) return;
@@ -311,11 +371,12 @@ function start(DATA: Obj, token: string) {
           const differs = i.type === "checkbox" ? v !== isOn(orig) : String(v) !== String(orig || "").slice(0, i.type === "datetime-local" ? 16 : i.type === "date" ? 10 : 9999);
           if (differs) fs[key] = v;
         });
+        if (fresh && !String(fs.name || "").trim()) { msg(`Please give the new ${one} a name.`, true); (box.querySelector('[data-k="name"]') as HTMLElement | null)?.focus(); return; }
         s.fields = fs; s.decision = "approve"; touch(); editing[c.id] = false; return rerender(c);
       }
-      if (b.classList.contains("cancel-btn")) { editing[c.id] = false; return rerender(c); }
+      if (b.classList.contains("cancel-btn")) { if (fresh && !String((s.fields || {}).name || "").trim()) return drop(); editing[c.id] = false; return rerender(c); }
       if (b.classList.contains("ok")) { s.decision = s.decision === "approve" ? "" : "approve"; touch(); return rerender(c); }
-      if (b.classList.contains("rm")) { s.decision = s.decision === "remove" ? "" : "remove"; touch(); return rerender(c); }
+      if (b.classList.contains("rm")) { if (fresh) return drop(); s.decision = s.decision === "remove" ? "" : "remove"; touch(); return rerender(c); }
     });
     return box;
   }

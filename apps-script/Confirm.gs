@@ -37,6 +37,9 @@ var CONFIRM_FIELDS = {
   action: ['name', 'description', 'deadline', 'link'],
 };
 var CONFIRM_FORM = 'Confirmation screen';
+/** New items one submission can add (the + buttons by each section, Nov 17). */
+var MAX_NEW_ITEMS = 25;
+var NEW_ITEM_ = '(new from the confirmation screen)';
 /** Where the static confirmation page lives (override with the script property CONFIRM_PAGE_URL). */
 var DEFAULT_CONFIRM_PAGE_URL = 'https://ma.climateorgmap.earth/confirm.html';
 
@@ -323,6 +326,8 @@ function confirmData_(rec, t) {
     var out = { id: str_(row.id), kind: k };
     CONFIRM_FIELDS[k].forEach(function (f) { out[f] = f === 'online' ? isTrue_(row[f]) : str_(row[f]); });
     if (k !== 'org' && k !== 'coalition') { out.verified = isTrue_(row.verified); out.needs_info = isTrue_(row.needs_info); }
+    if (k === 'action') out.role = str_(row.kind).toLowerCase() === 'role'; // volunteer roles get their own section
+
     return out;
   };
   // An organization's items are the ones it hosts; a coalition's are the ones tagged with it (member orgs' too).
@@ -492,7 +497,28 @@ function confirmApply_(orgId, state, who, t, kind, others) {
   }
 
   var items = (state && state.items) || {};
+  // New items added on the page (Nov 17 redesign): ids "new_<n>". Created on this group's own tab rows, already checked.
+  var added = 0;
   Object.keys(items).forEach(function (id) {
+    if (!/^new_\d{1,4}$/.test(id)) return;
+    var it = items[id] || {};
+    var tab = tabs[it.kind];
+    if (!tab || it.decision !== 'approve' || added >= MAX_NEW_ITEMS) return;
+    var patch = clean(it.kind, it.fields);
+    if (!patch.name) return; // nothing without a name
+    patch[coalition ? 'coalition_id' : 'host_org_id'] = orgId;
+    if (it.kind === 'action') patch.kind = it.role ? 'role' : 'task';
+    patch.verified = 'TRUE';
+    patch.needs_info = 'FALSE';
+    addMissingColumns_(ss_().getSheetByName(tab[0]), COLS[tab[0]]);
+    var r = upsert_(tab[0], it.kind, NEW_ITEM_, NEW_ITEM_, patch);
+    r.action = 'added';
+    record(r, it.kind === 'action' && it.role ? 'volunteer role' : it.kind);
+    added++;
+  });
+  counts.added = added;
+  Object.keys(items).forEach(function (id) {
+    if (/^new_/.test(id)) return;
     var it = items[id] || {};
     var tab = tabs[it.kind];
     if (!tab || (it.decision !== 'approve' && it.decision !== 'remove')) return;
@@ -540,6 +566,6 @@ function confirmApply_(orgId, state, who, t, kind, others) {
   addPerson(who, 'a point person', false);
   (others || []).forEach(function (w) { addPerson(w, 'another point person', true); });
 
-  var summary = counts.approved + ' approved, ' + counts.removed + ' removed, ' + counts.edited + ' edited';
+  var summary = counts.approved + ' approved, ' + counts.removed + ' removed, ' + counts.edited + ' edited' + (added ? ', ' + added + ' added' : '');
   return { summary: summary, lines: lines, counts: counts };
 }

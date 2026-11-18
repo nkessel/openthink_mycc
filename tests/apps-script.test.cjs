@@ -848,6 +848,11 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const items = {
     [second.id]: { kind: "event", decision: "approve", fields: { name: "Renamed by the group", date: "2026-11-20T18:30", link: "example.org/x", hidden: "TRUE" } },
     [foreign.id]: { kind: "event", decision: "remove" },
+    // new items from the + buttons (Nov 17 redesign)
+    new_1: { kind: "event", decision: "approve", fields: { name: "Brand new teach-in", date: "2026-12-05T18:00", link: "example.org/teach-in", hidden: "TRUE" } },
+    new_2: { kind: "action", role: true, decision: "approve", fields: { name: "Volunteer photographer", description: "Take photos at our events." } },
+    new_3: { kind: "project", decision: "approve", fields: { description: "No name, so not added" } },
+    new_4: { kind: "project", decision: "remove", fields: { name: "Changed my mind" } },
   };
   const st = {
     who, org: { decision: "approve", fields: { description: "Checked by the group", social_links: "https://www.instagram.com/example_group, bsky.app/profile/example.bsky.social" } }, items,
@@ -866,6 +871,14 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(fbLast[fbHead.indexOf("type")], "Confirmation page");
   assert.equal(fbLast[fbHead.indexOf("message")], "A filter for youth groups would help us.");
   assert.ok(mail.slice(before).some((m) => /A filter for youth groups/.test(JSON.stringify(m))), "alert email includes the feedback");
+  const ne = ctx.readAll_().events.find((e) => e.name === "Brand new teach-in");
+  assert.ok(ne && ne.host_org_id === orgId && ctx.isTrue_(ne.verified) && !ctx.isTrue_(ne.hidden), "new event added for this group");
+  assert.equal(ne.date, "2026-12-05T18:00:00"); assert.equal(ne.link, "https://example.org/teach-in");
+  const nr = ctx.readAll_().actions.find((a) => a.name === "Volunteer photographer");
+  assert.ok(nr && nr.host_org_id === orgId && nr.kind === "role", "new volunteer role added");
+  assert.ok(!ctx.readAll_().projects.some((x) => x.name === "Changed my mind" || x.description === "No name, so not added"), "unnamed or removed new items are skipped");
+  assert.match(res.summary, /2 added/);
+  assert.ok(get(L.token).data.items.some((i) => i.kind === "action" && i.role === true && i.name === "Volunteer photographer"), "roles are marked for the page");
   const e0 = ctx.readAll_().events.find((e) => e.id === second.id);
   assert.equal(e0.name, "Renamed by the group"); assert.equal(e0.date, "2026-11-20T18:30:00"); assert.equal(e0.link, "https://example.org/x");
   assert.ok(ctx.isTrue_(e0.verified)); assert.ok(!ctx.isTrue_(e0.hidden), "only listed fields can change");
