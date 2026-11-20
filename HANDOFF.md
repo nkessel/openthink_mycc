@@ -30,6 +30,8 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 20 — "+ Map pin address" pill renamed "+ Group location"** (Nathan); field label "Group location: the address for your map pin…".
+
 - **Nov 20 — review page heading is just the group name** (Nathan picked option 2 on the canvas); tab title "{group} · Massachusetts Climate Organization Map".
 
 - **Nov 20 — review page from the sample-page comments:** "+ Group type" is now a main pill (type picker + the youth checkbox in one drawer; was a select stacked on the picker). "edit" text button after the topic pills opens the topic picker pre-filled (Save topics). Point people question back to "Who is your group's contact person?"; "More about point people ▸" sits inline at the end of the paragraph. Me / Me and others / Someone else stay on one row on phones. "Best way to reach you" no longer greys out; Text/Phone call/Any say "(add a phone number first)" until one is entered. Sample page (no server) is a Claude artifact built from the confirm bundle with a fetch mock. Open on the canvas: bottom bar A–F, page heading 1–3.

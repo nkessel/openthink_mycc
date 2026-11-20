@@ -137,7 +137,7 @@ const LABEL: Obj = {
   end: "Ends", location: "Where", online: "Online", link: "Web page", rsvp_link: "Sign-up / RSVP link", status: "Status", deadline: "Deadline",
   // Round 4 (Nov 19): every field the map shows
   abbrev: "Short name or acronym", type: "Type of group", remote: "",
-  hq_address: "Address for your map pin (a street address, or just a town)",
+  hq_address: "Group location: the address for your map pin (a street address, or just a town)",
   topic_tags: "Topics", focus_tags: "Focus areas", youth_serving: "Youth group",
   school_club: "School or campus club", membership_size: "Active membership (about how many people)",
   recurrence: "Repeats (for example: Every Tuesday, 6–7 PM)", skills_needed: "Skills you’re looking for (separated by commas)",
@@ -147,7 +147,7 @@ const LABEL: Obj = {
 const PILL: Obj = {
   description: "Description", abbrev: "Short name", type: "Group type", website: "Website", social_links: "Social media",
   public_contact: "Public contact", geographic_focus: "Where you work", geographic_scope: "Geographic scope", topic_tags: "Topics",
-  focus_tags: "Focus areas", membership_size: "Membership size", hq_address: "Map pin address",
+  focus_tags: "Focus areas", membership_size: "Membership size", hq_address: "Group location",
   location: "Location", link: "Web page", skills_needed: "Skills wanted", end: "End time", recurrence: "Repeats", rsvp_link: "Sign-up link",
   deadline: "Deadline", urgency: "Urgency",
 };
