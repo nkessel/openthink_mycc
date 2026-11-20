@@ -771,7 +771,7 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const LCo = linkOf("mycc", "coalition");
   const gc = get(LCo.token).data;
   assert.equal(gc.kind, "coalition"); assert.equal(gc.org.kind, "coalition"); assert.equal(gc.org.id, "mycc");
-  assert.deepEqual(Object.keys(gc.org).sort(), ["description", "geographic_scope", "id", "kind", "name", "social_links", "topic_tags", "website"]);
+  assert.deepEqual(Object.keys(gc.org).sort(), ["abbrev", "description", "focus_tags", "geographic_scope", "id", "kind", "name", "social_links", "topic_tags", "website"]);
   assert.ok(gc.items.some((i) => i.id === "mycc_e_call_1004" && i.kind === "event"), "coalition-tagged events are its items");
   assert.ok(gc.items.every((i) => ctx.readAll_().events.concat(ctx.readAll_().projects, ctx.readAll_().actions).find((r) => r.id === i.id).coalition_id === "mycc"));
   assert.equal(gc.pointPeople.length, 1, "the coalition's existing point person (Editors coalition_ids)");
@@ -846,16 +846,17 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const second = evs.find((e) => e.host_org_id === orgId);
   const foreign = evs.find((e) => e.host_org_id !== orgId);
   const items = {
-    [second.id]: { kind: "event", decision: "approve", fields: { name: "Renamed by the group", date: "2026-11-20T18:30", link: "example.org/x", hidden: "TRUE" } },
+    [second.id]: { kind: "event", decision: "approve", fields: { name: "Renamed by the group", date: "2026-11-20T18:30", link: "example.org/x", hidden: "TRUE", free_food: true, recurrence: "Every Tuesday", location: "Natick Common", online: false } },
     [foreign.id]: { kind: "event", decision: "remove" },
     // new items from the + buttons (Nov 17 redesign)
     new_1: { kind: "event", decision: "approve", fields: { name: "Brand new teach-in", date: "2026-12-05T18:00", link: "example.org/teach-in", hidden: "TRUE" } },
-    new_2: { kind: "action", role: true, decision: "approve", fields: { name: "Volunteer photographer", description: "Take photos at our events." } },
+    new_2: { kind: "action", role: true, decision: "approve", fields: { name: "Volunteer photographer", description: "Take photos at our events.", urgency: "HIGH", skills_needed: "photography, editing" } },
+    new_5: { kind: "project", decision: "approve", fields: { name: "Community solar push", status: "paused", help_wanted: false, location: "Online" } },
     new_3: { kind: "project", decision: "approve", fields: { description: "No name, so not added" } },
     new_4: { kind: "project", decision: "remove", fields: { name: "Changed my mind" } },
   };
   const st = {
-    who, org: { decision: "approve", fields: { description: "Checked by the group", social_links: "https://www.instagram.com/example_group, bsky.app/profile/example.bsky.social" } }, items,
+    who, org: { decision: "approve", fields: { description: "Checked by the group", abbrev: "EXG", type: "Not a slug!", youth_serving: true, topic_tags: "youth, energy", social_links: "https://www.instagram.com/example_group, bsky.app/profile/example.bsky.social" } }, items,
     others: [{ name: "Sam Second", email: "Sam@Example.org", phone: "", best: "Email" }, { name: "Tina Third", email: "tina@example.org", phone: "617-555-0143", best: "Phone call" }, { name: "", email: "", phone: "" }],
   };
   // an incomplete extra person stops everything (nothing half-applied)
@@ -877,11 +878,19 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const nr = ctx.readAll_().actions.find((a) => a.name === "Volunteer photographer");
   assert.ok(nr && nr.host_org_id === orgId && nr.kind === "role", "new volunteer role added");
   assert.ok(!ctx.readAll_().projects.some((x) => x.name === "Changed my mind" || x.description === "No name, so not added"), "unnamed or removed new items are skipped");
-  assert.match(res.summary, /2 added/);
+  assert.match(res.summary, /3 added/);
+  // round 4 (Nov 19): more fields; yes/no as TRUE/FALSE, fixed lists checked, org type must be a slug
+  assert.equal(nr.urgency, "high"); assert.equal(nr.skills_needed, "photography, editing");
+  const np = ctx.readAll_().projects.find((x) => x.name === "Community solar push");
+  assert.ok(np && np.status === "active" && String(np.help_wanted).toUpperCase() === "FALSE", "unknown status dropped (new projects default to active); help_wanted saved");
+  const og = ctx.readAll_().orgs.find((o) => o.id === orgId);
+  assert.equal(og.abbrev, "EXG"); assert.ok(ctx.isTrue_(og.youth_serving)); assert.equal(og.topic_tags, "youth, energy"); assert.notEqual(og.type, "Not a slug!");
   assert.ok(get(L.token).data.items.some((i) => i.kind === "action" && i.role === true && i.name === "Volunteer photographer"), "roles are marked for the page");
   const e0 = ctx.readAll_().events.find((e) => e.id === second.id);
   assert.equal(e0.name, "Renamed by the group"); assert.equal(e0.date, "2026-11-20T18:30:00"); assert.equal(e0.link, "https://example.org/x");
   assert.ok(ctx.isTrue_(e0.verified)); assert.ok(!ctx.isTrue_(e0.hidden), "only listed fields can change");
+  assert.ok(ctx.isTrue_(e0.free_food)); assert.equal(e0.recurrence, "Every Tuesday");
+  assert.ok(Math.abs(Number(e0.lat) - 42.2834) < 1e-3, "a changed location moves the pin");
   assert.ok(!ctx.isTrue_(ctx.readAll_().events.find((e) => e.id === foreign.id).hidden), "another group's item is untouched");
   assert.equal(ctx.readAll_().orgs.find((o) => o.id === orgId).description, "Checked by the group");
   // social media links (Nov 13): saved to the group's row and sent to the map
