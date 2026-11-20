@@ -209,7 +209,10 @@ function confirmApiGet_(token) {
   try {
     var link = linkRow_(token);
     if (!link) return { ok: false, error: badLinkMessage_() };
-    var data = confirmData_(link.rec, readAll_());
+    // Only the tabs the page shows (Nov 20: skipping Connections and Topics makes the page load faster).
+    var ss = ss_(), r = function (name) { var sh = ss.getSheetByName(name); return sh ? readTable_(sh).rows : []; };
+    var data = confirmData_(link.rec, { coalitions: r(TAB.coalitions), orgs: r(TAB.orgs), projects: r(TAB.projects), events: r(TAB.events),
+      actions: r(TAB.actions), editors: r(TAB.editors), connections: [], topics: [] });
     if (!str_(link.rec.opened_at)) setLinkFields_(link, { opened_at: nowIso_(), status: str_(link.rec.status) === 'not sent' || !str_(link.rec.status) ? 'opened' : link.rec.status });
     return { ok: true, data: data };
   } catch (err) {
