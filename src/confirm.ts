@@ -136,7 +136,8 @@ const LABEL: Obj = {
   geographic_scope: "Geographic scope", public_contact: "Public contact (email or phone people can use)", date: "Starts",
   end: "Ends", location: "Where", online: "Online", link: "Web page", rsvp_link: "Sign-up / RSVP link", status: "Status", deadline: "Deadline",
   // Round 4 (Nov 19): every field the map shows
-  abbrev: "Short name or acronym", type: "Type of group", remote: "Location on the map",
+  abbrev: "Short name or acronym", type: "Type of group", remote: "",
+  hq_address: "Address for your map pin (a street address, or just a town)",
   topic_tags: "Topics", focus_tags: "Focus areas", youth_serving: "Youth group",
   school_club: "School or campus club", membership_size: "Active membership (about how many people)",
   recurrence: "Repeats (for example: Every Tuesday, 6–7 PM)", skills_needed: "Skills you’re looking for (separated by commas)",
@@ -146,7 +147,9 @@ const LABEL: Obj = {
 const PILL: Obj = {
   description: "Description", abbrev: "Short name", type: "Type of group", website: "Website", social_links: "Social media",
   public_contact: "Public contact", geographic_focus: "Where you work", geographic_scope: "Geographic scope", topic_tags: "Topics",
-  focus_tags: "Focus areas", membership_size: "Membership size",
+  focus_tags: "Focus areas", membership_size: "Membership size", hq_address: "Map pin address",
+  location: "Location", link: "Web page", skills_needed: "Skills wanted", end: "End time", recurrence: "Repeats", rsvp_link: "Sign-up link",
+  deadline: "Deadline", urgency: "Urgency",
 };
 /** Main social platforms, from what the groups' own websites link to (Nov 13 check): Facebook 105, Instagram 76,
  *  X/Twitter 46, LinkedIn 43, YouTube 41; then Bluesky 16 and TikTok 15, which go under Other. */
@@ -168,6 +171,16 @@ const SOCIAL: { id: string; label: string; re: RegExp; hint: string; url: (v: st
 ];
 /** Brand colours, lightened to read on the dark page (round 7). YouTube's red is softened so it isn't read as "remove". */
 const BRAND: Record<string, string> = { instagram: "#f06292", facebook: "#5b9cf5", x: "#e5e7eb", linkedin: "#4fa3e0", youtube: "#ff7a7a", bluesky: "#4aa8ff", tiktok: "#5ee8e3", threads: "#d1d5db", mastodon: "#8b8cff", linktree: "#5be37a", other: "#a1a8b3" };
+/** Missing-info pills per card kind (round 7): the most-used as pills, the rest behind "+ N more". */
+const MAIN_PILLS: Record<string, string[]> = {
+  org: ["description", "website", "public_contact", "topic_tags"], coalition: ["description", "website", "focus_tags"],
+  event: ["description", "location", "link", "topic_tags"], project: ["description", "link", "skills_needed", "topic_tags"],
+  action: ["description", "link", "deadline", "skills_needed"],
+};
+const LESSER_PILLS: Record<string, string[]> = {
+  org: ["abbrev", "type", "geographic_focus", "hq_address", "membership_size"], coalition: ["abbrev", "geographic_scope"],
+  event: ["end", "recurrence", "rsvp_link", "public_contact"], project: ["location", "public_contact"], action: ["urgency"],
+};
 const BOOLS = ["online", "remote", "youth_serving", "school_club", "free_food", "affiliated_only", "help_wanted"];
 const CHOICES: Record<string, [string, string][]> = {
   status: [["active", "Active"], ["planning", "Planning"], ["completed", "Completed"]],
@@ -189,14 +202,27 @@ const ASK: Record<string, { text: string; why: string }> = {
 };
 /** Topic tags are stored as slugs (climate_policy) and shown as words (Climate policy). */
 const topicSlug = (t: string) => t.trim().toLowerCase().replace(/[\s-]+/g, "_").replace(/[^a-z0-9_]/g, "").replace(/_+/g, "_").replace(/^_|_$/g, "").slice(0, 40);
-const topicName = (t: string) => cap(String(t).trim().replace(/_/g, " "));
 const splitList = (v: unknown) => String(v || "").split(/[,;]\s*/).map((x) => x.trim()).filter(Boolean);
-/** The map's topics with how many groups and items use each, from the static snapshot (loaded once, in the background). */
+/** Topic names for slugs (filled from the Wikipedia topic list once it loads; else "climate_policy" → "Climate policy"). */
+const TOPIC_LABEL: Record<string, string> = {};
+const topicName = (t: string) => TOPIC_LABEL[topicSlug(String(t))] || cap(String(t).trim().replace(/_/g, " "));
+/** Suggestions (round 7): the map's Wikipedia topic list (Turibius's schema: 13 main topics and the topics under them),
+ *  ranked by how many groups' items it's found in, plus any topic a group already typed. Loaded once, when needed. */
 let TOPICS: Promise<[string, number][]> | null = null;
 function mapTopics(): Promise<[string, number][]> {
   if (TOPICS) return TOPICS;
-  TOPICS = fetch(import.meta.env.BASE_URL + "data.json", { credentials: "omit" }).then((r) => r.json()).then((d: Obj) => {
-    const n: Record<string, number> = {};
+  const base = import.meta.env.BASE_URL;
+  const n: Record<string, number> = {};
+  const wiki = fetch(base + "topics-wiki.json", { credentials: "omit" }).then((r) => r.json()).then((d: Obj) => {
+    const used: Record<string, number> = {};
+    (d.records || []).forEach((r: Obj) => (r.topics || []).forEach((q: string) => { used[q] = (used[q] || 0) + 1; }));
+    (d.parents || []).forEach((p: Obj) => {
+      const ps = topicSlug(p.label); TOPIC_LABEL[ps] = p.label;
+      n[ps] = Math.max(n[ps] || 0, 1000 + (p.children || []).reduce((a: number, ch: Obj) => a + (used[ch.id] || 0), 0)); // main topics first
+      (p.children || []).forEach((ch: Obj) => { const cs = topicSlug(ch.label); TOPIC_LABEL[cs] = ch.label; n[cs] = Math.max(n[cs] || 0, used[ch.id] || 0); });
+    });
+  }).catch(() => undefined);
+  const tags = fetch(base + "data.json", { credentials: "omit" }).then((r) => r.json()).then((d: Obj) => {
     const walk = (o: unknown): void => {
       if (Array.isArray(o)) { o.forEach(walk); return; }
       if (!o || typeof o !== "object") return;
@@ -207,10 +233,12 @@ function mapTopics(): Promise<[string, number][]> {
       Object.values(o).forEach(walk);
     };
     walk(d);
-    return Object.entries(n).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  }).catch(() => [] as [string, number][]);
+  }).catch(() => undefined);
+  TOPICS = Promise.all([wiki, tags]).then(() => Object.entries(n).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])));
   return TOPICS;
 }
+/** Shown next to a suggestion: main topics say so; others say how often they're used. */
+const topicNote = (n: number) => (n >= 1000 ? "main topic" : n ? `used ${n} time${n === 1 ? "" : "s"} on the map` : "");
 
 /** A pill picker (topics or group types): pills with ✕, a box to type in, suggestions under it. Keeps its value in a
  *  hidden input with data-k (or data-pk), so the card's Done/Add code reads it like any other field. */
@@ -243,7 +271,7 @@ function picker(id: string, key: string, value: string, attr: "data-k" | "data-p
     const term = topicSlug(q.value);
     const hits = vocab.filter(([t]) => !list.includes(t) && (!term || t.includes(term) || name(t).toLowerCase().includes(q.value.trim().toLowerCase()))).slice(0, isType ? 20 : 6);
     const exact = hits.some(([t]) => t === term) || list.includes(term);
-    const rows = hits.map(([t, n]) => `<div class="popt" role="option" data-t="${esc(t)}"><span>${esc(name(t))}</span>${n ? `<span class="hint">used ${n} time${n === 1 ? "" : "s"} on the map</span>` : ""}</div>`);
+    const rows = hits.map(([t, n]) => `<div class="popt" role="option" data-t="${esc(t)}"><span>${esc(name(t))}</span>${topicNote(n) ? `<span class="hint">${topicNote(n)}</span>` : ""}</div>`);
     if (!isType && term && !exact) rows.push(`<div class="popt new" role="option" data-t="${esc(term)}"><span>+ Add “${esc(q.value.trim())}” as a new topic</span><span class="hint">if nothing fits</span></div>`);
     sug.innerHTML = rows.join("");
     hi = Math.min(hi, Math.max(0, rows.length - 1));
@@ -360,6 +388,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   /** Description cards opened with "Show all", and the open pill rows (round 7). */
   const expanded: Record<string, boolean> = {};
   let rowOpen: "" | "social" | "social2" | "more" = "";
+  let pillCard = "";
   const pillDraft: Record<string, string> = {};
   let caretFrom = -1, lastRow = "", pfWasOpen = false;
   let draftAt: string = DATA.draftAt || "";
@@ -445,12 +474,19 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       <div><label for="pname">Your name</label><input id="pname" autocomplete="name"></div>
       <div><label for="pemail">Your email</label><input id="pemail" type="email" autocomplete="email"></div></div>
       <p class="hint" id="pp-self-note"></p>
-      <button type="button" class="fold" id="pp-phone" aria-expanded="false">+ Add a phone number</button>
-      <div class="row2 foldbody" id="pp-phone-body" hidden>
+      <div class="row2">
       <div><label for="pphone">Phone (optional)</label><input id="pphone" type="tel" autocomplete="tel"></div>
       <div><label for="pbest">Best way to reach you</label><select id="pbest">${bestOptions()}</select><p class="hint" id="pbest-hint"></p></div></div>
       <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}
-      <button type="button" class="add-other" id="add-other">+ Add another point person</button></div>`));
+      <button type="button" class="add-other" id="add-other">+ Add another point person</button>
+      <div class="decide pp-savebar"><button type="button" class="primary" id="pp-save">Save point person</button><span class="hint" id="pp-saved" aria-live="polite"></span></div></div>`));
+    $("pp-save").addEventListener("click", () => {
+      if (!editor) return;
+      if (!who.name || !EMAIL_RE.test(who.email)) { $("pp-saved").textContent = "Add your name and email first."; inp(who.name ? "pemail" : "pname").focus(); return; }
+      if (ppMode !== "me" && (!others[0].name || !EMAIL_RE.test(others[0].email))) { $("pp-saved").textContent = "Add the point person’s name and email first."; inp(others[0].name ? "o0email" : "o0name").focus(); return; }
+      $("pp-saved").textContent = "Saving…";
+      void saveNow().then((ok) => { $("pp-saved").textContent = ok ? `✓ Saved. ${ppMode === "else" ? "They’ll" : "You’ll"} be added when you press Finalize and Submit.` : "Couldn’t save. Please try again."; });
+    });
     const fold = (btn: string, body: string, open?: boolean) => {
       const b = $(btn), d = $(body), box = $("point-people");
       const set = (on: boolean, anim: boolean) => {
@@ -464,7 +500,6 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       b.addEventListener("click", () => set(d.hidden, true));
     };
     fold("pp-more", "pp-more-body");
-    fold("pp-phone", "pp-phone-body", !!who.phone);
     $("point-people").querySelectorAll<HTMLButtonElement>(".ppmode button").forEach((b) => b.addEventListener("click", () => {
       if (!editor) return;
       const box = $("point-people"), h0 = box.offsetHeight;
@@ -472,7 +507,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       try { localStorage.setItem("confirm.ppmode." + token, ppMode); } catch { /* ignore */ }
       if (ppMode !== "me" && othersShown === 0) othersShown = 1;
       touch(); syncOthers(); glide(box, h0);
-      if (ppMode !== "me") { $("orow0").classList.add("reveal"); inp("o0name").focus(); } else inp("pname").focus();
+      if (ppMode !== "me") { $("orow0").classList.add("reveal"); inp("o0name").focus({ preventScroll: true }); } else inp("pname").focus({ preventScroll: true });
     }));
     $("add-other").addEventListener("click", () => {
       if (!editor) return;
@@ -482,7 +517,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       glide(ppb, h0);
       const row = $("orow" + (othersShown - 1));
       row.classList.add("reveal");
-      inp(`o${othersShown - 1}name`).focus();
+      inp(`o${othersShown - 1}name`).focus({ preventScroll: true });
     });
     wirePerson("p", () => who, (p) => { who = p; });
     [0, 1].forEach((i) => wirePerson("o" + i, () => others[i], (p) => { others[i] = p; }));
@@ -532,7 +567,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     render();
     const box = document.getElementById("card-" + id);
     box?.scrollIntoView({ block: "center" });
-    (box?.querySelector("[data-k]") as HTMLElement | null)?.focus();
+    (box?.querySelector("[data-k]") as HTMLElement | null)?.focus({ preventScroll: true });
   }
   const bestOptions = () => `<option value="">No preference</option>` + BESTS.map((b) => `<option>${b}</option>`).join("");
   function otherRow(i: number) {
@@ -603,7 +638,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       label = LABEL[f]; input = `<input id="${id}" data-pk="1" type="url" placeholder="https://" autocomplete="off">`;
     } else {
       label = LABEL[f] || f;
-      if (f !== "type" && f !== "topic_tags" && f !== "focus_tags") input = `<input id="${id}" data-pk="1" autocomplete="off">`;
+      if (CHOICES[f]) input = `<select id="${id}" data-pk="1">${CHOICES[f].filter(([o]) => o).map(([o, l]) => `<option value="${esc(o)}">${esc(l)}</option>`).join("")}</select>`;
+      else if (f !== "type" && f !== "topic_tags" && f !== "focus_tags") input = `<input id="${id}" data-pk="1" type="${f === "end" ? "datetime-local" : f === "deadline" ? "date" : /link$/.test(f) ? "url" : "text"}"${/link$/.test(f) ? ' placeholder="https://"' : f === "skills_needed" ? ' placeholder="e.g. outreach, design"' : ""} autocomplete="off">`;
     }
     // Round 7: a drawer whose arrow points up at the pill; Cancel (muted) sits left of Add.
     const d = el(`<div class="pillfield"><span class="caret" aria-hidden="true"></span><label for="${f === "type" || f === "topic_tags" || f === "focus_tags" ? id + "-q" : id}">${esc(label)}</label>${input}<div class="decide pf-actions"><button type="button" class="pill-cancel textbtn">Cancel</button><button type="button" class="primary pill-save">Add</button><span class="hint pf-enter">Enter to add</span></div></div>`);
@@ -629,6 +665,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     caretFrom = x;
   }
   let pillOpen: string | null = null;
+  /** Moves the open pill state to card c (closing the other card's pills). */
+  function openPillsOn(c: Card) {
+    const prev = pillCard;
+    pillCard = c.id; pillOpen = null; rowOpen = ""; lastRow = ""; pfWasOpen = false; caretFrom = -1;
+    const pc = prev && cards.find((x) => x.id === prev);
+    if (pc) rerender(pc);
+  }
 
   function card(c: Card): HTMLElement {
     const s = S(c.id), ed = !!editing[c.id], k = c.kind === "org" || c.kind === "coalition" ? "org" : c.kind;
@@ -666,7 +709,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         if (key === "school_club") return; // round 7: set from "Type of group"
         if (key === "description") f += `<label for="${id}">${LABEL[key]}</label><textarea id="${id}" data-k="${key}">${esc(v)}</textarea>`;
         else if (key === "type" || key === "topic_tags" || key === "focus_tags") f += `<label for="${id}-q">${LABEL[key]} <span class="hint">· ${key === "type" ? "pick all that apply" : "type to search ours, or add your own"}</span></label><div class="pk-slot" data-key="${key}"></div>`;
-        else if (ASK[key]) f += `<p class="asklab">${esc(LABEL[key])}</p><label class="askrow"><input type="checkbox" id="${id}" data-k="${key}"${isOn(v) ? " checked" : ""}><span>${ASK[key].text}</span></label><p class="hint">${esc(ASK[key].why)}</p>`;
+        else if (key === "hq_address") f += `<label for="${id}">${LABEL[key]}</label><input id="${id}" data-k="${key}" value="${esc(v)}" autocomplete="off"><p class="hint">Only used to place your pin. The address itself isn’t shown on the map.</p>`;
+        else if (ASK[key]) f += `${LABEL[key] ? `<p class="asklab">${esc(LABEL[key])}</p>` : ""}<label class="askrow"><input type="checkbox" id="${id}" data-k="${key}"${isOn(v) ? " checked" : ""}><span>${ASK[key].text}</span></label><p class="hint">${esc(ASK[key].why)}</p>`;
         else if (BOOLS.includes(key)) f += `<label class="check"><input type="checkbox" id="${id}" data-k="${key}"${isOn(v) ? " checked" : ""}> ${esc(LABEL[key])}</label>`;
         else if (CHOICES[key]) {
           const opts = CHOICES[key].slice(), cur = String(v || (key === "status" ? "active" : key === "type" ? "unknown" : ""));
@@ -709,34 +753,38 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       ul.innerHTML = on.concat(mine).join("");
     };
     ippList();
-    if (!ed && k === "org") {
+    // Pills (round 7): the group card and, since Nathan's Nov 20 ask, every existing item card. One card's pills are open at a time.
+    if (!ed && !fresh) {
+      const po = pillCard === c.id ? pillOpen : null, ro = pillCard === c.id ? rowOpen : "";
       // Round 7 (Nov 20 canvas): the most-used fields as pills, then one Social media pill (main platforms, then More),
       // then "+ N more" for the lesser-used fields. Each pill opens one field in a drawer pointing at it.
       const missing = (f: string) => keys.includes(f) && (f === "type" ? !splitList(val(c, f)).filter((t) => t !== "unknown").length : !String(val(c, f) || "").trim());
-      const main = ["description", "website", "public_contact", "topic_tags", "focus_tags"].filter(missing);
-      const lesser = ["abbrev", "type", "geographic_focus", "geographic_scope", "membership_size"].filter(missing);
+      const ks = k === "org" ? (coalition ? "coalition" : "org") : kindOfSec(sec!);
+      const online = isOn(val(c, "online"));
+      const main = (MAIN_PILLS[ks] || []).filter(missing).filter((f) => f !== "location" || !online);
+      const lesser = (LESSER_PILLS[ks] || []).filter(missing).filter((f) => (f !== "hq_address" || !isOn(val(c, "remote"))) && (f !== "location" || !online));
       const have = String(val(c, "social_links") || "");
       const plat = keys.includes("social_links") ? SOCIAL.filter((x) => !x.more && !x.re.test(have)) : [];
       const plat2 = keys.includes("social_links") ? SOCIAL.filter((x) => x.more && (x.id === "other" || !x.re.test(have))) : [];
       const socialOn = keys.includes("social_links");
       let n = 0;
       // Social platforms use their own brand colours (lightened for the dark page), so they're easy to spot.
-      const pill = (f: string, label: string, sub = false) => { const b = BRAND[f.replace("social:", "")]; return `<button type="button" class="pill-add${sub ? " sub" : ""}${b ? "" : " c" + n++ % 3}" data-f="${esc(f)}"${b ? ` style="--pc:${b}"` : ""} aria-expanded="${pillOpen === f}">+ ${esc(label)}</button>`; };
+      const pill = (f: string, label: string, sub = false) => { const b = BRAND[f.replace("social:", "")]; return `<button type="button" class="pill-add${sub ? " sub" : ""}${b ? "" : " c" + n++ % 3}" data-f="${esc(f)}"${b ? ` style="--pc:${b}"` : ""} aria-expanded="${po === f}">+ ${esc(label)}</button>`; };
       const rowPill = (r: string, label: string, open: boolean) => `<button type="button" class="pill-add rowpill" data-row="${r}" aria-expanded="${open}">${esc(label)}</button>`;
-      const sOpen = rowOpen === "social" || rowOpen === "social2";
+      const sOpen = ro === "social" || ro === "social2";
       if (main.length || lesser.length || socialOn) {
-        box.appendChild(el(`<div class="addinfo"><span class="hint">Add missing info:</span>${main.map((f) => pill(f, PILL[f])).join("")}${socialOn ? `<button type="button" class="pill-add c3" data-row="social" aria-expanded="${sOpen}">+ Social media ${sOpen ? "▾" : "▸"}</button>` : ""}${lesser.length ? rowPill("more", `+ ${lesser.length} more ${rowOpen === "more" ? "▴" : "▾"}`, rowOpen === "more") : ""}</div>`));
-        if (sOpen) box.appendChild(el(`<div class="addinfo more${lastRow === "" ? " reveal" : ""}">${plat.map((x) => pill("social:" + x.id, x.label, true)).join("")}${rowPill("social2", rowOpen === "social2" ? "Less ▴" : "More ▸", rowOpen === "social2")}</div>`));
-        if (rowOpen === "social2") box.appendChild(el(`<div class="addinfo more deeper${lastRow !== "social2" ? " reveal" : ""}">${plat2.map((x) => pill("social:" + x.id, x.label, true)).join("")}</div>`));
-        if (rowOpen === "more") box.appendChild(el(`<div class="addinfo more${lastRow !== "more" ? " reveal" : ""}">${lesser.map((f) => pill(f, PILL[f], true)).join("")}</div>`));
-        const op = pillOpen ? box.querySelector(`.pill-add[data-f="${CSS.escape(pillOpen)}"]`) : null;
+        box.appendChild(el(`<div class="addinfo"><span class="hint">Add missing info:</span>${main.map((f) => pill(f, PILL[f])).join("")}${socialOn ? `<button type="button" class="pill-add c3" data-row="social" aria-expanded="${sOpen}">+ Social media ${sOpen ? "▾" : "▸"}</button>` : ""}${lesser.length ? rowPill("more", `+ ${lesser.length} more ${ro === "more" ? "▴" : "▾"}`, ro === "more") : ""}</div>`));
+        if (sOpen) box.appendChild(el(`<div class="addinfo more${lastRow === "" ? " reveal" : ""}">${plat.map((x) => pill("social:" + x.id, x.label, true)).join("")}${rowPill("social2", ro === "social2" ? "Less ▴" : "More ▸", ro === "social2")}</div>`));
+        if (ro === "social2") box.appendChild(el(`<div class="addinfo more deeper${lastRow !== "social2" ? " reveal" : ""}">${plat2.map((x) => pill("social:" + x.id, x.label, true)).join("")}</div>`));
+        if (ro === "more") box.appendChild(el(`<div class="addinfo more${lastRow !== "more" ? " reveal" : ""}">${lesser.map((f) => pill(f, PILL[f], true)).join("")}</div>`));
+        const op = po ? box.querySelector(`.pill-add[data-f="${CSS.escape(po)}"]`) : null;
         if (op) {
-          const d = pillField(c, pillOpen!);
+          const d = pillField(c, po!);
           if (!pfWasOpen) d.classList.add("reveal");
           op.closest(".addinfo")!.after(d); // right under the row its pill is in, so the arrow points at it
         }
       }
-      lastRow = rowOpen; pfWasOpen = !!(pillOpen && box.querySelector(".pillfield"));
+      if (pillCard === c.id) { lastRow = rowOpen; pfWasOpen = !!(pillOpen && box.querySelector(".pillfield")); }
     }
     if (!ed) {
       const approved = s.decision === "approve";
@@ -753,17 +801,18 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       if (!b || !editor) return;
       if (b.hasAttribute("data-row")) {
         const r = b.getAttribute("data-row") as typeof rowOpen;
+        if (pillCard !== c.id) openPillsOn(c);
         rowOpen = r === "social2" ? (rowOpen === "social2" ? "social" : "social2") : rowOpen === r || (r === "social" && rowOpen === "social2") ? "" : r;
         // a field from a row that just closed closes with it
-        if (pillOpen && ((pillOpen.startsWith("social:") && !rowOpen.startsWith("social")) || (rowOpen !== "more" && ["abbrev", "type", "geographic_focus", "geographic_scope", "membership_size"].includes(pillOpen)) || (rowOpen === "social" && SOCIAL.some((x) => x.more && "social:" + x.id === pillOpen)))) pillOpen = null;
+        if (pillOpen && ((pillOpen.startsWith("social:") && !rowOpen.startsWith("social")) || (rowOpen !== "more" && (LESSER_PILLS[k === "org" ? (coalition ? "coalition" : "org") : kindOfSec(sec!)] || []).includes(pillOpen!)) || (rowOpen === "social" && SOCIAL.some((x) => x.more && "social:" + x.id === pillOpen)))) pillOpen = null;
         rerender(c);
-        (document.querySelector(`#card-${CSS.escape(c.id)} [data-row="${r}"]`) as HTMLElement | null)?.focus();
+        (document.querySelector(`#card-${CSS.escape(c.id)} [data-row="${r}"]`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
       if (b.classList.contains("tagbtn")) {
         const m = box.querySelector(".typemenu") as HTMLElement, open = m.hidden;
         m.hidden = !open; b.setAttribute("aria-expanded", String(open));
-        if (open) (m.querySelector("[aria-current]") as HTMLElement | null)?.focus();
+        if (open) (m.querySelector("[aria-current]") as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
       if (b.classList.contains("typeopt")) {
@@ -774,12 +823,12 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         touch(); render();
         const title = SECTIONS.find((x) => x.key === t)!.title;
         msg(t === orig || fresh ? `Moved to ${title}.` : `Moved to ${title}. The type changes on the map when you press Finalize and Submit.`);
-        (document.querySelector(`#card-${CSS.escape(c.id)} .tagbtn`) as HTMLElement | null)?.focus();
+        (document.querySelector(`#card-${CSS.escape(c.id)} .tagbtn`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
-      if (b.classList.contains("ipp-start")) { ippMode[c.id] = "ask"; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .ipp-me`) as HTMLElement | null)?.focus(); return; }
-      if (b.classList.contains("ipp-cancel")) { ippMode[c.id] = ""; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .ipp-start`) as HTMLElement | null)?.focus(); return; }
-      if (b.classList.contains("ipp-other")) { ippMode[c.id] = "other"; rerender(c); (document.querySelector(`#ip-${CSS.escape(c.id)}-name`) as HTMLElement | null)?.focus(); return; }
+      if (b.classList.contains("ipp-start")) { ippMode[c.id] = "ask"; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .ipp-me`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
+      if (b.classList.contains("ipp-cancel")) { ippMode[c.id] = ""; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .ipp-start`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
+      if (b.classList.contains("ipp-other")) { ippMode[c.id] = "other"; rerender(c); (document.querySelector(`#ip-${CSS.escape(c.id)}-name`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
       if (b.classList.contains("ipp-me")) {
         const note = box.querySelector(".ipp-note") as HTMLElement;
         if (!who.name || !EMAIL_RE.test(who.email)) {
@@ -821,12 +870,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       }
       if (b.classList.contains("pill-add")) {
         const f = b.getAttribute("data-f")!;
+        if (pillCard !== c.id) openPillsOn(c);
         pillOpen = pillOpen === f ? null : f;
         rerender(c);
-        (document.querySelector(`#card-${CSS.escape(c.id)} .pillfield [data-pk]:not([type=hidden]), #card-${CSS.escape(c.id)} .pillfield .pin`) as HTMLElement | null)?.focus();
+        (document.querySelector(`#card-${CSS.escape(c.id)} .pillfield [data-pk]:not([type=hidden]), #card-${CSS.escape(c.id)} .pillfield .pin`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
-      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus(); return; }
+      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
       if (b.classList.contains("pill-save")) {
         const i = box.querySelector(".pillfield [data-pk]") as HTMLInputElement;
         const f = pillOpen || "";
@@ -848,10 +898,10 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         s.decision = "approve";
         delete pillDraft[f]; pillOpen = null; touch(); rerender(c);
         msg("Added. It goes on the map when you press Finalize and Submit.");
-        (document.querySelector(`#card-${CSS.escape(c.id)} .addinfo .pill-add`) as HTMLElement | null)?.focus();
+        (document.querySelector(`#card-${CSS.escape(c.id)} .addinfo .pill-add`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
-      if (b.classList.contains("edit-btn")) { editing[c.id] = true; rerender(c); const i = document.querySelector(`#card-${CSS.escape(c.id)} [data-k]`) as HTMLElement | null; i?.focus(); return; }
+      if (b.classList.contains("edit-btn")) { editing[c.id] = true; rerender(c); const i = document.querySelector(`#card-${CSS.escape(c.id)} [data-k]`) as HTMLElement | null; i?.focus({ preventScroll: true }); return; }
       if (b.classList.contains("done-btn")) {
         const fs: Obj = {};
         box.querySelectorAll<HTMLInputElement>("[data-k]").forEach((i) => {
@@ -862,13 +912,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
           if (differs) fs[key] = v;
         });
         if (fs.type !== undefined && keys.includes("school_club")) { const sc = splitList(fs.type).includes("school_club"); if (sc !== isOn(c.school_club)) fs.school_club = sc; }
-        if (fresh && !String(fs.name || "").trim()) { msg(`Please give the new ${one} a name.`, true); (box.querySelector('[data-k="name"]') as HTMLElement | null)?.focus(); return; }
+        if (fresh && !String(fs.name || "").trim()) { msg(`Please give the new ${one} a name.`, true); (box.querySelector('[data-k="name"]') as HTMLElement | null)?.focus({ preventScroll: true }); return; }
         s.fields = fs; s.decision = "approve"; touch(); editing[c.id] = false; return rerender(c);
       }
       if (b.classList.contains("cancel-btn")) { if (fresh && !String((s.fields || {}).name || "").trim()) return drop(); editing[c.id] = false; return rerender(c); }
       if (b.classList.contains("ok")) {
         s.decision = s.decision === "approve" ? "" : "approve"; touch(); rerender(c);
-        (document.querySelector(`#card-${CSS.escape(c.id)} .ok`) as HTMLElement | null)?.focus(); return;
+        (document.querySelector(`#card-${CSS.escape(c.id)} .ok`) as HTMLElement | null)?.focus({ preventScroll: true }); return;
       }
       if (b.classList.contains("rm")) { if (fresh) return drop(); s.decision = s.decision === "remove" ? "" : "remove"; touch(); return rerender(c); }
     });
@@ -885,8 +935,9 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   function glide(n: HTMLElement, h0: number) {
     const h1 = n.offsetHeight;
     if (calm.matches || Math.abs(h1 - h0) < 4 || !n.animate) return;
-    n.style.overflow = "hidden";
-    n.animate([{ height: h0 + "px" }, { height: h1 + "px" }], { duration: 220, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = () => { n.style.overflow = ""; };
+    // overflow: clip (not hidden) so focusing a field inside can't scroll the card's content while it eases
+    n.style.overflow = "clip";
+    n.animate([{ height: h0 + "px" }, { height: h1 + "px" }], { duration: 220, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = () => { n.style.overflow = ""; n.scrollTop = 0; };
   }
   function rerender(c: Card) {
     const old = document.getElementById("card-" + c.id);
@@ -1062,18 +1113,20 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     }
     return true;
   }
-  $("save").addEventListener("click", async () => {
-    if (!editor || busy) return;
+  async function saveNow(): Promise<boolean> {
+    if (!editor || busy) return false;
     msg("Saving…");
     const sentRev = rev;
     try {
       const r = await call({ action: "save", token, sid, state: buildState() });
-      if (!r.ok) return msg(String(r.error || "Something went wrong. Please try again."), true);
+      if (!r.ok) { msg(String(r.error || "Something went wrong. Please try again."), true); return false; }
       savedRev = sentRev;
       if (r.savedAt) draftAt = r.savedAt;
       msg("Saved. Open this same link to pick up where you left off.");
-    } catch (e) { msg((e as Error).message, true); }
-  });
+      return true;
+    } catch (e) { msg((e as Error).message, true); return false; }
+  }
+  $("save").addEventListener("click", () => void saveNow());
   $("reload").addEventListener("click", () => location.reload());
   $("submit").addEventListener("click", async () => {
     if (!editor || busy) return;

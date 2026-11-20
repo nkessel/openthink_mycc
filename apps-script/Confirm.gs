@@ -32,7 +32,7 @@ var PING_SECONDS = 15;
 // Nov 19 (round 4): every field the map shows for a group or item can now be checked here, except the logo, the pin's
 // exact spot, coalition membership and the map team's own ratings (ej_focus etc.).
 var CONFIRM_FIELDS = {
-  org: ['name', 'abbrev', 'type', 'description', 'website', 'social_links', 'public_contact', 'geographic_focus', 'remote',
+  org: ['name', 'abbrev', 'type', 'description', 'website', 'social_links', 'public_contact', 'geographic_focus', 'hq_address', 'remote',
     'topic_tags', 'youth_serving', 'school_club', 'membership_size'],
   coalition: ['name', 'abbrev', 'description', 'website', 'social_links', 'geographic_scope', 'focus_tags'],
   event: ['name', 'date', 'end', 'recurrence', 'location', 'online', 'description', 'link', 'rsvp_link', 'public_contact',
@@ -590,6 +590,16 @@ function confirmApply_(orgId, state, who, t, kind, others) {
   var o = state && state.org;
   if (o && o.decision === 'approve' && findById_(coalition ? t.coalitions : t.orgs, orgId)) {
     var op = clean(cardKind, o.fields);
+    // Round 7 (Nov 20): the group's pin. A changed address moves it (exact); a changed town moves it only when
+    // there's no address (approximate). No pin work for groups marked "no public location".
+    if (!coalition) {
+      var ex = findById_(t.orgs, orgId);
+      var addrChanged = op.hq_address !== undefined && op.hq_address !== str_(ex.hq_address);
+      var townChanged = op.geographic_focus !== undefined && op.geographic_focus !== str_(ex.geographic_focus) && !str_(op.hq_address !== undefined ? op.hq_address : ex.hq_address);
+      var remote = isTrue_(op.remote !== undefined ? op.remote : ex.remote);
+      var place = addrChanged ? op.hq_address : townChanged ? op.geographic_focus : '';
+      if (place && !remote) { var ll = geocode_(place); if (ll) { op.lat = ll[0]; op.lng = ll[1]; } }
+    }
     // Sheets made before a field existed (social_links, Nov 13) get its column here; upsert_ skips unknown columns.
     addMissingColumns_(ss_().getSheetByName(coalition ? TAB.coalitions : TAB.orgs), COLS[coalition ? TAB.coalitions : TAB.orgs]);
     var r = upsert_(coalition ? TAB.coalitions : TAB.orgs, coalition ? 'coalition' : 'organization', '[' + orgId + ']', '', op);
