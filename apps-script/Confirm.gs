@@ -482,7 +482,55 @@ function saveDraft_(link, state, auto) {
   } else {
     setLinkFields_(link, { draft: json, saved_at: at, status: str_(link.rec.submitted_at) ? link.rec.status : 'saved for later', notes: savedBy ? 'last saved by ' + savedBy : str_(link.rec.notes) });
   }
+  confirmProgressAlert_(link, copy, savedBy, auto);
   return { savedAt: at };
+}
+
+/**
+ * Nov 20 (Nathan): the team hears about partial work too. The first save in a while (autosave or Save for later)
+ * emails a short progress note: at most one every 6 hours per group, and never when the day's email quota is low.
+ */
+var PROGRESS_ALERT_SECONDS = 21600;
+function confirmProgressAlert_(link, state, savedBy, auto) {
+  try {
+    var tok = str_(link.rec.token), cache = CacheService.getScriptCache();
+    if (!tok || cache.get('alerted:' + tok)) return;
+    var to = confirmAlertTo_();
+    if (!to.length || !mailBudgetOk_(to.length)) return;
+    cache.put('alerted:' + tok, nowIso_(), PROGRESS_ALERT_SECONDS);
+    sendMail_(to.join(','), REGION.title + ': ' + str_(link.rec.org_name) + ' is reviewing their information',
+      (savedBy || 'Someone') + (auto ? ' started working on ' : ' pressed Save for later on ') + 'the review page for ' + str_(link.rec.org_name) + '.\n\n' +
+      'So far: ' + confirmTally_(state) + '\n\nNothing is on the map until they press Finalize and Submit. You’ll get one of these at most every 6 hours per group, and another email when they submit.' +
+      '\n\nLinks tab: ' + linksSheetUrl_());
+  } catch (e) { /* never block a save over an alert */ }
+}
+/** "2 approved, 1 edited, 1 removed, 3 not decided yet" for a page state. */
+function confirmTally_(state) {
+  var n = { approve: 0, remove: 0, edited: 0, open: 0 };
+  var one = function (c) {
+    if (!c) return;
+    if (c.decision === 'approve') n.approve++; else if (c.decision === 'remove') n.remove++; else n.open++;
+    if (c.fields && Object.keys(c.fields).length) n.edited++;
+  };
+  one(state && state.org);
+  Object.keys((state && state.items) || {}).forEach(function (k) { one(state.items[k]); });
+  return n.approve + ' approved, ' + n.edited + ' edited, ' + n.remove + ' marked remove, ' + n.open + ' not decided yet.';
+}
+/** Who gets review-page emails: the ALERT_EMAIL script property (e.g. the team inbox) if set, else the admins. */
+function confirmAlertTo_() {
+  var one = String(PropertiesService.getScriptProperties().getProperty('ALERT_EMAIL') || '').trim();
+  return one ? one.split(/\s*,\s*/).filter(String) : alertEmails_();
+}
+/**
+ * Nov 20: the script sends from a personal Gmail (about 100 recipients a day). Alerts are skipped when fewer than
+ * MAIL_RESERVE would be left, so point person confirmation emails (which people need) still go out.
+ */
+var MAIL_RESERVE = 25;
+function mailBudgetOk_(n) {
+  try { return MailApp.getRemainingDailyQuota() - (n || 1) >= MAIL_RESERVE; } catch (e) { return true; }
+}
+function linksSheetUrl_() {
+  try { return SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('LINKS_SHEET_ID')).getUrl(); } catch (e) { return ''; }
 }
 
 /** Save for later: only the person editing (or anyone, when nobody is). */
@@ -529,8 +577,8 @@ function confirmSubmit_(link, token, sid, b) {
       }
     } catch (e) { /* never block a submission over feedback */ }
   }
-  var to = alertEmails_();
-  if (to.length) {
+  var to = confirmAlertTo_();
+  if (to.length && mailBudgetOk_(to.length)) {
     try {
       sendMail_(to.join(','), REGION.title + ': ' + str_(link.rec.org_name) + ' checked their information',
         who.name + ' (' + who.email + ') submitted the confirmation screen for ' + str_(link.rec.org_name) + '.\n\n' + result.lines.join('\n') +
