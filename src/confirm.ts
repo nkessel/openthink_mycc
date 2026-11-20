@@ -447,10 +447,10 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
 
   // ---- steps (round 7): the same four steps at the top and on the Next button
   const steps = () => [
-    { id: "card-" + DATA.org.id, label: `Review your ${coalition ? "coalition" : "group"}` },
-    { id: "point-people", label: "Point people" },
-    { id: "sec-event", label: "Events, projects & actions" },
-    { id: "approve-all-box", label: "Submit" },
+    { id: "step-1", label: `Review your ${coalition ? "coalition" : "group"}` },
+    { id: "point-people", label: "Add point people" },
+    { id: "step-3", label: "Review events, projects & actions" },
+    { id: "step-4", label: "Submit" },
   ];
   /** The step whose part of the page is on screen (the last one whose top has passed 40% of the window). */
   function stepNow(): number {
@@ -496,11 +496,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     }
     requestAnimationFrame(syncSteps);
     const onFileNames = pointPeople.map((p) => esc(p.name || p.email) + (p.pending ? " (waiting to confirm)" : "")).join(", ");
-    app.appendChild(el(`<h2>Your ${coalition ? "coalition" : "organization"}</h2>`));
+    // Nov 20 (Nathan): each part of the page is titled with its step, in the same words as the steps at the top.
+    const stepTitle = (n: number, id?: string) => `<h2 class="steph"${id ? ` id="${id}"` : ""}><span class="num">${n}</span>${esc(steps()[n - 1].label)}</h2>`;
+    app.appendChild(el(stepTitle(1, "step-1")));
     app.appendChild(card(DATA.org as Card));
     // Point people (round 7, Nov 20 design canvas, option B): a question, the description, details under Learn more.
     const gname = esc(DATA.org.name);
-    app.appendChild(el(`<div class="box pp-box" id="point-people"><h2 style="margin-top:0">Who is your group’s point person?</h2>
+    app.appendChild(el(`<div class="box pp-box" id="point-people">${stepTitle(2)}<p class="ppq"><b>Who is your group’s point person?</b></p>
       <p>Point people are your group’s main contacts and editors on the map: each gets a personal link to update your group’s description, events, projects and actions any time.</p>
       <button type="button" class="fold" id="pp-more" aria-expanded="false">Learn more ▸</button>
       <div class="foldbody" id="pp-more-body" hidden><p class="pp">A group can have up to ${MAXPP} point people. Someone who only runs one event or project can be the point person for just that item: press <b>Edit</b> on its card below. We email every new point person a link to confirm their address. Emails and phone numbers are only seen by the map’s core team, never shown on the map.${onFileNames ? ` <b>Already on file: ${onFileNames}.</b>` : ""}</p></div>
@@ -557,6 +559,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     wirePerson("p", () => who, (p) => { who = p; });
     [0, 1].forEach((i) => wirePerson("o" + i, () => others[i], (p) => { others[i] = p; }));
     syncOthers();
+    app.appendChild(el(stepTitle(3, "step-3")));
     // One section per type, each with a + button (round 3, option A: a round button next to the count).
     SECTIONS.forEach((sec) => {
       const list = cards.slice(1).filter((c) => sectionOf(c) === sec.key);
@@ -568,6 +571,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       list.forEach((c) => app.appendChild(card(c)));
     });
     // Approve all (Nathan, Nov 17): under the last cards that ask for approval. Marks every card approved, except ones marked Remove.
+    app.appendChild(el(stepTitle(4, "step-4")));
     app.appendChild(el(`<div class="box approve-all" id="approve-all-box"><button type="button" class="primary" id="approve-all">✓ Approve all</button><p class="hint">Approves every card you haven’t marked Remove.</p></div>`));
     $("approve-all").addEventListener("click", () => {
       if (!editor) return;
@@ -578,7 +582,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       msg(`Approved ${cards.filter((c) => S(c.id).decision === "approve").length} card(s). Review anything you like, then press Finalize and Submit.`);
     });
     // Feedback for the map team (Nathan, Nov 17): sent with Finalize and Submit, saved with the draft.
-    app.appendChild(el(`<div class="box"><h2 style="margin-top:0"><label for="fb">Ideas or comments for us (optional)</label></h2>
+    app.appendChild(el(`<div class="box"><h2 style="margin-top:0"><label for="fb">Ideas or comments for the development team (optional)</label></h2>
       <p class="pp">What would make the map most useful for ${esc(DATA.org.name)}? Anything else you’d like to share with the map’s team? We read every note.</p>
       <textarea id="fb" class="grow" rows="2" maxlength="3000"></textarea></div>`));
     const fb = $("fb") as HTMLTextAreaElement;
@@ -796,8 +800,9 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       const missing = (f: string) => keys.includes(f) && (f === "type" ? !splitList(val(c, f)).filter((t) => t !== "unknown").length : !String(val(c, f) || "").trim());
       const ks = k === "org" ? (coalition ? "coalition" : "org") : kindOfSec(sec!);
       const online = isOn(val(c, "online"));
-      const main = (MAIN_PILLS[ks] || []).filter(missing).filter((f) => f !== "location" || !online);
-      const lesser = (LESSER_PILLS[ks] || []).filter(missing).filter((f) => (f !== "hq_address" || !isOn(val(c, "remote"))) && (f !== "location" || !online));
+      // Nov 20 (Nathan): every missing field shows as its own pill; "+ N more" hid fields groups should fill in.
+      const main = (MAIN_PILLS[ks] || []).concat(LESSER_PILLS[ks] || []).filter(missing).filter((f) => (f !== "hq_address" || !isOn(val(c, "remote"))) && (f !== "location" || !online));
+      const lesser: string[] = [];
       const have = String(val(c, "social_links") || "");
       const plat = keys.includes("social_links") ? SOCIAL.filter((x) => !x.more && !x.re.test(have)) : [];
       const plat2 = keys.includes("social_links") ? SOCIAL.filter((x) => x.more && (x.id === "other" || !x.re.test(have))) : [];
