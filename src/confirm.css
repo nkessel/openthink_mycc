@@ -271,3 +271,5 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
   .pubtick:has(input:checked){border-color:var(--accent)}
 }
 .pubtick:has(input:disabled){opacity:.5;cursor:not-allowed}
+
+.step .stepn{color:var(--dim);font-weight:400;margin-left:2px}
