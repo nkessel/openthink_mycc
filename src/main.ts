@@ -469,6 +469,15 @@ async function main() {
   // Give the logos a moment so the map doesn't open on empty circles (they keep loading after that anyway).
   await Promise.race([logosReady, new Promise((r) => setTimeout(r, 1500))]);
   if (startTab !== "map" && !(startTab === "topics" && largePrint())) setTab(startTab, false);
+  // A link like …/?group=mycc opens the map zoomed in on that group, with its details open (Nov 19: the Group 1
+  // outreach emails link "<group> is already on the map" here for groups with 3 or more items).
+  const startGroup = new URLSearchParams(location.search).get("group");
+  if (startGroup) {
+    const c = data.coalitions.find((x) => x.id === startGroup);
+    const o = data.organizations.find((x) => x.id === startGroup);
+    const node: GraphNode | null = c ? { ...c, kind: "coalition" } : o ? { ...o, kind: "org" } : null;
+    if (node) locateOnMap(node);
+  }
   // Once the map is up and nobody is using the page for a moment, fetch the other pages in the background.
   preloadWhenQuiet([geoPage, eventsPage, orgsPage, projectsPage, actionsPage, topicsPage], 4000);
 
