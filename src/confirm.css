@@ -59,3 +59,18 @@ fieldset.ipp{border:1px solid var(--line);border-radius:10px;margin:14px 0 4px;p
 fieldset.scope{border:0;padding:0;margin:8px 0}fieldset.scope legend{font-size:.85em;color:var(--dim);padding:0}
 fieldset.scope label{display:flex;gap:8px;align-items:baseline;color:var(--text);font-size:.95em}fieldset.scope input{width:auto}
 .ipp-btn{margin-top:6px}
+
+/* Round 4 (Nov 19): point people box, symmetric + buttons, icons in the type menu, missing-info pills, checkboxes, button notes */
+.pp-box h3{font-size:1em;margin:14px 0 2px}.pp-box>p:first-of-type{margin-top:0}
+.plus svg{display:block;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.typeopt{display:flex;align-items:center;gap:8px}.topt-icon{display:inline-flex;color:var(--kc)}
+.topt-icon svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.addinfo{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}.addinfo .hint{margin:0 4px 0 0}
+.pill-add{border-radius:999px;padding:3px 12px;font-size:.85em;font-weight:600;background:transparent;border:1.5px solid var(--pc);color:var(--pc)}
+.pill-add:hover:not(:disabled){background:color-mix(in srgb,var(--pc) 18%,transparent)}
+.pill-add.c0{--pc:#34d399}.pill-add.c1{--pc:#38bdf8}.pill-add.c2{--pc:#a78bfa}.pill-add.c3{--pc:#f472b6}.pill-add.c4{--pc:#fbbf24}.pill-add.c5{--pc:#fb923c}
+label.check{display:flex;gap:8px;align-items:center;color:var(--text);font-size:.95em;margin:10px 0 2px}label.check input{width:auto}
+.tpill.flag{border-color:var(--warn);color:var(--warn)}
+.btnwrap{display:inline-flex;flex-direction:column;align-items:center;gap:2px}.btn-note{font-size:.72em;color:var(--dim);max-width:16em;text-align:center;line-height:1.25}
+.ipp-add[hidden]{display:none}.ipp-ask{border-top:1px solid var(--line);margin-top:8px;padding-top:6px}.ipp-ask p{margin:4px 0}
+.ipp-start{margin-top:4px}

@@ -29,13 +29,22 @@ var MAX_POINT_PEOPLE = 3;
 var LOCK_SECONDS = 150;
 var PING_SECONDS = 15;
 /** Fields a point person can change on each kind of card (sheet column names). */
+// Nov 19 (round 4): every field the map shows for a group or item can now be checked here, except the logo, the pin's
+// exact spot, coalition membership and the map team's own ratings (ej_focus etc.).
 var CONFIRM_FIELDS = {
-  org: ['name', 'description', 'website', 'social_links', 'geographic_focus', 'public_contact'],
-  coalition: ['name', 'description', 'website', 'social_links', 'geographic_scope'],
-  event: ['name', 'date', 'end', 'location', 'online', 'description', 'link', 'rsvp_link'],
-  project: ['name', 'description', 'status', 'location', 'online', 'link'],
-  action: ['name', 'description', 'deadline', 'link'],
+  org: ['name', 'abbrev', 'type', 'description', 'website', 'social_links', 'public_contact', 'geographic_focus', 'remote',
+    'topic_tags', 'youth_serving', 'school_club', 'membership_size'],
+  coalition: ['name', 'abbrev', 'description', 'website', 'social_links', 'geographic_scope', 'focus_tags'],
+  event: ['name', 'date', 'end', 'recurrence', 'location', 'online', 'description', 'link', 'rsvp_link', 'public_contact',
+    'topic_tags', 'free_food', 'affiliated_only'],
+  project: ['name', 'description', 'status', 'location', 'online', 'link', 'public_contact', 'skills_needed', 'topic_tags',
+    'help_wanted', 'free_food', 'affiliated_only'],
+  action: ['name', 'description', 'deadline', 'urgency', 'link', 'skills_needed'],
 };
+/** Yes/no fields (checkboxes on the page), stored as TRUE / FALSE. */
+var CONFIRM_BOOL = ['online', 'remote', 'youth_serving', 'school_club', 'free_food', 'affiliated_only', 'help_wanted'];
+/** Fields with a fixed list of values (dropdowns on the page); anything else is dropped. */
+var CONFIRM_CHOICES = { status: ['active', 'planning', 'completed'], urgency: ['', 'low', 'medium', 'high'] };
 var CONFIRM_FORM = 'Confirmation screen';
 /** New items one submission can add (the + buttons by each section, Nov 17). */
 var MAX_NEW_ITEMS = 25;
@@ -327,7 +336,9 @@ function confirmData_(rec, t) {
   var o = findById_(coalition ? t.coalitions : t.orgs, id) || { id: id, name: rec.org_name };
   var pick = function (row, k) {
     var out = { id: str_(row.id), kind: k };
-    CONFIRM_FIELDS[k].forEach(function (f) { out[f] = f === 'online' ? isTrue_(row[f]) : str_(row[f]); });
+    CONFIRM_FIELDS[k].forEach(function (f) { out[f] = CONFIRM_BOOL.indexOf(f) !== -1 ? isTrue_(row[f]) : str_(row[f]); });
+    // help_wanted is "yes" unless the sheet says FALSE (types.ts: default yes).
+    if (k === 'project') out.help_wanted = str_(row.help_wanted).toUpperCase() !== 'FALSE';
     if (k !== 'org' && k !== 'coalition') { out.verified = isTrue_(row.verified); out.needs_info = isTrue_(row.needs_info); }
     if (k === 'action') out.role = str_(row.kind).toLowerCase() === 'role'; // volunteer roles get their own section
     // Shown, not edited here (round 3: every card shows all its info).
@@ -484,14 +495,29 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     var out = {};
     CONFIRM_FIELDS[k].forEach(function (f) {
       if (!fields || fields[f] === undefined || fields[f] === null) return;
-      var v = f === 'online' ? (fields[f] === true || isTrue_(fields[f]) ? 'TRUE' : 'FALSE') : String(fields[f]).trim().slice(0, 4000);
+      var v = CONFIRM_BOOL.indexOf(f) !== -1 ? (fields[f] === true || isTrue_(fields[f]) ? 'TRUE' : 'FALSE') : String(fields[f]).trim().slice(0, 4000);
       if (f === 'name' && !v) return; // a card can't lose its name
+      if (CONFIRM_CHOICES[f] && CONFIRM_CHOICES[f].indexOf(v.toLowerCase()) === -1) return;
+      if (CONFIRM_CHOICES[f]) v = v.toLowerCase();
+      if (f === 'type' && !/^[a-z0-9_]{1,40}(,[a-z0-9_]{1,40}){0,3}$/.test(v)) return; // slugs, as on the forms
+      if ((f === 'abbrev' || f === 'membership_size') && v.length > 60) v = v.slice(0, 60);
       if ((f === 'date' || f === 'end') && v && !/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?)?$/.test(v)) return;
       if ((f === 'date' || f === 'end') && /T\d{2}:\d{2}$/.test(v)) v += ':00';
       if ((f === 'link' || f === 'rsvp_link' || f === 'website') && v && !/^https?:\/\//i.test(v)) v = 'https://' + v;
       out[f] = v;
     });
     return out;
+  };
+  // A changed in-person location moves the map pin (Nov 19: page edits used to leave the old pin).
+  var pin = function (patch, existing) {
+    if (patch.location === undefined && patch.online === undefined) return;
+    var online = patch.online !== undefined ? isTrue_(patch.online) : existing ? isTrue_(existing.online) : false;
+    var loc = patch.location !== undefined ? patch.location : existing ? str_(existing.location) : '';
+    var changed = patch.location !== undefined && (!existing || str_(existing.location) !== patch.location);
+    var becameInPerson = patch.online === 'FALSE' && existing && isTrue_(existing.online);
+    if (online || !loc || !(changed || becameInPerson)) return;
+    var ll = geocode_(loc, placeHint_(patch, existing, t));
+    if (ll) { patch.lat = ll[0]; patch.lng = ll[1]; }
   };
   var record = function (r, type) {
     logChange_(who.email, CONFIRM_FORM, 'applied', '', type, r.id, r.name, r.changes);
@@ -522,6 +548,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     if (it.kind === 'action') patch.kind = it.role ? 'role' : 'task';
     patch.verified = 'TRUE';
     patch.needs_info = 'FALSE';
+    if (it.kind !== 'action') pin(patch, null);
     addMissingColumns_(ss_().getSheetByName(tab[0]), COLS[tab[0]]);
     var r = upsert_(tab[0], it.kind, NEW_ITEM_, NEW_ITEM_, patch);
     r.action = 'added';
@@ -553,6 +580,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
         if (to.kind === 'action') moved.kind = to.role ? 'role' : 'task';
         if (to.kind === 'project' && !moved.status) moved.status = 'active';
         moved.verified = 'TRUE'; moved.needs_info = 'FALSE';
+        if (to.kind !== 'action') { if (str_(row.lat) && moved.location === str_(row.location)) { moved.lat = str_(row.lat); moved.lng = str_(row.lng); } else pin(moved, null); }
         addMissingColumns_(ss_().getSheetByName(tabs[to.kind][0]), COLS[tabs[to.kind][0]]);
         var nr = upsert_(tabs[to.kind][0], to.kind, NEW_ITEM_, NEW_ITEM_, moved);
         nr.action = 'moved here from ' + it.kind + ' ' + id;
@@ -572,6 +600,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     else {
       patch = clean(it.kind, it.fields);
       if (Object.keys(patch).length) counts.edited++;
+      if (it.kind !== 'action') pin(patch, row);
       patch.verified = 'TRUE';
       patch.needs_info = 'FALSE';
       counts.approved++;
