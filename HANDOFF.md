@@ -30,6 +30,8 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 20 — round 11:** inside a coloured pill drawer the input focus ring, address suggestions, topic box and ticked checkboxes use the pill's colour too (was green).
+
 - **Nov 20 — round 10 (Nathan, canvas comments):** more space above card titles; the website (group) / web page (items) is a labelled row under the description, as a clickable link with "edit"; the pill drawer's arrow now touches its pill even when pills wrapped (later pills get covered). Open: how to show suggested topics (not on the card preview; ideas sent in the comment thread).
 
 - **Nov 20 — round 9 (Nathan):** Public contact now lives with each point person (checkboxes: show email / show phone on the map; the group's public_contact is built from them; event/project/action cards still have their own pill). Address suggestions (src/placeSuggest.ts, Photon, Massachusetts only) on Where / Group location. Pill drawer wears its pill's colour. A3 bar: Undo toast after Approve all + "Reset form". New design rules 12-14 in LLM_GUIDELINES.md. Waiting on Nathan: end-time input style (board "Round 9b"), then autofill the end date from the start.

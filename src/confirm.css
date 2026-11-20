@@ -241,3 +241,10 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 .webrow a{color:#7dd3fc;font-size:.9em;overflow-wrap:anywhere}
 
 .pillfield{z-index:3}
+
+/* Round 11: everything inside a coloured drawer (focus ring, suggestions, topic picker box, buttons) uses the pill's colour */
+.pillfield :is(button,input,textarea,select,a):focus-visible{outline-color:var(--pc,var(--accent))}
+.pillfield .suggest{border-color:var(--pc,var(--line))}
+.pillfield .suggest li:hover,.pillfield .suggest li.on{background:color-mix(in srgb,var(--pc,var(--accent)) 18%,transparent)}
+.pillfield .pbox:focus-within{border-color:var(--pc,#7dd3fc)}
+.pillfield .askrow:has(input:checked){border-color:var(--pc,var(--accent))}
