@@ -941,3 +941,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 2026-11-20 10:25 (Claude, session_01GX4HkYNamrodrU79kJurt8): Review page: step titles match the steps, all pills shown, 'for the development team'. Checked with Playwright at 390/820 px.
 
 2026-11-20 10:55 — Review page fixes from Nathan's sample-page comments: group-type pill with youth checkbox (fixes duplicate select), topics "edit" button, contact-person question wording, inline "More about point people", one-row point person buttons on phones; "Best way to reach you" stays usable, only the phone choices wait for a number (no separate hint). Tested in Playwright at 1100px and iPhone 13 with a mocked server: no errors.
+2026-11-20 11:25 — Review page h1 → group name only (canvas heading option 2, Nathan); tab title no longer says "check your information".

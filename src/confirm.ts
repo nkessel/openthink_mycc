@@ -362,7 +362,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   const MAXPP: number = DATA.maxPointPeople || 3;
   const pingMs = (DATA.pingSeconds || 15) * 1000;
 
-  document.title = `${DATA.title} : check your information`;
+  document.title = `${DATA.title} · Massachusetts Climate Organization Map`;
   $("bar").hidden = false;
 
   const blank = (): Person => ({ name: "", email: "", phone: "", best: "" });
@@ -480,7 +480,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     syncNewCards();
     const app = $("app");
     app.innerHTML = "";
-    app.appendChild(el(`<div><h1>Check ${esc(DATA.org.name)}’s information</h1><p class="lead">All of this group information was retrieved from online sources. Approve what’s right, edit what isn’t, and add anything we missed with the <b>+</b> buttons. Approved information goes live when you press <b>Finalize and Submit</b> (at the end of the page); <b>Save for later</b> keeps your work.</p>
+    app.appendChild(el(`<div><h1>${esc(DATA.org.name)}</h1><p class="lead">All of this group information was retrieved from online sources. Approve what’s right, edit what isn’t, and add anything we missed with the <b>+</b> buttons. Approved information goes live when you press <b>Finalize and Submit</b> (at the end of the page); <b>Save for later</b> keeps your work.</p>
       <div class="steps">${steps().map((x, i) => `<button type="button" class="step" data-i="${i}"><span class="num">${i + 1}</span>${esc(x.label)}</button>`).join("")}</div></div>`));
     app.querySelectorAll<HTMLElement>(".step").forEach((b) => b.addEventListener("click", () => goStep(Number(b.getAttribute("data-i")))));
     if (baseSubmittedAt) app.appendChild(el(`<div class="box done">Thank you: this was submitted on ${esc(new Date(baseSubmittedAt).toLocaleDateString())}. You can check it again and submit any changes.</div>`));
