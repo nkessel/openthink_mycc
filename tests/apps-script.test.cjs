@@ -1023,6 +1023,28 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(post({ action: "submit", token: L.token, sid: A, baseSubmittedAt: res2.submittedAt, state: { who: { name: "", email: "x@example.org" } } }).ok, false);
   assert.match(post({ action: "submit", token: L.token, sid: A, baseSubmittedAt: res2.submittedAt, state: { who: { name: "", email: "x@example.org" } } }).error, /name/);
   assert.equal(post({ action: "verify", verify: "zz" }).ok, true);
+  // speed (Nov 20): pages come from the script cache; saves drop them; the warm-up rebuilds them and writes opened_at
+  for (const k of Object.keys(cache)) if (/^(cdata|cdirty|opened):/.test(k)) delete cache[k];
+  const fresh = get(L.token).data;
+  assert.ok(cache["cdata:" + L.token], "a visit keeps the page ready");
+  const cached = JSON.parse(cache["cdata:" + L.token]); cached.title = "FROM CACHE"; cache["cdata:" + L.token] = JSON.stringify(cached);
+  assert.equal(get(L.token).data.title, "FROM CACHE", "the next visit is served from the cache");
+  post({ action: "claim", token: L.token, sid: A, name: "Pat" });
+  post({ action: "save", token: L.token, sid: A, state: { who: { name: "Pat", email: "pat@example.org" }, org: { decision: "", fields: {} }, items: {} } });
+  assert.equal(cache["cdata:" + L.token], undefined, "a save drops the ready page"); assert.ok(cache["cdirty:" + L.token]);
+  assert.equal(get(L.token).data.title, fresh.title, "rebuilt from the sheet after a save");
+  assert.equal(cache["cdirty:" + L.token], undefined);
+  post({ action: "release", token: L.token, sid: A });
+  for (const k of Object.keys(cache)) if (/^cdata:/.test(k)) delete cache[k];
+  const L2 = ctx.readTable_(ctx.linksSheet_()).rows.find((r) => r.token && r.token !== L.token && !r.opened_at);
+  assert.ok(L2, "another unopened link to warm");
+  {
+    cache["opened:" + L2.token] = "2026-11-20T10:00:00.000Z";
+    const built = G("warmConfirmPages")();
+    assert.ok(built > 1, "warm-up builds every link's page");
+    assert.ok(cache["cdata:" + L2.token]);
+    assert.equal(ctx.readTable_(ctx.linksSheet_()).rows.find((r) => r.token === L2.token).opened_at, "2026-11-20T10:00:00.000Z", "opened_at written from the cache flag");
+  }
   delete props.LINKS_SHEET_ID;
   console.log("confirmation screen OK");
 }
