@@ -138,3 +138,23 @@ button{transition:background-color .15s ease,border-color .15s ease,color .15s e
 
 .pill-add.c0{--pc:#34d399}.pill-add.c1{--pc:#38bdf8}.pill-add.c2{--pc:#a78bfa}
 textarea.grow{min-height:0;resize:none;overflow:hidden}
+/* Round 7: every Approve button is green; once approved it turns soft green with a check */
+.decide button.ok{background:var(--accent);border-color:var(--accent);color:#0a0a0f;font-weight:600}
+.decide button.ok:hover:not(:disabled){background:#2bbd88}
+.decide button[aria-pressed="true"].ok{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pp-savebar{align-items:center;margin-top:14px}.pp-savebar .hint{margin:0}
+/* Round 7: a slimmer bottom bar, progress on the left, bigger buttons; messages float just above it */
+.bar{padding:8px 16px;gap:14px;flex-wrap:nowrap}
+.bar .progress{order:0;flex:1 1 180px;max-width:320px;margin:0;font-size:.82em;gap:8px}
+.bar .status{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);order:0;flex-basis:auto;min-width:0;min-height:0;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.bar .status:empty{display:none}
+.bar #save,.bar #submit{padding:10px 22px;font-size:1.02em;font-weight:600}
+.bar #save{border-color:var(--dim)}
+.bar .btn-note{font-size:.68em}
+@media (max-width:560px){.bar{flex-wrap:wrap;gap:8px 10px}.bar .progress{flex-basis:100%;max-width:none}.bar #save,.bar #submit{padding:9px 14px}}
+/* Round 7: Next button in the bar; the current step is marked at the top */
+.bar .nextbtn{padding:10px 16px;font-size:.95em;background:transparent;border-color:#7dd3fc;color:#7dd3fc;white-space:nowrap}
+.bar .nextbtn:hover:not(:disabled){background:#10233a}
+.steps .step[aria-current="step"]{border-color:var(--accent);background:var(--accent-soft)}
+#card-org,.card,.pp-box,h2.sec,.approve-all{scroll-margin-top:16px}
+@media (max-width:560px){.bar .nextbtn{flex-basis:100%;order:1}}

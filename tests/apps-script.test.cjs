@@ -1009,6 +1009,12 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(G("pointPeopleOf_")("mycc", ctx.readAll_().editors).length, 0, "org lookups don't see coalition ids");
   assert.ok(mail.some((m) => m.to === "cora@example.org" && m.body.includes(PAGE + "?verify=")));
   assert.equal(linkOf("mycc", "coalition").status, "submitted");
+  // round 7: a group's street address moves its pin (and comes back on the page)
+  const rPin = post({ action: "submit", token: L.token, sid: C, baseSubmittedAt: res2.submittedAt, state: { who: { name: "Pat Point", email: "pat@example.org" }, others: [], org: { decision: "approve", fields: { hq_address: "Natick Common, Natick" } }, items: {} } });
+  assert.equal(rPin.ok, true, JSON.stringify(rPin));
+  const pinned = ctx.readAll_().orgs.find((o) => o.id === orgId);
+  assert.equal(pinned.hq_address, "Natick Common, Natick"); assert.equal(Number(pinned.lat), 42.2834); assert.equal(Number(pinned.lng), -71.3495);
+  res2.submittedAt = rPin.submittedAt;
   // round 7: "Someone else" is the point person, so the visitor isn't added
   const cres2 = post({ action: "submit", token: LCo.token, sid: A, baseSubmittedAt: cres.submittedAt, state: { ...cstate({}), who: { name: "Quinn Checker", email: "quinn@example.org" }, selfPP: false, others: [{ name: "Rae Lead", email: "rae@example.org", phone: "", best: "" }] } });
   assert.equal(cres2.ok, true, JSON.stringify(cres2));
