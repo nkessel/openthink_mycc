@@ -2,7 +2,7 @@
 
 **Start with [HANDOFF.md](HANDOFF.md)** (current state, what's waiting, recent changes) and update it before you finish a session, so any account can pick up where the last one stopped.
 
-Follow the team's shared rules in [LLM_GUIDELINES.md](LLM_GUIDELINES.md). In short: brief answers, number every point in responses (`12`, `12.1`, `12.1.1`) and never reuse a number in a conversation: each reply continues from the last number used, so every number points to one place, use detail tags `[0]`–`[4]` (default `[2]`), state your uncertainty, `git pull` + check open PRs before coding, branch off `development_branch` and open a PR into it (never push to `main` or `development_branch` directly), and log what you did and why in `<github-username>_LLM.log`.
+Follow the team's shared rules in [LLM_GUIDELINES.md](LLM_GUIDELINES.md). In short: brief answers, number every point in responses (`12`, `12.1`, `12.1.1`) and never reuse a number in a conversation: each reply continues from the last number used, so every number points to one place, use detail tags `[0]`–`[4]` (default `[2]`), state your uncertainty, `git pull` + check open PRs before coding, branch off `development_branch` and open a PR into it (never push to `main` or `development_branch` directly), and log what you did and why in `<github-username>_LLM.log`. One decision per number, and each design question carries its mockup link. Design mockups must show the real UI in real context (screenshots of the actual page, with its progress bar, buttons and layout), never a simplified stand-in.
 
 ## Project
 

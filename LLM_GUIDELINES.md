@@ -18,3 +18,6 @@ Shared rules for anyone (human or AI) using an LLM — Claude Code, ChatGPT, Cop
 9. Use merge requests (pull requests) instead of pushing changes directly.
 10. We work on `development_branch`, not `main`.
 11. Log what you did and why in `<username>_LLM.log` (e.g. `nkessel_LLM.log`).
+12. **One decision per number.** Never bundle separate design or product decisions under one number (or under `x.1`–`x.4` as if they were one). Give each decision its own top-level number so it can be approved or rejected alone.
+13. **Every design question comes with its mockup link**, right next to the number it belongs to, so I can approve from the point itself.
+14. **Show design ideas in the real UI, never in a made-up context.** Mockups must be screenshots of (or built inside) the actual page: the real progress bar, bar buttons, card layout, theme and widths (desktop and phone), not a simplified stand-in. If the idea isn't built yet, prototype it in the real page (or inject it into the real page's DOM) and screenshot that. Abstract option sketches are only fine as a short legend beside real-context pictures.
