@@ -447,7 +447,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
 
   // ---- steps (round 7): the same four steps at the top and on the Next button
   const steps = () => [
-    { id: "step-1", label: `Review your ${coalition ? "coalition" : "group"}` },
+    { id: "step-1", label: `Confirm your ${coalition ? "coalition" : "group"}’s details` },
     { id: "point-people", label: "Add point people" },
     { id: "step-3", label: "Review events, projects & actions" },
     { id: "step-4", label: "Submit" },
