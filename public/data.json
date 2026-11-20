@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T02:55:33.077Z",
+  "generated_at": "2026-11-20T16:11:52.222Z",
   "coalitions": [
     {
       "id": "mpf",
@@ -225,9 +225,10 @@
         "sunrise_amherst",
         "mit_sea",
         "boston_climate_action_network",
-        "citizens_climate_lobby_north_shore_chapter"
+        "citizens_climate_lobby_north_shore_chapter",
+        "wayland_high_school_green_team"
       ],
-      "member_count": 46,
+      "member_count": 47,
       "projects": [
         {
           "id": "mycc_p_map",
@@ -374,20 +375,6 @@
           "location": "George Sherman Hall, UMass Boston, Boston",
           "lat": 42.314248,
           "lng": -71.037496
-        },
-        {
-          "id": "pr_some_other_project_to_see_if_this_ema",
-          "name": "Some other project to see if this email gets blocked",
-          "description": "",
-          "status": "active",
-          "skills_needed": [
-            "outreach"
-          ],
-          "topic_tags": [
-            "forests"
-          ],
-          "verified": true,
-          "online": true
         }
       ],
       "events": [],
@@ -924,18 +911,6 @@
           "host_org_id": "youth_climate_action_now",
           "link": "https://sites.google.com/view/ycanupcomingevents/home"
         }
-      ],
-      "actions": [
-        {
-          "id": "youth_climate_action_now_a1",
-          "kind": "role",
-          "name": "Join Youth Climate Action Now",
-          "skills_needed": [],
-          "deadline": null,
-          "description": "Young people can fill out the YCAN interest form to get involved; adult allies can join the mailing list.",
-          "link": "https://sites.google.com/view/ycanupcomingevents/join-our-team",
-          "host_org_id": "youth_climate_action_now"
-        }
       ]
     },
     {
@@ -1463,7 +1438,7 @@
       "name": "Massachusetts Youth for Climate Justice",
       "type": "youth_org",
       "geographic_focus": "",
-      "description": "",
+      "description": "MA Youth for Climate Justice is a youth organization of young people fighting for intersectional climate justice in Massachusetts. A member of the Massachusetts Youth Climate Coalition (MYCC), it organizes town halls, meetings and events, lobbying for climate legislation, daily actions, and mutual aid, and shares resources and art with its community.",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -1472,6 +1447,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "MA YCJ",
+      "website": "https://www.instagram.com/mayouth4climatejustice/",
       "logo": "logos/ma_youth_for_climate_justice.png",
       "profile": {
         "youth_serving": true,
@@ -2075,7 +2051,7 @@
       "name": "Climate XChange",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Climate XChange is a nonpartisan nonprofit dedicated to advancing fair, science-backed climate policy at the state level. Its mission is to achieve a rapid and equitable transition to a zero-emissions economy. Through its State Climate Policy Network, it connects policymakers and advocates across the country so states can learn from each other and make their climate policies more ambitious, equitable and durable. It also runs the State Climate Policy Dashboard, which tracks more than 70 climate policies across all 50 states, and hosts regular webinars on topics such as transmission, transit and grid reform.",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -2084,6 +2060,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "CXC",
+      "website": "https://climate-xchange.org/",
       "logo": "logos/climate_xchange.png",
       "social_links": "https://www.facebook.com/ClimateXChange, https://www.instagram.com/climate_xchange, https://twitter.com/_ClimateXChange, https://twitter.com/ClimateXChngeMA",
       "profile": {
@@ -2498,7 +2475,7 @@
       "name": "Elders Climate Action Massachusetts",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Elders Climate Action Massachusetts, a chapter of the national Elders Climate Action, mobilizes elders to address the climate crisis while there is still time to protect the well-being of our grandchildren and future generations. Its volunteer activists reach out, teach and organize in their communities, advocate for key climate legislation, and share powerful personal stories from their life experience with policymakers. The chapter holds monthly Chapter Meetings and Deep Dialogues, publishes legislative priorities, and supports environmental justice communities in their efforts to protect themselves and take climate action.",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -2507,6 +2484,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "ECA Mass",
+      "website": "https://ecamass.org/",
       "logo": "logos/elders_climate_action_mass.png",
       "social_links": "https://www.facebook.com/ecamasschapter",
       "profile": {
@@ -2706,13 +2684,14 @@
       "name": "Mass Audubon Wellfleet Bay Wildlife Sanctuary",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Mass Audubon's Wellfleet Bay Wildlife Sanctuary is a 1,183-acre sanctuary in South Wellfleet, overlooking Wellfleet Harbor on Cape Cod. Five miles of trails, including half a mile that is universally accessible, lead through a panoramic salt marsh, sandy barrier beach and pine woodlands that attract a wide array of wildlife. The sanctuary's nature center is open daily, and it offers programs, camps, volunteer opportunities and conservation projects.",
       "coalition_ids": [
         "mycc"
       ],
       "lat": 41.9376,
       "lng": -70.0295,
       "last_activity": "2026-09-25T13:38:29.000Z",
+      "website": "https://www.massaudubon.org/places-to-explore/wildlife-sanctuaries/wellfleet-bay",
       "logo": "logos/mass_audubon_wellfleet_bay_wildlife_sanctuary.png",
       "profile": {
         "youth_serving": false,
@@ -2806,7 +2785,7 @@
       "name": "Sunrise Boston",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Sunrise Boston is Boston's hub of the Sunrise Movement, building a youth movement to stop climate change and create millions of good jobs. As part of the national movement, the hub organizes young people in and around Boston to take action, and supports national Sunrise campaigns such as ICE Out For Good and the Green New Deal for Communities. New members can sign up through the hub's interest form.",
       "coalition_ids": [
         "mpf",
         "mycc"
@@ -2921,14 +2900,14 @@
       "name": "Sunrise Amherst",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "The Amherst Sunrise Movement is the Amherst hub of the national Sunrise Movement: youth activists fighting for good jobs and a livable future. The hub holds regular hub meetings and organizes locally, from canvassing and election-day work to walkouts, Earth Day events, farmers market tabling and art in Amherst. It is a supporter of the Massachusetts Youth Climate Coalition (MYCC).",
       "coalition_ids": [
         "mycc"
       ],
       "lat": 42.3732,
       "lng": -72.5199,
       "last_activity": "2026-09-25T13:38:29.000Z",
-      "website": "https://hubs.sunrisemovement.org/amherst/",
+      "website": "https://www.instagram.com/sunrisemvmt_amherst/",
       "logo": "logos/sunrise_amherst.png",
       "profile": {
         "youth_serving": false,
@@ -2995,7 +2974,7 @@
       "name": "Unitarian Universalist Mass Action",
       "type": "school_club",
       "geographic_focus": "",
-      "description": "",
+      "description": "UU Mass Action, founded in 2006, organizes and mobilizes the 20,000 Unitarian Universalists and 142 congregations in Massachusetts to confront oppression, always in partnership with larger campaigns and coalitions. On climate, it is committed to environmental justice, the abolition of dirty fuels, and a just transition to 100% renewable clean energy, centering the communities of color and low-income communities on the frontlines. It is a planning-team member and convener of Mass Power Forward, part of the MA Renews Alliance and the Environmental Justice Table, and hosts a monthly UU Climate Justice Leader Team. It also supports campaigns with GreenRoots, Fore River Residents Against the Compressor Station and Arise for Social Justice.",
       "coalition_ids": [
         "ejlt",
         "scjc",
@@ -3005,6 +2984,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "UU Mass Action",
+      "website": "https://www.uumassaction.org/",
       "logo": "logos/unitarian_universalist_mass_action.png",
       "profile": {
         "youth_serving": true,
@@ -3245,7 +3225,7 @@
       "name": "Pipeline Awareness Network Northeast",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "The Pipeline Awareness Network for the Northeast (PLAN-NE), based in Cummington, has been active since 2014, when it emerged alongside about 50 local and regional groups opposing Kinder Morgan's Northeast Energy Direct pipeline proposal. It educates the public about fossil fuel infrastructure and its alternatives, works to protect people and the environment from that infrastructure, and promotes energy efficiency and lower-impact solutions. Much of its work is outreach to affected landowners, town officials and residents, alongside legal and regulatory advocacy and support for similar groups.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3366,7 +3346,7 @@
       "name": "Coalition for Social Justice",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "The Coalition for Social Justice (CSJ) is a grassroots organization founded in 1994 to bring together people affected by and concerned about poverty to advocate for economic opportunity, seen through a race and gender lens. CSJ develops leaders from low-income communities and builds campaigns on economic survival issues, through multilingual door-to-door canvassing, phone outreach and voter engagement. Its base is in Brockton, Fall River and New Bedford, with reach into Taunton, Attleboro, southern Boston and Falmouth, and volunteers work on issues including environmental justice, transit fares, childcare and the Fair Share Amendment. CSJ is a founding member and co-chair of Raise Up Massachusetts.",
       "coalition_ids": [
         "mpf",
         "gjc"
@@ -3375,6 +3355,7 @@
       "lng": -70.947443,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "CSJ",
+      "website": "https://coalitionforsocialjustice.org/",
       "logo": "logos/coalition_for_social_justice.png",
       "social_links": "https://www.facebook.com/coalitionforsocialjustice, https://www.instagram.com/coalitionforsocialjustice, https://twitter.com/PeopleforCSJ",
       "profile": {
@@ -3406,7 +3387,7 @@
       "name": "Fore River Residents Against the Compressor Station",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Fore River Residents Against the Compressor Station (FRRACS) is a community-based group of residents of Weymouth, Quincy, Braintree and the wider South Shore opposing the 7,700-horsepower fracked-gas compressor station that Enbridge built next to the Fore River Bridge in North Weymouth, part of the Atlantic Bridge pipeline. FRRACS warns that the station threatens the health, safety, environment and economy of the South Shore, from noise and toxic pollution to the risk of accidents in the most densely populated coastal location ever chosen for a compressor station. The group keeps residents informed and involved, works alongside local officials and allied organizations, and supports local efforts such as Braintree's community air-sensor program.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3414,6 +3395,7 @@
       "lng": -70.9662,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "FRRACS",
+      "website": "https://www.nocompressor.com/",
       "logo": "logos/fore_river_residents_against_the_compressor_station.png",
       "social_links": "https://bsky.app/profile/frracs.bsky.social, https://www.facebook.com/ForeRiverResidentsAgainstCompressorStation, https://www.facebook.com/Back-River-Watershed-Association-345912222170505, https://www.facebook.com/Idlewell-Education-Improvement-Association-1421111418123245, https://www.facebook.com/sustainablebraintree, https://www.instagram.com/frracs",
       "profile": {
@@ -3607,7 +3589,7 @@
       "name": "350 Massachusetts",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "350 Mass is a statewide, grassroots, member-led, campaign-focused network working to end fossil fuel dependency and secure a just transition to a clean energy future. Part of the Better Future Project, it advocates for deep systemic change through public policy, direct action, coalitions, education and community organizing, with a focus on how Massachusetts can meet its climate goals through legislation, regulation and local action. Its work is led by members through statewide working groups and local chapters called “nodes,” from the Berkshires to Cape Cod, and it centers the communities most affected by climate change.",
       "coalition_ids": [
         "mpf",
         "hero"
@@ -3616,6 +3598,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "350MA",
+      "website": "https://350mass.betterfutureproject.org/",
       "logo": "logos/350ma.png",
       "profile": {
         "youth_serving": false,
@@ -3666,10 +3649,10 @@
     },
     {
       "id": "350ma_cape_cod",
-      "name": "350 Massachusetts Cape Cod",
+      "name": "Cape Climate Action",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Cape Climate Action, the Cape Cod node of 350 Mass, is building a grassroots volunteer organization of people across Cape Cod who want to be part of solving the climate crisis. Its dual priorities are cutting carbon pollution from burning oil and gas and making Cape communities more resilient to rising seas and intensifying storms. The group supports permanent land preservation, builds local climate action networks to help towns cut emissions and build resilience, and organizes for regional action, such as opposing a major expansion of the gas pipeline under the Cape Cod Canal. It publishes Cape Climate News, a free monthly update on local climate action.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3677,6 +3660,7 @@
       "lng": -70.2962,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "350MA Cape Cod",
+      "website": "https://capeclimateaction.org/",
       "logo": "logos/350ma_cape_cod.png",
       "profile": {
         "youth_serving": false,
@@ -3694,7 +3678,7 @@
       "name": "350 Massachusetts Central Massachusetts",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "350 Central Mass is an all-volunteer, grassroots climate-action organization based in Central Massachusetts, “the heart of the Commonwealth.” An affiliate of 350.org and 350 Mass, it works locally, nationally and globally to end our dependence on fossil fuels and ensure a livable planet, with climate justice for all people. Its principles call for eliminating fossil fuels and fossil-fuel infrastructure, with special attention to economically marginalized communities, people of color and Indigenous peoples, who have been most at risk from that infrastructure. Volunteers choose the group's action priorities and meet regularly on Zoom.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3702,6 +3686,7 @@
       "lng": -71.8023,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "350MA Central Mass",
+      "website": "https://www.350centralmass.org/",
       "logo": "logos/350ma_central_mass.png",
       "social_links": "https://www.facebook.com/350-Central-Mass-472347592844271, https://www.instagram.com/350_central_mass, https://twitter.com/350CentralMass",
       "profile": {
@@ -3713,37 +3698,14 @@
       },
       "coalition_weights": {
         "mpf": 2
-      },
-      "projects": [
-        {
-          "id": "350ma_central_mass_p1",
-          "name": "350 Central Mass priorities",
-          "description": "All-volunteer 350 Mass affiliate working on ending fossil fuel dependence, electrifying everything and environmental justice in Central Massachusetts, including support for the Fix the Grid campaign.",
-          "status": "active",
-          "skills_needed": [],
-          "host_org_id": "350ma_central_mass",
-          "link": "https://www.350centralmass.org/"
-        }
-      ],
-      "actions": [
-        {
-          "id": "350ma_central_mass_a1",
-          "kind": "task",
-          "name": "Join 350 Central Mass",
-          "skills_needed": [],
-          "deadline": null,
-          "description": "Join the volunteer group; meetings are held on Zoom and all are welcome. Contact the group through its website for the link.",
-          "link": "https://www.350centralmass.org/get-involved",
-          "host_org_id": "350ma_central_mass"
-        }
-      ]
+      }
     },
     {
       "id": "350ma_berkshires",
       "name": "350 Massachusetts Berkshires",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "The 350 Mass Berkshires node formed in 2014 and immediately joined the fight against the Northeast Energy Direct pipeline, which was defeated, and the Connecticut Expansion pipeline in Sandisfield. Its members come from many of Berkshire County's 32 towns and support countywide and town efforts to build more just, sustainable, fossil-fuel-free communities. The node has helped Berkshire towns earn Mass Green Communities grants, supported low-cost clean electricity through community aggregation, and helped organize the annual Berkshire Earth Expo. Today it is working with other groups and residents to shut down three old, polluting peaker plants in Berkshire County.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3751,6 +3713,7 @@
       "lng": -73.2454,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "350MA Berkshires",
+      "website": "https://350mass.betterfutureproject.org/350mass_berkshires",
       "logo": "logos/350ma_berkshires.png",
       "profile": {
         "youth_serving": false,
@@ -3768,7 +3731,7 @@
       "name": "Berkshire Environmental Action Team",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Berkshire Environmental Action Team (BEAT) is a nonprofit that protects the environment for wildlife, in support of the natural world that sustains us all, through stewardship, education and outreach, and watchdogging across Berkshire County and western Massachusetts. It works to protect wetlands and wildlife corridors, educate the public, develop community leaders, and respond to threats to the environment. Through its No Fracked Gas in Mass program, BEAT works to dismantle fossil fuel infrastructure, expand clean, well-sited renewable energy, and build a broad social movement for environmental protection.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3776,6 +3739,7 @@
       "lng": -73.310084,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "BEAT",
+      "website": "https://www.thebeatnews.org/",
       "logo": "logos/berkshire_environmental_action_team.png",
       "profile": {
         "youth_serving": false,
@@ -3793,7 +3757,7 @@
       "name": "Canton Residents for a Sustainable Equitable Future",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Canton Residents for a Sustainable Equitable Future (CR4SEF) is an all-volunteer, multigenerational group working to address the accelerating climate crisis and mitigate its effects by advancing environmental justice through public engagement and thoughtful action. It stands in solidarity with the frontline communities most harmed by the fossil fuel industry, and collaborates with local, state and national groups to advance a rapid transition to renewable clean energy, a regenerative and equitable economy, and a healthy future for all communities. Its campaigns include Canton for Renewable Clean Local Energy Now.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3801,6 +3765,7 @@
       "lng": -71.1495,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "CR4SEF",
+      "website": "https://actionnetwork.org/groups/canton-residents-for-a-sustainable-equitable-future",
       "logo": "logos/canton_residents_for_a_sustainable_equitable_future.png",
       "profile": {
         "youth_serving": false,
@@ -3818,7 +3783,7 @@
       "name": "Climate Action Brookline",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Climate Action Brookline is an all-volunteer group whose mission is to create a greener and healthier future by connecting Brookline residents to ways they can reduce their carbon footprint at home, at work and in the community. It helps people make choices, big and small, in their homes, businesses, transportation and lifestyles that increase energy efficiency and sustainability and help Brookline meet its goal of net zero by 2040. The group produces educational material, advocates for policy and infrastructure changes, and partners with other climate-focused organizations in town. It first met in June 2000, after Brookline joined ICLEI's Cities for Climate Protection program.",
       "coalition_ids": [
         "mpf"
       ],
@@ -3826,6 +3791,7 @@
       "lng": -71.1212,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "CAB",
+      "website": "https://climateactionbrookline.org/",
       "logo": "logos/climate_action_brookline.png",
       "profile": {
         "youth_serving": false,
@@ -3877,13 +3843,14 @@
       "name": "Climate Code Blue",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Climate Code Blue is a group of physician activists, a medical “code team” responding to a dying planet, who treat climate change as a public health emergency. They amplify the voices of children, low-income communities and communities of color, who are harmed most by fossil fuel pollution and the climate crisis. They support climate advocates and activists in affected communities by writing amicus briefs, op-eds and public statements in support of local, grassroots action, and by speaking at educational events.",
       "coalition_ids": [
         "mpf"
       ],
       "lat": 42.3601,
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
+      "website": "https://www.climatecodeblue.org/",
       "logo": "logos/climate_code_blue.png",
       "profile": {
         "youth_serving": false,
@@ -4066,7 +4033,7 @@
       "name": "Jewish Alliance for Law and Social Action",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "The Jewish Alliance for Law and Social Action (JALSA), established in 2001, puts Jewish values into action by engaging the Jewish community and its allies in the pursuit of social, economic, environmental and racial justice. A grassroots, membership-driven nonprofit, it draws on an intergenerational network of individuals, clergy and Jewish organizations across Massachusetts, using community organizing, advocacy, legal strategies and educational workshops to win lasting social and legislative change. Members can join JALSA's issue action teams, including one on climate change.",
       "coalition_ids": [
         "mpf",
         "hero"
@@ -4075,6 +4042,7 @@
       "lng": -71.0589,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "JALSA",
+      "website": "https://www.jalsa.org/",
       "logo": "logos/jewish_alliance_for_law_and_social_action.png",
       "social_links": "https://bsky.app/profile/jalsaboston.bsky.social, https://www.facebook.com/JALSABoston, https://www.instagram.com/jalsa_boston, https://linkedin.com/company/jewish-alliance-for-law-and-social-action, https://www.tiktok.com/@jalsaboston",
       "profile": {
@@ -4116,7 +4084,7 @@
       "name": "Partnership for Policy Integrity",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "The Partnership for Policy Integrity (PFPI) uses data-driven advocacy and litigation to fight for forests, communities and the climate. It grew out of a 2008 effort by scientists and activists alarmed by three large biomass power plants proposed in western Massachusetts, and was founded in 2010 by ecologist Dr. Mary Stuart Booth and Richard Wiles. PFPI provides science and legal support so citizen groups, environmental organizations and policymakers can understand the impacts of energy development on air, water, ecosystems and climate, and its work has grown from local to national and international campaigns on biomass energy, forest policy, fracking and more.",
       "coalition_ids": [
         "mpf"
       ],
@@ -4124,6 +4092,7 @@
       "lng": -72.5199,
       "last_activity": "2026-09-25T13:38:29.000Z",
       "abbrev": "PFPI",
+      "website": "https://www.pfpi.net/",
       "logo": "logos/partnership_for_policy_integrity.png",
       "social_links": "https://www.facebook.com/PartnershipForPolicyIntegrity",
       "profile": {
@@ -4253,7 +4222,7 @@
       "name": "Arise for Social Justice",
       "type": "unknown",
       "geographic_focus": "",
-      "description": "",
+      "description": "Arise for Social Justice was founded in 1985 by women on welfare and has grown into a member-led organization of poor and low-income people confronting oppression in all its forms. From its home in Springfield's inner city, Arise takes on housing instability, criminalization, environmental injustice and systemic racism, with those most affected leading the fight. Its mission is to educate, organize and unite low-income people to understand and claim their rights, build collective power and push for structural change, including exposing environmental racism.",
       "coalition_ids": [
         "mpf",
         "scjc"
@@ -4261,6 +4230,7 @@
       "lat": 42.103795,
       "lng": -72.58119,
       "last_activity": "2026-09-25T13:38:29.000Z",
+      "website": "https://arisespringfield.org/",
       "logo": "logos/arise_for_social_justice.png",
       "profile": {
         "youth_serving": false,
@@ -4897,16 +4867,6 @@
           "description": "Weekly 60-minute drop-in online action events with Climate Changemakers; RSVP and show up, no experience needed.",
           "link": "https://www.climatechangemakers.org/events",
           "host_org_id": "the_climate_reality_project_boston_metro_chapter"
-        },
-        {
-          "id": "the_climate_reality_project__a4",
-          "kind": "task",
-          "name": "Join the Climate Reality Boston Metro chapter",
-          "skills_needed": [],
-          "deadline": null,
-          "description": "Sign up to join the chapter through the Climate Reality Project website.",
-          "link": "https://www.climaterealityboston.org/",
-          "host_org_id": "the_climate_reality_project_boston_metro_chapter"
         }
       ]
     },
@@ -5011,18 +4971,6 @@
           "skills_needed": [],
           "host_org_id": "community_labor_united",
           "link": "https://massclu.org/green-justice-coalition/"
-        }
-      ],
-      "actions": [
-        {
-          "id": "community_labor_united_a1",
-          "kind": "task",
-          "name": "Join the Green Justice Coalition",
-          "skills_needed": [],
-          "deadline": null,
-          "description": "Sign up to get involved with the Green Justice Coalition through the Take Action page.",
-          "link": "https://massclu.org/take-action/",
-          "host_org_id": "community_labor_united"
         }
       ]
     },
@@ -7314,16 +7262,6 @@
           "host_org_id": "neighbor_to_neighbor_massachusetts"
         },
         {
-          "id": "neighbor_to_neighbor_massach_a2",
-          "kind": "role",
-          "name": "Become a Neighbor to Neighbor member",
-          "skills_needed": [],
-          "deadline": null,
-          "description": "Join Neighbor to Neighbor as a member in Holyoke, Lynn, Springfield, Worcester or statewide.",
-          "link": "https://n2nma.org/take-action/",
-          "host_org_id": "neighbor_to_neighbor_massachusetts"
-        },
-        {
           "id": "neighbor_to_neighbor_massach_a3",
           "kind": "role",
           "name": "Sign up to be a LUCE verifier",
@@ -7588,18 +7526,6 @@
           "skills_needed": [],
           "host_org_id": "chinese_progressive_association",
           "link": "https://cpaboston.org/programs/green-justice-environmental-justice/"
-        }
-      ],
-      "actions": [
-        {
-          "id": "chinese_progressive_associat_a1",
-          "kind": "role",
-          "name": "Volunteer or Become a Member of CPA",
-          "skills_needed": [],
-          "deadline": null,
-          "description": "Fill out the Chinese Progressive Association volunteer interest form or sign up for membership.",
-          "link": "https://cpaboston.org/support/get-involved/",
-          "host_org_id": "chinese_progressive_association"
         }
       ]
     },
@@ -8044,7 +7970,7 @@
       "lat": 42.3736,
       "lng": -71.1097,
       "last_activity": "2026-09-25T13:38:29.000Z",
-      "abbrev": "CJ-JT Collaborative",
+      "abbrev": "the Collaborative",
       "website": "https://www.umb.edu/ssl/",
       "logo": "logos/northeast_climate_justice_research_collaborative.svg",
       "profile": {
@@ -8071,18 +7997,6 @@
           "skills_needed": [],
           "host_org_id": "northeast_climate_justice_research_collaborative",
           "link": "https://climateadaptationforum.org/events/"
-        }
-      ],
-      "actions": [
-        {
-          "id": "northeast_climate_justice_re_a1",
-          "kind": "task",
-          "name": "Join the Northeast Climate Justice Research Collaborative",
-          "skills_needed": [],
-          "deadline": null,
-          "description": "Local and regional climate justice researchers, whether experienced or new, can join the Collaborative for seed grants, workshops, convenings and a listserv.",
-          "link": "https://www.umb.edu/ssl/collaborative",
-          "host_org_id": "northeast_climate_justice_research_collaborative"
         }
       ]
     },
@@ -8209,6 +8123,91 @@
           "link": "https://www.undauntedk12.org"
         }
       ]
+    },
+    {
+      "id": "mit_cate",
+      "name": "MIT Climate Action Through Education",
+      "type": "university",
+      "geographic_focus": "Statewide",
+      "description": "MIT program, based at the MIT Center for Energy and Environmental Policy Research, that provides an interdisciplinary climate action curriculum and teaching materials for K-12 educators.",
+      "coalition_ids": [],
+      "lat": 42.3601,
+      "lng": -71.0942,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "MIT CATE",
+      "website": "https://cate.mit.edu/",
+      "profile": {
+        "youth_serving": true
+      }
+    },
+    {
+      "id": "winsor_conserve_our_world",
+      "name": "Winsor Conserve Our World",
+      "type": "school_club",
+      "geographic_focus": "Boston",
+      "description": "Student sustainability club at the Winsor School that holds film screenings and school-wide assemblies on topics such as fast fashion, encouraging students to buy less and buy better.",
+      "coalition_ids": [],
+      "lat": 42.3398,
+      "lng": -71.1035,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "Winsor COW",
+      "website": "https://www.winsor.edu/community-life/student-clubs/",
+      "profile": {
+        "youth_serving": true,
+        "school_club": true
+      }
+    },
+    {
+      "id": "wayland_high_school_green_team",
+      "name": "Wayland High School Green Team",
+      "type": "school_club",
+      "geographic_focus": "Wayland",
+      "description": "Student environmental club at Wayland High School that runs lunch composting, school gardens, a monthly Walk/Ride/Carpool Day and an annual town clean-up, and speaks at Wayland Town Meeting on climate issues.",
+      "coalition_ids": [
+        "mycc"
+      ],
+      "lat": 42.3626,
+      "lng": -71.3615,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "WHS Green Team",
+      "website": "https://sites.google.com/student.wayland.k12.ma.us/whsgreenteam-website/our-initiatives",
+      "profile": {
+        "youth_serving": true,
+        "school_club": true
+      },
+      "coalition_weights": {
+        "mycc": 1
+      }
+    },
+    {
+      "id": "commonwealth_school_environmental_club",
+      "name": "Commonwealth School Environmental Club",
+      "type": "school_club",
+      "geographic_focus": "Boston",
+      "description": "Student club at Commonwealth School in Boston that organizes the school's Earth Day Assembly and helps students engage with environmentalism.",
+      "coalition_ids": [],
+      "lat": 42.3519,
+      "lng": -71.0786,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "website": "https://www.commschool.org/",
+      "profile": {
+        "youth_serving": true,
+        "school_club": true
+      }
+    },
+    {
+      "id": "solar_united_neighbors",
+      "name": "Solar United Neighbors",
+      "type": "501c3",
+      "geographic_focus": "Statewide",
+      "description": "National nonprofit dedicated to helping people go solar. In Massachusetts it runs the free Energy Champion Program, which trains local leaders to explain clean energy to their neighbors and advance energy justice.",
+      "coalition_ids": [],
+      "lat": 42.3601,
+      "lng": -71.0589,
+      "last_activity": "2026-11-18T00:50:00.000Z",
+      "abbrev": "SUN",
+      "website": "https://solarunitedneighbors.org/massachusetts-energy-champion-program/",
+      "remote": true
     }
   ],
   "edges": [
@@ -8811,6 +8810,10 @@
     {
       "source": "mycc",
       "target": "citizens_climate_lobby_north_shore_chapter"
+    },
+    {
+      "source": "mycc",
+      "target": "wayland_high_school_green_team"
     },
     {
       "source": "ejlt",
