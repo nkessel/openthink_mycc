@@ -111,3 +111,11 @@ export function socialLinks(text: string): HTMLElement {
   }
   return out;
 }
+
+/** Nov 20: a date-only deadline ("2026-12-10") as "Thu, Dec 10" (with the year when it isn't this year). Other text is left as is. */
+export function niceDay(d: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d || "").trim());
+  if (!m) return d;
+  const x = new Date(+m[1], +m[2] - 1, +m[3]);
+  return x.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", ...(x.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}) });
+}

@@ -139,8 +139,10 @@ button{transition:background-color .15s ease,border-color .15s ease,color .15s e
 .pill-add.c0{--pc:#34d399}.pill-add.c1{--pc:#38bdf8}.pill-add.c2{--pc:#a78bfa}
 textarea.grow{min-height:0;resize:none;overflow:hidden}
 /* Round 7: every Approve button is green; once approved it turns soft green with a check */
-.decide button.ok{background:var(--accent);border-color:var(--accent);color:#0a0a0f;font-weight:600}
-.decide button.ok:hover:not(:disabled){background:#2bbd88}
+/* Nov 20 (Nathan): Approve is quiet until the person works on the card, then green; approved = soft green */
+.decide button.ok{background:transparent;border-color:var(--accent);color:var(--accent);font-weight:600;transition:background .2s,color .2s}
+.decide button.ok:hover:not(:disabled){background:var(--accent-soft)}
+.decide button.ok.ready{background:var(--accent);color:#0a0a0f}.decide button.ok.ready:hover:not(:disabled){background:#2bbd88}
 .decide button[aria-pressed="true"].ok{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .pp-savebar{align-items:center;margin-top:14px}.pp-savebar .hint{margin:0}
 /* Round 7: a slimmer bottom bar, progress on the left, bigger buttons; messages float just above it */
@@ -206,3 +208,6 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 }
 .pf-alt{margin:8px 0 2px}.pillfield.alt-on [data-pk]{opacity:.45}
 @keyframes barup{from{transform:translateY(100%)}to{transform:none}}.bar.slidein{animation:barup .25s ease-out}@media (prefers-reduced-motion:reduce){.bar.slidein{animation:none}}
+.tsug{font:inherit;font-size:.8em;border:1px dashed #4b5563;color:var(--dim);background:none;border-radius:999px;padding:1px 10px;cursor:pointer}.tsug:hover{color:var(--text);border-color:var(--dim)}
+@keyframes editin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}.card.edit-in>*,.box.edit-in>*{animation:editin .24s ease-out both}
+#pp-save:not(.ready){background:transparent;color:var(--accent);border-color:var(--accent)}#pp-save{transition:background .2s,color .2s}

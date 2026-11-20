@@ -10,7 +10,7 @@ import type {
   DataFile,
 } from "./types";
 import { initials, relTime, fmtEventTime, shownType } from "./util";
-import { contactLinks, itemButtons, joinLine, socialLinks } from "./links";
+import { contactLinks, itemButtons, joinLine, socialLinks, niceDay } from "./links";
 import { h, clear } from "./dom";
 import { staleNotice } from "./notice";
 import { formUrl } from "./fab";
@@ -672,7 +672,7 @@ export function createDrawer(
         h("a", { href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, target: "_blank", rel: "noopener noreferrer" }, "Open in maps ↗")));
     } else if ((kind === "event" && e.online) || (kind === "action" && a.online)) row("Where", "Online");
     if (kind === "action") {
-      if (a.deadline) row("Deadline", a.deadline);
+      if (a.deadline) row("Deadline", niceDay(a.deadline));
       if (a.urgency) row("Urgency", a.urgency);
       if (a.skills_needed?.length) row("Skills that help", a.skills_needed.join(", "));
     }
