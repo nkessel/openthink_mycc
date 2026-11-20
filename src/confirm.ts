@@ -51,6 +51,7 @@ const digits = (s: string) => s.replace(/\D/g, "").length;
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 function msgPage(text: string) {
+  clearInterval((window as unknown as { __loadingTimer?: number }).__loadingTimer);
   document.body.innerHTML = "";
   const p = document.createElement("p");
   p.className = "msgpage";
@@ -86,7 +87,7 @@ async function boot(token: string) {
   const claimP: Promise<Obj> = call({ action: "claim", token, sid: sessionId(), name: me }).catch((e) => ({ ok: false, error: (e as Error).message }));
   // Loading screen (round 4, Nov 19): the map's server (Google Apps Script) can take several seconds to wake up.
   const note = document.getElementById("loading-note");
-  const steps: [number, string][] = [[1800, "Reading your group’s information…"], [4200, "Gathering events, projects and actions…"], [7000, "Almost ready…"], [13000, "Still working: the map’s server is slow right now. Thanks for your patience!"]];
+  const steps: [number, string][] = [[1800, "Reading your group’s information…"], [4500, "Gathering events, projects and actions…"], [8000, "Putting your page together…"], [15000, "Still working: the map’s server is slow right now. Thanks for your patience!"]];
   const slow = steps.map(([ms, text]) => setTimeout(() => { if (note) note.textContent = text; }, ms));
   try {
     const r = await call(null, `api=confirm&t=${encodeURIComponent(token)}`);
@@ -169,6 +170,9 @@ function sessionId(): string {
 /** Fills the loading bar before the page appears. */
 function finishLoading() {
   const bar = document.getElementById("loading-bar");
+  clearInterval((window as unknown as { __loadingTimer?: number }).__loadingTimer);
+  const eta = document.getElementById("loading-eta");
+  if (eta) eta.textContent = "Done!";
   if (bar) { bar.style.transition = "width .25s ease-out"; bar.style.width = "100%"; }
 }
 
