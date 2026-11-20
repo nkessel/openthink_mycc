@@ -1,12 +1,13 @@
 // Group confirmation page (static site). Talks to the Apps Script web app with fetch and no cookies, so it works
 // no matter how many Google accounts the browser is signed into. See the API contract in the PR description.
+import { attachPlaceSuggest } from "./placeSuggest";
 import "./confirm.css";
 import { LIVE_DATA_URL } from "./data.config";
 import { applyKindStyle } from "./kinds.config";
 import { typeIcon, type IconKind } from "./icons";
 
 type Obj = Record<string, any>;
-interface Person { name: string; email: string; phone: string; best: string }
+interface Person { name: string; email: string; phone: string; best: string; showEmail?: boolean; showPhone?: boolean }
 interface Card { id: string; kind: string; [k: string]: any }
 
 const BASE = LIVE_DATA_URL;
@@ -173,7 +174,7 @@ const SOCIAL: { id: string; label: string; re: RegExp; hint: string; url: (v: st
 const BRAND: Record<string, string> = { instagram: "#f06292", facebook: "#5b9cf5", x: "#e5e7eb", linkedin: "#4fa3e0", youtube: "#ff7a7a", bluesky: "#4aa8ff", tiktok: "#5ee8e3", threads: "#d1d5db", mastodon: "#8b8cff", linktree: "#5be37a", other: "#a1a8b3" };
 /** Missing-info pills per card kind (round 7): the most-used as pills, the rest behind "+ N more". */
 const MAIN_PILLS: Record<string, string[]> = {
-  org: ["description", "type", "website", "public_contact", "topic_tags"], coalition: ["description", "website", "focus_tags"],
+  org: ["description", "type", "website", "topic_tags"], coalition: ["description", "website", "focus_tags"],
   event: ["description", "location", "link", "topic_tags"], project: ["description", "link", "skills_needed", "topic_tags"],
   action: ["description", "location", "link", "deadline", "skills_needed"],
 };
@@ -370,6 +371,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   let st: Obj = DATA.draft || { org: { decision: "", fields: {} }, items: {} };
   st.org = st.org || { decision: "", fields: {} };
   st.items = st.items || {};
+  /** What the cards looked like when the page opened, for "Reset form" (round 9). */
+  const initialCards = JSON.stringify({ org: st.org, items: st.items });
   let who: Person = blank();
   let others: Person[] = [blank(), blank()];
   try {
@@ -403,7 +406,23 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
 
   const dirty = () => rev !== savedRev;
   const touch = () => { rev++; const b = document.getElementById("bar"); if (b && b.hidden) { b.hidden = false; b.classList.add("slidein"); } showProgress(); };
+  /** A message in the floating note above the bar with buttons (Undo, Yes/Keep). Fades after `secs` seconds. */
+  let toastTimer = 0;
+  function toast(t: string, buttons: [string, () => void][], secs = 10) {
+    const s = $("status");
+    s.className = "status";
+    s.textContent = t + " ";
+    buttons.forEach(([label, fn]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "toastbtn"; b.textContent = label;
+      b.addEventListener("click", () => { window.clearTimeout(toastTimer); s.textContent = ""; fn(); });
+      s.appendChild(b);
+    });
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => { s.textContent = ""; }, secs * 1000);
+  }
   function msg(t: string, bad = false) {
+    window.clearTimeout(toastTimer);
     const s = $("status");
     s.textContent = t;
     s.className = "status" + (bad ? " err" : "");
@@ -557,6 +576,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       <div class="row2">
       <div><label for="pphone">Phone (optional)</label><input id="pphone" type="tel" autocomplete="tel"></div>
       <div><label for="pbest">Best way to reach you</label><select id="pbest">${bestOptions()}</select><p class="hint" id="pbest-hint"></p></div></div>
+      ${pubRow("p")}
       <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}
       <button type="button" class="add-other" id="add-other">+ Add another point person</button>
       <div class="decide pp-savebar"><button type="button" class="primary" id="pp-save">Save point person</button><span class="hint" id="pp-saved" aria-live="polite"></span></div></div>`));
@@ -619,11 +639,26 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     $("approve-all").addEventListener("click", () => {
       if (!editor) return;
       if (Object.values(editing).some(Boolean)) return msg("Press “Done editing” on the open card first.", true);
+      const before = Object.fromEntries(cards.map((c) => [c.id, S(c.id).decision]));
       cards.forEach((c) => { const s = S(c.id); if (s.decision !== "remove") s.decision = "approve"; });
       touch();
       cards.forEach((c) => rerender(c));
-      msg(`Approved ${cards.filter((c) => S(c.id).decision === "approve").length} card(s). Review anything you like, then press Finalize and Submit.`);
+      toast(`✓ Approved ${cards.filter((c) => S(c.id).decision === "approve").length} cards.`, [["Undo", () => {
+        cards.forEach((c) => { S(c.id).decision = before[c.id]; });
+        cards.forEach((c) => rerender(c)); showProgress(); msg("Undone. Your cards are back to how they were.");
+      }]]);
     });
+    // Reset form (round 9, A3): a quiet button in the bar; asks once, then puts every card back to how it was on opening.
+    $("reset").onclick = () => {
+      if (!editor) return;
+      if (Object.values(editing).some(Boolean)) return msg("Press “Done editing” on the open card first.", true);
+      toast("Put every card back to how it was when you opened this page?", [["Yes, reset", () => {
+        const o = JSON.parse(initialCards);
+        st.org = o.org; st.items = o.items;
+        Object.keys(engaged).forEach((k) => delete engaged[k]);
+        render(); showProgress(); msg("Reset. Your point people were not changed.");
+      }], ["Keep my changes", () => {}]], 15);
+    };
     // Feedback for the map team (Nathan, Nov 17): sent with Finalize and Submit, saved with the draft.
     app.appendChild(el(`<div class="box"><h2 style="margin-top:0"><label for="fb">Ideas or comments for the development team (optional)</label></h2>
       <p class="pp">What would make the map most useful for ${esc(DATA.org.name)}? Anything else you’d like to share with the map’s team? We read every note.</p>
@@ -657,19 +692,26 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       <div><label for="o${i}name">Name</label><input id="o${i}name" autocomplete="off"></div>
       <div><label for="o${i}email">Email</label><input id="o${i}email" type="email" autocomplete="off"></div>
       <div><label for="o${i}phone">Phone (optional)</label><input id="o${i}phone" type="tel" autocomplete="off"></div>
-      <div><label for="o${i}best">Best way to reach them</label><select id="o${i}best">${bestOptions()}</select><p class="hint" id="o${i}best-hint"></p></div></div></div>`;
+      <div><label for="o${i}best">Best way to reach them</label><select id="o${i}best">${bestOptions()}</select><p class="hint" id="o${i}best-hint"></p></div></div>${pubRow("o" + i)}</div>`;
+  }
+  /** Round 9 (Nov 20): which contact details the map shows publicly lives with each point person (replaces the group's separate "public contact" field). */
+  function pubRow(pre: string) {
+    return `<div class="pubrow"><span class="hint">Show on the map so people can reach the group:</span><label class="askrow"><input type="checkbox" id="${pre}showemail"><span>Email</span></label><label class="askrow"><input type="checkbox" id="${pre}showphone"><span>Phone</span></label></div>`;
   }
   const inp = (id: string) => document.getElementById(id) as HTMLInputElement & HTMLSelectElement;
   function wirePerson(pre: string, get: () => Person, set: (p: Person) => void) {
     const f = ["name", "email", "phone", "best"] as const;
     const cur = get();
     f.forEach((k) => { inp(pre + k).value = cur[k] || ""; });
+    inp(pre + "showemail").checked = !!cur.showEmail; inp(pre + "showphone").checked = !!cur.showPhone;
     syncBest(pre);
+    const read = (): Person => ({ name: inp(pre + "name").value.trim(), email: inp(pre + "email").value.trim(), phone: inp(pre + "phone").value.trim(), best: inp(pre + "best").value, showEmail: inp(pre + "showemail").checked, showPhone: inp(pre + "showphone").checked });
+    (["showemail", "showphone"] as const).forEach((k) => inp(pre + k).addEventListener("change", () => { if (!editor) return; set(read()); remember(); touch(); }));
     f.forEach((k) => {
       inp(pre + k).addEventListener(k === "best" ? "change" : "input", () => {
         if (!editor) return;
         if (k === "phone") syncBest(pre);
-        set({ name: inp(pre + "name").value.trim(), email: inp(pre + "email").value.trim(), phone: inp(pre + "phone").value.trim(), best: inp(pre + "best").value });
+        set(read());
         remember();
         touch();
         if (pre === "p" && k === "email") syncOthers();
@@ -683,6 +725,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     // Nov 20: the menu stays open; only the phone-based choices wait for a number, and say so themselves.
     Array.from(sel.options).forEach((o) => { if (o.value && o.value !== "Email") { o.disabled = !ok; o.textContent = o.value + (ok ? "" : " (add a phone number first)"); } });
     if (!ok && sel.value && sel.value !== "Email") sel.value = "";
+    const sp = inp(pre + "showphone"); sp.disabled = !editor || !ok; if (!ok) sp.checked = false;
     sel.disabled = !editor;
     $(pre + "best-hint").textContent = "";
   }
@@ -742,6 +785,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       const i = d.querySelector("[data-pk]") as HTMLInputElement;
       i.value = pillDraft[f] || "";
       i.addEventListener("input", () => { pillDraft[f] = i.value; });
+      if (f === "location" || f === "hq_address") attachPlaceSuggest(i);
       // Nov 20 (Nathan): the yes/no that goes with a place sits in the same drawer: "Online" with a location,
       // "no public location" with the group's pin address. Checking it makes the address optional.
       const alt = f === "location" ? "online" : f === "hq_address" ? "remote" : "";
@@ -767,6 +811,9 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   function aimCaret(box: HTMLElement) {
     const d = box.querySelector(".pillfield") as HTMLElement | null, pill = box.querySelector(`.pill-add[aria-expanded="true"]:not([data-f="social:more"]):not([data-row])`) as HTMLElement | null;
     if (!d || !pill) return;
+    // Round 9: the drawer takes the colour of its pill
+    const pc = getComputedStyle(pill).getPropertyValue("--pc").trim();
+    if (pc) d.style.setProperty("--pc", pc);
     const x = pill.getBoundingClientRect().left + pill.offsetWidth / 2 - d.getBoundingClientRect().left - 7;
     const caret = d.querySelector(".caret") as HTMLElement;
     caret.style.left = x + "px";
@@ -861,6 +908,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
           <div class="decide" style="margin-top:6px"><button type="button" class="ipp-btn">Add point person</button><button type="button" class="ipp-cancel textbtn">Cancel</button></div></div></fieldset>`;
       }
       box.innerHTML = `<div class="tagrow">${sec ? `<span class="tag">${esc(title)}</span>` : `<span class="kind">${esc(title)}</span>`}</div>${f}<div class="decide"><button type="button" class="cancel-btn textbtn">Cancel</button><button type="button" class="primary done-btn">${fresh ? `Add ${esc(one)}` : "Done editing"}</button></div>`;
+      box.querySelectorAll<HTMLInputElement>('input[data-k="location"],input[data-k="hq_address"]').forEach((i) => attachPlaceSuggest(i));
       box.querySelectorAll<HTMLElement>(".pk-slot").forEach((slot) => { const key = slot.getAttribute("data-key")!; slot.replaceWith(picker(`f-${c.id}-${key}`, key, String(val(c, key) || ""), "data-k")); });
     }
     if (sec) box.querySelector(".tag")!.prepend(typeIcon(sec, 15));
@@ -1236,8 +1284,17 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   window.addEventListener("beforeunload", (e) => { if (editor && dirty() && !submitted) { e.preventDefault(); e.returnValue = ""; } });
 
   // ---- state, save, submit
+  /** The map's public contact: the email and phone each point person chose to show (set whenever anyone chose). */
+  function publicContact(): string {
+    const list = [ppMode !== "else" ? who : null, ...(ppMode === "me" ? [] : others.slice(0, 2))].filter(Boolean) as Person[];
+    const parts: string[] = [];
+    list.forEach((p) => { if (p.showEmail && EMAIL_RE.test(p.email)) parts.push(p.email); if (p.showPhone && digits(p.phone) >= 7) parts.push(p.phone); });
+    return parts.join(", ");
+  }
   function buildState(): Obj {
     const free = freeSpaces();
+    const pc = publicContact();
+    if (pc) { st.org.fields = st.org.fields || {}; st.org.fields.public_contact = pc; }
     return {
       who: { ...who },
       selfPP: ppMode !== "else",
