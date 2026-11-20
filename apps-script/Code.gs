@@ -250,7 +250,7 @@ var COLS = {
   'Events': ['id', 'coalition_id', 'host_org_id', 'name', 'description', 'date', 'location', 'online', 'lat', 'lng',
     'topic_tags', 'link', 'public_contact', 'last_activity', 'hidden', 'end', 'recurrence', 'needs_info', 'verified', 'rsvp_link', 'free_food', 'affiliated_only'],
   'Actions': ['id', 'coalition_id', 'kind', 'name', 'urgency', 'skills_needed', 'deadline', 'hidden', 'host_org_id',
-    'description', 'link', 'needs_info', 'verified'],
+    'description', 'link', 'needs_info', 'verified', 'location', 'online', 'lat', 'lng', 'public_contact'],
   // item_ids (Nov 17): point people for one event, project or action only (the confirmation page's item point people).
   'Editors': ['email', 'role', 'org_ids', 'coalition_ids', 'name', 'notes', 'item_ids'],
   // The master topic list (any length). People type topics on the forms; typed text is matched against name + aliases.
@@ -2542,7 +2542,7 @@ function buildDataFile_(t, generatedAt) {
   var actions = group(t.actions, function (a) {
     return extra({ id: str(a.id), kind: str(a.kind) || 'task', name: str(a.name),
       skills_needed: list_(a.skills_needed), deadline: str(a.deadline) || null },
-      a, ['urgency', 'description', 'link', 'needs_info', 'verified', 'host_org_id']);
+      a, ['urgency', 'description', 'link', 'needs_info', 'verified', 'host_org_id', 'public_contact'].concat(place));
   });
 
   var coalitions = t.coalitions.filter(function (c) { return c.id; }).map(function (c) {

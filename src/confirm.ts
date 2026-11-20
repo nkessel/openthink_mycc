@@ -175,11 +175,11 @@ const BRAND: Record<string, string> = { instagram: "#f06292", facebook: "#5b9cf5
 const MAIN_PILLS: Record<string, string[]> = {
   org: ["description", "type", "website", "public_contact", "topic_tags"], coalition: ["description", "website", "focus_tags"],
   event: ["description", "location", "link", "topic_tags"], project: ["description", "link", "skills_needed", "topic_tags"],
-  action: ["description", "link", "deadline", "skills_needed"],
+  action: ["description", "location", "link", "deadline", "skills_needed"],
 };
 const LESSER_PILLS: Record<string, string[]> = {
   org: ["abbrev", "geographic_focus", "hq_address", "membership_size"], coalition: ["abbrev", "geographic_scope"],
-  event: ["end", "recurrence", "rsvp_link", "public_contact"], project: ["location", "public_contact"], action: ["urgency"],
+  event: ["end", "recurrence", "rsvp_link", "public_contact"], project: ["location", "public_contact"], action: ["urgency", "public_contact"],
 };
 const BOOLS = ["online", "remote", "youth_serving", "school_club", "free_food", "affiliated_only", "help_wanted"];
 const CHOICES: Record<string, [string, string][]> = {
@@ -363,7 +363,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   const pingMs = (DATA.pingSeconds || 15) * 1000;
 
   document.title = `${DATA.title} · Massachusetts Climate Organization Map`;
-  $("bar").hidden = false;
+  // Nov 20 (Nathan, option D): the bar appears once there is something to save or submit (or a saved draft).
+  $("bar").hidden = !(DATA.draft || DATA.draftAt);
 
   const blank = (): Person => ({ name: "", email: "", phone: "", best: "" });
   let st: Obj = DATA.draft || { org: { decision: "", fields: {} }, items: {} };
@@ -399,7 +400,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   const editing: Record<string, boolean> = {};
 
   const dirty = () => rev !== savedRev;
-  const touch = () => { rev++; showProgress(); };
+  const touch = () => { rev++; const b = document.getElementById("bar"); if (b && b.hidden) { b.hidden = false; b.classList.add("slidein"); } showProgress(); };
   function msg(t: string, bad = false) {
     const s = $("status");
     s.textContent = t;
@@ -717,6 +718,18 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       const i = d.querySelector("[data-pk]") as HTMLInputElement;
       i.value = pillDraft[f] || "";
       i.addEventListener("input", () => { pillDraft[f] = i.value; });
+      // Nov 20 (Nathan): the yes/no that goes with a place sits in the same drawer: "Online" with a location,
+      // "no public location" with the group's pin address. Checking it makes the address optional.
+      const alt = f === "location" ? "online" : f === "hq_address" ? "remote" : "";
+      if (alt && (c.kind === "org" ? orgFields : FIELDS[c.kind] || []).includes(alt)) {
+        const txt = alt === "online" ? `Online${c.kind === "event" ? " event" : ""} <span class="hint">(no address needed)</span>` : `We don’t have a public location <span class="hint">(no pin on the map)</span>`;
+        const r = el(`<label class="askrow pf-alt"><input type="checkbox" data-alt="${alt}"${pillDraft[alt] === "1" ? " checked" : ""}><span>${txt}</span></label>`);
+        const box2 = r.querySelector("input") as HTMLInputElement;
+        const sync = () => { i.disabled = box2.checked; i.closest(".pillfield")?.classList.toggle("alt-on", box2.checked); };
+        box2.addEventListener("change", () => { pillDraft[alt] = box2.checked ? "1" : "0"; sync(); });
+        d.insertBefore(r, d.querySelector(".pf-actions"));
+        sync();
+      }
       if (f === "link" && c.kind === "event" && (FIELDS.event || []).includes("rsvp_link")) {
         const r = el(`<label class="askrow pf-rsvp"><input type="checkbox" data-rsvp="1"${pillDraft.rsvp === "1" ? " checked" : ""}><span>This is a sign-up or RSVP page <span class="hint">(the map shows an RSVP button for it)</span></span></label>`);
         (r.querySelector("input") as HTMLInputElement).addEventListener("change", (e) => { pillDraft.rsvp = (e.target as HTMLInputElement).checked ? "1" : "0"; });
@@ -759,7 +772,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       : `<span class="kind">${esc(KIND.org)}</span>`;
     const head = `<div class="tagrow">${tag}${fresh ? '<span class="edited-tag">new</span>' : edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
     const typeName = (t: string) => (CHOICES.type.find((x) => x[0] === t) || [t, t])[1];
-    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "rsvp_link") ? "sign-up: " + val(c, "rsvp_link") : "", val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
+    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "rsvp_link") ? "sign-up: " + val(c, "rsvp_link") : "", k === "org" && val(c, "hq_address") && !isOn(val(c, "remote")) ? "pin: " + val(c, "hq_address") : "", k === "org" && isOn(val(c, "remote")) ? "no pin on the map" : "", val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
     // Round 7: labelled rows, so yes/no facts and topics don't look alike.
     const flags = [["youth_serving", "✓ Youth group"], ["remote", "No pin on the map"], ["free_food", "✓ Free food"], ["affiliated_only", "Members only"]]
       .filter(([f]) => keys.includes(f) && isOn(val(c, f))).map(([, l]) => l).concat(kindOfSec(sec || "event") === "project" && keys.includes("help_wanted") && !isOn(val(c, "help_wanted")) ? ["Not looking for help"] : []);
@@ -953,13 +966,21 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         (document.querySelector(`#card-${CSS.escape(c.id)} .pillfield [data-pk]:not([type=hidden]), #card-${CSS.escape(c.id)} .pillfield .pin`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
-      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; delete pillDraft.youth; delete pillDraft.rsvp; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
+      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; delete pillDraft.youth; delete pillDraft.rsvp; delete pillDraft.online; delete pillDraft.remote; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
       if (b.classList.contains("pill-save")) {
         const i = box.querySelector(".pillfield [data-pk]") as HTMLInputElement;
         const f = pillOpen || "";
         const q = box.querySelector(".pillfield .pin") as HTMLInputElement | null;
         if (q && q.value.trim() && f !== "type") { q.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" })); } // a typed topic not yet turned into a pill
         let v: string | boolean = i.type === "checkbox" ? i.checked : i.value.trim();
+        const altBox = box.querySelector(".pillfield [data-alt]") as HTMLInputElement | null;
+        if (altBox && altBox.checked) {
+          s.fields = { ...(s.fields || {}), [altBox.getAttribute("data-alt")!]: true };
+          if (v !== "" && !i.disabled) s.fields[f] = v;
+          s.decision = "approve"; delete pillDraft[f]; delete pillDraft[altBox.getAttribute("data-alt")!]; pillOpen = null; touch(); rerender(c);
+          msg("Added. It goes on the map when you press Finalize and Submit.");
+          return;
+        }
         if (v === "" ) { msg(f === "type" ? "Pick a type first, or press Cancel." : "Type something first, or press Cancel.", true); (q || i).focus(); return; }
         let key = f;
         if (f === "link" && (box.querySelector(".pillfield [data-rsvp]") as HTMLInputElement | null)?.checked) key = "rsvp_link";

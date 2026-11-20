@@ -204,3 +204,5 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
   .bar #submit .sublong{display:none}
   .bar #submit .subcount{display:inline}
 }
+.pf-alt{margin:8px 0 2px}.pillfield.alt-on [data-pk]{opacity:.45}
+@keyframes barup{from{transform:translateY(100%)}to{transform:none}}.bar.slidein{animation:barup .25s ease-out}@media (prefers-reduced-motion:reduce){.bar.slidein{animation:none}}

@@ -30,6 +30,8 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 20 — actions get location / online / public contact; place yes/no inside pills; bar appears on first change.** Code.gs COLS.Actions + JSON export (location, online, lat, lng, public_contact); Confirm.gs CONFIRM_FIELDS.action + actions now geocode like projects; map item card + drawer show an action's place. Review page: "+ Location" drawer has "Online" (address optional), "+ Group location" has "We don't have a public location (no pin)"; org line shows "pin: …". Bottom bar hidden until the first change (or a saved draft), slides up. **Needs Apps Script redeploy (Version 19)** for the server part.
+
 - **Nov 20 — bottom bar: G on desktop, H on phones** (Nathan). Next button removed. Desktop: a bar split into the 3 steps (1 Details / 2 Point people / 3 Review · n of m, ✓ when done; each part jumps to its step) above Save for later and Finalize and Submit, both full buttons with their notes. Phones (≤560px): thin line on the top edge (cards approved) and "Submit · n of m". Numbering rule: numbers never reused within a conversation (LLM_GUIDELINES 5).
 
 - **Nov 20 — events: sign-up link lives in the "+ Web page" pill** (checkbox "This is a sign-up or RSVP page" saves to rsvp_link, which the map shows as the RSVP button); the separate sign-up pill only shows once a web page exists. Card line shows "sign-up: …". Topic link reads "edit topics".

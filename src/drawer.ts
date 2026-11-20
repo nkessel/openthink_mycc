@@ -665,12 +665,12 @@ export function createDrawer(
       row("When", fmtEventTime(e.date, e.end, e.recurrence));
       if (e.recurrence) row("Repeats", recurrenceLabel(e.recurrence));
     }
-    const loc = kind === "event" ? e.location : kind === "project" ? p.location : "";
+    const loc = kind === "event" ? e.location : kind === "project" ? p.location : a.location || "";
     if (loc) {
       const online = /^online/i.test(loc) || (kind === "event" && e.online);
       row("Where", online ? loc : h("span", {}, loc, " · ",
         h("a", { href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`, target: "_blank", rel: "noopener noreferrer" }, "Open in maps ↗")));
-    } else if (kind === "event" && e.online) row("Where", "Online");
+    } else if ((kind === "event" && e.online) || (kind === "action" && a.online)) row("Where", "Online");
     if (kind === "action") {
       if (a.deadline) row("Deadline", a.deadline);
       if (a.urgency) row("Urgency", a.urgency);
