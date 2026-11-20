@@ -1033,6 +1033,12 @@ console.log("second round trip (org-owned items, locations, links) OK");
   const pinned = ctx.readAll_().orgs.find((o) => o.id === orgId);
   assert.equal(pinned.hq_address, "Natick Common, Natick"); assert.equal(Number(pinned.lat), 42.2834); assert.equal(Number(pinned.lng), -71.3495);
   res2.submittedAt = rPin.submittedAt;
+  // Nov 20: a new action with a place gets a pin, and its location/online/contact reach the map's data
+  const rAct = post({ action: "submit", token: L.token, sid: C, baseSubmittedAt: res2.submittedAt, state: { who: { name: "Pat Point", email: "pat@example.org" }, others: [], org: { decision: "approve", fields: {} }, items: { new_9: { kind: "action", decision: "approve", fields: { name: "Testify at town meeting", location: "Natick Common", public_contact: "pat@example.org" } } } } });
+  assert.equal(rAct.ok, true, JSON.stringify(rAct));
+  const act = ctx.readAll_().actions.find((a) => a.name === "Testify at town meeting");
+  assert.ok(act, "action saved"); assert.equal(act.location, "Natick Common"); assert.equal(Number(act.lat), 42.2834); assert.equal(act.public_contact, "pat@example.org");
+  res2.submittedAt = rAct.submittedAt;
   // round 7: "Someone else" is the point person, so the visitor isn't added
   const cres2 = post({ action: "submit", token: LCo.token, sid: A, baseSubmittedAt: cres.submittedAt, state: { ...cstate({}), who: { name: "Quinn Checker", email: "quinn@example.org" }, selfPP: false, others: [{ name: "Rae Lead", email: "rae@example.org", phone: "", best: "" }] } });
   assert.equal(cres2.ok, true, JSON.stringify(cres2));

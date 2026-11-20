@@ -82,6 +82,8 @@ export function showItemCard(host: HTMLElement, kind: CardKind, item: CardItem, 
       h("span", { class: "pill kind" }, a.kind === "role" ? "Volunteer role" : "Action"),
       a.deadline ? h("span", { class: "pill deadline" }, `Deadline ${a.deadline}`) : null,
       a.urgency ? h("span", { class: "pill" }, a.urgency) : null,
+      a.location ? h("span", { class: "pill" }, a.location) : null,
+      a.online ? h("span", { class: "pill" }, "online") : null,
     );
   }
   const tags = (item as { topic_tags?: string[] }).topic_tags;

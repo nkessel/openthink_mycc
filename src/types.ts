@@ -97,6 +97,12 @@ export interface Action {
   /** The group's own page (or a point person) confirms this; no "may be out of date" warning. */
   verified?: boolean;
   host_org_id?: string;
+  /** Nov 20: actions can happen somewhere (testify, rallies) — same fields as projects. */
+  location?: string;
+  online?: boolean;
+  lat?: number;
+  lng?: number;
+  public_contact?: string;
   /** Sector layer id (src/sectors.ts) when this came from a sector file rather than the climate map. */
   sector?: string;
 }

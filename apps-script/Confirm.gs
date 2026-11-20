@@ -39,7 +39,7 @@ var CONFIRM_FIELDS = {
     'topic_tags', 'free_food', 'affiliated_only'],
   project: ['name', 'description', 'status', 'location', 'online', 'link', 'public_contact', 'skills_needed', 'topic_tags',
     'help_wanted', 'free_food', 'affiliated_only'],
-  action: ['name', 'description', 'deadline', 'urgency', 'link', 'skills_needed'],
+  action: ['name', 'description', 'deadline', 'urgency', 'location', 'online', 'link', 'public_contact', 'skills_needed'],
 };
 /** Yes/no fields (checkboxes on the page), stored as TRUE / FALSE. */
 var CONFIRM_BOOL = ['online', 'remote', 'youth_serving', 'school_club', 'free_food', 'affiliated_only', 'help_wanted'];
@@ -669,7 +669,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     if (it.kind === 'action') patch.kind = it.role ? 'role' : 'task';
     patch.verified = 'TRUE';
     patch.needs_info = 'FALSE';
-    if (it.kind !== 'action') pin(patch, null);
+    pin(patch, null); // Nov 20: actions can have a place too (testify, rallies)
     addMissingColumns_(ss_().getSheetByName(tab[0]), COLS[tab[0]]);
     var r = upsert_(tab[0], it.kind, NEW_ITEM_, NEW_ITEM_, patch);
     r.action = 'added';
@@ -701,7 +701,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
         if (to.kind === 'action') moved.kind = to.role ? 'role' : 'task';
         if (to.kind === 'project' && !moved.status) moved.status = 'active';
         moved.verified = 'TRUE'; moved.needs_info = 'FALSE';
-        if (to.kind !== 'action') { if (str_(row.lat) && moved.location === str_(row.location)) { moved.lat = str_(row.lat); moved.lng = str_(row.lng); } else pin(moved, null); }
+        if (str_(row.lat) && moved.location === str_(row.location)) { moved.lat = str_(row.lat); moved.lng = str_(row.lng); } else pin(moved, null);
         addMissingColumns_(ss_().getSheetByName(tabs[to.kind][0]), COLS[tabs[to.kind][0]]);
         var nr = upsert_(tabs[to.kind][0], to.kind, NEW_ITEM_, NEW_ITEM_, moved);
         nr.action = 'moved here from ' + it.kind + ' ' + id;
@@ -721,7 +721,7 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     else {
       patch = clean(it.kind, it.fields);
       if (Object.keys(patch).length) counts.edited++;
-      if (it.kind !== 'action') pin(patch, row);
+      pin(patch, row);
       patch.verified = 'TRUE';
       patch.needs_info = 'FALSE';
       counts.approved++;
