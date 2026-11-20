@@ -30,6 +30,8 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 20 — events: sign-up link lives in the "+ Web page" pill** (checkbox "This is a sign-up or RSVP page" saves to rsvp_link, which the map shows as the RSVP button); the separate sign-up pill only shows once a web page exists. Card line shows "sign-up: …". Topic link reads "edit topics".
+
 - **Nov 20 — "+ Map pin address" pill renamed "+ Group location"** (Nathan); field label "Group location: the address for your map pin…".
 
 - **Nov 20 — review page heading is just the group name** (Nathan picked option 2 on the canvas); tab title "{group} · Massachusetts Climate Organization Map".
