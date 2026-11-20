@@ -472,7 +472,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     if (!nx) return;
     const last = n >= all.length - 1;
     nx.hidden = last;
-    if (!last) nx.textContent = `Next: ${all[n + 1].label} ↓`;
+    if (!last) { nx.textContent = innerWidth < 560 ? "Next ↓" : `Next: ${all[n + 1].label} ↓`; nx.title = `Next: ${all[n + 1].label}`; }
   }
 
   // ---- rendering

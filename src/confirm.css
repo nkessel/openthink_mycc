@@ -157,4 +157,13 @@ textarea.grow{min-height:0;resize:none;overflow:hidden}
 .bar .nextbtn:hover:not(:disabled){background:#10233a}
 .steps .step[aria-current="step"]{border-color:var(--accent);background:var(--accent-soft)}
 #card-org,.card,.pp-box,h2.sec,.approve-all{scroll-margin-top:16px}
-@media (max-width:560px){.bar .nextbtn{flex-basis:100%;order:1}}
+@media (max-width:560px){
+  .bar{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;align-items:center}
+  .bar .progress{grid-column:1;min-width:0;max-width:none;flex-wrap:nowrap}.bar .progress .pbar{min-width:30px}
+  .bar .nextbtn{grid-column:2;justify-self:end;padding:5px 12px;font-size:.85em}
+  .bar .nextbtn[hidden]{display:none}
+  .bar .btnwrap{min-width:0}.bar .btnwrap button{width:100%}
+  .bar .btn-note{white-space:normal;max-width:none}
+}
+.bar button{white-space:nowrap}.bar .progress .pbar{min-width:40px}
+@media (max-width:900px) and (min-width:561px){.bar .btn-note{white-space:normal;max-width:13em}.bar .progress .ptext{white-space:normal}}
