@@ -607,7 +607,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     box?.scrollIntoView({ block: "center" });
     (box?.querySelector("[data-k]") as HTMLElement | null)?.focus({ preventScroll: true });
   }
-  const bestOptions = () => `<option value="">No preference</option>` + BESTS.map((b) => `<option>${b}</option>`).join("");
+  const bestOptions = () => `<option value="">No preference</option>` + BESTS.map((b) => `<option value="${b}">${b}</option>`).join("");
   function otherRow(i: number) {
     return `<div class="other" id="orow${i}"><div class="ohead"><h3 id="ohead${i}">Point person</h3><span class="hint" id="oroom${i}"></span></div><div class="row2">
       <div><label for="o${i}name">Name</label><input id="o${i}name" autocomplete="off"></div>
@@ -636,9 +636,11 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   function syncBest(pre: string) {
     const ok = digits(inp(pre + "phone").value) >= 7;
     const sel = inp(pre + "best");
-    if (!ok) sel.value = "";
-    sel.disabled = !ok || !editor;
-    $(pre + "best-hint").textContent = ok ? "" : "Add a phone number first";
+    // Nov 20: the menu stays open; only the phone-based choices wait for a number, and say so themselves.
+    Array.from(sel.options).forEach((o) => { if (o.value && o.value !== "Email") { o.disabled = !ok; o.textContent = o.value + (ok ? "" : " (add a phone number first)"); } });
+    if (!ok && sel.value && sel.value !== "Email") sel.value = "";
+    sel.disabled = !editor;
+    $(pre + "best-hint").textContent = "";
   }
   function syncOthers() {
     const free = freeSpaces();
