@@ -698,6 +698,11 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       const i = d.querySelector("[data-pk]") as HTMLInputElement;
       i.value = pillDraft[f] || "";
       i.addEventListener("input", () => { pillDraft[f] = i.value; });
+      if (f === "link" && c.kind === "event" && (FIELDS.event || []).includes("rsvp_link")) {
+        const r = el(`<label class="askrow pf-rsvp"><input type="checkbox" data-rsvp="1"${pillDraft.rsvp === "1" ? " checked" : ""}><span>This is a sign-up or RSVP page <span class="hint">(the map shows an RSVP button for it)</span></span></label>`);
+        (r.querySelector("input") as HTMLInputElement).addEventListener("change", (e) => { pillDraft.rsvp = (e.target as HTMLInputElement).checked ? "1" : "0"; });
+        d.insertBefore(r, d.querySelector(".pf-actions"));
+      }
       if (i.tagName === "INPUT") i.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") { e.preventDefault(); (d.querySelector(".pill-save") as HTMLElement).click(); } });
     }
     return d;
@@ -735,7 +740,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       : `<span class="kind">${esc(KIND.org)}</span>`;
     const head = `<div class="tagrow">${tag}${fresh ? '<span class="edited-tag">new</span>' : edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
     const typeName = (t: string) => (CHOICES.type.find((x) => x[0] === t) || [t, t])[1];
-    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
+    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "rsvp_link") ? "sign-up: " + val(c, "rsvp_link") : "", val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
     // Round 7: labelled rows, so yes/no facts and topics don't look alike.
     const flags = [["youth_serving", "✓ Youth group"], ["remote", "No pin on the map"], ["free_food", "✓ Free food"], ["affiliated_only", "Members only"]]
       .filter(([f]) => keys.includes(f) && isOn(val(c, f))).map(([, l]) => l).concat(kindOfSec(sec || "event") === "project" && keys.includes("help_wanted") && !isOn(val(c, "help_wanted")) ? ["Not looking for help"] : []);
@@ -747,7 +752,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     if (!ed) {
       box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc${expanded[c.id] ? "" : " clamp"}">${esc(val(c, "description"))}</p><button type="button" class="textbtn showall" hidden>${expanded[c.id] ? "Show less ▴" : "Show all ▾"}</button>` : `<p class="desc empty">No description yet.</p>`)
         + (flags.length ? `<div class="topics"><span class="tlabel">This ${k === "org" ? "group" : esc(one)}:</span>${flags.map((t) => `<span class="tpill flag">${esc(t)}</span>`).join("")}</div>` : "")
-        + (topics.length ? `<div class="topics"><span class="tlabel">${coalition && k === "org" ? "Focus areas" : "Topics"}:</span>${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}${keys.includes(coalition && k === "org" ? "focus_tags" : "topic_tags") ? `<button type="button" class="pill-add tedit" data-f="${coalition && k === "org" ? "focus_tags" : "topic_tags"}" aria-expanded="${(pillCard === c.id ? pillOpen : null) === (coalition && k === "org" ? "focus_tags" : "topic_tags")}">edit</button>` : ""}</div>` : "")
+        + (topics.length ? `<div class="topics"><span class="tlabel">${coalition && k === "org" ? "Focus areas" : "Topics"}:</span>${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}${keys.includes(coalition && k === "org" ? "focus_tags" : "topic_tags") ? `<button type="button" class="pill-add tedit" data-f="${coalition && k === "org" ? "focus_tags" : "topic_tags"}" aria-expanded="${(pillCard === c.id ? pillOpen : null) === (coalition && k === "org" ? "focus_tags" : "topic_tags")}">edit ${coalition && k === "org" ? "focus areas" : "topics"}</button>` : ""}</div>` : "")
         + (skills.length ? `<p class="who">Skills wanted: ${skills.map(esc).join(", ")}</p>` : "")
         + (people.length ? `<p class="who">${k === "org" ? "Point people (can edit everything for this group)" : "Point people"}: ${people.join(", ")}</p>` : "");
     } else {
@@ -810,7 +815,9 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       const ks = k === "org" ? (coalition ? "coalition" : "org") : kindOfSec(sec!);
       const online = isOn(val(c, "online"));
       // Nov 20 (Nathan): every missing field shows as its own pill; "+ N more" hid fields groups should fill in.
-      const main = (MAIN_PILLS[ks] || []).concat(LESSER_PILLS[ks] || []).filter(missing).filter((f) => (f !== "hq_address" || !isOn(val(c, "remote"))) && (f !== "location" || !online));
+      const main = (MAIN_PILLS[ks] || []).concat(LESSER_PILLS[ks] || []).filter(missing).filter((f) => (f !== "hq_address" || !isOn(val(c, "remote"))) && (f !== "location" || !online))
+        // Nov 20: an event's sign-up link is chosen inside the "+ Web page" pill; its own pill only shows once there's a web page.
+        .filter((f) => f !== "rsvp_link" || !!String(val(c, "link") || "").trim());
       const lesser: string[] = [];
       const have = String(val(c, "social_links") || "");
       const plat = keys.includes("social_links") ? SOCIAL.filter((x) => !x.more && !x.re.test(have)) : [];
@@ -927,7 +934,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         (document.querySelector(`#card-${CSS.escape(c.id)} .pillfield [data-pk]:not([type=hidden]), #card-${CSS.escape(c.id)} .pillfield .pin`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
-      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; delete pillDraft.youth; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
+      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; delete pillDraft.youth; delete pillDraft.rsvp; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
       if (b.classList.contains("pill-save")) {
         const i = box.querySelector(".pillfield [data-pk]") as HTMLInputElement;
         const f = pillOpen || "";
@@ -936,6 +943,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         let v: string | boolean = i.type === "checkbox" ? i.checked : i.value.trim();
         if (v === "" ) { msg(f === "type" ? "Pick a type first, or press Cancel." : "Type something first, or press Cancel.", true); (q || i).focus(); return; }
         let key = f;
+        if (f === "link" && (box.querySelector(".pillfield [data-rsvp]") as HTMLInputElement | null)?.checked) key = "rsvp_link";
+        delete pillDraft.rsvp;
         if (f.startsWith("social:")) {
           const pf = SOCIAL.find((x) => "social:" + x.id === f)!;
           const url = pf.url(String(v));
