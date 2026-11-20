@@ -167,3 +167,8 @@ textarea.grow{min-height:0;resize:none;overflow:hidden}
 }
 .bar button{white-space:nowrap}.bar .progress .pbar{min-width:40px}
 @media (max-width:900px) and (min-width:561px){.bar .btn-note{white-space:normal;max-width:13em}.bar .progress .ptext{white-space:normal}}
+/* Nov 20: step titles match the steps at the top */
+h2.steph{display:flex;align-items:center;gap:10px;margin:28px 0 10px;font-size:1.15em}
+h2.steph .num{width:26px;height:26px;font-size:.8em}
+.pp-box h2.steph{margin-top:0}
+.ppq{margin:0 0 4px;font-size:1.02em}
