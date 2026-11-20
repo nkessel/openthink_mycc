@@ -80,10 +80,14 @@ async function runVerify(token: string) {
 // ---------------------------------------------------------------- page
 async function boot(token: string) {
   let data: Obj;
+  // Round 5 (Nov 19): ask for the editing lock at the same time as the data (they used to run one after the other).
+  let me = "";
+  try { me = String((JSON.parse(localStorage.getItem("confirm.me") || "null") || {}).name || "").trim(); } catch { /* ignore */ }
+  const claimP: Promise<Obj> = call({ action: "claim", token, sid: sessionId(), name: me }).catch((e) => ({ ok: false, error: (e as Error).message }));
   // Loading screen (round 4, Nov 19): the map's server (Google Apps Script) can take several seconds to wake up.
   const note = document.getElementById("loading-note");
-  const slow = [setTimeout(() => { if (note) note.textContent = "Still loading: the map’s server can take a few seconds to wake up."; }, 5000),
-    setTimeout(() => { if (note) note.textContent = "Almost there. Thanks for your patience!"; }, 14000)];
+  const steps: [number, string][] = [[1800, "Reading your group’s information…"], [4200, "Gathering events, projects and actions…"], [7000, "Almost ready…"], [13000, "Still working: the map’s server is slow right now. Thanks for your patience!"]];
+  const slow = steps.map(([ms, text]) => setTimeout(() => { if (note) note.textContent = text; }, ms));
   try {
     const r = await call(null, `api=confirm&t=${encodeURIComponent(token)}`);
     slow.forEach(clearTimeout);
@@ -92,7 +96,8 @@ async function boot(token: string) {
   } catch (e) {
     return msgPage((e as Error).message);
   }
-  start(data, token);
+  finishLoading();
+  start(data, token, claimP);
 }
 
 const KIND_BASE: Obj = { event: "Event", project: "Project", action: "Action", volunteer: "Volunteer role" };
@@ -120,6 +125,18 @@ const PILL: Obj = {
   public_contact: "Public contact", geographic_focus: "Where you work", geographic_scope: "Geographic scope", topic_tags: "Topics",
   focus_tags: "Focus areas", membership_size: "Membership size",
 };
+/** Main social platforms, from what the groups' own websites link to (Nov 13 check): Facebook 105, Instagram 76,
+ *  X/Twitter 46, LinkedIn 43, YouTube 41; then Bluesky 16 and TikTok 15, which go under Other. */
+const handle = (v: string) => v.replace(/^@/, "").trim();
+const asUrl = (v: string) => (/^[^\s]+\.[a-z]{2,}(\/|$)/i.test(v.replace(/^https?:\/\//i, "")) ? (/^https?:\/\//i.test(v) ? v : "https://" + v) : "");
+const SOCIAL: { id: string; label: string; re: RegExp; hint: string; url: (v: string) => string }[] = [
+  { id: "instagram", label: "Instagram", re: /instagram\.com/i, hint: "instagram.com/yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?[\w.]{1,30}$/.test(v) ? "https://www.instagram.com/" + handle(v) : "") },
+  { id: "facebook", label: "Facebook", re: /facebook\.com|fb\.com/i, hint: "facebook.com/yourgroup", url: (v) => asUrl(v) || (/^@?[\w.-]{1,50}$/.test(v) ? "https://www.facebook.com/" + handle(v) : "") },
+  { id: "x", label: "X (Twitter)", re: /(^|[/.])(x|twitter)\.com/i, hint: "x.com/yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?\w{1,15}$/.test(v) ? "https://x.com/" + handle(v) : "") },
+  { id: "linkedin", label: "LinkedIn", re: /linkedin\.com/i, hint: "linkedin.com/company/yourgroup", url: (v) => asUrl(v) || (/^[\w-]{2,100}$/.test(v) ? "https://www.linkedin.com/company/" + v : "") },
+  { id: "youtube", label: "YouTube", re: /youtube\.com|youtu\.be/i, hint: "youtube.com/@yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?[\w.-]{3,30}$/.test(v) ? "https://www.youtube.com/@" + handle(v) : "") },
+  { id: "other", label: "Other social", re: /$^/, hint: "bsky.app/profile/yourgroup, tiktok.com/@yourgroup…", url: (v) => asUrl(v) },
+];
 const BOOLS = ["online", "remote", "youth_serving", "school_club", "free_food", "affiliated_only", "help_wanted"];
 const CHOICES: Record<string, [string, string][]> = {
   status: [["active", "Active"], ["planning", "Planning"], ["completed", "Completed"]],
@@ -143,7 +160,13 @@ function sessionId(): string {
   return id;
 }
 
-function start(DATA: Obj, token: string) {
+/** Fills the loading bar before the page appears. */
+function finishLoading() {
+  const bar = document.getElementById("loading-bar");
+  if (bar) { bar.style.transition = "width .25s ease-out"; bar.style.width = "100%"; }
+}
+
+function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   const sid = sessionId();
   const coalition = DATA.kind === "coalition" || DATA.org?.kind === "coalition";
   const groupWord = coalition ? "coalition" : "organization";
@@ -193,6 +216,8 @@ function start(DATA: Obj, token: string) {
   } catch { /* ignore */ }
 
   let editor = false, submitted = false, busy = false;
+  /** Extra point person rows shown (round 5: behind "+ Add another point person"). */
+  let othersShown = others.filter((o) => o.name || o.email).length;
   let draftAt: string = DATA.draftAt || "";
   const baseSubmittedAt: string = DATA.submittedAt || ""; // set once from the GET data; only a reload changes it
   let stale = false;
@@ -272,7 +297,16 @@ function start(DATA: Obj, token: string) {
       <div><label for="pphone">Phone (optional)</label><input id="pphone" type="tel" autocomplete="tel"></div>
       <div><label for="pbest">Best way to reach you</label><select id="pbest">${bestOptions()}</select><p class="hint" id="pbest-hint"></p></div>
       </div><p class="hint">Needed to submit. You’ll be added as a point person for ${gname} if there’s space.</p>
-      <h3 style="margin-top:18px">Others on your team (optional)</h3><p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}</div>`));
+      <h3 style="margin-top:18px">Others on your team (optional)</h3><p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}
+      <button type="button" class="add-other" id="add-other">+ Add another point person</button></div>`));
+    $("add-other").addEventListener("click", () => {
+      if (!editor) return;
+      othersShown = Math.min(2, othersShown + 1);
+      syncOthers();
+      const row = $("orow" + (othersShown - 1));
+      row.classList.add("reveal");
+      inp(`o${othersShown - 1}name`).focus();
+    });
     wirePerson("p", () => who, (p) => { who = p; });
     [0, 1].forEach((i) => wirePerson("o" + i, () => others[i], (p) => { others[i] = p; }));
     syncOthers();
@@ -357,6 +391,8 @@ function start(DATA: Obj, token: string) {
   }
   function syncOthers() {
     const free = freeSpaces();
+    [0, 1].forEach((i) => { $("orow" + i).hidden = i >= othersShown; });
+    ($("add-other") as HTMLButtonElement).hidden = othersShown >= Math.min(2, free);
     [0, 1].forEach((i) => {
       const on = i < free && editor;
       ["name", "email", "phone"].forEach((k) => { inp(`o${i}${k}`).disabled = !on; });
@@ -367,6 +403,26 @@ function start(DATA: Obj, token: string) {
     $("others-note").textContent = free <= 0 ? (pointPeople.length >= MAXPP ? `Your group already has ${MAXPP} point people, so no more can be added here.` : "No space left: one place is kept for you.") : `${free} space${free === 1 ? "" : "s"} left`;
   }
 
+  /** The one field a missing-info pill opens, right under the pills (round 5). */
+  function pillField(c: Card, f: string): HTMLElement {
+    const id = `pf-${esc(c.id)}`;
+    let input: string, label: string;
+    if (f.startsWith("social:")) {
+      const pf = SOCIAL.find((x) => "social:" + x.id === f)!;
+      label = pf.id === "other" ? "Link to another social media account" : `Your ${pf.label} page`;
+      input = `<input id="${id}" data-pk="1" placeholder="${esc(pf.hint)}" autocomplete="off">`;
+    } else if (CHOICES[f]) {
+      label = LABEL[f];
+      input = `<select id="${id}" data-pk="1">${CHOICES[f].filter(([o]) => o !== "unknown").map(([o, l]) => `<option value="${esc(o)}">${esc(l)}</option>`).join("")}</select>`;
+    } else if (f === "description") {
+      label = LABEL[f]; input = `<textarea id="${id}" data-pk="1"></textarea>`;
+    } else {
+      label = LABEL[f] || f; input = `<input id="${id}" data-pk="1" autocomplete="off">`;
+    }
+    return el(`<div class="pillfield reveal"><label for="${id}">${esc(label)}</label>${input}<div class="decide" style="margin-top:8px"><button type="button" class="primary pill-save">Add</button><button type="button" class="pill-cancel textbtn danger">Cancel</button></div></div>`);
+  }
+  let pillOpen: string | null = null;
+
   function card(c: Card): HTMLElement {
     const s = S(c.id), ed = !!editing[c.id], k = c.kind === "org" || c.kind === "coalition" ? "org" : c.kind;
     const sec = k === "org" ? null : sectionOf(c);
@@ -374,7 +430,7 @@ function start(DATA: Obj, token: string) {
     const fresh = isNew(c.id);
     const keys: string[] = k === "org" ? orgFields : FIELDS[kindOfSec(sec!)] || [];
     const edited = !fresh && s.fields && Object.keys(s.fields).length;
-    const box = el(`<div class="box card${sec ? " k-" + sec : ""}${s.decision === "remove" ? " removed" : ""}" id="card-${esc(c.id)}"></div>`);
+    const box = el(`<div class="box card${sec ? " k-" + sec : ""}${s.decision === "remove" ? " removed" : ""}${ed ? " is-editing" : ""}" id="card-${esc(c.id)}"></div>`);
     const moved = sec && !fresh && s.newType ? `<span class="edited-tag">type changed</span>` : "";
     const tag = sec
       ? `<span class="tagwrap"><button type="button" class="tag tagbtn" aria-haspopup="true" aria-expanded="false" aria-label="Type: ${esc(KIND_BASE[sec])}. Change type">${esc(KIND_BASE[sec])} <span aria-hidden="true">▾</span></button><span class="typemenu" role="menu" hidden>${SECTIONS.map((x) => `<button type="button" role="menuitem" class="typeopt k-${x.key}" data-type="${x.key}"${x.key === sec ? ' aria-current="true"' : ""}><span class="topt-icon"></span>${esc(KIND_BASE[x.key])}</button>`).join("")}</span></span>${moved}`
@@ -419,14 +475,14 @@ function start(DATA: Obj, token: string) {
           <p class="hint">The point person is the main contact for this ${esc(one)}: the person who keeps it up to date on the map, and who the map team contacts about it. They can update it any time without editing the rest of ${esc(DATA.org.name)}’s page. Their email and phone are never shown on the map.</p>
           <ul class="ipp-list"></ul>
           ${mode === "" ? `<button type="button" class="ipp-start">+ Add a point person for this ${esc(one)}</button>` : ""}
-          ${mode === "ask" ? `<div class="ipp-ask"><p><b>Who looks after this ${esc(one)}?</b></p><div class="decide" style="margin-top:4px"><button type="button" class="ipp-me">Me</button><button type="button" class="ipp-other">Someone else</button><button type="button" class="ipp-cancel">Cancel</button></div><p class="hint ipp-note" aria-live="polite"></p></div>` : ""}
-          <div class="ipp-add"${mode === "other" ? "" : " hidden"}><div class="row2"><div><label for="ip-${pid}-name">Name</label><input id="ip-${pid}-name" autocomplete="off"></div>
+          ${mode === "ask" ? `<div class="ipp-ask reveal"><p><b>Who is the point person?</b></p><div class="decide" style="margin-top:4px"><button type="button" class="ipp-me">Me</button><button type="button" class="ipp-other">Someone else</button><button type="button" class="ipp-cancel textbtn danger">Cancel</button></div><p class="hint ipp-note" aria-live="polite"></p></div>` : ""}
+          <div class="ipp-add reveal"${mode === "other" ? "" : " hidden"}><div class="row2"><div><label for="ip-${pid}-name">Name</label><input id="ip-${pid}-name" autocomplete="off"></div>
           <div><label for="ip-${pid}-email">Email</label><input id="ip-${pid}-email" type="email" autocomplete="off"></div>
           <div><label for="ip-${pid}-phone">Phone (optional)</label><input id="ip-${pid}-phone" type="tel" autocomplete="off"></div></div>
           <fieldset class="scope"><legend>What can they edit?</legend>
           <label><input type="radio" name="ip-${pid}-scope" value="item" checked> Just this ${esc(one)} <span class="hint">(recommended)</span></label>
           <label><input type="radio" name="ip-${pid}-scope" value="group"> Everything for ${esc(DATA.org.name)} <span class="hint">(makes them a point person for the whole group)</span></label></fieldset>
-          <div class="decide" style="margin-top:6px"><button type="button" class="ipp-btn">Add point person</button><button type="button" class="ipp-cancel">Cancel</button></div></div></fieldset>`;
+          <div class="decide" style="margin-top:6px"><button type="button" class="ipp-btn">Add point person</button><button type="button" class="ipp-cancel textbtn danger">Cancel</button></div></div></fieldset>`;
       }
       box.innerHTML = `<div class="tagrow">${sec ? `<span class="tag">${esc(title)}</span>` : `<span class="kind">${esc(title)}</span>`}</div>${f}<div class="decide"><button type="button" class="primary done-btn">${fresh ? `Add ${esc(one)}` : "Done editing"}</button><button type="button" class="cancel-btn">Cancel</button></div>`;
     }
@@ -437,13 +493,20 @@ function start(DATA: Obj, token: string) {
       if (!ul) return;
       const on = (c.pointPeople || []).map((p: Obj) => `<li>${esc(p.name || p.email)}${p.pending ? " (waiting to confirm)" : ""}</li>`);
       const mine = (itemPeople[c.id] || []).map((p, i) => `<li>${esc(p.name)} · ${esc(p.email)} · ${p.scope === "group" ? "whole group" : "just this " + esc(one)} <button type="button" class="ipp-rm" data-i="${i}" aria-label="Remove ${esc(p.name)}">Remove</button></li>`);
-      ul.innerHTML = on.concat(mine).join("") || `<li class="hint">No point person for this ${esc(one)} yet.</li>`;
+      ul.innerHTML = on.concat(mine).join("");
     };
     ippList();
     if (!ed && k === "org") {
       // Round 4 (Nov 19): coloured pills for what the group's card is missing; each opens Edit at that field.
-      const uniq = keys.filter((f) => PILL[f] && (f === "type" ? !val(c, f) || val(c, f) === "unknown" : !String(val(c, f) || "").trim()));
-      if (uniq.length) box.appendChild(el(`<div class="addinfo"><span class="hint">Add missing info:</span>${uniq.map((f, i) => `<button type="button" class="pill-add c${i % 6}" data-f="${f}">+ ${esc(PILL[f])}</button>`).join("")}</div>`));
+      const uniq = keys.filter((f) => PILL[f] && f !== "social_links" && (f === "type" ? !val(c, f) || val(c, f) === "unknown" : !String(val(c, f) || "").trim()));
+      // Social media (round 5): one pill per main platform the group hasn't listed, plus Other.
+      const socials = keys.includes("social_links") ? SOCIAL.filter((x) => x.id === "other" || !x.re.test(String(val(c, "social_links") || ""))) : [];
+      const pills = [...uniq.map((f) => ({ f, label: PILL[f] })), ...socials.map((x) => ({ f: "social:" + x.id, label: x.label }))];
+      if (pills.length) {
+        const wrap = el(`<div class="addinfo"><span class="hint">Add missing info:</span>${pills.map((x, i) => `<button type="button" class="pill-add c${i % 6}" data-f="${esc(x.f)}" aria-expanded="${pillOpen === x.f}">+ ${esc(x.label)}</button>`).join("")}</div>`);
+        box.appendChild(wrap);
+        if (pillOpen && pills.some((x) => x.f === pillOpen)) box.appendChild(pillField(c, pillOpen));
+      }
     }
     if (!ed) {
       const approved = s.decision === "approve";
@@ -517,9 +580,32 @@ function start(DATA: Obj, token: string) {
         saveItemPeople(); touch(); ippList(); return;
       }
       if (b.classList.contains("pill-add")) {
-        editing[c.id] = true; rerender(c);
-        const i = document.querySelector(`#card-${CSS.escape(c.id)} [data-k="${b.getAttribute("data-f")}"]`) as HTMLElement | null;
-        i?.scrollIntoView({ block: "center" }); i?.focus();
+        const f = b.getAttribute("data-f")!;
+        pillOpen = pillOpen === f ? null : f; // another pill closes the open one
+        rerender(c);
+        (document.querySelector(`#card-${CSS.escape(c.id)} .pillfield [data-pk]`) as HTMLElement | null)?.focus();
+        return;
+      }
+      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus(); return; }
+      if (b.classList.contains("pill-save")) {
+        const i = box.querySelector(".pillfield [data-pk]") as HTMLInputElement;
+        const f = pillOpen || "";
+        let v: string | boolean = i.type === "checkbox" ? i.checked : i.value.trim();
+        if (v === "" ) { msg("Type something first, or press Cancel.", true); i.focus(); return; }
+        let key = f;
+        if (f.startsWith("social:")) {
+          const pf = SOCIAL.find((x) => "social:" + x.id === f)!;
+          const url = pf.url(String(v));
+          if (!url) { msg(pf.id === "other" ? "Please paste the full link (for example bsky.app/profile/yourgroup)." : `Please enter your ${pf.label} link or @handle.`, true); i.focus(); return; }
+          key = "social_links";
+          const cur = String(val(c, "social_links") || "").trim();
+          v = cur ? cur + ", " + url : url;
+        }
+        s.fields = { ...(s.fields || {}), [key]: v };
+        s.decision = "approve";
+        pillOpen = null; touch(); rerender(c);
+        msg("Added. It goes on the map when you press Finalize and Submit.");
+        (document.querySelector(`#card-${CSS.escape(c.id)} .addinfo .pill-add`) as HTMLElement | null)?.focus();
         return;
       }
       if (b.classList.contains("edit-btn")) { editing[c.id] = true; rerender(c); const i = document.querySelector(`#card-${CSS.escape(c.id)} [data-k]`) as HTMLElement | null; i?.focus(); return; }
@@ -534,7 +620,11 @@ function start(DATA: Obj, token: string) {
         s.fields = fs; s.decision = "approve"; touch(); editing[c.id] = false; return rerender(c);
       }
       if (b.classList.contains("cancel-btn")) { if (fresh && !String((s.fields || {}).name || "").trim()) return drop(); editing[c.id] = false; return rerender(c); }
-      if (b.classList.contains("ok")) { s.decision = s.decision === "approve" ? "" : "approve"; touch(); return rerender(c); }
+      if (b.classList.contains("ok")) {
+        s.decision = s.decision === "approve" ? "" : "approve"; touch(); rerender(c);
+        const nb = document.querySelector(`#card-${CSS.escape(c.id)} .ok`) as HTMLElement | null;
+        nb?.classList.add("pop"); nb?.focus(); return;
+      }
       if (b.classList.contains("rm")) { if (fresh) return drop(); s.decision = s.decision === "remove" ? "" : "remove"; touch(); return rerender(c); }
     });
     return box;
@@ -641,7 +731,8 @@ function start(DATA: Obj, token: string) {
   // ---- the lock: claim, ping, release
   async function claim() {
     try {
-      const r = await call({ action: "claim", token, sid, name: myName() });
+      const r = claimP ? await claimP : await call({ action: "claim", token, sid, name: myName() });
+      claimP = undefined;
       if (!r.ok) { render(); return msg(String(r.error || "Something went wrong."), true); }
       if (r.editor) becomeEditor(r);
       else { becomeViewer(r.heldBy, r.since); checkStale(r); }
@@ -745,5 +836,8 @@ function start(DATA: Obj, token: string) {
     finally { busy = false; }
   });
 
-  void claim();
+  // Show the page right away (read-only) while the editing lock comes back.
+  render();
+  msg("Getting the page ready for editing…");
+  void claim().then(() => { if (editor && $("status").textContent === "Getting the page ready for editing…") msg(""); });
 }
