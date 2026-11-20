@@ -172,3 +172,12 @@ h2.steph{display:flex;align-items:center;gap:10px;margin:28px 0 10px;font-size:1
 h2.steph .num{width:26px;height:26px;font-size:.8em}
 .pp-box h2.steph{margin-top:0}
 .ppq{margin:0 0 4px;font-size:1.02em}
+
+/* Nov 20: "edit" text button after the topic pills; group-type drawer holds the youth question too */
+.pill-add.tedit{border:0;background:none;color:var(--dim);text-decoration:underline;text-underline-offset:3px;font-size:.8em;padding:1px 4px;font-weight:400}
+.pill-add.tedit[aria-expanded="true"]{color:var(--text,#e5e7eb);background:none}
+.pf-youth{margin:10px 0 2px}.pf-youth .hint{margin:4px 0 0}
+.fold.inline{display:inline;margin:0;padding:0;font-size:inherit;vertical-align:baseline}
+/* Nov 20: Me / Me and others / Someone else stay on one row on phones */
+.decide.ppmode{display:grid;grid-template-columns:auto auto auto;justify-content:start}
+@media (max-width:560px){.decide.ppmode{grid-template-columns:1fr 1.35fr 1.35fr;gap:6px}.decide.ppmode button{padding-left:6px;padding-right:6px;font-size:.9em;white-space:nowrap}}

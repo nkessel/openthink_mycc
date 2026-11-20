@@ -145,7 +145,7 @@ const LABEL: Obj = {
 };
 /** Short names for the "add missing info" pills on the group card. */
 const PILL: Obj = {
-  description: "Description", abbrev: "Short name", type: "Type of group", website: "Website", social_links: "Social media",
+  description: "Description", abbrev: "Short name", type: "Group type", website: "Website", social_links: "Social media",
   public_contact: "Public contact", geographic_focus: "Where you work", geographic_scope: "Geographic scope", topic_tags: "Topics",
   focus_tags: "Focus areas", membership_size: "Membership size", hq_address: "Map pin address",
   location: "Location", link: "Web page", skills_needed: "Skills wanted", end: "End time", recurrence: "Repeats", rsvp_link: "Sign-up link",
@@ -173,12 +173,12 @@ const SOCIAL: { id: string; label: string; re: RegExp; hint: string; url: (v: st
 const BRAND: Record<string, string> = { instagram: "#f06292", facebook: "#5b9cf5", x: "#e5e7eb", linkedin: "#4fa3e0", youtube: "#ff7a7a", bluesky: "#4aa8ff", tiktok: "#5ee8e3", threads: "#d1d5db", mastodon: "#8b8cff", linktree: "#5be37a", other: "#a1a8b3" };
 /** Missing-info pills per card kind (round 7): the most-used as pills, the rest behind "+ N more". */
 const MAIN_PILLS: Record<string, string[]> = {
-  org: ["description", "website", "public_contact", "topic_tags"], coalition: ["description", "website", "focus_tags"],
+  org: ["description", "type", "website", "public_contact", "topic_tags"], coalition: ["description", "website", "focus_tags"],
   event: ["description", "location", "link", "topic_tags"], project: ["description", "link", "skills_needed", "topic_tags"],
   action: ["description", "link", "deadline", "skills_needed"],
 };
 const LESSER_PILLS: Record<string, string[]> = {
-  org: ["abbrev", "type", "geographic_focus", "hq_address", "membership_size"], coalition: ["abbrev", "geographic_scope"],
+  org: ["abbrev", "geographic_focus", "hq_address", "membership_size"], coalition: ["abbrev", "geographic_scope"],
   event: ["end", "recurrence", "rsvp_link", "public_contact"], project: ["location", "public_contact"], action: ["urgency"],
 };
 const BOOLS = ["online", "remote", "youth_serving", "school_club", "free_food", "affiliated_only", "help_wanted"];
@@ -502,9 +502,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     app.appendChild(card(DATA.org as Card));
     // Point people (round 7, Nov 20 design canvas, option B): a question, the description, details under Learn more.
     const gname = esc(DATA.org.name);
-    app.appendChild(el(`<div class="box pp-box" id="point-people">${stepTitle(2)}<p class="ppq"><b>Who is your group’s point person?</b></p>
-      <p>Point people are your group’s main contacts and editors on the map: each gets a personal link to update your group’s description, events, projects and actions any time.</p>
-      <button type="button" class="fold" id="pp-more" aria-expanded="false">Learn more ▸</button>
+    app.appendChild(el(`<div class="box pp-box" id="point-people">${stepTitle(2)}<p class="ppq"><b>Who is your group’s contact person?</b></p>
+      <p>Point people are your group’s main contacts and editors on the map: each gets a personal link to update your group’s description, events, projects and actions any time. <button type="button" class="fold inline" id="pp-more" aria-expanded="false">More about point people ▸</button></p>
       <div class="foldbody" id="pp-more-body" hidden><p class="pp">A group can have up to ${MAXPP} point people. Someone who only runs one event or project can be the point person for just that item: press <b>Edit</b> on its card below. We email every new point person a link to confirm their address. Emails and phone numbers are only seen by the map’s core team, never shown on the map.${onFileNames ? ` <b>Already on file: ${onFileNames}.</b>` : ""}</p></div>
       <div class="decide ppmode" role="group" aria-label="Who is the point person?"><button type="button" data-m="me">Me</button><button type="button" data-m="team">Me and others</button><button type="button" data-m="else">Someone else</button></div>
       <div class="row2" style="margin-top:6px">
@@ -529,7 +528,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       const set = (on: boolean, anim: boolean) => {
         const h0 = box.offsetHeight;
         d.hidden = !on; b.setAttribute("aria-expanded", String(on));
-        if (btn === "pp-more") b.textContent = on ? "Learn more ▾" : "Learn more ▸";
+        if (btn === "pp-more") b.textContent = on ? "More about point people ▾" : "More about point people ▸";
         else b.hidden = on;
         if (anim) { glide(box, h0); if (on) d.classList.add("reveal"); }
       };
@@ -677,7 +676,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       label = LABEL[f]; input = `<input id="${id}" data-pk="1" type="url" placeholder="https://" autocomplete="off">`;
     } else {
       label = LABEL[f] || f;
-      if (CHOICES[f]) input = `<select id="${id}" data-pk="1">${CHOICES[f].filter(([o]) => o).map(([o, l]) => `<option value="${esc(o)}">${esc(l)}</option>`).join("")}</select>`;
+      if (CHOICES[f] && f !== "type") input = `<select id="${id}" data-pk="1">${CHOICES[f].filter(([o]) => o).map(([o, l]) => `<option value="${esc(o)}">${esc(l)}</option>`).join("")}</select>`;
       else if (f !== "type" && f !== "topic_tags" && f !== "focus_tags") input = `<input id="${id}" data-pk="1" type="${f === "end" ? "datetime-local" : f === "deadline" ? "date" : /link$/.test(f) ? "url" : "text"}"${/link$/.test(f) ? ' placeholder="https://"' : f === "skills_needed" ? ' placeholder="e.g. outreach, design"' : ""} autocomplete="off">`;
     }
     // Round 7: a drawer whose arrow points up at the pill; Cancel (muted) sits left of Add.
@@ -685,6 +684,14 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     if (f === "type" || f === "topic_tags" || f === "focus_tags") {
       d.insertBefore(picker(id, f, pillDraft[f] || "", "data-pk"), d.querySelector(".pf-actions"));
       (d.querySelector(".pf-enter") as HTMLElement).textContent = f === "type" ? "Pick all that apply" : "Enter adds a topic";
+      if (f !== "type" && splitList(val(c, f)).length) (d.querySelector(".pill-save") as HTMLElement).textContent = "Save topics";
+      // Nov 20: the group-type pill also asks the youth question, so both group-type facts are set in one place.
+      if (f === "type" && c.kind === "org" && orgFields.includes("youth_serving")) {
+        const on = pillDraft.youth != null ? pillDraft.youth === "1" : isOn(val(c, "youth_serving"));
+        const y = el(`<div class="pf-youth"><label class="askrow"><input type="checkbox" data-youth="1"${on ? " checked" : ""}><span>${ASK.youth_serving.text}</span></label><p class="hint">${esc(ASK.youth_serving.why)}</p></div>`);
+        (y.querySelector("input") as HTMLInputElement).addEventListener("change", (e) => { pillDraft.youth = (e.target as HTMLInputElement).checked ? "1" : "0"; });
+        d.insertBefore(y, d.querySelector(".pf-actions"));
+      }
     } else {
       const i = d.querySelector("[data-pk]") as HTMLInputElement;
       i.value = pillDraft[f] || "";
@@ -738,7 +745,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     if (!ed) {
       box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc${expanded[c.id] ? "" : " clamp"}">${esc(val(c, "description"))}</p><button type="button" class="textbtn showall" hidden>${expanded[c.id] ? "Show less ▴" : "Show all ▾"}</button>` : `<p class="desc empty">No description yet.</p>`)
         + (flags.length ? `<div class="topics"><span class="tlabel">This ${k === "org" ? "group" : esc(one)}:</span>${flags.map((t) => `<span class="tpill flag">${esc(t)}</span>`).join("")}</div>` : "")
-        + (topics.length ? `<div class="topics"><span class="tlabel">${coalition && k === "org" ? "Focus areas" : "Topics"}:</span>${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}</div>` : "")
+        + (topics.length ? `<div class="topics"><span class="tlabel">${coalition && k === "org" ? "Focus areas" : "Topics"}:</span>${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}${keys.includes(coalition && k === "org" ? "focus_tags" : "topic_tags") ? `<button type="button" class="pill-add tedit" data-f="${coalition && k === "org" ? "focus_tags" : "topic_tags"}" aria-expanded="${(pillCard === c.id ? pillOpen : null) === (coalition && k === "org" ? "focus_tags" : "topic_tags")}">edit</button>` : ""}</div>` : "")
         + (skills.length ? `<p class="who">Skills wanted: ${skills.map(esc).join(", ")}</p>` : "")
         + (people.length ? `<p class="who">${k === "org" ? "Point people (can edit everything for this group)" : "Point people"}: ${people.join(", ")}</p>` : "");
     } else {
@@ -821,7 +828,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         if (op) {
           const d = pillField(c, po!);
           if (!pfWasOpen) d.classList.add("reveal");
-          op.closest(".addinfo")!.after(d); // right under the row its pill is in, so the arrow points at it
+          (op.closest(".addinfo, .topics") as HTMLElement).after(d); // right under the row its pill is in, so the arrow points at it
         }
       }
       if (pillCard === c.id) { lastRow = rowOpen; pfWasOpen = !!(pillOpen && box.querySelector(".pillfield")); }
@@ -912,11 +919,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         const f = b.getAttribute("data-f")!;
         if (pillCard !== c.id) openPillsOn(c);
         pillOpen = pillOpen === f ? null : f;
+        // Nov 20: "edit" by the topics starts from the topics already there, so people can add or remove.
+        if (pillOpen && b.classList.contains("tedit") && pillDraft[f] == null) pillDraft[f] = splitList(val(c, f)).join(",");
         rerender(c);
         (document.querySelector(`#card-${CSS.escape(c.id)} .pillfield [data-pk]:not([type=hidden]), #card-${CSS.escape(c.id)} .pillfield .pin`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
-      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
+      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; if (f) delete pillDraft[f]; delete pillDraft.youth; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus({ preventScroll: true }); return; }
       if (b.classList.contains("pill-save")) {
         const i = box.querySelector(".pillfield [data-pk]") as HTMLInputElement;
         const f = pillOpen || "";
@@ -935,6 +944,9 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         }
         s.fields = { ...(s.fields || {}), [key]: v };
         if (key === "type" && keys.includes("school_club")) s.fields.school_club = splitList(v).includes("school_club");
+        const yb = key === "type" ? box.querySelector(".pillfield [data-youth]") as HTMLInputElement | null : null;
+        if (yb) s.fields.youth_serving = yb.checked;
+        delete pillDraft.youth;
         s.decision = "approve";
         delete pillDraft[f]; pillOpen = null; touch(); rerender(c);
         msg("Added. It goes on the map when you press Finalize and Submit.");
