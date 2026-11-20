@@ -76,12 +76,9 @@ label.check{display:flex;gap:8px;align-items:center;color:var(--text);font-size:
 .ipp-start{margin-top:4px}
 
 /* Round 5 (Nov 19): animations, red text Cancel, inline pill field, extra point person behind a button */
-button{transition:transform .12s ease,background-color .15s ease,border-color .15s ease,color .15s ease,box-shadow .15s ease}
-button:active:not(:disabled){transform:scale(.96)}
+button{transition:background-color .15s ease,border-color .15s ease,color .15s ease}
 .reveal{animation:reveal .22s ease-out both}
 @keyframes reveal{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.pop{animation:pop .28s ease-out}
-@keyframes pop{0%{transform:scale(.94)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
 .card.is-editing{animation:fadein .18s ease-out}
 @keyframes fadein{from{opacity:.4}to{opacity:1}}
 .textbtn{background:none;border:0;padding:7px 6px;text-decoration:underline;text-underline-offset:3px}
@@ -90,6 +87,7 @@ button:active:not(:disabled){transform:scale(.96)}
 .pillfield{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin-top:10px}
 .ipp-list:empty{display:none}
 .add-other{margin-top:10px}.other[hidden]{display:none}
-@media (prefers-reduced-motion:reduce){button,.reveal,.pop,.card.is-editing{transition:none;animation:none}button:active:not(:disabled){transform:none}}
+@media (prefers-reduced-motion:reduce){button,.reveal,.card.is-editing{transition:none;animation:none}}
 @media (max-width:560px){.btn-note{white-space:normal;max-width:14em}}
 .bar .status{order:-1;flex-basis:100%;min-height:1.2em;font-size:.85em}
+.addinfo.more{margin-top:6px;padding-left:12px;border-left:2px solid var(--line)}
