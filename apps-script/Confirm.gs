@@ -698,7 +698,8 @@ function confirmApply_(orgId, state, who, t, kind, others) {
     lines.push('- ' + w.email + ' added as ' + label + (added && !added.pending ? '' : ' (asked to confirm their email)'));
     if (keepDetails) logChange_(w.email, CONFIRM_FORM, 'added', 'PENDING', 'editor', orgId, orgId, label + ' named by ' + who.email);
   };
-  addPerson(who, 'a point person', false);
+  // Round 7 (Nov 20): "Someone else" is the point person, so the person filling it in isn't added.
+  if (!(state && state.selfPP === false)) addPerson(who, 'a point person', false);
   (others || []).forEach(function (w) { addPerson(w, 'another point person', true); });
 
   // Point people for one item (round 3): "just this item" → Editors item_ids; "the whole group" → a group point person.

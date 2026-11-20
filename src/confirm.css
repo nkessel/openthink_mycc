@@ -91,3 +91,50 @@ button{transition:background-color .15s ease,border-color .15s ease,color .15s e
 @media (max-width:560px){.btn-note{white-space:normal;max-width:14em}}
 .bar .status{order:-1;flex-basis:100%;min-height:1.2em;font-size:.85em}
 .addinfo.more{margin-top:6px;padding-left:12px;border-left:2px solid var(--line)}
+
+/* Round 7 (Nov 20, design canvas): steps, progress in the bar, labelled tags, 3-line descriptions, pill drawer with an
+   arrow, point person question, boxed yes/no rows, pill pickers for topics and types, muted Cancel */
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+.step{display:inline-flex;align-items:center;gap:8px;font-size:.85em;border-radius:999px;padding:3px 12px 3px 4px}
+.step:hover:not(:disabled){border-color:var(--dim)}
+.num{width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.85em;display:inline-flex;align-items:center;justify-content:center}
+.bar .progress{flex-basis:100%;max-width:760px;margin:0 auto 2px;font-size:.85em}.bar .progress .ptext{white-space:nowrap}
+.bar .pbar{height:6px}
+.tlabel{font-size:.8em;color:var(--dim);align-self:center;margin-right:2px}
+.desc.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.showall{padding:2px 0;font-size:.85em;color:#7dd3fc;text-decoration:none}
+.textbtn{color:var(--dim);text-decoration:none}.textbtn:hover:not(:disabled){color:var(--text);text-decoration:underline}
+.showall.textbtn{color:#7dd3fc}
+.pill-add.rowpill{--pc:var(--dim);border-style:dashed}
+.addinfo.more.deeper{margin-left:12px}
+.pillfield{position:relative;border:1px solid var(--accent);background:var(--bg);margin-top:12px}
+.pillfield .caret{position:absolute;top:-7px;left:20px;width:12px;height:12px;background:var(--bg);border-left:1px solid var(--accent);border-top:1px solid var(--accent);transform:rotate(45deg)}
+.pf-actions{align-items:center;margin-top:8px}.pf-enter{margin:0 0 0 auto;font-size:.78em}
+.fold{background:none;border:0;padding:2px 0;color:#7dd3fc;font-size:.9em;text-align:left}.fold[hidden],.foldbody[hidden]{display:none}
+.ppmode button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);font-weight:600}
+.ohead{display:flex;align-items:baseline;gap:8px;margin-top:8px}.ohead h3{margin:0;font-size:1em}.ohead .hint{margin:0}
+.asklab{font-size:.85em;color:var(--dim);margin:14px 0 3px}
+.askrow{display:flex;align-items:flex-start;gap:10px;margin:0;padding:9px 12px;border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:.95em;cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+.askrow input{width:20px;height:20px;flex:none;margin:1px 0 0;accent-color:var(--accent)}
+.askrow:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.askrow .hint{display:inline;font-size:.85em}
+.picker{position:relative}
+.pbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:40px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);cursor:text}
+.pbox:focus-within{border-color:#7dd3fc}
+.ptoks{display:contents}
+.ptok{display:inline-flex;align-items:center;gap:4px;font-size:.85em;color:#7dd3fc;border:1px solid #7dd3fc;border-radius:999px;padding:1px 3px 1px 10px}
+.ptype .ptok{color:var(--warn);border-color:var(--warn)}
+.px{border:0;background:none;color:var(--dim);padding:0 4px;font-size:.85em;line-height:1.4}.px:hover:not(:disabled){color:var(--text)}
+.pin{flex:1;min-width:8em;border:0;background:none;padding:4px 2px}.pin:focus-visible{outline:none}
+.psug{position:absolute;z-index:7;left:0;right:0;margin-top:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:5px;box-shadow:0 10px 24px rgba(0,0,0,.6);max-height:260px;overflow:auto}
+.psug[hidden]{display:none}
+.popt{display:flex;justify-content:space-between;gap:10px;font-size:.9em;padding:6px 10px;border-radius:6px;cursor:pointer}.popt .hint{margin:0;font-size:.85em}
+.popt.hi,.popt:hover{background:#10233a}.popt.new{border-top:1px solid var(--line);margin-top:3px}
+.ppop{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}.ppop:empty{display:none}.ppop .hint{margin:0}
+.pchip{font-size:.78em;color:var(--dim);border:1px dashed #4b5563;border-radius:999px;padding:1px 9px;background:none}
+.pchip:hover:not(:disabled){color:var(--text);border-color:var(--dim)}
+.decide .cancel-btn.textbtn{padding:7px 6px}
+@media (prefers-reduced-motion:reduce){.askrow{transition:none}}
+
+.pill-add.c0{--pc:#34d399}.pill-add.c1{--pc:#38bdf8}.pill-add.c2{--pc:#a78bfa}
+textarea.grow{min-height:0;resize:none;overflow:hidden}
