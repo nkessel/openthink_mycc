@@ -398,6 +398,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   let lastAutosave = "";
   let rev = 0, savedRev = 0; // rev changes with every edit; savedRev is what the server has
   const editing: Record<string, boolean> = {};
+  /** Nov 20 (Nathan): a card's Approve turns green once the person has worked on it (Edit, or info added). */
+  const engaged: Record<string, boolean> = {};
 
   const dirty = () => rev !== savedRev;
   const touch = () => { rev++; const b = document.getElementById("bar"); if (b && b.hidden) { b.hidden = false; b.classList.add("slidein"); } showProgress(); };
@@ -443,12 +445,34 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     if (tl) tl.style.width = n ? `${Math.round((100 * a) / n)}%` : "0";
     const cnt = document.getElementById("subcount");
     if (cnt) cnt.textContent = ` · ${a} of ${n}`;
+    // Save point person turns green once the minimum is in (name + email, and the other person's when asked).
+    const ps = document.getElementById("pp-save");
+    if (ps) ps.classList.toggle("ready", !!who.name && EMAIL_RE.test(String(who.email || "").trim()) && (ppMode === "me" || (!!others[0]?.name && EMAIL_RE.test(String(others[0]?.email || "").trim()))));
   }
   function val(c: Card, k: string) {
     const s = S(c.id);
     return s.fields && s.fields[k] !== undefined ? s.fields[k] : c[k];
   }
   const isOn = (v: unknown) => v === true || v === "TRUE";
+  /** Nov 20: "2026-12-10" → "Thu, Dec 10" (the year only when it isn't this year). */
+  const niceDay = (d: string) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d);
+    if (!m) return d;
+    const x = new Date(+m[1], +m[2] - 1, +m[3]);
+    return x.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", ...(x.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}) });
+  };
+  /** Nov 20 (Nathan): up to 3 likely topics to add with one tap: ones the name or description mentions, then the map's main topics. */
+  let vocab: [string, number][] = [];
+  function suggestTopics(c: Card, tf: string): string[] {
+    if (!vocab.length) return [];
+    const have = new Set(splitList(val(c, tf)).map(topicSlug));
+    const text = ` ${String(val(c, "name") || "")} ${String(val(c, "description") || "")} `.toLowerCase();
+    const label = (t: string) => String(topicName(t)).toLowerCase();
+    const mentioned = vocab.filter(([t]) => !have.has(t) && label(t).length >= 4 && text.includes(label(t))).map(([t]) => t);
+    const common = vocab.filter(([t, n]) => n >= 1000 && !have.has(t) && !mentioned.includes(t)).map(([t]) => t);
+    return mentioned.concat(common).slice(0, 3);
+  }
+  void mapTopics().then((v) => { vocab = v; cards.forEach((c) => { if (!editing[c.id]) rerender(c); }); });
   function when(c: Card) {
     const d = val(c, "date");
     if (!d) return "";
@@ -597,7 +621,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       if (Object.values(editing).some(Boolean)) return msg("Press “Done editing” on the open card first.", true);
       cards.forEach((c) => { const s = S(c.id); if (s.decision !== "remove") s.decision = "approve"; });
       touch();
-      cards.forEach(rerender);
+      cards.forEach((c) => rerender(c));
       msg(`Approved ${cards.filter((c) => S(c.id).decision === "approve").length} card(s). Review anything you like, then press Finalize and Submit.`);
     });
     // Feedback for the map team (Nathan, Nov 17): sent with Finalize and Submit, saved with the draft.
@@ -772,19 +796,30 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       : `<span class="kind">${esc(KIND.org)}</span>`;
     const head = `<div class="tagrow">${tag}${fresh ? '<span class="edited-tag">new</span>' : edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
     const typeName = (t: string) => (CHOICES.type.find((x) => x[0] === t) || [t, t])[1];
-    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "status"), val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + val(c, "deadline") : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "rsvp_link") ? "sign-up: " + val(c, "rsvp_link") : "", k === "org" && val(c, "hq_address") && !isOn(val(c, "remote")) ? "pin: " + val(c, "hq_address") : "", k === "org" && isOn(val(c, "remote")) ? "no pin on the map" : "", val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
+    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + niceDay(String(val(c, "deadline"))) : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "rsvp_link") ? "sign-up: " + val(c, "rsvp_link") : "", k === "org" && val(c, "hq_address") && !isOn(val(c, "remote")) ? "pin: " + val(c, "hq_address") : "", k === "org" && isOn(val(c, "remote")) ? "no pin on the map" : "", val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
     // Round 7: labelled rows, so yes/no facts and topics don't look alike.
     const flags = [["youth_serving", "✓ Youth group"], ["remote", "No pin on the map"], ["free_food", "✓ Free food"], ["affiliated_only", "Members only"]]
-      .filter(([f]) => keys.includes(f) && isOn(val(c, f))).map(([, l]) => l).concat(kindOfSec(sec || "event") === "project" && keys.includes("help_wanted") && !isOn(val(c, "help_wanted")) ? ["Not looking for help"] : []);
+      .filter(([f]) => keys.includes(f) && isOn(val(c, f))).map(([, l]) => l);
     const topics = splitList(val(c, "topic_tags") || val(c, "focus_tags") || c.topic_tags).map(topicName);
     const skills = String(val(c, "skills_needed") || "").split(/[,;]\s*/).filter(Boolean);
     const people = k === "org"
       ? pointPeople.map((p) => esc(p.name || p.email) + (p.pending ? " (waiting to confirm)" : ""))
       : [...(c.pointPeople || []).map((p: Obj) => esc(p.name || p.email) + (p.pending ? " (waiting to confirm)" : "")), ...(itemPeople[c.id] || []).map((p) => esc(p.name) + " (new" + (p.scope === "group" ? ", whole group" : "") + ")")];
+    const tf = coalition && k === "org" ? "focus_tags" : "topic_tags";
+    /** Topics, a few likely ones to add with one tap (grey), and "edit … topics". */
+    const topicRow = () => {
+      if (!keys.includes(tf)) return topics.length ? `<div class="topics"><span class="tlabel">Topics:</span>${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}</div>` : "";
+      const sug = suggestTopics(c, tf);
+      if (!topics.length && !sug.length) return "";
+      const what = k === "org" ? (coalition ? "focus areas" : "group topics") : `${one} topics`;
+      return `<div class="topics"><span class="tlabel">${coalition && k === "org" ? "Focus areas" : "Topics"}:</span>${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}`
+        + sug.map((t) => `<button type="button" class="tsug" data-t="${esc(t)}" title="Add this topic">+ ${esc(topicName(t))}</button>`).join("")
+        + (topics.length ? `<button type="button" class="pill-add tedit" data-f="${tf}" aria-expanded="${(pillCard === c.id ? pillOpen : null) === tf}">edit ${what}</button>` : "") + `</div>`;
+    };
     if (!ed) {
       box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc${expanded[c.id] ? "" : " clamp"}">${esc(val(c, "description"))}</p><button type="button" class="textbtn showall" hidden>${expanded[c.id] ? "Show less ▴" : "Show all ▾"}</button>` : `<p class="desc empty">No description yet.</p>`)
         + (flags.length ? `<div class="topics"><span class="tlabel">This ${k === "org" ? "group" : esc(one)}:</span>${flags.map((t) => `<span class="tpill flag">${esc(t)}</span>`).join("")}</div>` : "")
-        + (topics.length ? `<div class="topics"><span class="tlabel">${coalition && k === "org" ? "Focus areas" : "Topics"}:</span>${topics.map((t) => `<span class="tpill">${esc(t)}</span>`).join("")}${keys.includes(coalition && k === "org" ? "focus_tags" : "topic_tags") ? `<button type="button" class="pill-add tedit" data-f="${coalition && k === "org" ? "focus_tags" : "topic_tags"}" aria-expanded="${(pillCard === c.id ? pillOpen : null) === (coalition && k === "org" ? "focus_tags" : "topic_tags")}">edit ${coalition && k === "org" ? "focus areas" : "topics"}</button>` : ""}</div>` : "")
+        + topicRow()
         + (skills.length ? `<p class="who">Skills wanted: ${skills.map(esc).join(", ")}</p>` : "")
         + (people.length ? `<p class="who">${k === "org" ? "Point people (can edit everything for this group)" : "Point people"}: ${people.join(", ")}</p>` : "");
     } else {
@@ -876,7 +911,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     }
     if (!ed) {
       const approved = s.decision === "approve";
-      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="ok" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
+      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="ok${!approved && engaged[c.id] ? " ready" : ""}" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
     }
     box.addEventListener("keydown", (e) => {
       const m = box.querySelector(".typemenu") as HTMLElement | null;
@@ -956,6 +991,14 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         (itemPeople[c.id] || []).splice(Number(b.getAttribute("data-i")), 1);
         saveItemPeople(); touch(); ippList(); return;
       }
+      if (b.classList.contains("tsug")) {
+        const tf = c.kind === "org" && coalition ? "focus_tags" : "topic_tags";
+        const cur = splitList(val(c, tf));
+        s.fields = { ...(s.fields || {}), [tf]: cur.concat(b.getAttribute("data-t")!).join(", ") };
+        engaged[c.id] = true; touch(); rerender(c);
+        msg(`Added “${topicName(b.getAttribute("data-t")!)}”. Approve the card when it looks right.`);
+        return;
+      }
       if (b.classList.contains("pill-add")) {
         const f = b.getAttribute("data-f")!;
         if (pillCard !== c.id) openPillsOn(c);
@@ -977,8 +1020,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         if (altBox && altBox.checked) {
           s.fields = { ...(s.fields || {}), [altBox.getAttribute("data-alt")!]: true };
           if (v !== "" && !i.disabled) s.fields[f] = v;
-          s.decision = "approve"; delete pillDraft[f]; delete pillDraft[altBox.getAttribute("data-alt")!]; pillOpen = null; touch(); rerender(c);
-          msg("Added. It goes on the map when you press Finalize and Submit.");
+          engaged[c.id] = true; delete pillDraft[f]; delete pillDraft[altBox.getAttribute("data-alt")!]; pillOpen = null; touch(); rerender(c);
+          msg("Added. Approve the card when it looks right; it goes on the map when you press Finalize and Submit.");
           return;
         }
         if (v === "" ) { msg(f === "type" ? "Pick a type first, or press Cancel." : "Type something first, or press Cancel.", true); (q || i).focus(); return; }
@@ -998,13 +1041,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         const yb = key === "type" ? box.querySelector(".pillfield [data-youth]") as HTMLInputElement | null : null;
         if (yb) s.fields.youth_serving = yb.checked;
         delete pillDraft.youth;
-        s.decision = "approve";
+        engaged[c.id] = true;
         delete pillDraft[f]; pillOpen = null; touch(); rerender(c);
-        msg("Added. It goes on the map when you press Finalize and Submit.");
+        msg("Added. Approve the card when it looks right; it goes on the map when you press Finalize and Submit.");
         (document.querySelector(`#card-${CSS.escape(c.id)} .addinfo .pill-add`) as HTMLElement | null)?.focus({ preventScroll: true });
         return;
       }
-      if (b.classList.contains("edit-btn")) { editing[c.id] = true; rerender(c); const i = document.querySelector(`#card-${CSS.escape(c.id)} [data-k]`) as HTMLElement | null; i?.focus({ preventScroll: true }); return; }
+      if (b.classList.contains("edit-btn")) { editing[c.id] = true; engaged[c.id] = true; rerender(c, "open"); const i = document.querySelector(`#card-${CSS.escape(c.id)} [data-k]`) as HTMLElement | null; i?.focus({ preventScroll: true }); return; }
       if (b.classList.contains("done-btn")) {
         const fs: Obj = {};
         box.querySelectorAll<HTMLInputElement>("[data-k]").forEach((i) => {
@@ -1042,12 +1085,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     n.style.overflow = "clip";
     n.animate([{ height: h0 + "px" }, { height: h1 + "px" }], { duration: 220, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = () => { n.style.overflow = ""; n.scrollTop = 0; };
   }
-  function rerender(c: Card) {
+  function rerender(c: Card, how?: "open") {
     const old = document.getElementById("card-" + c.id);
     if (!old) return;
     const n = card(c);
     const h0 = old.offsetHeight;
     old.replaceWith(n);
+    if (how === "open" && !calm.matches) n.classList.add("edit-in"); // Nov 20: the editor fades and slides in as the card grows
     glide(n, h0);
     if (!editor) lockWithin(n);
   }
@@ -1235,6 +1279,8 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     if (!editor || busy) return;
     if (!ready()) return;
     if (Object.values(editing).some(Boolean)) return msg("Press “Done editing” on the open card first.", true);
+    // Info added with a pill but never approved still goes in (the person clearly meant it).
+    cards.forEach((c) => { const x = S(c.id); if (!x.decision && x.fields && Object.keys(x.fields).length) x.decision = "approve"; });
     const n = cards.filter((c) => !S(c.id).decision).length;
     if (n && !confirm(`${n} card(s) have no decision yet and will be left as they are. Submit anyway?`)) return;
     msg("Submitting…");

@@ -1,7 +1,7 @@
 // The detail card for one event, project or action, shown over a page (Events, Topics…) without leaving it.
 import type { Action, CoalitionEvent, DataFile, Project } from "./types";
 import { allActions, allEvents, allProjects, ownerBadge, sectorAttrs, sectorPill, type Owner } from "./owners";
-import { contactLinks, itemButtons, joinLine } from "./links";
+import { contactLinks, itemButtons, joinLine, niceDay } from "./links";
 import { h } from "./dom";
 import { staleNotice } from "./notice";
 import { fmtEventTime, hasTime, parseEventDate } from "./util";
@@ -80,7 +80,7 @@ export function showItemCard(host: HTMLElement, kind: CardKind, item: CardItem, 
   } else {
     pills.push(
       h("span", { class: "pill kind" }, a.kind === "role" ? "Volunteer role" : "Action"),
-      a.deadline ? h("span", { class: "pill deadline" }, `Deadline ${a.deadline}`) : null,
+      a.deadline ? h("span", { class: "pill deadline" }, `Deadline ${niceDay(a.deadline)}`) : null,
       a.urgency ? h("span", { class: "pill" }, a.urgency) : null,
       a.location ? h("span", { class: "pill" }, a.location) : null,
       a.online ? h("span", { class: "pill" }, "online") : null,
