@@ -1,7 +1,7 @@
 /* The map's dark theme (round 3 mockups, Nov 6) */
 :root{color-scheme:dark;--bg:#0a0a0f;--card:#15151c;--text:#e5e7eb;--dim:#a1a8b3;--line:#2f2f3c;--accent:#34d399;--accent-soft:#10322a;--warn:#f2c46b;--warn-soft:#3a2f17;--bad:#ff8f8f;--bad-soft:#3d1f22}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:760px;margin:0 auto;padding:20px 16px 120px}h1{font-size:1.5em;margin:.2em 0}h2{font-size:1.1em;margin:28px 0 8px}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 160px}h1{font-size:1.5em;margin:.2em 0}h2{font-size:1.1em;margin:28px 0 8px}
 .lead{color:var(--dim);margin:0 0 16px}.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}
 label{display:block;font-size:.85em;color:var(--dim);margin:8px 0 2px}input,textarea,select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text)}
 input:disabled,textarea:disabled,select:disabled{opacity:.6;cursor:not-allowed}
@@ -181,3 +181,26 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 /* Nov 20: Me / Me and others / Someone else stay on one row on phones */
 .decide.ppmode{display:grid;grid-template-columns:auto auto auto;justify-content:start}
 @media (max-width:560px){.decide.ppmode{grid-template-columns:1fr 1.35fr 1.35fr;gap:6px}.decide.ppmode button{padding-left:6px;padding-right:6px;font-size:.9em;white-space:nowrap}}
+
+/* Nov 20 — bottom bar: G on desktop (step bar above two big buttons, notes kept), H on phones (thin top line, count on Submit). No Next. */
+.bar{position:fixed}
+.bar .stepbar{flex-basis:100%;max-width:760px;margin:0 auto;display:flex;gap:6px}
+.bar .seg{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;background:none;border:0;padding:2px 0;cursor:pointer;text-align:left;color:var(--dim);font:inherit}
+.bar .seg.wide{flex:2}
+.bar .seg .track{display:block;height:5px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar .seg .fill{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.bar .seg .slab{font-size:.72em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .seg:hover .slab{color:var(--text)}
+.bar .seg .short{display:none}
+.bar .topline{display:none}
+.bar #submit .subcount{display:none}
+.bar{flex-wrap:wrap}
+@media (min-width:561px){.bar{display:grid;grid-template-columns:repeat(2,minmax(0,280px));justify-content:center;gap:8px 14px}.bar .stepbar{grid-column:1/-1;width:100%;max-width:none}.bar .btnwrap{min-width:0}.bar .btnwrap button{width:100%}.bar .btn-note{white-space:normal}}
+@media (max-width:560px){
+  .bar{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;padding-top:12px}
+  .bar .stepbar{display:none}
+  .bar .topline{display:block;position:absolute;left:0;right:0;top:0;height:4px;background:var(--line)}
+  .bar .topline span{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+  .bar #submit .sublong{display:none}
+  .bar #submit .subcount{display:inline}
+}

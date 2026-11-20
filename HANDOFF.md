@@ -30,6 +30,8 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 20 — bottom bar: G on desktop, H on phones** (Nathan). Next button removed. Desktop: a bar split into the 3 steps (1 Details / 2 Point people / 3 Review · n of m, ✓ when done; each part jumps to its step) above Save for later and Finalize and Submit, both full buttons with their notes. Phones (≤560px): thin line on the top edge (cards approved) and "Submit · n of m". Numbering rule: numbers never reused within a conversation (LLM_GUIDELINES 5).
+
 - **Nov 20 — events: sign-up link lives in the "+ Web page" pill** (checkbox "This is a sign-up or RSVP page" saves to rsvp_link, which the map shows as the RSVP button); the separate sign-up pill only shows once a web page exists. Card line shows "sign-up: …". Topic link reads "edit topics".
 
 - **Nov 20 — "+ Map pin address" pill renamed "+ Group location"** (Nathan); field label "Group location: the address for your map pin…".
