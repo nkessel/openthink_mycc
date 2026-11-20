@@ -2,7 +2,7 @@
 
 **Start with [HANDOFF.md](HANDOFF.md)** (current state, what's waiting, recent changes) and update it before you finish a session, so any account can pick up where the last one stopped.
 
-Follow the team's shared rules in [LLM_GUIDELINES.md](LLM_GUIDELINES.md). In short: brief answers, label responses (`1.01`), use detail tags `[0]`–`[4]` (default `[2]`), state your uncertainty, `git pull` + check open PRs before coding, branch off `development_branch` and open a PR into it (never push to `main` or `development_branch` directly), and log what you did and why in `<github-username>_LLM.log`.
+Follow the team's shared rules in [LLM_GUIDELINES.md](LLM_GUIDELINES.md). In short: brief answers, number every point in responses (`1`, `1.1`, `1.1.2`) so each suggestion or question can be answered by number, use detail tags `[0]`–`[4]` (default `[2]`), state your uncertainty, `git pull` + check open PRs before coding, branch off `development_branch` and open a PR into it (never push to `main` or `development_branch` directly), and log what you did and why in `<github-username>_LLM.log`.
 
 ## Project
 

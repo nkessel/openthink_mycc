@@ -49,6 +49,7 @@ function sheet(name) {
   };
 }
 const ssObj = { getSheetByName: sheet, getUrl: () => "https://sheet", toast: () => {} };
+const mailQuota = { left: 100 };
 const props = { ADMIN_EMAILS: "admin1@example.org, admin2@example.org, admin3@example.org" };
 const mail = [];
 const cache = {};
@@ -63,7 +64,7 @@ const ctx = {
   HtmlService: { createHtmlOutput: (h) => ({ html: h, setTitle() { return this; }, addMetaTag() { return this; } }) },
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   Session: { getScriptTimeZone: () => "America/New_York", getActiveUser: () => ({ getEmail: () => "" }) },
-  MailApp: { sendEmail: (to, subject, body, opts) => mail.push({ to, subject, body, opts }) },
+  MailApp: { sendEmail: (to, subject, body, opts) => mail.push({ to, subject, body, opts }), getRemainingDailyQuota: () => mailQuota.left },
   // Apps Script's Utilities, backed by Node's crypto (bytes come back signed, as in Apps Script)
   Utilities: {
     sleep: () => {},
@@ -811,7 +812,24 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(vp.draft.org.fields.description, "Draft text");
   assert.equal("draft" in post({ action: "ping", token: L.token, sid: B, name: "Bob", draftAt: pg.savedAt }), false);
   // not the holder: save and submit are refused
+  // Nov 20: partial work emails the team once per 6 hours per group (the autosave above already did)
+  const prog = mail.filter((m) => /is reviewing their information/.test(m.subject));
+  assert.equal(prog.length, 1, "one progress email for the first save");
+  assert.match(prog[0].body, /approved/); assert.equal(prog[0].to, "admin1@example.org,admin2@example.org,admin3@example.org");
   const rs = post({ action: "save", token: L.token, sid: B, state });
+  assert.equal(mail.filter((m) => /is reviewing their information/.test(m.subject)).length, 1, "not again within 6 hours");
+  // ALERT_EMAIL sends to the team inbox only; a low quota skips alerts so confirmation emails still go
+  {
+    const fake = { rec: { token: "f".repeat(32), org_name: "Test Group" } }, n = () => mail.filter((m) => /Test Group is reviewing/.test(m.subject));
+    props.ALERT_EMAIL = "team@example.org";
+    mailQuota.left = 20; ctx.confirmProgressAlert_(fake, state, "x@example.org", true);
+    assert.equal(n().length, 0, "skipped when the quota is low");
+    mailQuota.left = 100; ctx.confirmProgressAlert_(fake, state, "x@example.org", false);
+    assert.equal(n().length, 1); assert.equal(n()[0].to, "team@example.org"); assert.match(n()[0].body, /Save for later/);
+    ctx.confirmProgressAlert_(fake, state, "x@example.org", true);
+    assert.equal(n().length, 1, "once per 6 hours");
+    delete props.ALERT_EMAIL; delete cache["alerted:" + "f".repeat(32)];
+  }
   assert.equal(rs.ok, false); assert.match(rs.error, /Ann is editing this page now\. Press Take over/);
   const rsub = post({ action: "submit", token: L.token, sid: B, state, baseSubmittedAt: "" });
   assert.equal(rsub.ok, false); assert.match(rsub.error, /Ann is editing/);
