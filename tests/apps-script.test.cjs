@@ -1009,6 +1009,11 @@ console.log("second round trip (org-owned items, locations, links) OK");
   assert.equal(G("pointPeopleOf_")("mycc", ctx.readAll_().editors).length, 0, "org lookups don't see coalition ids");
   assert.ok(mail.some((m) => m.to === "cora@example.org" && m.body.includes(PAGE + "?verify=")));
   assert.equal(linkOf("mycc", "coalition").status, "submitted");
+  // round 7: "Someone else" is the point person, so the visitor isn't added
+  const cres2 = post({ action: "submit", token: LCo.token, sid: A, baseSubmittedAt: cres.submittedAt, state: { ...cstate({}), who: { name: "Quinn Checker", email: "quinn@example.org" }, selfPP: false, others: [{ name: "Rae Lead", email: "rae@example.org", phone: "", best: "" }] } });
+  assert.equal(cres2.ok, true, JSON.stringify(cres2));
+  assert.ok(!ctx.readAll_().editors.some((r) => r.email === "quinn@example.org"), "the visitor isn't a point person");
+  assert.ok(ctx.readAll_().editors.some((r) => r.email === "rae@example.org" && ctx.list_(r.coalition_ids).includes("mycc")), "the person they named is");
 
   // doPost never throws
   const raw = (contents) => JSON.parse(ctx.doPost({ postData: { contents } }).getContent());
