@@ -30,6 +30,8 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 20 — round 12 (Nathan chose 24.1, 35.3 phone, inline desktop tick):** End time: day starts as the start day, time picked from a list counting up from the start (events; pill drawer and editor); the card line now shows start–end. Public contact: a tick inside each email/phone field on desktop (hover tip, quiet highlight), a full row under the field on phones. Edit now sits before Approve (matches Cancel/Add). Still waiting on Nathan: 36 (named Edit / general Approve), 25-28, 30, website-link design (37).
+
 - **Nov 20 — round 11:** inside a coloured pill drawer the input focus ring, address suggestions, topic box and ticked checkboxes use the pill's colour too (was green).
 
 - **Nov 20 — round 10 (Nathan, canvas comments):** more space above card titles; the website (group) / web page (items) is a labelled row under the description, as a clickable link with "edit"; the pill drawer's arrow now touches its pill even when pills wrapped (later pills get covered). Open: how to show suggested topics (not on the card preview; ideas sent in the comment thread).
