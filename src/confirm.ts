@@ -814,6 +814,10 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     // Round 9: the drawer takes the colour of its pill
     const pc = getComputedStyle(pill).getPropertyValue("--pc").trim();
     if (pc) d.style.setProperty("--pc", pc);
+    // Round 10: the drawer's arrow touches its pill, even when pills wrapped onto later rows (those get covered).
+    d.style.marginTop = "";
+    const gap = d.getBoundingClientRect().top - pill.getBoundingClientRect().bottom;
+    if (gap > 14) d.style.marginTop = `${12 - gap}px`;
     const x = pill.getBoundingClientRect().left + pill.offsetWidth / 2 - d.getBoundingClientRect().left - 7;
     const caret = d.querySelector(".caret") as HTMLElement;
     caret.style.left = x + "px";
@@ -843,7 +847,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       : `<span class="kind">${esc(KIND.org)}</span>`;
     const head = `<div class="tagrow">${tag}${fresh ? '<span class="edited-tag">new</span>' : edited ? '<span class="edited-tag">edited</span>' : ""}</div><h3>${esc(val(c, "name") || "(no name)")}</h3>`;
     const typeName = (t: string) => (CHOICES.type.find((x) => x[0] === t) || [t, t])[1];
-    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + niceDay(String(val(c, "deadline"))) : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "website") || val(c, "link"), val(c, "rsvp_link") ? "sign-up: " + val(c, "rsvp_link") : "", k === "org" && val(c, "hq_address") && !isOn(val(c, "remote")) ? "pin: " + val(c, "hq_address") : "", k === "org" && isOn(val(c, "remote")) ? "no pin on the map" : "", val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
+    const meta = [val(c, "abbrev"), k === "org" ? splitList(val(c, "type")).filter((t) => t !== "unknown").map(typeName).join(", ") : "", when(c), val(c, "recurrence"), val(c, "location"), isOn(val(c, "online")) ? "online" : "", val(c, "urgency") ? val(c, "urgency") + " urgency" : "", val(c, "deadline") ? "deadline " + niceDay(String(val(c, "deadline"))) : "", val(c, "geographic_focus"), val(c, "geographic_scope"), val(c, "rsvp_link") ? "sign-up: " + val(c, "rsvp_link") : "", k === "org" && val(c, "hq_address") && !isOn(val(c, "remote")) ? "pin: " + val(c, "hq_address") : "", k === "org" && isOn(val(c, "remote")) ? "no pin on the map" : "", val(c, "social_links"), val(c, "public_contact") ? "contact: " + val(c, "public_contact") : "", val(c, "membership_size") ? "about " + val(c, "membership_size") + " members" : ""].filter(Boolean).map(esc).join(" · ");
     // Round 7: labelled rows, so yes/no facts and topics don't look alike.
     const flags = [["youth_serving", "✓ Youth group"], ["remote", "No pin on the map"], ["free_food", "✓ Free food"], ["affiliated_only", "Members only"]]
       .filter(([f]) => keys.includes(f) && isOn(val(c, f))).map(([, l]) => l);
@@ -863,8 +867,17 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         + sug.map((t) => `<button type="button" class="tsug" data-t="${esc(t)}" title="Add this topic">+ ${esc(topicName(t))}</button>`).join("")
         + (topics.length ? `<button type="button" class="pill-add tedit" data-f="${tf}" aria-expanded="${(pillCard === c.id ? pillOpen : null) === tf}">edit ${what}</button>` : "") + `</div>`;
     };
+    /** Round 10: the web address sits under the description with its own label, as a link (like Topics). */
+    const wf = k === "org" ? "website" : "link";
+    const webRow = () => {
+      const w = String(val(c, wf) || "").trim();
+      if (!w) return "";
+      const href = asUrl(w);
+      return `<div class="topics webrow"><span class="tlabel">${k === "org" ? "Website" : "Web page"}:</span>${href ? `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(w.replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, ""))}</a>` : esc(w)}${keys.includes(wf) ? `<button type="button" class="pill-add tedit" data-f="${wf}" aria-expanded="${(pillCard === c.id ? pillOpen : null) === wf}">edit</button>` : ""}</div>`;
+    };
     if (!ed) {
       box.innerHTML = head + (meta ? `<div class="meta">${meta}</div>` : "") + (val(c, "description") ? `<p class="desc${expanded[c.id] ? "" : " clamp"}">${esc(val(c, "description"))}</p><button type="button" class="textbtn showall" hidden>${expanded[c.id] ? "Show less ▴" : "Show all ▾"}</button>` : `<p class="desc empty">No description yet.</p>`)
+        + webRow()
         + (flags.length ? `<div class="topics"><span class="tlabel">This ${k === "org" ? "group" : esc(one)}:</span>${flags.map((t) => `<span class="tpill flag">${esc(t)}</span>`).join("")}</div>` : "")
         + topicRow()
         + (skills.length ? `<p class="who">Skills wanted: ${skills.map(esc).join(", ")}</p>` : "")
