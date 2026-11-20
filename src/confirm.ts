@@ -445,21 +445,56 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     return Math.max(0, MAXPP - pointPeople.length - (onFile || ppMode === "else" ? 0 : 1));
   }
 
+  // ---- steps (round 7): the same four steps at the top and on the Next button
+  const steps = () => [
+    { id: "card-" + DATA.org.id, label: `Review your ${coalition ? "coalition" : "group"}` },
+    { id: "point-people", label: "Point people" },
+    { id: "sec-event", label: "Events, projects & actions" },
+    { id: "approve-all-box", label: "Submit" },
+  ];
+  /** The step whose part of the page is on screen (the last one whose top has passed 40% of the window). */
+  function stepNow(): number {
+    const line = innerHeight * 0.4;
+    let n = 0;
+    steps().forEach((x, i) => { const e = document.getElementById(x.id); if (e && e.getBoundingClientRect().top <= line) n = i; });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) n = steps().length - 1;
+    return n;
+  }
+  function goStep(i: number) {
+    const x = steps()[i], e = document.getElementById(x.id);
+    if (!e) return;
+    e.scrollIntoView({ block: "start", behavior: calm.matches ? "auto" : "smooth" });
+    if (i === steps().length - 1) ($("submit") as HTMLElement).focus({ preventScroll: true });
+  }
+  function syncSteps() {
+    const n = stepNow(), all = steps(), nx = document.getElementById("next");
+    document.querySelectorAll<HTMLElement>(".steps .step").forEach((b, i) => { if (i === n) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+    if (!nx) return;
+    const last = n >= all.length - 1;
+    nx.hidden = last;
+    if (!last) nx.textContent = `Next: ${all[n + 1].label} ↓`;
+  }
+
   // ---- rendering
   function render() {
     syncNewCards();
     const app = $("app");
     app.innerHTML = "";
     app.appendChild(el(`<div><h1>Check ${esc(DATA.org.name)}’s information</h1><p class="lead">All of this group information was retrieved from online sources. Approve what’s right, edit what isn’t, and add anything we missed with the <b>+</b> buttons. Approved information goes live when you press <b>Finalize and Submit</b> (at the end of the page); <b>Save for later</b> keeps your work.</p>
-      <div class="steps"><button type="button" class="step" data-go="card-${esc(DATA.org.id)}"><span class="num">1</span>Check your group</button><button type="button" class="step" data-go="sec-event"><span class="num">2</span>Check events, projects &amp; actions</button><button type="button" class="step" data-go="bar"><span class="num">3</span>Submit</button></div></div>`));
-    app.querySelectorAll<HTMLElement>(".step").forEach((b) => b.addEventListener("click", () => {
-      const go = b.getAttribute("data-go")!;
-      if (go === "bar") { ($("submit") as HTMLElement).focus(); window.scrollTo({ top: document.body.scrollHeight, behavior: calm.matches ? "auto" : "smooth" }); return; }
-      document.getElementById(go)?.scrollIntoView({ block: "start", behavior: calm.matches ? "auto" : "smooth" });
-    }));
+      <div class="steps">${steps().map((x, i) => `<button type="button" class="step" data-i="${i}"><span class="num">${i + 1}</span>${esc(x.label)}</button>`).join("")}</div></div>`));
+    app.querySelectorAll<HTMLElement>(".step").forEach((b) => b.addEventListener("click", () => goStep(Number(b.getAttribute("data-i")))));
     if (baseSubmittedAt) app.appendChild(el(`<div class="box done">Thank you: this was submitted on ${esc(new Date(baseSubmittedAt).toLocaleDateString())}. You can check it again and submit any changes.</div>`));
     // Round 7: the progress count sits in the bar at the bottom, next to Submit.
-    if (!document.getElementById("progress")) $("bar").prepend(el(`<div class="progress" id="progress"><span class="ptext"><b></b> cards approved</span><div class="pbar" aria-hidden="true"><span></span></div></div>`));
+    if (!document.getElementById("progress")) {
+      $("bar").prepend(el(`<div class="progress" id="progress"><span class="ptext"><b></b> cards approved</span><div class="pbar" aria-hidden="true"><span></span></div></div>`));
+      // Next (round 7, Nathan): walks through the steps; its label names the next one.
+      const nx = el(`<button type="button" id="next" class="nextbtn"></button>`);
+      document.getElementById("progress")!.after(nx);
+      nx.addEventListener("click", () => goStep(Math.min(steps().length - 1, stepNow() + 1)));
+      let raf = 0;
+      window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; syncSteps(); }); }, { passive: true });
+    }
+    requestAnimationFrame(syncSteps);
     const onFileNames = pointPeople.map((p) => esc(p.name || p.email) + (p.pending ? " (waiting to confirm)" : "")).join(", ");
     app.appendChild(el(`<h2>Your ${coalition ? "coalition" : "organization"}</h2>`));
     app.appendChild(card(DATA.org as Card));
@@ -533,7 +568,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       list.forEach((c) => app.appendChild(card(c)));
     });
     // Approve all (Nathan, Nov 17): under the last cards that ask for approval. Marks every card approved, except ones marked Remove.
-    app.appendChild(el(`<div class="box approve-all"><button type="button" class="primary" id="approve-all">✓ Approve all</button><p class="hint">Approves every card you haven’t marked Remove.</p></div>`));
+    app.appendChild(el(`<div class="box approve-all" id="approve-all-box"><button type="button" class="primary" id="approve-all">✓ Approve all</button><p class="hint">Approves every card you haven’t marked Remove.</p></div>`));
     $("approve-all").addEventListener("click", () => {
       if (!editor) return;
       if (Object.values(editing).some(Boolean)) return msg("Press “Done editing” on the open card first.", true);

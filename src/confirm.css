@@ -152,3 +152,9 @@ textarea.grow{min-height:0;resize:none;overflow:hidden}
 .bar #save{border-color:var(--dim)}
 .bar .btn-note{font-size:.68em}
 @media (max-width:560px){.bar{flex-wrap:wrap;gap:8px 10px}.bar .progress{flex-basis:100%;max-width:none}.bar #save,.bar #submit{padding:9px 14px}}
+/* Round 7: Next button in the bar; the current step is marked at the top */
+.bar .nextbtn{padding:10px 16px;font-size:.95em;background:transparent;border-color:#7dd3fc;color:#7dd3fc;white-space:nowrap}
+.bar .nextbtn:hover:not(:disabled){background:#10233a}
+.steps .step[aria-current="step"]{border-color:var(--accent);background:var(--accent-soft)}
+#card-org,.card,.pp-box,h2.sec,.approve-all{scroll-margin-top:16px}
+@media (max-width:560px){.bar .nextbtn{flex-basis:100%;order:1}}
