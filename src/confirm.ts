@@ -167,6 +167,8 @@ function start(DATA: Obj, token: string) {
   /** Point people for one item (round 3): kept in this browser like the other point people, sent with Submit only. */
   interface ItemPerson { name: string; email: string; phone: string; best: string; scope: "item" | "group" }
   let itemPeople: Record<string, ItemPerson[]> = {};
+  /** Item point person flow (round 4): "" = button, "ask" = Me / Someone else, "other" = the form. */
+  const ippMode: Record<string, "" | "ask" | "other"> = {};
   try { itemPeople = JSON.parse(localStorage.getItem("confirm.itempeople." + token) || "{}") || {}; } catch { /* ignore */ }
   const saveItemPeople = () => { try { localStorage.setItem("confirm.itempeople." + token, JSON.stringify(itemPeople)); } catch { /* ignore */ } };
   applyKindStyle();
@@ -412,16 +414,19 @@ function start(DATA: Obj, token: string) {
       const title = fresh ? `New ${one}` : `${k === "org" ? "Group information" : KIND_BASE[sec!]} · editing`;
       if (sec) {
         const pid = esc(c.id);
+        const mode = ippMode[c.id] || "";
         f += `<fieldset class="ipp"><legend>Point people for this ${esc(one)}</legend>
-          <p class="hint">If someone else looks after this ${esc(one)}, add them to give them edit access. We’ll email them to confirm. Their email and phone are only seen by the map’s core team.</p>
+          <p class="hint">The point person is the main contact for this ${esc(one)}: the person who keeps it up to date on the map, and who the map team contacts about it. They can update it any time without editing the rest of ${esc(DATA.org.name)}’s page. Their email and phone are never shown on the map.</p>
           <ul class="ipp-list"></ul>
-          <div class="ipp-add"><div class="row2"><div><label for="ip-${pid}-name">Name</label><input id="ip-${pid}-name" autocomplete="off"></div>
+          ${mode === "" ? `<button type="button" class="ipp-start">+ Add a point person for this ${esc(one)}</button>` : ""}
+          ${mode === "ask" ? `<div class="ipp-ask"><p><b>Who looks after this ${esc(one)}?</b></p><div class="decide" style="margin-top:4px"><button type="button" class="ipp-me">Me</button><button type="button" class="ipp-other">Someone else</button><button type="button" class="ipp-cancel">Cancel</button></div><p class="hint ipp-note" aria-live="polite"></p></div>` : ""}
+          <div class="ipp-add"${mode === "other" ? "" : " hidden"}><div class="row2"><div><label for="ip-${pid}-name">Name</label><input id="ip-${pid}-name" autocomplete="off"></div>
           <div><label for="ip-${pid}-email">Email</label><input id="ip-${pid}-email" type="email" autocomplete="off"></div>
           <div><label for="ip-${pid}-phone">Phone (optional)</label><input id="ip-${pid}-phone" type="tel" autocomplete="off"></div></div>
           <fieldset class="scope"><legend>What can they edit?</legend>
           <label><input type="radio" name="ip-${pid}-scope" value="item" checked> Just this ${esc(one)} <span class="hint">(recommended)</span></label>
           <label><input type="radio" name="ip-${pid}-scope" value="group"> Everything for ${esc(DATA.org.name)} <span class="hint">(makes them a point person for the whole group)</span></label></fieldset>
-          <button type="button" class="ipp-btn">Add point person</button></div></fieldset>`;
+          <div class="decide" style="margin-top:6px"><button type="button" class="ipp-btn">Add point person</button><button type="button" class="ipp-cancel">Cancel</button></div></div></fieldset>`;
       }
       box.innerHTML = `<div class="tagrow">${sec ? `<span class="tag">${esc(title)}</span>` : `<span class="kind">${esc(title)}</span>`}</div>${f}<div class="decide"><button type="button" class="primary done-btn">${fresh ? `Add ${esc(one)}` : "Done editing"}</button><button type="button" class="cancel-btn">Cancel</button></div>`;
     }
@@ -469,6 +474,30 @@ function start(DATA: Obj, token: string) {
         (document.querySelector(`#card-${CSS.escape(c.id)} .tagbtn`) as HTMLElement | null)?.focus();
         return;
       }
+      if (b.classList.contains("ipp-start")) { ippMode[c.id] = "ask"; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .ipp-me`) as HTMLElement | null)?.focus(); return; }
+      if (b.classList.contains("ipp-cancel")) { ippMode[c.id] = ""; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .ipp-start`) as HTMLElement | null)?.focus(); return; }
+      if (b.classList.contains("ipp-other")) { ippMode[c.id] = "other"; rerender(c); (document.querySelector(`#ip-${CSS.escape(c.id)}-name`) as HTMLElement | null)?.focus(); return; }
+      if (b.classList.contains("ipp-me")) {
+        const note = box.querySelector(".ipp-note") as HTMLElement;
+        if (!who.name || !EMAIL_RE.test(who.email)) {
+          note.innerHTML = `First add your name and email under <a href="#point-people">Point people</a> (near the top), then come back and press <b>Me</b>.`;
+          note.querySelector("a")!.addEventListener("click", (ev) => { ev.preventDefault(); $("point-people").scrollIntoView({ block: "start" }); inp(who.name ? "pemail" : "pname").focus(); });
+          return;
+        }
+        const masked = pointPeople.map((p) => String(p.email || "").toLowerCase());
+        const onFile = masked.includes(maskEmail(who.email).toLowerCase());
+        if (onFile || pointPeople.length < MAXPP) {
+          note.textContent = `You’re ${onFile ? "already" : "being added as"} a point person for all of ${DATA.org.name}, so you can already edit this ${one}. Nothing else to do.`;
+          return;
+        }
+        const list = (itemPeople[c.id] = itemPeople[c.id] || []);
+        if (list.some((p) => p.email.toLowerCase() === who.email.toLowerCase())) { note.textContent = "You’re already on the list for this " + one + "."; return; }
+        if (list.length + (c.pointPeople || []).length >= MAXPP) { note.textContent = `Up to ${MAXPP} point people per ${one}.`; return; }
+        list.push({ name: who.name, email: who.email, phone: who.phone, best: who.best, scope: "item" });
+        saveItemPeople(); touch(); ippMode[c.id] = ""; rerender(c);
+        msg(`You’ll be the point person for this ${one} when you press Finalize and Submit.`);
+        return;
+      }
       if (b.classList.contains("ipp-btn")) {
         const g = (x: string) => (box.querySelector(`#ip-${CSS.escape(c.id)}-${x}`) as HTMLInputElement);
         const name = g("name").value.trim(), email = g("email").value.trim(), phone = g("phone").value.trim();
@@ -479,7 +508,7 @@ function start(DATA: Obj, token: string) {
         if (list.length + (c.pointPeople || []).length >= MAXPP) { msg(`Up to ${MAXPP} point people per ${one}.`, true); return; }
         list.push({ name, email, phone, best: "", scope });
         saveItemPeople(); touch(); ippList();
-        g("name").value = g("email").value = g("phone").value = "";
+        ippMode[c.id] = ""; rerender(c);
         msg(`${name} will be added when you press Finalize and Submit; we’ll email them to confirm.`);
         return;
       }

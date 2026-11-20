@@ -72,3 +72,5 @@ fieldset.scope label{display:flex;gap:8px;align-items:baseline;color:var(--text)
 label.check{display:flex;gap:8px;align-items:center;color:var(--text);font-size:.95em;margin:10px 0 2px}label.check input{width:auto}
 .tpill.flag{border-color:var(--warn);color:var(--warn)}
 .btnwrap{display:inline-flex;flex-direction:column;align-items:center;gap:2px}.btn-note{font-size:.72em;color:var(--dim);max-width:16em;text-align:center;line-height:1.25}
+.ipp-add[hidden]{display:none}.ipp-ask{border-top:1px solid var(--line);margin-top:8px;padding-top:6px}.ipp-ask p{margin:4px 0}
+.ipp-start{margin-top:4px}
