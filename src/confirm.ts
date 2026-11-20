@@ -496,7 +496,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     const d = val(c, "date");
     if (!d) return "";
     const x = new Date(d);
-    return isNaN(+x) ? String(d) : x.toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    if (isNaN(+x)) return String(d);
+    const full: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
+    const e = val(c, "end") ? new Date(val(c, "end")) : null;
+    if (!e || isNaN(+e) || +e <= +x) return x.toLocaleString(undefined, full);
+    // Round 12: the end shows with the start ("Tue, Dec 1, 3:00 – 4:00 PM"; another day gets its own date)
+    if (e.toDateString() === x.toDateString()) return `${x.toLocaleString(undefined, full)} – ${e.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}`;
+    return `${x.toLocaleString(undefined, full)} – ${e.toLocaleString(undefined, full)}`;
   }
 
   // ---- free point-person spaces
@@ -571,12 +577,11 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       <div class="decide ppmode" role="group" aria-label="Who is the point person?"><button type="button" data-m="me">Me</button><button type="button" data-m="team">Me and others</button><button type="button" data-m="else">Someone else</button></div>
       <div class="row2" style="margin-top:6px">
       <div><label for="pname">Your name</label><input id="pname" autocomplete="name"></div>
-      <div><label for="pemail">Your email</label><input id="pemail" type="email" autocomplete="email"></div></div>
+      <div><label for="pemail">Your email</label><div class="pubw"><input id="pemail" type="email" autocomplete="email">${pubTick("p", "email")}</div></div></div>
       <p class="hint" id="pp-self-note"></p>
       <div class="row2">
-      <div><label for="pphone">Phone (optional)</label><input id="pphone" type="tel" autocomplete="tel"></div>
+      <div><label for="pphone">Phone (optional)</label><div class="pubw"><input id="pphone" type="tel" autocomplete="tel">${pubTick("p", "phone")}</div></div>
       <div><label for="pbest">Best way to reach you</label><select id="pbest">${bestOptions()}</select><p class="hint" id="pbest-hint"></p></div></div>
-      ${pubRow("p")}
       <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}
       <button type="button" class="add-other" id="add-other">+ Add another point person</button>
       <div class="decide pp-savebar"><button type="button" class="primary" id="pp-save">Save point person</button><span class="hint" id="pp-saved" aria-live="polite"></span></div></div>`));
@@ -690,13 +695,14 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
   function otherRow(i: number) {
     return `<div class="other" id="orow${i}"><div class="ohead"><h3 id="ohead${i}">Point person</h3><span class="hint" id="oroom${i}"></span></div><div class="row2">
       <div><label for="o${i}name">Name</label><input id="o${i}name" autocomplete="off"></div>
-      <div><label for="o${i}email">Email</label><input id="o${i}email" type="email" autocomplete="off"></div>
-      <div><label for="o${i}phone">Phone (optional)</label><input id="o${i}phone" type="tel" autocomplete="off"></div>
-      <div><label for="o${i}best">Best way to reach them</label><select id="o${i}best">${bestOptions()}</select><p class="hint" id="o${i}best-hint"></p></div></div>${pubRow("o" + i)}</div>`;
+      <div><label for="o${i}email">Email</label><div class="pubw"><input id="o${i}email" type="email" autocomplete="off">${pubTick("o" + i, "email")}</div></div>
+      <div><label for="o${i}phone">Phone (optional)</label><div class="pubw"><input id="o${i}phone" type="tel" autocomplete="off">${pubTick("o" + i, "phone")}</div></div>
+      <div><label for="o${i}best">Best way to reach them</label><select id="o${i}best">${bestOptions()}</select><p class="hint" id="o${i}best-hint"></p></div></div></div>`;
   }
   /** Round 9 (Nov 20): which contact details the map shows publicly lives with each point person (replaces the group's separate "public contact" field). */
-  function pubRow(pre: string) {
-    return `<div class="pubrow"><span class="hint">Show on the map so people can reach the group:</span><label class="askrow"><input type="checkbox" id="${pre}showemail"><span>Email</span></label><label class="askrow"><input type="checkbox" id="${pre}showphone"><span>Phone</span></label></div>`;
+  const PUB_TIP = "Show this on the map so people can reach the group";
+  function pubTick(pre: string, what: "email" | "phone") {
+    return `<label class="pubtick" data-tip="${PUB_TIP}"><input type="checkbox" id="${pre}show${what}"><span class="short">Show on map</span><span class="long">Show ${what === "email" ? "this email address" : "this phone number"} on the map so people can reach the group</span></label>`;
   }
   const inp = (id: string) => document.getElementById(id) as HTMLInputElement & HTMLSelectElement;
   function wirePerson(pre: string, get: () => Person, set: (p: Person) => void) {
@@ -786,6 +792,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       i.value = pillDraft[f] || "";
       i.addEventListener("input", () => { pillDraft[f] = i.value; });
       if (f === "location" || f === "hq_address") attachPlaceSuggest(i);
+      if (f === "end") endPicker(i, () => String(val(c, "date") || ""));
       // Nov 20 (Nathan): the yes/no that goes with a place sits in the same drawer: "Online" with a location,
       // "no public location" with the group's pin address. Checking it makes the address optional.
       const alt = f === "location" ? "online" : f === "hq_address" ? "remote" : "";
@@ -806,6 +813,37 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       if (i.tagName === "INPUT") i.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") { e.preventDefault(); (d.querySelector(".pill-save") as HTMLElement).click(); } });
     }
     return d;
+  }
+  /** Round 12 (decided 24.1): the end day starts as the start day; the end time is picked from a list that counts up from the start. */
+  function endPicker(raw: HTMLInputElement, start: () => string) {
+    if (raw.dataset.endpicker) return;
+    raw.dataset.endpicker = "1"; raw.hidden = true;
+    const wrap = document.createElement("div");
+    wrap.className = "endpick";
+    const day = document.createElement("input"); day.type = "date"; day.setAttribute("aria-label", "End day");
+    const sel = document.createElement("select"); sel.setAttribute("aria-label", "End time");
+    wrap.append(day, sel);
+    raw.insertAdjacentElement("afterend", wrap);
+    const clock = (mins: number) => { const m = ((mins % 1440) + 1440) % 1440, h = Math.floor(m / 60); return `${h % 12 || 12}:${String(m % 60).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
+    const dur = (mins: number) => (mins < 60 ? `${mins} min` : `${mins / 60 % 1 ? (mins / 60).toFixed(1) : mins / 60} hr`);
+    const startMins = () => { const t = /T(\d\d):(\d\d)/.exec(start()); return t ? +t[1] * 60 + +t[2] : null; };
+    const fill = () => {
+      const sm = startMins(), sameDay = !!day.value && day.value === start().slice(0, 10) && sm !== null;
+      const cur = /T(\d\d:\d\d)/.exec(raw.value)?.[1] || "";
+      sel.innerHTML = `<option value="">Pick a time…</option>`;
+      const add = (hhmm: string, label: string) => { const o = document.createElement("option"); o.value = hhmm; o.textContent = label; sel.appendChild(o); };
+      const hh = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+      if (sameDay) for (let d = 30; sm! + d < 1440 && d <= 720; d += 30) add(hh(sm! + d), `${clock(sm! + d)} (${dur(d)})`);
+      else for (let m = 0; m < 1440; m += 30) add(hh(m), clock(m));
+      if (cur && !Array.from(sel.options).some((o) => o.value === cur)) { const [h, mm] = cur.split(":").map(Number); add(cur, clock(h * 60 + mm)); }
+      sel.value = cur;
+    };
+    const push = () => { raw.value = day.value && sel.value ? `${day.value}T${sel.value}` : ""; raw.dispatchEvent(new Event("input", { bubbles: true })); };
+    day.value = raw.value.slice(0, 10) || start().slice(0, 10);
+    fill();
+    day.addEventListener("change", () => { fill(); push(); });
+    sel.addEventListener("change", push);
+    sel.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); sel.dispatchEvent(new Event("change")); } });
   }
   /** Points the open drawer's arrow at its pill, sliding over from the last pill (round 7). */
   function aimCaret(box: HTMLElement) {
@@ -900,7 +938,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         else {
           const type = key === "date" || key === "end" ? "datetime-local" : key === "deadline" ? "date" : "text";
           const vv = type === "datetime-local" ? String(v || "").slice(0, 16) : type === "date" ? String(v || "").slice(0, 10) : v;
-          f += `<label for="${id}">${LABEL[key] || esc(key)}${key === "name" && fresh ? " (required)" : ""}</label><input id="${id}" type="${type}" data-k="${key}" value="${esc(vv)}">`;
+          f += `<label for="${id}">${LABEL[key] || esc(key)}${key === "name" && fresh ? " (required)" : ""}</label><input id="${id}" type="${type}" data-k="${key}" value="${esc(vv)}"${key === "end" ? ' class="endraw"' : ""}>`;
         }
       });
       const title = fresh ? `New ${one}` : `${k === "org" ? "Group information" : KIND_BASE[sec!]} · editing`;
@@ -922,6 +960,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       }
       box.innerHTML = `<div class="tagrow">${sec ? `<span class="tag">${esc(title)}</span>` : `<span class="kind">${esc(title)}</span>`}</div>${f}<div class="decide"><button type="button" class="cancel-btn textbtn">Cancel</button><button type="button" class="primary done-btn">${fresh ? `Add ${esc(one)}` : "Done editing"}</button></div>`;
       box.querySelectorAll<HTMLInputElement>('input[data-k="location"],input[data-k="hq_address"]').forEach((i) => attachPlaceSuggest(i));
+      box.querySelectorAll<HTMLInputElement>('input[data-k="end"]').forEach((i) => endPicker(i, () => (box.querySelector('input[data-k="date"]') as HTMLInputElement | null)?.value || String(val(c, "date") || "")));
       box.querySelectorAll<HTMLElement>(".pk-slot").forEach((slot) => { const key = slot.getAttribute("data-key")!; slot.replaceWith(picker(`f-${c.id}-${key}`, key, String(val(c, key) || ""), "data-k")); });
     }
     if (sec) box.querySelector(".tag")!.prepend(typeIcon(sec, 15));
@@ -972,7 +1011,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     }
     if (!ed) {
       const approved = s.decision === "approve";
-      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="ok${!approved && engaged[c.id] ? " ready" : ""}" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
+      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button><button type="button" class="ok${!approved && engaged[c.id] ? " ready" : ""}" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
     }
     box.addEventListener("keydown", (e) => {
       const m = box.querySelector(".typemenu") as HTMLElement | null;

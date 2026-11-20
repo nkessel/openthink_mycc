@@ -248,3 +248,26 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 .pillfield .suggest li:hover,.pillfield .suggest li.on{background:color-mix(in srgb,var(--pc,var(--accent)) 18%,transparent)}
 .pillfield .pbox:focus-within{border-color:var(--pc,#7dd3fc)}
 .pillfield .askrow:has(input:checked){border-color:var(--pc,var(--accent))}
+
+/* Round 12: end day + time list; public-contact tick inside each field (desktop) or as a full row under it (phones); Edit before Approve */
+.endpick{display:flex;gap:8px;flex-wrap:wrap}.endpick input{flex:0 1 11em}.endpick select{flex:1 1 14em}
+.pubw{position:relative}
+.pubtick{display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--dim);font-size:.85em}
+.pubtick input{margin:0;accent-color:var(--accent)}
+.pubtick .long{display:none}
+.pubtick:has(input:checked){color:var(--text,#e5e7eb)}
+@media (min-width:561px){
+  .pubw input:not([type=checkbox]){padding-right:9.5em}
+  .pubtick{position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:3px 8px 3px 6px;border:1px solid transparent;border-radius:8px;background:var(--card)}
+  .pubtick:hover{border-color:var(--line)}
+  .pubtick input{width:18px;height:18px}
+  .pubtick::after{content:attr(data-tip);position:absolute;right:0;bottom:calc(100% + 8px);width:14em;padding:6px 10px;border-radius:8px;background:var(--card);border:1px solid var(--line);color:var(--text,#e5e7eb);font-size:.95em;line-height:1.35;box-shadow:0 6px 18px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .15s ease;z-index:6}
+  .pubtick:hover::after,.pubtick:focus-within::after{opacity:1}
+}
+@media (max-width:560px){
+  .pubtick{margin-top:6px;padding:11px 14px;min-height:46px;border:1px solid var(--line);border-radius:10px;font-size:.92em;color:var(--text,#e5e7eb)}
+  .pubtick input{width:22px;height:22px;flex:none}
+  .pubtick .short{display:none}.pubtick .long{display:inline}
+  .pubtick:has(input:checked){border-color:var(--accent)}
+}
+.pubtick:has(input:disabled){opacity:.5;cursor:not-allowed}
