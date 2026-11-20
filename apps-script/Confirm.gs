@@ -207,17 +207,73 @@ function confirmMovedPage_(token) {
 /** doGet(?api=confirm&t=token): everything the page shows, or { ok: false, error }. */
 function confirmApiGet_(token) {
   try {
+    if (!/^[0-9a-f]{32}$/.test(String(token || ''))) return { ok: false, error: badLinkMessage_() };
+    // Ready-made page from the cache (Nov 20, speed): built by warmConfirmPages every 10 minutes or by the last visit.
+    var hit = confirmCacheGet_(token);
+    if (hit) {
+      try { CacheService.getScriptCache().put('opened:' + token, nowIso_(), 21600); } catch (e) { /* the warm-up writes opened_at */ }
+      return { ok: true, data: hit };
+    }
     var link = linkRow_(token);
     if (!link) return { ok: false, error: badLinkMessage_() };
-    // Only the tabs the page shows (Nov 20: skipping Connections and Topics makes the page load faster).
-    var ss = ss_(), r = function (name) { var sh = ss.getSheetByName(name); return sh ? readTable_(sh).rows : []; };
-    var data = confirmData_(link.rec, { coalitions: r(TAB.coalitions), orgs: r(TAB.orgs), projects: r(TAB.projects), events: r(TAB.events),
-      actions: r(TAB.actions), editors: r(TAB.editors), connections: [], topics: [] });
+    var data = confirmData_(link.rec, confirmTabs_());
     if (!str_(link.rec.opened_at)) setLinkFields_(link, { opened_at: nowIso_(), status: str_(link.rec.status) === 'not sent' || !str_(link.rec.status) ? 'opened' : link.rec.status });
+    confirmCachePut_(token, data);
+    try { CacheService.getScriptCache().remove('cdirty:' + token); } catch (e) { /* ignore */ }
     return { ok: true, data: data };
   } catch (err) {
     return { ok: false, error: friendlyError_(err) };
   }
+}
+
+// ---- speed (Nov 20): only the tabs the page shows, and each group's page kept ready in the script cache
+
+/** The tabs the page shows (skipping Connections and Topics makes the read faster). */
+function confirmTabs_() {
+  var ss = ss_(), r = function (name) { var sh = ss.getSheetByName(name); return sh ? readTable_(sh).rows : []; };
+  return { coalitions: r(TAB.coalitions), orgs: r(TAB.orgs), projects: r(TAB.projects), events: r(TAB.events),
+    actions: r(TAB.actions), editors: r(TAB.editors), connections: [], topics: [] };
+}
+/** Longer than the warm-up's 10 minutes, so a page is always ready. */
+var CONFIRM_CACHE_SECONDS = 1500;
+function confirmCacheGet_(token) {
+  try { return JSON.parse(CacheService.getScriptCache().get('cdata:' + token) || 'null'); } catch (e) { return null; }
+}
+function confirmCachePut_(token, data) {
+  try { var s = JSON.stringify(data); if (s.length < 95000) CacheService.getScriptCache().put('cdata:' + token, s, CONFIRM_CACHE_SECONDS); } catch (e) { /* too big or cache down: no cache */ }
+}
+/** After a save or submit: drop the ready page, and tell a warm-up that's already running not to put an old one back. */
+function confirmCacheDrop_(token) {
+  try { var c = CacheService.getScriptCache(); c.remove('cdata:' + token); c.put('cdirty:' + token, '1', CONFIRM_CACHE_SECONDS); } catch (e) { /* ignore */ }
+}
+
+/**
+ * Time trigger (every 10 minutes; install once with installConfirmWarmup): builds every link's page into the cache,
+ * and writes opened_at for links opened from the cache. Sheet edits made outside the page show up within 10 minutes.
+ */
+function warmConfirmPages() {
+  var sheet = linksSheet_();
+  if (!sheet) return 0;
+  var table = readTable_(sheet), t = confirmTabs_(), cache = CacheService.getScriptCache(), n = 0;
+  table.rows.forEach(function (rec) {
+    var tok = str_(rec.token);
+    if (!/^[0-9a-f]{32}$/.test(tok)) return;
+    var opened = cache.get('opened:' + tok);
+    if (opened && !str_(rec.opened_at)) {
+      var fields = { opened_at: opened, status: str_(rec.status) === 'not sent' || !str_(rec.status) ? 'opened' : rec.status };
+      writeFields_(sheet, table.headers, rec._row, fields);
+      cache.remove('opened:' + tok);
+    }
+    if (cache.get('cdirty:' + tok)) return; // changed while this ran: the next visit builds it fresh
+    try { confirmCachePut_(tok, confirmData_(rec, t)); n++; } catch (e) { /* one bad row doesn't stop the rest */ }
+  });
+  return n;
+}
+
+/** Run once from the script editor: the 10-minute warm-up trigger, then a first warm-up. */
+function installConfirmWarmup() {
+  ensureTrigger_('warmConfirmPages', function () { ScriptApp.newTrigger('warmConfirmPages').timeBased().everyMinutes(10).create(); });
+  return warmConfirmPages();
 }
 
 /** doPost: body is JSON { action, token, sid, ... }. Never throws. */
@@ -236,7 +292,9 @@ function confirmPost_(e) {
     var sid = String(b.sid || '');
     if (!/^[0-9a-f]{32}$/.test(sid)) return { ok: false, error: 'Please reload the page and try again.' };
     if (action === 'release') return confirmRelease_(token, sid);
-    return withScriptLock_(function () {
+    var changes = action === 'save' || action === 'submit' || (action === 'ping' && b.state);
+    if (changes) confirmCacheDrop_(token);
+    var out = withScriptLock_(function () {
       var link = linkRow_(token);
       if (!link) return action === 'ping' ? { ok: false, gone: true, error: badLinkMessage_() } : { ok: false, error: badLinkMessage_() };
       if (action === 'claim') return confirmClaim_(link, token, sid, b, false);
@@ -245,6 +303,8 @@ function confirmPost_(e) {
       if (action === 'save') return confirmSave_(link, token, sid, b);
       return confirmSubmit_(link, token, sid, b);
     });
+    if (changes) confirmCacheDrop_(token); // again, in case a page was built while this ran
+    return out;
   } catch (err) {
     return { ok: false, error: friendlyError_(err) };
   }

@@ -59,6 +59,12 @@ function msgPage(text: string) {
   document.body.appendChild(p);
 }
 
+/** The page as last loaded on this device (speed, Nov 20): shown at once on the next visit while a fresh copy loads. */
+const keepKey = (token: string): string => "confirm.data." + token;
+const sameData = (a: Obj, b: Obj) => { const x = (d: Obj) => JSON.stringify({ ...d, draft: null, draftAt: "" }); return x(a) === x(b); };
+/** Set by start(): what to do when the fresh copy differs from the remembered one. */
+let onNewer: (() => void) | null = null;
+
 // ---------------------------------------------------------------- routes
 const params = new URLSearchParams(location.search);
 const T = params.get("t") || "";
@@ -80,23 +86,39 @@ async function runVerify(token: string) {
 
 // ---------------------------------------------------------------- page
 async function boot(token: string) {
+  await null; // let the rest of this module load first (its constants are defined below the routes)
   let data: Obj;
   // Round 5 (Nov 19): ask for the editing lock at the same time as the data (they used to run one after the other).
   let me = "";
   try { me = String((JSON.parse(localStorage.getItem("confirm.me") || "null") || {}).name || "").trim(); } catch { /* ignore */ }
   const claimP: Promise<Obj> = call({ action: "claim", token, sid: sessionId(), name: me }).catch((e) => ({ ok: false, error: (e as Error).message }));
+  const fresh = call(null, `api=confirm&t=${encodeURIComponent(token)}`);
+  let kept: Obj | null = null;
+  try { kept = JSON.parse(localStorage.getItem(keepKey(token)) || "null"); } catch { /* ignore */ }
+  if (kept && kept.org) {
+    // Repeat visit: show the remembered page now; swap in the fresh copy if anything changed.
+    finishLoading();
+    start(kept, token, claimP);
+    fresh.then((r) => {
+      if (!r.ok) return;
+      try { localStorage.setItem(keepKey(token), JSON.stringify(r.data)); } catch { /* ignore */ }
+      if (!sameData(kept!, r.data)) onNewer?.();
+    }).catch(() => { /* the remembered page stays */ });
+    return;
+  }
   // Loading screen (round 4, Nov 19): the map's server (Google Apps Script) can take several seconds to wake up.
   const note = document.getElementById("loading-note");
   const steps: [number, string][] = [[1800, "Reading your group’s information…"], [4500, "Gathering events, projects and actions…"], [8000, "Putting your page together…"], [15000, "Still working: the map’s server is slow right now. Thanks for your patience!"]];
   const slow = steps.map(([ms, text]) => setTimeout(() => { if (note) note.textContent = text; }, ms));
   try {
-    const r = await call(null, `api=confirm&t=${encodeURIComponent(token)}`);
+    const r = await fresh;
     slow.forEach(clearTimeout);
     if (!r.ok) return msgPage(String(r.error || "This link doesn't work."));
     data = r.data;
   } catch (e) {
     return msgPage((e as Error).message);
   }
+  try { localStorage.setItem(keepKey(token), JSON.stringify(data)); } catch { /* ignore */ }
   finishLoading();
   start(data, token, claimP);
 }
@@ -854,6 +876,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         return;
       }
       submitted = true;
+      try { localStorage.removeItem(keepKey(token)); } catch { /* ignore */ }
       itemPeople = {}; saveItemPeople();
       savedRev = rev;
       showBanner(null);
@@ -863,6 +886,18 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     finally { busy = false; }
   });
 
+  // Newer information than the remembered copy (speed, Nov 20): reload quietly if nothing was touched yet, else ask.
+  onNewer = () => {
+    if (rev === 0 && !Object.values(editing).some(Boolean)) { location.reload(); return; }
+    const b = $("banner");
+    b.innerHTML = ""; b.className = "banner"; b.setAttribute("role", "status");
+    const span = document.createElement("span");
+    span.textContent = "This page has newer information. Save for later, then reload to see it.";
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.textContent = "Reload";
+    btn.addEventListener("click", () => location.reload());
+    b.append(span, btn);
+  };
   // Show the page right away (read-only) while the editing lock comes back.
   render();
   msg("Getting the page ready for editing…");
