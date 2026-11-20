@@ -129,13 +129,19 @@ const PILL: Obj = {
  *  X/Twitter 46, LinkedIn 43, YouTube 41; then Bluesky 16 and TikTok 15, which go under Other. */
 const handle = (v: string) => v.replace(/^@/, "").trim();
 const asUrl = (v: string) => (/^[^\s]+\.[a-z]{2,}(\/|$)/i.test(v.replace(/^https?:\/\//i, "")) ? (/^https?:\/\//i.test(v) ? v : "https://" + v) : "");
-const SOCIAL: { id: string; label: string; re: RegExp; hint: string; url: (v: string) => string }[] = [
+const SOCIAL: { id: string; label: string; re: RegExp; hint: string; url: (v: string) => string; more?: boolean }[] = [
   { id: "instagram", label: "Instagram", re: /instagram\.com/i, hint: "instagram.com/yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?[\w.]{1,30}$/.test(v) ? "https://www.instagram.com/" + handle(v) : "") },
   { id: "facebook", label: "Facebook", re: /facebook\.com|fb\.com/i, hint: "facebook.com/yourgroup", url: (v) => asUrl(v) || (/^@?[\w.-]{1,50}$/.test(v) ? "https://www.facebook.com/" + handle(v) : "") },
   { id: "x", label: "X (Twitter)", re: /(^|[/.])(x|twitter)\.com/i, hint: "x.com/yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?\w{1,15}$/.test(v) ? "https://x.com/" + handle(v) : "") },
   { id: "linkedin", label: "LinkedIn", re: /linkedin\.com/i, hint: "linkedin.com/company/yourgroup", url: (v) => asUrl(v) || (/^[\w-]{2,100}$/.test(v) ? "https://www.linkedin.com/company/" + v : "") },
   { id: "youtube", label: "YouTube", re: /youtube\.com|youtu\.be/i, hint: "youtube.com/@yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?[\w.-]{3,30}$/.test(v) ? "https://www.youtube.com/@" + handle(v) : "") },
-  { id: "other", label: "Other social", re: /$^/, hint: "bsky.app/profile/yourgroup, tiktok.com/@yourgroup…", url: (v) => asUrl(v) },
+  // Under "Other social" (round 6): the next most common, then any other link.
+  { id: "bluesky", label: "Bluesky", more: true, re: /bsky\.app/i, hint: "bsky.app/profile/yourgroup or @yourgroup.bsky.social", url: (v) => asUrl(v.replace(/^@/, "")) && !/^@?[\w-]+\.bsky\.social$/i.test(v) ? asUrl(v) : (/^@?[\w.-]{3,60}$/.test(v) ? "https://bsky.app/profile/" + handle(v) : "") },
+  { id: "tiktok", label: "TikTok", more: true, re: /tiktok\.com/i, hint: "tiktok.com/@yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?[\w.]{2,24}$/.test(v) ? "https://www.tiktok.com/@" + handle(v) : "") },
+  { id: "threads", label: "Threads", more: true, re: /threads\.(net|com)/i, hint: "threads.net/@yourgroup or @yourgroup", url: (v) => asUrl(v) || (/^@?[\w.]{1,30}$/.test(v) ? "https://www.threads.net/@" + handle(v) : "") },
+  { id: "mastodon", label: "Mastodon", more: true, re: /mastodon|mstdn/i, hint: "mastodon.social/@yourgroup (the full link)", url: (v) => asUrl(v) },
+  { id: "linktree", label: "Linktree", more: true, re: /linktr\.ee/i, hint: "linktr.ee/yourgroup", url: (v) => asUrl(v) || (/^@?[\w.]{2,30}$/.test(v) ? "https://linktr.ee/" + handle(v) : "") },
+  { id: "other", label: "Other link", more: true, re: /$^/, hint: "Paste the full link", url: (v) => asUrl(v) },
 ];
 const BOOLS = ["online", "remote", "youth_serving", "school_club", "free_food", "affiliated_only", "help_wanted"];
 const CHOICES: Record<string, [string, string][]> = {
@@ -302,7 +308,9 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     $("add-other").addEventListener("click", () => {
       if (!editor) return;
       othersShown = Math.min(2, othersShown + 1);
+      const ppb = $("point-people"), h0 = ppb.offsetHeight;
       syncOthers();
+      glide(ppb, h0);
       const row = $("orow" + (othersShown - 1));
       row.classList.add("reveal");
       inp(`o${othersShown - 1}name`).focus();
@@ -409,7 +417,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     let input: string, label: string;
     if (f.startsWith("social:")) {
       const pf = SOCIAL.find((x) => "social:" + x.id === f)!;
-      label = pf.id === "other" ? "Link to another social media account" : `Your ${pf.label} page`;
+      label = pf.id === "other" ? "Link to another social media account or page" : `Your ${pf.label} page`;
       input = `<input id="${id}" data-pk="1" placeholder="${esc(pf.hint)}" autocomplete="off">`;
     } else if (CHOICES[f]) {
       label = LABEL[f];
@@ -500,12 +508,17 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       // Round 4 (Nov 19): coloured pills for what the group's card is missing; each opens Edit at that field.
       const uniq = keys.filter((f) => PILL[f] && f !== "social_links" && (f === "type" ? !val(c, f) || val(c, f) === "unknown" : !String(val(c, f) || "").trim()));
       // Social media (round 5): one pill per main platform the group hasn't listed, plus Other.
-      const socials = keys.includes("social_links") ? SOCIAL.filter((x) => x.id === "other" || !x.re.test(String(val(c, "social_links") || ""))) : [];
-      const pills = [...uniq.map((f) => ({ f, label: PILL[f] })), ...socials.map((x) => ({ f: "social:" + x.id, label: x.label }))];
+      const have = String(val(c, "social_links") || "");
+      const socials = keys.includes("social_links") ? SOCIAL.filter((x) => !x.more && !x.re.test(have)) : [];
+      const more = keys.includes("social_links") ? SOCIAL.filter((x) => x.more && (x.id === "other" || !x.re.test(have))) : [];
+      const pills = [...uniq.map((f) => ({ f, label: PILL[f] })), ...socials.map((x) => ({ f: "social:" + x.id, label: x.label })), ...(more.length ? [{ f: "social:more", label: "Other social" }] : [])];
+      // "Other social" opens a second row of platforms (round 6); its pills keep that row open.
+      const moreOpen = pillOpen === "social:more" || more.some((x) => "social:" + x.id === pillOpen);
       if (pills.length) {
-        const wrap = el(`<div class="addinfo"><span class="hint">Add missing info:</span>${pills.map((x, i) => `<button type="button" class="pill-add c${i % 6}" data-f="${esc(x.f)}" aria-expanded="${pillOpen === x.f}">+ ${esc(x.label)}</button>`).join("")}</div>`);
+        const wrap = el(`<div class="addinfo"><span class="hint">Add missing info:</span>${pills.map((x, i) => `<button type="button" class="pill-add c${i % 6}" data-f="${esc(x.f)}" aria-expanded="${x.f === "social:more" ? moreOpen : pillOpen === x.f}">${x.f === "social:more" ? (moreOpen ? "− " : "+ ") : "+ "}${esc(x.label)}</button>`).join("")}</div>`);
         box.appendChild(wrap);
-        if (pillOpen && pills.some((x) => x.f === pillOpen)) box.appendChild(pillField(c, pillOpen));
+        if (moreOpen) box.appendChild(el(`<div class="addinfo more reveal">${more.map((x, i) => `<button type="button" class="pill-add sub c${(i + 2) % 6}" data-f="social:${x.id}" aria-expanded="${pillOpen === "social:" + x.id}">+ ${esc(x.label)}</button>`).join("")}</div>`));
+        if (pillOpen && pillOpen !== "social:more" && (pills.some((x) => x.f === pillOpen) || moreOpen)) box.appendChild(pillField(c, pillOpen));
       }
     }
     if (!ed) {
@@ -581,12 +594,13 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       }
       if (b.classList.contains("pill-add")) {
         const f = b.getAttribute("data-f")!;
-        pillOpen = pillOpen === f ? null : f; // another pill closes the open one
+        // Another pill closes the open one; a platform under "Other social" keeps that row open.
+        pillOpen = pillOpen === f ? (b.classList.contains("sub") ? "social:more" : null) : f;
         rerender(c);
         (document.querySelector(`#card-${CSS.escape(c.id)} .pillfield [data-pk]`) as HTMLElement | null)?.focus();
         return;
       }
-      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = null; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus(); return; }
+      if (b.classList.contains("pill-cancel")) { const f = pillOpen; pillOpen = f && SOCIAL.some((x) => x.more && "social:" + x.id === f) ? "social:more" : null; rerender(c); (document.querySelector(`#card-${CSS.escape(c.id)} .pill-add[data-f="${f}"]`) as HTMLElement | null)?.focus(); return; }
       if (b.classList.contains("pill-save")) {
         const i = box.querySelector(".pillfield [data-pk]") as HTMLInputElement;
         const f = pillOpen || "";
@@ -622,18 +636,27 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       if (b.classList.contains("cancel-btn")) { if (fresh && !String((s.fields || {}).name || "").trim()) return drop(); editing[c.id] = false; return rerender(c); }
       if (b.classList.contains("ok")) {
         s.decision = s.decision === "approve" ? "" : "approve"; touch(); rerender(c);
-        const nb = document.querySelector(`#card-${CSS.escape(c.id)} .ok`) as HTMLElement | null;
-        nb?.classList.add("pop"); nb?.focus(); return;
+        (document.querySelector(`#card-${CSS.escape(c.id)} .ok`) as HTMLElement | null)?.focus(); return;
       }
       if (b.classList.contains("rm")) { if (fresh) return drop(); s.decision = s.decision === "remove" ? "" : "remove"; touch(); return rerender(c); }
     });
     return box;
   }
+  /** Round 6 (Nov 19): a card that changes size eases to its new height instead of jumping. */
+  const calm = matchMedia("(prefers-reduced-motion: reduce)");
+  function glide(n: HTMLElement, h0: number) {
+    const h1 = n.offsetHeight;
+    if (calm.matches || Math.abs(h1 - h0) < 4 || !n.animate) return;
+    n.style.overflow = "hidden";
+    n.animate([{ height: h0 + "px" }, { height: h1 + "px" }], { duration: 220, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = () => { n.style.overflow = ""; };
+  }
   function rerender(c: Card) {
     const old = document.getElementById("card-" + c.id);
     if (!old) return;
     const n = card(c);
+    const h0 = old.offsetHeight;
     old.replaceWith(n);
+    glide(n, h0);
     if (!editor) lockWithin(n);
   }
 
