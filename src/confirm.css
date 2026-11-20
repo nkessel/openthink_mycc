@@ -235,3 +235,9 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 @media (min-width:561px){.bar{grid-template-columns:auto repeat(2,minmax(0,280px))}}
 @media (max-width:560px){.bar{grid-template-columns:auto 1fr 1fr}.bar .stepbar{grid-column:1/-1}.bar .topline{grid-column:1/-1}}
 @media (max-width:560px){.bar #reset .sublong{display:none}}
+
+/* Round 10: room above the title; website row under the description */
+.card .tagrow+h3{margin-top:14px}
+.webrow a{color:#7dd3fc;font-size:.9em;overflow-wrap:anywhere}
+
+.pillfield{z-index:3}
