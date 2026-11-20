@@ -71,6 +71,25 @@ fieldset.scope label{display:flex;gap:8px;align-items:baseline;color:var(--text)
 .pill-add.c0{--pc:#34d399}.pill-add.c1{--pc:#38bdf8}.pill-add.c2{--pc:#a78bfa}.pill-add.c3{--pc:#f472b6}.pill-add.c4{--pc:#fbbf24}.pill-add.c5{--pc:#fb923c}
 label.check{display:flex;gap:8px;align-items:center;color:var(--text);font-size:.95em;margin:10px 0 2px}label.check input{width:auto}
 .tpill.flag{border-color:var(--warn);color:var(--warn)}
-.btnwrap{display:inline-flex;flex-direction:column;align-items:center;gap:2px}.btn-note{font-size:.72em;color:var(--dim);max-width:16em;text-align:center;line-height:1.25}
+.btnwrap{display:inline-flex;flex-direction:column;align-items:center;gap:2px}.btn-note{font-size:.72em;color:var(--dim);white-space:nowrap;text-align:center;line-height:1.25}
 .ipp-add[hidden]{display:none}.ipp-ask{border-top:1px solid var(--line);margin-top:8px;padding-top:6px}.ipp-ask p{margin:4px 0}
 .ipp-start{margin-top:4px}
+
+/* Round 5 (Nov 19): animations, red text Cancel, inline pill field, extra point person behind a button */
+button{transition:transform .12s ease,background-color .15s ease,border-color .15s ease,color .15s ease,box-shadow .15s ease}
+button:active:not(:disabled){transform:scale(.96)}
+.reveal{animation:reveal .22s ease-out both}
+@keyframes reveal{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.pop{animation:pop .28s ease-out}
+@keyframes pop{0%{transform:scale(.94)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
+.card.is-editing{animation:fadein .18s ease-out}
+@keyframes fadein{from{opacity:.4}to{opacity:1}}
+.textbtn{background:none;border:0;padding:7px 6px;text-decoration:underline;text-underline-offset:3px}
+.textbtn.danger{color:var(--bad)}.textbtn:hover:not(:disabled){text-decoration-thickness:2px}
+.pill-add[aria-expanded="true"]{background:color-mix(in srgb,var(--pc) 22%,transparent)}
+.pillfield{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin-top:10px}
+.ipp-list:empty{display:none}
+.add-other{margin-top:10px}.other[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){button,.reveal,.pop,.card.is-editing{transition:none;animation:none}button:active:not(:disabled){transform:none}}
+@media (max-width:560px){.btn-note{white-space:normal;max-width:14em}}
+.bar .status{order:-1;flex-basis:100%;min-height:1.2em;font-size:.85em}
