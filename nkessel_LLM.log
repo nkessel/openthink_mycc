@@ -944,3 +944,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 2026-11-20 11:25 — Review page h1 → group name only (canvas heading option 2, Nathan); tab title no longer says "check your information".
 2026-11-20 11:30 — hq_address pill label → "Group location" (Nathan comment on sample page).
 2026-11-20 11:40 — Review page: RSVP checkbox inside the event Web page pill (link vs rsvp_link, matches src/links.ts rsvpUrl); "edit topics" label (Nathan comments).
+2026-11-20 11:50 — Bottom bar G (desktop step bar) / H (phone top line + count on Submit), Next removed; numbering rule: continue numbers across replies, never reuse (Nathan).

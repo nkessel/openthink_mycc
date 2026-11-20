@@ -6,7 +6,7 @@ Shared rules for anyone (human or AI) using an LLM — Claude Code, ChatGPT, Cop
 2. You are an LLM, so consider if you could be wrong. I'm a human, so consider if I could also be wrong, or if there could be better things.
 3. Consider the underlying purpose of a question or a statement. If a question or contention I provide can be taken in multiple ways, ask for a clarifying example if you are uncertain.
 4. Track your uncertainty/accuracy in your responses as conversations progress: how sure are you that something will work, and what ambiguities exist for a certain mechanism?
-5. Number everything in your responses so I can answer each point on its own: top-level points `1`, `2`, `3`, sub-points `1.1`, `1.2`, and deeper `1.1.1`, `1.1.2`. Every suggestion, question and option gets its own number, and numbers stay the same if you repeat a list later, so a reply like "1.2 yes, 2.1 no" is unambiguous.
+5. Number everything in your responses so I can answer each point on its own: top-level points, then sub-points (`12.1`, `12.2`) and deeper (`12.1.1`). **Never reuse a number in a conversation:** each reply continues from the last top-level number you used (if your last reply ended at 11, this one starts at 12), so "12.1 yes" always points to exactly one place. Every suggestion, question and option gets its own number; if you bring back an earlier point, cite its original number ("see 7.2") instead of renumbering it.
 6. Tags for responses:
    1. `[0]` = no response — only for you to know, for decision making on other things
    2. `[1]` = ruling only — e.g. "yes, X and Y should be done"

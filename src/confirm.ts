@@ -418,12 +418,30 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     if (cards[0].id === id) return st.org;
     return (st.items[id] = st.items[id] || { kind: find(id).kind, decision: "", fields: {} });
   }
+  /** Nov 20 (Nathan: G on desktop, H on phones): a step bar above the buttons on desktop; on phones a thin line
+   *  along the top of the bar and the count on Submit. Both read from here. */
   function showProgress() {
-    const p = document.getElementById("progress");
-    if (!p) return;
+    const sb = document.getElementById("stepbar");
+    if (!sb) return;
     const n = cards.length, a = cards.filter((c) => S(c.id).decision === "approve").length;
-    p.querySelector("b")!.textContent = `${a} of ${n}`;
-    (p.querySelector(".pbar span") as HTMLElement).style.width = n ? `${Math.round((100 * a) / n)}%` : "0";
+    const items = cards.slice(1), ia = items.filter((c) => S(c.id).decision === "approve").length;
+    const org = S(cards[0].id).decision === "approve" ? 1 : 0;
+    const pp = pointPeople.length > 0 || EMAIL_RE.test(String(who.email || "").trim()) ? 1 : 0;
+    const parts: [number, string][] = [
+      [org, `1 Details${org ? " ✓" : ""}`],
+      [pp, `2 Point people${pp ? " ✓" : ""}`],
+      [items.length ? ia / items.length : 1, `3 Review${items.length ? ` · ${ia} of ${items.length}` : ""}${items.length && ia === items.length ? " ✓" : ""}`],
+    ];
+    const shortL = [`1${org ? " ✓" : ""}`, `2${pp ? " ✓" : ""}`, `3${items.length ? ` · ${ia} of ${items.length}` : ""}`];
+    sb.querySelectorAll<HTMLElement>(".seg").forEach((b, i) => {
+      (b.querySelector(".fill") as HTMLElement).style.width = `${Math.round(parts[i][0] * 100)}%`;
+      (b.querySelector(".full") as HTMLElement).textContent = parts[i][1];
+      (b.querySelector(".short") as HTMLElement).textContent = shortL[i];
+    });
+    const tl = document.querySelector("#topline span") as HTMLElement | null;
+    if (tl) tl.style.width = n ? `${Math.round((100 * a) / n)}%` : "0";
+    const cnt = document.getElementById("subcount");
+    if (cnt) cnt.textContent = ` · ${a} of ${n}`;
   }
   function val(c: Card, k: string) {
     const s = S(c.id);
@@ -484,13 +502,14 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       <div class="steps">${steps().map((x, i) => `<button type="button" class="step" data-i="${i}"><span class="num">${i + 1}</span>${esc(x.label)}</button>`).join("")}</div></div>`));
     app.querySelectorAll<HTMLElement>(".step").forEach((b) => b.addEventListener("click", () => goStep(Number(b.getAttribute("data-i")))));
     if (baseSubmittedAt) app.appendChild(el(`<div class="box done">Thank you: this was submitted on ${esc(new Date(baseSubmittedAt).toLocaleDateString())}. You can check it again and submit any changes.</div>`));
-    // Round 7: the progress count sits in the bar at the bottom, next to Submit.
-    if (!document.getElementById("progress")) {
-      $("bar").prepend(el(`<div class="progress" id="progress"><span class="ptext"><b></b> cards approved</span><div class="pbar" aria-hidden="true"><span></span></div></div>`));
-      // Next (round 7, Nathan): walks through the steps; its label names the next one.
-      const nx = el(`<button type="button" id="next" class="nextbtn"></button>`);
-      document.getElementById("progress")!.after(nx);
-      nx.addEventListener("click", () => goStep(Math.min(steps().length - 1, stepNow() + 1)));
+    // Nov 20 (Nathan picked G for desktop, H for phones): no Next button. Desktop: a bar split into the steps,
+    // each part fills on its own and jumps to its step. Phones: a thin line on the top edge + the count on Submit.
+    if (!document.getElementById("stepbar")) {
+      const segs = [0, 1, 2].map((i) => `<button type="button" class="seg${i === 2 ? " wide" : ""}" data-i="${i}"><span class="track"><span class="fill"></span></span><span class="slab"><span class="full"></span><span class="short"></span></span></button>`).join("");
+      $("bar").prepend(el(`<div class="stepbar" id="stepbar" aria-label="Your progress">${segs}</div>`));
+      $("bar").prepend(el(`<div class="topline" id="topline" aria-hidden="true"><span></span></div>`));
+      $("submit").insertAdjacentHTML("beforeend", `<span class="subcount" id="subcount"></span>`);
+      document.querySelectorAll<HTMLElement>("#stepbar .seg").forEach((b) => b.addEventListener("click", () => goStep(Number(b.getAttribute("data-i")))));
       let raf = 0;
       window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; syncSteps(); }); }, { passive: true });
     }
