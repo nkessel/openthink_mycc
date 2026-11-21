@@ -273,3 +273,7 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 .pubtick:has(input:disabled){opacity:.5;cursor:not-allowed}
 
 .step .stepn{color:var(--dim);font-weight:400;margin-left:2px}
+
+/* round 15: Remove from map is quiet red text, last in the visual hierarchy (board 55.3). The pressed state keeps its stronger red above. */
+.decide button.rm{background:transparent;border-color:transparent;color:#d98a8a;font-weight:400}
+.decide button.rm:hover:not(:disabled){background:#3d1f2255;color:var(--bad)}
