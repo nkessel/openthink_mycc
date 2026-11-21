@@ -1011,7 +1011,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     }
     if (!ed) {
       const approved = s.decision === "approve";
-      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">Edit</button><button type="button" class="ok${!approved && engaged[c.id] ? " ready" : ""}" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
+      box.appendChild(el(`<div class="decide" role="group" aria-label="Decision"><button type="button" class="ok${!approved && engaged[c.id] ? " ready" : ""}" aria-pressed="${approved}">✓ ${approved ? `${k === "org" ? "Group information" : esc(cap(one))} approved` : `Approve ${esc(one)}`}</button><button type="button" class="edit-btn" aria-label="Edit ${esc(val(c, "name") || "this card")}">${k === "org" ? "Edit group info" : `Edit ${esc(one)}`}</button>${k === "org" ? "" : `<button type="button" class="rm" aria-pressed="${s.decision === "remove"}">${fresh ? "Delete" : "Remove from map"}</button>`}</div>`));
     }
     box.addEventListener("keydown", (e) => {
       const m = box.querySelector(".typemenu") as HTMLElement | null;
