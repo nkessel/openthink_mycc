@@ -548,7 +548,7 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
     syncNewCards();
     const app = $("app");
     app.innerHTML = "";
-    app.appendChild(el(`<div><h1>${esc(DATA.org.name)}</h1><p class="lead">All of this group information was retrieved from online sources. Approve what’s right, edit what isn’t, and add anything we missed with the <b>+</b> buttons. Approved information goes live when you press <b>Finalize and Submit</b> (at the end of the page); <b>Save for later</b> keeps your work.</p>
+    app.appendChild(el(`<div><h1>${esc(DATA.org.name)}</h1><p class="lead">Welcome to the map! ${esc(DATA.org.name)}’s work is an important part of the Massachusetts climate ecosystem, and we’re glad you’re here. This listing shows what’s publicly available online, so you don’t have to start from scratch. Please approve or edit each section, and add what’s missing using the <b>+</b> buttons. Approved information goes live when you select <b>Finalize and Submit</b> at the end of the page. You can save at any time and return to finish later.</p>
       <div class="steps">${steps().map((x, i) => `<button type="button" class="step" data-i="${i}"><span class="num">${i + 1}</span>${esc(x.label)}${i === 2 && cards.length > 1 ? ` <span class="stepn">(${cards.length - 1})</span>` : ""}</button>`).join("")}</div></div>`));
     app.querySelectorAll<HTMLElement>(".step").forEach((b) => b.addEventListener("click", () => goStep(Number(b.getAttribute("data-i")))));
     if (baseSubmittedAt) app.appendChild(el(`<div class="box done">Thank you: this was submitted on ${esc(new Date(baseSubmittedAt).toLocaleDateString())}. You can check it again and submit any changes.</div>`));

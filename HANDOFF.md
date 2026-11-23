@@ -30,6 +30,7 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 22 — round 16:** new intro under the group name, chosen line by line with Nathan (45.2 welcome, 71.1, 76.1 + "so you don't have to start from scratch", 81.1, 74.1.2, 74.2.1).
 - **Nov 21 — round 15:** decision row is Edit, Approve, Remove (board 55.3): full names ("Edit project", "Approve project"), and "Remove from map" is quiet red text with no border (pressed state keeps the strong red). This reverses round 14's order (Approve first). Intro wording is still being chosen slot by slot (57.1 to 57.5; 57.1.1 welcome line chosen).
 - **Nov 21 — round 14:** decision row is now Approve first, then a named Edit ("Edit project", "Edit event", "Edit action", "Edit group info"), then Remove from map (board 51.3). Remove-button colour (board 48) and the other open decisions are still waiting on Nathan.
 - **Nov 20 — round 13:** step 3 pill shows the number of events/projects/actions, e.g. "(4)". Nathan chose plain-paragraph intro formatting (40.0/40.3 style); waiting on the intro wording (board 45).
