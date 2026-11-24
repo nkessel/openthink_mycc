@@ -670,15 +670,44 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
         render(); showProgress(); msg("Reset. Your point people were not changed.");
       }], ["Keep my changes", () => {}]], 15);
     };
-    // Feedback for the map team (Nathan, Nov 17): sent with Finalize and Submit, saved with the draft.
-    app.appendChild(el(`<div class="box"><h2 style="margin-top:0"><label for="fb">Ideas or comments for the development team (optional)</label></h2>
+    // Feedback for the map team (Nathan, Nov 17; Nov 24: its own Send button and a confirmation showing what was sent).
+    app.appendChild(el(`<div class="box fbbox"><h2 style="margin-top:0"><label for="fb">Ideas or comments for the map development team (optional)</label></h2>
       <p class="pp">What would make the map most useful for ${esc(DATA.org.name)}? Anything else you’d like to share with the map’s team? We read every note.</p>
-      <textarea id="fb" class="grow" rows="2" maxlength="3000"></textarea></div>`));
+      <div id="fb-sent"></div>
+      <div id="fb-write"><textarea id="fb" class="grow" rows="2" maxlength="3000"></textarea>
+      <div class="decide fb-bar"><button type="button" class="primary wait" id="fb-send">Send to the team</button><span class="hint" id="fb-status" aria-live="polite"></span></div></div></div>`));
     const fb = $("fb") as HTMLTextAreaElement;
     fb.value = String(st.feedback || "");
     const grow = () => { fb.style.height = "auto"; fb.style.height = fb.scrollHeight + 2 + "px"; };
-    fb.addEventListener("input", () => { st.feedback = fb.value; touch(); grow(); });
-    requestAnimationFrame(grow);
+    const fbSend = $("fb-send") as HTMLButtonElement;
+    const syncFb = () => { const ok = !!fb.value.trim(); fbSend.classList.toggle("wait", !ok); fbSend.setAttribute("aria-disabled", String(!ok)); };
+    const showSent = (anim: boolean) => {
+      const sent = (st.feedbackSent as { text: string; at: string }[] | undefined) || [];
+      $("fb-sent").innerHTML = sent.map((n) => `<div class="fb-note${anim ? " fresh" : ""}"><p class="fb-ok">✓ Sent to the map development team <span class="hint">${esc(new Date(n.at).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }))}</span></p><blockquote>${esc(n.text).replace(/\n/g, "<br>")}</blockquote></div>`).join("");
+      $("fb-sent").querySelectorAll(".fresh").forEach((x, k, all) => { if (k < all.length - 1) x.classList.remove("fresh"); });
+      if (sent.length) fbSend.textContent = "Send another note";
+    };
+    fb.addEventListener("input", () => { st.feedback = fb.value; touch(); grow(); syncFb(); });
+    fbSend.addEventListener("click", async () => {
+      const text = fb.value.trim();
+      if (!text) { $("fb-status").textContent = "Write a note first."; fb.focus(); return; }
+      if (!editor) return;
+      fbSend.disabled = true; $("fb-status").textContent = "Sending…";
+      let r: Obj = {};
+      try { r = await call({ action: "feedback", message: text, email: who.email || "", page: `Review page · ${DATA.org.name}` }); } catch (e) { r = { ok: false, error: (e as Error).message }; }
+      fbSend.disabled = false;
+      if (r.ok) {
+        st.feedbackSent = [...((st.feedbackSent as unknown[]) || []), { text, at: new Date().toISOString() }];
+        st.feedback = ""; fb.value = ""; grow(); syncFb(); touch();
+        $("fb-status").textContent = "";
+        showSent(true);
+        return;
+      }
+      // The server doesn't take notes on their own yet: keep it, and it goes with Finalize and Submit.
+      if (/reload the page/i.test(String(r.error || ""))) { $("fb-status").textContent = "Saved. It will reach the team when you press Finalize and Submit."; void saveNow(); return; }
+      $("fb-status").textContent = String(r.error || "Couldn’t send. Please try again.");
+    });
+    requestAnimationFrame(() => { grow(); syncFb(); showSent(false); });
     showProgress();
     applyLock();
   }
