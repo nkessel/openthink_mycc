@@ -959,3 +959,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 2026-11-23 23:10 — Map form v2 (essentials first, pills, one main button, group-first org form, edit/copy buttons open the map form) and an always-on draggable Feedback button with a server action (mapFeedback_). Tests added. Server needs redeploy.
 2026-11-24 11:20 — Save point person gray until required details are in (Nathan). Tried to deploy script v20 via Claude in Chrome: no signed-in account there has access to the sheet; nothing changed.
 2026-11-24 11:30 — Review page feedback box: Send button + sent-note confirmation (Nathan).
+2026-11-24 11:25 — Deployed Version 20 (SignIn.gs feedback action) after Nathan added his account to the Chrome profile; verified live without saving a note. Checked Mailmeteor: only the two Nov 20 campaigns (42 sent).
