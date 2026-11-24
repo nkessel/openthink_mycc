@@ -277,3 +277,7 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 /* round 15: Remove from map is quiet red text, last in the visual hierarchy (board 55.3). The pressed state keeps its stronger red above. */
 .decide button.rm{background:transparent;border-color:transparent;color:#d98a8a;font-weight:400}
 .decide button.rm:hover:not(:disabled){background:#3d1f2255;color:var(--bad)}
+
+/* Nov 24: Save point person is gray until name + email (and the other person's, if any) are filled in */
+#pp-save{transition:background .25s ease,border-color .25s ease,color .25s ease}
+#pp-save.wait{background:transparent;border-color:var(--border);color:var(--text-dim);box-shadow:none}

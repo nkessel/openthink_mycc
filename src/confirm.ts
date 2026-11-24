@@ -585,6 +585,12 @@ function start(DATA: Obj, token: string, claimP?: Promise<Obj>) {
       <p class="note" id="others-note" aria-live="polite"></p>${[0, 1].map(otherRow).join("")}
       <button type="button" class="add-other" id="add-other">+ Add another point person</button>
       <div class="decide pp-savebar"><button type="button" class="primary" id="pp-save">Save point person</button><span class="hint" id="pp-saved" aria-live="polite"></span></div></div>`));
+    // Nov 24 (Nathan): Save point person stays gray until the needed details are filled in (it still explains what's missing).
+    const ppReady = () => !!who.name && EMAIL_RE.test(who.email) && (ppMode === "me" || (!!others[0].name && EMAIL_RE.test(others[0].email)));
+    const syncPPSave = () => { const b = $("pp-save"); const ok = ppReady(); b.classList.toggle("wait", !ok); b.setAttribute("aria-disabled", String(!ok)); };
+    $("point-people").addEventListener("input", () => requestAnimationFrame(syncPPSave));
+    $("point-people").addEventListener("click", () => requestAnimationFrame(syncPPSave));
+    requestAnimationFrame(syncPPSave);
     $("pp-save").addEventListener("click", () => {
       if (!editor) return;
       if (!who.name || !EMAIL_RE.test(who.email)) { $("pp-saved").textContent = "Add your name and email first."; inp(who.name ? "pemail" : "pname").focus(); return; }
