@@ -36,6 +36,7 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
   if (!fields || !base || !data) return false;
 
   const inputs: { title: string; f: Field; get: () => string[] }[] = [];
+  const rows = new Map<string, HTMLElement>();
   const body = h("div", { class: "qf-body" });
   const orgNames = data.organizations.map((o) => orgLabel(o)).sort((a, b) => a.localeCompare(b));
   const listId = `qf-orgs-${kind}`;
@@ -83,6 +84,7 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
       get = () => [inp.value.trim()];
     }
     body.appendChild(row);
+    rows.set(title, row);
     inputs.push({ title, f, get });
   }
 
@@ -96,6 +98,18 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
     return out;
   };
   const whichMissing = () => !Object.keys(answers()).some((t) => /^Which /.test(t));
+  // Adding something new needs at least its name, so an empty form can't be sent by accident.
+  const nameRow = kind === "org" ? null : inputs.find((i) => /\bname\b/i.test(i.title) && !/^Which /.test(i.title));
+  const nameMissing = (): HTMLElement | null => {
+    if (!nameRow || nameRow.get().some(Boolean)) return null;
+    return (rows.get(nameRow.title)?.querySelector("input, textarea") as HTMLElement | null) ?? null;
+  };
+  const needs = (el: HTMLElement, msg: string) => {
+    status.textContent = msg;
+    el.classList.remove("qf-need"); void el.offsetWidth; el.classList.add("qf-need");
+    el.addEventListener("input", () => el.classList.remove("qf-need"), { once: true });
+    el.focus();
+  };
 
   const note = h("p", { class: "qf-note" });
   const extra = h("div", { class: "qf-email" });
@@ -131,13 +145,21 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
     h("div", { class: "qf-head" }, h("h2", {}, TITLES[kind])), body, note, extra, status, foot);
   const shade = h("div", { class: "qf-shade" }, dialog);
   const stopWatching = onSessionChange(renderFoot);
-  const close = () => { stopWatching(); shade.remove(); };
+  const close = () => {
+    stopWatching();
+    if (shade.classList.contains("closing")) return;
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) { shade.remove(); return; }
+    shade.classList.add("closing");
+    setTimeout(() => shade.remove(), 190);
+  };
   cancel.addEventListener("click", close);
   done.addEventListener("click", close);
   shade.addEventListener("click", (e) => { if (e.target === shade) close(); });
   shade.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Escape") close(); });
 
   confirm.addEventListener("click", () => {
+    { const miss = nameMissing(); if (miss) { needs(miss, "Please add a name first."); return; } }
     if (whichMissing()) { status.textContent = "Please fill in which organization this is about first."; return; }
     status.textContent = "";
     if (!extra.childElementCount) {
@@ -154,6 +176,7 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
   });
 
   submit.addEventListener("click", async () => {
+    { const miss = nameMissing(); if (miss) { needs(miss, "Please add a name first."); return; } }
     if (whichMissing()) { status.textContent = "Please fill in which organization this is about first."; return; }
     submit.disabled = true;
     status.textContent = "Sending…";
@@ -164,6 +187,7 @@ export function openQuickForm(kind: Kind, context: GraphNode | null): boolean {
   });
 
   toGoogle.addEventListener("click", async () => {
+    { const miss = nameMissing(); if (miss) { needs(miss, "Please add a name first."); return; } }
     const params = new URLSearchParams();
     const tooLong: string[] = [];
     for (const { title, f, get } of inputs) {

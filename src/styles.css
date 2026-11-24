@@ -1204,7 +1204,13 @@ body {
   transform: rotate(45deg);
 }
 .fab-menu {
-  display: none;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transform-origin: bottom right;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2), visibility 0s linear 0.22s;
   flex-direction: column;
   min-width: 260px;
   background: var(--bg-elev);
@@ -1214,7 +1220,11 @@ body {
   overflow: hidden;
 }
 .fab-wrap.open .fab-menu {
-  display: flex;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2), visibility 0s;
 }
 .fab-item {
   display: flex;
@@ -3386,3 +3396,38 @@ html, body { overflow-x: clip; max-width: 100%; }
 .social-links .social-link { padding: 3px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; color: var(--text); }
 .social-links a.social-link { color: #7dd3fc; text-decoration: none; }
 .social-links a.social-link:hover { border-color: #7dd3fc; }
+
+/* Map forms: simple, friendly motion (Nov 23). The + menu rises from the button with its items easing in one after
+   another; the quick form fades its backdrop and lifts into place, and eases out on close. Off for reduced motion. */
+.fab-wrap { pointer-events: none; }
+.fab-wrap .fab { pointer-events: auto; transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3), background 0.2s ease, box-shadow 0.2s ease; }
+.fab-wrap .fab:active { transform: scale(0.92); }
+.fab-wrap.open .fab:active { transform: rotate(45deg) scale(0.92); }
+.fab-wrap.open .fab-item { animation: fab-item-in 0.26s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+.fab-wrap.open .fab-item:nth-child(2) { animation-delay: 0.03s; }
+.fab-wrap.open .fab-item:nth-child(3) { animation-delay: 0.06s; }
+.fab-wrap.open .fab-item:nth-child(4) { animation-delay: 0.09s; }
+.fab-wrap.open .fab-item:nth-child(5) { animation-delay: 0.12s; }
+.fab-item { transition: background 0.15s ease, padding-left 0.15s ease; }
+@keyframes fab-item-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.qf-shade { z-index: 2200; animation: qf-fade-in 0.2s ease both; }
+.qf { animation: qf-lift-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.1) both; }
+.qf-shade.closing { animation: qf-fade-out 0.18s ease both; }
+.qf-shade.closing .qf { animation: qf-lift-out 0.18s ease both; }
+@keyframes qf-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes qf-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes qf-lift-in { from { opacity: 0; transform: translateY(18px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes qf-lift-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(10px) scale(0.98); } }
+.qf input, .qf textarea, .qf select { transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+.qf input:focus, .qf textarea:focus, .qf select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18); }
+.qf .qf-need { border-color: #f59e0b !important; animation: qf-nudge 0.32s ease; }
+@keyframes qf-nudge { 0%, 100% { transform: none; } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.qf-status:not(:empty) { animation: qf-fade-in 0.2s ease both; }
+.qf-email:not([hidden]) { animation: qf-lift-in 0.22s ease both; }
+.qf-go, .qf-alt, .qf-cancel { transition: transform 0.12s ease, filter 0.15s ease, border-color 0.15s ease; }
+.qf-go:hover { filter: brightness(1.08); }
+.qf-go:active, .qf-alt:active, .qf-cancel:active { transform: scale(0.96); }
+@media (prefers-reduced-motion: reduce) {
+  .fab-menu, .fab-wrap.open .fab-menu, .fab-wrap .fab { transition: none; }
+  .fab-wrap.open .fab-item, .qf-shade, .qf, .qf-shade.closing, .qf-shade.closing .qf, .qf .qf-need, .qf-status:not(:empty), .qf-email:not([hidden]) { animation: none; }
+}
