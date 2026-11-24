@@ -5,6 +5,17 @@ import { formUrl, type FormKind } from "./fab";
 import { FORMS } from "./forms.config";
 import { h } from "./dom";
 import { currentMap } from "./maps";
+import { openQuickForm } from "./quickform";
+
+/** A plain click opens the map's own form (when it can); Ctrl/⌘/Shift-click still follows the link to the Google Form. */
+export function onPlain<T extends HTMLElement>(el: T, open: () => boolean): T {
+  el.addEventListener("click", (e) => {
+    const me = e as MouseEvent;
+    if (me.metaKey || me.ctrlKey || me.shiftKey || me.button !== 0) return;
+    if (open()) e.preventDefault();
+  });
+  return el;
+}
 
 /** A real button (an <a> styled as one) that opens the form for this item. */
 function editBtn(url: string, kind: string): HTMLElement {
@@ -24,12 +35,14 @@ export function staleNotice(kind: "project" | "event" | "action", owner: GraphNo
   const url = formUrl(form, form === "feedback" ? null : owner, form === "feedback" ? null : item);
   // An event that happens again: same details, new date, as a new event.
   const copyUrl = kind === "event" && form === "event" && item ? formUrl("event", owner, item, { copy: true }) : null;
-  const copyBtn = () => h("a", { class: "edit-btn copy-btn", href: copyUrl!, target: "_blank", rel: "noopener noreferrer", title: "Opens the event form with these details filled in, as a new event" }, "Copy as a new event");
+  const own = form !== "feedback" && currentMap.editable;
+  const edit = () => (own ? onPlain(editBtn(url!, kind), () => openQuickForm(kind, owner, item)) : editBtn(url!, kind));
+  const copyBtn = () => onPlain(h("a", { class: "edit-btn copy-btn", href: copyUrl!, target: "_blank", rel: "noopener noreferrer", title: "Opens the event form with these details filled in, as a new event" }, "Copy as a new event"), () => openQuickForm("event", owner, item, { copy: true }));
   if (verified && !needsInfo) {
     // Confirmed on the group's own page: no warning, just a quiet note and the way to update it.
     const ok = h("div", { class: "stale-notice verified" });
     ok.appendChild(h("span", {}, "✓ Listed on the group's own page. "));
-    if (url) ok.appendChild(editBtn(url, kind));
+    if (url) ok.appendChild(edit());
     if (copyUrl) ok.appendChild(copyBtn());
     return ok;
   }
@@ -37,7 +50,7 @@ export function staleNotice(kind: "project" | "event" | "action", owner: GraphNo
   box.appendChild(h("span", {}, needsInfo
     ? `⚠ Needs more information. We couldn't confirm this ${kind} is current. `
     : "⚠ May be inaccurate or out of date. Gathered from public web pages, not confirmed by the group. "));
-  if (url) box.appendChild(editBtn(url, kind));
+  if (url) box.appendChild(edit());
   if (copyUrl) box.appendChild(copyBtn());
   return box;
 }

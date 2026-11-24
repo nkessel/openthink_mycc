@@ -15,6 +15,7 @@ import { FORMS } from "./forms.config";
 import { applyKindStyle } from "./kinds.config";
 applyKindStyle(); // item-type colours from kinds.config.ts
 import { webLogo, tinyLogo } from "./weblogos";
+import { createFeedbackButton, openFeedback } from "./feedbackbtn";
 import { createFab, setFormLabelData, setItemLabelData } from "./fab";
 import { setPrefillData } from "./prefill";
 import { checkSources } from "./sourcecheck";
@@ -211,6 +212,7 @@ async function main() {
   try { noteHidden = sessionStorage.getItem("openthink.devnote") === "1"; } catch { /* ignore */ }
   if (!noteHidden) {
     const link = h("a", { href: FORMS.feedback.url, target: "_blank", rel: "noopener" }, "please let us know");
+    link.addEventListener("click", (e) => { if (!(e as MouseEvent).metaKey && !(e as MouseEvent).ctrlKey && openFeedback("note at the bottom")) e.preventDefault(); });
     const close = h("button", { type: "button", class: "dev-note-x", "aria-label": "Hide this note", title: "Hide this note" }, "\u00d7");
     const note = h("div", { class: "dev-note", role: "note", title: "Drag to move" },
       h("span", {}, "Note: this map is currently in development and uses data gathered from organization websites.  If you see any inaccuracies, ", link),
@@ -461,6 +463,11 @@ async function main() {
   setQuickFormData(data);
   setItemLabelData([...data.coalitions, ...data.organizations]);
   // Sector groups aren't in the Google Sheet yet, so the forms aren't pre-filled with them.
+  // Feedback button, always on the map: straight to the team (src/feedbackbtn.ts)
+  createFeedbackButton(() => {
+    const cur = drawerApi?.current() as { name?: string } | null;
+    return [currentMap.name, activeTab, cur?.name].filter(Boolean).join(" · ");
+  });
   createFab(content, () => {
     const cur = drawerApi?.current() ?? null;
     return cur && (cur as { sector?: string }).sector ? null : cur;

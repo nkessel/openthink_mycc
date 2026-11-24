@@ -1194,5 +1194,19 @@ console.log("second round trip (org-owned items, locations, links) OK");
   ctx.sendMail_("x@example.org", "s", "b");
   assert.equal(gmail.length, 1); assert.equal(mail[0].opts.replyTo, "not-an-alias@example.org"); assert.ok(!mail[0].opts.from);
   delete props.MAIL_FROM; delete props.MAIL_NAME; delete ctx.GmailApp;
+
+  // the map's Feedback button: no sign-in, saved to the Feedback tab
+  const fbRows = () => ctx.readTable_(ctx.ss_().getSheetByName("Feedback")).rows;
+  const before = fbRows().length;
+  r = post({ action: "feedback", message: "  Search misses SCJC  ", email: "", page: "Network map" });
+  assert.ok(r.ok); assert.match(r.message, /straight to the map team/);
+  const fb = fbRows().slice(-1)[0];
+  assert.equal(fbRows().length, before + 1); assert.equal(fb.message, "Search misses SCJC"); assert.equal(fb.area, "Network map"); assert.equal(fb.status, "new"); assert.equal(fb.email, "");
+  assert.ok(post({ action: "feedback", message: "hi", email: "me@example.org" }).ok);
+  assert.equal(fbRows().slice(-1)[0].email, "me@example.org"); assert.equal(fbRows().slice(-1)[0].ok_to_follow_up, "Yes");
+  assert.match(post({ action: "feedback", message: "   " }).error, /write a note/);
+  assert.match(post({ action: "feedback", message: "x", email: "nope" }).error, /doesn't look right/);
+  const n0 = fbRows().length;
+  assert.ok(post({ action: "feedback", message: "spam", website: "http://x" }).ok); assert.equal(fbRows().length, n0, "honeypot: nothing kept");
   console.log("sign-in OK");
 }
