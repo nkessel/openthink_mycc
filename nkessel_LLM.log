@@ -960,3 +960,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 2026-11-24 11:20 — Save point person gray until required details are in (Nathan). Tried to deploy script v20 via Claude in Chrome: no signed-in account there has access to the sheet; nothing changed.
 2026-11-24 11:30 — Review page feedback box: Send button + sent-note confirmation (Nathan).
 2026-11-24 11:25 — Deployed Version 20 (SignIn.gs feedback action) after Nathan added his account to the Chrome profile; verified live without saving a note. Checked Mailmeteor: only the two Nov 20 campaigns (42 sent).
+2026-11-24 18:20 — Built Tue 12/1 and Wed 12/2 send tabs (Giving Tuesday split), updated agenda + action items as Nathan.
