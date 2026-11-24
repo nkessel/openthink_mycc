@@ -281,3 +281,15 @@ h2.steph .num{width:26px;height:26px;font-size:.8em}
 /* Nov 24: Save point person is gray until name + email (and the other person's, if any) are filled in */
 #pp-save{transition:background .25s ease,border-color .25s ease,color .25s ease}
 #pp-save.wait{background:transparent;border-color:var(--border);color:var(--text-dim);box-shadow:none}
+
+/* Nov 24: Ideas or comments get their own Send button and show what was sent */
+#fb-send{transition:background .25s ease,border-color .25s ease,color .25s ease}
+#fb-send.wait,#pp-save.wait{background:transparent;border-color:var(--border);color:var(--text-dim);box-shadow:none}
+.fb-bar{margin-top:8px;align-items:center}
+.fb-note{border:1px solid rgba(52,211,153,.45);background:rgba(52,211,153,.07);border-radius:12px;padding:10px 14px;margin:0 0 10px}
+.fb-note.fresh{animation:fbnote .35s cubic-bezier(.2,.9,.3,1.1) both}
+@keyframes fbnote{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.fb-ok{margin:0 0 6px;color:#34d399;font-weight:600}
+.fb-ok .hint{font-weight:400;margin-left:6px}
+.fb-note blockquote{margin:0;padding-left:10px;border-left:3px solid rgba(52,211,153,.5);white-space:normal;overflow-wrap:anywhere}
+@media (prefers-reduced-motion:reduce){.fb-note.fresh{animation:none}}
