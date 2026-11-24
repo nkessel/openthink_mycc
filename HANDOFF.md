@@ -30,6 +30,7 @@ This repo is public: no emails, phone numbers, passwords or private sheet conten
 
 ## Recent (newest first)
 
+- **Nov 23 — map forms motion + fixes:** + menu rises from the button with items easing in; quick form fades/lifts in and eases out on close; focus glow and button press feedback; reduced-motion respected. Fixes: the phone "Tap here for other pages" tip covered the form (z-index); a new event/project/action could be sent with no name (now asks for a name and highlights the field). Full click-through QA of the review page and map forms (desktop + phone) found no other errors. Waiting on Nathan: a redesign of the map form to match the review page (mockup to come).
 - **Nov 22 — round 16:** new intro under the group name, chosen line by line with Nathan (45.2 welcome, 71.1, 76.1 + "so you don't have to start from scratch", 81.1, 74.1.2, 74.2.1).
 - **Nov 21 — round 15:** decision row is Edit, Approve, Remove (board 55.3): full names ("Edit project", "Approve project"), and "Remove from map" is quiet red text with no border (pressed state keeps the strong red). This reverses round 14's order (Approve first). Intro wording is still being chosen slot by slot (57.1 to 57.5; 57.1.1 welcome line chosen).
 - **Nov 21 — round 14:** decision row is now Approve first, then a named Edit ("Edit project", "Edit event", "Edit action", "Edit group info"), then Remove from map (board 51.3). Remove-button colour (board 48) and the other open decisions are still waiting on Nathan.
