@@ -957,3 +957,4 @@ Source: all open items from the Running doc + Turibius's 2026-10-11-MACOM-Feedba
 2026-11-22 23:40 — Round 16: new intro paragraph on the review page (Nathan's line-by-line picks).
 2026-11-23 21:40 — QA pass of review page + map forms (Playwright, desktop+phone). Added simple animations to the + menu and quick form, fixed tip-over-form z-index, required a name for new items.
 2026-11-23 23:10 — Map form v2 (essentials first, pills, one main button, group-first org form, edit/copy buttons open the map form) and an always-on draggable Feedback button with a server action (mapFeedback_). Tests added. Server needs redeploy.
+2026-11-24 11:20 — Save point person gray until required details are in (Nathan). Tried to deploy script v20 via Claude in Chrome: no signed-in account there has access to the sheet; nothing changed.
