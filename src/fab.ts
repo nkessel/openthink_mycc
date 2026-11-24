@@ -6,6 +6,7 @@ import { h } from "./dom";
 import { currentMap } from "./maps";
 import { liveEntry, prefill } from "./prefill";
 import { openQuickForm } from "./quickform";
+import { openFeedback } from "./feedbackbtn";
 import type { Action, CoalitionEvent, Project } from "./types";
 
 export type FormKind = keyof typeof FORMS;
@@ -121,8 +122,9 @@ export function createFab(parent: HTMLElement, getContext: () => GraphNode | nul
       // Adding an event/project/action, or updating the open organization: fill it in here first, then the
       // Google Form opens with the answers in. (Ctrl/⌘-click still opens the plain form.)
       const ctx = getContext();
-      const quick = kind === "event" || kind === "project" || kind === "action" || (kind === "org" && ctx?.kind === "org");
+      const quick = kind === "event" || kind === "project" || kind === "action" || kind === "org";
       const me = e as MouseEvent;
+      if (kind === "feedback" && !me.metaKey && !me.ctrlKey && !me.shiftKey && openFeedback(label)) { e.preventDefault(); return; }
       if (url && quick && !me.metaKey && !me.ctrlKey && !me.shiftKey && openQuickForm(kind as "org" | "event" | "project" | "action", ctx)) e.preventDefault();
     });
     return el;

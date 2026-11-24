@@ -1,3 +1,5 @@
+import { openQuickForm } from "./quickform";
+import { onPlain } from "./notice";
 import { REGION } from "./region.config";
 import { recurrenceLabel } from "./recurrence";
 import type {
@@ -163,7 +165,7 @@ export function createDrawer(
       const edit = formUrl("org", node);
       if (edit) {
         head.appendChild(
-          h("a", { class: "edit-link", href: edit, target: "_blank", rel: "noopener" }, "✎ Update this organization's info"),
+          onPlain(h("a", { class: "edit-link", href: edit, target: "_blank", rel: "noopener" }, "✎ Update this organization's info"), () => openQuickForm("org", node)),
         );
       }
       head.appendChild(

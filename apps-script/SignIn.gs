@@ -19,7 +19,8 @@
  * Paste this file next to Code.gs and Confirm.gs in Apps Script (+ → Script → "SignIn"), then deploy a new version.
  */
 
-var SIGNIN_ACTIONS = ['google', 'emailLink', 'login', 'submitForm'];
+var SIGNIN_ACTIONS = ['google', 'emailLink', 'login', 'submitForm', 'feedback'];
+var FEEDBACK_PER_HOUR = 60; // notes from the map's Feedback button, all senders together
 var SESSION_DAYS = 30;
 var LOGIN_LINK_MINUTES = 15;
 var LOGIN_LINKS_PER_EMAIL = 3; // per 15 minutes, so the form can't be used to flood someone's inbox
@@ -38,6 +39,7 @@ function signInPost_(action, b) {
   if (action === 'google') return googleSignIn_(String(b.credential || ''));
   if (action === 'emailLink') return sendLoginLink_(b);
   if (action === 'login') return redeemLogin_(String(b.token || ''));
+  if (action === 'feedback') return mapFeedback_(b);
   return submitSignedIn_(b);
 }
 
@@ -273,3 +275,30 @@ function submitAs_(email, kind, a, via) {
   var why = queued.split(' · ')[0];
   return { status: 'review', message: 'Your changes were sent to the map team to check first: ' + (why.split(' — ')[1] || why) + '.' };
 }
+
+// ---------------------------------------------------------------- the map's Feedback button (Nov 23)
+
+/**
+ * A note from the Feedback button on the map: no sign-in, saved to the Feedback tab (status "new") like the feedback
+ * form. `page` says where on the map it was sent from; `website` is a hidden field only bots fill in.
+ */
+function mapFeedback_(b) {
+  var msg = String(b.message || '').trim().slice(0, 4000);
+  if (String(b.website || '')) return { ok: true, message: feedbackThanks_() }; // a bot: say thanks, keep nothing
+  if (!msg) return { ok: false, error: 'Please write a note first.' };
+  var email = String(b.email || '').trim().slice(0, 200);
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: 'That email address doesn\'t look right. You can also leave it blank.' };
+  var cache = CacheService.getScriptCache();
+  var key = 'FEEDBACK_' + Math.floor(Date.now() / 3600000);
+  var n = Number(cache.get(key) || 0);
+  if (n >= FEEDBACK_PER_HOUR) return { ok: false, error: 'We\'ve had a lot of notes in the last hour. Please try again a little later.' };
+  cache.put(key, String(n + 1), 3600);
+  var a = {};
+  a[Q.fbType] = 'Feedback button on the map';
+  a[Q.fbMessage] = msg;
+  a[Q.fbArea] = String(b.page || '').slice(0, 200);
+  if (email) a[Q.fbFollowUp] = 'Yes';
+  saveFeedback_(a, email);
+  return { ok: true, message: feedbackThanks_() };
+}
+function feedbackThanks_() { return 'Thank you! Your note went straight to the map team.'; }
